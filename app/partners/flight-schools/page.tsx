@@ -26,12 +26,12 @@ export default function FlightSchoolPartnersPage() {
               >
                 Apply to Partner →
               </a>
-              <Link 
-                to="/framework/full"
+              <a 
+                href="https://enterprise.pilotrecognition.com/framework/full"
                 className="bg-transparent border-2 border-white hover:bg-white hover:text-slate-900 text-white font-semibold py-4 px-8 rounded-lg transition-colors"
               >
                 View Our Framework
-              </Link>
+              </a>
             </div>
           </div>
         </div>

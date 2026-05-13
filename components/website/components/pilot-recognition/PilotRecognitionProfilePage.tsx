@@ -1449,6 +1449,66 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 onNavigate={onNavigate}
                             />
 
+                            {/* Veremark Verified Badge — visible to ALL pilots */}
+                            <div style={{ marginTop: '1.5rem' }}>
+                                <VeremarkVerifiedBadge
+                                    isVerified={profileData?.veremark_verified || false}
+                                    isPreCleared={profileData?.veremark_verified && profileData?.verification_completeness === 100}
+                                    verificationDate={profileData?.veremark_verified_at ? new Date(profileData.veremark_verified_at) : undefined}
+                                    expiryDate={profileData?.veremark_expires_at ? new Date(profileData.veremark_expires_at) : undefined}
+                                    verificationId={profileData?.veremark_verification_id || undefined}
+                                    riskTier={(() => {
+                                        // Compute insurance risk tier from profile data
+                                        const medical = profileData?.medical_status?.toLowerCase() || '';
+                                        const hours = profileData?.total_hours || 0;
+                                        const license = profileData?.license_status?.toLowerCase() || '';
+                                        const incidents = profileData?.incident_count || 0;
+                                        const suspensions = profileData?.license_suspension_count || 0;
+
+                                        if (incidents >= 2 || suspensions >= 1 || medical.includes('special')) return 'high';
+                                        if (incidents === 1 || hours < 250 || !medical.includes('valid')) return 'moderate';
+                                        if (license.includes('valid') && medical.includes('valid') && hours >= 500) return 'low';
+                                        return 'unknown';
+                                    })()}
+                                    countryCode={profileData?.country_of_license}
+                                    isPremium={isPremium}
+                                    walletCompletenessPercent={(() => {
+                                        // Compute wallet completeness from available profile data
+                                        let checks = 0;
+                                        let total = 9;
+                                        if (profileData?.license_type && profileData?.license_type !== 'None') checks++;
+                                        if (profileData?.medical_status && profileData?.medical_status !== 'None') checks++;
+                                        if (profileData?.total_hours && profileData?.total_hours > 0) checks++;
+                                        if (profileData?.certifications?.length > 0) checks++;
+                                        if (profileData?.current_employer) checks++;
+                                        if (profileData?.country_of_license) checks++;
+                                        if (profileData?.veremark_verified) checks += 3;
+                                        return Math.min(100, Math.round((checks / total) * 100));
+                                    })()}
+                                    items={(() => {
+                                        const vItems: import('./VeremarkVerifiedBadge').VerificationItem[] = [];
+                                        if (profileData?.license_type && profileData?.license_type !== 'None') {
+                                            vItems.push({ id: 'lic', category: 'license', label: 'License Validation', status: profileData?.license_status?.toLowerCase().includes('valid') ? 'verified' : 'pending' });
+                                        }
+                                        if (profileData?.medical_status && profileData?.medical_status !== 'None') {
+                                            vItems.push({ id: 'med', category: 'medical', label: 'Medical Certificate', status: profileData?.medical_status?.toLowerCase().includes('valid') ? 'verified' : 'pending' });
+                                        }
+                                        if (profileData?.total_hours && profileData?.total_hours > 0) {
+                                            vItems.push({ id: 'hrs', category: 'identity', label: 'Flight Hours Log', status: 'verified' });
+                                        }
+                                        if (profileData?.certifications?.length > 0) {
+                                            vItems.push({ id: 'edu', category: 'education', label: 'Education & Credentials', status: 'verified' });
+                                        }
+                                        if (profileData?.current_employer) {
+                                            vItems.push({ id: 'emp', category: 'employment', label: 'Employment History', status: 'verified' });
+                                        }
+                                        return vItems;
+                                    })()}
+                                    onRequestVerification={() => onNavigate('veremark-verification')}
+                                    onViewDetails={() => onNavigate('verification-details')}
+                                />
+                            </div>
+
                             {/* Recognition+ Premium Features */}
                             {isPremium && (
                                 <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -1464,16 +1524,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             if (action === 'View Requirements') onNavigate('license-requirements');
                                             if (action === 'Update Logbook') onNavigate('digital-logbook');
                                         }}
-                                    />
-
-                                    {/* Veremark Verified Badge */}
-                                    <VeremarkVerifiedBadge
-                                        isVerified={profileData?.veremark_verified || false}
-                                        verificationDate={profileData?.veremark_verified_at ? new Date(profileData.veremark_verified_at) : undefined}
-                                        expiryDate={profileData?.veremark_expires_at ? new Date(profileData.veremark_expires_at) : undefined}
-                                        verificationId={profileData?.veremark_verification_id || undefined}
-                                        onRequestVerification={() => onNavigate('veremark-verification')}
-                                        onViewDetails={() => onNavigate('verification-details')}
                                     />
 
                                     {/* Career Pathway Priority */}
@@ -1622,6 +1672,188 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </button>
                                     </div>
                                 ))}
+                            </div>
+                        </CategorySection>
+
+                        {/* PILLAR 11: Verification & Background Checks */}
+                        <CategorySection title="Verification & Background Checks" description="Pillar 11 — Portable credential wallet, pre-cleared status, and insurance risk profile">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                {/* Verification Wallet Status Card */}
+                                <div style={{ ...baseCardStyle }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Pillar 11</p>
+                                            <h3 style={{ margin: '0.35rem 0 0', fontSize: '1.1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Verification Wallet</h3>
+                                            <p style={{ margin: '0.5rem 0 0', color: '#64748b', fontSize: '0.85rem', maxWidth: '500px' }}>
+                                                Complete background checks once. Store results in a blockchain-backed digital wallet. Share verified status with any operator instantly. Verify once, apply anywhere.
+                                            </p>
+                                        </div>
+                                        <div style={{ textAlign: 'center', minWidth: '120px' }}>
+                                            <div style={{ position: 'relative', width: '64px', height: '64px', margin: '0 auto' }}>
+                                                <svg width="64" height="64" viewBox="0 0 64 64" style={{ transform: 'rotate(-90deg)' }}>
+                                                    <circle cx="32" cy="32" r="26" fill="none" stroke="#1e293b" strokeWidth="5" />
+                                                    <circle cx="32" cy="32" r="26" fill="none" stroke="#10b981" strokeWidth="5" strokeDasharray={`${(() => {
+                                                        const checks = (profileData?.veremark_verified ? 3 : 0) +
+                                                            (profileData?.license_type && profileData?.license_type !== 'None' ? 1 : 0) +
+                                                            (profileData?.medical_status && profileData?.medical_status !== 'None' ? 1 : 0) +
+                                                            (profileData?.total_hours && profileData?.total_hours > 0 ? 1 : 0) +
+                                                            (profileData?.certifications?.length > 0 ? 1 : 0) +
+                                                            (profileData?.current_employer ? 1 : 0) +
+                                                            (profileData?.country_of_license ? 1 : 0);
+                                                        const pct = Math.min(100, (checks / 9) * 100);
+                                                        return (pct / 100) * 163.36;
+                                                    })()} 163.36`} strokeLinecap="round" />
+                                                </svg>
+                                                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.875rem', fontWeight: 700, color: '#ffffff' }}>
+                                                    {Math.round(((() => {
+                                                        const checks = (profileData?.veremark_verified ? 3 : 0) +
+                                                            (profileData?.license_type && profileData?.license_type !== 'None' ? 1 : 0) +
+                                                            (profileData?.medical_status && profileData?.medical_status !== 'None' ? 1 : 0) +
+                                                            (profileData?.total_hours && profileData?.total_hours > 0 ? 1 : 0) +
+                                                            (profileData?.certifications?.length > 0 ? 1 : 0) +
+                                                            (profileData?.current_employer ? 1 : 0) +
+                                                            (profileData?.country_of_license ? 1 : 0);
+                                                        return Math.min(100, (checks / 9) * 100);
+                                                    })()))}%
+                                                </div>
+                                            </div>
+                                            <p style={{ margin: '0.5rem 0 0', fontSize: '0.65rem', color: '#94a3b8' }}>Wallet Complete</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Pre-Cleared Advantage Banner */}
+                                <div style={{
+                                    background: profileData?.veremark_verified ? 'rgba(16, 185, 129, 0.1)' : 'rgba(30, 41, 59, 0.6)',
+                                    borderRadius: '16px',
+                                    padding: '1.25rem',
+                                    border: `1px solid ${profileData?.veremark_verified ? 'rgba(16, 185, 129, 0.3)' : 'rgba(255, 255, 255, 0.1)'}`,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '1rem'
+                                }}>
+                                    <div style={{
+                                        width: '48px', height: '48px', borderRadius: '12px',
+                                        background: profileData?.veremark_verified ? 'rgba(16, 185, 129, 0.2)' : 'rgba(148, 163, 184, 0.1)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        fontSize: '1.5rem'
+                                    }}>
+                                        {profileData?.veremark_verified ? '⚡' : '🔒'}
+                                    </div>
+                                    <div>
+                                        <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#ffffff' }}>
+                                            {profileData?.veremark_verified ? 'Pre-Cleared Status Active' : 'Complete Verification to Unlock Pre-Cleared Status'}
+                                        </p>
+                                        <p style={{ margin: '0.35rem 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>
+                                            {profileData?.veremark_verified
+                                                ? 'Airlines see you as pre-cleared. 80% faster screening. Priority on candidate lists. Zero surprise rejections.'
+                                                : 'Verification Preferred badge lets airlines filter for pre-cleared pilots. Complete your wallet to stand out.'
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Check Type Tiles */}
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+                                    {[
+                                        { label: 'Identity', icon: '🆔', status: profileData?.veremark_verified ? 'verified' : 'pending' },
+                                        { label: 'License', icon: '📜', status: (profileData?.license_type && profileData?.license_type !== 'None') ? 'verified' : 'pending' },
+                                        { label: 'Medical', icon: '🩺', status: (profileData?.medical_status && profileData?.medical_status !== 'None') ? 'verified' : 'pending' },
+                                        { label: 'Employment', icon: '💼', status: profileData?.current_employer ? 'verified' : 'pending' },
+                                        { label: 'Criminal', icon: '🔒', status: profileData?.veremark_verified ? 'verified' : 'pending' },
+                                        { label: 'Education', icon: '🎓', status: (profileData?.certifications?.length > 0) ? 'verified' : 'pending' },
+                                        { label: 'Right-to-Work', icon: '🌍', status: profileData?.country_of_license ? 'verified' : 'pending' },
+                                        { label: 'References', icon: '📝', status: profileData?.veremark_verified ? 'verified' : 'pending' },
+                                        { label: 'Insurance', icon: '🛡️', status: profileData?.veremark_verified ? 'verified' : 'pending' },
+                                    ].map(check => (
+                                        <div key={check.label} style={{
+                                            background: check.status === 'verified' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(30, 41, 59, 0.6)',
+                                            borderRadius: '12px',
+                                            padding: '0.85rem',
+                                            border: `1px solid ${check.status === 'verified' ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.08)'}`,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.75rem'
+                                        }}>
+                                            <span style={{ fontSize: '1.25rem' }}>{check.icon}</span>
+                                            <div>
+                                                <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 600, color: '#ffffff' }}>{check.label}</p>
+                                                <p style={{ margin: '0.15rem 0 0', fontSize: '0.7rem', color: check.status === 'verified' ? '#10b981' : '#94a3b8', fontWeight: 500 }}>
+                                                    {check.status === 'verified' ? '✓ Verified' : 'Pending'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Risk Profile & CTA Row */}
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                                    {/* Insurance Risk Profile */}
+                                    <div style={{ ...baseCardStyle }}>
+                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Insurance Risk Profile</p>
+                                        <h3 style={{ margin: '0.5rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
+                                            {(() => {
+                                                const medical = profileData?.medical_status?.toLowerCase() || '';
+                                                const hours = profileData?.total_hours || 0;
+                                                const license = profileData?.license_status?.toLowerCase() || '';
+                                                const incidents = profileData?.incident_count || 0;
+                                                const suspensions = profileData?.license_suspension_count || 0;
+                                                if (incidents >= 2 || suspensions >= 1 || medical.includes('special')) return 'High Risk Tier';
+                                                if (incidents === 1 || hours < 250 || !medical.includes('valid')) return 'Moderate Risk Tier';
+                                                if (license.includes('valid') && medical.includes('valid') && hours >= 500) return 'Low Risk Tier';
+                                                return 'Risk Profile Unknown';
+                                            })()}
+                                        </h3>
+                                        <p style={{ margin: '0.5rem 0 0', fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>
+                                            {(() => {
+                                                const medical = profileData?.medical_status?.toLowerCase() || '';
+                                                const hours = profileData?.total_hours || 0;
+                                                const incidents = profileData?.incident_count || 0;
+                                                const suspensions = profileData?.license_suspension_count || 0;
+                                                if (incidents >= 2 || suspensions >= 1 || medical.includes('special')) {
+                                                    return 'Multiple incidents or medical Special Issuances detected. Premium rates or coverage exclusions may apply.';
+                                                }
+                                                if (incidents === 1 || hours < 250 || !medical.includes('valid')) {
+                                                    return 'Minor risk factors present. Standard insurance rates with conditions may apply.';
+                                                }
+                                                if (hours >= 500) {
+                                                    return 'Clean record with stable credentials. Preferred insurance rates available to operators hiring you.';
+                                                }
+                                                return 'Complete verification to determine your insurance risk profile for airline and operator applications.';
+                                            })()}
+                                        </p>
+                                    </div>
+
+                                    {/* Verification CTA */}
+                                    <div style={{ ...baseCardStyle, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1rem' }}>
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Background Screening</p>
+                                            <h3 style={{ margin: '0.5rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Start Verification</h3>
+                                            <p style={{ margin: '0.5rem 0 0', fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>
+                                                Complete all 9 checks via Veremark. Turnaround: {profileData?.country_of_license ? 'varies by country' : '24-72 hours'}.
+                                                {isPremium ? ' Expedited service available.' : ' Upgrade to Recognition+ for expedited 4-24h processing.'}
+                                            </p>
+                                        </div>
+                                        <button
+                                            onClick={() => onNavigate('veremark-verification')}
+                                            style={{
+                                                padding: '0.75rem 1.5rem',
+                                                borderRadius: '999px',
+                                                border: 'none',
+                                                background: '#0ea5e9',
+                                                color: '#fff',
+                                                fontWeight: 600,
+                                                fontSize: '0.85rem',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.2s ease'
+                                            }}
+                                            onMouseEnter={(e) => { e.currentTarget.style.background = '#0284c7'; }}
+                                            onMouseLeave={(e) => { e.currentTarget.style.background = '#0ea5e9'; }}
+                                        >
+                                            {profileData?.veremark_verified ? 'Update Verification' : 'Begin Verification Checks'}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </CategorySection>
 

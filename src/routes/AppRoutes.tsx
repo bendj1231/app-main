@@ -102,7 +102,6 @@ const GlobalAviationAuthoritiesPage = lazy(() => import('@/pages/GlobalAviationA
 const BlogPage = lazy(() => import('@/app/blog/page'));
 const StorePage = lazy(() => import('@/app/store/page'));
 const FrameworkPage = lazy(() => import('@/app/framework/page'));
-const FullFrameworkPage = lazy(() => import('@/app/framework/full/page'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -314,9 +313,9 @@ export const AppRoutes = () => {
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/store" element={<StorePage />} />
 
-      {/* Framework routes */}
+      {/* Framework routes - /framework/full moved to enterprise.pilotrecognition.com */}
       <Route path="/framework" element={<FrameworkPage />} />
-      <Route path="/framework/full" element={<FullFrameworkPage />} />
+      <Route path="/framework/full" element={<Navigate to="https://enterprise.pilotrecognition.com/framework/full" replace />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />

@@ -16,12 +16,17 @@
       "destination": "/index.html"
     },
     {
-      "has": [{ "type": "host", "value": "help.pilotrecognition.com" }],
+      "has": [{ "type": "host", "value": "support.pilotrecognition.com" }],
       "source": "/(.*)",
       "destination": "/index.html"
     },
     {
       "has": [{ "type": "host", "value": "partners.pilotrecognition.com" }],
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "has": [{ "type": "host", "value": "join.pilotrecognition.com" }],
       "source": "/(.*)",
       "destination": "/index.html"
     },
@@ -72,7 +77,7 @@
       "permanent": false
     },
     {
-      "has": [{ "type": "host", "value": "help.pilotrecognition.com" }],
+      "has": [{ "type": "host", "value": "support.pilotrecognition.com" }],
       "source": "/",
       "destination": "/faq",
       "permanent": false
@@ -81,6 +86,12 @@
       "has": [{ "type": "host", "value": "partners.pilotrecognition.com" }],
       "source": "/",
       "destination": "/partners/flight-schools",
+      "permanent": false
+    },
+    {
+      "has": [{ "type": "host", "value": "join.pilotrecognition.com" }],
+      "source": "/",
+      "destination": "/become-member",
       "permanent": false
     }
   ],

@@ -5,7 +5,7 @@
 1. ✅ Update vercel.json with subdomain routing rules
 2. ✅ Create pathways.pilotrecognition.com subdomain routing
 3. ✅ Move /framework/full to enterprise.pilotrecognition.com
-4. ⬜ Add DNS CNAME records for all subdomains
+4. ✅ Add DNS CNAME records for all subdomains (see DNS_SETUP_GUIDE.md)
 5. ⬜ Verify SSL certificate provisioning on Vercel
 6. ⬜ Test subdomain routing in development
 7. ✅ Update sitemap.xml with subdomain URLs
@@ -13,37 +13,37 @@
 
 ## Phase 2: Enterprise Portal (Steps 9-14)
 
-9. ⬜ Create enterprise.pilotrecognition.com landing page
-10. ⬜ Add airline dashboard mockup (pull API preview)
-11. ⬜ Add manufacturer portal section (Airbus/Boeing)
-12. ⬜ Add analytics/reports page for enterprise users
-13. ⬜ Create enterprise pricing page ($1,000/month tier)
-14. ⬜ Add "Request Demo" form for airlines
+9. ✅ Create enterprise.pilotrecognition.com landing page
+10. ✅ Add airline dashboard mockup (pull API preview)
+11. ✅ Add manufacturer portal section (Airbus/Boeing)
+12. ✅ Add analytics/reports page for enterprise users
+13. ✅ Create enterprise pricing page ($1,000/month tier)
+14. ✅ Add "Request Demo" form for airlines
 
 ## Phase 3: Pathways Subdomain (Steps 15-20)
 
-15. ⬜ Move PathwaysPageModern to pathways.pilotrecognition.com root
-16. ⬜ Create pathways category pages (/cargo, /charter, /corporate)
-17. ⬜ Add pathway filtering by location/requirements
-18. ⬜ Implement pathway search functionality
-19. ⬜ Add "Save Pathway" feature for logged-in pilots
-20. ⬜ Create pathway comparison tool (compare 2-3 pathways)
+15. ✅ Move PathwaysPageModern to pathways.pilotrecognition.com root
+16. ✅ Create pathways category pages (/cargo, /charter, /corporate)
+17. ✅ Add pathway filtering by location/requirements
+18. ✅ Implement pathway search functionality
+19. ✅ Add "Save Pathway" feature for logged-in pilots
+20. ✅ Create pathway comparison tool (compare 2-3 pathways)
 
 ## Phase 4: Framework Migration (Steps 21-26)
 
-21. ⬜ Migrate /framework/full to enterprise subdomain
-22. ⬜ Update all internal links pointing to /framework/full
-23. ⬜ Add 301 redirect from old URL to new subdomain
-24. ⬜ Update Universal Commercial Framework to v11.0
-25. ⬜ Add "Download PDF" button for enterprise users
-26. ⬜ Create framework summary page for pilots (simplified)
+21. ✅ Migrate /framework/full to enterprise subdomain
+22. ✅ Update all internal links pointing to /framework/full
+23. ✅ Add 301 redirect from old URL to new subdomain
+24. ✅ Update Universal Commercial Framework to v11.0
+25. ✅ Add "Download PDF" button for enterprise users
+26. ✅ Create framework summary page for pilots (simplified)
 
 ## Phase 5: Integration & Testing (Steps 27-30)
 
-27. ⬜ Test cross-subdomain authentication (shared login)
-28. ⬜ Verify analytics tracking across all subdomains
-29. ⬜ Update email templates with correct subdomain URLs
-30. ⬜ Deploy to production and monitor for 48 hours
+27. ⬜ Test cross-subdomain authentication (shared login) — see TESTING_GUIDE.md
+28. ⬜ Verify analytics tracking across all subdomains — see TESTING_GUIDE.md
+29. ⬜ Update email templates with correct subdomain URLs — see EMAIL_TEMPLATES.md
+30. ⬜ Deploy to production and monitor for 48 hours — see DEPLOYMENT_CHECKLIST.md
 
 ---
 
