@@ -3349,6 +3349,69 @@ Every aviation career question — from a 16-year-old dreaming of becoming a pil
 
 ---
 
+### Detailed: Airline Expectations Page — What Pilots Access
+
+**Purpose:** Centralized, verified airline requirements and operational information — not job postings.
+
+| **Information Category** | **What's Publicly Available (Old Way)** | **Airline Expectations Page (Framework)** |
+|--------------------------|-----------------------------------------|-------------------------------------------|
+| **Airline Identity** | Scattered website info, marketing claims | Verified enterprise profile, structured data |
+| **Base Locations** | Buried in careers page, often outdated | Live base maps, domicile options, commute policies |
+| **Fleet Composition** | Wikipedia, press releases | Live fleet: active aircraft, on order, retiring, with EIS dates |
+| **Type Ratings in Demand** | Rumors, job board inference | Explicit: which types are actively needed, 12-24 month forecast |
+| **Hour Requirements** | "Competitive" or vague ranges | Exact: TT, PIC, turbine, multi-engine, night, cross-country |
+| **License Acceptance** | Discover after applying | Clear policy: which foreign licenses, conversion requirements |
+| **Medical Requirements** | Generic "Class 1" mention | Specific: medical standards, revalidation cycles, common disqualifiers |
+| **ICAO English Level** | Often omitted | Explicit: Level 4/5/6 required, additional language requirements |
+| **Age Limits** | Hidden or "encouraged" | Stated: minimum, maximum, mandatory retirement |
+| **Assessment Process** | Unknown until invited | Published: aptitude tests, interviews, simulator evaluations, timeframes |
+| **Bond/Sponsorship** | Surprise in contract | Clear: training bond amounts, sponsorship terms, repayment schedules |
+| **Cadet Program Structure** | Inconsistent across channels | Complete: intake dates, selection criteria, training duration, employment guarantee |
+| **Rostering Patterns** | Unknown until employed | Published: typical patterns, layover policies, scheduling systems |
+| **Salary Progression** | Negotiated or secretive | Transparent: first year, fifth year, captain upgrade, benefit overview |
+| **Work Culture** | Trial and error | Published: management style, union environment, pilot feedback scores |
+| **Recognition Score Range** | No standard exists | Published: minimum required, preferred, competitive threshold |
+| **Status Updates** | Check job boards repeatedly | Live: Open/Closed/Paused/Future with estimated reopening dates |
+| **Comparison Tool** | Manual spreadsheet work | One-click: compare multiple airlines side-by-side |
+| **Gap Analysis** | Self-assessment guesswork | Automated: your profile vs. their requirements with specific gaps |
+
+**What Pilots Do:** Browse airline profiles → Compare requirements to their profile → Submit interest when aligned (no application needed)
+
+**What Airlines Do:** Publish verified expectations → Receive interest from pre-aligned pilots → Pull from verified interest list
+
+---
+
+### Detailed: Type Rating & Manufacturer Page — Aircraft-Specific Information
+
+**Purpose:** Direct aircraft and type rating information from manufacturers — not training center marketing.
+
+| **Information Category** | **Current Public Sources** | **Manufacturer Page (Framework)** |
+|--------------------------|----------------------------|-----------------------------------|
+| **Aircraft Specifications** | Manufacturer website, technical docs | Pilot-focused: range, payload, typical routes, operating environments |
+| **Type Rating Cost** | Training center quotes (vary wildly) | Official: manufacturer-suggested training duration, cost ranges, what affects price |
+| **Training Locations** | Google search, broker recommendations | Verified: authorized training centers by region, with quality metrics |
+| **Prerequisites** | Assumed "CPL + ME/IR" | Detailed: minimum hours, license types, experience level recommended |
+| **Training Duration** | "4-6 weeks" estimate | Specific: ground school hours, simulator sessions, check ride prep |
+| **Career Pathways** | Generic advice | Mapped: which operators fly this type, hiring demand, network effects |
+| **Fleet Demand Signal** | Press releases, industry rumors | Live data: pilots searching for this type, operator interest levels |
+| **Operator Network** | Operator websites individually | Connected: which airlines, cargo, charter operators use this aircraft |
+| **Transition Paths** | Forums, anecdotal | Structured: from which types, which pilot profiles, conversion difficulty |
+| **Salary by Type** | Survey data, word of mouth | Aggregated: typical FO/Captain pay by operator type for this aircraft |
+| **Job Market Heat** | Climbto350, job boards | Real-time: interest levels, verified operator pathway activity |
+| **Manufacturer Direct Info** | Through operators only | Direct: OEM requirements, recommended competencies, fleet plans |
+| **Pre-Launch Pipeline** | None for new types | Early access: interest lists before certification, exclusive updates |
+| **Competency Alignment** | Generic EBT frameworks | OEM-specific: which Recognition Score components align to this type |
+| **Simulator Availability** | Call around | Live: simulator center capacity, booking windows, location map |
+| **Financing Options** | Bank loans only | Integrated: career trajectory loans tied to this type's pathway |
+| **Insurance Implications** | Unknown until employed | Clarified: type rating impact on employability and coverage |
+| **Future Resale Value** | Broker estimates | Industry view: type rating currency, transferability to other types |
+
+**Pilot Use Case:** Researching A320 type rating → Sees official Airbus training requirements → Compares to their profile → Discovers which operators are actively seeking A320 pilots → Submits interest to those operator pathways → Chooses training center based on verified data
+
+**Manufacturer Value:** Direct relationship with pilots exploring their aircraft → Understanding of pilot readiness gaps → Ability to signal fleet demand to training pipeline → Pre-certified interest pools for new types
+
+---
+
 ### Appendix A: Technical Integration
 
 - API architecture, webhook specifications, authentication protocols
