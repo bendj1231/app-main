@@ -48,7 +48,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                                 { label: 'Airline Expectations', page: 'portal-airline-expectations' },
                                 { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
                                 { label: 'Pilot Pathways', page: 'pathways-modern' },
-                                { label: 'Job Listings', page: 'job-listings' },
+                                { label: 'Pathway Listings', page: 'pathways-modern' },
                             ].map(({ label, page }) => (
                                 <button
                                     key={page}
@@ -110,10 +110,10 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                             Urban Air Mobility is Here
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            The air taxi sector has transformed from concept to operational reality. <strong>Archer Aviation</strong>, <strong>MLG</strong>, and <strong>Joby Aviation</strong> are now launching commercial eVTOL services in major cities worldwide, representing a fundamental shift in urban transportation and creating unprecedented career opportunities for pilots.
+                            The air taxi sector has transformed from concept to operational reality. <strong>Archer Aviation</strong>, <strong>MLG</strong>, and <strong>Joby Aviation</strong> are now launching commercial eVTOL services in major cities worldwide, representing a fundamental shift in urban transportation and creating unprecedented pathway opportunities for pilots.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Through strategic partnerships with these industry pioneers, PilotRecognition delivers direct insight into pilot requirements, operational standards, and hiring timelines. Our Transition Program is built on this insider knowledge, ensuring you develop exactly the competencies these operators demand.
+                            Through strategic partnerships with these industry pioneers, PilotRecognition delivers direct insight into pilot requirements, operational standards, and pathway interest timelines. Our Transition Program is built on this insider knowledge, ensuring you develop exactly the competencies these operators demand.
                         </p>
                     </div>
                     <div className="md:w-1/2">
@@ -261,7 +261,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                             Your Pathway Through PilotRecognition
                         </h2>
                         <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-8 text-center">
-                            The <strong>PilotRecognition Transition Program</strong> provides exclusive access to air taxi career pathways. Beyond training, we connect you directly to recruitment pipelines at Archer, MLG, and Joby, accelerating your transition into this emerging sector.
+                            The <strong>PilotRecognition Transition Program</strong> provides exclusive access to air taxi professional pathways. Beyond training, we connect you directly to pathway teams at Archer, MLG, and Joby, accelerating your transition into this emerging sector.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -270,7 +270,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                                 <ul className="space-y-2 text-sm text-slate-200">
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                                        <span>Direct introductions to Archer, MLG, and Joby recruitment teams</span>
+                                        <span>Direct introductions to Archer, MLG, and Joby pathway teams</span>
                                     </li>
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
@@ -292,7 +292,7 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                                 <ul className="space-y-2 text-sm text-slate-200">
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                                        <span>Early notification of air taxi job openings</span>
+                                        <span>Early notification of air taxi pathway openings</span>
                                     </li>
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
@@ -331,13 +331,13 @@ export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack
                         Your Journey to Air Taxi Operations
                     </h2>
                     <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        The air taxi industry is actively hiring now, with demand accelerating rapidly. Our Transition Program fast-tracks your journey from current qualifications to interview-ready status in months, positioning you ahead of the competition.
+                        The air taxi industry has high demand now, with opportunities accelerating rapidly. Our Transition Program fast-tracks your journey from current qualifications to interview-ready status in months, positioning you ahead of the competition.
                     </p>
 
                     <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
                         <h3 className="text-lg font-bold text-slate-900 mb-4">Ready to Take Off?</h3>
                         <p className="text-base text-slate-700 leading-relaxed mb-6">
-                            Enroll in the PilotRecognition Transition Program today to unlock exclusive access to air taxi career pathways. Our strategic advisory relationships with Archer, MLG, and Joby provide unparalleled insights into emerging opportunities in the eVTOL sector.
+                            Enroll in the PilotRecognition Transition Program today to unlock exclusive access to air taxi professional pathways. Our strategic advisory relationships with Archer, MLG, and Joby provide unparalleled insights into emerging opportunities in the eVTOL sector.
                         </p>
                         <button
                             onClick={() => onNavigate('contact-support')}

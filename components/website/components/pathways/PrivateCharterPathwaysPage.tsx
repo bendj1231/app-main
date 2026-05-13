@@ -398,7 +398,7 @@ export const PrivateCharterPathwaysPage: React.FC<PrivateCharterPathwaysPageProp
                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-slate-200">
                                 <li className="flex items-start gap-2">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                                    <span>Direct introductions to hiring managers</span>
+                                    <span>Direct introductions to pathway managers</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />

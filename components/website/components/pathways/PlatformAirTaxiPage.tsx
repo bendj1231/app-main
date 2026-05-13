@@ -54,10 +54,10 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                             Urban Air Mobility is Here
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            The air taxi sector is no longer science fiction—it's operational reality. Companies like <strong>Archer Aviation</strong>, <strong>MLG</strong>, and <strong>Joby Aviation</strong> are launching commercial eVTOL (electric Vertical Take-Off and Landing) services in major cities worldwide. These aircraft represent a fundamental shift in how we think about urban transportation and pilot careers.
+                            The air taxi sector is no longer science fiction—it's operational reality. Companies like <strong>Archer Aviation</strong>, <strong>MLG</strong>, and <strong>Joby Aviation</strong> are launching commercial eVTOL (electric Vertical Take-Off and Landing) services in major cities worldwide. These aircraft represent a fundamental shift in how we think about urban transportation and pilot opportunities.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            PilotRecognition has established direct communication channels with these industry pioneers to understand their pilot requirements, operational standards, and hiring timelines. This insider knowledge allows us to prepare our Transition Program members with the exact competencies these operators demand.
+                            PilotRecognition has established direct communication channels with these industry pioneers to understand their pilot requirements, operational standards, and pathway interest timelines. This insider knowledge allows us to prepare our Transition Program members with the exact competencies these operators demand.
                         </p>
                     </div>
                     <div className="md:w-1/2">
@@ -174,7 +174,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                             What Air Taxi Operators Expect
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Through our direct conversations with Archer, MLG, and Joby, we've identified the core competencies these operators prioritize when hiring pilots. It's not just about flight hours—it's about demonstrating mastery of modern aviation principles.
+                            Through our direct conversations with Archer, MLG, and Joby, we've identified the core competencies these operators prioritize when selecting pilots. It's not just about flight hours—it's about demonstrating mastery of modern aviation principles.
                         </p>
                         <ul className="mt-2 space-y-2 text-base text-slate-700 list-disc list-inside md:list-outside md:pl-5 text-left">
                             <li><strong>EBT/CBTA Proficiency:</strong> Evidence-Based Training competency assessments</li>
@@ -285,7 +285,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                         Your Journey to Air Taxi Operations
                     </h2>
                     <p className="text-base text-slate-700 leading-relaxed mb-8">
-                        The air taxi industry is hiring now, and demand is accelerating. PilotRecognition's Transition Program is designed to get you from where you are today to interview-ready in months, not years.
+                        The air taxi industry is actively seeking pilots now, with demand accelerating. PilotRecognition's Transition Program is designed to get you from where you are today to interview-ready in months, not years.
                     </p>
 
                     <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">

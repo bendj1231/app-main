@@ -78,10 +78,10 @@ export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNa
                             Emirates-Standard Theory, Recognized Worldwide
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
-                            Passing the GCAA ATPL theoretical exams gives you a frozen ATPL aligned with Emirates hiring
+                            Passing the GCAA ATPL theoretical exams gives you a frozen ATPL aligned with Emirates pathway
                             standards. These credits signal to airlines in Europe, Asia, and the Middle East that you can
                             handle rigorous international training – a powerful differentiator when competing for limited
-                            cadet and First Officer positions.
+                            cadet and First Officer opportunities.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
                             In practice, this makes your profile readable and trusted by operators beyond the UAE alone,
