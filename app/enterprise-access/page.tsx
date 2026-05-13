@@ -396,10 +396,42 @@ const EnterpriseAccessPage = () => {
     const [submitted, setSubmitted] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
+    const [activeSection, setActiveSection] = useState<string>('home');
+    const [scrollProgress, setScrollProgress] = useState(0);
+
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', onScroll);
+        const onScroll = () => {
+            setScrolled(window.scrollY > 20);
+            // Calculate scroll progress
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / docHeight) * 100;
+            setScrollProgress(progress);
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    // Intersection Observer for section tracking
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            { 
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0.1 
+            }
+        );
+
+        // Observe all sections
+        const sections = document.querySelectorAll('section[id]');
+        sections.forEach((section) => observer.observe(section));
+
+        return () => observer.disconnect();
     }, []);
 
     const scrollTo = (id: string) => {
@@ -407,7 +439,8 @@ const EnterpriseAccessPage = () => {
         setMobileNav(false);
         const el = document.getElementById(id);
         if (el) {
-            const top = el.getBoundingClientRect().top + window.scrollY - 80;
+            const headerOffset = 100;
+            const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
             window.scrollTo({ top, behavior: 'smooth' });
         }
     };
@@ -482,8 +515,16 @@ const EnterpriseAccessPage = () => {
     return (
         <div className="min-h-screen bg-white text-slate-900">
 
+            {/* ─── SCROLL PROGRESS BAR ─── */}
+            <div className="fixed top-0 left-0 right-0 h-1 z-[60] bg-slate-100">
+                <div 
+                    className="h-full bg-red-600 transition-all duration-150 ease-out"
+                    style={{ width: `${scrollProgress}%` }}
+                />
+            </div>
+
             {/* ─── STICKY NAV ─── */}
-            <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
+            <header className={`sticky top-1 z-50 transition-all duration-200 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
                 <div className="max-w-7xl mx-auto px-4 lg:px-6">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
@@ -510,12 +551,17 @@ const EnterpriseAccessPage = () => {
                                     {openMenu === group.label && (
                                         <div className="absolute top-full left-0 pt-2 min-w-[260px]">
                                             <div className="bg-white border border-slate-200 rounded-xl shadow-2xl py-2">
-                                                {group.items.map(item => (
-                                                    item.href ? (
+                                                {group.items.map(item => {
+                                                    const isActive = activeSection === item.id;
+                                                    return item.href ? (
                                                         <button
                                                             key={item.id}
                                                             onClick={() => { setOpenMenu(null); navigate(item.href!); }}
-                                                            className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors block"
+                                                            className={`w-full text-left px-4 py-2.5 text-sm transition-colors block ${
+                                                                isActive 
+                                                                    ? 'bg-red-50 text-red-700 font-medium border-l-2 border-red-600' 
+                                                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                                            }`}
                                                         >
                                                             {item.label}
                                                         </button>
@@ -523,12 +569,19 @@ const EnterpriseAccessPage = () => {
                                                         <button
                                                             key={item.id}
                                                             onClick={() => scrollTo(item.id)}
-                                                            className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                                                            className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                                                                isActive 
+                                                                    ? 'bg-red-50 text-red-700 font-medium border-l-2 border-red-600' 
+                                                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                                            }`}
                                                         >
                                                             {item.label}
+                                                            {isActive && (
+                                                                <span className="ml-2 inline-flex items-center justify-center w-1.5 h-1.5 bg-red-600 rounded-full" />
+                                                            )}
                                                         </button>
-                                                    )
-                                                ))}
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     )}
@@ -553,25 +606,40 @@ const EnterpriseAccessPage = () => {
                             {NAV_GROUPS.map(group => (
                                 <div key={group.label} className="mb-4">
                                     <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 mb-1.5">{group.label}</p>
-                                    {group.items.map(item => (
-                                        item.href ? (
+                                    {group.items.map(item => {
+                                        const isActive = activeSection === item.id;
+                                        return item.href ? (
                                             <button
                                                 key={item.id}
                                                 onClick={() => { setMobileNav(false); navigate(item.href!); }}
-                                                className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900 block"
+                                                className={`w-full text-left px-2 py-2 text-sm block transition-colors ${
+                                                    isActive 
+                                                        ? 'text-red-700 font-medium bg-red-50 rounded' 
+                                                        : 'text-slate-600 hover:text-slate-900'
+                                                }`}
                                             >
                                                 {item.label}
+                                                {isActive && (
+                                                    <span className="ml-2 inline-flex w-1.5 h-1.5 bg-red-600 rounded-full" />
+                                                )}
                                             </button>
                                         ) : (
                                             <button
                                                 key={item.id}
                                                 onClick={() => scrollTo(item.id)}
-                                                className="w-full text-left px-2 py-2 text-sm text-slate-600 hover:text-slate-900"
+                                                className={`w-full text-left px-2 py-2 text-sm transition-colors ${
+                                                    isActive 
+                                                        ? 'text-red-700 font-medium bg-red-50 rounded' 
+                                                        : 'text-slate-600 hover:text-slate-900'
+                                                }`}
                                             >
                                                 {item.label}
+                                                {isActive && (
+                                                    <span className="ml-2 inline-flex w-1.5 h-1.5 bg-red-600 rounded-full" />
+                                                )}
                                             </button>
-                                        )
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             ))}
                         </div>
