@@ -15,6 +15,7 @@ Add these CNAME records in your domain registrar (GoDaddy, Namecheap, Cloudflare
 | `support.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Support center |
 | `partners.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Flight school partners |
 | `join.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Membership signup |
+| `blog.pilotrecognition.com` | CNAME | `535f678ef37f1e51.vercel-dns-017.com` | Blog and content |
 
 **Note:** Your Vercel DNS target is `535f678ef37f1e51.vercel-dns-017.com` (project-specific). Use this exact value.
 

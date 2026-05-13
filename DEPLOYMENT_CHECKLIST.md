@@ -16,6 +16,7 @@
 - [ ] https://support.pilotrecognition.com loads
 - [ ] https://partners.pilotrecognition.com loads
 - [ ] https://join.pilotrecognition.com loads
+- [ ] https://blog.pilotrecognition.com loads
 - [ ] All pages mobile-responsive
 - [ ] No console errors on any page
 
