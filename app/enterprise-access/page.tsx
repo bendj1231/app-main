@@ -381,77 +381,64 @@ const TIER_CHECK: Record<string, string> = {
 };
 
 // ─── Hero Carousel ────────────────────────────────────────────────
-const CAROUSEL_ITEMS = [
-    { label: 'Live Pilot Profiles', desc: 'Real-time profiles that update as pilots log hours, complete programs, and earn endorsements.' },
-    { label: 'Airline Expectations API', desc: 'Pull exact airline requirements directly into your systems — type ratings, hours, endorsements.' },
-    { label: 'Background Verification', desc: 'Every pilot is screened before listing. Licence checks, recency exams, aeromedical status.' },
-    { label: 'Recognition Score', desc: 'A single ranked readiness score. Airlines filter and sort pilots by this number — live.' },
-    { label: 'Pathway Cards', desc: 'Requirements-based cards, not job ads. Pilots see exactly what they are missing to qualify.' },
+const SHUFFLE_ITEMS = [
+    { pillar: 'Commercial Airlines', effect: 'updates pathway requirements on your profile in real time.' },
+    { pillar: 'Background Verification', effect: 'clears your licence, recency exam, and aeromedical status automatically.' },
+    { pillar: 'Airline Expectations API', effect: 'pulls exact type rating and hour requirements into your gap analysis.' },
+    { pillar: 'Recognition Score', effect: 'ranks your readiness against every active pilot in the database.' },
+    { pillar: 'Pathway Cards', effect: 'show you precisely what is missing before you can qualify.' },
+    { pillar: 'Flight Training ATOs', effect: 'connect your completed programs directly to airline verification.' },
+    { pillar: 'Aviation Insurance', effect: 'verifies your medical and recency for operator risk assessments.' },
+    { pillar: 'Recruitment Agencies', effect: 'surface your verified profile when operators run live searches.' },
 ];
 
 const HeroCarousel = () => {
-    const [activeIdx, setActiveIdx] = useState(0);
-    const [progress, setProgress] = useState(0);
-    useEffect(() => {
-        setProgress(0);
-        const step = 50;
-        const duration = 2800;
-        const inc = (step / duration) * 100;
-        const prog = setInterval(() => setProgress(p => Math.min(p + inc, 100)), step);
-        const next = setInterval(() => {
-            setActiveIdx(p => (p + 1) % CAROUSEL_ITEMS.length);
-            setProgress(0);
-        }, duration);
-        return () => { clearInterval(prog); clearInterval(next); };
-    }, [activeIdx]);
+    const [idx, setIdx] = useState(0);
+    const [visible, setVisible] = useState(true);
 
-    const item = CAROUSEL_ITEMS[activeIdx];
+    useEffect(() => {
+        const t = setInterval(() => {
+            setVisible(false);
+            setTimeout(() => {
+                setIdx(p => (p + 1) % SHUFFLE_ITEMS.length);
+                setVisible(true);
+            }, 300);
+        }, 2600);
+        return () => clearInterval(t);
+    }, []);
+
+    const item = SHUFFLE_ITEMS[idx];
     return (
-        <div className="mb-8 max-w-[520px]">
-            {/* Step pills */}
-            <div className="flex gap-2 mb-3">
-                {CAROUSEL_ITEMS.map((c, i) => (
+        <div className="mb-10">
+            {/* Shuffling text line */}
+            <div className="mb-6 min-h-[64px]">
+                <p
+                    className="text-lg md:text-xl text-slate-600 leading-snug transition-opacity duration-300"
+                    style={{ opacity: visible ? 1 : 0 }}
+                >
+                    <span className="font-bold text-slate-900">{item.pillar}</span>
+                    {' '}{item.effect}
+                </p>
+            </div>
+
+            {/* Dot indicators */}
+            <div className="flex gap-1.5 mb-6">
+                {SHUFFLE_ITEMS.map((_, i) => (
                     <button
                         key={i}
-                        onClick={() => setActiveIdx(i)}
-                        className={`text-[10px] font-semibold px-2.5 py-1 rounded-full transition-all border ${
-                            i === activeIdx
-                                ? 'bg-slate-900 text-white border-slate-900'
-                                : 'bg-white text-slate-400 border-slate-200 hover:border-slate-400'
-                        }`}
-                    >
-                        {String(i + 1).padStart(2, '0')}
-                    </button>
+                        onClick={() => { setIdx(i); setVisible(true); }}
+                        className={`h-1 rounded-full transition-all duration-300 ${i === idx ? 'w-8 bg-slate-900' : 'w-1.5 bg-slate-300'}`}
+                    />
                 ))}
             </div>
 
-            {/* Card + arrow */}
-            <div className="flex items-center gap-3">
-                <div className="flex-1 bg-white border-2 border-slate-900 rounded-2xl px-5 py-4 shadow-sm">
-                    <p className="text-[10px] uppercase tracking-widest text-red-600 font-bold mb-1.5">{`Feature ${String(activeIdx + 1).padStart(2, '0')}`}</p>
-                    <p className="text-xl font-bold text-slate-900 mb-2">{item.label}</p>
-                    <p className="text-sm text-slate-500 leading-snug mb-4">{item.desc}</p>
-                    <button
-                        onClick={() => { const el = document.getElementById('contact'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 100; window.scrollTo({ top, behavior: 'smooth' }); } }}
-                        className="w-full bg-red-600 hover:bg-red-500 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors mb-3"
-                    >
-                        Request Access
-                    </button>
-                    {/* Progress bar at bottom */}
-                    <div className="h-0.5 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-red-600 rounded-full transition-none"
-                            style={{ width: `${progress}%` }}
-                        />
-                    </div>
-                </div>
-                <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                    <svg className="w-7 h-7 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                    <span className="text-[9px] text-slate-400 uppercase tracking-wider">Live</span>
-                </div>
-            </div>
+            {/* CTA */}
+            <button
+                onClick={() => { const el = document.getElementById('contact'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 100; window.scrollTo({ top, behavior: 'smooth' }); } }}
+                className="bg-red-600 hover:bg-red-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm"
+            >
+                Request Access
+            </button>
         </div>
     );
 };
