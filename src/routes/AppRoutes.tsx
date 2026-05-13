@@ -104,6 +104,7 @@ const GlobalAviationAuthoritiesPage = lazy(() => import('@/pages/GlobalAviationA
 const BlogPage = lazy(() => import('@/app/blog/page'));
 const StorePage = lazy(() => import('@/app/store/page'));
 const FrameworkPage = lazy(() => import('@/app/framework/page'));
+const EnterpriseFrameworkPage = lazy(() => import('@/app/enterprise/framework/page'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -138,9 +139,13 @@ export const AppRoutes = () => {
     console.log('[DEBUG AppRoutes] Enterprise subdomain detected, normalized path:', path);
 
     // Framework pages - served from enterprise subdomain
-    if (path === '/framework' || path === '/framework/full' || path === '/framework/full/index.html') {
+    if (path === '/framework') {
       console.log('[DEBUG AppRoutes] Rendering FrameworkPage on enterprise subdomain');
       return <FrameworkPage />;
+    }
+    if (path === '/framework/full' || path === '/framework/full/index.html') {
+      console.log('[DEBUG AppRoutes] Rendering EnterpriseFrameworkPage (full 80+ page) on enterprise subdomain');
+      return <EnterpriseFrameworkPage />;
     }
 
     if (path === '/enterprise-access/airlines') {
