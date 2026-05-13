@@ -648,64 +648,92 @@ const EnterpriseAccessPage = () => {
             </header>
 
             {/* ─── HERO ─── */}
-            <section id="home" className="relative bg-slate-950 overflow-hidden border-b border-slate-800">
-                {/* Background image right side with fade */}
-                <div className="absolute inset-0 flex">
-                    <div className="w-1/3 bg-slate-950 flex-shrink-0" />
-                    <div className="relative flex-1">
+            <section id="home" className="relative flex flex-col lg:flex-row min-h-[620px] border-b border-slate-800">
+
+                {/* LEFT HALF — dark image + text */}
+                <div className="relative lg:w-1/2 bg-slate-950 flex flex-col justify-center px-8 md:px-14 py-20 overflow-hidden">
+                    {/* Background image fading right */}
+                    <div className="absolute inset-0">
                         <img
                             src="/recognition-unlock.png"
                             alt=""
-                            className="w-full h-full object-cover object-left opacity-60"
+                            className="w-full h-full object-cover object-right opacity-30"
                             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                         />
-                        {/* Fade left */}
-                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #020617 0%, rgba(2,6,23,0.85) 25%, rgba(2,6,23,0.3) 60%, transparent 100%)' }} />
-                        {/* Fade bottom */}
-                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #020617 0%, transparent 40%)' }} />
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #020617 30%, rgba(2,6,23,0.7) 70%, rgba(2,6,23,0.95) 100%)' }} />
                     </div>
-                </div>
 
-                {/* Content */}
-                <div className="relative max-w-7xl mx-auto px-6 pt-24 pb-0">
-                    <div className="max-w-2xl">
+                    {/* Text content */}
+                    <div className="relative">
                         <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-900/30 border border-red-800/50 text-red-400 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest">
                             Enterprise · Global Aviation Network
                         </span>
-                        <h1 className="text-5xl md:text-7xl font-black leading-[1.0] mb-6 text-white">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] mb-5 text-white">
                             Connecting Pilots<br />
                             <span className="text-red-500">to the Industry.</span>
                         </h1>
-                        <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-lg">
-                            Live pilot profiles. Background-verified. Recognition scored. The infrastructure that connects verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
+                        <p className="text-slate-400 text-base mb-8 leading-relaxed max-w-md">
+                            Live pilot profiles. Background-verified. Recognition scored. The infrastructure connecting verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
                         </p>
                         <div className="flex flex-wrap gap-3 mb-6">
-                            <button onClick={() => scrollTo('pillars')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-7 py-3.5 rounded-xl transition-colors">
+                            <button onClick={() => scrollTo('pillars')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
                                 Explore 25 Pillars
                             </button>
-                            <button onClick={() => scrollTo('contact')} className="text-white border border-white/20 hover:bg-white/10 font-semibold px-7 py-3.5 rounded-xl transition-colors">
+                            <button onClick={() => scrollTo('contact')} className="text-white border border-white/20 hover:bg-white/10 font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
                                 Request Access
                             </button>
                         </div>
-                        <p className="text-slate-600 text-xs">
-                            Not a job board — a Recognition & Information Platform. No hiring promises. Just verified discovery.
-                        </p>
+                        <p className="text-slate-600 text-xs">Not a job board — a Recognition & Information Platform.</p>
+                    </div>
+                </div>
+
+                {/* RIGHT HALF — Airline Expectations panel */}
+                <div className="relative lg:w-1/2 bg-slate-900 border-l border-slate-800 flex flex-col">
+                    {/* Panel header */}
+                    <div className="px-8 py-5 border-b border-slate-800 flex items-center justify-between">
+                        <div>
+                            <p className="text-[10px] uppercase tracking-widest text-red-500 font-bold mb-0.5">Live Data</p>
+                            <p className="text-sm font-semibold text-white">Airline Expectations</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                            <span className="text-xs text-slate-400">Updated daily</span>
+                        </div>
                     </div>
 
-                    {/* Feature strip — fades up from bottom */}
-                    <div className="relative mt-16 grid grid-cols-2 md:grid-cols-4 border-t border-slate-800">
+                    {/* Expectation rows */}
+                    <div className="flex-1 divide-y divide-slate-800 overflow-auto">
                         {[
-                            { label: 'Background Verification', sub: 'Pilots are screened before listing' },
-                            { label: 'Live Profile API', sub: 'Pull real-time pilot data' },
-                            { label: 'Airline Pathway Cards', sub: 'Requirements, not job ads' },
-                            { label: 'Recognition Score', sub: 'Ranked readiness currency' },
-                        ].map((f, i) => (
-                            <div key={f.label} className={`px-6 py-5 border-slate-800 ${i < 3 ? 'border-r' : ''}`}>
-                                <div className="w-1.5 h-1.5 bg-red-500 rounded-full mb-3" />
-                                <p className="text-sm font-semibold text-white mb-1">{f.label}</p>
-                                <p className="text-xs text-slate-500">{f.sub}</p>
+                            { airline: 'Commercial Airlines', req: 'ATPL · 1,500 hrs TT · Type Rating', tag: 'Hub A', score: 92 },
+                            { airline: 'Cargo Operators', req: 'CPL · 500 hrs TT · Multi-engine', tag: 'Hub A', score: 78 },
+                            { airline: 'Charter & Business', req: 'CPL · 200 hrs · Instrument Rating', tag: 'Hub A', score: 71 },
+                            { airline: 'Flight Training ATOs', req: 'CPL · 200 hrs · Class 1 Medical', tag: 'Hub B', score: 65 },
+                            { airline: 'Type Rating Centers', req: 'ATPL · 3,000 hrs · Instructor Rating', tag: 'Hub B', score: 88 },
+                            { airline: 'eVTOL & Air Taxi', req: 'PPL+ · eVTOL endorsement · 100 hrs', tag: 'Hub A', score: 60 },
+                            { airline: 'Military Transition', req: 'Military equiv · ICAO conversion', tag: 'Hub B', score: 83 },
+                        ].map((row) => (
+                            <div key={row.airline} className="px-8 py-4 flex items-center gap-4 hover:bg-slate-800/50 transition-colors group cursor-default">
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-semibold text-white truncate">{row.airline}</p>
+                                    <p className="text-xs text-slate-500 mt-0.5 truncate">{row.req}</p>
+                                </div>
+                                <div className="flex items-center gap-3 flex-shrink-0">
+                                    <span className="text-[10px] text-slate-600 font-mono bg-slate-800 px-1.5 py-0.5 rounded">{row.tag}</span>
+                                    <div className="text-right">
+                                        <p className="text-xs text-slate-500">Min. Score</p>
+                                        <p className="text-sm font-bold text-red-400">{row.score}</p>
+                                    </div>
+                                </div>
                             </div>
                         ))}
+                    </div>
+
+                    {/* Panel footer */}
+                    <div className="px-8 py-4 border-t border-slate-800 flex items-center justify-between">
+                        <p className="text-xs text-slate-600">Showing 7 of 25 sectors</p>
+                        <button onClick={() => scrollTo('pillars')} className="text-xs text-red-500 hover:text-red-400 font-semibold transition-colors">
+                            View all 25 pillars →
+                        </button>
                     </div>
                 </div>
             </section>
