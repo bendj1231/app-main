@@ -85,11 +85,11 @@
 ### Part VII-A: Hub G - Digital Discovery & Search Infrastructure (Pages 96-97)
 
 30. **Pillar 25: Digital Discovery & Search Platforms**
-    - Google (Search, Careers, Travel)
-    - Microsoft Bing & LinkedIn
-    - Aviation-Specific Job Boards (Climb, JSfirm, Aviation Job Search)
-    - Professional Networks (LinkedIn, Aviation forums)
-    - Voice & AI Assistants (Siri, Alexa, ChatGPT search)
+    - Major Search Engines (general search, career search, travel search)
+    - Professional Networks (career platforms, business networking)
+    - Aviation-Specific Job Boards (industry-specific recruitment platforms)
+    - Professional Communities (forums, discussion boards, Discord communities)
+    - Voice & AI Assistants (virtual assistants, conversational AI, chatbot platforms)
 
 ### Part VIII: Technical & Commercial Appendices (Pages 98-112)
 
@@ -1211,7 +1211,7 @@ Commercial airlines face a consistent set of operational challenges in pilot rec
 
 **Pain Points for Pilots:**
 
-**1. No central directory** — Job posts scattered across Facebook, LinkedIn, generic boards. No single source of truth.
+**1. No central directory** — Job posts scattered across social media, professional networks, generic boards. No single source of truth.
 
 **2. Opaque requirements** — Exact hours, ratings, and competency expectations rarely published clearly.
 
@@ -2913,9 +2913,9 @@ Integration with platform allows real-time verification of:
 
 **Why This Pillar Exists:**
 
-Every pilot journey begins with a search. Before a pilot contacts an airline, enrolls in flight school, or applies for a type rating — they search. They search Google for "how to become a pilot," they search LinkedIn for airline career pages, they search job boards for openings, and increasingly, they ask AI assistants for career guidance. 
+Every pilot journey begins with a search. Before a pilot contacts an airline, enrolls in flight school, or applies for a type rating — they search. They search the web for "how to become a pilot," they search professional networks for airline career pages, they search job boards for openings, and increasingly, they ask AI assistants for career guidance. 
 
-**The problem:** Aviation career information is fragmented, unstructured, and often misleading. A Google search for "Emirates pilot requirements" returns 50 different answers, none verified by the airline. LinkedIn shows job posts that closed months ago. Job boards list opportunities without context about pathways or requirements.
+**The problem:** Aviation career information is fragmented, unstructured, and often misleading. A search for "Emirates pilot requirements" returns 50 different answers, none verified by the airline. Professional networks show job posts that closed months ago. Job boards list opportunities without context about pathways or requirements.
 
 **Pillar 25 solves this** by creating a structured data partnership between PilotRecognition and the world's discovery platforms. Instead of pilots finding fragmented, outdated information, they find live, verified, structured pathway data directly in search results.
 
@@ -2923,54 +2923,54 @@ Every pilot journey begins with a search. Before a pilot contacts an airline, en
 
 ### What We Require:
 
-**From Google (Search, Careers, Travel):**
+**From Major Search Platforms (Search, Career Search, Travel):**
 
-- **Structured Data Integration:** Google ingests our pathway schema markup (JobPosting + Course + OccupationalCertification) to display rich results
-- **Career Pathway Panels:** Google Career search displays verified pilot pathways with live requirements and gap analysis
+- **Structured Data Integration:** Search platforms ingest our pathway schema markup (JobPosting + Course + OccupationalCertification) to display rich results
+- **Career Pathway Panels:** Career search features display verified pilot pathways with live requirements and gap analysis
 - **Knowledge Graph Integration:** PilotRecognition framework recognized as authoritative source for aviation career data
-- **Google for Jobs:** Direct ingestion of verified pathway cards into Google Jobs search
-- **Voice Search Optimization:** Structured data enables Google Assistant to answer "What do I need to become an Emirates pilot?" with verified data
+- **Job Search Integration:** Direct ingestion of verified pathway cards into job search platforms
+- **Voice Search Optimization:** Structured data enables virtual assistants to answer "What do I need to become an Emirates pilot?" with verified data
 
-**From Microsoft (Bing, LinkedIn, Azure):**
+**From Professional Networks (Career Platforms, Business Networks):**
 
-- **Bing Career Search:** Bing ingests structured pathway data for aviation career queries
-- **LinkedIn Profile Integration:** LinkedIn displays Recognition Score and verified credentials on pilot profiles
-- **LinkedIn Jobs API:** Pathway cards published as structured job postings with requirements
-- **Azure AI Integration:** Microsoft Copilot trained on framework data for aviation career guidance
+- **Career Platform Search:** Career networks ingest structured pathway data for aviation career queries
+- **Profile Integration:** Professional platforms display Recognition Score and verified credentials on pilot profiles
+- **Jobs API Integration:** Pathway cards published as structured job postings with requirements
+- **AI Assistant Integration:** Conversational AI trained on framework data for aviation career guidance
 
 **From Aviation-Specific Platforms:**
 
-- **Climb (formerly JSfirm):** Real-time pathway requirement sync, eliminating outdated job posts
-- **Aviation Job Search:** API integration for live pathway data display
-- **AirlineCareer.com:** Framework data powers their airline requirement database
-- **ATP Flight School:** Pathway integration for student career planning
+- **Aviation Job Boards:** Real-time pathway requirement sync, eliminating outdated job posts
+- **Industry Recruitment Sites:** API integration for live pathway data display
+- **Career Information Portals:** Framework data powers airline requirement databases
+- **Flight School Networks:** Pathway integration for student career planning
 
-**From Professional Networks & Forums:**
+**From Professional Communities:**
 
-- **PPRuNe (Professional Pilots Rumour Network):** Verified pathway data replaces speculation in forum discussions
-- **Reddit r/aviation & r/flying:** Bot integration provides framework-backed answers to career questions
+- **Aviation Forums:** Verified pathway data replaces speculation in forum discussions
+- **Reddit Aviation Communities:** Bot integration provides framework-backed answers to career questions
 - **Discord Aviation Communities:** Real-time pathway query bot with verified data
 
 ---
 
 ### The Win-Win Proposition:
 
-**What Google & Discovery Platforms Receive:**
+**What Search & Discovery Platforms Receive:**
 
 1. **First-Mover Advantage:** First aviation career platform with structured, verified, real-time data
 2. **Query Satisfaction:** Pilots get accurate answers, increasing search engagement and reducing bounce
-3. **Rich Results Expansion:** Aviation becomes a vertical for Google's career search features
+3. **Rich Results Expansion:** Aviation becomes a vertical for career search features
 4. **Misinformation Reduction:** Verified data combats pilot forum myths and outdated information
 5. **Traffic Quality:** Pilots who find verified pathways are higher-intent users
 6. **AI Training Data:** Structured framework data improves AI assistant responses for aviation careers
 
 **What PilotRecognition Receives:**
 
-1. **Search Visibility:** Pathway cards appear directly in Google search results (position zero)
+1. **Search Visibility:** Pathway cards appear directly in search results (position zero)
 2. **Organic Discovery:** Pilots find us without paid advertising via structured data display
-3. **Authority Signal:** Google's recognition of framework data as authoritative
-4. **LinkedIn Integration:** Professional profiles link directly to verified credentials
-5. **Voice Search Ready:** "Hey Google, what's the pathway to become a cargo pilot?" returns our data
+3. **Authority Signal:** Search platform recognition of framework data as authoritative
+4. **Profile Integration:** Professional profiles link directly to verified credentials
+5. **Voice Search Ready:** "What do I need to become a cargo pilot?" returns our data via virtual assistants
 6. **Reduced CAC:** Discovery through search engines vs. paid acquisition
 
 ---
@@ -3028,13 +3028,13 @@ Every pilot journey begins with a search. Before a pilot contacts an airline, en
 
 ### Platform Partnership Protection Framework:
 
-**⚠️ CRITICAL: Protecting Platform Assets from Big Tech Exploitation**
+**⚠️ CRITICAL: Protecting Platform Assets from Platform Exploitation**
 
-Google has demonstrated a pattern of "partnerships" that transition to competition: Google Jobs eliminated job boards, Google Flights decimated travel sites, Google Shopping displaced retailers. Pillar 25 partnerships require **aggressive legal and technical protections** to prevent Google (or Microsoft, Amazon) from replicating our framework after gaining intelligence access.
+Major technology platforms have demonstrated a pattern of "partnerships" that transition to competition: career search features eliminated job boards, travel search decimated travel sites, shopping platforms displaced retailers. Pillar 25 partnerships require **aggressive legal and technical protections** to prevent large platforms from replicating our framework after gaining intelligence access.
 
 #### 1. Intellectual Property Fortress
 
-**File Before Any Google Engagement:**
+**File Before Any Platform Engagement:**
 
 - **Trademark:** "Universal Commercial Framework," "25 Pillars," "Recognition Score"
 - **Copyright:** Framework document, API documentation, data schemas
@@ -3043,21 +3043,21 @@ Google has demonstrated a pattern of "partnerships" that transition to competiti
 
 **University Student Protection Protocol:**
 
-Google frequently uses university recruitment and "student case studies" for intelligence gathering without formal partnership commitments.
+Large platforms frequently use university recruitment and "student case studies" for intelligence gathering without formal partnership commitments.
 
 **Protection Measures:**
-- **NDA Required:** Before any meeting, presentation, or data sharing with Google representatives, students, or affiliates
+- **NDA Required:** Before any meeting, presentation, or data sharing with platform representatives, students, or affiliates
 - **Limited Disclosure:** Present framework **concept** (what it does), never technical implementation (how it works)
 - **No Live Demos:** Screenshots and mockups only; never expose live database queries
 - **Recording Required:** All meetings recorded with consent; transcripts archived
-- **No Student Projects:** Decline all requests to use PilotRecognition as "case study" for Google-sponsored university programs
+- **No Student Projects:** Decline all requests to use PilotRecognition as "case study" for platform-sponsored university programs
 
 #### 2. API License Terms (Non-Negotiable)
 
 **Data Feed Restrictions:**
 
 ```
-LICENSE TERMS FOR GOOGLE/SEARCH PLATFORM INTEGRATION:
+LICENSE TERMS FOR SEARCH PLATFORM INTEGRATION:
 
 1. DISPLAY PURPOSES ONLY
    - Data provided for real-time display in search results
@@ -3073,15 +3073,15 @@ LICENSE TERMS FOR GOOGLE/SEARCH PLATFORM INTEGRATION:
    - Building internal aviation career databases
    - Training AI models on pathway data without written consent
    - Reselling data to third parties
-   - Creating Google-branded competing pilot platforms
+   - Creating competing pilot platforms under partner's brand
 
 4. TERMINATION CLAUSE
-   - Immediate revocation if Google launches competing aviation career product
+   - Immediate revocation if platform launches competing aviation career product
    - 30-day notice for any terms violation
    - Survival of IP protections post-termination
 
 5. AUDIT RIGHTS
-   - Quarterly access to Google's usage logs
+   - Quarterly access to platform's usage logs
    - Right to inspect data handling practices
 ```
 
@@ -3098,20 +3098,20 @@ LICENSE TERMS FOR GOOGLE/SEARCH PLATFORM INTEGRATION:
 
 **Technical Moat Elements:**
 
-- **Veremark Integration:** Background verification layer Google cannot replicate without partnership
+- **Veremark Integration:** Background verification layer search platforms cannot replicate without partnership
 - **Live Profile Updates:** Real-time pilot hour logging requires active platform participation
 - **25-Pillar Relationships:** Industry partnerships built over years; data exists only through ecosystem trust
-- **Philippines/Emerging Market Data:** First-mover advantage in markets Google hasn't prioritized
+- **Philippines/Emerging Market Data:** First-mover advantage in markets large platforms haven't prioritized
 
 **API-Only Access (Never Raw Database):**
 
 ```
-GOOGLE REQUEST: "Can we get a data dump of all your pathways?"
+PLATFORM REQUEST: "Can we get a data dump of all your pathways?"
 RESPONSE: "Use our API. Real-time lookups only. Rate limits apply."
 ```
 
 **Benefits:**
-- Google cannot hoard data for offline analysis
+- Platforms cannot hoard data for offline analysis
 - Query patterns monitored for competitive intelligence
 - Access revocable instantly if misuse detected
 - Technical dependency created (they need us, not vice versa)
@@ -3120,70 +3120,70 @@ RESPONSE: "Use our API. Real-time lookups only. Rate limits apply."
 
 **Phase 1: Limited Pilot (Months 1-3)**
 - [ ] Schema markup deployment for 3 airlines only
-- [ ] Monitor Google's search result behavior
-- [ ] Track any Google Careers feature launches in aviation
+- [ ] Monitor search platform result behavior
+- [ ] Track any career search feature launches in aviation
 - [ ] NDA in effect; no technical deep-dives
 
 **Phase 2: Expanded (Months 4-6) — IF Trust Established**
 - [ ] API access granted for live pathway data
 - [ ] 10 airlines added to structured data feeds
-- [ ] Quarterly audit of Google's data usage
+- [ ] Quarterly audit of platform's data usage
 - [ ] Attribution verification in search results
 
 **Phase 3: Deep Integration (Months 7-12) — IF Proven Partnership**
-- [ ] Google Career search full integration
+- [ ] Career search platform full integration
 - [ ] Revenue share negotiations for premium placement
 - [ ] Co-marketing agreement (both brands featured)
 - [ ] Joint press releases with mutual benefit focus
 
 **Kill Switch Protocol:**
 
-If at ANY phase Google launches competing product:
+If at ANY phase a platform launches competing product:
 1. **Immediate:** API access revoked (automated cutoff)
 2. **24 hours:** Ceasefire letter sent demanding discontinuation
-3. **72 hours:** Public statement: "Google exploited our partnership to build competitor"
+3. **72 hours:** Public statement: "Platform exploited our partnership to build competitor"
 4. **1 week:** Regulatory complaints filed (anti-competitive behavior)
-5. **Ongoing:** Pilot community mobilization: "Google tried to steal your career data"
+5. **Ongoing:** Pilot community mobilization: "Large platforms tried to steal your career data"
 
-#### 5. The Nuclear Options (If Google Copies)
+#### 5. The Nuclear Options (If a Platform Copies)
 
 **Public Relations Play:**
-> "Google approached us for partnership, signed NDAs, reviewed our framework, then launched a copycat product. This is why aviation needs independent platforms, not Big Tech monopolies that exploit startup innovation."
+> "A major platform approached us for partnership, signed NDAs, reviewed our framework, then launched a copycat product. This is why aviation needs independent platforms, not large technology monopolies that exploit startup innovation."
 
 **Pilot Community Mobilization:**
-> "Google wanted to commoditize your career data for their ad network. We said no. Your verification, your pathways, your Recognition Score stays with you — not their surveillance capitalism machine."
+> "Major platforms wanted to commoditize your career data for their business models. We said no. Your verification, your pathways, your Recognition Score stays with you — not their commercial systems."
 
 **Regulatory Pressure:**
 - FTC complaint: Anti-competitive behavior in emerging aviation tech market
 - EU complaint: GDPR violations if any pilot data accessed (EU pilots protected)
-- Congressional inquiry: "Google's pattern of partnership-to-competition"
+- Congressional inquiry: "Pattern of partnership-to-competition by major platforms"
 
 **Technical Countermeasures:**
-- Block all Googlebot IPs from pathway pages (they can index competitors, not us)
-- Implement aggressive rate limiting on Google API calls
-- Watermark all data feeds: "Google unauthorized use detected if displayed without attribution"
+- Block all platform crawler IPs from pathway pages (they can index competitors, not us)
+- Implement aggressive rate limiting on platform API calls
+- Watermark all data feeds: "Unauthorized use detected if displayed without attribution"
 
 #### 6. Strategic Positioning: Amplifier, Not Supplier
 
 **Frame the Narrative:**
 
-Google is **Pillar 25**, not our customer. They are **one of 25 pillars** in our framework, not the dominant partner. This positioning:
+Search platforms are **Pillar 25**, not our customers. They are **one of 25 pillars** in our framework, not dominant partners. This positioning:
 
-- Reduces Google's leverage in negotiations
-- Makes them one of many discovery platforms (Bing, LinkedIn, job boards all equal)
-- Prevents "Google dependency" narrative that weakens our position
-- Enables multi-platform strategy without Google exclusivity
+- Reduces any single platform's leverage in negotiations
+- Makes search platforms one of many discovery channels (all equal partners)
+- Prevents "platform dependency" narrative that weakens our position
+- Enables multi-platform strategy without exclusivity
 
 **Communication Protocol:**
 
-All public statements frame Google integration as:
-> "Google has joined the Universal Commercial Framework as Pillar 25, integrating our verified pathway data into their search results — just as LinkedIn (professional profiles), Climb (job boards), and aviation forums have integrated."
+All public statements frame search platform integration as:
+> "Search platforms have joined the Universal Commercial Framework as Pillar 25, integrating our verified pathway data into their results — just as professional networks (career profiles), job boards, and aviation forums have integrated."
 
 Never:
-> "We're partnering with Google" (implies subordination)
+> "We're partnering with [specific platform]" (implies subordination)
 
 Always:
-> "Google is participating in our framework" (implies equality)
+> "Search platforms are participating in our framework" (implies equality)
 
 ---
 
@@ -3193,7 +3193,7 @@ Always:
 
 Unlike other pillars, Pillar 25 operates on **value exchange**, not payment:
 
-- **Google/Bing/LinkedIn:** Free data feed in exchange for search visibility
+- **Search Platforms:** Free data feed in exchange for search visibility
 - **Aviation Job Boards:** API access in exchange for backlink attribution
 - **Professional Networks:** Data syndication in exchange for profile integration
 
@@ -3209,22 +3209,22 @@ Unlike other pillars, Pillar 25 operates on **value exchange**, not payment:
 
 **Phase 1 (Month 1-2): Schema Implementation**
 - [ ] Deploy schema.org markup on all pathway pages
-- [ ] Validate structured data via Google Rich Results Test
-- [ ] Submit sitemaps to Google Search Console
+- [ ] Validate structured data via Rich Results Test Tools
+- [ ] Submit sitemaps to Search Console platforms
 
-**Phase 2 (Month 2-3): Google Partnership**
-- [ ] Apply for Google Career search integration
+**Phase 2 (Month 2-3): Platform Partnership**
+- [ ] Apply for career search integration
 - [ ] Test rich results display for pathway queries
 - [ ] Optimize for position zero (featured snippets)
 
-**Phase 3 (Month 3-4): LinkedIn Integration**
-- [ ] LinkedIn profile integration development
+**Phase 3 (Month 3-4): Professional Network Integration**
+- [ ] Professional network profile integration development
 - [ ] Recognition Score display on pilot profiles
-- [ ] LinkedIn Jobs API pathway publishing
+- [ ] Career platform API pathway publishing
 
 **Phase 4 (Month 4-6): Voice & AI**
-- [ ] Optimize for Google Assistant voice queries
-- [ ] Microsoft Copilot integration testing
+- [ ] Optimize for voice assistant queries
+- [ ] AI assistant integration testing
 - [ ] ChatGPT plugin for pathway queries
 
 ---
@@ -3242,19 +3242,19 @@ Unlike other pillars, Pillar 25 operates on **value exchange**, not payment:
 - Zero-click searches with knowledge panels: Monitor framework data display
 
 **Integration Partners:**
-- Google Career search inclusion: 100% of major airline pathways
-- LinkedIn profile integration: 100% of verified pilots
-- Bing aviation search results: Position 1-3 for target queries
+- Major search engine inclusion: 100% of major airline pathways
+- Professional network integration: 100% of verified pilots
+- Alternative search platform results: Position 1-3 for target queries
 
 ---
 
 ### The Long-Term Vision:
 
-**"Ask Google, Get PilotRecognition"**
+**"Ask Any Search Platform, Get PilotRecognition"**
 
-Every aviation career question — from a 16-year-old dreaming of becoming a pilot to a 5,000-hour captain considering a career change — is answered with verified, structured, real-time data from our framework. Google, Bing, LinkedIn, and AI assistants become the **discovery layer** for the Universal Commercial Framework, driving millions of pilots to verified pathways instead of fragmented, outdated job posts.
+Every aviation career question — from a 16-year-old dreaming of becoming a pilot to a 5,000-hour captain considering a career change — is answered with verified, structured, real-time data from our framework. Search platforms, professional networks, and AI assistants become the **discovery layer** for the Universal Commercial Framework, driving millions of pilots to verified pathways instead of fragmented, outdated job posts.
 
-**Google becomes Pillar 25 not as a payer, but as a amplifier** — multiplying the reach of every other pillar's data by making it discoverable to every pilot with a question.
+**Search platforms become Pillar 25 not as payers, but as amplifiers** — multiplying the reach of every other pillar's data by making it discoverable to every pilot with a question.
 
 ---
 
