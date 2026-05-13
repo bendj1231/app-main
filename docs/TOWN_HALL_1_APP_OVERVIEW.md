@@ -330,6 +330,52 @@ Current flight training is transactional: hours logged, exams passed, certificat
 - **Foundation Program:** ✅ Live — Individual enrollment open, campus partnerships accepting
 - **Transition Program:** 🚧 WIP — Requires collaboration with all 25 Universal Commercial Framework pillars (operators, ATOs, simulator centers, manufacturers, etc.) — *Coming soon once all partners established and onboard*
 
+**Pilot Ambassadors: Scholarships for Excellence** 🏆
+
+> **The industry secures top talent early through the Pilot Ambassador Program.**
+
+**What Are Pilot Ambassadors?**
+
+High-performing pilots who receive **full scholarships** for Foundation Program and Transition Program based on:
+- Exceptional Recognition Scores (top 10%)
+- Outstanding EBT video assessment performance
+- Strong mentorship engagement and peer leadership
+- "Best Flyer Award" potential — pilots the industry wants to secure early
+
+**Scholarship Structure:**
+
+| Program | Scholarship Spots | Selection Criteria | Industry Partners |
+|---------|-------------------|-------------------|-------------------|
+| **Foundation Program** | 10% of cohort (free) | Merit + financial need + potential | Campus partnerships |
+| **Transition Program** | Top performers ( invitation-only) | Excellence in 9 competencies + EBT scoring | Airbus, Airlines, Private Jet, eVTOL operators |
+
+**Why Industry Partners Want Pilot Ambassadors:**
+
+- **Airbus:** Secures pilots pre-trained in HINFACT framework before competitors
+- **Airlines:** Gets "90% ready" candidates with verified behavioral assessments
+- **Private Jet Operators:** Access to polished, professional pilots with EBT video proof
+- **eVTOL Companies:** Early access to next-generation pilots trained for future aviation
+- **Cargo Operators:** Pilots with cross-sector competencies and recognition
+
+**Ambassador Benefits:**
+
+- **Full program sponsorship** ($49 + $299 value)
+- **Priority pathway matching** — fast-track to partner operators
+- **Direct industry connections** — bypass the "submit interest" queue
+- **Pre-cleared status** — verification completed, ready to hire
+- **"From scholarship to cockpit"** PR case studies and media features
+
+**Selection Process:**
+
+1. **Foundation Program:** Application-based for 10% of spots (merit + need)
+2. **Transition Program:** Invitation-only for top performers who exceed all 9 competencies
+3. **Industry Input:** Airbus, airlines, operators can nominate candidates
+4. **Final Award:** "Best Flyer Award" — industry-recognized top talent
+
+> **Scholarship pilots become PR case studies.** "From scholarship to airline cockpit" media angle demonstrates platform success.
+
+---
+
 **Creating Our Own Aviation University**
 
 > **PilotRecognition is creating its own university** — where pilots explore, discover, and prepare for the entire aviation industry through structured programs addressing real industry needs.
