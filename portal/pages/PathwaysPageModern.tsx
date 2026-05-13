@@ -1581,7 +1581,7 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
     ],
     locations: [job.location || 'TBD'],
     interestLevel,
-    positions: interestLevel === 'actively_hiring' ? 20 + Math.floor(Math.random() * 50) : 5 + Math.floor(Math.random() * 15),
+    positions: interestLevel === 'high_interest' ? 20 + Math.floor(Math.random() * 50) : 5 + Math.floor(Math.random() * 15),
     url: job.url, // Link to original job posting
   };
 };
@@ -2903,7 +2903,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: selectedSubPathway.description || 'Training pathway for pilot certification',
           locations: selectedSubPathway.description ? [selectedSubPathway.description.substring(0, 50)] : ['Global'],
           matchProbability: 95,
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -2959,7 +2959,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 80 + (index * 3),
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: branded.image || '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -3040,7 +3040,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 80 + (index * 3),
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: branded.image || '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -3062,7 +3062,7 @@ const ThreeStagePathwayFilter: React.FC<{
         description: 'Sponsored airline training programs with guaranteed employment. Full or partial training sponsorship with partner airlines. Includes structured flight training, ground school, and mentorship. Direct pathway to first officer positions with major airlines. Competitive selection process with medical and age requirements. Ideal for aspiring airline pilots seeking structured career progression.',
         locations: ['Global'],
         matchProbability: 95,
-        interestLevel: 'actively_hiring' as const,
+        interestLevel: 'high_interest' as const,
         requirements: { totalHours: 0, typeRatings: [] },
         image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
         pathwayId: pathwayId,
@@ -3114,7 +3114,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 80 + (index * 3),
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: branded.image || '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -3187,7 +3187,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: branded.description || sp.description || 'Training pathway for pilot certification',
           locations: ['USA', 'Global'],
           matchProbability: 85 + (index * 2),
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: branded.image || '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -3377,7 +3377,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: branded.description || sp.description || 'Airline-sponsored cadet training program',
           locations: ['USA', 'Global'],
           matchProbability: 90 + (index * 1),
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: branded.image || '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -3429,7 +3429,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: branded.description || sp.description || 'Drone or UAV pilot training program',
           locations: ['USA', 'Global'],
           matchProbability: 85 + (index * 2),
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: branded.image || '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -3469,7 +3469,7 @@ const ThreeStagePathwayFilter: React.FC<{
           description: branded.description || sp.description || 'Private sector aviation career',
           locations: ['USA', 'Global'],
           matchProbability: 90 + (index * 1),
-          interestLevel: 'actively_hiring' as const,
+          interestLevel: 'high_interest' as const,
           requirements: { totalHours: 0, typeRatings: [] },
           image: branded.image || '/images/accessportal.png',
           pathwayId: pathwayId,
@@ -3503,7 +3503,7 @@ const ThreeStagePathwayFilter: React.FC<{
         description: sp.description || 'Training pathway for pilot certification',
         locations: sp.description ? [sp.description.substring(0, 50)] : ['Global'],
         matchProbability: 85 + (index % 10),
-        interestLevel: 'actively_hiring' as const,
+        interestLevel: 'high_interest' as const,
         requirements: { totalHours: 0, typeRatings: [] },
         image: '/images/accessportal.png',
         pathwayId: pathwayId,
@@ -3534,7 +3534,7 @@ const ThreeStagePathwayFilter: React.FC<{
                 : (pathway.description || `Explore ${pathway.name} opportunities and training options`),
               locations: ['Global'],
               matchProbability: 100,
-              interestLevel: 'actively_hiring' as const,
+              interestLevel: 'high_interest' as const,
               requirements: { totalHours: 0, typeRatings: [] },
               image: (pathway.id === '05da1618-8398-4199-8993-90fd7353ac39' || pathway.id === '751b23de-4c0c-4fa1-8080-944ad7ea41b0' || pathway.id === 'aaa44819-37ec-40e7-a6cf-6d1990040d65' || pathway.id === '7cbd80b9-1172-4b8a-b7e0-e975c91b3ee1' || pathway.id === '83806ec2-6376-4b65-bcd8-4fc25391cc71' || pathway.id === 'c39c880b-dce1-4c6a-88b6-c5bf19eb07d0' || pathway.id === '7c3f09b6-5a24-48d6-89d8-f74c662f324e') ? '' : '/images/accessportal.png',
               pathwayId: pathway.id,
@@ -3704,7 +3704,7 @@ const ThreeStagePathwayFilter: React.FC<{
                         {!isPilotRecognitionCard && <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />}
                         <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
                         <div className="absolute top-3 right-3 flex gap-2 items-start">
-                          {!isPilotRecognitionCard && card.interestLevel === 'actively_hiring' && (
+                          {!isPilotRecognitionCard && card.interestLevel === 'high_interest' && (
                             <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/80 text-white text-xs font-semibold">
                               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                               Hiring
@@ -4848,7 +4848,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             },
             benefits: c.benefits_summary ? [c.benefits_summary] : [],
             locations: Array.isArray(c.base_locations) && c.base_locations.length > 0 ? c.base_locations : (ea.country ? [ea.country] : ['Global']),
-            interestLevel: c.hiring_status === 'active' ? 'actively_hiring' : c.hiring_status === 'paused' ? 'limited' : 'moderate',
+            interestLevel: c.hiring_status === 'active' ? 'high_interest' : c.hiring_status === 'paused' ? 'limited' : 'moderate',
             positions: c.positions_available || 1,
             url: c.application_url || ea.airline_website || undefined,
             isEnterprise: true,
@@ -4958,7 +4958,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       salary: { firstYear: item.salary || '', fifthYear: '', bonuses: '' },
       benefits: item.tags || [],
       locations: [item.location || 'Global'],
-      interestLevel: item.postedAt === 'Hiring Now' ? 'actively_hiring' : 'moderate' as const,
+      interestLevel: item.postedAt === 'Hiring Now' ? 'high_interest' : 'moderate' as const,
       positions: 1,
       url: undefined,
     }))
@@ -5128,7 +5128,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       typeRatings: [],
     },
     locations: ['Global'],
-    interestLevel: 'hiring',
+    interestLevel: 'active',
   };
 
   const pathwaysWithIntro = [introCard, ...filteredPathways];
@@ -6404,7 +6404,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     category: discoveryKey as PathwayData['category'],
                     matchProbability: j.matchPercentage,
                     aircraftType: j.image?.startsWith('wingmentor') ? '__wingmentor__' : 'generic',
-                    interestLevel: j.postedAt === 'Hiring Now' ? 'actively_hiring' : j.postedAt === 'Limited Slots' ? 'limited' : 'moderate',
+                    interestLevel: j.postedAt === 'Hiring Now' ? 'high_interest' : j.postedAt === 'Limited Slots' ? 'limited' : 'moderate',
                     locations: [j.location],
                     requirements: { totalHours: 0, typeRatings: [] },
                     claimed: (j as any).claimed ?? false,
@@ -6479,7 +6479,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                                 Unverified
                               </span>
                             )}
-                            {pathway.interestLevel === 'actively_hiring' && (
+                            {pathway.interestLevel === 'high_interest' && (
                               <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-green-600">
                                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                                 Hiring
@@ -6487,7 +6487,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                             )}
                           </div>
                         )}
-                        {discoveryKey !== 'flight-schools' && discoveryKey !== 'type-rating' && pathway.interestLevel === 'actively_hiring' && (
+                        {discoveryKey !== 'flight-schools' && discoveryKey !== 'type-rating' && pathway.interestLevel === 'high_interest' && (
                           <div className="absolute top-3 left-3">
                             <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-green-600">
                               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
