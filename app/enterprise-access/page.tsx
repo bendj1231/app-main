@@ -382,15 +382,80 @@ const TIER_CHECK: Record<string, string> = {
 
 // ─── Hero Carousel ────────────────────────────────────────────────
 const SHUFFLE_ITEMS = [
-    { pillar: 'Commercial Airlines', effect: 'updates pathway requirements on your profile in real time.' },
-    { pillar: 'Background Verification', effect: 'clears your licence, recency exam, and aeromedical status automatically.' },
-    { pillar: 'Airline Expectations API', effect: 'pulls exact type rating and hour requirements into your gap analysis.' },
-    { pillar: 'Recognition Score', effect: 'ranks your readiness against every active pilot in the database.' },
-    { pillar: 'Pathway Cards', effect: 'show you precisely what is missing before you can qualify.' },
-    { pillar: 'Flight Training ATOs', effect: 'connect your completed programs directly to airline verification.' },
-    { pillar: 'Aviation Insurance', effect: 'verifies your medical and recency for operator risk assessments.' },
-    { pillar: 'Recruitment Agencies', effect: 'surface your verified profile when operators run live searches.' },
+    {
+        tag: 'Airlines',
+        pillar: 'Commercial Airlines',
+        hook: "Airlines can't find pre-verified pilots quickly.",
+        detail: 'Your live profile surfaces instantly when operators run filtered searches — hours, type ratings, recency, all pre-checked.',
+    },
+    {
+        tag: 'Airlines',
+        pillar: 'Airline Expectations API',
+        hook: 'What airlines actually want is never published clearly.',
+        detail: 'Pathway Cards pull exact requirements — minimum hours, type ratings, language level — directly from each operator into your gap analysis.',
+    },
+    {
+        tag: 'Airlines',
+        pillar: 'Cargo & Freight Operators',
+        hook: 'FedEx, DHL, and cargo operators need pilots with specific type ratings.',
+        detail: 'The platform matches freight operators to pilots who hold the exact endorsements they require — no guesswork, no PDF resumes.',
+    },
+    {
+        tag: 'Flight Schools',
+        pillar: 'Flight Training Organizations',
+        hook: "Flight school graduates can't get jobs — instructors are stuck.",
+        detail: 'ATOs can publish their programs directly. Graduates earn verified completions that attach to their profile and update airline pathway matches live.',
+    },
+    {
+        tag: 'Flight Schools',
+        pillar: 'Type Rating Centers',
+        hook: 'Expensive type rating training with no job guarantee.',
+        detail: 'Type rating centres connect their endorsements to pilot records. Airlines see verified ratings the moment training is logged — no delay.',
+    },
+    {
+        tag: 'Flight Schools',
+        pillar: 'Military & Defence',
+        hook: 'The civilian transition pathway is broken for military pilots.',
+        detail: 'Military hours, endorsements, and service records convert to civilian profile fields — making the transition visible to commercial operators.',
+    },
+    {
+        tag: 'Compliance',
+        pillar: 'Background Verification',
+        hook: 'Background checks take months and block hiring.',
+        detail: 'Veremark API integration clears licence, recency exam, and aeromedical status before an operator ever makes contact — pilots arrive pre-cleared.',
+    },
+    {
+        tag: 'Compliance',
+        pillar: 'Aviation Insurance',
+        hook: "Insurance won't cover low-timers, blocking job offers.",
+        detail: 'Insurers access real-time pilot readiness data — medical currency, recency scores, incident history — to assess risk accurately and issue cover faster.',
+    },
+    {
+        tag: 'Compliance',
+        pillar: 'Aeromedical Examiners',
+        hook: 'Medical status is not connected to hiring decisions.',
+        detail: 'AME-verified medical currency flows directly into the recognition profile — operators see it live, not months later on a PDF.',
+    },
+    {
+        tag: 'Industry',
+        pillar: 'Recruitment Agencies',
+        hook: 'Matching pilots to jobs is guesswork.',
+        detail: 'Agencies pull verified profiles via API — filtered by hours, type rating, base, availability — and surface ranked shortlists in seconds.',
+    },
+    {
+        tag: 'Industry',
+        pillar: 'Recognition Score',
+        hook: 'Airlines focus on hours alone, not actual competency.',
+        detail: 'The Recognition Score weighs hours, type ratings, programs, recency, and background checks into a single ranked readiness number — live.',
+    },
 ];
+
+const TAG_COLORS: Record<string, string> = {
+    Airlines: 'text-blue-600 bg-blue-50 border-blue-200',
+    'Flight Schools': 'text-emerald-600 bg-emerald-50 border-emerald-200',
+    Compliance: 'text-amber-600 bg-amber-50 border-amber-200',
+    Industry: 'text-red-600 bg-red-50 border-red-200',
+};
 
 const HeroCarousel = () => {
     const [idx, setIdx] = useState(0);
@@ -403,31 +468,37 @@ const HeroCarousel = () => {
                 setIdx(p => (p + 1) % SHUFFLE_ITEMS.length);
                 setVisible(true);
             }, 300);
-        }, 2600);
+        }, 3200);
         return () => clearInterval(t);
     }, []);
 
     const item = SHUFFLE_ITEMS[idx];
     return (
         <div className="mb-10">
-            {/* Shuffling text line */}
-            <div className="mb-6 min-h-[64px]">
-                <p
-                    className="text-lg md:text-xl text-slate-600 leading-snug transition-opacity duration-300"
-                    style={{ opacity: visible ? 1 : 0 }}
-                >
-                    <span className="font-bold text-slate-900">{item.pillar}</span>
-                    {' '}{item.effect}
-                </p>
+            <div
+                className="transition-opacity duration-300 mb-5"
+                style={{ opacity: visible ? 1 : 0 }}
+            >
+                {/* Tag + pillar */}
+                <div className="flex items-center gap-2 mb-2">
+                    <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border ${TAG_COLORS[item.tag]}`}>
+                        {item.tag}
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-medium">{item.pillar}</span>
+                </div>
+                {/* Hook — the problem */}
+                <p className="text-base font-bold text-slate-900 mb-1 leading-snug">{item.hook}</p>
+                {/* Detail — the solution */}
+                <p className="text-sm text-slate-500 leading-relaxed max-w-md">{item.detail}</p>
             </div>
 
             {/* Dot indicators */}
-            <div className="flex gap-1.5 mb-6">
+            <div className="flex gap-1.5 mb-6 flex-wrap">
                 {SHUFFLE_ITEMS.map((_, i) => (
                     <button
                         key={i}
-                        onClick={() => { setIdx(i); setVisible(true); }}
-                        className={`h-1 rounded-full transition-all duration-300 ${i === idx ? 'w-8 bg-slate-900' : 'w-1.5 bg-slate-300'}`}
+                        onClick={() => { setVisible(false); setTimeout(() => { setIdx(i); setVisible(true); }, 150); }}
+                        className={`h-1 rounded-full transition-all duration-300 ${i === idx ? 'w-6 bg-slate-900' : 'w-1.5 bg-slate-200 hover:bg-slate-400'}`}
                     />
                 ))}
             </div>
