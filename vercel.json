@@ -6,6 +6,11 @@
       "destination": "/index.html"
     },
     {
+      "has": [{ "type": "host", "value": "pathways.pilotrecognition.com" }],
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
       "has": [{ "type": "host", "value": "recognitionplus.pilotrecognition.com" }],
       "source": "/(.*)",
       "destination": "/index.html"
@@ -37,10 +42,6 @@
       "destination": "/robots.txt"
     },
     {
-      "source": "/framework/full",
-      "destination": "/framework/full/index.html"
-    },
-    {
       "source": "/((?!api|assets|docs|.*\\..*).*)",
       "destination": "/index.html"
     }
@@ -50,6 +51,18 @@
       "has": [{ "type": "host", "value": "enterprise.pilotrecognition.com" }],
       "source": "/",
       "destination": "/enterprise-access",
+      "permanent": false
+    },
+    {
+      "has": [{ "type": "host", "value": "enterprise.pilotrecognition.com" }],
+      "source": "/framework/full",
+      "destination": "/framework/full/index.html",
+      "permanent": false
+    },
+    {
+      "has": [{ "type": "host", "value": "pathways.pilotrecognition.com" }],
+      "source": "/",
+      "destination": "/discover-pathways",
       "permanent": false
     },
     {
