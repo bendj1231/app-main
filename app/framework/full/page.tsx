@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { getCompleteFrameworkData, getPillarDetail } from '@/lib/framework-api';
+import type { FrameworkPillar, FrameworkContentSection, FrameworkTable, FrameworkTableRow } from '@/types/framework-db';
 
 // Pillar Accordion Table Component
 function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
@@ -175,11 +177,18 @@ function NavSection({ section, scrollToSection }: {
               key={child.id}
               onClick={() => {
                 console.log('Child CLICK:', child.label, 'id:', child.id);
-                scrollToSection(child.id);
+                // Support both onClick handler and scrollToSection
+                if (child.onClick) {
+                  child.onClick();
+                } else {
+                  scrollToSection(child.id);
+                }
               }}
-              className="w-full text-left px-2 py-1 rounded-md text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-start gap-1.5"
+              className={`w-full text-left px-2 py-1 rounded-md text-xs transition-colors flex items-start gap-1.5 ${
+                child.onClick ? 'text-red-600 hover:text-red-700 hover:bg-red-50 font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+              }`}
             >
-              <span className="text-blue-500 mt-0.5 flex-shrink-0">→</span>
+              <span className={`mt-0.5 flex-shrink-0 ${child.onClick ? 'text-red-500' : 'text-blue-500'}`}>→</span>
               <span className="leading-tight">{child.label}</span>
             </button>
           ))}
@@ -198,58 +207,57 @@ const generateId = (text: string) => {
 };
 
 export default function FullFrameworkPage() {
-  const [content, setContent] = useState<string>('');
+  const [pillars, setPillars] = useState<FrameworkPillar[]>([]);
+  const [selectedPillar, setSelectedPillar] = useState<FrameworkPillar | null>(null);
+  const [pillarSections, setPillarSections] = useState<FrameworkContentSection[]>([]);
+  const [pillarTables, setPillarTables] = useState<(FrameworkTable & { rows: FrameworkTableRow[] })[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [tocItems, setTocItems] = useState<Array<{level: number; text: string; id: string}>>([]);
+  const [activeTab, setActiveTab] = useState<'overview' | 'pillars'>('overview');
   const contentRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  
-  // Error boundary for render errors
+
+  // Load framework data from Supabase
   useEffect(() => {
-    const handleError = (e: ErrorEvent) => {
-      console.error('Framework Full Page Error:', e.error);
-      setError(e.error?.message || 'Unknown error');
-    };
-    window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
+    loadFrameworkData();
   }, []);
 
-  useEffect(() => {
-    fetch('/docs/universal-commercial-framework-expanded.md')
-      .then(res => res.text())
-      .then(text => {
-        setContent(text);
-        // Extract TOC items
-        const items: Array<{level: number; text: string; id: string}> = [];
-        const seenIds = new Set<string>();
-        
-        text.split('\n').forEach(line => {
-          if (line.startsWith('# ') || line.startsWith('## ') || line.startsWith('### ')) {
-            const level = line.startsWith('### ') ? 3 : line.startsWith('## ') ? 2 : 1;
-            const text = line.replace(/^#+\s/, '');
-            let id = generateId(text);
-            // Ensure unique IDs
-            let counter = 1;
-            const baseId = id;
-            while (seenIds.has(id)) {
-              id = `${baseId}-${counter}`;
-              counter++;
-            }
-            seenIds.add(id);
-            items.push({ level, text, id });
-          }
-        });
-        setTocItems(items);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Failed to load framework document:', err);
-        setContent('# Error loading document');
-        setError(err.message || 'Failed to load document');
-        setLoading(false);
-      });
-  }, []);
+  async function loadFrameworkData() {
+    try {
+      setLoading(true);
+      const data = await getCompleteFrameworkData();
+      setPillars(data.pillars);
+      
+      // Load first pillar details by default
+      if (data.pillars.length > 0) {
+        await loadPillarDetail(data.pillars[0].pillar_number);
+      }
+      
+      setError(null);
+    } catch (err) {
+      console.error('Error loading framework:', err);
+      setError('Failed to load framework data from Supabase');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function loadPillarDetail(pillarNumber: number) {
+    try {
+      const pillar = pillars.find(p => p.pillar_number === pillarNumber);
+      if (pillar) {
+        setSelectedPillar(pillar);
+      }
+      
+      const detail = await getPillarDetail(pillarNumber);
+      if (detail) {
+        setPillarSections(detail.content_sections);
+        setPillarTables(detail.tables);
+      }
+    } catch (err) {
+      console.error('Error loading pillar detail:', err);
+    }
+  }
 
   const scrollToSection = (id: string) => {
     console.log('scrollToSection called with id:', id);
@@ -266,130 +274,153 @@ export default function FullFrameworkPage() {
     }
   };
 
-  // Left navigation sections structure - IDs must match actual document heading IDs
-  const navSections = [
-    { id: 'document-information', label: 'Document Info', level: 1 },
-    { id: 'table-of-contents', label: 'Table of Contents', level: 1 },
-    { 
-      id: 'part-i-foundation-vision-pages-1-15', 
-      label: 'Part I: Foundation & Vision', 
-      level: 1,
-      children: [
-        { id: 'page-1-executive-summary', label: 'Executive Summary', level: 2 },
-        { id: 'the-universal-framework-in-numbers', label: '📊 Framework in Numbers', level: 2 },
-        { id: 'page-2-the-founders-narrative---why-this-platform-', label: "Founder's Narrative", level: 2 },
-        { id: 'page-3-4-the-universal-ecosystem-philosophy', label: 'Universal Ecosystem Philosophy', level: 2 },
-        { id: 'page-4-6-the-12-core-industry-failures-we-solve', label: '12 Core Industry Failures', level: 2 },
-        { id: 'page-7-10-infrastructure-architecture-overview', label: 'Infrastructure Architecture', level: 2 },
-      ]
-    },
-    { 
-      id: 'part-ii-hub-a---operations-recruitment-pages-16-35', 
-      label: 'Part II: Hub A - Operations & Recruitment', 
-      level: 1,
-      children: [
-        { id: 'pillar-1-commercial-airlines-detailed', label: 'Pillar 1: Commercial Airlines', level: 2 },
-        { id: 'pillar-2-cargo-freight-operators', label: 'Pillar 2: Cargo & Freight', level: 2 },
-        { id: 'pillar-3-charter-business-aviation', label: 'Pillar 3: Charter & Business Aviation', level: 2 },
-        { id: 'pillar-4-emerging-aviation-sectors-evtol-air-taxi-', label: 'Pillar 4: Emerging Sectors', level: 2 },
-        { id: 'pillar-5-flight-training-organizations-atos', label: 'Pillar 5: Flight Training (ATOs)', level: 2 },
-      ]
-    },
-    { 
-      id: 'part-iii-hub-b---training-transition-pages-36-50', 
-      label: 'Part III: Hub B - Training & Transition', 
-      level: 1,
-      children: [
-        { id: 'pillar-6-type-rating-simulator-centers', label: 'Pillar 6: Type Rating Centers', level: 2 },
-        { id: 'pillar-7-military-defense-commands', label: 'Pillar 7: Military & Defense', level: 2 },
-        { id: 'pillar-8-banking-financial-institutions', label: 'Pillar 8: Banking & Financial', level: 2 },
-        { id: 'pillar-9-aviation-insurance-providers', label: 'Pillar 9: Aviation Insurance', level: 2 },
-      ]
-    },
-    { 
-      id: 'part-iv-hub-c---capital-risk-compliance-pages-51-6', 
-      label: 'Part IV: Hub C - Capital, Risk & Compliance', 
-      level: 1,
-      children: [
-        { id: 'pillar-10-legal-regulatory-bodies-caap-faa-easa', label: 'Pillar 10: Legal & Regulatory', level: 2 },
-        { id: 'pillar-11-verification-apis-veremark-background-ch', label: 'Pillar 11: Verification APIs', level: 2 },
-        { id: 'pillar-12-flight-data-navigation-apps-navigraph-fo', label: 'Pillar 12: Flight Data & Navigation', level: 2 },
-        { id: 'pillar-13-aeromedical-examiners-ames', label: 'Pillar 13: Aeromedical (AMEs)', level: 2 },
-      ]
-    },
-    { 
-      id: 'part-v-hub-d---infrastructure-data-pages-66-80', 
-      label: 'Part V: Hub D - Infrastructure & Data', 
-      level: 1,
-      children: [
-        { id: 'pillar-14-pilot-contributors-mentors-unions', label: 'Pillar 14: Pilot Contributors', level: 2 },
-        { id: 'pillar-15-aircraft-manufacturers-oems-airbus-boein', label: 'Pillar 15: Manufacturers & OEMs', level: 2 },
-        { id: 'pillar-16-aviation-recruitment-agencies', label: 'Pillar 16: Recruitment Agencies', level: 2 },
-        { id: 'pillar-17-aviation-universities-academies', label: 'Pillar 17: Aviation Universities', level: 2 },
-      ]
-    },
-    { 
-      id: 'part-vi-hub-e---community-culture-pages-81-90', 
-      label: 'Part VI: Hub E - Community & Culture', 
-      level: 1,
-      children: [
-        { id: 'pillar-18-aviation-media-publications', label: 'Pillar 18: Aviation Media', level: 2 },
-      ]
-    },
-    { 
-      id: 'part-vii-hub-f---growth-expansion-pages-91-95', 
-      label: 'Part VII: Hub F - Growth & Expansion', 
-      level: 1,
-      children: [
-        { id: 'pillar-19-aviation-events-career-fairs', label: 'Pillar 19: Aviation Events & Career Fairs', level: 2 },
-        { id: 'pillar-20-government-aviation-authorities-caap-faa', label: 'Pillar 20: Government Aviation Authorities', level: 2 },
-      ]
-    },
-    { 
-      id: 'part-viii-technical-commercial-appendices-pages-96-1', 
-      label: 'Part VIII: Appendices', 
-      level: 1,
-      children: [
-        { id: 'appendix-a-technical-integration', label: 'Appendix A: Technical Integration', level: 2 },
-        { id: 'appendix-b-data-governance', label: 'Appendix B: Data Governance', level: 2 },
-        { id: 'appendix-c-commercial-framework', label: 'Appendix C: Commercial Framework', level: 2 },
-        { id: 'appendix-d-implementation-timeline', label: 'Appendix D: Implementation', level: 2 },
-      ]
-    },
-    { id: 'conclusion', label: 'Conclusion', level: 1 },
-  ];
-
-  // Simple markdown renderer with anchor IDs
-  const renderMarkdown = (text: string) => {
-    const seenIds = new Set<string>();
-    let inTocSection = false;
-    let tocSectionEnd = false;
-    let debugTocFound = false;
-    
-    const lines = text.split('\n');
-    
-    // Pre-compute: which line indices are the START of a table block (vs inside one)
-    const tableStartIndices = new Set<number>();
-    const tableConsumedIndices = new Set<number>();
-    {
-      let k = 0;
-      while (k < lines.length) {
-        if (lines[k].startsWith('|')) {
-          tableStartIndices.add(k);
-          let k2 = k;
-          while (k2 < lines.length && lines[k2].startsWith('|')) {
-            if (k2 !== k) tableConsumedIndices.add(k2);
-            k2++;
-          }
-          k = k2;
-        } else {
-          k++;
-        }
-      }
+  // Group pillars by hub for navigation
+  const groupedPillars = pillars.reduce((acc, pillar) => {
+    if (!acc[pillar.hub_name]) {
+      acc[pillar.hub_name] = [];
     }
+    acc[pillar.hub_name].push(pillar);
+    return acc;
+  }, {} as Record<string, FrameworkPillar[]>);
 
-    console.log('TOC Items loaded:', tocItems.length);
-    console.log('First few TOC items:', tocItems.slice(0, 5).map(i => i.text));
+  // Build navigation from database pillars
+  const navSections = Object.entries(groupedPillars).map(([hubName, hubPillars]) => ({
+    id: generateId(hubName),
+    label: hubName,
+    level: 1,
+    children: hubPillars.map(p => ({
+      id: `pillar-${p.pillar_number}`,
+      label: `P${p.pillar_number}: ${p.name}`,
+      level: 2,
+      onClick: () => loadPillarDetail(p.pillar_number)
+    }))
+  }));
+
+  // Render pillar overview - list all pillars grouped by hub
+  const renderPillarOverview = () => (
+    <div className="space-y-8">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-slate-900 mb-4">25 Pillars • 7 Hubs</h2>
+        <p className="text-lg text-slate-600">Click any pillar in the sidebar to view details</p>
+      </div>
+      
+      {Object.entries(groupedPillars).map(([hubName, hubPillars]) => (
+        <div key={hubName} className="bg-slate-50 rounded-xl p-6">
+          <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <span className="w-3 h-3 bg-red-600 rounded-full"></span>
+            {hubName}
+            <span className="text-sm font-normal text-slate-500">({hubPillars.length} pillars)</span>
+          </h3>
+          <div className="grid gap-3">
+            {hubPillars.map((pillar) => (
+              <button
+                key={pillar.id}
+                onClick={() => loadPillarDetail(pillar.pillar_number)}
+                className="flex items-center gap-4 p-4 bg-white rounded-lg border border-slate-200 hover:border-red-300 hover:shadow-sm transition-all text-left"
+              >
+                <span className="text-2xl">{pillar.icon || '🔷'}</span>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-slate-900">
+                    Pillar {pillar.pillar_number}: {pillar.name}
+                  </h4>
+                  {pillar.description && (
+                    <p className="text-sm text-slate-500 mt-1">{pillar.description}</p>
+                  )}
+                </div>
+                <span className="text-slate-400">→</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Render content from database
+  const renderPillarContent = () => {
+    if (!selectedPillar) return null;
+
+    return (
+      <div className="space-y-8">
+        {/* Pillar Header */}
+        <div id={`pillar-${selectedPillar.pillar_number}`} className="border-b-2 border-slate-900 pb-6">
+          <div className="flex items-center gap-4 mb-4">
+            <span className="text-4xl">{selectedPillar.icon || '🔷'}</span>
+            <div>
+              <h2 className="text-3xl font-bold text-slate-900">
+                Pillar {selectedPillar.pillar_number}: {selectedPillar.name}
+              </h2>
+              <p className="text-slate-500 text-lg">{selectedPillar.hub_name}</p>
+            </div>
+          </div>
+          {selectedPillar.description && (
+            <p className="text-lg text-slate-600">{selectedPillar.description}</p>
+          )}
+        </div>
+
+        {/* Content Sections */}
+        {pillarSections.map((section) => (
+          <div key={section.id} id={`section-${section.id}`} className="mb-6">
+            <h3 className="text-xl font-bold text-slate-800 mb-4 pb-2 border-b border-slate-200">
+              {section.title}
+            </h3>
+            {section.content && (
+              <div className="text-slate-600 whitespace-pre-wrap leading-relaxed">
+                {section.content}
+              </div>
+            )}
+          </div>
+        ))}
+
+        {/* Tables */}
+        {pillarTables.map((table) => (
+          <div key={table.id} className="mb-8">
+            <h3 className="text-xl font-bold text-slate-800 mb-2">{table.title}</h3>
+            {table.description && (
+              <p className="text-sm text-slate-500 mb-4">{table.description}</p>
+            )}
+            <div className="overflow-x-auto border border-slate-200 rounded-lg">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-slate-100">
+                    {Array.isArray(table.headers) && table.headers.map((header: string, idx: number) => (
+                      <th 
+                        key={idx} 
+                        className="border-b border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-700"
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {table.rows?.map((row: FrameworkTableRow) => (
+                    <tr 
+                      key={row.id} 
+                      className={`border-b border-slate-100 ${
+                        row.row_type === 'keynote' ? 'bg-red-50' : ''
+                      }`}
+                    >
+                      {Array.isArray(row.cells) && row.cells.map((cell: string, idx: number) => (
+                        <td 
+                          key={idx} 
+                          className={`px-4 py-3 text-sm ${
+                            row.row_type === 'keynote' ? 'text-red-800 italic' : 'text-slate-700'
+                          }`}
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
     
     return lines.map((line, i) => {
         // IMPORTANT: Track TOC section FIRST (before any early returns)
@@ -646,7 +677,8 @@ export default function FullFrameworkPage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-600">Loading 90+ page framework...</p>
+          <p className="text-slate-600">Loading from Supabase...</p>
+          <p className="text-slate-400 text-sm mt-2">Universal Commercial Framework • 25 Pillars • 7 Hubs</p>
         </div>
       </div>
     );
@@ -695,7 +727,12 @@ export default function FullFrameworkPage() {
               ← Back to Summary
             </Link>
             <span className="hidden sm:inline text-slate-300">|</span>
-            <span className="hidden sm:inline text-slate-600 text-sm">90+ Pages</span>
+            <span className="hidden sm:inline text-slate-600 text-sm">
+              {pillars.length} Pillars • 7 Hubs
+            </span>
+            <span className="hidden md:inline text-xs bg-green-100 text-green-700 px-2 py-1 rounded ml-2">
+              Live from Supabase
+            </span>
           </div>
           <div className="flex gap-3">
             <button
@@ -735,8 +772,11 @@ export default function FullFrameworkPage() {
         <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-64 pt-20 px-4' : 'hidden'} md:block md:static md:w-64 md:flex-shrink-0 md:h-fit md:print:hidden`}>
           <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
             <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
-              <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
-              <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
+              <h2 className="font-bold text-slate-900 text-sm">📑 25 Pillars</h2>
+              <p className="text-xs text-slate-500 mt-1">Click to view pillar details</p>
+              <span className="inline-block mt-1 text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded">
+                Live from Supabase
+              </span>
             </div>
             <nav className="p-2">
               {navSections.map((section) => (
@@ -745,10 +785,13 @@ export default function FullFrameworkPage() {
             </nav>
             <div className="p-3 border-t border-slate-200">
               <button
-                onClick={() => scrollToSection('conclusion')}
+                onClick={() => {
+                  setSelectedPillar(null);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className="w-full text-center py-2 px-3 bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium rounded-lg transition-colors"
               >
-                Jump to Conclusion
+                ← Back to Overview
               </button>
             </div>
           </div>
@@ -776,9 +819,9 @@ export default function FullFrameworkPage() {
           </p>
         </div>
 
-        {/* Content */}
+        {/* Content - Now from Supabase */}
         <div ref={contentRef} className="prose prose-slate max-w-none">
-          {renderMarkdown(content)}
+          {selectedPillar ? renderPillarContent() : renderPillarOverview()}
         </div>
 
         {/* Footer */}
