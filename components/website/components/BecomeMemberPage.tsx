@@ -50,7 +50,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [otherSkills, setOtherSkills] = useState('');
     const [lastFlown, setLastFlown] = useState('');
 
-    // Job Experience Array
+    // Professional Experience Array
     const [jobExperiences, setJobExperiences] = useState<Array<{
         title: string;
         company: string;
@@ -907,11 +907,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                         <div className="h-px w-full bg-slate-100/80" />
 
-                                        {/* Section: Job Experience */}
+                                        {/* Section: Professional Experience */}
                                         <section className="space-y-10">
                                             <div style={{ borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-                                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Job Experience</h2>
-                                                <p className="text-sm text-slate-500 font-medium">Recent job experience and industry aligned accredited programs</p>
+                                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Professional Experience</h2>
+                                                <p className="text-sm text-slate-500 font-medium">Recent professional experience and industry aligned accredited programs</p>
                                             </div>
 
                                             <div className="space-y-6">
@@ -919,7 +919,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     <div key={index} className="bg-gray-50 rounded-xl p-6 border border-gray-200 opacity-60">
                                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div className="space-y-2.5">
-                                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">Job Title</label>
+                                                                <label className="text-sm font-semibold text-gray-700 mb-2 block">Position Title</label>
                                                                 <input
                                                                     type="text"
                                                                     disabled

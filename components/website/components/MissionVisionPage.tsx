@@ -48,7 +48,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             We deliver verified competency assessment through <strong>EBT CBTA aligned programs</strong>
                             and 50 hours of evidence-based mentorship. Pilots demonstrate actual capabilities—not just credentials.
-                            Recognition becomes portable professional value that travels across operators and career paths.
+                            Recognition becomes portable professional value that travels across operators and professional pathways.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
                             Our programs are aligned with EBT CBTA international standards used by airlines worldwide.
@@ -72,7 +72,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                                 Four Pillars of Recognition
                             </h2>
                             <p className="text-slate-600 max-w-2xl mx-auto">
-                                How we transform training investment into career opportunity
+                                How we transform training investment into recognition opportunity
                             </p>
                         </RevealOnScroll>
                     </div>
@@ -119,7 +119,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center">
                     <RevealOnScroll>
                         <p className="text-lg font-medium">
-                            Your recognition score improves your matching priority with operators. Pathways are available to all users. We bridge the gap between training investment and career opportunity.
+                            Your recognition score improves your matching priority with operators. Pathways are available to all users. We bridge the gap between training investment and recognition opportunity.
                         </p>
                     </RevealOnScroll>
                 </div>
@@ -137,7 +137,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                         </h2>
                         <p className="text-base text-slate-700 leading-relaxed mb-4">
                             We aim to become the global standard for pilot recognition by 2027. <strong>ATS-compatible ATLAS Aviation CV formatting</strong>,
-                            verified competency certifications, and intelligent pathway matching replace uncertainty in aviation careers.
+                            verified competency certifications, and intelligent pathway matching replace uncertainty in aviation professional development.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
                             Our platform tracks requirements as operators publish changes and our community reports updates.
@@ -157,10 +157,10 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                                 Comprehensive Ecosystem
                             </p>
                             <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-4">
-                                How We Transform Aviation Careers
+                                How We Transform Aviation Professional Development
                             </h2>
                             <p className="text-slate-600 max-w-2xl mx-auto">
-                                From foundational training to career pathways, we provide the complete infrastructure for professional pilot development
+                                From foundational training to professional pathways, we provide the complete infrastructure for pilot recognition development
                             </p>
                         </RevealOnScroll>
                     </div>
@@ -181,7 +181,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                             },
                             {
                                 title: "Pilot Terminal",
-                                desc: "Professional network platform providing industry intelligence, job discovery, and direct connections with operators worldwide. We are actively building the operator network."
+                                desc: "Professional network platform providing industry intelligence, pathway discovery, and direct connections with operators worldwide. We are actively building the operator network."
                             }
                         ].map((item, idx) => (
                             <RevealOnScroll key={idx}>
@@ -202,7 +202,7 @@ export const MissionVisionPage: React.FC<MissionVisionPageProps> = ({
                 <div className="max-w-6xl mx-auto text-center">
                     <RevealOnScroll>
                         <p className="text-lg font-medium">
-                            Your recognition score improves your matching priority with operators. Pathways are available to all users. We bridge the gap between training investment and career opportunity.
+                            Your recognition score improves your matching priority with operators. Pathways are available to all users. We bridge the gap between training investment and recognition opportunity.
                         </p>
                     </RevealOnScroll>
                 </div>
