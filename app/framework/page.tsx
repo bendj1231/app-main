@@ -14,18 +14,18 @@ const pillars = [
   { num: 7, name: 'Military & Defense', role: 'Armed forces aviation', contribution: 'Discipline and advanced operational training', need: 'Civilian credential recognition and transition pathways' },
   { num: 8, name: 'Banking & Finance', role: 'Aviation financing and career loans', contribution: 'Financial infrastructure for training', need: 'Creditworthiness verification and career outcome data' },
   { num: 9, name: 'Aviation Insurance', role: 'Underwriters and risk assessors', contribution: 'Risk management and liability frameworks', need: 'Verified pilot history and competency profiles' },
-  { num: 10, name: 'Regulatory Bodies', role: 'CAAP, FAA, EASA, CAA', contribution: 'Safety standards and licensing frameworks', need: 'Digital verification systems and real-time compliance' },
-  { num: 11, name: 'Verification APIs (Veremark)', role: 'Background check and credential verification', contribution: 'Trusted third-party verification infrastructure', need: 'Aviation-specific verification workflows' },
+  { num: 10, name: 'Regulatory Bodies', role: 'National aviation authorities', contribution: 'Safety standards and licensing frameworks', need: 'Digital verification systems and real-time compliance' },
+  { num: 11, name: 'Verification Providers', role: 'Background check and credential verification', contribution: 'Trusted third-party verification infrastructure', need: 'Aviation-specific verification workflows' },
   { num: 12, name: 'Flight Data Providers', role: 'Navigation and flight planning platforms', contribution: 'Operational data and currency tracking', need: 'Integration with competency frameworks' },
   { num: 13, name: 'Aeromedical Examiners', role: 'AMEs and medical certification', contribution: 'Medical fitness verification', need: 'Real-time medical status integration' },
   { num: 14, name: 'Pilot Mentors & Unions', role: 'Professional associations and experienced pilots', contribution: 'Knowledge transfer and career guidance', need: 'Structured mentorship frameworks' },
-  { num: 15, name: 'Aircraft Manufacturers', role: 'Airbus, Boeing, OEMs', contribution: 'Aircraft design and training standards', need: 'Pilot competency alignment with aircraft capabilities' },
+  { num: 15, name: 'Aircraft Manufacturers', role: 'Commercial aircraft OEMs', contribution: 'Aircraft design and training standards', need: 'Pilot competency alignment with aircraft capabilities' },
   { num: 16, name: 'Recruitment Agencies', role: 'Pilot placement and staffing firms', contribution: 'Matching services and talent pools', need: 'Verified competency data and qualification matching' },
   { num: 17, name: 'Aviation Universities', role: 'Degree-granting institutions', contribution: 'Academic foundations and research', need: 'Industry connection and practical application pathways' },
   { num: 18, name: 'Aviation Media', role: 'Publications and industry news', contribution: 'Information dissemination and awareness', need: 'Accurate, actionable career guidance' },
   { num: 19, name: 'Career Fairs & Events', role: 'Recruitment events and conferences', contribution: 'Networking and opportunity exposure', need: 'Digital extension and year-round access' },
   { num: 20, name: 'Government Authorities', role: 'Civil aviation departments', contribution: 'Policy frameworks and national oversight', need: 'Labor market data and pipeline visibility' },
-  { num: 21, name: 'International Organizations', role: 'IATA, ICAO', contribution: 'Global standards and harmonization', need: 'Local implementation and regional adaptation' },
+  { num: 21, name: 'International Organizations', role: 'Global aviation standards bodies', contribution: 'Global standards and harmonization', need: 'Local implementation and regional adaptation' },
   { num: 22, name: 'Humanitarian & Mission Aviation', role: 'Charitable and relief operations', contribution: 'Service-oriented flying opportunities', need: 'Verified volunteer pilot pools' },
   { num: 23, name: 'Airport Authorities', role: 'Airport operations and security', contribution: 'Infrastructure and operational support', need: 'Pre-cleared personnel verification' },
   { num: 24, name: 'Simulator Data Providers', role: 'Training analytics and performance tracking', contribution: 'Competency measurement and EBT/CBTA alignment', need: 'Standardized competency frameworks' },
@@ -162,8 +162,8 @@ export default function FrameworkPage() {
         <section className="mb-12">
           <div className="bg-slate-900 text-white p-8 rounded-2xl">
             <p className="text-blue-400 font-bold mb-2 text-sm tracking-wider">PILLAR 11 — VERIFICATION LAYER</p>
-            <h3 className="text-2xl font-bold mb-4">Veremark Integration</h3>
-            <p className="text-slate-300 mb-6">Trusted third-party verification enabling pre-cleared pilot status across all 25 pillars</p>
+            <h3 className="text-2xl font-bold mb-4">Third-Party Verification</h3>
+            <p className="text-slate-300 mb-6">Trusted verification infrastructure enabling pre-cleared pilot status across all 25 pillars</p>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className="bg-slate-800 rounded-lg p-4">
                 <p className="text-2xl font-bold text-blue-400">Global</p>
