@@ -290,20 +290,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         const fetchNotifications = async () => {
             if (currentUser?.uid && userProfile?.id) {
                 try {
-                    console.log('Fetching notifications for Supabase user:', userProfile.id);
-                    
                     const profileId = userProfile.id;
-                    
+
                     // Fetch count
                     const { count, error: countError } = await supabase
                         .from('notifications')
                         .select('*', { count: 'exact', head: true })
                         .eq('user_id', profileId)
                         .eq('is_read', false);
-                    
+
                     if (!countError && count !== null) {
                         setNotificationCount(count);
-                        console.log('Notification count:', count);
                     }
 
                     // Fetch actual notifications
@@ -313,15 +310,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         .eq('user_id', profileId)
                         .order('created_at', { ascending: false })
                         .limit(10);
-                    
+
                     if (!error && data) {
                         setNotifications(data);
-                        console.log('Fetched notifications:', data.length);
-                    } else if (error) {
-                        console.error('Error fetching notifications:', error);
                     }
                 } catch (err) {
-                    console.error('Error fetching notifications:', err);
+                    // Suppress transient network errors (tab suspended, offline, etc.)
+                    if (err instanceof Error && err.message !== 'Load failed') {
+                        console.error('Error fetching notifications:', err);
+                    }
                 }
             }
         };
@@ -347,7 +344,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         return () => {
             subscription.unsubscribe();
         };
-    }, [currentUser]);
+    }, [currentUser?.uid, userProfile?.id]);
 
     const markAsRead = async (notificationId: string) => {
         await supabase
