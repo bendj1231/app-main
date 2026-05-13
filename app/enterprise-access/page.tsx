@@ -752,7 +752,7 @@ const EnterpriseAccessPage = () => {
                         <p className="text-slate-500 max-w-2xl">Grouped by stakeholder sector — click any pillar to explore its requirements, contributions, and commercial value.</p>
                     </div>
 
-                    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+                    <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
                         {[
                             {
                                 hub: 'Sector A', label: 'Operations & Recruitment',
@@ -815,22 +815,22 @@ const EnterpriseAccessPage = () => {
                                 ]
                             },
                         ].map((group, idx, arr) => (
-                            <div key={group.hub} className={idx !== arr.length - 1 ? 'border-b border-slate-200' : ''}>
+                            <div key={group.hub} className={idx !== arr.length - 1 ? 'border-b border-slate-700' : ''}>
                                 {/* Sector header row */}
-                                <div className="px-6 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                                <div className="px-6 py-3 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
                                     <span className="text-[11px] font-bold uppercase tracking-widest text-red-600">{group.hub}</span>
-                                    <span className="text-[11px] text-slate-400">{group.label}</span>
+                                    <span className="text-[11px] text-slate-500">{group.label}</span>
                                 </div>
                                 {/* Pillars — horizontal row */}
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 divide-x divide-y divide-slate-100">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 divide-x divide-y divide-slate-800">
                                     {group.pillars.map((pillar) => (
                                         <button
                                             key={pillar.n}
                                             onClick={() => scrollTo('solutions')}
-                                            className="text-left px-5 py-4 flex items-center gap-3 hover:bg-red-50 transition-colors group"
+                                            className="text-left px-5 py-4 flex items-center gap-3 hover:bg-slate-800 transition-colors group"
                                         >
-                                            <span className="text-[11px] font-mono text-slate-300 flex-shrink-0 group-hover:text-red-400 transition-colors tabular-nums">{String(pillar.n).padStart(2, '0')}</span>
-                                            <span className="text-sm text-slate-700 group-hover:text-slate-900 font-medium leading-tight">{pillar.name}</span>
+                                            <span className="text-[11px] font-mono text-slate-600 flex-shrink-0 group-hover:text-red-400 transition-colors tabular-nums">{String(pillar.n).padStart(2, '0')}</span>
+                                            <span className="text-sm text-slate-300 group-hover:text-white font-medium leading-tight">{pillar.name}</span>
                                         </button>
                                     ))}
                                 </div>
