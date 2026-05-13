@@ -121,15 +121,19 @@ export const AppRoutes = () => {
 
   // Subdomain routing for enterprise.pilotrecognition.com
   if (window.location.hostname === 'enterprise.pilotrecognition.com') {
-    const path = window.location.pathname;
-    console.log('[DEBUG AppRoutes] Enterprise subdomain detected, path:', path);
-    
+    let path = window.location.pathname;
+    // Normalize: strip trailing /index.html from static file serving
+    path = path.replace(/\/index\.html$/, '');
+    // Handle empty path after stripping
+    if (path === '') path = '/';
+    console.log('[DEBUG AppRoutes] Enterprise subdomain detected, normalized path:', path);
+
     // Framework pages - served from enterprise subdomain
     if (path === '/framework' || path === '/framework/full') {
       console.log('[DEBUG AppRoutes] Rendering FrameworkPage on enterprise subdomain');
       return <FrameworkPage />;
     }
-    
+
     if (path === '/enterprise-access/airlines') {
       console.log('[DEBUG AppRoutes] Rendering AirlinesOperatorsPage');
       return <AirlinesOperatorsPage />;
