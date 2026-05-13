@@ -101,12 +101,16 @@
 - [ ] Comparison tool
 - [ ] Fleet information updated
 
-#### 3.3 Enterprise Access Portal ⭐⭐⭐⭐
+#### 3.3 Enterprise Access Portal ⭐⭐⭐⭐⭐
 - [ ] Airline login system
+- [ ] **Teaser Logic:** Show first 3 Recognition+ members (blurred)
+- [ ] **Interest Count:** Display "12 pilots interested" for free
+- [ ] **Pay-Per-Pathway:** $49 to unlock full interest list
+- [ ] **Enterprise:** $1,000/month for unlimited access
 - [ ] Pull API for pilot discovery
 - [ ] Filter by Recognition Score
 - [ ] EBT video access
-- [ ] $1,000/month subscription flow
+- [ ] Stripe payment integration for both tiers
 
 #### 3.4 Type Rating Search Engine ⭐⭐⭐⭐
 - [ ] Manufacturer data (Airbus, Boeing)
