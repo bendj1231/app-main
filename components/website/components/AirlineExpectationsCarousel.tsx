@@ -1213,23 +1213,23 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
       {/* Header - Centered */}
       <div className="w-full px-8 mb-8 text-center">
         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-700 mb-4">
-          Strategic Career Intelligence
+          Strategic Pathway Intelligence
         </p>
         <h2 className="text-4xl md:text-6xl font-serif text-slate-900 leading-tight mb-4">
           Airline Expectations
         </h2>
         <span className="text-3xl md:text-4xl mt-1 leading-none" style={{ color: '#DAA520', fontFamily: 'Georgia, serif' }}>
-          Requirements | Expectations | Career Pathways
+          Requirements | Expectations | Professional Pathways
         </span>
       </div>
 
       {/* Regional Selector and Description */}
       <div className="w-full px-8 py-4">
         <p className="text-center text-slate-700 text-base md:text-lg mb-4 max-w-3xl mx-auto leading-relaxed">
-          We seek the answers that all pilots need to know: <strong>What sets your airline apart in the industry?</strong> <strong>What unique value does your airline offer pilots?</strong> <strong>What makes you different?</strong> <strong>What are the benefits of your pilot programs?</strong> <strong>What are your requirements?</strong> <strong>What type of pilots are you looking for?</strong> <strong>How can I align my recognition profile with your airline?</strong> The airlines we contact provide direct expectations and answers pilots need to know to align their careers toward their airline.
+          We seek the answers that all pilots need to know: <strong>What sets your airline apart in the industry?</strong> <strong>What unique value does your airline offer pilots?</strong> <strong>What makes you different?</strong> <strong>What are the benefits of your pilot programs?</strong> <strong>What are your requirements?</strong> <strong>What type of pilots are you looking for?</strong> <strong>How can I align my recognition profile with your airline?</strong> The airlines we contact provide direct expectations and answers pilots need to know to align their professional development toward their airline.
         </p>
         <p className="text-center text-slate-600 text-sm mb-4 max-w-3xl mx-auto leading-relaxed">
-          Our programs align with EBT CBTA frameworks and international training standards, ensuring that the airline expectations we provide align with the exacting standards required by leading manufacturers and operators. We recognize that pilots need to understand new industry standards, systems, and training methods. With thousands of pilots asking about requirements daily—80% lacking clear information—we bridge this communication gap. The industry only offers job boards. PilotRecognition provides direct understanding and career direction, helping pilots align with the new systems and training methods the industry now uses. Our ATS-compatible ATLAS Aviation CV formatting presents your credentials in the standardized format preferred by major airlines worldwide.
+          Our programs align with EBT CBTA frameworks and international training standards, ensuring that the airline expectations we provide align with the exacting standards required by leading manufacturers and operators. We recognize that pilots need to understand new industry standards, systems, and training methods. With thousands of pilots asking about requirements daily—80% lacking clear information—we bridge this communication gap. The industry only offers job boards. PilotRecognition provides direct understanding and recognition direction, helping pilots align with the new systems and training methods the industry now uses. Our ATS-compatible ATLAS Aviation CV formatting presents your credentials in the standardized format preferred by major airlines worldwide.
         </p>
       </div>
 
@@ -1446,7 +1446,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
           className="text-2xl md:text-3xl font-serif transition-opacity duration-300"
           style={{ color: '#DAA520', opacity: contentVisible ? 1 : 0 }}
         >
-          {currentAirline?.name || 'Explore Career Opportunities'}
+          {currentAirline?.name || 'Explore Pathway Opportunities'}
         </h3>
 
         <button
@@ -1504,7 +1504,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
       {/* Bottom Description */}
       <div className="max-w-4xl mx-auto px-6 mt-12 pt-8 border-t border-slate-100">
         <p className="text-base md:text-lg text-slate-700 leading-relaxed text-center">
-          Swipe through to discover airline-specific requirements and compare opportunities across global carriers. The airlines we contact provide direct expectations and answers pilots need to align their careers toward their airline.
+          Swipe through to discover airline-specific requirements and compare opportunities across global carriers. The airlines we contact provide direct expectations and answers pilots need to align their professional development toward their airline.
         </p>
       </div>
 
