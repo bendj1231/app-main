@@ -145,6 +145,10 @@ export const AppRoutes = () => {
       console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessPage');
       return <EnterpriseAccessPage />;
     }
+    if (path === '/framework/full' || path === '/framework/full/index.html') {
+      console.log('[DEBUG AppRoutes] Rendering FrameworkFullPage on enterprise');
+      return <FrameworkFullPage />;
+    }
     console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes');
   }
 
