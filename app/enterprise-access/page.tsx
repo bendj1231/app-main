@@ -680,13 +680,12 @@ const EnterpriseAccessPage = () => {
                         {/* Stats cards */}
                         <div className="grid grid-cols-2 gap-4">
                             {[
-                                { value: '25', label: 'Strategic Pillars', sub: 'Across 7 industry hubs', icon: '🏛️' },
-                                { value: '15+', label: 'Aviation Sectors', sub: 'Airlines to eVTOL', icon: '✈️' },
-                                { value: 'Live', label: 'Real-Time Profiles', sub: 'Not static CVs', icon: '📡' },
-                                { value: 'API', label: 'Enterprise Access', sub: 'Pull verified pilot data', icon: '🔗' },
+                                { value: '25', label: 'Strategic Pillars', sub: 'Across 7 industry hubs' },
+                                { value: '15+', label: 'Aviation Sectors', sub: 'Airlines to eVTOL' },
+                                { value: 'Live', label: 'Real-Time Profiles', sub: 'Not static CVs' },
+                                { value: 'API', label: 'Enterprise Access', sub: 'Pull verified pilot data' },
                             ].map((stat) => (
                                 <div key={stat.label} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                                    <div className="text-2xl mb-2">{stat.icon}</div>
                                     <p className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</p>
                                     <p className="text-sm font-semibold text-slate-700">{stat.label}</p>
                                     <p className="text-xs text-slate-400 mt-1">{stat.sub}</p>
@@ -751,31 +750,31 @@ const EnterpriseAccessPage = () => {
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                         {[
-                            { n: 1, icon: '✈️', name: 'Commercial Airlines', hub: 'Hub A' },
-                            { n: 2, icon: '📦', name: 'Cargo & Freight', hub: 'Hub A' },
-                            { n: 3, icon: '🛩️', name: 'Charter & Business', hub: 'Hub A' },
-                            { n: 4, icon: '🚁', name: 'eVTOL & Air Taxi', hub: 'Hub A' },
-                            { n: 5, icon: '🏫', name: 'Flight Training ATOs', hub: 'Hub B' },
-                            { n: 6, icon: '🖥️', name: 'Type Rating Centers', hub: 'Hub B' },
-                            { n: 7, icon: '🎖️', name: 'Military & Defence', hub: 'Hub B' },
-                            { n: 8, icon: '🏦', name: 'Banking & Finance', hub: 'Hub C' },
-                            { n: 9, icon: '🛡️', name: 'Aviation Insurance', hub: 'Hub C' },
-                            { n: 10, icon: '📋', name: 'Regulatory Bodies', hub: 'Hub C' },
-                            { n: 11, icon: '🔍', name: 'Verification APIs', hub: 'Hub C' },
-                            { n: 12, icon: '📊', name: 'Flight Data Providers', hub: 'Hub C' },
-                            { n: 13, icon: '🩺', name: 'Aeromedical Examiners', hub: 'Hub C' },
-                            { n: 14, icon: '🤝', name: 'Pilot Mentors & Unions', hub: 'Hub D' },
-                            { n: 15, icon: '🏭', name: 'Aircraft Manufacturers', hub: 'Hub D' },
-                            { n: 16, icon: '💼', name: 'Recruitment Agencies', hub: 'Hub D' },
-                            { n: 17, icon: '🎓', name: 'Aviation Universities', hub: 'Hub D' },
-                            { n: 18, icon: '📰', name: 'Aviation Media', hub: 'Hub D' },
-                            { n: 19, icon: '🎪', name: 'Career Fairs & Events', hub: 'Hub D' },
-                            { n: 20, icon: '🏛️', name: 'Government Authorities', hub: 'Hub E' },
-                            { n: 21, icon: '⛪', name: 'Humanitarian Missions', hub: 'Hub E-A' },
-                            { n: 22, icon: '🌐', name: 'International Orgs', hub: 'Hub E' },
-                            { n: 23, icon: '🔎', name: 'Search & Discovery', hub: 'Hub G' },
-                            { n: 24, icon: '📅', name: 'Aviation Events', hub: 'Hub G' },
-                            { n: 25, icon: '💻', name: 'Digital Platforms', hub: 'Hub G' },
+                            { n: 1, name: 'Commercial Airlines', hub: 'Hub A' },
+                            { n: 2, name: 'Cargo & Freight', hub: 'Hub A' },
+                            { n: 3, name: 'Charter & Business', hub: 'Hub A' },
+                            { n: 4, name: 'eVTOL & Air Taxi', hub: 'Hub A' },
+                            { n: 5, name: 'Flight Training ATOs', hub: 'Hub B' },
+                            { n: 6, name: 'Type Rating Centers', hub: 'Hub B' },
+                            { n: 7, name: 'Military & Defence', hub: 'Hub B' },
+                            { n: 8, name: 'Banking & Finance', hub: 'Hub C' },
+                            { n: 9, name: 'Aviation Insurance', hub: 'Hub C' },
+                            { n: 10, name: 'Regulatory Bodies', hub: 'Hub C' },
+                            { n: 11, name: 'Verification APIs', hub: 'Hub C' },
+                            { n: 12, name: 'Flight Data Providers', hub: 'Hub C' },
+                            { n: 13, name: 'Aeromedical Examiners', hub: 'Hub C' },
+                            { n: 14, name: 'Pilot Mentors & Unions', hub: 'Hub D' },
+                            { n: 15, name: 'Aircraft Manufacturers', hub: 'Hub D' },
+                            { n: 16, name: 'Recruitment Agencies', hub: 'Hub D' },
+                            { n: 17, name: 'Aviation Universities', hub: 'Hub D' },
+                            { n: 18, name: 'Aviation Media', hub: 'Hub D' },
+                            { n: 19, name: 'Career Fairs & Events', hub: 'Hub D' },
+                            { n: 20, name: 'Government Authorities', hub: 'Hub E' },
+                            { n: 21, name: 'Humanitarian Missions', hub: 'Hub E-A' },
+                            { n: 22, name: 'International Orgs', hub: 'Hub E' },
+                            { n: 23, name: 'Search & Discovery', hub: 'Hub G' },
+                            { n: 24, name: 'Aviation Events', hub: 'Hub G' },
+                            { n: 25, name: 'Digital Platforms', hub: 'Hub G' },
                         ].map((pillar) => (
                             <button
                                 key={pillar.n}
@@ -783,11 +782,10 @@ const EnterpriseAccessPage = () => {
                                 className="group text-left p-4 rounded-xl border border-slate-200 hover:border-red-300 hover:bg-red-50 transition-all"
                             >
                                 <div className="flex items-center justify-between mb-2">
-                                    <span className="text-xl">{pillar.icon}</span>
                                     <span className="text-[10px] text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded">{pillar.hub}</span>
+                                    <span className="text-[10px] text-slate-300">#{pillar.n}</span>
                                 </div>
                                 <p className="text-xs font-semibold text-slate-700 group-hover:text-red-700 leading-tight">{pillar.name}</p>
-                                <p className="text-[10px] text-slate-400 mt-1">Pillar {pillar.n}</p>
                             </button>
                         ))}
                     </div>
