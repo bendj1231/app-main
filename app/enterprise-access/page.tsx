@@ -430,9 +430,15 @@ const HeroCarousel = () => {
                 <div className="flex-1 bg-white border-2 border-slate-900 rounded-2xl px-5 py-4 shadow-sm">
                     <p className="text-[10px] uppercase tracking-widest text-red-600 font-bold mb-1.5">{`Feature ${String(activeIdx + 1).padStart(2, '0')}`}</p>
                     <p className="text-base font-bold text-slate-900 mb-1">{item.label}</p>
-                    <p className="text-sm text-slate-500 leading-snug">{item.desc}</p>
+                    <p className="text-sm text-slate-500 leading-snug mb-4">{item.desc}</p>
+                    <button
+                        onClick={() => { const el = document.getElementById('contact'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 100; window.scrollTo({ top, behavior: 'smooth' }); } }}
+                        className="w-full bg-red-600 hover:bg-red-500 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors mb-3"
+                    >
+                        Request Access
+                    </button>
                     {/* Progress bar at bottom */}
-                    <div className="mt-3 h-0.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-0.5 bg-slate-100 rounded-full overflow-hidden">
                         <div
                             className="h-full bg-red-600 rounded-full transition-none"
                             style={{ width: `${progress}%` }}
@@ -730,12 +736,7 @@ const EnterpriseAccessPage = () => {
                         </h1>
                         {/* Carousel descriptor */}
                         <HeroCarousel />
-                        <div className="flex flex-wrap gap-3 mb-6">
-                            <button onClick={() => scrollTo('contact')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-7 py-3.5 rounded-xl transition-colors">
-                                Request Access
-                            </button>
-                        </div>
-                        <p className="text-slate-400 text-xs">
+                        <p className="text-slate-400 text-xs mt-2">
                             Not a job board — a Recognition & Information Platform. No hiring promises. Just verified discovery.
                         </p>
                     </div>
