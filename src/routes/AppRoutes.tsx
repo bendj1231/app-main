@@ -134,15 +134,16 @@ export const AppRoutes = () => {
     // Normalize: strip trailing /index.html from static file serving
     path = path.replace(/\/index\.html$/, '');
     // Handle empty path after stripping
-    if (path === '') path = '/';
+    if (path === '' || path === '/index' || path === '/home') path = '/';
     console.log('[DEBUG AppRoutes] Enterprise subdomain detected, normalized path:', path);
 
     // Framework pages - served from enterprise subdomain
-    if (path === '/framework' || path === '/framework/full') {
+    if (path === '/framework' || path === '/framework/full' || path.startsWith('/framework/')) {
       console.log('[DEBUG AppRoutes] Rendering FrameworkPage on enterprise subdomain');
       return <FrameworkPage />;
     }
 
+    // Enterprise sub-pages
     if (path === '/enterprise-access/airlines') {
       console.log('[DEBUG AppRoutes] Rendering AirlinesOperatorsPage');
       return <AirlinesOperatorsPage />;
@@ -151,11 +152,14 @@ export const AppRoutes = () => {
       console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessLearnMorePage');
       return <EnterpriseAccessLearnMorePage />;
     }
-    if (path === '/' || path === '/enterprise-access') {
-      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessPage');
+    
+    // Enterprise root page - MUST check for exact match or root variations
+    if (path === '/' || path === '/enterprise-access' || path === '/enterprise') {
+      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessPage for path:', path);
       return <EnterpriseAccessPage />;
     }
-    console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes');
+    
+    console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes:', path);
   }
 
   // Listen for custom login modal events
