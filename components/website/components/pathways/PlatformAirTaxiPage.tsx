@@ -215,7 +215,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                             Your Pathway Through PilotRecognition
                         </h2>
                         <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-8 text-center">
-                            Members participating in the <strong>PilotRecognition Transition Program</strong> receive exclusive pathway access to air taxi opportunities. We don't just teach you what these operators want—we connect you directly to their recruitment pipelines.
+                            Members participating in the <strong>PilotRecognition Transition Program</strong> receive exclusive pathway access to air taxi opportunities. We don't just teach you what these operators want—we connect you directly to their pathway teams.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -224,7 +224,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                                 <ul className="space-y-2 text-sm text-slate-200">
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                                        <span>Direct introductions to Archer, MLG, and Joby recruitment teams</span>
+                                        <span>Direct introductions to Archer, MLG, and Joby pathway teams</span>
                                     </li>
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
@@ -246,7 +246,7 @@ export const PlatformAirTaxiPage: React.FC<PlatformAirTaxiPageProps> = ({
                                 <ul className="space-y-2 text-sm text-slate-200">
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                                        <span>Early notification of air taxi job openings</span>
+                                        <span>Early notification of air taxi pathway openings</span>
                                     </li>
                                     <li className="flex items-start gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
