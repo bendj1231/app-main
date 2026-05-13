@@ -10,6 +10,10 @@
       "destination": "/api/:path*"
     },
     {
+      "source": "/framework/full",
+      "destination": "/framework/full/index.html"
+    },
+    {
       "source": "/((?!api|assets|docs|.*\\..*).*)",
       "destination": "/index.html"
     }
