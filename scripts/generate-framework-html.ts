@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join, dirname } from 'path';
 
 // Simple markdown to HTML converter
 function markdownToHTML(markdown: string): string {
@@ -54,6 +54,13 @@ function generateId(text: string): string {
 function generateFrameworkHTML() {
   const markdownPath = join(process.cwd(), 'docs', 'universal-commercial-framework-expanded.md');
   const outputPath = join(process.cwd(), 'dist', 'framework', 'full', 'index.html');
+  
+  // Create output directory if it doesn't exist
+  const outputDir = dirname(outputPath);
+  if (!existsSync(outputDir)) {
+    mkdirSync(outputDir, { recursive: true });
+    console.log('Created directory:', outputDir);
+  }
   
   console.log('Reading markdown from:', markdownPath);
   const markdown = readFileSync(markdownPath, 'utf-8');
