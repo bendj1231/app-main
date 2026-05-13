@@ -424,7 +424,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             subItems: [
                 { category: 'For Pilots', name: 'About PilotRecognition', target: '/about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
                 { name: 'Mission & Vision', target: '/mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
-                { name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Career Transition', 'Industry Challenge', 'Our Solution'] },
+                { name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Professional Transition', 'Industry Challenge', 'Our Solution'] },
                 { category: 'For Industry', name: 'For Airlines & Operators', target: '/about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
                 { name: 'Industry Stewardship', target: '/industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
                 { name: 'FAQ', target: 'faq' },
@@ -441,15 +441,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Core Programs', name: 'Transition Program', target: '/transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
                 { category: 'Core Programs', name: 'EBT CBTA Fast-Track', target: '/ebt-cbta', bullets: ['Competency-based training', 'Evidence-based assessment', 'Interview priority'] },
                 // Training & Development
-                { category: 'Training', name: 'Pilot Gap Training', target: '/pilot-gap-module', bullets: ['Bridge knowledge gaps', 'Industry alignment', 'Career readiness'] },
-                { category: 'Training', name: 'Mentorship Program', target: '/mentorship', bullets: ['Captain mentors', 'Career guidance', '1-on-1 coaching'] },
+                { category: 'Training', name: 'Pilot Gap Training', target: '/pilot-gap-module', bullets: ['Bridge knowledge gaps', 'Industry alignment', 'Recognition readiness'] },
+                { category: 'Training', name: 'Mentorship Program', target: '/mentorship', bullets: ['Captain mentors', 'Professional guidance', '1-on-1 coaching'] },
                 { category: 'Training', name: 'Examination Portal', target: '/examination-portal', bullets: ['Skill assessments', 'Progress tracking', 'Certification prep'] },
                 // Resources
-                { category: 'Resources', name: 'Program Benefits', target: '/program-benefits', bullets: ['Member advantages', 'Career tools', 'Network access'] },
+                { category: 'Resources', name: 'Program Benefits', target: '/program-benefits', bullets: ['Member advantages', 'Professional tools', 'Network access'] },
                 { category: 'Resources', name: 'Program Pathways', target: '/programs-pathways', bullets: ['Stage progression', 'Milestone tracking', 'Next steps'] },
                 { category: 'Resources', name: 'News & Updates', target: '/news-updates', bullets: ['Latest announcements', 'Program changes', 'Industry news'] },
                 // Special Programs (highlighted)
-                { category: 'Special Programs', name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Industry disconnect', 'Career transition', 'Our solution'], isYellow: true },
+                { category: 'Special Programs', name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Industry disconnect', 'Professional transition', 'Our solution'], isYellow: true },
             ]
         },
         {
@@ -462,13 +462,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'For Pilots', name: 'Air Taxi & eVTOL', target: '/pathways-modern?section=evtol', bullets: ['Urban air mobility', 'Electric aircraft', 'Next-gen aviation'] },
                 { category: 'For Pilots', name: 'Cargo & Logistics', target: '/pathways-modern?section=cargo', bullets: ['Freight operators', 'Express delivery', 'Long-haul cargo'] },
                 { category: 'For Pilots', name: 'Military & Defence', target: '/pathways-modern?section=military', bullets: ['Armed forces', 'Defence contractors', 'Government aviation'] },
-                { category: 'For Pilots', name: 'Flight Schools & ATOs', target: '/pathways-modern?section=flight-schools', bullets: ['Instructor pathways', 'Examiner routes', 'Training careers'] },
+                { category: 'For Pilots', name: 'Flight Schools & ATOs', target: '/pathways-modern?section=flight-schools', bullets: ['Instructor pathways', 'Examiner routes', 'Training pathways'] },
                 { category: 'For Pilots', name: 'Type Rating Search', target: '/type-rating-search', bullets: ['Aircraft manufacturers', 'Training centers', 'Licensing requirements'] },
-                { category: 'For Pilots', name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry requirements', 'Operator standards', 'Application insights'] },
+                { category: 'For Pilots', name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry requirements', 'Operator standards', 'Expectation insights'] },
                 { category: 'For Pilots', name: 'Global Aviation Authorities', target: '/global-aviation-authorities', bullets: ['FAA database', 'CAAP compliance', 'EASA integration', 'Regulatory sync'], isYellow: true },
                 // For Industry - Enterprise Access & Services
                 { category: 'For Industry', name: 'Enterprise Access', target: '/enterprise-access/airlines', bullets: ['Pull-based recruitment', 'Verified candidates', 'Pathway publishing'] },
-                { category: 'For Industry', name: 'Aviation Recruitment', target: '/enterprise-access#recruitment', bullets: ['Agency partnerships', 'Talent pipeline', 'Career brokers'] },
+                { category: 'For Industry', name: 'Aviation Discovery', target: '/enterprise-access#recruitment', bullets: ['Agency partnerships', 'Talent pipeline', 'Recognition brokers'] },
                 { category: 'For Industry', name: 'Simulator Training', target: '/enterprise-access#simulator', bullets: ['Type rating centers', 'Training partnerships', 'Facility network'] },
                 { category: 'For Industry', name: 'MRO & Maintenance', target: '/enterprise-access#maintenance', bullets: ['Engineering tracks', 'Maintenance ops', 'Technical services'] },
                 { category: 'For Industry', name: 'RPAS & Drone Ops', target: '/enterprise-access#drone', bullets: ['UAV training', 'Commercial drones', 'Remote pilot programs'] },
@@ -487,10 +487,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Learn About', name: 'Why Resumes Are Dead Data', target: '/learn-about?section=dead-data-resumes', bullets: ['Static PDFs are outdated', 'Live profiles update auto', 'Verified vs claimed data'] },
                 { category: 'Learn About', name: 'For Airlines & Operators', target: '/learn-about?section=for-airlines', bullets: ['Verified candidates', 'Ranked shortlists', 'Compliance ready'] },
                 // Recognition+ Premium Features (RED header)
-                { category: 'Recognition+', name: 'Recognition Plus Membership', target: '/recognition-plus', bullets: ['Priority Pipeline Access', 'Recognition+ Badge', 'AI Career Strategist'], isYellow: true },
+                { category: 'Recognition+', name: 'Recognition Plus Membership', target: '/recognition-plus', bullets: ['Priority Pipeline Access', 'Recognition+ Badge', 'AI Recognition Strategist'], isYellow: true },
                 { category: 'Recognition+', name: 'Live Real-Time Profile', target: '/recognition-plus?section=live-profile', bullets: ['Auto-updates on hours logged', 'Airline pulling system', 'Ranked shortlist placement'] },
                 { category: 'Recognition+', name: 'Recognition AI', target: '/recognition-plus?section=ai-features', bullets: ['Extended AI access', 'Live type rating data', 'Airline & pathway insights'] },
-                { category: 'Recognition+', name: 'Priority Matching', target: '/recognition-plus?section=priority-matching', bullets: ['Unlimited pathway submissions', 'Unlimited profile comparisons', 'Hiring surge priority'] },
+                { category: 'Recognition+', name: 'Priority Matching', target: '/recognition-plus?section=priority-matching', bullets: ['Unlimited pathway submissions', 'Unlimited profile comparisons', 'Pathway surge priority'] },
                 { category: 'Recognition+', name: 'EBT CBTA Fast-Track', target: '/recognition-plus?section=ebt-cbta', bullets: ['Skip the queue', 'Foundation Program', 'Interview priority'] },
                 { category: 'Recognition+', name: 'ATLAS Formatted CV', target: '/atlas-cv', bullets: ['AI data extraction', 'Global standards', 'Airline visibility'] },
                 { category: 'Recognition+', name: 'AI Medical Alerts', target: '/recognition-plus?section=medical-alerts', bullets: ['60-day expiry warnings', 'Zero-Fail compliance', 'Auto-reminders'] },
@@ -499,7 +499,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'General', name: 'Free Tier Access', target: '/general?section=free-tier', bullets: ['Create basic profile', '3 pathways per month', 'Public registry listing'] },
                 { category: 'General', name: 'Priority Listings', target: '/general?section=priority-listings', bullets: ['How ranking works', 'Visibility tiers', 'Airline filters'] },
                 { category: 'General', name: 'Verification Levels', target: '/general?section=verification-levels', bullets: ['Basic profile', 'Recognition+', 'Recognition+ Verified'] },
-                { category: 'General', name: 'Career Pathway Access', target: '/general?section=career-pathway-access', bullets: ['View public pathways', 'Submit interest', 'Match with operators'] },
+                { category: 'General', name: 'Professional Pathway Access', target: '/general?section=career-pathway-access', bullets: ['View public pathways', 'Submit interest', 'Match with operators'] },
                 { category: 'General', name: 'Membership Benefits', target: '/general?section=membership-benefits', bullets: ['Free forever tier', 'Upgrade anytime', 'Cancel anytime'] },
                 // Recognition Profiling (BLUE headers)
                 { category: 'Recognition Profiling', name: 'Digital Logbook', target: '/professional-profile?section=digital-logbook', bullets: ['Flight records', 'Verified hours', 'Professional milestones'] },
@@ -508,7 +508,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Recognition Profiling', name: 'Pilot Recognition Profile', target: '/professional-profile?section=pilot-recognition-profile', bullets: ['Digital identity', 'Verified credentials', 'Public registry'] },
                 { category: 'Recognition Profiling', name: 'Type Ratings & Endorsements', target: '/professional-profile?section=type-ratings', bullets: ['Complete inventory', 'Expiration tracking', 'Recency monitoring'] },
                 { category: 'Recognition Profiling', name: 'Training Records', target: '/professional-profile?section=training-records', bullets: ['Complete history', 'Provider sync', 'Check ride docs'] },
-                { category: 'Recognition Profiling', name: 'Career Timeline', target: '/professional-profile?section=career-timeline', bullets: ['Visual journey', 'Milestone tracking', 'Command upgrades'] },
+                { category: 'Recognition Profiling', name: 'Professional Timeline', target: '/professional-profile?section=career-timeline', bullets: ['Visual journey', 'Milestone tracking', 'Command upgrades'] },
                 { category: 'Recognition Profiling', name: 'Document Vault', target: '/professional-profile?section=document-vault', bullets: ['Secure storage', 'Instant access', 'License archive'] },
                 { category: 'Recognition Profiling', name: 'Skills & Competencies', target: '/professional-profile?section=skills-competencies', bullets: ['Skill breakdown', 'Instructor validation', 'Proficiency ratings'] },
                 // Background & Compliance (BLUE headers) - includes Medical
