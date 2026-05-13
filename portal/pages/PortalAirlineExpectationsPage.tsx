@@ -257,7 +257,7 @@ const AIRLINES: Airline[] = [
     recruitmentStatus: {
       typeRatedPositions: 'Continuous recruitment for type-rated positions.',
       directEntryCaptains: 'Direct entry captain positions available for qualified candidates.',
-      applicationMethod: 'Apply through official airline career portals.',
+      applicationMethod: 'Submit interest through official airline pathway portals.',
       assessmentProcess: 'Multi-stage assessment process including technical evaluation and competency-based interviews.'
     },
     preparationResources: {
