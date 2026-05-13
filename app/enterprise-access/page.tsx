@@ -458,6 +458,7 @@ const TAG_COLORS: Record<string, string> = {
 };
 
 const HeroCarousel = () => {
+    const navigate = useNavigate();
     const [idx, setIdx] = useState(0);
     const [visible, setVisible] = useState(true);
 
@@ -468,7 +469,7 @@ const HeroCarousel = () => {
                 setIdx(p => (p + 1) % SHUFFLE_ITEMS.length);
                 setVisible(true);
             }, 300);
-        }, 3200);
+        }, 5000);
         return () => clearInterval(t);
     }, []);
 
@@ -504,12 +505,21 @@ const HeroCarousel = () => {
             </div>
 
             {/* CTA */}
-            <button
-                onClick={() => { const el = document.getElementById('contact'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 100; window.scrollTo({ top, behavior: 'smooth' }); } }}
-                className="bg-red-600 hover:bg-red-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm"
-            >
-                Request Access
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                    onClick={() => { const el = document.getElementById('contact'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 100; window.scrollTo({ top, behavior: 'smooth' }); } }}
+                    className="bg-red-600 hover:bg-red-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm"
+                >
+                    Request Access
+                </button>
+                <button
+                    onClick={() => navigate('/ucf')}
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm"
+                >
+                    UCF View
+                </button>
+            </div>
+            <p className="text-xs text-slate-400 mt-3">Access our Universal Commercial Framework page</p>
         </div>
     );
 };
