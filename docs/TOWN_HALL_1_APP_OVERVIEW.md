@@ -417,6 +417,48 @@ When a 4-year degree ends in:
 
 **The message is clear:** "Don't enter aviation. Choose a career that actually leads somewhere."
 
+**The AOM Problem: Abandoning Flying for Management**
+
+> **Many pilots are shifting to AOM (Airlines Operations Management) due to industry forecast uncertainty. Flight schools are actually advising students to abandon flying and pursue management instead — further devaluing commercial flying bachelor's degrees.**
+
+**What's Happening:**
+
+| The Advice Given | The Real Impact |
+|------------------|-----------------|
+| "Get an AOM degree instead" | Commercial Flying BA becomes worthless |
+| "Flying is too competitive" | Industry loses actual pilots |
+| "Management is safer" | Students abandon their dream of flying |
+| "Bachelor's in Aviation is uncertain" | Degree credibility collapses |
+
+**The Devaluation Spiral:**
+
+1. **Flight Schools Advise AOM:** "Better to be in operations than unemployed"
+2. **Students Abandon Flying:** 4-year Commercial Flying degree → 4-year AOM degree
+3. **Degree Loses Value:** "Why get a flying degree if you can't get hired?"
+4. **Industry Loses Pilots:** Future captains become desk managers
+5. **Reputation Damage:** "Aviation degrees are useless" — fewer enrollments
+6. **Cycle Continues:** Less pilots → more AOM students → less credibility
+
+**The Irony:**
+
+- **Commercial Flying Bachelor's:** 4 years, $100K+ investment, no job guarantee
+- **AOM Degree:** 4 years, same investment, "safer" but NOT what students wanted
+- **Result:** Students wanted to FLY. Now they're filing paperwork.
+
+**What Students Actually Want:**
+
+> *"I didn't spend 4 years learning to fly just to become an office manager. I wanted to be a pilot. But the industry made it impossible."*
+
+**How PilotRecognition Reverses This:**
+
+- **Restores degree value:** "Recognition-Ready" pilots ARE employable
+- **Proves pathways exist:** Not just "get 1500 hours and hope"
+- **Shows industry demand:** Real operators pulling from platform
+- **Validates the investment:** $50K training actually leads somewhere
+- **Keeps pilots flying:** No need to abandon cockpit for cubicle
+
+> **For every pilot pushed into AOM, the industry loses a potential captain. PilotRecognition keeps them in the cockpit where they belong.**
+
 **How PilotRecognition Prevents Talent Loss:**
 
 **1. Clear Pathway from Day One:**
