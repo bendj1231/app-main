@@ -731,10 +731,7 @@ const EnterpriseAccessPage = () => {
                         {/* Carousel descriptor */}
                         <HeroCarousel />
                         <div className="flex flex-wrap gap-3 mb-6">
-                            <button onClick={() => scrollTo('pillars')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-7 py-3.5 rounded-xl transition-colors">
-                                Explore 25 Pillars
-                            </button>
-                            <button onClick={() => scrollTo('contact')} className="text-slate-900 border border-slate-300 hover:bg-slate-50 font-semibold px-7 py-3.5 rounded-xl transition-colors">
+                            <button onClick={() => scrollTo('contact')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-7 py-3.5 rounded-xl transition-colors">
                                 Request Access
                             </button>
                         </div>
