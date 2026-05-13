@@ -3412,6 +3412,61 @@ Every aviation career question — from a 16-year-old dreaming of becoming a pil
 
 ---
 
+### Detailed: Pilot Recognition Profile — Unified Professional Identity
+
+**Purpose:** One live, verified, portable professional identity — not scattered documents across multiple systems.
+
+| **Profile Element** | **Current Industry (Fragmented)** | **Pilot Recognition Profile (Unified)** |
+|---------------------|-----------------------------------|---------------------------------------|
+| **Flight Hours Log** | Paper logbook + multiple apps (ForeFlight, CrewLounge, etc.) + spreadsheet backups | One live feed: integrated logbook sync, automatic hour calculations, recency tracking |
+| **License Verification** | Physical license + CAAP/FAA/EASA database (manual check) + employer copies | Live verified: license number, ratings, endorsements, expiry dates, auto-alerts |
+| **Medical Certificate** | Paper Class 1/2 + AME records + airline photocopies | Live status: medical expiry, revalidation dates, restrictions, AME-connected updates |
+| **Type Ratings** | Logbook entries + license page + employer records + training certificates | Verified inventory: current, expired, in-progress, with renewal tracking |
+| **Training Records** | Scattered: ATO certificates, type rating docs, recurrent training folders | Centralized: all certificates digitized, verified, expiry-tracked, renewal alerts |
+| **Background Checks** | Repeated for every employer: criminal, employment, reference checks | Once via Veremark: PRC, NBI, employment history — travels with profile |
+| **Competency Assessments** | EBT/CBTA: airline-specific, results not portable | Universal: EBT video scoring, competency badges, transferable across operators |
+| **Mentorship Hours** | Self-declared, rarely verified | Verified: 50-hour Foundation Program mentorship, logged and attested |
+| **Program Completion** | Certificates in drawer, different formats per ATO | Digital credentials: Foundation, Transition, specialized — all verified |
+| **Employment History** | Resume entries, reference calls, gap explanations | Verified timeline: operator, aircraft, dates, roles — with reference contacts |
+| **Recognition Score** | Doesn't exist | Proprietary: 0-100 scoring based on hours, recency, ratings, competencies, verification |
+| **Profile Comparison** | Manual: read job post, check logbook, guess if qualified | Automated: profile vs. any pathway = instant gap analysis with specific deficits |
+| **Data Portability** | PDF resumes, faxed documents, email attachments | Live API: profile data flows to authorized stakeholders with pilot consent |
+| **Update Frequency** | When pilot remembers (stale, outdated) | Real-time: hours update daily, medical syncs with AME, ratings auto-refresh |
+| **Employer View** | Static snapshot (months old by time they see it) | Live dashboard: current status, recent flights, currency, recency — all now |
+| **Verification Status** | Unknown: "trust me, this is accurate" | Clear: verified (green), pending (amber), self-declared (grey) — per data point |
+| **Control & Privacy** | Pilot sends full resume to everyone | Selective sharing: pilot controls which stakeholders see which data elements |
+| **Gap to Pathway** | Self-assessment: "I think I can apply for that" | Precise: "You need 47 more PIC hours and B737 type rating for Emirates FO" |
+| **Career Trajectory** | In pilot's head + scattered notes | Visualized: hours progression graph, rating timeline, competency development |
+| **Document Storage** | Physical folder + Dropbox + Google Drive + email attachments | Secure vault: all licenses, certificates, medicals — encrypted, backed up, accessible |
+| **Reference Management** | Phone numbers in phone, scattered contacts | Structured: instructor references, employer contacts, mentor attestations — verified |
+| **Insurance Access** | Self-declared to broker annually | Live feed: underwriters access verified hours, recency, incident history (with consent) |
+| **Banking/Finance** | Credit score only — aviation career not considered | Career trajectory: loan officers see recognition score, pathway probability, earning potential |
+| **International Mobility** | License conversion nightmare, each country different | Framework recognition: verified profile accepted across 150+ countries, conversion paths clear |
+
+**The Fragmentation Problem Today:**
+- Pilot keeps hours in ForeFlight (but airline uses their own system)
+- License is in physical wallet (but CAAP database is separate)
+- Medical is with AME (but employer needs photocopy)
+- Type rating cert is in drawer (but training center has different record)
+- Background check is repeated for every job (same questions, same answers)
+- Resume is updated manually (stale by the time it's sent)
+- Competencies are assessed per-airline (not transferable)
+
+**The Unified Framework Solution:**
+- One profile, live and verified
+- Pilot owns the data, grants selective access
+- All 25 pillars access same verified information (with consent)
+- Updates happen automatically through integrations
+- Recognition Score travels with pilot across all stakeholders
+- Gap analysis shows exactly what's needed for any pathway
+- No more repeated paperwork, no more self-declared resumes
+
+**What Pilots Do:** Build profile once → Keep it live → Get verified → Become discoverable → Receive pathway matches → Submit interest → Get pulled by operators
+
+**What Stakeholders See:** Pre-verified, recognition-scored, live-updated professional identity — not a static CV.
+
+---
+
 ### Appendix A: Technical Integration
 
 - API architecture, webhook specifications, authentication protocols
