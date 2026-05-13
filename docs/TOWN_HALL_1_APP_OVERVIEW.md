@@ -96,6 +96,30 @@ Current flight training is transactional: hours logged, exams passed, certificat
 - **Foundation Program:** ✅ Live — Individual enrollment open, campus partnerships accepting
 - **Transition Program:** 🚧 WIP — Requires collaboration with all 25 Universal Commercial Framework pillars (airlines, ATOs, simulator centers, etc.) — *Coming soon once all partners established and onboard*
 
+**The Transition Program: Aviation Industry First**
+
+> **The Transition Program will be the first of its kind in the aviation industry** — establishing a **real pipeline** from flight school graduation to aviation industry readiness.
+
+**The Problem It Solves:**
+- Currently: Pilots graduate with a license, shake hands, get a certificate, and are told "good luck"
+- No structured path from "200-hour graduate" to "airline-ready candidate"
+- 2-3 year gap with no guidance, mentorship, or industry alignment
+- Pilots waste $50K+ on the wrong training because they don't know what airlines actually want
+
+**The Transition Program Solution:**
+- **Structured pipeline:** Flight school → Foundation Program → Transition Program → Verified Recognition Profile → Airline Pathway
+- **Industry-aligned competencies:** 9 core competencies that airlines actually assess (not just hours)
+- **Verified readiness:** EBT video scoring, ATLAS CV formatting, interview preparation
+- **Direct connections:** Programs integrate with all 25 pillars (airlines, ATOs, sim centers) for seamless handoffs
+
+**Why This Is Revolutionary:**
+- **First comprehensive bridge** between training and employment in aviation
+- **Not just a course** — a recognized industry standard for pilot readiness
+- **Airlines can trust** Transition Program graduates as "90% ready" candidates
+- **Flight schools can offer** guaranteed pathway to industry (not just "we hope you get hired")
+
+---
+
 **What Programs Add Beyond Flight Training:**
 
 1. **Professional Identity** — How pilots portray themselves to employers
