@@ -70,12 +70,12 @@ const SECTORS: Sector[] = [
         icon: '🏫',
         label: 'Flight Schools & ATOs',
         color: 'emerald',
-        tagline: 'Turn your graduates into a tracked, monetisable pipeline.',
+        tagline: 'Help your graduates get recognized by the industry.',
         pain: 'Flight schools train pilots, hand them a certificate, and lose them. There\'s no way to track which graduates gain recognition in the industry, no recurring relationship, and no visibility into graduate pathway outcomes.',
         solution: 'Become a partner ATO. Your graduates get prioritised pathway visibility, you earn referral revenue when graduates join the platform, and you receive analytics on graduate recognition outcomes — proving your school\'s ROI to prospective students.',
         benefits: [
-            '$20 referral payout when one of your graduates signs up',
-            'Pathway Cards listing — feature your ATO directly to pilot applicants',
+            '$20 when a graduate joins and gets their Recognition Profile verified',
+            'Pathway Cards listing — showcase your training to pilots exploring options',
             'Graduate outcome dashboard — track recognition progress and pathway engagement',
             'Co-branded recognition badge for graduates ("Trained at [School]")',
             'Direct integration with school CRM / student records',
@@ -144,34 +144,34 @@ const SECTORS: Sector[] = [
         icon: '💼',
         label: 'Private Jet & Charter',
         color: 'violet',
-        tagline: 'On-demand, verified, type-rated pilots — pulled in hours.',
-        pain: 'Private charter and corporate flight departments need pilots fast — for repositioning, sick calls, surge demand. Today this means phoning agencies, sifting freelance CVs, and trusting a self-declared logbook. No live data, no verification, no scoring.',
-        solution: 'Pull-on-demand for verified, current, type-rated, background-checked pilots. Filter by aircraft type (Gulfstream, Falcon, Citation, Global, Challenger, Legacy), location, availability, recency. Pull a Veremark-verified pilot in hours, not weeks.',
+        tagline: 'Access verified pilot recognition data — when you need it.',
+        pain: 'Private charter operators need verified pilot information quickly — for surge demand, coverage, or new routes. Today this means calling agencies and trusting unverified CVs. No live recognition data, no verification of current status.',
+        solution: 'Pull verified pilot recognition data on-demand. Filter by aircraft type, location, verification status, and recency. Access pre-verified pilot profiles from the recognition database — real information, not self-declared CVs.',
         benefits: [
-            'On-demand pilot pull by type rating + location + availability',
+            'On-demand access to verified pilot recognition profiles',
             'Veremark-verified — background, criminal record, identity confirmed',
             'Live recency — confirm pilot has flown that type in last 30 days',
-            'Per-trip or per-month pull billing — pay for what you use',
+            'Per-access billing for recognition data — pay for what you use',
             'Concierge tier — managed pull with our recruitment team',
-            'Owner-operator listing — list captains for fractional / charter use',
+            'Owner-operator pathway listing — showcase your operation to recognized pilots',
             'Insurance integration — verified pilot data flows to your insurer',
             'EASA / FAA / GCAA jurisdiction filtering',
         ],
         pilots: [
-            'High-paying ad-hoc work without going through agencies that take 30%',
-            'Direct relationship with operators who pull them',
-            'Listed once, pulled many times — passive opportunity flow',
+            'Get recognized and become visible to charter operators',
+            'Verified profile travels with you — no repeated background checks',
+            'Discovery by operators who need your specific type rating and experience',
         ],
-        cta: 'Per-pull pricing or $750/mo Charter Pro plan. Inquire for fleet rates.',
+        cta: 'Per-access pricing or $750/mo Charter Pro plan. Inquire for fleet rates.',
     },
     {
         id: 'military',
         icon: '🎖️',
         label: 'Military & Defence Transition',
         color: 'rose',
-        tagline: 'Bridge military aviators into civilian flight decks.',
-        pain: 'Military pilots leaving service have thousands of hours, advanced training, and zero civilian recognition. Their logbooks don\'t map to civilian metrics, their type ratings don\'t exist on civilian aircraft, and airlines don\'t know how to score them.',
-        solution: 'Military-to-Civilian (Mil2Civ) Recognition Mapping. We translate military hours, qualifications, and competencies into civilian-equivalent Recognition Scores, surface tailored transition pathways, and partner with Mil2Civ programs run by airlines and ATOs.',
+        tagline: 'Help military aviators gain civilian recognition.',
+        pain: 'Military pilots leaving service have thousands of hours and advanced training, but lack civilian recognition. Their experience doesn\'t map to civilian metrics, and they\'re invisible to civilian pathway providers who don\'t understand military qualifications.',
+        solution: 'Military-to-Civilian (Mil2Civ) Recognition Mapping. We translate military qualifications into civilian-equivalent Recognition Scores, surface transition pathway information, and connect you with Mil2Civ programs that value your verified status.',
         benefits: [
             'Mil2Civ Recognition Mapping — military hours → civilian equivalent',
             'Tailored transition pathways from each major air force / branch',
@@ -182,33 +182,33 @@ const SECTORS: Sector[] = [
             'Cohort tracking — class of [year] outcome dashboards',
         ],
         pilots: [
-            'Civilian-recognised score from day one of separation',
-            'Funded transition pathways with airlines, not generic CV submission',
-            'Veteran-only support, mentorship, and peer network',
+            'Recognition Score from day one of civilian transition',
+            'Discovery by Mil2Civ programs that value military experience',
+            'Verified profile that eliminates repetitive paperwork',
         ],
-        cta: 'Free for veterans. Partner programs for ATOs, airlines, and defence contractors.',
+        cta: 'Free veteran recognition. Partnerships for ATOs, airlines, and defence programs.',
     },
     {
         id: 'evtol',
         icon: '🚁',
         label: 'Air Taxi & eVTOL',
         color: 'cyan',
-        tagline: 'Build the talent pipeline before your fleet lifts off.',
-        pain: 'eVTOL and advanced air mobility (AAM) operators are 12–24 months from commercial ops. Pilots ask: "How do I get qualified for Joby / Archer / Lilium / Vertical?" There\'s no public pathway, no data, no pipeline. Operators are building aircraft but have no surfaced pilot pool.',
-        solution: 'Pre-Launch Pathway Cards for eVTOL operators. Surface your aircraft, training requirements, location, hiring timeline. Build a waitlist of pre-qualified pilots ready to convert when type certification lands. We tag interested pilots, score readiness, and hand you a pre-warmed pipeline.',
+        tagline: 'Surface your pathway information to pre-qualified pilots.',
+        pain: 'eVTOL and advanced air mobility operators are preparing for commercial ops but pilots can\'t find reliable information about qualifications, timelines, or pathways. Operators are building aircraft but have no way to surface their information to interested pilots.',
+        solution: 'Pre-Launch Pathway Cards for eVTOL operators. Surface your aircraft specifications, training requirements, location, and operational timeline. Build a waitlist of interested, recognition-scored pilots who want to know more. We track pilot interest and readiness, connecting you with a pre-qualified discovery pool.',
         benefits: [
-            'Pre-Launch Pathway Cards — list pre-commercial hiring intent',
-            'Pilot interest waitlist — scored, ranked, type-rating-ready',
+            'Pre-Launch Pathway Cards — surface your operational information',
+            'Pilot interest waitlist — recognition-scored, qualified, interested',
             'OEM-aligned pathway co-branding (Joby, Archer, Lilium, Volocopter, Vertical, Beta)',
             'Conversion training partnerships with rotorcraft & STC schools',
             'Helicopter-to-eVTOL bridge programmes',
             'Public showcase — pilots learn what eVTOL means for their career',
-            'Investor-ready pilot pipeline metrics for funding rounds',
+            'Investor-ready pilot interest metrics for funding rounds',
         ],
         pilots: [
-            'Find emerging operators before they hit mainstream job boards',
-            'Get on a tracked waitlist — first in line when hiring opens',
-            'Discover transition pathways from FW / RW into eVTOL',
+            'Discover emerging operators before they\'re widely known',
+            'Join interest waitlists — get early access to pathway information',
+            'Explore transition pathways from FW / RW into eVTOL',
         ],
         cta: 'Free pre-launch listing. $1,500/mo when commercial hiring begins.',
     },
@@ -217,49 +217,49 @@ const SECTORS: Sector[] = [
         icon: '📋',
         label: 'Job Boards & Staffing Agencies',
         color: 'orange',
-        tagline: 'Co-list pathways. Redirect pilots. Both sides win.',
-        pain: 'Aviation job boards (CV-Library, Climbto350, FlightDeckRecruitment, etc.) and staffing agencies have pilot traffic but lack the structured pathway, scoring, and live profile data. Pilots churn through listings without context.',
-        solution: 'Partner integration. Co-list our Pathway Cards on your board. Redirect pilots to PilotRecognition for profile creation and recognition scoring — they come back to your board with a verified profile, and you get a referral fee per qualified pilot who joins the platform.',
+        tagline: 'Co-list pathway information. Share recognition data. Both sides win.',
+        pain: 'Aviation information platforms have pilot traffic but lack structured pathway information, recognition scoring, and verified profile data. Pilots browse endlessly without understanding requirements or their own readiness.',
+        solution: 'Partner integration. Co-list our Pathway Cards on your platform. Redirect pilots to PilotRecognition for profile creation and recognition scoring — they return with verified recognition status, and you get referral value per qualified pilot who joins the recognition platform.',
         benefits: [
             'Co-listed Pathway Cards via API or embed widget',
-            'Redirect partner — pilots create scored profile, return to your board',
-            'Per-referral revenue when pilots join platform (15% of subscription fee)',
+            'Redirect partner — pilots build recognition profile, return verified',
+            'Per-referral revenue when pilots join the recognition platform (15% of subscription fee)',
             'White-label embedded recognition score badge on listings',
             'Pilot data feed (with consent) for your matching engine',
             'Cross-listing of premium pathways for your niche',
             'Joint marketing — featured partner placement',
         ],
         pilots: [
-            'See structured pathway data alongside traditional listings',
-            'Build one profile, apply across many partner boards',
-            'Get scored once — recognised everywhere',
+            'See structured pathway requirements alongside listings',
+            'Build one recognition profile, verified across all partner platforms',
+            'Get recognized once — visible everywhere',
         ],
-        cta: 'Revenue share partnership. No fixed cost. Inquire for terms.',
+        cta: 'Revenue share partnership. No fixed cost. Strengthen your platform with verified recognition data.',
     },
     {
         id: 'manufacturers',
         icon: '🔧',
         label: 'Manufacturers & OEMs',
         color: 'sky',
-        tagline: 'Align pilot training data with the aircraft you build.',
-        pain: 'Aircraft manufacturers (Airbus, Boeing, Embraer, ATR, Bombardier, Pilatus, Cessna, Piper, Gulfstream, Dassault, Cirrus, Daher, etc.) want training programs aligned with their fleet — but pilot recognition, EBT/CBTA scoring, and type rating data sits siloed at airlines and ATOs.',
-        solution: 'OEM-Aligned Recognition. Partner to certify our recognition framework against your aircraft\'s competencies. Fleet pilots get OEM-co-branded recognition; you get global pilot training data tied to your aircraft type.',
+        tagline: 'Connect your aircraft information with recognized pilot data.',
+        pain: 'Aircraft manufacturers want pilots to understand their aircraft capabilities and training paths — but recognition data, competency scoring, and type rating information sits siloed across airlines and ATOs, invisible to pilots exploring options.',
+        solution: 'OEM-Aligned Recognition. Partner to align our recognition framework with your aircraft competencies. Pilots exploring your type get OEM-specific pathway information; you gain visibility into which pilots are recognition-ready for your fleet.',
         benefits: [
-            'OEM-co-branded Recognition Score (e.g. "Airbus-Aligned Recognition")',
-            'Fleet pilot competency data for product development',
+            'OEM-co-branded pathway information (e.g. "Airbus-aligned requirements")',
+            'Pilot recognition data for type-specific competency insights',
             'Type rating training partner network listing',
             'EBT/CBTA scoring aligned to OEM-defined competencies',
             'Pilot expectations content co-published with your product team',
             'Simulator training partner integration',
-            'New aircraft launch — pre-qualified pilot pipeline',
+            'New aircraft launch — recognition-ready pilot interest pool',
             'Service bulletins / fleet alerts pushed to relevant pilots',
         ],
         pilots: [
-            'Get OEM-recognised credentials alongside airline employment',
-            'Know exactly what each manufacturer expects from a pilot on their type',
-            'Direct line to the people who built the aircraft they fly',
+            'Discover OEM-specific requirements before choosing a type rating',
+            'Understand exactly what competencies manufacturers value',
+            'Connect with the teams behind the aircraft you want to fly',
         ],
-        cta: 'Strategic OEM partnership. Custom integration scope.',
+        cta: 'Strategic OEM partnership. Surface your aircraft information to recognized pilots.',
     },
     {
         id: 'integrations',
@@ -292,9 +292,9 @@ const SECTORS: Sector[] = [
         icon: '📦',
         label: 'Cargo & Freight Operators',
         color: 'amber',
-        tagline: 'Find rated, current pilots for your freighter fleet.',
-        pain: 'Cargo operators — FedEx, UPS, DHL, Amazon Air, Atlas, Cargolux — operate on tight schedules with specific type ratings (B747F, B767F, MD-11F, A330F). Finding rated, current pilots with freight experience is harder than passenger recruitment. Traditional job boards don\'t filter by cargo-specific experience.',
-        solution: 'Cargo-focused pilot database with freighter type ratings, night flying recency, and cargo operations experience. Pull rated pilots with specific freighter endorsements and dangerous goods certification.',
+        tagline: 'Surface your cargo pathway information to verified pilots.',
+        pain: 'Cargo operators have specific type ratings (B747F, B767F, MD-11F, A330F) and operational requirements, but pilots can\'t find clear information about cargo pathways. Your pathway requirements are buried among passenger airline listings, invisible to pilots exploring all options.',
+        solution: 'Cargo-focused pathway visibility. Surface your freighter type requirements, night flying expectations, and dangerous goods needs. Pilots exploring cargo options discover your information and can verify their readiness against your requirements.',
         benefits: [
             'Freighter type rating filters — B747F, B767F, MD-11F, A330F, A350F',
             'Cargo operations experience scoring',
@@ -302,12 +302,12 @@ const SECTORS: Sector[] = [
             'Dangerous goods certification tracking',
             'ICAO Level 4+ English verification for international ops',
             'Long-haul and short-haul cargo route matching',
-            'Placement tracking for seasonal demand surges',
+            'Interest tracking for seasonal pathway visibility'
         ],
         pilots: [
-            'Discover cargo-specific pathways not listed on passenger airline boards',
-            'Match with operators by freighter type, not just generic jet ratings',
-            'Get recognised for cargo operations experience',
+            'Discover cargo-specific pathway requirements not visible elsewhere',
+            'Compare operators by freighter type and operational details',
+            'Get recognition for cargo operations experience',
         ],
         cta: 'Enterprise pricing $1,000/mo. Volume discounts for fleet operators.',
     },
@@ -316,9 +316,9 @@ const SECTORS: Sector[] = [
         icon: '🚁',
         label: 'Commercial Drone & UAV Operators',
         color: 'cyan',
-        tagline: 'Scale your drone fleet with verified remote pilots.',
-        pain: 'Commercial drone operations — delivery, surveying, inspection, agriculture, cinematography — need certified remote pilots (RPAS / Part 107 / A2 CofC). Finding rated pilots with specific aircraft type experience and BVLOS certification is fragmented across forums and agencies.',
-        solution: 'Verified remote pilot database with UAV-specific ratings, BVLOS certification, and aircraft type experience. Pull pilots by certification level, flight hours, and operational category (delivery, inspection, mapping, etc.).',
+        tagline: 'Surface your UAV pathway information to certified operators.',
+        pain: 'Commercial drone operations need certified remote pilots (RPAS / Part 107 / A2 CofC), but operators can\'t surface their pathway information to qualified pilots. Pilots with BVLOS certification and specific aircraft experience are scattered across forums with no central discovery point.',
+        solution: 'UAV pathway visibility platform. Surface your certification requirements, aircraft specifications, and operational details. Certified pilots discover your pathway information and can verify their readiness for your specific needs.',
         benefits: [
             'RPAS / Part 107 / A2 CofC certification verification',
             'BVLOS (Beyond Visual Line of Sight) certified pilot filter',
@@ -326,36 +326,36 @@ const SECTORS: Sector[] = [
             'Operational category tagging — delivery, survey, inspection, film',
             'Insurance-ready pilot profiles for commercial coverage',
             'Geographic availability mapping for field operations',
-            'Hourly or project-based engagement tracking',
+            'Pathway interest tracking by operational category'
         ],
         pilots: [
-            'Build a commercial UAV career beyond hobby flying',
-            'Get verified for BVLOS and advanced certifications',
-            'Connect with enterprise drone operators at scale',
+            'Discover commercial UAV pathways beyond hobby forums',
+            'Get verified recognition for BVLOS and advanced certifications',
+            'Connect with enterprise operators seeking certified pilots',
         ],
-        cta: 'Flexible pricing per pilot pulled. Enterprise plans for fleet operators.',
+        cta: 'Flexible pathway listing pricing. Enterprise plans for fleet operators.'
     },
     {
         id: 'recruitment',
         icon: '🤝',
         label: 'Aviation Recruitment Agencies',
         color: 'green',
-        tagline: 'White-label recognition scoring for your candidates.',
-        pain: 'Aviation recruitment agencies spend weeks verifying pilot credentials, calling references, and checking logbooks manually. Candidates look identical on paper — hours and type ratings don\'t tell the full story of competency and recency.',
-        solution: 'White-label partnership. Your candidates get PilotRecognition profiles with verified scores. You present ranked, scored candidates to clients — reducing verification time from weeks to hours and winning more placement deals.',
+        tagline: 'Add verified recognition data to your candidate profiles.',
+        pain: 'Aviation agencies spend weeks verifying pilot credentials manually. Candidates look identical on paper — hours and type ratings don\'t tell the full story. You need verified recognition data to differentiate candidates and accelerate your process.',
+        solution: 'White-label recognition partnership. Your candidates build PilotRecognition profiles with verified scores. You present candidates with recognition data attached — reducing verification time and differentiating your candidate pool.',
         benefits: [
             'White-label Recognition Score for your candidates',
             'Background verification integration — reduce manual checks',
             'Live logbook sync — no more "trust me" hour claims',
-            'Client-ready candidate reports with scoring breakdown',
+            'Client-ready recognition reports with verified scoring',
             'Priority API access for high-volume agencies',
             'Revenue share on referred pilot subscriptions',
-            'ATS integration for candidate pipeline management',
+            'ATS integration for recognition-enriched profiles'
         ],
         pilots: [
-            'Get scored and verified through your agency partner',
-            'Profile travels with you to every job opportunity',
-            'Faster placement — verified candidates get hired first',
+            'Build recognition profile through your agency partner',
+            'Verified status travels with you across all opportunities',
+            'Stand out with recognition data — not just another CV',
         ],
         cta: 'Agency partnership program. Custom pricing based on volume.',
     },
@@ -473,7 +473,7 @@ const EnterpriseAccessPage = () => {
                     <h2 className="text-2xl font-bold text-slate-900 mb-3">Request Received</h2>
                     <p className="text-slate-600 mb-2">Thank you, <strong className="text-slate-900">{formData.name}</strong>.</p>
                     <p className="text-slate-600 text-sm mb-6">Your enterprise inquiry for <strong className="text-slate-900">{formData.company}</strong> has been received. The PilotRecognition partnership team will respond at <strong className="text-slate-900">{formData.email}</strong> within 1–2 business days.</p>
-                    <a href="https://pilotrecognition.com" className="inline-block bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all">← pilotrecognition.com</a>
+                    <a href="https://pilotrecognition.com" className="inline-block bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all">← Back to Pilot Site</a>
                 </motion.div>
             </div>
         );
@@ -589,8 +589,19 @@ const EnterpriseAccessPage = () => {
                         Connecting Pilots<br />
                         <span className="text-red-600">to the Industry.</span>
                     </h1>
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 max-w-3xl">
+                        <p className="text-amber-800 font-semibold text-sm flex items-center gap-2">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            NOT A JOB BOARD — A RECOGNITION & INFORMATION PLATFORM
+                        </p>
+                        <p className="text-amber-700 text-sm mt-1">
+                            We don't post jobs or accept applications. Pilots get verified and discover pathway information. Partners list requirements and access recognition data. No hiring promises. Just verified discovery.
+                        </p>
+                    </div>
                     <p className="text-slate-600 text-xl max-w-3xl mb-10 leading-relaxed">
-                        Live pilot profiles. Background-verified. Manufacturer Expectations and Aircraft type ratings. Recognition scored based on flight hours with potential logbook application partnerships for pilot data tracking & metrics. The infrastructure that connects qualified pilots with airlines, operators, insurers, lenders, ATOs, and manufacturers.
+                        Live pilot profiles. Background-verified. Recognition scored. The infrastructure that connects verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
                     </p>
                     <div className="flex flex-wrap gap-3">
                         <button onClick={() => scrollTo('solutions')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-6 py-3 rounded-lg transition-colors">
@@ -618,7 +629,7 @@ const EnterpriseAccessPage = () => {
                         </div>
                         <div>
                             <p className="text-3xl font-bold text-slate-900 mb-1">90<span className="text-lg text-slate-500 font-normal">d</span></p>
-                            <p className="text-sm text-slate-500">Average placement time</p>
+                            <p className="text-sm text-slate-500">Avg. pathway connection time</p>
                         </div>
                         <div>
                             <p className="text-3xl font-bold text-slate-900 mb-1">Live</p>
@@ -637,13 +648,13 @@ const EnterpriseAccessPage = () => {
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <div>
-                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">20-Pillar Master Blueprint</p>
+                            <p className="text-[11px] uppercase tracking-[0.3em] text-red-400 font-semibold mb-4">25-Pillar Master Blueprint</p>
                             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
                                 Universal Commercial<br />
                                 <span className="text-red-400">Framework</span>
                             </h2>
                             <p className="text-slate-300 text-lg mb-6 leading-relaxed">
-                                The definitive reference for all aviation stakeholders. Detailed requirements, contributions, and ROI analysis for 20 industry pillars—from airlines to regulators, banks to manufacturers.
+                                The definitive reference for all aviation stakeholders. Detailed requirements, contributions, and value analysis for 25 industry pillars—from airlines to search platforms, ATOs to verification APIs.
                             </p>
                             <div className="flex flex-wrap gap-4">
                                 <a 
@@ -900,14 +911,14 @@ const EnterpriseAccessPage = () => {
                             </ul>
                         </div>
                         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <p className="text-emerald-600 text-xs uppercase tracking-widest font-semibold mb-2">Success Fee</p>
-                            <p className="text-4xl font-bold text-slate-900 mb-1">$500<span className="text-lg text-slate-500 font-normal">/placement</span></p>
-                            <p className="text-slate-600 text-sm mb-5">Per pilot placed within 90 days</p>
+                            <p className="text-emerald-600 text-xs uppercase tracking-widest font-semibold mb-2">Outcome Fee</p>
+                            <p className="text-4xl font-bold text-slate-900 mb-1">$500<span className="text-lg text-slate-500 font-normal">/outcome</span></p>
+                            <p className="text-slate-600 text-sm mb-5">When a pathway connection succeeds</p>
                             <ul className="space-y-2 text-sm text-slate-700">
-                                <li>• Charged when a pilot is hired</li>
-                                <li>• Tracked through pathway card</li>
+                                <li>• Charged when pilot engagement succeeds</li>
+                                <li>• Tracked through pathway interaction</li>
                                 <li>• Outcome attribution proven</li>
-                                <li>• No placement = no fee</li>
+                                <li>• No outcome = no fee</li>
                             </ul>
                         </div>
                     </div>
@@ -945,9 +956,9 @@ const EnterpriseAccessPage = () => {
                 <div className="max-w-4xl mx-auto text-center">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">The One Metric We Track</p>
                     <h2 className="text-3xl md:text-5xl font-bold mb-5 leading-tight text-slate-900">
-                        Pilots placed within <span className="text-red-600">90 days</span> of a pathway being posted.
+                        Pilots connected to pathways within <span className="text-red-600">90 days</span>.
                     </h2>
-                    <p className="text-slate-600 text-lg max-w-2xl mx-auto">Every other vanity metric — listings, profile views, applications — doesn't matter if pilots aren't getting hired. We obsess over outcomes. So should every partner.</p>
+                    <p className="text-slate-600 text-lg max-w-2xl mx-auto">Not job placements. Not hires. Just pilots discovering the right information, at the right time, with the right recognition status. That's the outcome we obsess over.</p>
                 </div>
             </section>
 
@@ -977,7 +988,7 @@ const EnterpriseAccessPage = () => {
                                 <option value="privatejet">Private Jet / Charter</option>
                                 <option value="military">Military / Defence Transition Program</option>
                                 <option value="evtol">Air Taxi / eVTOL Operator</option>
-                                <option value="jobboard">Job Board / Staffing Agency</option>
+                                <option value="jobboard">Information Platform / Staffing Agency</option>
                                 <option value="manufacturer">Manufacturer / OEM</option>
                                 <option value="integration">Software / Integration Partner</option>
                                 <option value="other">Other</option>
@@ -1030,11 +1041,11 @@ const EnterpriseAccessPage = () => {
                             <label className="block text-sm font-semibold text-slate-900 mb-2">Partnership interest *</label>
                             <select name="partnershipInterest" required value={formData.partnershipInterest} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-red-500">
                                 <option value="">Select interest</option>
-                                <option value="pull-api">Pull API access (pull pilots)</option>
+                                <option value="pull-api">Pull API access (recognition data)</option>
                                 <option value="pathway-cards">Post pathway cards</option>
                                 <option value="data-licence">Data licence (insurance / finance / OEM)</option>
                                 <option value="integration">Software integration</option>
-                                <option value="redirect-partner">Redirect / co-listing (job board)</option>
+                                <option value="redirect-partner">Redirect / co-listing partner</option>
                                 <option value="general">General inquiry</option>
                             </select>
                         </div>
@@ -1071,7 +1082,7 @@ const EnterpriseAccessPage = () => {
                         <span className="font-bold"><span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span></span>
                         <span className="text-[10px] uppercase tracking-widest border border-slate-300 px-1.5 py-0.5 rounded">Enterprise</span>
                     </div>
-                    <p className="text-slate-600">Connecting Pilots to the Industry.</p>
+                    <p className="text-slate-600">Pilot Recognition & Information Platform — Not a Job Board</p>
                     <a href="https://pilotrecognition.com" className="text-red-600 hover:text-red-500">← pilotrecognition.com</a>
                 </div>
             </footer>
