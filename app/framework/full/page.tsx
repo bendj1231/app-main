@@ -372,7 +372,14 @@ export default function FullFrameworkPage() {
 
   // Render content from database
   const renderPillarContent = () => {
-    if (!selectedPillar) return null;
+    if (!selectedPillar) {
+      return (
+        <div className="text-center py-12">
+          <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-slate-600">Loading framework content...</p>
+        </div>
+      );
+    }
 
     return (
       <div className="space-y-8">
@@ -625,12 +632,7 @@ export default function FullFrameworkPage() {
 
         {/* Content - Now from Supabase */}
         <div ref={contentRef} className="prose prose-slate max-w-none">
-          {selectedPillar ? renderPillarContent() : (
-            <div className="text-center py-12">
-              <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-slate-600">Loading framework content...</p>
-            </div>
-          )}
+          {renderPillarContent()}
         </div>
 
         {/* Footer */}
