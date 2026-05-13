@@ -31,9 +31,23 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
                         PilotRecognition Platform
                     </h1>
-                    <span className="text-xl md:text-2xl text-slate-500 leading-none block mb-8">
+                    <span className="text-xl md:text-2xl text-slate-500 leading-none block mb-4">
                         Programs · Recognition · Pathways
                     </span>
+                    
+                    {/* NOT A JOB BOARD Banner */}
+                    <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 mb-8 max-w-2xl mx-auto">
+                        <p className="text-amber-800 font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            NOT A JOB BOARD — A RECOGNITION & INFORMATION PLATFORM
+                        </p>
+                        <p className="text-amber-700 text-sm mt-2">
+                            We don't post jobs or accept applications. Pilots get verified and discover pathway information. 
+                            No hiring promises. Just recognition and discovery.
+                        </p>
+                    </div>
 
                     <div className="max-w-3xl mx-auto text-base text-slate-700 leading-relaxed text-left space-y-6">
                         <p>
