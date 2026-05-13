@@ -64,7 +64,11 @@ Enterprise Access → Post Pathway Requirements → Pull Verified Profiles
 
 ---
 
+## 👨‍✈️ FOR PILOTS — PROGRAMS & RECOGNITION
+
 ### 3. Programs (Education Layer)
+
+Pilots build competency through structured programs that feed into their Recognition Score.
 
 **Foundation Program ($49)**
 - 20 hours guided mentorship
@@ -90,7 +94,10 @@ Enterprise Access → Post Pathway Requirements → Pull Verified Profiles
 
 ---
 
-### 4. Pilot Recognition (Identity Layer)
+### 4. Recognition Profile (Identity Layer)
+
+**What Pilots Build:**
+A live, verified profile that replaces the static CV. Updates automatically as pilots log hours and complete assessments.
 
 **Recognition Profile Components:**
 
@@ -152,9 +159,11 @@ Recognition Score =
 
 ---
 
-### 5. Pathways (Discovery Layer)
+### 5. Pathways (Discovery Layer for Pilots)
 
-**Pathway Categories:**
+Pilots use pathways to understand requirements and submit interest.
+
+**7 Pathway Categories:**
 1. **Airlines & Operators** - Commercial carriers, regional, flagship
 2. **Private Jet & Charter** - Corporate aviation, VIP charter
 3. **Air Taxi & eVTOL** - Urban air mobility, electric aircraft
@@ -163,7 +172,7 @@ Recognition Score =
 6. **Flight Schools & ATOs** - Instructor pathways
 7. **Type Rating Search** - Aircraft manufacturers, training centers
 
-**Pathway Card System:**
+**Pathway Card (Pilot View):**
 ```
 ┌─────────────────────────────────────┐
 │  AIRLINE: Emirates                   │
@@ -171,13 +180,14 @@ Recognition Score =
 │  Type: Wide-body Operator          │
 ├─────────────────────────────────────┤
 │  REQUIREMENTS:                     │
-│  ✓ 4,000+ hours total              │
-│  ✓ 1,500+ hours PIC                │
-│  ✓ Multi-crew experience           │
-│  ✗ Type rating (missing)           │
+│  ✓ 4,000+ hours total (YOU HAVE)   │
+│  ✓ 1,500+ hours PIC (YOU HAVE)     │
+│  ✓ Multi-crew experience (YOU HAVE)│
+│  ✗ Type rating (MISSING)           │
 │                                    │
-│  Match: 75%                        │
+│  Your Match: 75%                   │
 │  Recognition Score Needed: 70+     │
+│  Your Score: 78 ✓                  │
 │                                    │
 │  [SUBMIT INTEREST] ← NOT "Apply"  │
 └─────────────────────────────────────┘
@@ -189,24 +199,49 @@ Recognition Score =
 
 ---
 
-### 6. Enterprise Access (Airline Layer)
+## 🏢 FOR PARTNERS — PATHWAY PUBLISHING & DISCOVERY
 
-**Free Tier:**
-- Post public pathways
-- View pilot profiles
-- Basic filtering
+### 6. Pathway Management (Publishing Layer)
 
-**Enterprise ($1,000/month):**
-- Pull API access
-- Unlimited profile pulls
-- Advanced filtering (Recognition Score, competencies)
-- EBT video access
-- Verified candidate shortlists
+Partners publish pathway requirements and discover interested pilots.
 
-**Success Fee:**
-- $500 per pilot placed through pathway
+**What Partners See:**
+
+```
+┌─────────────────────────────────────────┐
+│  YOUR PATHWAY: Emirates Cadet           │
+│  📍 Dubai                               │
+│  Status: Active                         │
+│                                         │
+│  INTEREST TEASER:                       │
+│  🔥 12 pilots have submitted interest    │
+│                                         │
+│  🔒 TOP 3 RECOGNITION+ (Preview):       │
+│     • P**** S**** (Score: 8*)           │
+│     • A**** K**** (Score: 7*)           │
+│     • M**** H**** (Score: 9*)           │
+│                                         │
+│  [Unlock Full List - $49]              │
+│  [Upgrade to Enterprise - $1K/mo]       │
+└─────────────────────────────────────────┘
+```
+
+**Three-Tier Partner Model:**
+
+| Feature | Free | Pay-Per-Pathway ($49) | Enterprise ($1K/mo) |
+|---------|------|----------------------|---------------------|
+| Post Pathways | ✅ | ✅ | ✅ |
+| See Interest Count | ✅ ("12 interested") | ✅ | ✅ |
+| Preview Top 3 | ✅ (blurred) | ✅ (full) | ✅ (unlimited) |
+| Unlock Full List | ❌ | ✅ (this pathway) | ✅ (all) |
+| Pull API | ❌ | ❌ | ✅ |
+| EBT Video Access | ❌ | ❌ | ✅ |
+
+**Success Fee:** $500 per pilot placed through pathway
 
 ---
+
+## 🔧 TECHNICAL INFRASTRUCTURE
 
 ### 7. Database Structure (Supabase)
 
@@ -307,206 +342,7 @@ functions/
 
 ---
 
-## 👨‍✈️ FOR PILOTS
-
-### Pilot User Journey
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         PILOT JOURNEY                               │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  1️⃣ DISCOVER                                                        │
-│     Visit pilotrecognition.com                                      │
-│     ↓                                                               │
-│     See "NOT A JOB BOARD" banner (sets expectations)                │
-│     ↓                                                               │
-│     Browse Pathways (see what airlines actually expect)             │
-│     ↓                                                               │
-│     Compare your profile to requirements (see your gaps)            │
-│                                                                     │
-│  2️⃣ BUILD PROFILE                                                   │
-│     Create account (email/password or OAuth)                        │
-│     ↓                                                               │
-│     Enter Flight Hours, Licenses, Ratings                           │
-│     ↓                                                               │
-│     Add Professional Experience (not "job history")                 │
-│     ↓                                                               │
-│     Calculate your Recognition Score (0-100)                        │
-│                                                                     │
-│  3️⃣ ENGAGE                                                          │
-│     Submit Interest to Pathways (NOT "apply")                     │
-│     ↓                                                               │
-│     [TH2] Complete Verification (Veremark background checks)       │
-│     ↓                                                               │
-│     Airlines PULL from database (you don't push applications)        │
-│     ↓                                                               │
-│     Get contacted directly by verified airlines                     │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### What Pilots Get:
-
-| Feature | Free | Recognition+ ($99/year) |
-|---------|------|---------------------------|
-| Browse Pathways | ✅ | ✅ |
-| Basic Profile | ✅ | ✅ |
-| Submit Interest (3/month) | ✅ | Unlimited |
-| Recognition Score | ✅ | ✅ + Priority Boost |
-| Profile Comparisons | Shows 2 gaps | Unlimited full comparison |
-| Verified Badge | ❌ | ✅ |
-| AI Recognition Strategist | ❌ | ✅ |
-| Early Pathway Notifications | ❌ | ✅ |
-
-### Pilot Value Proposition:
-> **"Stop applying and hoping. Get verified and discovered."**
-
-- See exactly what airlines expect (not generic job posts)
-- Know your gaps before applying (gap analysis tool)
-- Build a Recognition Score that travels with you
-- Submit interest once, get pulled by multiple airlines
-- Background verification increases airline trust
-
----
-
-## 🏢 FOR PARTNERS (Airlines, Operators, ATOs)
-
-### Partner User Journey
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        PARTNER JOURNEY                              │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  1️⃣ DISCOVER                                                        │
-│     Visit enterprise.pilotrecognition.com                           │
-│     ↓                                                               │
-│     See "Pull-Verified Pilots" messaging                            │
-│     ↓                                                               │
-│     Submit Enterprise Access Form                                   │
-│     ↓                                                               │
-│     Review partnership terms (Free / Pay-Per-Pathway / Enterprise)    │
-│                                                                     │
-│  2️⃣ PUBLISH                                                         │
-│     [Free] Post public pathway requirements                         │
-│     ↓                                                               │
-│     See "12 pilots interested" (proves demand)                      │
-│     ↓                                                               │
-│     See blurred preview of top 3 Recognition+ members                 │
-│     • P**** S**** (Score: 8*)                                       │
-│     • A**** K**** (Score: 7*)                                       │
-│     • M**** H**** (Score: 9*)                                       │
-│                                                                     │
-│  3️⃣ UNLOCK (Choose Your Tier)                                       │
-│     Option A: Pay-Per-Pathway ($49)                                 │
-│       ↓                                                             │
-│       Unlock full list for THIS pathway only                        │
-│       See all names, scores, contact info                           │
-│       ↓                                                             │
-│       Contact pilots directly                                       │
-│                                                                     │
-│     Option B: Enterprise ($1,000/month)                             │
-│       ↓                                                             │
-│       Unlock ALL pathways unlimited                                 │
-│       Access Pull API + advanced filters                            │
-│       View EBT Video Assessments                                    │
-│       ↓                                                             │
-│       Contact pilots directly                                       │
-│                                                                     │
-│  💰 SUCCESS FEE: $500 per pilot placed through pathway              │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### What Partners Get:
-
-| Feature | Free | Pay-Per-Pathway | Enterprise ($1K/mo) |
-|---------|------|-----------------|---------------------|
-| Post Public Pathways | ✅ | ✅ | ✅ |
-| View Pilot Profiles (public) | ✅ | ✅ | ✅ |
-| **Teaser: First 3 Recognition+ Members** | ✅ (names blurred) | ✅ (full details) | ✅ (unlimited) |
-| **See Interest Count** | ✅ ("12 pilots interested") | ✅ + unlock list | ✅ unlimited |
-| **Unlock Full Interest List** | ❌ | $49/pathway | Included |
-| Pull API Access | ❌ | ❌ | ✅ Unlimited |
-| Advanced Filtering (Score, Competencies) | ❌ | ❌ | ✅ |
-| EBT Video Access | ❌ | ❌ | ✅ |
-| Recognition Score Analytics | ❌ | ❌ | ✅ |
-| Priority Support | ❌ | ❌ | ✅ |
-
-### How It Works (LinkedIn-Style Model):
-
-```
-Free Partner View:
-┌─────────────────────────────────────────┐
-│  Emirates Cadet Program                 │
-│  📍 Dubai                               │
-│                                         │
-│  Interest Teaser:                       │
-│  "12 pilots have submitted interest"     │
-│                                         │
-│  🔒 First 3 Recognition+ Members:        │
-│     • P**** S**** (Score: 8*)           │
-│     • A**** K**** (Score: 7*)           │
-│     • M**** H**** (Score: 9*)           │
-│     • Names blurred, scores masked      │
-│                                         │
-│  [Unlock Full List - $49]              │
-│  [Upgrade to Enterprise - $1K/mo]       │
-└─────────────────────────────────────────┘
-```
-
-**Pay-Per-Pathway Model ($49 per pathway unlock):**
-- See full names of all interested pilots
-- View complete Recognition Scores
-- Access contact information
-- One-time fee per pathway (not recurring)
-- Perfect for airlines testing the platform
-
-**Enterprise Model ($1,000/month):**
-- Unlimited pathway unlocks
-- Pull API access
-- Advanced filtering
-- EBT video access
-- Bulk profile exports
-
-### Partner Value Proposition:
-> **"See demand before you pay. Only unlock the pathways you need."**
-
-**Free Tier Benefits:**
-- Post pathways at no cost
-- See interest count (proves platform works)
-- Preview top 3 candidates (shows quality)
-- No risk, no commitment
-
-**Pay-Per-Pathway Benefits:**
-- $49 to unlock full candidate list
-- Cheaper than one job board posting
-- Access to pre-verified, interested pilots
-- No monthly commitment
-
-**Enterprise Benefits:**
-- Unlimited access for high-volume recruiters
-- API integration for ATS systems
-- EBT video assessments before interview
-- Verified candidate shortlists
-- Recognition Score Analytics dashboard
-
-### Partner Types:
-
-| Partner Type | Use Case |
-|--------------|----------|
-| **Commercial Airlines** | Pull cadet-ready pilots, type-rated candidates |
-| **Cargo Operators** | Find experienced multi-crew pilots |
-| **Private Jet/Charter** | Discover high-scoring flexible pilots |
-| **Flight Schools/ATOs** | Affiliated partner program, shared content |
-| **Simulator Centers** | Type rating training partnerships |
-| **Aviation Recruitment** | Access verified pilot pool for clients |
-| **MRO/Maintenance** | Engineering track pilot placements |
-
----
-
-### 10. Recognition Score Algorithm (TH1)
+### 9. Recognition Score Algorithm (TH1)
 
 **Current Calculation (in functions/index-all.js):**
 
