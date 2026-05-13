@@ -123,7 +123,7 @@
               </tr>
             </thead>
             <tbody>
-              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/') and not(contains(s:loc, '/airline-expectations')) and not(contains(s:loc, '/discover-pathways')) and not(contains(s:loc, '/what-is-the-pilot-gap')) and not(contains(s:loc, '/programs')) and not(contains(s:loc, '/foundational-program')) and not(contains(s:loc, '/transition-program')) and not(contains(s:loc, '/airbus-aligned')) and not(contains(s:loc, '/pilot-recognition')) and not(contains(s:loc, '/recognition-career')) and not(contains(s:loc, '/become-member')) and not(contains(s:loc, '/benefits')) and not(contains(s:loc, '/news-updates')) and not(contains(s:loc, '/framework')) and not(contains(s:loc, '/enterprise')) and not(contains(s:loc, '/why-recognition')) and not(contains(s:loc, '/pilot-shortage')) and not(contains(s:loc, '/pilot-terminal')) and not(contains(s:loc, '/recognition-plus')) and not(contains(s:loc, '/professional-profile')) and not(contains(s:loc, '/career-tools')) and not(contains(s:loc, '/background-check')) and not(contains(s:loc, '/pilot-insurance')) and not(contains(s:loc, '/banking-finance')) and not(contains(s:loc, '/manufacturer')) and not(contains(s:loc, '/store')) and not(contains(s:loc, '/faq')) and not(contains(s:loc, '/blog')) and not(contains(s:loc, '/learn-about')) and not(contains(s:loc, '/general')) and not(contains(s:loc, '/privacy')) and not(contains(s:loc, '/terms')) and not(contains(s:loc, '/cookie'))]">
+              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/') and not(contains(s:loc, '/airline-expectations')) and not(contains(s:loc, '/discover-pathways')) and not(contains(s:loc, '/what-is-the-pilot-gap')) and not(contains(s:loc, '/programs')) and not(contains(s:loc, '/foundational-program')) and not(contains(s:loc, '/transition-program')) and not(contains(s:loc, '/airbus-aligned')) and not(contains(s:loc, '/pilot-recognition')) and not(contains(s:loc, '/recognition-career')) and not(contains(s:loc, '/become-member')) and not(contains(s:loc, '/benefits')) and not(contains(s:loc, '/news-updates')) and not(contains(s:loc, '/framework')) and not(contains(s:loc, '/enterprise')) and not(contains(s:loc, '/why-recognition')) and not(contains(s:loc, '/pilot-shortage')) and not(contains(s:loc, '/pilot-terminal')) and not(contains(s:loc, '/recognition-plus')) and not(contains(s:loc, '/professional-profile')) and not(contains(s:loc, '/career-tools')) and not(contains(s:loc, '/background-check')) and not(contains(s:loc, '/pilot-insurance')) and not(contains(s:loc, '/banking-finance')) and not(contains(s:loc, '/manufacturer')) and not(contains(s:loc, '/store')) and not(contains(s:loc, '/faq')) and not(contains(s:loc, '/blog')) and not(contains(s:loc, '/learn-about')) and not(contains(s:loc, '/general')) and not(contains(s:loc, '/privacy')) and not(contains(s:loc, '/terms')) and not(contains(s:loc, '/cookie')) and not(contains(s:loc, '/philippines')) and not(contains(s:loc, '/partners'))]">
               <tr>
                 <td><a href="{s:loc}" target="_blank"><xsl:value-of select="s:loc"/></a></td>
                 <td><xsl:value-of select="s:lastmod"/></td>
@@ -148,7 +148,7 @@
               </tr>
             </thead>
             <tbody>
-              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/enterprise-access') or contains(s:loc, '/manufacturer') or contains(s:loc, '/background-check')]">
+              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/enterprise-access') or contains(s:loc, '/manufacturer') or contains(s:loc, '/background-check') or contains(s:loc, '/partners/flight-schools')]">
               <tr>
                 <td><a href="{s:loc}" target="_blank"><xsl:value-of select="s:loc"/></a></td>
                 <td><xsl:value-of select="s:lastmod"/></td>
@@ -173,7 +173,7 @@
               </tr>
             </thead>
             <tbody>
-              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/programs') or contains(s:loc, '/foundational-program') or contains(s:loc, '/transition-program') or contains(s:loc, '/airbus-aligned') or contains(s:loc, '/pilot-recognition') or contains(s:loc, '/recognition-career') or contains(s:loc, '/become-member') or contains(s:loc, '/why-recognition') or contains(s:loc, '/pilot-terminal') or contains(s:loc, '/recognition-plus') or contains(s:loc, '/professional-profile') or contains(s:loc, '/career-tools') or contains(s:loc, '/pilot-insurance') or contains(s:loc, '/banking-finance')]">
+              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/programs') or contains(s:loc, '/foundational-program') or contains(s:loc, '/transition-program') or contains(s:loc, '/airbus-aligned') or contains(s:loc, '/pilot-recognition') or contains(s:loc, '/recognition-career') or contains(s:loc, '/become-member') or contains(s:loc, '/why-recognition') or contains(s:loc, '/pilot-terminal') or contains(s:loc, '/recognition-plus') or contains(s:loc, '/professional-profile') or contains(s:loc, '/career-tools') or contains(s:loc, '/pilot-insurance') or contains(s:loc, '/banking-finance') or contains(s:loc, '/philippines')]">
               <tr>
                 <td><a href="{s:loc}" target="_blank"><xsl:value-of select="s:loc"/></a></td>
                 <td><xsl:value-of select="s:lastmod"/></td>
