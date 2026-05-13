@@ -305,6 +305,52 @@ Current flight training is transactional: hours logged, exams passed, certificat
 
 > **For flight schools, the Transition Program is a pipeline unclogger.** It turns stuck instructors into success stories, making room for fresh graduates, and showing new students that their training actually leads somewhere.
 
+**Background Check Compliance & Safety Records**
+
+> **We want our pilots to be fully compliant with background checks — including any crashes during solo or training flights, incidents that may impact their profile, and complete safety histories. This is critical for both the pilot's career and the flight school's reputation.**
+
+**Why Incident Transparency Matters:**
+
+| What Happens | Impact on Pilot | Impact on Flight School |
+|--------------|-----------------|------------------------|
+| Solo flight crash goes unreported | Future operator discovers it → immediate rejection | "School hides incidents" reputation damage |
+| Training incident buried | Pilot profile appears clean → later blacklisted | Loss of operator trust |
+| Incomplete background check | Pre-cleared status revoked | Partner relationships damaged |
+| Full disclosure + learning | Verified profile shows growth | "Honest, transparent training" reputation |
+
+**What Veremark Background Checks Cover:**
+
+**For Pilots:**
+- ✅ Solo flight incident history
+- ✅ Training flight accidents or near-misses
+- ✅ Checkride failures and retakes
+- ✅ Medical certificate issues
+- ✅ License suspensions or violations
+- ✅ Criminal background (global)
+- ✅ Employment verification
+
+**For Flight Schools:**
+- ✅ Student incident tracking from day one
+- ✅ Pre-graduation clearance ensures "clean" graduates
+- ✅ "Pre-cleared graduates" marketing advantage
+- ✅ Reduced liability — no hidden surprises
+- ✅ Operator confidence in placement candidates
+
+**The Pre-Cleared Graduate Advantage:**
+
+**Before:** Flight school graduates → apply to airlines → background check reveals incident → airline rejects pilot → school reputation damaged
+
+**After:** Flight school graduates → already background checked → "Pre-Cleared Graduate" badge → airlines trust immediately → school reputation protected
+
+> **Background checks aren't just for operators — they're for protecting flight school reputations and ensuring pilots don't have career-ending surprises.**
+
+**For Flight School Partnerships:**
+
+- **Incident tracking integration:** Flight schools log incidents directly to pilot profiles
+- **Remediation documentation:** Shows how pilot learned from incident
+- **Transparency as marketing:** "Our graduates have verified, clean records"
+- **Risk mitigation:** No graduate surprises that damage operator relationships
+
 ---
 
 **Why Pilots MUST Complete This (Future Alignment):**
