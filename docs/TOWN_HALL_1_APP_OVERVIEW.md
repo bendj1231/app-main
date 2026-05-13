@@ -98,25 +98,27 @@ Current flight training is transactional: hours logged, exams passed, certificat
 
 **The Transition Program: Aviation Industry First**
 
-> **The Transition Program will be the first of its kind in the aviation industry** — establishing a **real pipeline** from flight school graduation to aviation industry readiness.
+> **The Transition Program will be the first of its kind in the aviation industry** — establishing a **real pipeline** from flight school graduation to aviation industry readiness across **all sectors and pillars**.
 
 **The Problem It Solves:**
 - Currently: Pilots graduate with a license, shake hands, get a certificate, and are told "good luck"
-- No structured path from "200-hour graduate" to "airline-ready candidate"
+- No structured path from "200-hour graduate" to "industry-ready candidate"
 - 2-3 year gap with no guidance, mentorship, or industry alignment
-- Pilots waste $50K+ on the wrong training because they don't know what airlines actually want
+- Pilots waste $50K+ on the wrong training because they don't know what operators actually want
 
 **The Transition Program Solution:**
-- **Structured pipeline:** Flight school → Foundation Program → Transition Program → Verified Recognition Profile → Airline Pathway
-- **Industry-aligned competencies:** 9 core competencies that airlines actually assess (not just hours)
+- **Structured pipeline:** Flight school → Foundation Program → Transition Program → Verified Recognition Profile → Industry Pathway
+- **Industry-aligned competencies:** 9 core competencies that all operators assess (not just hours)
+- **Cross-sector readiness:** Prepares pilots for airlines, cargo, private jet, air taxi, military — all 7 pathway categories
 - **Verified readiness:** EBT video scoring, ATLAS CV formatting, interview preparation
-- **Direct connections:** Programs integrate with all 25 pillars (airlines, ATOs, sim centers) for seamless handoffs
+- **Direct connections:** Programs integrate with all 25 pillars (operators, ATOs, sim centers, manufacturers) for seamless handoffs
 
 **Why This Is Revolutionary:**
-- **First comprehensive bridge** between training and employment in aviation
+- **First comprehensive bridge** between training and employment across ALL aviation sectors
 - **Not just a course** — a recognized industry standard for pilot readiness
-- **Airlines can trust** Transition Program graduates as "90% ready" candidates
-- **Flight schools can offer** guaranteed pathway to industry (not just "we hope you get hired")
+- **Operators can trust** Transition Program graduates as "90% ready" candidates
+- **Flight schools can offer** guaranteed pathway to aviation industry (not just "we hope you get hired")
+- **Pillar-agnostic:** Works for airlines, cargo operators, charter companies, air taxi, military, flight schools — every sector
 
 ---
 
