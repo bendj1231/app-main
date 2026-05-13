@@ -6,6 +6,21 @@
       "destination": "/index.html"
     },
     {
+      "has": [{ "type": "host", "value": "recognitionplus.pilotrecognition.com" }],
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "has": [{ "type": "host", "value": "help.pilotrecognition.com" }],
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "has": [{ "type": "host", "value": "partners.pilotrecognition.com" }],
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },
@@ -35,6 +50,24 @@
       "has": [{ "type": "host", "value": "enterprise.pilotrecognition.com" }],
       "source": "/",
       "destination": "/enterprise-access",
+      "permanent": false
+    },
+    {
+      "has": [{ "type": "host", "value": "recognitionplus.pilotrecognition.com" }],
+      "source": "/",
+      "destination": "/recognition-plus",
+      "permanent": false
+    },
+    {
+      "has": [{ "type": "host", "value": "help.pilotrecognition.com" }],
+      "source": "/",
+      "destination": "/faq",
+      "permanent": false
+    },
+    {
+      "has": [{ "type": "host", "value": "partners.pilotrecognition.com" }],
+      "source": "/",
+      "destination": "/partners/flight-schools",
       "permanent": false
     }
   ],
