@@ -749,7 +749,7 @@ const EnterpriseAccessPage = () => {
                     <div className="mb-12">
                         <span className="text-xs uppercase tracking-widest text-red-600 font-semibold">25 Strategic Pillars · 7 Stakeholder Hubs</span>
                         <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-3">Every Aviation Stakeholder. One Platform.</h2>
-                        <p className="text-slate-500 max-w-2xl">Categorised by hub — each pillar represents a distinct stakeholder group with defined requirements, contributions, and commercial value.</p>
+                        <p className="text-slate-500 max-w-2xl">Grouped by stakeholder hub — click any pillar to explore its requirements, contributions, and commercial value.</p>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -803,23 +803,23 @@ const EnterpriseAccessPage = () => {
                             {
                                 hub: 'Hub E-A', label: 'Humanitarian & Mission',
                                 pillars: [
-                                    { n: 21, name: 'Church & Charity Missions' },
+                                    { n: 21, name: 'Humanitarian Missions' },
                                 ]
                             },
                             {
                                 hub: 'Hub G', label: 'Digital Discovery',
                                 pillars: [
                                     { n: 23, name: 'Search & Discovery Platforms' },
-                                    { n: 24, name: 'Aviation Events & Career Fairs' },
-                                    { n: 25, name: 'Digital Discovery Platforms' },
+                                    { n: 24, name: 'Aviation Events' },
+                                    { n: 25, name: 'Digital Platforms' },
                                 ]
                             },
                         ].map((group) => (
                             <div key={group.hub} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                                 {/* Hub header */}
-                                <div className="bg-red-600 px-4 py-3">
-                                    <p className="text-white text-[10px] font-bold uppercase tracking-widest">{group.hub}</p>
-                                    <p className="text-red-100 text-xs font-medium mt-0.5">{group.label}</p>
+                                <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-red-600">{group.hub}</span>
+                                    <span className="text-[10px] text-slate-400">{group.label}</span>
                                 </div>
                                 {/* Pillars stacked */}
                                 <div className="divide-y divide-slate-100">
@@ -827,10 +827,10 @@ const EnterpriseAccessPage = () => {
                                         <button
                                             key={pillar.n}
                                             onClick={() => scrollTo('solutions')}
-                                            className="w-full text-left px-4 py-3 flex items-center justify-between hover:bg-red-50 transition-colors group"
+                                            className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-red-50 transition-colors group"
                                         >
-                                            <span className="text-sm text-slate-700 group-hover:text-red-700 font-medium">{pillar.name}</span>
-                                            <span className="text-[10px] text-slate-300 font-mono ml-2 flex-shrink-0">{pillar.n}</span>
+                                            <span className="text-[11px] font-mono text-slate-300 w-5 flex-shrink-0 group-hover:text-red-400 transition-colors">{pillar.n}</span>
+                                            <span className="text-sm text-slate-700 group-hover:text-slate-900 font-medium leading-tight">{pillar.name}</span>
                                         </button>
                                     ))}
                                 </div>
