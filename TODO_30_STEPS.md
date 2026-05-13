@@ -8,7 +8,7 @@
 4. ⬜ Add DNS CNAME records for all subdomains
 5. ⬜ Verify SSL certificate provisioning on Vercel
 6. ⬜ Test subdomain routing in development
-7. ⬜ Update sitemap.xml with subdomain URLs
+7. ✅ Update sitemap.xml with subdomain URLs
 8. ⬜ Submit updated sitemap to Google Search Console
 
 ## Phase 2: Enterprise Portal (Steps 9-14)
