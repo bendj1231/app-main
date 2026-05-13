@@ -391,31 +391,60 @@ const CAROUSEL_ITEMS = [
 
 const HeroCarousel = () => {
     const [activeIdx, setActiveIdx] = useState(0);
+    const [progress, setProgress] = useState(0);
     useEffect(() => {
-        const t = setInterval(() => setActiveIdx(p => (p + 1) % CAROUSEL_ITEMS.length), 2800);
-        return () => clearInterval(t);
-    }, []);
+        setProgress(0);
+        const step = 50;
+        const duration = 2800;
+        const inc = (step / duration) * 100;
+        const prog = setInterval(() => setProgress(p => Math.min(p + inc, 100)), step);
+        const next = setInterval(() => {
+            setActiveIdx(p => (p + 1) % CAROUSEL_ITEMS.length);
+            setProgress(0);
+        }, duration);
+        return () => { clearInterval(prog); clearInterval(next); };
+    }, [activeIdx]);
+
+    const item = CAROUSEL_ITEMS[activeIdx];
     return (
-        <div className="mb-8 max-w-md">
-            <div className="flex items-start gap-3 mb-4">
-                <div className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 min-h-[76px]">
-                    <p className="text-sm font-bold text-slate-900 mb-1">{CAROUSEL_ITEMS[activeIdx].label}</p>
-                    <p className="text-sm text-slate-500 leading-snug">{CAROUSEL_ITEMS[activeIdx].desc}</p>
-                </div>
-                <div className="self-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                </div>
-            </div>
-            <div className="flex gap-1.5">
-                {CAROUSEL_ITEMS.map((_, i) => (
+        <div className="mb-8 max-w-[420px]">
+            {/* Step pills */}
+            <div className="flex gap-2 mb-3">
+                {CAROUSEL_ITEMS.map((c, i) => (
                     <button
                         key={i}
                         onClick={() => setActiveIdx(i)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${i === activeIdx ? 'w-6 bg-red-600' : 'w-1.5 bg-slate-300'}`}
-                    />
+                        className={`text-[10px] font-semibold px-2.5 py-1 rounded-full transition-all border ${
+                            i === activeIdx
+                                ? 'bg-slate-900 text-white border-slate-900'
+                                : 'bg-white text-slate-400 border-slate-200 hover:border-slate-400'
+                        }`}
+                    >
+                        {String(i + 1).padStart(2, '0')}
+                    </button>
                 ))}
+            </div>
+
+            {/* Card + arrow */}
+            <div className="flex items-center gap-3">
+                <div className="flex-1 bg-white border-2 border-slate-900 rounded-2xl px-5 py-4 shadow-sm">
+                    <p className="text-[10px] uppercase tracking-widest text-red-600 font-bold mb-1.5">{`Feature ${String(activeIdx + 1).padStart(2, '0')}`}</p>
+                    <p className="text-base font-bold text-slate-900 mb-1">{item.label}</p>
+                    <p className="text-sm text-slate-500 leading-snug">{item.desc}</p>
+                    {/* Progress bar at bottom */}
+                    <div className="mt-3 h-0.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-red-600 rounded-full transition-none"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-col items-center gap-1 flex-shrink-0">
+                    <svg className="w-7 h-7 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    <span className="text-[9px] text-slate-400 uppercase tracking-wider">Live</span>
+                </div>
             </div>
         </div>
     );
