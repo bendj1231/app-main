@@ -697,45 +697,48 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── UCF BANNER ─── */}
-            <section id="framework" className="relative py-20 px-6 bg-slate-950 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-red-950/50 via-slate-950 to-slate-950 pointer-events-none" />
-                <div className="relative max-w-7xl mx-auto">
-                    <div className="grid lg:grid-cols-5 gap-12 items-center">
-                        <div className="lg:col-span-3">
-                            <span className="inline-block px-3 py-1 bg-red-900/40 border border-red-800/50 text-red-400 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest">
-                                Version 10.0-Expanded · 25 Pillars · 7 Hubs · 90+ Pages
-                            </span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
-                                Universal Commercial<br />
-                                <span className="text-red-400">Framework</span>
-                            </h2>
-                            <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-xl">
-                                The master blueprint for the aviation industry operating system. Detailed requirements, contributions, and commercial value analysis for every stakeholder — from commercial airlines to search platforms.
-                            </p>
-                            <div className="flex flex-wrap gap-4">
-                                <a href="/ucf" className="bg-red-600 hover:bg-red-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors inline-flex items-center gap-2 text-sm">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                                    Open UCF Page
-                                </a>
-                                <a href="https://enterprise.pilotrecognition.com/framework/full" className="bg-white/5 hover:bg-white/10 text-white border border-white/20 font-semibold px-8 py-3.5 rounded-xl transition-colors inline-flex items-center gap-2 text-sm">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                                    Full Framework Document
-                                </a>
-                            </div>
-                        </div>
-                        <div className="lg:col-span-2 grid grid-cols-2 gap-3">
-                            {[
-                                { n: '25', label: 'Pillars' },
-                                { n: '7', label: 'Hubs' },
-                                { n: '90+', label: 'Pages' },
-                                { n: 'v10', label: 'Version' },
-                            ].map((item) => (
-                                <div key={item.label} className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
-                                    <p className="text-3xl font-bold text-red-400 mb-1">{item.n}</p>
-                                    <p className="text-xs text-slate-400 uppercase tracking-widest">{item.label}</p>
-                                </div>
-                            ))}
-                        </div>
+            <section id="framework" className="relative py-24 px-6 bg-slate-950 overflow-hidden">
+                {/* Giant background text */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+                    <span className="text-[22vw] font-black text-white/[0.03] leading-none tracking-tighter whitespace-nowrap">UCF</span>
+                </div>
+                {/* Subtle red glow */}
+                <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-red-600/10 blur-[100px] rounded-full pointer-events-none" />
+
+                <div className="relative max-w-5xl mx-auto text-center">
+                    <div className="flex items-center justify-center gap-3 mb-8">
+                        <div className="h-px w-12 bg-red-600/50" />
+                        <span className="text-red-500 text-xs font-semibold uppercase tracking-[0.3em]">Version 10.0-Expanded</span>
+                        <div className="h-px w-12 bg-red-600/50" />
+                    </div>
+
+                    <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-none tracking-tight">
+                        Universal<br />
+                        <span className="text-red-500">Commercial</span><br />
+                        Framework
+                    </h2>
+
+                    <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-4 leading-relaxed">
+                        The master blueprint for the aviation industry operating system. Requirements, contributions, and commercial value analysis for every stakeholder.
+                    </p>
+
+                    <div className="flex items-center justify-center gap-6 text-xs text-slate-500 mb-12">
+                        <span>25 Pillars</span>
+                        <span className="w-1 h-1 bg-slate-600 rounded-full" />
+                        <span>7 Hubs</span>
+                        <span className="w-1 h-1 bg-slate-600 rounded-full" />
+                        <span>90+ Pages</span>
+                        <span className="w-1 h-1 bg-slate-600 rounded-full" />
+                        <span>7 Stakeholder Hubs</span>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-center gap-4">
+                        <a href="/ucf" className="bg-red-600 hover:bg-red-500 text-white font-bold px-10 py-4 rounded-xl transition-colors text-sm tracking-wide">
+                            Open UCF →
+                        </a>
+                        <a href="https://enterprise.pilotrecognition.com/framework/full" className="text-slate-400 hover:text-white border border-white/10 hover:border-white/30 font-semibold px-8 py-4 rounded-xl transition-colors text-sm">
+                            Full Framework Document
+                        </a>
                     </div>
                 </div>
             </section>
