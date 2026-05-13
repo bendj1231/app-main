@@ -1,9 +1,34 @@
 # Allow all crawlers
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
-# Sitemap
+# Sitemap Index (preferred for multiple subdomains)
+Sitemap: https://pilotrecognition.com/sitemap-index.xml
+
+# Legacy sitemap (kept for compatibility during transition)
 Sitemap: https://pilotrecognition.com/sitemap.xml
 
-# Disallow callback route (no need to index OAuth callback)
+# Disallow private/non-indexable routes
 Disallow: /callback
+Disallow: /api/
+Disallow: /examination-portal
+Disallow: /access-portal
+Disallow: /access-portal-2
+Disallow: /*?*  # URL parameters
+
+# Allow specific static assets
+Allow: /assets/
+Allow: /images/
+Allow: /*.js$
+Allow: /*.css$
+
+# Googlebot-specific (faster crawling)
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+# Bingbot-specific
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1

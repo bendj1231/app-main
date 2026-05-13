@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Domain Sitemap -->
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-main.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  
+  <!-- Subdomain Sitemaps -->
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-enterprise.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-pathways.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-recognitionplus.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-support.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-partners.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-join.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-blog.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+  
+  <!-- Image Sitemap -->
+  <sitemap>
+    <loc>https://pilotrecognition.com/sitemap-images.xml</loc>
+    <lastmod>2026-05-13</lastmod>
+  </sitemap>
+</sitemapindex>

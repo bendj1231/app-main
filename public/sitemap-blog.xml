@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap-style.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- BLOG HOMEPAGE -->
+  <url>
+    <loc>https://blog.pilotrecognition.com/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://blog.pilotrecognition.com/blog</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- BLOG POSTS - Examples with News markup -->
+  <!-- Add new blog posts here with news:news tags for Google News -->
+  <!--
+  <url>
+    <loc>https://blog.pilotrecognition.com/blog/post-slug</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>PilotRecognition Blog</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-05-13</news:publication_date>
+      <news:title>Blog Post Title</news:title>
+    </news:news>
+  </url>
+  -->
+</urlset>
