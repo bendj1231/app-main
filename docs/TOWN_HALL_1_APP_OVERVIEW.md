@@ -195,6 +195,53 @@ Current flight training is transactional: hours logged, exams passed, certificat
 └─────────────────────────────────────────────────────────┘
 ```
 
+**Breaking the Flight Instructor Trap**
+
+> **The traditional route: Flight instructor for 5+ grueling years. You don't learn much — you're basically a teacher teaching the students you once were. No evolution. Information trapped. No growth.**
+
+**The Flight Instructor Problem:**
+
+**Floor 1 of the Four-Floor Tower:**
+- 5,000-6,000 hours logged
+- 15 years of teaching the same maneuvers
+- Stuck because nobody's leaving Floor 2 (airline positions)
+- Knowledge trapped — you know more than your logbook shows
+- No professional evolution — same lessons, year after year
+- Confidence erodes — "Am I still a pilot or just a teacher?"
+
+**Why Flight Instructors LOVE the Transition Program:**
+
+1. **Breaks the Knowledge Barrier:**
+   - Finally learn what airlines/cargo/eVTOL operators actually assess
+   - Access to industry intelligence (not trapped in the flight school bubble)
+   - Understanding of the 9 core competencies beyond stick-and-rudder
+
+2. **Feel Confident Again:**
+   - Recognition for what they've built (15 years of experience matters!)
+   - Verified Recognition Profile shows their true value
+   - "I'm not just an instructor — I'm an industry-ready professional"
+
+3. **Investment in Themselves:**
+   - For the first time, investing in their own career (not just student success)
+   - 50-hour mentorship gives them guidance (they're always the mentor, never the mentee)
+   - EBT video scoring validates their competence
+
+4. **Pathway to Evolution:**
+   - No longer stuck teaching the same lessons
+   - Can finally move to cargo, private jet, eVTOL — any sector
+   - Recognition Score travels with them (not stuck at one flight school)
+
+> *"Flight instructors feel susceptible to not investing in themselves or feeling confident. The Transition Program changes that — it gives them recognition, knowledge, and a path forward."*
+
+**Why This Matters:**
+
+- **2-3 year instructor backup:** Currently instructors wait 2-3 years for airline slots
+- **2015 batch still waiting:** Some graduates from 2015 are STILL in line for instructor positions
+- **$50K investment unused:** Their own training investment sits dormant while they teach
+- **The Transition Program:** Breaks this cycle by giving instructors recognition and alternative pathways
+
+---
+
 **Why Pilots MUST Complete This (Future Alignment):**
 
 > **The industry is shifting from CBTA to new EBT standards. Pilots who don't complete this program will be left behind as the industry standard evolves.**
