@@ -4033,9 +4033,9 @@ async function calculateRecognitionScore(profile, supabaseClient) {
   const foundationProgress = profile.foundation_progress || 0;
   const foundationScore = foundationProgress * 0.5; // 0-50 points based on progress
   
-  // Certifications (if any stored in job_experiences or similar)
-  const jobExperiences = profile.job_experiences || [];
-  const certificationsCount = jobExperiences.filter(j => j?.certifications?.length > 0).length;
+  // Certifications (if any stored in professional_experiences or similar)
+  const professionalExperiences = profile.professional_experiences || [];
+  const certificationsCount = professionalExperiences.filter(j => j?.certifications?.length > 0).length;
   const certificationsScore = certificationsCount * 5;
   
   // Total experience score

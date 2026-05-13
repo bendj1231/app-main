@@ -453,8 +453,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           // Aircraft Ratings
           setAircraftRatings(data.aircraft_ratings || []);
 
-          // Job Experiences
-          setJobExperiences(data.job_experiences || []);
+          // Professional Experiences
+          setJobExperiences(data.professional_experiences || []);
 
           // Current Occupation
           setCurrentOccupation(data.current_occupation || '');
@@ -725,7 +725,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         medical_class: medicalClass,
         radio_license_expiry: radioLicenseExpiry,
         aircraft_ratings: aircraftRatings,
-        job_experiences: jobExperiences,
+        professional_experiences: jobExperiences,
         current_occupation: currentOccupation,
         current_employer: currentEmployer,
         current_position: currentPosition,

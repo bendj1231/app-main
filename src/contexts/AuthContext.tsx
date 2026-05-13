@@ -256,7 +256,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         medical_class: userData.medicalClass || null,
                         radio_license_expiry: userData.radioLicenseExpiry || null,
                         last_flown: userData.lastFlown || null,
-                        job_experiences: userData.jobExperiences || []
+                        professional_experiences: userData.jobExperiences || []
                     })
                     .eq('id', userId);
 
@@ -313,7 +313,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         medical_class: userData.medicalClass || null,
                         radio_license_expiry: userData.radioLicenseExpiry || null,
                         last_flown: userData.lastFlown || null,
-                        job_experiences: userData.jobExperiences || []
+                        professional_experiences: userData.jobExperiences || []
                     });
 
                 if (profileError) {
@@ -461,8 +461,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     favorite_aircraft: userData.favoriteAircraft || null,
                     why_become_pilot: userData.whyBecomePilot || null,
                     other_skills: userData.otherSkills || null,
-                    // Job experiences
-                    job_experiences: Array.isArray(userData.jobExperiences) ? userData.jobExperiences : (userData.jobExperiences ? [userData.jobExperiences] : []),
+                    // Professional experiences
+                    professional_experiences: Array.isArray(userData.jobExperiences) ? userData.jobExperiences : (userData.jobExperiences ? [userData.jobExperiences] : []),
                     // Interests
                     aviation_pathways_interests: Array.isArray(userData.pathwayInterests) ? userData.pathwayInterests : (userData.pathwayInterests ? [userData.pathwayInterests] : []),
                     pilot_job_positions_interests: Array.isArray(userData.insightInterests) ? userData.insightInterests : (userData.insightInterests ? [userData.insightInterests] : []),

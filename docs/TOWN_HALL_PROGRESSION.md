@@ -34,8 +34,8 @@
 - [x] RLS policies fixed
 - [x] Security events table created
 - [x] Function search_path vulnerabilities fixed
-- [ ] Migrate `job_experiences` table → `professional_experiences`
-- [ ] Update all queries referencing old table names
+- [x] Migrate `job_experiences` table → `professional_experiences`
+- [x] Update all queries referencing old table names
 
 #### 1.4 Core Navigation Structure ⭐⭐⭐⭐
 - [x] TopNavbar terminology fixed
