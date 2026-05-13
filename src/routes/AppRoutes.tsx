@@ -345,9 +345,9 @@ export const AppRoutes = () => {
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/store" element={<StorePage />} />
 
-      {/* Framework routes - /framework/full redirects to enterprise subdomain */}
+      {/* Framework routes */}
       <Route path="/framework" element={<FrameworkPage />} />
-      <Route path="/framework/full" element={<ExternalRedirect url="https://enterprise.pilotrecognition.com/framework/full" />} />
+      <Route path="/framework/full" element={<EnterpriseFrameworkPage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
