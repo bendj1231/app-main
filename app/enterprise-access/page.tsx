@@ -648,101 +648,64 @@ const EnterpriseAccessPage = () => {
             </header>
 
             {/* ─── HERO ─── */}
-            <section id="home" className="relative overflow-hidden bg-white border-b border-slate-100">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-red-50/60 via-white to-white pointer-events-none" />
-                <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-16">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest">
-                                Enterprise · Global Aviation Network
-                            </span>
-                            <h1 className="text-5xl md:text-6xl font-bold leading-[1.05] mb-6 text-slate-900">
-                                Connecting Pilots<br />
-                                <span className="text-red-600">to the Industry.</span>
-                            </h1>
-                            <p className="text-slate-500 text-lg mb-8 leading-relaxed max-w-lg">
-                                Live pilot profiles. Background-verified. Recognition scored. The infrastructure that connects verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
-                            </p>
-                            <div className="flex flex-wrap gap-3 mb-8">
-                                <button onClick={() => scrollTo('pillars')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-6 py-3 rounded-lg transition-colors">
-                                    Explore 25 Pillars
-                                </button>
-                                <button onClick={() => scrollTo('contact')} className="bg-white hover:bg-slate-50 border border-slate-300 text-slate-900 font-semibold px-6 py-3 rounded-lg transition-colors">
-                                    Request Access
-                                </button>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-slate-400">
-                                <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/></svg>
-                                Not a job board — a Recognition & Information Platform. No hiring promises. Just verified discovery.
-                            </div>
+            <section id="home" className="relative bg-slate-950 overflow-hidden border-b border-slate-800">
+                {/* Background image right side with fade */}
+                <div className="absolute inset-0 flex">
+                    <div className="w-1/3 bg-slate-950 flex-shrink-0" />
+                    <div className="relative flex-1">
+                        <img
+                            src="/recognition-unlock.png"
+                            alt=""
+                            className="w-full h-full object-cover object-left opacity-60"
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
+                        {/* Fade left */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #020617 0%, rgba(2,6,23,0.85) 25%, rgba(2,6,23,0.3) 60%, transparent 100%)' }} />
+                        {/* Fade bottom */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #020617 0%, transparent 40%)' }} />
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="relative max-w-7xl mx-auto px-6 pt-24 pb-0">
+                    <div className="max-w-2xl">
+                        <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-900/30 border border-red-800/50 text-red-400 text-xs font-semibold rounded-full mb-6 uppercase tracking-widest">
+                            Enterprise · Global Aviation Network
+                        </span>
+                        <h1 className="text-5xl md:text-7xl font-black leading-[1.0] mb-6 text-white">
+                            Connecting Pilots<br />
+                            <span className="text-red-500">to the Industry.</span>
+                        </h1>
+                        <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-lg">
+                            Live pilot profiles. Background-verified. Recognition scored. The infrastructure that connects verified pilots with pathway information from airlines, operators, insurers, lenders, ATOs, and manufacturers.
+                        </p>
+                        <div className="flex flex-wrap gap-3 mb-6">
+                            <button onClick={() => scrollTo('pillars')} className="bg-red-600 text-white hover:bg-red-500 font-semibold px-7 py-3.5 rounded-xl transition-colors">
+                                Explore 25 Pillars
+                            </button>
+                            <button onClick={() => scrollTo('contact')} className="text-white border border-white/20 hover:bg-white/10 font-semibold px-7 py-3.5 rounded-xl transition-colors">
+                                Request Access
+                            </button>
                         </div>
+                        <p className="text-slate-600 text-xs">
+                            Not a job board — a Recognition & Information Platform. No hiring promises. Just verified discovery.
+                        </p>
+                    </div>
 
-                        {/* Mock Pilot Profile Card */}
-                        <div className="relative">
-                            {/* Glow behind card */}
-                            <div className="absolute -inset-4 bg-red-100/40 blur-2xl rounded-3xl pointer-events-none" />
-                            <div className="relative bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden">
-                                {/* Card header */}
-                                <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                        <span className="text-xs font-semibold text-slate-600">Live Pilot Profile</span>
-                                    </div>
-                                    <span className="text-[10px] bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-semibold">Verified</span>
-                                </div>
-
-                                {/* Pilot info */}
-                                <div className="px-5 py-5">
-                                    <div className="flex items-center gap-4 mb-5">
-                                        <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center flex-shrink-0">
-                                            <span className="text-white font-bold text-sm">JR</span>
-                                        </div>
-                                        <div>
-                                            <p className="font-bold text-slate-900 text-sm">Capt. James R.</p>
-                                            <p className="text-xs text-slate-500">ATPL · 8,400 hrs TT</p>
-                                        </div>
-                                        <div className="ml-auto text-right">
-                                            <p className="text-xs font-bold text-red-600">Score</p>
-                                            <p className="text-2xl font-black text-slate-900">91</p>
-                                        </div>
-                                    </div>
-
-                                    {/* Stats row */}
-                                    <div className="grid grid-cols-3 gap-3 mb-5">
-                                        {[
-                                            { label: 'Type Ratings', value: '3' },
-                                            { label: 'Background', value: 'Clear' },
-                                            { label: 'Availability', value: '30d' },
-                                        ].map(s => (
-                                            <div key={s.label} className="bg-slate-50 rounded-lg p-2.5 text-center">
-                                                <p className="text-sm font-bold text-slate-900">{s.value}</p>
-                                                <p className="text-[10px] text-slate-400 mt-0.5">{s.label}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Pathway match */}
-                                    <div className="bg-red-50 border border-red-100 rounded-xl p-3 mb-4">
-                                        <p className="text-[10px] uppercase tracking-widest text-red-600 font-semibold mb-1">Pathway Match</p>
-                                        <div className="flex items-center justify-between">
-                                            <p className="text-sm font-semibold text-slate-800">Emirates — First Officer</p>
-                                            <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full font-bold">94%</span>
-                                        </div>
-                                        <p className="text-xs text-slate-500 mt-1">2 gaps remaining · A380 type rating required</p>
-                                    </div>
-
-                                    {/* Pull button */}
-                                    <button onClick={() => scrollTo('contact')} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 rounded-lg transition-colors">
-                                        Pull Profile via API →
-                                    </button>
-                                </div>
+                    {/* Feature strip — fades up from bottom */}
+                    <div className="relative mt-16 grid grid-cols-2 md:grid-cols-4 border-t border-slate-800">
+                        {[
+                            { label: 'Background Verification', sub: 'Pilots are screened before listing' },
+                            { label: 'Live Profile API', sub: 'Pull real-time pilot data' },
+                            { label: 'Airline Pathway Cards', sub: 'Requirements, not job ads' },
+                            { label: 'Recognition Score', sub: 'Ranked readiness currency' },
+                        ].map((f, i) => (
+                            <div key={f.label} className={`px-6 py-5 border-slate-800 ${i < 3 ? 'border-r' : ''}`}>
+                                <div className="w-1.5 h-1.5 bg-red-500 rounded-full mb-3" />
+                                <p className="text-sm font-semibold text-white mb-1">{f.label}</p>
+                                <p className="text-xs text-slate-500">{f.sub}</p>
                             </div>
-
-                            {/* Floating badge */}
-                            <div className="absolute -bottom-3 -right-3 bg-slate-900 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg">
-                                25 Pillars · 15+ Sectors
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
