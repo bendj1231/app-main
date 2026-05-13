@@ -307,51 +307,145 @@ functions/
 
 ---
 
-### 9. Key User Flows (TH1 Level)
+## 👨‍✈️ FOR PILOTS
 
-#### Pilot Onboarding Flow:
+### Pilot User Journey
+
 ```
-1. Visit pilotrecognition.com
-   ↓
-2. See "NOT A JOB BOARD" banner (sets expectations)
-   ↓
-3. Browse Pathways (see what airlines expect)
-   ↓
-4. Compare Profile (see gaps vs requirements)
-   ↓
-5. Create Profile (email/password or OAuth)
-   ↓
-6. Enter Flight Hours, Licenses, Ratings
-   ↓
-7. Add Professional Experience (not "job history")
-   ↓
-8. Calculate Recognition Score (0-100)
-   ↓
-9. Submit Interest to Pathways (not "apply")
-   ↓
-10. [TH2] Complete Verification (Veremark)
-   ↓
-11. Airlines Pull From Database (not push applications)
+┌─────────────────────────────────────────────────────────────────────┐
+│                         PILOT JOURNEY                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1️⃣ DISCOVER                                                        │
+│     Visit pilotrecognition.com                                      │
+│     ↓                                                               │
+│     See "NOT A JOB BOARD" banner (sets expectations)                │
+│     ↓                                                               │
+│     Browse Pathways (see what airlines actually expect)             │
+│     ↓                                                               │
+│     Compare your profile to requirements (see your gaps)            │
+│                                                                     │
+│  2️⃣ BUILD PROFILE                                                   │
+│     Create account (email/password or OAuth)                        │
+│     ↓                                                               │
+│     Enter Flight Hours, Licenses, Ratings                           │
+│     ↓                                                               │
+│     Add Professional Experience (not "job history")                 │
+│     ↓                                                               │
+│     Calculate your Recognition Score (0-100)                        │
+│                                                                     │
+│  3️⃣ ENGAGE                                                          │
+│     Submit Interest to Pathways (NOT "apply")                     │
+│     ↓                                                               │
+│     [TH2] Complete Verification (Veremark background checks)       │
+│     ↓                                                               │
+│     Airlines PULL from database (you don't push applications)        │
+│     ↓                                                               │
+│     Get contacted directly by verified airlines                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-#### Airline Enterprise Flow:
+### What Pilots Get:
+
+| Feature | Free | Recognition+ ($99/year) |
+|---------|------|---------------------------|
+| Browse Pathways | ✅ | ✅ |
+| Basic Profile | ✅ | ✅ |
+| Submit Interest (3/month) | ✅ | Unlimited |
+| Recognition Score | ✅ | ✅ + Priority Boost |
+| Profile Comparisons | Shows 2 gaps | Unlimited full comparison |
+| Verified Badge | ❌ | ✅ |
+| AI Recognition Strategist | ❌ | ✅ |
+| Early Pathway Notifications | ❌ | ✅ |
+
+### Pilot Value Proposition:
+> **"Stop applying and hoping. Get verified and discovered."**
+
+- See exactly what airlines expect (not generic job posts)
+- Know your gaps before applying (gap analysis tool)
+- Build a Recognition Score that travels with you
+- Submit interest once, get pulled by multiple airlines
+- Background verification increases airline trust
+
+---
+
+## 🏢 FOR PARTNERS (Airlines, Operators, ATOs)
+
+### Partner User Journey
+
 ```
-1. Visit enterprise.pilotrecognition.com
-   ↓
-2. Enterprise Access Form
-   ↓
-3. View Pathway Publishing Interface
-   ↓
-4. Post Pathway Requirements
-   ↓
-5. Pull Verified Pilot Profiles
-   ↓
-6. Filter by Recognition Score
-   ↓
-7. View EBT Videos (if enabled)
-   ↓
-8. Contact Pilots Directly
+┌─────────────────────────────────────────────────────────────────────┐
+│                        PARTNER JOURNEY                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1️⃣ DISCOVER                                                        │
+│     Visit enterprise.pilotrecognition.com                           │
+│     ↓                                                               │
+│     See "Pull-Verified Pilots" messaging                            │
+│     ↓                                                               │
+│     Submit Enterprise Access Form                                   │
+│     ↓                                                               │
+│     Review partnership terms (Free tier vs Enterprise)                │
+│                                                                     │
+│  2️⃣ PUBLISH                                                         │
+│     [Free] Post public pathway requirements                         │
+│     ↓                                                               │
+│     [Enterprise $1K/mo] Access pull API                             │
+│     ↓                                                               │
+│     Define requirements (hours, ratings, competencies)            │
+│                                                                     │
+│  3️⃣ DISCOVER                                                        │
+│     Pull verified pilot profiles (not sift through 500 CVs)        │
+│     ↓                                                               │
+│     Filter by Recognition Score (0-100)                             │
+│     ↓                                                               │
+│     Filter by competencies, hours, verification status              │
+│     ↓                                                               │
+│     [Enterprise] View EBT Video Assessments                         │
+│     ↓                                                               │
+│     Contact pilots directly (pre-verified, scored candidates)     │
+│     ↓                                                               │
+│     $500 success fee per placement                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
 ```
+
+### What Partners Get:
+
+| Feature | Free | Enterprise ($1,000/month) |
+|---------|------|---------------------------|
+| Post Public Pathways | ✅ | ✅ |
+| View Pilot Profiles | ✅ | ✅ |
+| Basic Filtering | ✅ | ✅ |
+| Pull API Access | ❌ | ✅ Unlimited |
+| Advanced Filtering (Score, Competencies) | ❌ | ✅ |
+| EBT Video Access | ❌ | ✅ |
+| Verified Candidate Shortlists | ❌ | ✅ |
+| Recognition Score Analytics | ❌ | ✅ |
+| Priority Support | ❌ | ✅ |
+
+### Partner Value Proposition:
+> **"Stop sifting through 500 CVs. Pull pre-verified, scored candidates."**
+
+- See Recognition Scores (0-100) before contact
+- Filter by verified competencies (not self-reported)
+- Pre-cleared candidates reduce hiring risk
+- ATS-compatible ATLAS CV format
+- EBT video assessments show actual behavior
+- Pre-verified by Veremark (background checks)
+
+### Partner Types:
+
+| Partner Type | Use Case |
+|--------------|----------|
+| **Commercial Airlines** | Pull cadet-ready pilots, type-rated candidates |
+| **Cargo Operators** | Find experienced multi-crew pilots |
+| **Private Jet/Charter** | Discover high-scoring flexible pilots |
+| **Flight Schools/ATOs** | Affiliated partner program, shared content |
+| **Simulator Centers** | Type rating training partnerships |
+| **Aviation Recruitment** | Access verified pilot pool for clients |
+| **MRO/Maintenance** | Engineering track pilot placements |
 
 ---
 
