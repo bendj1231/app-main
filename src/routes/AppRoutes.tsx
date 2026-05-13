@@ -111,6 +111,15 @@ const LoadingFallback = () => (
   </div>
 );
 
+// ExternalRedirect: performs a hard browser redirect for cross-origin URLs.
+// React Router's <Navigate> treats "https://..." as a relative path, so we use window.location.href directly.
+const ExternalRedirect: React.FC<{ url: string }> = ({ url }) => {
+  useEffect(() => {
+    window.location.href = url;
+  }, [url]);
+  return <LoadingFallback />;
+};
+
 export const AppRoutes = () => {
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -331,9 +340,9 @@ export const AppRoutes = () => {
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/store" element={<StorePage />} />
 
-      {/* Framework routes - /framework/full moved to enterprise.pilotrecognition.com */}
+      {/* Framework routes - /framework/full redirects to enterprise subdomain */}
       <Route path="/framework" element={<FrameworkPage />} />
-      <Route path="/framework/full" element={<Navigate to="https://enterprise.pilotrecognition.com/framework/full" replace />} />
+      <Route path="/framework/full" element={<ExternalRedirect url="https://enterprise.pilotrecognition.com/framework/full" />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />

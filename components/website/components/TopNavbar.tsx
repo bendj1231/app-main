@@ -467,12 +467,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'For Pilots', name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry requirements', 'Operator standards', 'Expectation insights'] },
                 { category: 'For Pilots', name: 'Global Aviation Authorities', target: '/global-aviation-authorities', bullets: ['FAA database', 'CAAP compliance', 'EASA integration', 'Regulatory sync'], isYellow: true },
                 // For Industry - Enterprise Access & Services
-                { category: 'For Industry', name: 'Enterprise Access', target: '/enterprise-access/airlines', bullets: ['Pull-based recruitment', 'Verified candidates', 'Pathway publishing'] },
-                { category: 'For Industry', name: 'Aviation Discovery', target: '/enterprise-access#recruitment', bullets: ['Agency partnerships', 'Talent pipeline', 'Recognition brokers'] },
-                { category: 'For Industry', name: 'Simulator Training', target: '/enterprise-access#simulator', bullets: ['Type rating centers', 'Training partnerships', 'Facility network'] },
-                { category: 'For Industry', name: 'MRO & Maintenance', target: '/enterprise-access#maintenance', bullets: ['Engineering tracks', 'Maintenance ops', 'Technical services'] },
-                { category: 'For Industry', name: 'RPAS & Drone Ops', target: '/enterprise-access#drone', bullets: ['UAV training', 'Commercial drones', 'Remote pilot programs'] },
-                { category: 'For Industry', name: 'OEM Partnerships', target: '/enterprise-access#manufacturers', bullets: ['Manufacturer programs', 'Factory training', 'Technical pathways'] },
+                { category: 'For Industry', name: 'Enterprise Access', target: 'https://enterprise.pilotrecognition.com', bullets: ['Pull-based recruitment', 'Verified candidates', 'Pathway publishing'] },
+                { category: 'For Industry', name: 'Aviation Discovery', target: 'https://enterprise.pilotrecognition.com#recruitment', bullets: ['Agency partnerships', 'Talent pipeline', 'Recognition brokers'] },
+                { category: 'For Industry', name: 'Simulator Training', target: 'https://enterprise.pilotrecognition.com#simulator', bullets: ['Type rating centers', 'Training partnerships', 'Facility network'] },
+                { category: 'For Industry', name: 'MRO & Maintenance', target: 'https://enterprise.pilotrecognition.com#maintenance', bullets: ['Engineering tracks', 'Maintenance ops', 'Technical services'] },
+                { category: 'For Industry', name: 'RPAS & Drone Ops', target: 'https://enterprise.pilotrecognition.com#drone', bullets: ['UAV training', 'Commercial drones', 'Remote pilot programs'] },
+                { category: 'For Industry', name: 'OEM Partnerships', target: 'https://enterprise.pilotrecognition.com#manufacturers', bullets: ['Manufacturer programs', 'Factory training', 'Technical pathways'] },
             ]
         },
         {
@@ -536,7 +536,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         { name: 'Contact', target: 'contact-support' },
-        { name: 'Enterprise', target: '/enterprise-access', isBlue: true },
+        { name: 'Enterprise', target: 'https://enterprise.pilotrecognition.com', isBlue: true },
     ];
 
     // Filter out Home nav item when on home page
@@ -557,8 +557,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     };
 
     const handleNavClick = (target: string) => {
+        // External URLs: use full browser redirect
+        if (target.startsWith('http://') || target.startsWith('https://')) {
+            window.location.href = target;
+        }
         // Use page routing for Portal 2 URLs
-        if (target.startsWith('/access-portal-2')) {
+        else if (target.startsWith('/access-portal-2')) {
             window.location.href = target;
         } else {
             onNavigate(target);
