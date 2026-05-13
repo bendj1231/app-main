@@ -79,7 +79,7 @@ Current flight training is transactional: hours logged, exams passed, certificat
 | Program | Price | What They Get |
 |---------|-------|---------------|
 | **Foundation Program** | $49 | 50-hour mentorship with certification, 5 EBT modules, W1000 access, initial recognition presence + accumulated score |
-| **Transition Program** | $299 | 9 competencies assessment, ATLAS CV, interview prep, EBT scoring |
+| **Transition Program** | $299 | **🚧 WIP — Collaboration with all 25 pillars** — 9 competencies assessment, ATLAS CV, interview prep, EBT scoring — *Coming soon once all partners established* |
 | **EBT Video Scoring** | Bundled | Recorded behavioral assessment airlines can view |
 
 **For Flight School Campuses:**
@@ -90,6 +90,11 @@ Current flight training is transactional: hours logged, exams passed, certificat
 | **Campus Partnership Pricing** | Volume discounts for bulk student enrollment |
 | **Graduation Requirement** | Schools can mandate Foundation Program completion |
 | **Recognition Ceremony** | EBT assessment replaces/supplements traditional checkrides |
+
+**Program Status:**
+
+- **Foundation Program:** ✅ Live — Individual enrollment open, campus partnerships accepting
+- **Transition Program:** 🚧 WIP — Requires collaboration with all 25 Universal Commercial Framework pillars (airlines, ATOs, simulator centers, etc.) — *Coming soon once all partners established and onboard*
 
 **What Programs Add Beyond Flight Training:**
 
