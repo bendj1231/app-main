@@ -20,7 +20,7 @@
 | -------------------- | ---------------------- |
 | **Version**          | 10.0-Expanded          |
 | **Total Pages**      | 80+ Pages              |
-| **Stakeholder Hubs** | 7 Hubs, 20+ Bodies     |
+| **Stakeholder Hubs** | 7 Hubs, 25 Pillars     |
 | **Last Updated**     | May 2026               |
 | **Document Owner**   | Platform Strategy Team |
 | **Review Cycle**     | Quarterly              |
@@ -82,7 +82,16 @@
 28. Pillar 23: Government Aviation Authorities
 29. Pillar 24: International Aviation Organizations (IATA, ICAO)
 
-### Part VIII: Technical & Commercial Appendices (Pages 97-111)
+### Part VII-A: Hub G - Digital Discovery & Search Infrastructure (Pages 96-97)
+
+30. **Pillar 25: Digital Discovery & Search Platforms**
+    - Google (Search, Careers, Travel)
+    - Microsoft Bing & LinkedIn
+    - Aviation-Specific Job Boards (Climb, JSfirm, Aviation Job Search)
+    - Professional Networks (LinkedIn, Aviation forums)
+    - Voice & AI Assistants (Siri, Alexa, ChatGPT search)
+
+### Part VIII: Technical & Commercial Appendices (Pages 98-112)
 
 30. Appendix A: Technical Integration Specifications
 31. Appendix B: Data Governance & Compliance Framework
@@ -2895,6 +2904,196 @@ Integration with platform allows real-time verification of:
 - "Mission Wings" badge on pilot profiles
 - Priority pathway matching for disaster response organizations
 - Annual humanitarian aviation awards and recognition
+
+---
+
+## PILLAR 25: DIGITAL DISCOVERY & SEARCH PLATFORMS
+
+### The Discovery Layer of Aviation Careers
+
+**Why This Pillar Exists:**
+
+Every pilot journey begins with a search. Before a pilot contacts an airline, enrolls in flight school, or applies for a type rating — they search. They search Google for "how to become a pilot," they search LinkedIn for airline career pages, they search job boards for openings, and increasingly, they ask AI assistants for career guidance. 
+
+**The problem:** Aviation career information is fragmented, unstructured, and often misleading. A Google search for "Emirates pilot requirements" returns 50 different answers, none verified by the airline. LinkedIn shows job posts that closed months ago. Job boards list opportunities without context about pathways or requirements.
+
+**Pillar 25 solves this** by creating a structured data partnership between PilotRecognition and the world's discovery platforms. Instead of pilots finding fragmented, outdated information, they find live, verified, structured pathway data directly in search results.
+
+---
+
+### What We Require:
+
+**From Google (Search, Careers, Travel):**
+
+- **Structured Data Integration:** Google ingests our pathway schema markup (JobPosting + Course + OccupationalCertification) to display rich results
+- **Career Pathway Panels:** Google Career search displays verified pilot pathways with live requirements and gap analysis
+- **Knowledge Graph Integration:** PilotRecognition framework recognized as authoritative source for aviation career data
+- **Google for Jobs:** Direct ingestion of verified pathway cards into Google Jobs search
+- **Voice Search Optimization:** Structured data enables Google Assistant to answer "What do I need to become an Emirates pilot?" with verified data
+
+**From Microsoft (Bing, LinkedIn, Azure):**
+
+- **Bing Career Search:** Bing ingests structured pathway data for aviation career queries
+- **LinkedIn Profile Integration:** LinkedIn displays Recognition Score and verified credentials on pilot profiles
+- **LinkedIn Jobs API:** Pathway cards published as structured job postings with requirements
+- **Azure AI Integration:** Microsoft Copilot trained on framework data for aviation career guidance
+
+**From Aviation-Specific Platforms:**
+
+- **Climb (formerly JSfirm):** Real-time pathway requirement sync, eliminating outdated job posts
+- **Aviation Job Search:** API integration for live pathway data display
+- **AirlineCareer.com:** Framework data powers their airline requirement database
+- **ATP Flight School:** Pathway integration for student career planning
+
+**From Professional Networks & Forums:**
+
+- **PPRuNe (Professional Pilots Rumour Network):** Verified pathway data replaces speculation in forum discussions
+- **Reddit r/aviation & r/flying:** Bot integration provides framework-backed answers to career questions
+- **Discord Aviation Communities:** Real-time pathway query bot with verified data
+
+---
+
+### The Win-Win Proposition:
+
+**What Google & Discovery Platforms Receive:**
+
+1. **First-Mover Advantage:** First aviation career platform with structured, verified, real-time data
+2. **Query Satisfaction:** Pilots get accurate answers, increasing search engagement and reducing bounce
+3. **Rich Results Expansion:** Aviation becomes a vertical for Google's career search features
+4. **Misinformation Reduction:** Verified data combats pilot forum myths and outdated information
+5. **Traffic Quality:** Pilots who find verified pathways are higher-intent users
+6. **AI Training Data:** Structured framework data improves AI assistant responses for aviation careers
+
+**What PilotRecognition Receives:**
+
+1. **Search Visibility:** Pathway cards appear directly in Google search results (position zero)
+2. **Organic Discovery:** Pilots find us without paid advertising via structured data display
+3. **Authority Signal:** Google's recognition of framework data as authoritative
+4. **LinkedIn Integration:** Professional profiles link directly to verified credentials
+5. **Voice Search Ready:** "Hey Google, what's the pathway to become a cargo pilot?" returns our data
+6. **Reduced CAC:** Discovery through search engines vs. paid acquisition
+
+---
+
+### Technical Integration Specifications:
+
+**Schema.org Markup:**
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "title": "First Officer - Boeing 737",
+  "description": "Commercial airline pilot position with full pathway requirements",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "Emirates Airlines",
+    "sameAs": "https://pilotrecognition.com/airlines/emirates"
+  },
+  "qualifications": {
+    "@type": "OccupationalExperienceRequirements",
+    "monthsOfExperience": 36,
+    "description": "3000+ total hours, 1500+ PIC, Boeing type rating preferred"
+  },
+  "recognitionScoreRequired": 750,
+  "educationRequirements": "CPL with multi-engine and instrument ratings",
+  "estimatedSalary": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "value": "8500",
+    "unitText": "MONTH"
+  },
+  "datePosted": "2026-05-13",
+  "validThrough": "2026-08-13",
+  "employmentType": "FULL_TIME",
+  "pathwayUrl": "https://pathways.pilotrecognition.com/emirates/first-officer-737"
+}
+```
+
+**API Endpoints for Partners:**
+
+- `GET /api/v1/pathways/search?q={query}` - Real-time pathway search
+- `GET /api/v1/airlines/{id}/requirements` - Live requirement data
+- `GET /api/v1/pilots/{id}/recognition-score` - Verification status
+- `POST /api/v1/webhooks/pathway-updates` - Real-time change notifications
+
+**Data Refresh Rate:**
+
+- Pathway requirements: Real-time (webhook push)
+- Airline hiring status: Daily sync
+- Recognition Score ranges: Weekly update
+- Pilot verification status: Real-time
+
+---
+
+### Commercial Framework:
+
+**No Direct Revenue Exchange:**
+
+Unlike other pillars, Pillar 25 operates on **value exchange**, not payment:
+
+- **Google/Bing/LinkedIn:** Free data feed in exchange for search visibility
+- **Aviation Job Boards:** API access in exchange for backlink attribution
+- **Professional Networks:** Data syndication in exchange for profile integration
+
+**Revenue Indirectly Generated:**
+
+- **Organic Traffic:** Reduced customer acquisition cost for pilot signups
+- **Authority Boost:** Search engine recognition increases domain authority
+- **Lead Quality:** Users from structured results are higher-intent
+
+---
+
+### Implementation Timeline:
+
+**Phase 1 (Month 1-2): Schema Implementation**
+- [ ] Deploy schema.org markup on all pathway pages
+- [ ] Validate structured data via Google Rich Results Test
+- [ ] Submit sitemaps to Google Search Console
+
+**Phase 2 (Month 2-3): Google Partnership**
+- [ ] Apply for Google Career search integration
+- [ ] Test rich results display for pathway queries
+- [ ] Optimize for position zero (featured snippets)
+
+**Phase 3 (Month 3-4): LinkedIn Integration**
+- [ ] LinkedIn profile integration development
+- [ ] Recognition Score display on pilot profiles
+- [ ] LinkedIn Jobs API pathway publishing
+
+**Phase 4 (Month 4-6): Voice & AI**
+- [ ] Optimize for Google Assistant voice queries
+- [ ] Microsoft Copilot integration testing
+- [ ] ChatGPT plugin for pathway queries
+
+---
+
+### Success Metrics:
+
+**Platform Success:**
+- Aviation career queries with rich results: Target 50%+ of pathway-related searches
+- Average search result position: Target position 1-3 for "pilot pathways"
+- Click-through rate from search: Target 15%+ (vs. 3% industry average)
+
+**Pilot Discovery:**
+- Organic search traffic to pathways: Target 40% of total pathway views
+- Voice search queries answered: Track "how to become a pilot" voice results
+- Zero-click searches with knowledge panels: Monitor framework data display
+
+**Integration Partners:**
+- Google Career search inclusion: 100% of major airline pathways
+- LinkedIn profile integration: 100% of verified pilots
+- Bing aviation search results: Position 1-3 for target queries
+
+---
+
+### The Long-Term Vision:
+
+**"Ask Google, Get PilotRecognition"**
+
+Every aviation career question — from a 16-year-old dreaming of becoming a pilot to a 5,000-hour captain considering a career change — is answered with verified, structured, real-time data from our framework. Google, Bing, LinkedIn, and AI assistants become the **discovery layer** for the Universal Commercial Framework, driving millions of pilots to verified pathways instead of fragmented, outdated job posts.
+
+**Google becomes Pillar 25 not as a payer, but as a amplifier** — multiplying the reach of every other pillar's data by making it discoverable to every pilot with a question.
 
 ---
 
