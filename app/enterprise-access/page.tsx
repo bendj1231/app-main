@@ -746,9 +746,9 @@ const EnterpriseAccessPage = () => {
 
                     {/* Mobile nav */}
                     {mobileNav && (
-                        <div className="lg:hidden border-t border-slate-200 py-4 max-h-[80vh] overflow-y-auto bg-white">
+                        <div className="lg:hidden border-t border-slate-200 py-4 max-h-[80vh] overflow-y-auto bg-white pb-6">
                             {NAV_GROUPS.map(group => (
-                                <div key={group.label} className="mb-4">
+                                <div key={group.label} className="mb-3">
                                     <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-2 mb-1.5">{group.label}</p>
                                     {group.items.map(item => {
                                         const isActive = activeSection === item.id;
@@ -786,6 +786,9 @@ const EnterpriseAccessPage = () => {
                                     })}
                                 </div>
                             ))}
+                            <div className="mt-4 px-2">
+                                <button onClick={() => { setMobileNav(false); scrollTo('contact'); }} className="w-full bg-red-600 hover:bg-red-500 text-white text-sm font-semibold px-4 py-3 rounded-lg transition-colors">Request Access →</button>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -794,11 +797,11 @@ const EnterpriseAccessPage = () => {
             {/* ─── HERO ─── */}
             <section id="home" className="relative bg-white overflow-hidden border-b border-slate-200">
                 {/* Split layout */}
-                <div className="flex min-h-[540px]">
+                <div className="flex min-h-[400px] sm:min-h-[540px]">
 
                     {/* LEFT — text flush to screen edge */}
-                    <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center pl-6 md:pl-12 lg:pl-16 pr-8 py-20">
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.0] mb-6 text-slate-900">
+                    <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center px-4 sm:pl-8 md:pl-12 lg:pl-16 sm:pr-8 py-10 sm:py-16 lg:py-20">
+                        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-4 sm:mb-6 text-slate-900">
                             Connecting Pilots<br />
                             <span className="text-red-600">to the Industry.</span>
                         </h1>
@@ -826,7 +829,7 @@ const EnterpriseAccessPage = () => {
                         { label: 'Airline Pathway Cards', sub: 'Requirements, not job ads' },
                         { label: 'Recognition Score', sub: 'Ranked readiness currency' },
                     ].map((f, i) => (
-                        <div key={f.label} className={`pl-6 md:pl-12 lg:pl-16 pr-6 py-5 border-slate-200 ${i < 3 ? 'border-r' : ''}`}>
+                        <div key={f.label} className={`px-3 sm:pl-6 md:pl-12 lg:pl-16 sm:pr-6 py-4 sm:py-5 border-slate-200 ${i < 3 ? 'border-r' : ''}`}>
                             <div className="w-1.5 h-1.5 bg-red-500 rounded-full mb-3" />
                             <p className="text-sm font-semibold text-slate-800 mb-1">{f.label}</p>
                             <p className="text-xs text-slate-400">{f.sub}</p>
@@ -836,7 +839,7 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── UCF BANNER ─── */}
-            <section id="framework" className="relative py-24 px-6 bg-slate-950 overflow-hidden">
+            <section id="framework" className="relative py-12 sm:py-24 px-4 sm:px-6 bg-slate-950 overflow-hidden">
                 {/* Giant background text */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
                     <span className="text-[22vw] font-black text-white/[0.03] leading-none tracking-tighter whitespace-nowrap">UCF</span>
@@ -851,17 +854,17 @@ const EnterpriseAccessPage = () => {
                         <div className="h-px w-12 bg-red-600/50" />
                     </div>
 
-                    <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-none tracking-tight">
+                    <h2 className="text-3xl sm:text-5xl md:text-7xl font-black text-white mb-4 sm:mb-6 leading-none tracking-tight">
                         Universal<br />
                         <span className="text-red-500">Commercial</span><br />
                         Framework
                     </h2>
 
-                    <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-4 leading-relaxed">
+                    <p className="text-slate-400 text-sm sm:text-lg max-w-2xl mx-auto mb-4 leading-relaxed">
                         The master blueprint for the aviation industry operating system. Requirements, contributions, and commercial value analysis for every stakeholder.
                     </p>
 
-                    <div className="flex items-center justify-center gap-6 text-xs text-slate-500 mb-12">
+                    <div className="flex items-center justify-center flex-wrap gap-3 sm:gap-6 text-xs text-slate-500 mb-8 sm:mb-12">
                         <span>25 Pillars</span>
                         <span className="w-1 h-1 bg-slate-600 rounded-full" />
                         <span>7 Hubs</span>
@@ -883,11 +886,11 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── 25 PILLARS ─── */}
-            <section id="pillars" className="py-20 px-6 bg-slate-50 border-b border-slate-200">
+            <section id="pillars" className="py-10 sm:py-20 px-4 sm:px-6 bg-slate-50 border-b border-slate-200">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-12">
                         <span className="text-xs uppercase tracking-widest text-red-600 font-semibold">25 Strategic Pillars · 7 Stakeholder Sectors</span>
-                        <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-3">Every Aviation Stakeholder. One Platform.</h2>
+                        <h2 className="text-2xl sm:text-4xl font-bold text-slate-900 mt-2 mb-3">Every Aviation Stakeholder. One Platform.</h2>
                         <p className="text-slate-500 max-w-2xl">Grouped by stakeholder sector — click any pillar to explore its requirements, contributions, and commercial value.</p>
                     </div>
 
@@ -980,11 +983,11 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── WHO WE SERVE / SOLUTIONS GRID ─── */}
-            <section id="solutions" className="py-20 px-6 border-b border-slate-200 bg-slate-50">
+            <section id="solutions" className="py-10 sm:py-20 px-4 sm:px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Solutions for Every Aviation Sector</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Connecting Aviation Ecosystems.</h2>
-                    <p className="text-slate-600 text-lg max-w-2xl mb-12">From commercial airlines to cargo operators, flight schools to finance, insurance to emerging air mobility — we connect qualified pilots with every corner of the aviation industry. Expanding to new sectors continuously.</p>
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-900">Connecting Aviation Ecosystems.</h2>
+                    <p className="text-slate-600 text-sm sm:text-lg max-w-2xl mb-8 sm:mb-12">From commercial airlines to cargo operators, flight schools to finance, insurance to emerging air mobility — we connect qualified pilots with every corner of the aviation industry. Expanding to new sectors continuously.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {SECTORS.map(s => (
@@ -1005,13 +1008,13 @@ const EnterpriseAccessPage = () => {
 
             {/* ─── SECTOR DEEP-DIVES (one section per sector) ─── */}
             {SECTORS.map((s, idx) => (
-                <section key={s.id} id={s.id} className={`py-20 px-6 border-b border-slate-200 ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+                <section key={s.id} id={s.id} className={`py-10 sm:py-20 px-4 sm:px-6 border-b border-slate-200 ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
                     <div className="max-w-6xl mx-auto">
                         <div className="grid lg:grid-cols-12 gap-10">
                             {/* Left: intro */}
                             <div className="lg:col-span-5">
                                 <p className={`text-[11px] uppercase tracking-[0.25em] font-semibold mb-3 ${COLOR_CLASSES[s.color]?.eyebrow ?? 'text-red-600'}`}>{s.label}</p>
-                                <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-5 text-slate-900" dangerouslySetInnerHTML={{ __html: s.tagline }} />
+                                <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 sm:mb-5 text-slate-900" dangerouslySetInnerHTML={{ __html: s.tagline }} />
                                 {s.id === 'airlines' && (
                                     <div className="mb-5">
                                         <img 
@@ -1084,11 +1087,11 @@ const EnterpriseAccessPage = () => {
             ))}
 
             {/* ─── PARTNERSHIP TIERS ─── */}
-            <section id="partners" className="py-20 px-6 border-b border-slate-200 bg-white">
+            <section id="partners" className="py-10 sm:py-20 px-4 sm:px-6 border-b border-slate-200 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Partnership Tiers</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Three ways to partner.</h2>
-                    <p className="text-slate-600 text-lg max-w-2xl mb-12">Whether you want to plug in, pull pilots, or co-brand a pathway — pick the engagement that fits your business.</p>
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-900">Three ways to partner.</h2>
+                    <p className="text-slate-600 text-sm sm:text-lg max-w-2xl mb-8 sm:mb-12">Whether you want to plug in, pull pilots, or co-brand a pathway — pick the engagement that fits your business.</p>
 
                     <div className="grid md:grid-cols-3 gap-5">
                         {[
@@ -1134,11 +1137,11 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── PRICING ─── */}
-            <section id="pricing" className="py-20 px-6 border-b border-slate-200 bg-slate-50">
+            <section id="pricing" className="py-10 sm:py-20 px-4 sm:px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Enterprise Pricing</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Simple. Outcome-aligned.</h2>
-                    <p className="text-slate-600 text-lg max-w-2xl mb-12">Pay when it works. We track every placement obsessively — you should only pay when a pilot is hired through a pathway you posted.</p>
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-900">Simple. Outcome-aligned.</h2>
+                    <p className="text-slate-600 text-sm sm:text-lg max-w-2xl mb-8 sm:mb-12">Pay when it works. We track every placement obsessively — you should only pay when a pilot is hired through a pathway you posted.</p>
 
                     <div className="grid md:grid-cols-3 gap-5">
                         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
@@ -1183,11 +1186,11 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── WHY / METRIC ─── */}
-            <section id="why" className="py-20 px-6 border-b border-slate-200 bg-white">
+            <section id="why" className="py-10 sm:py-20 px-4 sm:px-6 border-b border-slate-200 bg-white">
                 <div className="max-w-5xl mx-auto">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Why PilotRecognition</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900">A PDF is a dead CV.</h2>
-                    <p className="text-slate-600 text-lg leading-relaxed mb-10 max-w-3xl">
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-slate-900">A PDF is a dead CV.</h2>
+                    <p className="text-slate-600 text-sm sm:text-lg leading-relaxed mb-6 sm:mb-10 max-w-3xl">
                         The aviation industry runs on stale paperwork. A PDF CV doesn't tell you whether the pilot has flown in the last 6 months. A logbook scan doesn't verify type rating currency. A self-declared medical doesn't catch a 30-day expiry. We rebuilt this from scratch: every pilot profile is live, scored, and verifiable in real time.
                     </p>
                     <div className="grid md:grid-cols-3 gap-5">
@@ -1207,10 +1210,10 @@ const EnterpriseAccessPage = () => {
                 </div>
             </section>
 
-            <section id="metric" className="py-16 px-6 border-b border-slate-200 bg-gradient-to-b from-slate-100 to-slate-50">
+            <section id="metric" className="py-10 sm:py-16 px-4 sm:px-6 border-b border-slate-200 bg-gradient-to-b from-slate-100 to-slate-50">
                 <div className="max-w-4xl mx-auto text-center">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">The One Metric We Track</p>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-5 leading-tight text-slate-900">
+                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-5 leading-tight text-slate-900">
                         Pilots connected to pathways within <span className="text-red-600">90 days</span>.
                     </h2>
                     <p className="text-slate-600 text-lg max-w-2xl mx-auto">Not job placements. Not hires. Just pilots discovering the right information, at the right time, with the right recognition status. That's the outcome we obsess over.</p>
@@ -1218,13 +1221,13 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── CONTACT FORM ─── */}
-            <section id="contact" className="py-20 px-6 bg-slate-100">
+            <section id="contact" className="py-10 sm:py-20 px-4 sm:px-6 bg-slate-100">
                 <div className="max-w-3xl mx-auto">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Request Access</p>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">Tell us about your business.</h2>
-                    <p className="text-slate-600 text-lg mb-10">We'll route your inquiry to the right team. Most partners hear back within 1–2 business days.</p>
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-900">Tell us about your business.</h2>
+                    <p className="text-slate-600 text-sm sm:text-lg mb-6 sm:mb-10">We'll route your inquiry to the right team. Most partners hear back within 1–2 business days.</p>
 
-                    <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-2xl p-8 space-y-5 shadow-sm">
+                    <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-8 space-y-5 shadow-sm">
                         {/* Sector */}
                         <div>
                             <label className="block text-sm font-semibold text-slate-900 mb-2">I represent a... *</label>
@@ -1331,7 +1334,7 @@ const EnterpriseAccessPage = () => {
             </section>
 
             {/* ─── FOOTER ─── */}
-            <footer className="bg-white border-t border-slate-200 py-10 px-6">
+            <footer className="bg-white border-t border-slate-200 py-8 px-4 sm:px-6">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
                     <div className="flex items-center gap-3">
                         <span className="font-bold"><span className="text-slate-900">Pilot</span><span className="text-red-600">Recognition</span></span>
