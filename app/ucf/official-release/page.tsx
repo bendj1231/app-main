@@ -1877,41 +1877,58 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>By being Market Neutral, the platform is structurally un-killable.</strong> If one regional node experiences a technical outage or a regulatory issue in a specific country, the remaining three nodes and the rest of the 25-pillar ecosystem continue operating without interruption. The platform has built a <strong style={{color:'#f87171'}}>decentralised trust network</strong> — resilient, regionally sovereign, and commercially fair to every participant in it.</p>
           </div>
 
-          <h5 className="text-base font-bold text-slate-800 mt-8 mb-2">The Smart Routing Engine — Jurisdiction-First, Conflict-Free</h5>
-          <p className="text-slate-700 text-sm leading-relaxed mb-4">When a pilot enrolls in Recognition+, they are not selecting a verification company. They are purchasing a <strong>Verified Status</strong>. The platform acts as the Traffic Controller — automatically routing each check and its associated fee to the regional node best equipped to handle that specific pilot's data, based on jurisdiction, not manual preference. There is no human selection. There is no conflict.</p>
+          <h5 className="text-base font-bold text-slate-800 mt-8 mb-2">The Smart Routing Engine — Weighted Routing by Licensing Authority</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">When a pilot enrols in Recognition+, they are not selecting a verification company. They are purchasing a <strong>Verified Status</strong>. The platform acts as the Traffic Controller — routing each check and its associated fee automatically using a <strong>Weighted Routing Model</strong> that reads two data points at signup: the pilot's highest-tier active licence authority, and their 5-year residency and employment history trail. There is no human selection. There is no conflict. <strong>The pilot's own career history makes the routing decision.</strong></p>
 
           <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
-            <p className="font-semibold text-slate-800 mb-3">Routing Logic — How a Pilot's Check is Assigned</p>
-            <ul className="space-y-2 list-disc ml-4">
-              <li><strong>Primary Node assignment</strong> — the platform reads the pilot's primary licence authority and residency history. The Lead Node is automatically assigned to the regional partner whose jurisdiction issued that licence. No manual override. No preference.</li>
-              <li><strong>Sub-task triggers</strong> — if the pilot has employment history, a secondary licence, or right-to-work requirements in another region, the platform automatically triggers a sub-task routed to the relevant secondary node. Both nodes process their specific scope in parallel.</li>
-              <li><strong>Revenue split — the Verification Bounty</strong> — the Recognition+ subscription fee contains a built-in Verification Bounty. <strong style={{color:'#dc2626'}}>70%</strong> is credited to the Lead Node handling identity and primary licence verification. <strong style={{color:'#dc2626'}}>30%</strong> is held in a <strong>Global Verification Pool</strong> — used to pay cross-border sub-check fees to secondary nodes as triggered. Partners receive payment automatically from the pool upon task completion. No invoicing. No negotiation.</li>
+            <p className="font-semibold text-slate-800 mb-3">Tier 1 — Primary Routing: The Licensing Authority (Lead Node)</p>
+            <p className="mb-3">The platform identifies the pilot's highest-tier active licence — FAA, EASA, CAAP, GCAA, etc. The issuing authority is the <strong style={{color:'#dc2626'}}>Anchor Key</strong>. The Lead Node is automatically assigned to the regional partner with direct API access to that authority. The licence is the pilot's primary professional identity — it is the most critical safety credential in the wallet, and it determines who takes the lead.</p>
+            <ul className="space-y-1 list-disc ml-4 mb-0">
+              <li>EASA or UK CAA licence → <strong>European Node (Node A)</strong> assigned as Lead. Handles identity verification and primary authority lookup. Target turnaround: <strong style={{color:'#dc2626'}}>4–24 hours</strong> via direct CAA API.</li>
+              <li>FAA licence → <strong>USA Node (Node B)</strong> assigned as Lead. FAA database lookup, FBI check eligibility, NTSB record access.</li>
+              <li>CAAP, CAAS, or CASA licence → <strong>Asia-Pacific Node (Node C)</strong> as Lead. NBI, CAAP, and regional authority depth.</li>
+              <li>GCAA, PACA, or SACAA licence → <strong>Africa/Middle East Node (Node D)</strong> as Lead. Gulf operator vetting and African authority coordination.</li>
             </ul>
           </div>
 
-          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Pricing Framework — Recognition+ Verification Economics</h5>
-          <p className="text-slate-700 text-sm leading-relaxed mb-3">The pilot pays a flat annual fee. The platform absorbs the complexity of multi-regional routing, multi-partner payment, and variable sub-check costs within its subscription margin. Cost is predictable for the pilot. Revenue is predictable for the partner.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-3">Tier 2 — Secondary Routing: The History Trail (Support Nodes)</p>
+            <p className="mb-3">Aviation background checks require a 5-year residency and employment history. If that history spans multiple regions, the platform automatically triggers <strong>Sub-Tasks</strong> — parallel verifications routed to the relevant regional node for each jurisdiction in the pilot's trail. The Lead Node is never asked to verify records outside its authority relationships. Each node receives only the scope it is built for.</p>
+            <div className="bg-white border border-slate-200 rounded px-4 py-3 mb-3">
+              <p className="font-semibold text-slate-700 mb-1">Example scenario</p>
+              <p className="text-slate-600">Pilot holds a UK CAA licence (Lead Node: European Node A). Has lived and worked in Manila for the last 3 years at Cebu Pacific.</p>
+              <p className="text-slate-600 mt-1"><strong>Workflow:</strong> European Node handles UK CAA licence validation and identity. Platform automatically triggers a sub-task to Asia-Pacific Node for NBI clearance and Cebu Pacific employment verification. Both nodes run in parallel. The Asia-Pacific Node receives a flat <strong>Sub-Task Fee</strong> from the Global Verification Pool — paid automatically upon completion.</p>
+            </div>
+            <ul className="space-y-1 list-disc ml-4">
+              <li>Sub-tasks are triggered per country/employer outside the Lead Node's region</li>
+              <li>Sub-Task Fee is flat and pre-agreed per jurisdiction — no negotiation per pilot</li>
+              <li>All sub-task results feed into the same credential wallet alongside the Lead Node's output</li>
+              <li>The pilot sees a single unified wallet. The routing complexity is entirely invisible to them</li>
+            </ul>
+          </div>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">The Verification Bounty — Pricing Architecture</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">The pilot pays a flat annual Recognition+ fee. The platform treats this as a <strong>Wholesale Clearinghouse</strong> — absorbing the complexity of multi-regional routing, parallel sub-task payment, and variable jurisdiction costs within its subscription margin. Cost is predictable for the pilot. Revenue allocation is automatic for every partner involved.</p>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-900 text-white">
-                  <th className="text-left px-4 py-2 font-semibold">Component</th>
-                  <th className="text-left px-4 py-2 font-semibold">Pilot Pays</th>
-                  <th className="text-left px-4 py-2 font-semibold">Partner Receives (Wholesale)</th>
+                  <th className="text-left px-4 py-2 font-semibold">Bounty Component</th>
                   <th className="text-left px-4 py-2 font-semibold">Logic</th>
+                  <th className="text-left px-4 py-2 font-semibold">Who Gets Paid</th>
                 </tr>
               </thead>
               <tbody>
                 {([
-                  { component: 'Base Recognition+', pilot: '$199/year', partner: '$35–$50', logic: 'Covers Standard Layer 1 check — identity, primary licence, medical status. Routed to Lead Node automatically.' },
-                  { component: 'Regional Multiplier', pilot: 'Included in subscription', partner: 'Varies — paid from Global Verification Pool', logic: 'If a pilot requires checks across 3+ regions, the platform absorbs the additional sub-task costs from the subscription margin. No upsell to the pilot.' },
-                  { component: 'Operator Deep Check (Layer 2)', pilot: 'N/A — operator-paid', partner: '$10/check (wholesale)', logic: 'Operator pays $12/check. $10 goes to the processing node. $2 is the platform\'s API convenience fee for orchestrating the handoff.' },
-                ] as { component: string; pilot: string; partner: string; logic: string }[]).map((row, i) => (
+                  { component: 'Lead Node Credit', logic: 'Initial identity verification + primary licence authority lookup. The most critical credential in the wallet — highest wholesale allocation from the Bounty.', who: 'The regional partner tied to the pilot\'s highest-tier licence issuing authority. Assigned automatically by the routing engine.' },
+                  { component: 'History Sub-Tasks', logic: 'Per-country, per-employer checks for any residency or employment outside the Lead Node\'s region. Flat pre-agreed Sub-Task Fee per jurisdiction, paid from Global Verification Pool on task completion.', who: 'The regional partner(s) tied to the pilot\'s residency history — one sub-task payment per triggered node, per jurisdiction.' },
+                  { component: 'Continuous Monitoring', logic: 'Monthly licence status pulse check against the issuing authority\'s live database. Flags suspension, lapse, or revocation events in near real-time.', who: 'Shared between the platform (infrastructure) and the Lead Node (authority API relationship). Split pre-agreed at partner onboarding.' },
+                  { component: 'Operator Deep Check (Layer 2)', logic: 'Operator-initiated. Scope-configurable per role. Pilot must consent. $2 platform API convenience fee retained per check.', who: 'The regional node best positioned for the check type requested. $10 wholesale per check, operator pays $12.' },
+                ] as { component: string; logic: string; who: string }[]).map((row, i) => (
                   <tr key={row.component} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
-                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.component}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold whitespace-nowrap">{row.pilot}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 whitespace-nowrap">{row.partner}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.logic}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-red-400 whitespace-nowrap">{row.component}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.logic}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.who}</td>
                   </tr>
                 ))}
               </tbody>
