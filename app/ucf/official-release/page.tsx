@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../../../src/lib/supabase';
 
 const navSections = [
   { id: 'document-information', label: 'Document Information' },
@@ -20,6 +21,21 @@ const navSections = [
   { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
 ];
 
+function useIsInternalUser() {
+  const [isInternal, setIsInternal] = useState(false);
+  useEffect(() => {
+    supabase.from('profiles').select('role').eq('id', (supabase.auth as any)._currentUser?.id ?? '').maybeSingle().then(() => {});
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) return;
+      supabase.from('profiles').select('role').eq('id', data.session.user.id).maybeSingle().then(({ data: profile }) => {
+        const role = profile?.role ?? '';
+        setIsInternal(role === 'super_admin' || role === 'mentor_manager');
+      });
+    });
+  }, []);
+  return isInternal;
+}
+
 function scrollTo(id: string) {
   const el = document.getElementById(id);
   if (el) {
@@ -31,6 +47,7 @@ function scrollTo(id: string) {
 
 export default function UCFOfficialReleasePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isInternal = useIsInternalUser();
 
   return (
     <div className="min-h-screen bg-white">
@@ -2373,7 +2390,7 @@ export default function UCFOfficialReleasePage() {
 
           <p className="text-sm text-slate-700 mb-6">Pre-cleared pilots receive a <strong>"Verification Preferred" badge</strong> — visible on pathway cards and prioritised in candidate lists. Airlines receive a shortlist of pre-verified, pre-cleared professionals. Zero surprise rejections at the final offer stage.</p>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Veremark Partnership — Live Pricing Integration</h4>
+          {isInternal && (<><h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Veremark Partnership — Live Pricing Integration <span className="ml-2 text-xs font-normal bg-red-100 text-red-700 px-2 py-0.5 rounded uppercase tracking-wide">Internal — Admin Only</span></h4>
           <p className="text-slate-700 text-sm leading-relaxed mb-3">PilotRecognition operates as a <strong>Veremark partner</strong>, accessing their global background check infrastructure at a negotiated <strong>15% discount below RRP</strong> across all jurisdictions. This pricing forms the cost basis for both verification layers — enabling the platform to bundle checks into the pilot journey at a margin while remaining competitively priced versus any direct-to-pilot alternative.</p>
           <p className="text-slate-700 text-sm leading-relaxed mb-4">The four primary markets for pilot verification are the <strong>Philippines</strong> (launch market), <strong>UAE</strong> (Gulf hub), <strong>Singapore</strong> (APAC expansion), and <strong>United Kingdom</strong> (EASA/CAA-adjacent). The tables below show the <strong>Airside Professional Bundle</strong> — the standardised check set applied to every pilot at Layer 1 profile verification — with partner pricing per market.</p>
 
@@ -2499,6 +2516,8 @@ export default function UCFOfficialReleasePage() {
             </div>
             <p className="text-slate-700 text-sm leading-relaxed"><strong>The platform profits from every currency zone.</strong> A PHP pilot in Manila, an AED pilot in Dubai, an SGD pilot in Singapore, and a GBP pilot in London all pay their regional rate — and in every case, the platform earns a margin on the Veremark cost basis. <strong>Geographic expansion is not a cost problem. It is a revenue multiplication event.</strong> Every new market Veremark covers is a new margin stream the platform inherits automatically — without renegotiating the partnership or rebuilding the infrastructure.</p>
           </div>
+
+          </>)}
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Airlines — Integrated Verification Infrastructure</h4>
 
