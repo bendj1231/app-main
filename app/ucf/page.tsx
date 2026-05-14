@@ -52,22 +52,23 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
-      className="relative flex items-stretch overflow-hidden cursor-pointer"
-      style={{ minHeight: '280px' }}
+      className="relative flex flex-col sm:flex-row items-stretch overflow-hidden cursor-pointer"
+      style={{ minHeight: undefined }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Left: Dark navy panel */}
       <div
-        className="relative z-10 w-48 flex-shrink-0 flex flex-col items-center justify-center gap-3"
+        className="relative z-10 w-full sm:w-40 lg:w-48 flex-shrink-0 flex flex-row sm:flex-col items-center justify-center gap-2 sm:gap-3 py-4 sm:py-0 px-4 sm:px-0"
         style={{
           background: HUB_COLORS[pillar.hub],
+          minHeight: '64px',
         }}
       >
         <span
           className="font-black"
           style={{
-            fontSize: '4.5rem',
+            fontSize: '2.5rem',
             lineHeight: 1,
             color: hovered ? '#ef4444' : '#ffffff',
             transition: 'color 0.4s ease-in-out',
@@ -78,13 +79,13 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
 
       {/* Center: Content */}
       <div
-        className="relative z-10 flex-1 px-12 py-10 flex flex-col justify-center"
+        className="relative z-10 flex-1 px-5 sm:px-8 lg:px-12 py-5 sm:py-8 lg:py-10 flex flex-col justify-center"
         style={{ 
           backgroundColor: hovered ? '#0f172a' : '#ffffff', 
           transition: 'all 0.4s ease-in-out',
         }}
       >
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-3 mb-3">
           <span
             className="text-xs font-bold px-3 py-1.5 rounded-full text-white shadow"
             style={{ background: HUB_COLORS[pillar.hub] }}
@@ -93,7 +94,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
           </span>
         </div>
         <h3
-          className="font-bold text-3xl mb-3 tracking-tight"
+          className="font-bold text-xl sm:text-2xl lg:text-3xl mb-2 sm:mb-3 tracking-tight"
           style={{ color: hovered ? '#ef4444' : '#0f172a', transition: 'color 0.4s ease-in-out' }}
         >{pillar.name}</h3>
         <div className="flex items-start gap-3">
@@ -109,7 +110,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
       </div>
 
       {/* Right: Image */}
-      <div className="relative w-96 flex-shrink-0 overflow-hidden">
+      <div className="relative w-full sm:w-80 lg:w-96 flex-shrink-0 overflow-hidden" style={{ minHeight: '160px' }}>
         <img
           src={pillar.img}
           alt={pillar.name}
@@ -133,30 +134,30 @@ export default function UCFPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-slate-900">Pilot</span>
-            <span className="text-xl font-bold text-red-600">Recognition</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+          <Link to="/" className="flex items-center gap-1.5 flex-shrink-0">
+            <span className="text-lg sm:text-xl font-bold text-slate-900">Pilot</span>
+            <span className="text-lg sm:text-xl font-bold text-red-600">Recognition</span>
           </Link>
-          <nav className="flex items-center gap-6">
-            <Link to="/framework" className="text-sm text-slate-600 hover:text-slate-900">Framework</Link>
-            <Link to="/framework/full" className="text-sm text-slate-600 hover:text-slate-900">Full Version</Link>
+          <nav className="flex items-center gap-3 sm:gap-6">
+            <Link to="/framework" className="text-xs sm:text-sm text-slate-600 hover:text-slate-900">Framework</Link>
+            <Link to="/framework/full" className="text-xs sm:text-sm text-slate-600 hover:text-slate-900">Full Version</Link>
           </nav>
         </div>
       </header>
 
-      <section className="py-20 text-center" style={{ backgroundColor: '#0f172a' }}>
-        <div className="max-w-7xl mx-auto px-6">
-          <span className="inline-block px-3 py-1 bg-red-600 text-white text-sm font-medium rounded-full mb-4">
+      <section className="py-12 sm:py-20 text-center" style={{ backgroundColor: '#0f172a' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <span className="inline-block px-3 py-1 bg-red-600 text-white text-xs sm:text-sm font-medium rounded-full mb-4">
             Version 10.0-Expanded
           </span>
-          <h1 className="text-5xl font-bold mb-6" style={{ color: '#ffffff' }}>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6" style={{ color: '#ffffff' }}>
             Universal Commercial <span style={{ color: '#ef4444' }}>Framework</span>
           </h1>
-          <p className="text-xl max-w-3xl mx-auto" style={{ color: '#cbd5e1' }}>
+          <p className="text-base sm:text-xl max-w-3xl mx-auto" style={{ color: '#cbd5e1' }}>
             The Master Blueprint for the Aviation Industry Operating System
           </p>
-          <div className="flex items-center justify-center gap-8 text-sm mt-8" style={{ color: '#94a3b8' }}>
+          <div className="flex items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm mt-6 sm:mt-8 flex-wrap" style={{ color: '#94a3b8' }}>
             <span>7 Stakeholder Hubs</span>
             <span>25 Strategic Pillars</span>
             <span>90+ Pages</span>
@@ -165,8 +166,8 @@ export default function UCFPage() {
       </section>
 
       {/* Section 2: What Is The UCF */}
-      <section className="py-16 max-w-4xl mx-auto px-6 text-center">
-        <h2 className="text-3xl font-bold text-slate-900 mb-2">What Is The UCF?</h2>
+      <section className="py-10 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">What Is The UCF?</h2>
         <p className="text-sm text-red-600 font-medium mb-6">and 25 pillars involved</p>
         <p className="text-lg text-slate-600 leading-relaxed mb-8">
           The Universal Commercial Framework is the <span className="font-semibold text-red-600">operating system blueprint</span> for aviation — 
@@ -191,8 +192,8 @@ export default function UCFPage() {
 
       {/* Section 3: The 25 Pillars - Stacked Full Width */}
       <section style={{ backgroundColor: '#f8fafc' }}>
-        <div className="py-16 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">25 Strategic Pillars</h2>
+        <div className="py-10 sm:py-16 text-center px-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">25 Strategic Pillars</h2>
           <p className="text-slate-500">Complete ecosystem directory — 7 Hubs unified under one framework</p>
         </div>
         
