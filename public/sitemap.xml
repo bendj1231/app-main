@@ -256,6 +256,12 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://enterprise.pilotrecognition.com/ucf/official-release</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
   
   <!-- PATHWAYS SUBDOMAIN -->
   <url>
