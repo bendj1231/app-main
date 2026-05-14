@@ -52,14 +52,14 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
-      className="relative flex flex-col sm:flex-row items-stretch overflow-hidden cursor-pointer"
+      className="relative flex flex-col md:flex-row items-stretch overflow-hidden cursor-pointer"
       style={{ minHeight: undefined }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Left: Dark navy panel */}
       <div
-        className="relative z-10 w-full sm:w-40 lg:w-48 flex-shrink-0 flex flex-row sm:flex-col items-center justify-center gap-2 sm:gap-3 py-4 sm:py-0 px-4 sm:px-0"
+        className="relative z-10 w-full md:w-40 lg:w-48 flex-shrink-0 flex flex-row md:flex-col items-center justify-center gap-2 md:gap-3 py-4 md:py-0 px-4 md:px-0"
         style={{
           background: HUB_COLORS[pillar.hub],
           minHeight: '64px',
@@ -79,7 +79,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
 
       {/* Center: Content */}
       <div
-        className="relative z-10 flex-1 px-5 sm:px-8 lg:px-12 py-5 sm:py-8 lg:py-10 flex flex-col justify-center"
+        className="relative z-10 flex-1 px-5 md:px-8 lg:px-12 py-5 md:py-8 lg:py-10 flex flex-col justify-center"
         style={{ 
           backgroundColor: hovered ? '#0f172a' : '#ffffff', 
           transition: 'all 0.4s ease-in-out',
@@ -94,7 +94,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
           </span>
         </div>
         <h3
-          className="font-bold text-xl sm:text-2xl lg:text-3xl mb-2 sm:mb-3 tracking-tight"
+          className="font-bold text-xl md:text-2xl lg:text-3xl mb-2 md:mb-3 tracking-tight"
           style={{ color: hovered ? '#ef4444' : '#0f172a', transition: 'color 0.4s ease-in-out' }}
         >{pillar.name}</h3>
         <div className="flex items-start gap-3">
@@ -110,7 +110,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
       </div>
 
       {/* Right: Image */}
-      <div className="relative w-full sm:w-80 lg:w-96 flex-shrink-0 overflow-hidden" style={{ minHeight: '160px' }}>
+      <div className="relative w-full md:w-80 lg:w-96 flex-shrink-0 overflow-hidden" style={{ minHeight: '200px' }}>
         <img
           src={pillar.img}
           alt={pillar.name}
