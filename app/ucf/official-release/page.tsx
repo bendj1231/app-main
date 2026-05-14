@@ -1813,33 +1813,69 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-3">Together, PilotRecognition and its verification partners build the <strong>Global Clearinghouse for Verified Pilots</strong> — the standard infrastructure layer the aviation industry has never had. The platform is open to all pilots — free and verified alike. Verification is not a gate. It is an <strong>upgrade path</strong> — pilots who choose to verify their credentials gain visibility, credibility, and priority access that unverified profiles cannot match. Verification partners become the <strong>trusted credential engine</strong> behind that upgrade — the infrastructure that makes a pilot's profile worth more to every operator who sees it.</p>
           <p className="text-slate-700 leading-relaxed mb-4">Pilots on this platform are choosing to be seen. <strong>They are consenting to verification checks across all relevant areas of their professional record — identity, license, medical, employment history, and operator-requested due diligence — in exchange for recognition in the industry.</strong> Not recognition as a courtesy. Recognition as a verified, credible, career-ready professional that operators can trust and act on. The verification exchange is mutual: pilots give transparency, and the platform returns standing.</p>
 
-          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Regional Partner Architecture — Market Neutrality by Design</h5>
-          <p className="text-slate-700 text-sm leading-relaxed mb-4">The verification partner structure is intentionally <strong>regionalised</strong>. No single provider holds a global monopoly on checks processed through the platform. Each partner holds a defined geographic mandate — which means the platform is commercially neutral across every major aviation market, no single partner dependency creates a systemic risk, and pilots in any region are served by a provider with the local authority relationships and jurisdictional expertise their checks require.</p>
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">The Multi-Node Verification Model — Market Neutrality by Design</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">The platform does not rely on a single global verification provider. <strong>It operates as a Verification Orchestrator</strong> — a standardised interface that connects best-of-region partners, each holding source-of-truth depth with the aviation authorities in their specific jurisdiction. No single provider is global. The platform is. Regional partners are the nodes. PilotRecognition is the network.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">This architecture is not a compromise — it is a structural advantage. Each regional node operates within its jurisdictional lane, processing only the checks its authority relationships are built for. The platform aggregates the results into a single, standardised credential wallet. <strong>The regional providers change. The Aviation Taxonomy, the Recognition Score, and the Verified Badge are identical everywhere.</strong></p>
+
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-900 text-white">
                   <th className="text-left px-4 py-2 font-semibold">Region</th>
-                  <th className="text-left px-4 py-2 font-semibold">Partner</th>
-                  <th className="text-left px-4 py-2 font-semibold">Jurisdictional Scope</th>
+                  <th className="text-left px-4 py-2 font-semibold">Verification Node</th>
+                  <th className="text-left px-4 py-2 font-semibold">Primary Authorities</th>
+                  <th className="text-left px-4 py-2 font-semibold">Data Residency</th>
                 </tr>
               </thead>
               <tbody>
                 {([
-                  { region: 'Europe', partner: 'Veremark', scope: 'EASA member states, UK (CAA/DBS), EU GDPR compliance, right-to-work validation across EU + EEA jurisdictions' },
-                  { region: 'United States', partner: 'TBD — US-domiciled provider', scope: 'FAA license database, FBI criminal checks, TSA aviation security vetting, NTSB incident records, US right-to-work' },
-                  { region: 'Africa & Asia-Pacific', partner: 'TBD — regional provider', scope: 'CAAP (Philippines), GCAA, SACAA, regional CAA authority access, NBI clearance, local police certificate coordination across high-volume pilot supply markets' },
-                ] as { region: string; partner: string; scope: string }[]).map((row, i) => (
+                  { region: 'Europe', partner: 'Veremark (Node A)', auth: 'EASA, UK CAA, DBS — EU/EEA right-to-work, GDPR-compliant identity and employment verification', residency: 'EU/EEA servers — GDPR Article 44 compliant. No cross-border data transfer required.' },
+                  { region: 'USA / Americas', partner: 'Regional Partner B', auth: 'FAA license database, FBI criminal checks, TSA aviation security vetting, NTSB incident records, Transport Canada', residency: 'US-domiciled infrastructure. FAA back-office relationships and federal agency coordination in jurisdiction.' },
+                  { region: 'Asia-Pacific', partner: 'Regional Partner C', auth: 'CAAP (Philippines), CAAS (Singapore), CASA (Australia), NBI clearance, local police certificate coordination', residency: 'In-region data handling. High-volume pilot supply market expertise — NBI, CAAP, and regional CAA authority depth.' },
+                  { region: 'Africa / Middle East', partner: 'Regional Partner D', auth: 'GCAA (UAE), PACA (Saudi Arabia), SACAA (South Africa), regional CAA networks', residency: 'In-region. Covers the primary Gulf operator hiring market and African pilot supply corridor.' },
+                ] as { region: string; partner: string; auth: string; residency: string }[]).map((row, i) => (
                   <tr key={row.region} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100 whitespace-nowrap">{row.region}</td>
                     <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold whitespace-nowrap">{row.partner}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.scope}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.auth}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.residency}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="text-slate-600 text-sm mb-6">Each regional partner integrates via the same standardised API layer. From the pilot's perspective, verification is seamless regardless of where their licence was issued, where they are currently based, or which operator they are applying to. From the platform's perspective, <strong>no single partner failure can disrupt global operations</strong> — regional redundancy is structural, not contingent.</p>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">The Standardised Rosetta Stone — Universal Currency for Pilot Trust</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">While the verification providers differ by region, the output is always identical. A pilot verified in Manila and a pilot verified in London both appear on the platform with the same <strong>Recognition Score</strong>, the same <strong>Verified Badge</strong>, and credentials stored in the same W3C Verifiable Credential format. The regional providers are the mints. <strong>The platform is the currency.</strong> An operator in Dubai evaluating a Filipino pilot and a British pilot is reading from the same trust standard — regardless of which node produced each credential. This is the "Universal API" proposition: Veremark builds one integration to PilotRecognition and gains access to every airline in the ecosystem — but processes only the checks within its zone of jurisdictional strength.</p>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Data Residency Sovereignty — Natively Compliant by Architecture</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Each regional node retains data within its own jurisdiction until the pilot actively chooses to share a credential with an operator. There is no requirement to transfer Philippine NBI data to European servers, or US FBI records to an Asian database. <strong>The platform does not hold the raw data — it holds the signed credential token.</strong> The token was signed in-region, by an in-region authority, processed by an in-region provider. GDPR, PDPA, and equivalent local data protection frameworks are satisfied at the architectural level — not through legal workarounds applied after the fact.</p>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Commercial Fair Play — What This Means for Each Regional Partner</h5>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-4 text-sm text-slate-700">
+            <ul className="space-y-2 list-disc ml-4">
+              <li><strong>No channel conflict</strong> — each partner knows exactly which checks are theirs. Veremark processes every pilot in the EASA/EU sphere. There is no ambiguity, no overlap, no competition with the other nodes.</li>
+              <li><strong>Single integration, full ecosystem access</strong> — a regional partner builds one API integration to PilotRecognition and immediately gains distribution across every airline, operator, and emerging sector employer on the platform — globally.</li>
+              <li><strong>Cross-node triggers without cross-node liability</strong> — if a Filipino pilot applies to a German airline, the Asia-Pacific node processes their origin history, and the European node (Veremark) handles right-to-work and local security vetting. Both nodes are triggered. Neither node is responsible for the other's jurisdiction. The platform orchestrates the handoff.</li>
+              <li><strong>Market neutrality protects the platform</strong> — PilotRecognition does not favour any single provider. Operators receive the same credential quality regardless of the pilot's origin. The platform's integrity is not contingent on any one partner's performance.</li>
+            </ul>
+          </div>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">The Pilot Experience — Seamless Across Every Node</h5>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-3">Example: Filipino pilot applying to a German airline</p>
+            <ol className="space-y-2 list-decimal ml-4">
+              <li>Pilot creates a profile — platform detects Philippines origin and triggers <strong>Asia-Pacific Node (Partner C)</strong> for CAAP licence validation and NBI clearance</li>
+              <li>Pilot submits interest to a Lufthansa Cargo pathway — platform triggers <strong>European Node (Veremark)</strong> for EU right-to-work validation and EASA licence recognition check</li>
+              <li>Both credential tokens are signed by their respective in-region providers and written to the pilot's wallet</li>
+              <li>Lufthansa's HR system receives a single, unified credential wallet — two verified signatures, one standardised profile, zero manual document chasing</li>
+              <li>The pilot sees one wallet. The operator sees one profile. <strong>The complexity is invisible. The trust is complete.</strong></li>
+            </ol>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>By being Market Neutral, the platform is structurally un-killable.</strong> If one regional node experiences a technical outage or a regulatory issue in a specific country, the remaining three nodes and the rest of the 25-pillar ecosystem continue operating without interruption. The platform has built a <strong style={{color:'#f87171'}}>decentralised trust network</strong> — resilient, regionally sovereign, and commercially fair to every participant in it.</p>
+          </div>
 
           <ul className="text-sm text-slate-700 space-y-1 mb-6 ml-4 list-disc">
             <li>10–15% revenue share on verification fees — passive income without operational overhead</li>
