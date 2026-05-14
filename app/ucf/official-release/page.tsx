@@ -1873,8 +1873,78 @@ export default function UCFOfficialReleasePage() {
             </ol>
           </div>
 
-          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>By being Market Neutral, the platform is structurally un-killable.</strong> If one regional node experiences a technical outage or a regulatory issue in a specific country, the remaining three nodes and the rest of the 25-pillar ecosystem continue operating without interruption. The platform has built a <strong style={{color:'#f87171'}}>decentralised trust network</strong> — resilient, regionally sovereign, and commercially fair to every participant in it.</p>
+          </div>
+
+          <h5 className="text-base font-bold text-slate-800 mt-8 mb-2">The Smart Routing Engine — Jurisdiction-First, Conflict-Free</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">When a pilot enrolls in Recognition+, they are not selecting a verification company. They are purchasing a <strong>Verified Status</strong>. The platform acts as the Traffic Controller — automatically routing each check and its associated fee to the regional node best equipped to handle that specific pilot's data, based on jurisdiction, not manual preference. There is no human selection. There is no conflict.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-3">Routing Logic — How a Pilot's Check is Assigned</p>
+            <ul className="space-y-2 list-disc ml-4">
+              <li><strong>Primary Node assignment</strong> — the platform reads the pilot's primary licence authority and residency history. The Lead Node is automatically assigned to the regional partner whose jurisdiction issued that licence. No manual override. No preference.</li>
+              <li><strong>Sub-task triggers</strong> — if the pilot has employment history, a secondary licence, or right-to-work requirements in another region, the platform automatically triggers a sub-task routed to the relevant secondary node. Both nodes process their specific scope in parallel.</li>
+              <li><strong>Revenue split — the Verification Bounty</strong> — the Recognition+ subscription fee contains a built-in Verification Bounty. <strong style={{color:'#dc2626'}}>70%</strong> is credited to the Lead Node handling identity and primary licence verification. <strong style={{color:'#dc2626'}}>30%</strong> is held in a <strong>Global Verification Pool</strong> — used to pay cross-border sub-check fees to secondary nodes as triggered. Partners receive payment automatically from the pool upon task completion. No invoicing. No negotiation.</li>
+            </ul>
+          </div>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Pricing Framework — Recognition+ Verification Economics</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">The pilot pays a flat annual fee. The platform absorbs the complexity of multi-regional routing, multi-partner payment, and variable sub-check costs within its subscription margin. Cost is predictable for the pilot. Revenue is predictable for the partner.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Component</th>
+                  <th className="text-left px-4 py-2 font-semibold">Pilot Pays</th>
+                  <th className="text-left px-4 py-2 font-semibold">Partner Receives (Wholesale)</th>
+                  <th className="text-left px-4 py-2 font-semibold">Logic</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { component: 'Base Recognition+', pilot: '$199/year', partner: '$35–$50', logic: 'Covers Standard Layer 1 check — identity, primary licence, medical status. Routed to Lead Node automatically.' },
+                  { component: 'Regional Multiplier', pilot: 'Included in subscription', partner: 'Varies — paid from Global Verification Pool', logic: 'If a pilot requires checks across 3+ regions, the platform absorbs the additional sub-task costs from the subscription margin. No upsell to the pilot.' },
+                  { component: 'Operator Deep Check (Layer 2)', pilot: 'N/A — operator-paid', partner: '$10/check (wholesale)', logic: 'Operator pays $12/check. $10 goes to the processing node. $2 is the platform\'s API convenience fee for orchestrating the handoff.' },
+                ] as { component: string; pilot: string; partner: string; logic: string }[]).map((row, i) => (
+                  <tr key={row.component} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.component}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold whitespace-nowrap">{row.pilot}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 whitespace-nowrap">{row.partner}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.logic}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Node Sovereignty — Eliminating the "Who Gets the Pilot?" Conflict</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">A regional partner does not compete for pilots. They fulfil orders. The platform is positioned as a <strong>Verification Clearinghouse</strong> — the partner is not acquiring a customer, they are processing a task assigned to them by the routing engine based on jurisdictional authority. The conflict of interest is eliminated structurally, not contractually.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">When a pilot moves from the UK to the US and obtains an FAA licence, their EASA licence renewal is still credited to the European node. Their FAA validation is credited to the US node. <strong>Both partners earn from the pilot's career progression — without overlap, without dispute, and without platform involvement in the split.</strong> The routing engine handles it automatically at every stage of the pilot's career.</p>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Overflow Protection — Performance-Based Routing</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Regional partners are not granted permanent monopoly status. Lead Node designation is conditional on maintaining the platform's SLA standards. If a regional node's turnaround time drops below threshold — for example, a check that should complete in 3 days taking 10 — the platform automatically routes new tasks to a secondary provider within that region until performance recovers. <strong>Partners are incentivised to maintain speed and accuracy. The pilot's experience is never degraded by a single node's operational failure.</strong> This keeps the network competitive, self-correcting, and always performing at standard.</p>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Pilot Dashboard Transparency — The Global Verification Dream Team</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">Pilots see exactly who is verifying each part of their profile. The Recognition+ dashboard displays a live verification activity feed — broken down by node, by credential type, and by status. Rather than obscuring the multi-provider architecture, the platform surfaces it as a <strong>feature</strong>: the pilot is receiving best-in-region expertise for every part of their global career record.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">Example — Pilot dashboard verification activity</p>
+            <ul className="space-y-1 list-disc ml-4">
+              <li><strong>EASA Licence &amp; Identity</strong> — being verified by <em>European Node (Node A)</em> · In Progress</li>
+              <li><strong>FAA Employment History (2018–2023)</strong> — being verified by <em>USA Node (Node B)</em> · Completed ✓</li>
+              <li><strong>NBI Clearance (Philippines)</strong> — being verified by <em>Asia-Pacific Node (Node C)</em> · Awaiting authority response</li>
+            </ul>
+            <p className="mt-3 text-slate-600">The pilot is not confused by multiple providers. They understand they are receiving <strong>local expertise for every jurisdiction in their career</strong> — coordinated by a single platform, displayed in a single dashboard, stored in a single wallet.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">Summary of Value for Regional Partners</p>
+            <ul className="space-y-1 list-disc ml-4">
+              <li><strong>Guaranteed volume</strong> — partners do not market to pilots. The platform sends them ready-to-verify files automatically from the subscription pool</li>
+              <li><strong>No sales friction</strong> — payment is automatic upon task completion, drawn from the Global Verification Pool. No invoicing cycle, no debtor management</li>
+              <li><strong>Specialisation without distraction</strong> — partners focus exclusively on the authorities they know best, reducing their operational cost and error rate</li>
+              <li><strong>Performance incentive</strong> — Lead Node status is maintained through SLA compliance. Partners who perform retain their jurisdiction. Partners who underperform are temporarily routed around until recovery</li>
+            </ul>
           </div>
 
           <ul className="text-sm text-slate-700 space-y-1 mb-6 ml-4 list-disc">
