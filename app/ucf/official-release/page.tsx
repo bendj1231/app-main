@@ -1582,8 +1582,28 @@ export default function UCFOfficialReleasePage() {
               </div>
             ))}
           </div>
-          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>No paper certificates. No self-reported claims. No ATS mis-parse. Unforgeable trust from Day One.</strong> The pilot leaves graduation with a digital credential that is already in the system — already visible to operators, already matched against pathway requirements, already part of their permanent Professional Standing Asset. The school that issued it is named on the token. <strong style={{color:'#f87171'}}>The credential is the school's signature on every operator database that reads it.</strong></p>
+          </div>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-8 bg-slate-50">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">The Issuers Platform — Built for ATOs Without Technical Infrastructure</p>
+            <p className="text-slate-800 text-sm leading-relaxed mb-3">Most flight schools do not have a blockchain engineering team. They do not need one. <strong>PilotRecognition builds and hosts the issuance infrastructure on their behalf.</strong> The Issuers Platform is accessible directly through the Enterprise ATO account — a dedicated credential management dashboard that allows the school to:</p>
+            <ul className="space-y-2 mb-4">
+              {[
+                'Define the credential types they are authorised to issue — CPL-Complete, AAM-Ready, or custom operator-specific designations co-developed with the platform',
+                'Issue signed digital tokens to individual graduates at graduation — single-click dispatch from the dashboard directly into the pilot\'s Professional Standing Asset',
+                'Manage bulk issuance for graduating cohorts — issue to an entire class simultaneously with a single verified batch action',
+                'View the live status of every credential issued — active, revoked, or expired — with a full audit trail per pilot',
+                'Revoke credentials if a graduate is later found to have not met the stated standard — the record updates instantly across every operator database that has read it',
+              ].map((item) => (
+                <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                  <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                  <span className="text-sm">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-slate-700 text-sm leading-relaxed"><strong>Issuance is included in the Enterprise ATO tier.</strong> The school does not pay per credential issued. They pay for the account — and the issuance infrastructure is part of what that account delivers. <strong style={{color:'#dc2626'}}>If your school cannot build a blockchain for your pilots, PilotRecognition has already built it for you.</strong></p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Campus Partnership Benefits</h3>
