@@ -983,7 +983,7 @@ export default function UCFOfficialReleasePage() {
               <tbody>
                 {([
                   { tier: 'Basic', fee: 'Free', features: <>Post up to 2 confidential pathway listings. <strong style={{color:'#dc2626'}}>View the first 10 matched Recognition+ pilots</strong> — full profiles visible. <strong style={{color:'#dc2626'}}>Remaining matched pilots are blurred</strong> — live signal of pool depth without full access. <span style={{color:'#dc2626'}}>No database search. No Recognition Score access.</span></> },
-                  { tier: 'Enterprise', fee: '$1,000/yr', features: <><strong style={{color:'#dc2626'}}>Unlimited confidential pathway listings</strong>, full Recognition+ pilot database access, Recognition Score and jet hours data, <strong style={{color:'#dc2626'}}>dedicated account support</strong>, NDA-enforced placement protocol, API access.</> },
+                  { tier: 'Enterprise', fee: '$1,000/yr', features: <><strong style={{color:'#dc2626'}}>Unlimited confidential pathway listings</strong> · Full Recognition+ pilot database access · Recognition Score, jet hours, and command time data · <strong style={{color:'#dc2626'}}>Direct ATS API integration — Greenhouse, Workday, and ATLAS-compatible</strong> · <strong>No manual export or re-entry</strong> — verified pilot data flows directly into your existing hiring infrastructure · NDA-enforced placement protocol · Dedicated account support.</> },
                 ] as { tier: string; fee: string; features: React.ReactNode }[]).map((row, i) => (
                   <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
@@ -1018,6 +1018,11 @@ export default function UCFOfficialReleasePage() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
+            <p className="text-slate-800 text-sm leading-relaxed mb-2"><strong>Verification Cost Advantage for Charter Operators:</strong> Every Recognition+ pilot who reaches your pathway card has already self-verified their identity, license, medical, employment history, jet time, and command hours — stored in their portable Professional Standing Asset. When a matched pilot surfaces in your results, their core verification is <strong>already done.</strong> You are not paying to run checks on a candidate you haven’t even spoken to yet.</p>
+            <p className="text-slate-800 text-sm leading-relaxed mb-2">What you can optionally request — at your cost, on selected candidates only — are the <strong>charter-specific deeper checks</strong>: criminal background, security vetting, right-to-work validation, conduct records, and NDA compliance history. Operator-initiated, pilot-consented, fully configurable.</p>
+            <p className="text-slate-800 text-sm leading-relaxed"><strong>The saving:</strong> Stop paying executive search firms 15–25% of first-year salary to find and vet a candidate. On this platform, the pilot is pre-verified and pre-matched before you spend a dollar. <strong style={{color:'#dc2626'}}>Pay only for the Layer 2 deep-checks on your verified shortlist. Not on every applicant. Not from scratch. Not repeatedly.</strong></p>
           </div>
           <p className="text-slate-600 text-sm mb-8"><strong>Success Fee:</strong> $500 per confirmed placement (waived for first 5 placements)</p>
 
