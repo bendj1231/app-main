@@ -216,9 +216,20 @@ export default function UCFOfficialReleasePage() {
             PILLAR 1: COMMERCIAL AIRLINES
           </h2>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3 scroll-mt-24">The Problem: Recruitment Friction and Information Asymmetry</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3 scroll-mt-24">The Problem: The Structural Collapse of the Pipeline</h3>
 
-          <p className="text-slate-700 leading-relaxed mb-4">Commercial airlines face a consistent set of operational challenges in pilot recruitment that <strong>no existing platform has solved.</strong> The problem exists on both sides of the hiring relationship simultaneously.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Commercial airlines face a consistent set of operational challenges in pilot recruitment that <strong>no existing platform has solved.</strong> The problem exists on both sides of the hiring relationship simultaneously. But beneath the surface-level friction of slow hiring and poor CV quality lies a deeper failure — two invisible structural crises that the industry has not named, addressed, or built infrastructure to reverse.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="border-l-4 border-red-500 bg-red-50 px-5 py-4 rounded-r">
+              <p className="font-bold text-slate-800 mb-1">Invisible Failure 1 — The Heritage Crisis</p>
+              <p className="text-slate-700 text-sm leading-relaxed">The most naturally capable pilots — those with aviation heritage, who grew up around aircraft and absorbed the profession from birth — are being steered away at the source. Captains with 30-year careers are telling their own children not to follow them into aviation. Not from lack of love for it. From lived experience of an industry with no clear pathway, no structured recognition, and a near-impossible financial entry barrier. Meanwhile, non-heritage pilots enter blind — discovering the 1,500-hour gap and its $160,000 capital requirement only after they have already committed. <strong>Every aviation family that redirects their child is a permanent loss the industry will never recover.</strong></p>
+            </div>
+            <div className="border-l-4 border-slate-400 bg-slate-50 px-5 py-4 rounded-r">
+              <p className="font-bold text-slate-800 mb-1">Invisible Failure 2 — The Information Asymmetry</p>
+              <p className="text-slate-700 text-sm leading-relaxed">Airlines delegate to agencies because they cannot handle the volume. Agencies prioritise filling seats over finding fit. The result: high-value profiles are systematically buried — a 6,000-hour flight instructor filtered out by an ATS parser because their CV wasn't ATLAS-formatted. Cadet programmes carry a <strong>35–45% washout rate</strong> because they select on academic scores rather than operational aptitude. The airline never knows what it lost. The pilot never understands why. The asymmetry is total — and the infrastructure to close it does not exist anywhere in the industry.</p>
+            </div>
+          </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Pain Points for Airlines:</h4>
           <ul className="space-y-2 mb-6">
@@ -502,6 +513,13 @@ export default function UCFOfficialReleasePage() {
           </div>
           <p className="text-slate-600 text-sm mb-8">The Browse Airlines directory surfaces the <strong>top-listed operators</strong> visible to every pilot on the platform. An airline that does not maintain its listing is invisible to pilots who are actively comparing their options. At <strong>$100 per year</strong>, this is the lowest-cost, highest-visibility brand presence available in professional aviation recruitment — and the only one where the audience is exclusively verified, career-active pilots.</p>
           <p className="text-slate-600 text-sm mb-6"><strong>Success Fee:</strong> $500 per confirmed hire (waived for first 10 hires)</p>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-amber-400 bg-amber-50 rounded-r-lg">
+            <p className="text-slate-800 text-sm font-bold mb-2">The Underwriter Handshake — Risk Distinction for Insurers and Airlines</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-2">By making incident history — gear-up landings, failed checkrides during training, hull loss involvement — a <strong>consent-based data point</strong> within the pilot's Professional Standing Asset, the platform enables a direct handshake with Pillar 9 (Aviation Insurance). Underwriters can segment the pilot pool by verified risk profile rather than relying on hours alone as a proxy for safety.</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-2">The consequence for operators is significant: a <strong>300-hour pilot with a flawless, fully verified training record</strong> — no incidents, no failed checkrides, consistent EBT performance — is now a quantifiably lower insurance risk than a 5,000-hour pilot whose last background refresh was three years ago. Pillar 11's Continuous Monitoring provides insurers with a live risk pulse on every verified pilot on the platform. This is the data infrastructure that finally breaks the 1,500-hour wall as the default hiring threshold — not by lowering standards, but by replacing a blunt hour-count with a verified competency and risk profile.</p>
+            <p className="text-slate-700 text-sm leading-relaxed"><strong>For airlines:</strong> hiring a lower-hour, high-integrity verified pilot can translate directly into improved underwriting terms on your hull and liability coverage. The pilot's risk profile is no longer invisible — it is structured, verified, and portable.</p>
+          </div>
 
           <div className="my-6 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
             <p className="text-slate-800 text-sm leading-relaxed mb-2"><strong>Verification Cost Advantage for Airlines:</strong> Pilots on the platform self-verify their own credentials at account creation — identity, license, medical, employment history — stored in a portable digital wallet they own. When a pilot submits interest against your pathway, their core verification is <strong>already done.</strong> You are not paying to re-run checks you don't need.</p>
