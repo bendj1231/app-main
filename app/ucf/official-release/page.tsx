@@ -559,7 +559,7 @@ export default function UCFOfficialReleasePage() {
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Ecosystem Integration — How the Platform Connects Every Stakeholder</h4>
 
           <h5 className="font-bold text-slate-800 mt-4 mb-2">For Airline HR Departments</h5>
-          <p className="leading-relaxed mb-2 text-sm text-red-600"><strong>Current gap:</strong> Each airline maintains unique requirements in siloed systems. Verification providers apply generic templates, missing operator-specific policies. HR manually chases documents across CAA/FAA/local authorities. Turnaround: 14–30 days per candidate.</p>
+          <p className="leading-relaxed mb-2 text-sm" style={{color:'#dc2626'}}><strong>Current gap:</strong> Each airline maintains unique requirements in siloed systems. Verification providers apply generic templates, missing operator-specific policies. HR manually chases documents across CAA/FAA/local authorities. Turnaround: 14–30 days per candidate.</p>
           <ul className="text-sm text-slate-700 space-y-1 mb-4 ml-4 list-disc">
             <li>Airlines publish per-role verification requirement matrices on platform backend (Captains = full checks, Cadets = standard, First Officers = enhanced)</li>
             <li>Webhook notifications feed verification status directly into airline ATS (Greenhouse, Workday, Lever)</li>
@@ -569,7 +569,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h5 className="font-bold text-slate-800 mt-4 mb-2">For Aviation Medical Examiners (AMEs)</h5>
-          <p className="leading-relaxed mb-2 text-sm text-red-600"><strong>Current gap:</strong> Medical status verification requires manual contact with individual AMEs. Background check companies cannot access Class 1/2/3 status, Special Issuance conditions, or renewal windows.</p>
+          <p className="leading-relaxed mb-2 text-sm" style={{color:'#dc2626'}}><strong>Current gap:</strong> Medical status verification requires manual contact with individual AMEs. Background check companies cannot access Class 1/2/3 status, Special Issuance conditions, or renewal windows.</p>
           <ul className="text-sm text-slate-700 space-y-1 mb-4 ml-4 list-disc">
             <li>AMEs provide live Class 1/2/3 validation, Special Issuance tracking, and renewal window data via API</li>
             <li>Medical certificates flow directly into pilot-controlled digital wallets with immutable audit trail</li>
@@ -578,7 +578,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h5 className="font-bold text-slate-800 mt-4 mb-2">For Aviation Authorities (CAA, FAA, EASA, CAAP)</h5>
-          <p className="leading-relaxed mb-2 text-sm text-red-600"><strong>Current gap:</strong> Each authority maintains separate license databases. Verification providers cannot access real-time credential validation, relying on pilot-submitted documents that may be falsified.</p>
+          <p className="leading-relaxed mb-2 text-sm" style={{color:'#dc2626'}}><strong>Current gap:</strong> Each authority maintains separate license databases. Verification providers cannot access real-time credential validation, relying on pilot-submitted documents that may be falsified.</p>
           <ul className="text-sm text-slate-700 space-y-1 mb-4 ml-4 list-disc">
             <li>Pre-established API connections to CAA, FAA, EASA, CAAP for real-time license lookups</li>
             <li>Cross-border validation: API access for license conversion, validation, and foreign license acceptance rules per operator</li>
@@ -587,7 +587,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h5 className="font-bold text-slate-800 mt-4 mb-2">For Flight Training Organisations (ATOs)</h5>
-          <p className="leading-relaxed mb-2 text-sm text-red-600"><strong>Current gap:</strong> Cadet program verification cannot access ATO transcripts, simulator hour logs, or training completion records — leaving a critical blind spot for low-time pilots entering the industry.</p>
+          <p className="leading-relaxed mb-2 text-sm" style={{color:'#dc2626'}}><strong>Current gap:</strong> Cadet program verification cannot access ATO transcripts, simulator hour logs, or training completion records — leaving a critical blind spot for low-time pilots entering the industry.</p>
           <ul className="text-sm text-slate-700 space-y-1 mb-4 ml-4 list-disc">
             <li>ATOs provide verified training records, simulator hours, and completion certificates — blockchain-backed</li>
             <li>Schools feed graduating pilots directly into the platform pipeline with pre-cleared verification status</li>
@@ -597,7 +597,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h5 className="font-bold text-slate-800 mt-4 mb-2">For Airport Security Authorities</h5>
-          <p className="leading-relaxed mb-2 text-sm text-red-600"><strong>Current gap:</strong> Airside passes, Counter Terrorist Check (CTC), and Known Crewmember status require direct aviation authority coordination. Background check companies treat these as standard criminal checks — missing aviation-specific security vetting entirely.</p>
+          <p className="leading-relaxed mb-2 text-sm" style={{color:'#dc2626'}}><strong>Current gap:</strong> Airside passes, Counter Terrorist Check (CTC), and Known Crewmember status require direct aviation authority coordination. Background check companies treat these as standard criminal checks — missing aviation-specific security vetting entirely.</p>
           <ul className="text-sm text-slate-700 space-y-1 mb-4 ml-4 list-disc">
             <li>Coordinated verification channels for CTC, airside passes, airport ID badges, and Known Crewmember status</li>
             <li>Pre-verified security credentials flow into pilot wallet — airlines receive security status alongside all other credentials</li>
