@@ -2373,6 +2373,103 @@ export default function UCFOfficialReleasePage() {
 
           <p className="text-sm text-slate-700 mb-6">Pre-cleared pilots receive a <strong>"Verification Preferred" badge</strong> — visible on pathway cards and prioritised in candidate lists. Airlines receive a shortlist of pre-verified, pre-cleared professionals. Zero surprise rejections at the final offer stage.</p>
 
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Veremark Partnership — Live Pricing Integration</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">PilotRecognition operates as a <strong>Veremark partner</strong>, accessing their global background check infrastructure at a negotiated <strong>15% discount below RRP</strong> across all jurisdictions. This pricing forms the cost basis for both verification layers — enabling the platform to bundle checks into the pilot journey at a margin while remaining competitively priced versus any direct-to-pilot alternative.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">The four primary markets for pilot verification are the <strong>Philippines</strong> (launch market), <strong>UAE</strong> (Gulf hub), <strong>Singapore</strong> (APAC expansion), and <strong>United Kingdom</strong> (EASA/CAA-adjacent). The tables below show the <strong>Airside Professional Bundle</strong> — the standardised check set applied to every pilot at Layer 1 profile verification — with partner pricing per market.</p>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-6 bg-white">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-4">Airside Professional Bundle — Layer 1 (Pilot-Initiated Profile Verification)</p>
+            <p className="text-slate-600 text-xs leading-relaxed mb-4">These checks form the <strong>standard Professional Standing Asset</strong>. Every pilot activating a verified profile on the platform completes this bundle. PilotRecognition pays Veremark at partner rate. The pilot pays the platform at a bundled rate inclusive of margin.</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-3 py-2 font-semibold">Check</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇵🇭 PH Partner</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇦🇪 UAE Partner</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇸🇬 SG Partner</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇬🇧 UK Partner</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { check: 'Identity Verification', ph: '$9', ae: '$13', sg: '$13', uk: '$13' },
+                    { check: 'Criminal Record Check', ph: '$13', ae: '$93', sg: 'N/A', uk: '$48' },
+                    { check: 'Employment Check', ph: '$9', ae: '$35', sg: '$22', uk: '$27' },
+                    { check: 'Education / Professional Qualification', ph: '$13', ae: '$99', sg: '$27', uk: '$27' },
+                    { check: 'CV Gap Check', ph: '$15', ae: '$15', sg: '$15', uk: '$15' },
+                    { check: 'Global Sanctions & PEP', ph: '$22', ae: '$22', sg: '$22', uk: '$22' },
+                    { check: 'Address Check (Current)', ph: '$12', ae: '$12', sg: '$12', uk: '$12' },
+                    { check: 'Right to Work', ph: '$9', ae: '$22', sg: '$18', uk: '$12' },
+                    { check: 'Adverse Media Check', ph: '$14', ae: '$16', sg: '$16', uk: '$16' },
+                  ] as { check: string; ph: string; ae: string; sg: string; uk: string }[]).map((row, i) => (
+                    <tr key={row.check} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-3 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.check}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.ph}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.ae}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.sg}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.uk}</td>
+                    </tr>
+                  ))}
+                  <tr className="bg-slate-900 text-white font-bold">
+                    <td className="px-3 py-2 font-bold">Bundle Total (Partner Cost)</td>
+                    <td className="px-3 py-2 text-right" style={{color:'#34d399'}}>~$116</td>
+                    <td className="px-3 py-2 text-right" style={{color:'#34d399'}}>~$327</td>
+                    <td className="px-3 py-2 text-right" style={{color:'#34d399'}}>~$146</td>
+                    <td className="px-3 py-2 text-right" style={{color:'#34d399'}}>~$192</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-slate-500 text-xs mt-3">Partner rates = RRP minus 15% Veremark discount. UAE costs are elevated due to regulated profession checks (Criminal: $93, Professional Qualification: $99). Philippines is the most cost-efficient launch market for the Layer 1 bundle.</p>
+          </div>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-6 bg-white">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-4">Layer 2 — Operator-Requested Deep Verification (Additional Checks, Per-Request)</p>
+            <p className="text-slate-600 text-xs leading-relaxed mb-4">These checks are <strong>not included in the standard bundle</strong>. Operators select and pay for them individually on shortlisted candidates. Pricing shown is partner cost to platform — operators are billed at a marked-up rate.</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-3 py-2 font-semibold">Check</th>
+                    <th className="text-left px-3 py-2 font-semibold">Use Case</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇵🇭 PH</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇦🇪 UAE</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇸🇬 SG</th>
+                    <th className="text-right px-3 py-2 font-semibold">🇬🇧 UK</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { check: 'Regulated Professions Check', use: 'Airline/ATO compliance — confirms licence with authority', ph: 'N/A', ae: '$105', sg: '$16', uk: '$16' },
+                    { check: 'Adverse Financial History', use: 'Insurance underwriters, lenders — financial risk signal', ph: '$14', ae: '$110', sg: '$30', uk: '$17' },
+                    { check: 'Bankruptcy Check', use: 'Financiers, large operators — debt exposure', ph: 'N/A', ae: '$100', sg: '$29', uk: '$93' },
+                    { check: 'Civil Check', use: 'Deep operator due diligence — litigation history', ph: '$14', ae: '$66', sg: '$29', uk: '$78' },
+                    { check: 'Directorship Check', use: 'Corporate aviation — conflicts of interest', ph: '$31', ae: '$87', sg: '$31', uk: '$16' },
+                    { check: 'Social Media Check', use: 'Charter/VIP operators — conduct & reputational risk', ph: '$32', ae: '$41', sg: '$41', uk: '$41' },
+                    { check: 'Reference Check', use: 'All operators — prior employer conduct', ph: '$6', ae: '$13', sg: '$13', uk: '$13' },
+                    { check: 'Employment Gap Check', use: 'Airlines — unexplained career gaps', ph: '$7', ae: '$22', sg: '$22', uk: '$22' },
+                  ] as { check: string; use: string; ph: string; ae: string; sg: string; uk: string }[]).map((row, i) => (
+                    <tr key={row.check} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-3 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.check}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-slate-500 text-xs italic">{row.use}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.ph}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.ae}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.sg}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-700">{row.uk}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-slate-500 text-xs mt-3">N/A = check not available in that jurisdiction per Veremark pricing sheet. UAE deep checks carry the highest costs — driven by civil, bankruptcy, and regulated profession complexity in UAE jurisdiction.</p>
+          </div>
+
+          <div className="bg-slate-100 border border-slate-300 rounded px-5 py-4 mb-8">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-2">Commercial Margin Logic</p>
+            <p className="text-slate-700 text-sm leading-relaxed">PilotRecognition pays Veremark at <strong>partner cost (RRP −15%)</strong>. The platform charges pilots and operators at a <strong>bundled retail rate</strong> that includes platform margin. For the Philippines launch market — the most cost-efficient jurisdiction — the Layer 1 Airside Professional Bundle costs the platform approximately <strong>$116</strong> at partner rates. Bundled to the pilot at <strong>$149–$179</strong>, this generates a <strong>$33–$63 margin per verified pilot profile</strong> while remaining substantially cheaper than any equivalent multi-check combination purchased directly. <strong>The Philippines market is the strategic entry point: lowest verification cost, highest pilot density relative to cost, and Veremark's strongest regional infrastructure.</strong></p>
+          </div>
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Airlines — Integrated Verification Infrastructure</h4>
 
           <h5 className="text-base font-bold text-slate-800 mt-4 mb-2">API Integration</h5>
