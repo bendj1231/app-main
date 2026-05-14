@@ -15,6 +15,7 @@ const navSections = [
   { id: 'pillar-4-emerging-sectors', label: '→ Pillar 4: Emerging Aviation Sectors', indent: true },
   { id: 'pillar-5-flight-training', label: '→ Pillar 5: Flight Training Organizations (ATOs)', indent: true },
   { id: 'pillar-6-type-rating', label: '→ Pillar 6: Type Rating & Simulator Centers', indent: true },
+  { id: 'pillar-7-military', label: '→ Pillar 7: Military & Defense Commands', indent: true },
   { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
 ];
 
@@ -1850,6 +1851,147 @@ export default function UCFOfficialReleasePage() {
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The airline mandate is coming.</strong> As EBT and CBTA frameworks mature, airlines will begin specifying not just that a candidate holds a type rating — but that the rating was obtained at a verified, proficiency-data-publishing centre. The centres that integrate now will be the centres airlines name on their pathway cards. <strong style={{color:'#f87171'}}>The simulator centre that owns the verified data channel owns the pilot pipeline that flows through it.</strong></p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          <h2 id="pillar-7-military" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            PILLAR 7: MILITARY &amp; DEFENSE COMMANDS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub B — Training &amp; Transition</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: The Most Qualified Pilots in the World Are Invisible to the Industry</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Military pilots are, by objective measure, among the most capable aviators on the planet. They operate high-performance aircraft in contested environments, under extreme physiological and psychological pressure, with crew resource management and decision-making frameworks that commercial aviation has been trying to replicate for decades. <strong>They graduate from military service having demonstrated, under real conditions, every competency airlines claim to assess.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">And then they leave the service — and become invisible. Their flight hours do not translate cleanly. Their sorties do not map to civilian logbook formats. Their competency records are held in classified or semi-classified service databases that civilian operators cannot access, cannot interpret, and cannot verify. The commercial aviation industry has no structured framework for converting a decade of military flight experience into a civilian hiring decision — so it defaults to the same blunt instrument it applies to everyone else: <strong style={{color:'#dc2626'}}>total hours. How many hours do you have? Come back when you have 1,500.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-6">Pillar 7 builds the translation infrastructure that has never existed. Military sorties converted to civilian EBT benchmarks. Service records securely validated and mapped to commercial competency frameworks. Discharge status verified. The result: a veteran pilot arrives on the platform not as a blank profile waiting to be rebuilt from scratch — but as a <strong>fully translated, verified, high-value candidate</strong> whose decade of military service is finally legible to the commercial operators who need exactly what they have.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The military transition problem is not a skills problem. It is a translation problem.</strong> The pilot who flew 400 combat sorties in an F/A-18 has more real-world decision-making hours under pressure than most airline captains. The industry knows this. The industry also has no mechanism to prove it, document it, or act on it. <strong style={{color:'#f87171'}}>PilotRecognition builds that mechanism.</strong></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Veteran Pilots</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'Military hours do not translate to civilian logbook format', d: <>A sortie is not a flight hour. A combat mission is not an IFR approach. The civilian aviation industry has no standardised conversion framework — so military experience that represents <strong>the highest-intensity, highest-stakes flying on earth</strong> is reduced to an approximate civilian hour count that undersells the actual competency by a factor the industry has never formally measured.</> },
+              { n: '2', t: 'Service records are inaccessible to civilian operators', d: <>Military flight records, competency assessments, and operational ratings are held within defence department systems that civilian HR departments cannot access. A veteran pilot cannot simply email their service record to an airline. <strong>The evidence of their competency is locked behind institutional walls the industry has no key to.</strong></> },
+              { n: '3', t: 'No civilian pathway visibility during service', d: <>Active-duty pilots have limited visibility into what the commercial sector requires, what they are missing, and what transition steps to take before discharge. By the time they leave service, <strong>they are already 12–18 months behind the transition timeline that would have maximised their civilian employment options.</strong> The preparation window is lost because the pathway data was never accessible during service.</> },
+              { n: '4', t: 'Type rating requirements applied without competency credit', d: <>A veteran who has thousands of hours on high-performance multi-engine jets may be required to complete a full civilian type rating course with no credit for demonstrated performance. <strong>The training industry charges full price for skills the candidate demonstrably already has.</strong> There is no structured mechanism to fast-track a military pilot's type rating based on verified prior competency.</> },
+              { n: '5', t: 'The seniority reset penalty', d: <>A veteran pilot who transitions to a commercial airline starts at the bottom of the seniority list regardless of experience. <strong>A 20-year military pilot with 3,000 hours of operational flying enters as a junior First Officer.</strong> The Recognition Score model provides a portable competency currency that partially offsets this structural disadvantage — operators who use the platform can see the full verified picture, not just the new hire start date.</> },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Defense Commands &amp; Military Aviation Authorities</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'Talent exodus with no structured handoff', d: <>Defense commands invest millions in producing a combat-ready military aviator. When that pilot leaves service, the investment leaves with them — into an industry that cannot properly receive it. There is no structured civilian handoff process. <strong>The defence sector loses the pilot. The commercial sector fails to recognise what it received.</strong> Both sides absorb a loss that a structured transition framework would eliminate.</> },
+              { n: '2', t: 'Post-service employment failure damages recruitment', d: <>Veterans who struggle to find commercial employment after service generate negative word-of-mouth within active military communities. <strong>Post-service employment outcomes directly affect military recruitment</strong> — a veteran who spent 12 months unemployed after discharge tells everyone in the mess about it. Frictionless transitions are a national defence recruitment asset.</> },
+              { n: '3', t: 'No visibility into where veteran pilots land', d: <>Defense commands have no structured data on where their pilots transition to, how long transition takes, or what competency gaps cause delays. <strong>There is no feedback loop between military service and commercial employment outcomes</strong> — which means training improvements that would accelerate transition cannot be identified or implemented.</> },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Platform Solution — The Military Translation Layer</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 7 introduces a <strong>structured military-to-civilian competency translation framework</strong> — converting the language of military aviation into verified, operator-readable data that slots directly into the platform's recognition infrastructure.</p>
+          <ul className="space-y-2 mb-6">
+            {([
+              { t: 'Sortie-to-hour conversion matrices', d: 'Military sorties are converted to civilian equivalent flight hours using a complexity-weighted formula — night operations, instrument conditions, multi-crew coordination, and operational intensity all contribute to the final verified equivalent. The conversion is documented, defensible, and operator-visible in the veteran\'s Recognition Profile.' },
+              { t: 'EBT competency mapping', d: 'Military training outcomes are mapped directly to the 9 ICAO EBT competency benchmarks — application of knowledge, communication, flight path management, leadership and teamwork, problem-solving and decision-making, situation awareness, workload management, and more. A veteran\'s service assessment record, once translated, produces an EBT-aligned competency profile without requiring a full civilian assessment programme.' },
+              { t: 'Secure service record validation', d: 'Veteran service records are validated through a secure API channel — classified-level security protocols, discharge status verification (Honourable/General Under Honourable), and flight hour attestation from defence department data sources. The data never leaves the secure channel. What enters the pilot\'s Recognition Profile is the verified output, not the raw classified record.' },
+              { t: 'Veteran Fast-Track pathway cards', d: 'Dedicated pathway cards for veteran pilots — published by operators who specifically value military experience and are willing to apply expedited assessment processes for verified veteran profiles. Fast-Track cards show the reduced training requirements, type rating credit eligibility, and direct-entry Captain or Senior First Officer options available to qualifying veterans.' },
+              { t: 'Pre-Service Transition Visibility', d: 'Active-duty pilots within 24 months of anticipated discharge can access the platform\'s pathway comparison tools in read-only mode — seeing exactly what civilian operators require, what gaps they need to close before discharge, and what transition pathway is optimal given their specific military background. The preparation window is restored.' },
+            ] as { t: string; d: string }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The ROI Case — Veterans, Operators, and the Defence Sector</h3>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-3 font-semibold">Metric</th>
+                  <th className="text-left px-4 py-3 font-semibold text-red-400">Current Reality</th>
+                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>With Platform Translation Layer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { m: 'Time to commercial employment post-discharge', curr: '12 months average', plat: '3 months — verified profile, fast-track pathway match' },
+                  { m: 'Transition training cost', curr: '$25,000 full type rating', plat: '$12,500 — 50% reduction via verified competency credit' },
+                  { m: 'Post-service employment rate', curr: '60% within 12 months', plat: '90% — structured pathway visibility and pre-discharge preparation' },
+                  { m: 'Military hour recognition', curr: 'Approximate, informal, undersold', plat: 'Verified, complexity-weighted, EBT-mapped, operator-visible' },
+                  { m: 'Pathway visibility during service', curr: 'None', plat: 'Read-only access from 24 months pre-discharge' },
+                ].map((row, i) => (
+                  <tr key={row.m} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.m}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400">{row.curr}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.plat}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2">Commercial Access — Defense Commands &amp; Veteran Organisations</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Defense commands and veteran aviation organisations access the platform under a bespoke partnership framework — the translation infrastructure is not a product sold to veterans; it is a structural capability built in partnership with the defence institutions that produced them.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Partnership Type</th>
+                  <th className="text-left px-4 py-2 font-semibold">Structure</th>
+                  <th className="text-left px-4 py-2 font-semibold">Deliverable</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { type: 'Defense Command MOU', structure: 'Memorandum of Understanding — no fee', deliverable: 'Secure API access for service record validation. Translation matrix co-development. Pre-discharge pathway visibility for active-duty pilots within 24 months of ETS.' },
+                  { type: 'Veteran Aviation Organisation', structure: 'Affiliate partner — revenue share on programme enrolments', deliverable: 'Co-branded Veteran Fast-Track pathway cards. Priority matching for verified veteran profiles. Aggregate transition outcome reporting.' },
+                  { type: 'Operator — Veteran Preference', structure: 'Included in existing Enterprise operator tier', deliverable: 'Veterans filter in pilot database search. Veteran Fast-Track pathway card publishing. Expedited assessment flag on matched veteran profiles.' },
+                ] as { type: string; structure: string; deliverable: string }[]).map((row, i) => (
+                  <tr key={row.type} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.type}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.structure}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.deliverable}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What Defense Commands Are Required to Provide</h4>
+          {[
+            { t: 'Essential', items: ['Translation matrices — co-develop the sortie-to-civilian-hour conversion standards (sorties × complexity factor) that form the verified baseline for military pilot Recognition Profiles', 'Secure API validation — provide access to service record and flight hour verification infrastructure at classified-level security', 'Discharge status verification — Honourable and General Under Honourable confirmation for platform eligibility'] },
+            { t: 'Preferred', items: ['Participate in Veteran Fast-Track pathway development — define the expedited assessment criteria operators should apply to verified veteran profiles', 'Share veteran employment outcome data (anonymised) — used to refine the transition model and improve pathway targeting accuracy', 'Provide introductions to veteran aviation organisations for co-branded programme deployment'] },
+            { t: 'Strategic', items: ['Industry advisory role — shape the military-to-civilian competency conversion standard that the whole sector adopts', 'Beta test Pre-Service Transition Visibility — grant read-only platform access to active-duty pilots within 24 months of discharge', 'Joint research on military-to-airline performance correlation — build the evidence base that unlocks type rating credit for verified military profiles'] },
+          ].map((section) => (
+            <div key={section.t} className="mb-4">
+              <p className="text-slate-700 font-semibold mb-1">{section.t}:</p>
+              <ul className="space-y-1">
+                {section.items.map((item) => (
+                  <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                    <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+                    <span className="text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>Every veteran pilot who leaves military service and disappears from aviation is a national failure.</strong> The defence sector trained them. The commercial sector needs them. The gap between those two facts exists only because no structured translation infrastructure has ever been built. <strong style={{color:'#f87171'}}>PilotRecognition builds it — and in doing so, keeps the most capable aviators in the industry that needs them most.</strong></p>
           </div>
 
           <hr className="my-10 border-slate-300" />
