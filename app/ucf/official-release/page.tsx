@@ -1964,6 +1964,66 @@ export default function UCFOfficialReleasePage() {
             </ul>
           </div>
 
+          <h5 className="text-base font-bold text-slate-800 mt-8 mb-3">The Multi-Node Model vs. Generic Verification — Feature Comparison</h5>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Feature</th>
+                  <th className="text-left px-4 py-2 font-semibold text-slate-400">Generic Verification</th>
+                  <th className="text-left px-4 py-2 font-semibold" style={{color:'#f87171'}}>Pillar 11 Multi-Node Model</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { feature: 'Routing', generic: 'Manual / random assignment', pillar: 'Automated — Jurisdiction-First, Anchor Key routing by issuing authority' },
+                  { feature: 'Trust Model', generic: '"Take our word for it" — PDF on file', pillar: 'SSI — W3C Verifiable Credential, cryptographically signed by the issuing authority' },
+                  { feature: 'Data Residency', generic: 'Cross-border transfer risk — GDPR liability', pillar: 'Natively local — data stays within regional node until pilot actively shares the token' },
+                  { feature: 'Monitoring', generic: 'Point-in-time snapshot — valid on print date only', pillar: 'Live Stream — Active Listener on authority databases, 90/60/30-day renewal alerts, same-day flag on licence suspension' },
+                  { feature: 'Pilot Experience', generic: 'Redundant & repetitive — new check per employer', pillar: 'Verify Once, Apply Anywhere — portable wallet, single consent, recognised across every operator on the platform' },
+                  { feature: 'Aviation Specificity', generic: 'Generic HR process — no Class 1 medical tracking, no CTC, no type rating awareness', pillar: 'Aviation-native taxonomy — medical expiry windows, type ratings, CTC, airside passes, multi-authority licence validation' },
+                  { feature: 'Revenue Model for Partners', generic: 'One-time check fee per employer request', pillar: 'Recurring — medical renewals, licence revalidations, employment updates, continuous monitoring pulse fees' },
+                ] as { feature: string; generic: string; pillar: string }[]).map((row, i) => (
+                  <tr key={row.feature} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                    <td className="px-4 py-2 border border-slate-200 font-semibold text-slate-800 whitespace-nowrap">{row.feature}</td>
+                    <td className="px-4 py-2 border border-slate-200 text-slate-500 text-xs">{row.generic}</td>
+                    <td className="px-4 py-2 border border-slate-200 text-slate-700 text-xs font-medium">{row.pillar}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h5 className="text-base font-bold text-slate-800 mt-8 mb-2">The Data Contribution Credit — The Moat Builder</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">The $2.00 operator credit for contributing Deep Check results back to a pilot's wallet is not just a pricing incentive. It is the mechanism that builds the platform's most durable competitive moat. Airlines are typically data hoarders — verification results sit in internal HR systems, used once, never shared. The credit inverts this behaviour by making contribution economically rational.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Once a pilot's wallet contains verified contributions from three or more major operators — criminal checks, incident history, conduct records — that wallet becomes the most comprehensive verified pilot record in existence. <strong style={{color:'#dc2626'}}>A pilot whose professional standing is physically stored in this ecosystem has no incentive to leave it.</strong> Every new employer contribution deepens the lock-in. The platform is not just a job board the pilot uses occasionally — it is the permanent, living record of their entire aviation career. The moat is built one $2.00 credit at a time.</p>
+
+          <h5 className="text-base font-bold text-slate-800 mt-8 mb-2">Partner ROI Summary — The Regional Partner View</h5>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">ROI Driver</th>
+                  <th className="text-left px-4 py-2 font-semibold">What It Means for the Partner</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { driver: 'Zero Acquisition Cost', value: 'No sales team required for pilots. The platform sends ready-to-verify EASA (or regional equivalent) leads directly from every Recognition+ signup within the partner\'s jurisdiction. The pipeline is automatic.' },
+                  { driver: 'High-Margin Recurring Revenue', value: 'Continuous Monitoring generates a recurring fee every 6–12 months per pilot — triggered by medical certificate and licence revalidation windows, not by the pilot seeking a new job. Revenue is decoupled from hiring activity.' },
+                  { driver: 'Territorial Dominance', value: 'The Lead Node for a region is the default and exclusive processor for every pilot whose primary licence falls within that jurisdiction. No other regional partner can process that check. Territory is protected by routing logic, not by contract negotiation.' },
+                  { driver: 'Cryptographic Authority', value: 'The regional partner acts as the Cryptographic Signer — not just a confirmer of facts, but the issuer of a signed digital token. The "Verification Preferred" badge on the platform is their signature. It is unforgeable and permanently associated with their node.' },
+                  { driver: 'Single Integration, Global Distribution', value: 'One API integration to PilotRecognition gives the partner distribution across every airline, cargo operator, charter operator, and emerging sector employer on the platform — globally. The platform handles sales, routing, and payment. The partner handles checks.' },
+                ] as { driver: string; value: string }[]).map((row, i) => (
+                  <tr key={row.driver} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-red-400 whitespace-nowrap align-top">{row.driver}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           <ul className="text-sm text-slate-700 space-y-1 mb-6 ml-4 list-disc">
             <li>10–15% revenue share on verification fees — passive income without operational overhead</li>
             <li>Volume multiplier: one verified pilot applies to 5+ airlines = 5x check volume per user</li>
