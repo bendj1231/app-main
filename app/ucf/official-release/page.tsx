@@ -1034,18 +1034,23 @@ export default function UCFOfficialReleasePage() {
             <p className="text-slate-800 text-sm leading-relaxed mb-2">What you can optionally request — at your cost, on selected candidates only — are the <strong>charter-specific deeper checks</strong>: criminal background, security vetting, right-to-work validation, conduct records, and NDA compliance history. Operator-initiated, pilot-consented, fully configurable.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 mb-3">
               <div className="bg-red-100 border border-red-300 rounded px-4 py-3 text-sm">
-                <p className="font-bold text-red-700 mb-1">Executive Search Firm</p>
-                <p className="text-red-800">20% of first-year salary <strong>= $20,000–$40,000 per placement</strong></p>
-                <p className="text-red-700">+ 60–90 day lead time</p>
-                <p className="text-red-700">+ No pre-verification. Candidate still needs full background checks.</p>
+                <p className="font-bold text-red-700 mb-2">Executive Search Firm</p>
+                <p className="text-red-800 mb-1">20% of first-year salary <strong>= $40,000</strong> (on a $200k Captain role)</p>
+                <p className="text-red-700 mb-1">+ 60–90 day lead time</p>
+                <p className="text-red-700 mb-1">+ No pre-verification — full background check still required on top</p>
+                <p className="text-red-700 mb-1">+ If pilot leaves in under 12 months: <strong>$40,000 burned, process restarts</strong></p>
+                <p className="font-bold text-red-800 mt-2 pt-2 border-t border-red-300">Total cost to hire: <strong>~$40,000+</strong></p>
               </div>
               <div className="bg-green-50 border border-green-300 rounded px-4 py-3 text-sm">
-                <p className="font-bold text-green-700 mb-1">PilotRecognition Enterprise</p>
-                <p className="text-green-800"><strong>$1,000/yr flat</strong> — unlimited placements</p>
-                <p className="text-green-700">+ Instant ELT match against pre-verified pool</p>
-                <p className="text-green-700">+ Layer 2 deep-checks only on your final shortlist</p>
+                <p className="font-bold text-green-700 mb-2">PilotRecognition Enterprise</p>
+                <p className="text-green-800 mb-1">$1,000/yr flat — unlimited placements, all sectors</p>
+                <p className="text-green-700 mb-1">+ Instant ELT match — pre-verified Recognition+ pool</p>
+                <p className="text-green-700 mb-1">+ ~$12 Layer 2 deep-check on your final shortlist candidate</p>
+                <p className="text-green-700 mb-1">+ $500 success fee per confirmed placement</p>
+                <p className="font-bold text-green-800 mt-2 pt-2 border-t border-green-300">Total cost to hire: <strong>$1,512</strong> — same day</p>
               </div>
             </div>
+            <p className="text-slate-700 text-sm leading-relaxed italic mb-2">The Director of Aviation takes this comparison to the CFO: <em>"I can get you a pre-vetted, background-checked Gulfstream Captain tomorrow and save you $38,488 on the placement fee."</em> The CFO signs the $1,000 subscription on the spot.</p>
             <p className="text-slate-800 text-sm leading-relaxed"><strong style={{color:'#dc2626'}}>Pay only for the Layer 2 deep-checks on your verified shortlist. Not on every applicant. Not from scratch. Not repeatedly.</strong></p>
           </div>
           <p className="text-slate-600 text-sm mb-8"><strong>Success Fee:</strong> $500 per confirmed placement (waived for first 5 placements)</p>
