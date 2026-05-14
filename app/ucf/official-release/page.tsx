@@ -1499,8 +1499,8 @@ export default function UCFOfficialReleasePage() {
               { t: 'Professional Identity Development', d: 'How pilots portray themselves to employers. Communication skills, professional presence, and the pilot mindset beyond stick-and-rudder proficiency — the behavioural profile airlines assess before they assess the hours.' },
               { t: 'Emotional Intelligence & Recognition', d: 'Validation of the 200+ hour journey. Peer mentorship from program graduates. A structured sense of accomplishment beyond the licence — the recognition the industry currently provides no mechanism for.' },
               { t: 'Industry Alignment', d: 'EBT and CBTA competency frameworks — what airlines actually assess. ATLAS Aviation CV formatting — what ATS systems actually parse. Interview preparation specific to each operator type in Hub A.' },
-              { t: 'Verified Competency Portfolio', d: '50-hour mentorship tracking logged and attested. Behavioural assessment scores (cognitive/constructivist alignment). Digital credentials stored in the Professional Standing Asset — portable, verified, and visible to every operator on the platform.' },
-            ] as {t: string; d: string}[]).map((item) => (
+              { t: 'Verified Competency Portfolio', d: <>50-hour mentorship tracking logged and attested. Behavioural assessment scores (cognitive/constructivist alignment). Digital credentials stored in the Professional Standing Asset (Pillar 11) — portable, verified, and visible to every operator on the platform. <strong style={{color:'#dc2626'}}>Enterprise ATOs become Verified Issuers on the platform.</strong> At graduation, the school pushes a cryptographically signed digital token — "CPL-Complete", "AAM-Ready", or operator-specific designation — directly into the pilot\'s Professional Standing Asset. No paper certificates. No self-reported claims. <strong>Unforgeable trust from Day One.</strong></> },
+            ] as {t: string; d: React.ReactNode}[]).map((item) => (
               <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                 <span className="text-red-500 mt-1 flex-shrink-0">→</span>
                 <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
@@ -1530,10 +1530,10 @@ export default function UCFOfficialReleasePage() {
             {([
               { t: 'Market differentiation', d: '"We don\'t just train pilots — we prepare professionals." ATOs with verified placement outcomes and program integration attract students from opaque competitors who cannot demonstrate the same.' },
               { t: 'Verified placement rates', d: 'Graduation placement statistics published on the platform — audited, not self-reported. The first ATO to publish verified outcomes in a market owns that credibility permanently.' },
-              { t: 'Referral revenue', d: '$20 per graduate who joins the platform. Co-branded badging: "Trained at [School]" displayed on every affiliated pilot\'s Recognition Profile — a permanent, visible endorsement in front of every operator on the platform.' },
+              { t: 'Referral revenue', d: <><strong style={{color:'#34d399'}}>The platform pays the ATO $20 for every student who graduates and activates a paid Recognition+ profile.</strong> An Enterprise ATO graduating 50 students per month receives $1,000 back in referral commissions — effectively offsetting the monthly subscription cost entirely. The tier stops being a cost centre and becomes a profit centre. Co-branded badging: "Trained at [School]" displayed on every affiliated pilot\'s Recognition Profile — a permanent, visible endorsement in front of every operator on the platform.</> },
               { t: 'Analytics dashboard', d: 'Graduate outcome tracking in real time. Which graduates are aligning with which pathways. Where gaps are occurring. What curriculum improvements are producing the strongest industry outcomes.' },
               { t: 'Recognition-Ready status', d: 'Partner schools are listed as Recognition-Ready Training Providers on the platform — a verified signal to pilots, parents, and operators that the school\'s graduates arrive pre-aligned to industry requirements.' },
-            ] as {t: string; d: string}[]).map((item) => (
+            ] as {t: string; d: React.ReactNode}[]).map((item) => (
               <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                 <span className="text-red-500 mt-1 flex-shrink-0">→</span>
                 <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
@@ -1623,7 +1623,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The first ATO to publish verified, audited placement rates in their market owns that credibility permanently.</strong> In a sector where predatory competitors make unverifiable promises, a school that publishes real outcomes — and connects graduates to real, verified operator pathways on day one — will capture enrolment from every competitor that cannot say the same. <strong style={{color:'#f87171'}}>Dominate your market by being the only school that can prove it.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The first ATO to publish verified, audited placement rates in their market owns that credibility permanently. In regions where pilot mills prey on naive students with unverifiable promises, PilotRecognition becomes the Auditor of Truth. A school that publishes real, independently verified outcomes — and connects graduates to verified operator pathways from graduation day — will capture enrolment from every competitor that cannot say the same. The predatory school cannot fake a placement rate that the platform audits. The high-quality ATO cannot lose to one that can. Dominate your market by being the only school that can prove it.</strong></p>
           </div>
 
           <hr className="my-10 border-slate-300" />
