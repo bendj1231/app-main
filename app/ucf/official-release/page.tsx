@@ -870,7 +870,7 @@ export default function UCFOfficialReleasePage() {
               { t: 'VIP service disposition', d: 'Years of high-pressure instruction and passenger-facing operations builds the calm, professional, client-first disposition that charter operators require. This cannot be trained in a simulator — it is demonstrated through career history.' },
               { t: 'Multi-engine command and jet time', d: 'Senior instructors and experienced FOs on multi-engine jets hold the exact time profile that light and mid-size charter operators specify — without the seniority lock-in of a legacy carrier.' },
               { t: 'Immediate deployment readiness', d: 'Pilots not embedded in airline seniority systems can transition to charter operations faster — no notice period negotiations, no seniority sacrifice, no position downgrade. They arrive ready.' },
-              { t: 'Discretion and confidentiality track record', d: 'Flight instructors and professional pilots operate under implicit confidentiality obligations with every student and passenger. Charter operators need pilots who understand discretion as a professional default — not a policy they have to be trained on.' },
+              { t: 'Discretion and confidentiality track record', d: 'Flight instructors and professional pilots operate under implicit confidentiality obligations with every student and passenger. Charter operators need pilots who understand discretion as a professional default — not a policy they have to be trained on. The Professional Standing Asset (Pillar 11) surfaces specific verifiable discretion markers: documented NDA compliance history, absence of social media policy violations confirmed by previous employers, and an unblemished VIP conduct record — the exact signals a VVIP operator or private family office aviation manager needs before an approach is made.' },
             ] as { t: string; d: string }[]).map((item) => (
               <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                 <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
@@ -942,15 +942,25 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">FOR CHARTER OPERATORS: Structured Operator Profile</h4>
           <p className="text-slate-700 leading-relaxed mb-3">Operators on Pillar 3 configure a confidential backend profile with five structured sections — none of which is visible without a verified Recognition+ profile match:</p>
-          <ul className="space-y-1 mb-5 ml-4 text-slate-700 text-sm list-disc">
-            {[
-              'Operator Identity — aircraft type, fleet size, operational base, client sector (corporate, HNWI, government)',
-              'Deployment Requirements — timeline expectations, standby availability, contractual terms',
-              'Pilot Profile Requirements — hours minima, type ratings, language requirements, presentation standards',
-              'Compensation Structure — base salary, per diem, trip allowances, retention bonuses, comparison benchmark',
-              'Culture & Lifestyle Transparency — scheduling pattern, trip duration, client interaction expectations, crew culture',
-            ].map((item) => <li key={item}>{item}</li>)}
-          </ul>
+          {[
+            { heading: 'Operator Identity', items: ['Aircraft type, fleet size, operational base', 'Client sector: corporate, HNWI, government, private family office'] },
+            { heading: 'Deployment Requirements', items: ['Engagement type: Full-Time Permanent / Long-Term Contract / Short-Term Contract (trip-by-trip)', 'Timeline expectations and standby availability requirements', 'Contractual terms and notice period expectations', 'Pop-up trip sourcing — operator can flag the profile as open to short-notice contract deployment'] },
+            { heading: 'Pilot Profile Requirements', items: ['Hours minima: total time, command time, jet time, multi-engine', 'Type ratings required or preferred', 'Language requirements, presentation standards', 'NDA micro-credentials and VIP conduct record expected'] },
+            { heading: 'Compensation Structure', items: ['Base salary, per diem, trip allowances, retention bonuses', 'Contract day rates for short-term engagements', 'Benchmark comparison against sector average'] },
+            { heading: 'Culture & Lifestyle Transparency', items: ['Scheduling pattern, trip duration, layover frequency', 'Client interaction level and confidentiality obligations', 'Crew culture and operating environment'] },
+          ].map((section) => (
+            <div key={section.heading} className="mb-4">
+              <p className="text-slate-700 font-semibold mb-1">{section.heading}:</p>
+              <ul className="space-y-1">
+                {section.items.map((item) => (
+                  <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                    <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+                    <span className="text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Access to the Pilot Database</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Charter operators access the same live verified pilot database as commercial and cargo operators — filtered specifically for charter-relevant profile criteria: jet command time, multi-engine hours, presentation history, CRM scores, and Recognition Score threshold.</p>
@@ -1022,7 +1032,21 @@ export default function UCFOfficialReleasePage() {
           <div className="my-6 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
             <p className="text-slate-800 text-sm leading-relaxed mb-2"><strong>Verification Cost Advantage for Charter Operators:</strong> Every Recognition+ pilot who reaches your pathway card has already self-verified their identity, license, medical, employment history, jet time, and command hours — stored in their portable Professional Standing Asset. When a matched pilot surfaces in your results, their core verification is <strong>already done.</strong> You are not paying to run checks on a candidate you haven’t even spoken to yet.</p>
             <p className="text-slate-800 text-sm leading-relaxed mb-2">What you can optionally request — at your cost, on selected candidates only — are the <strong>charter-specific deeper checks</strong>: criminal background, security vetting, right-to-work validation, conduct records, and NDA compliance history. Operator-initiated, pilot-consented, fully configurable.</p>
-            <p className="text-slate-800 text-sm leading-relaxed"><strong>The saving:</strong> Stop paying executive search firms 15–25% of first-year salary to find and vet a candidate. On this platform, the pilot is pre-verified and pre-matched before you spend a dollar. <strong style={{color:'#dc2626'}}>Pay only for the Layer 2 deep-checks on your verified shortlist. Not on every applicant. Not from scratch. Not repeatedly.</strong></p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 mb-3">
+              <div className="bg-red-100 border border-red-300 rounded px-4 py-3 text-sm">
+                <p className="font-bold text-red-700 mb-1">Executive Search Firm</p>
+                <p className="text-red-800">20% of first-year salary <strong>= $20,000–$40,000 per placement</strong></p>
+                <p className="text-red-700">+ 60–90 day lead time</p>
+                <p className="text-red-700">+ No pre-verification. Candidate still needs full background checks.</p>
+              </div>
+              <div className="bg-green-50 border border-green-300 rounded px-4 py-3 text-sm">
+                <p className="font-bold text-green-700 mb-1">PilotRecognition Enterprise</p>
+                <p className="text-green-800"><strong>$1,000/yr flat</strong> — unlimited placements</p>
+                <p className="text-green-700">+ Instant ELT match against pre-verified pool</p>
+                <p className="text-green-700">+ Layer 2 deep-checks only on your final shortlist</p>
+              </div>
+            </div>
+            <p className="text-slate-800 text-sm leading-relaxed"><strong style={{color:'#dc2626'}}>Pay only for the Layer 2 deep-checks on your verified shortlist. Not on every applicant. Not from scratch. Not repeatedly.</strong></p>
           </div>
           <p className="text-slate-600 text-sm mb-8"><strong>Success Fee:</strong> $500 per confirmed placement (waived for first 5 placements)</p>
 
