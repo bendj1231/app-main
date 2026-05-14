@@ -229,7 +229,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-slate-700 leading-relaxed mb-4">He called and said he was quitting. That if he did not stop now, he would never financially recover. <strong>A pilot with Airbus-level family connections, a completed type rating, simulator certification, and 6 million pesos invested — had nothing to show for it.</strong></p>
             <div className="border-l-4 border-red-500 pl-4 py-2">
               <p className="text-slate-800 text-sm leading-relaxed italic">"If this is happening to Daniel — someone with every advantage the industry can offer — what is happening to the rest of us?"</p>
-              <p className="text-slate-500 text-xs mt-1">— Andrew Bowler, Founder, PilotRecognition.com</p>
+              <p className="text-slate-500 text-xs mt-1">— Karl &amp; Benjamin, Co-Founders, PilotRecognition.com</p>
             </div>
           </div>
 
