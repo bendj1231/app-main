@@ -11,6 +11,7 @@ const navSections = [
   { id: 'part-ii-hub-a', label: 'Hub A — Pathways & Expectations' },
   { id: 'pillar-1-commercial-airlines', label: '→ Pillar 1: Commercial Airlines', indent: true },
   { id: 'pillar-2-cargo-freight', label: '→ Pillar 2: Cargo & Freight Operators', indent: true },
+  { id: 'pillar-3-charter-business', label: '→ Pillar 3: Charter & Business Aviation', indent: true },
   { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
 ];
 
@@ -815,6 +816,167 @@ export default function UCFOfficialReleasePage() {
           </div>
           <p className="text-slate-600 text-sm mb-4">At <strong>$100 per year</strong>, this is the only structured channel where cargo operators can present themselves to an audience of exclusively verified, career-active pilots who are actively comparing their options — before they apply anywhere.</p>
           <p className="text-slate-600 text-sm mb-8"><strong>Success Fee:</strong> $500 per confirmed hire (waived for first 10 hires)</p>
+
+          <hr className="my-10 border-slate-300" />
+
+          <h2 id="pillar-3-charter-business" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            PILLAR 3: CHARTER &amp; BUSINESS AVIATION
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Operations &amp; Recruitment</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: A Sector That Recruits in the Dark</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Charter and business aviation is one of the most demanding and least understood sectors in professional aviation. It operates on discretion by design — operators do not post publicly, clients do not tolerate exposure, and pilots are expected to arrive pre-qualified, pre-vetted, and ready to deploy within days. <strong>The result is a recruitment model that is almost entirely invisible to the pilots who would be most suited for it.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots qualified for charter and business aviation roles — typically experienced FOs and Captains with multi-engine command time, strong CRM records, and jet experience — are circulating in the same generic job boards as every other sector. They have no structured way to signal their suitability for VIP, VVIP, or charter operations. Operators have no structured way to find them without activating expensive executive search firms or relying on closed-network word-of-mouth.</p>
+          <p className="text-slate-700 leading-relaxed mb-6"><strong>Pillar 3 addresses this with a stealth-capable, discretion-first pathway layer — structured operator profiles visible only to matched, verified pilots, with deployment timelines, compensation frameworks, and VIP-specific competency requirements published for the first time in a structured, searchable format.</strong></p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Untapped Pool: Pilots Already Ready for Charter — Facing the Wrong Direction</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The same clogged pipeline that produces cargo-ready instructors produces charter-ready pilots. <strong>Senior flight instructors and experienced passenger FOs</strong> with strong interpersonal skills, immaculate presentation, and multi-engine jet time are often ideally suited for charter and business aviation — but are never presented with the pathway. The sector's discretion works against both sides: operators don't advertise, pilots don't know to look.</p>
+          <ul className="space-y-2 mb-6">
+            {([
+              { t: 'VIP service disposition', d: 'Years of high-pressure instruction and passenger-facing operations builds the calm, professional, client-first disposition that charter operators require. This cannot be trained in a simulator — it is demonstrated through career history.' },
+              { t: 'Multi-engine command and jet time', d: 'Senior instructors and experienced FOs on multi-engine jets hold the exact time profile that light and mid-size charter operators specify — without the seniority lock-in of a legacy carrier.' },
+              { t: 'Immediate deployment readiness', d: 'Pilots not embedded in airline seniority systems can transition to charter operations faster — no notice period negotiations, no seniority sacrifice, no position downgrade. They arrive ready.' },
+              { t: 'Discretion and confidentiality track record', d: 'Flight instructors and professional pilots operate under implicit confidentiality obligations with every student and passenger. Charter operators need pilots who understand discretion as a professional default — not a policy they have to be trained on.' },
+            ] as { t: string; d: string }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Pilots</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'Charter is invisible as a pathway', d: <><strong>No platform presents charter or business aviation as a structured, searchable pathway.</strong> Pilots with the right profile — multi-engine command time, jet experience, strong CRM — <strong>never see the door.</strong></> },
+              { n: '2', t: 'No published requirements', d: <><strong>VIP and VVIP operator requirements are never published.</strong> Hours minima, type rating preferences, grooming standards, language requirements, security clearance expectations — none of it is available before the approach stage.</> },
+              { n: '3', t: 'No profile gap analysis for charter', d: <>Pilots cannot compare their current profile against a charter operator's specific requirements. <strong>The gaps are invisible until an informal approach is made — and rejected.</strong></> },
+              { n: '4', t: 'Compensation opacity', d: <><strong>Charter pay structures are almost never disclosed upfront.</strong> Per-diem rates, standby allowances, trip pay structures, and retention bonuses are negotiated blind — with no market benchmark available to pilots.</> },
+              { n: '5', t: 'No transition pathway from airlines', d: <>Senior airline pilots considering a move to charter aviation — for lifestyle, flexibility, or compensation reasons — have <strong>no structured route to evaluate operators, compare packages, or signal interest without compromising their current employment.</strong></> },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Charter &amp; Business Aviation Operators</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'No discreet recruitment channel', d: <><strong>Public job postings are incompatible with VIP and VVIP operations.</strong> Operators cannot advertise without attracting unsuitable candidates, exposing client confidentiality, or triggering internal speculation among existing crew.</> },
+              { n: '2', t: 'Expensive executive search dependency', d: <>Without a structured platform, operators rely on executive search firms charging <strong>15–25% of first-year salary per placement</strong> — for a role that may turn over within 18 months. The cost model is unsustainable for smaller operators.</> },
+              { n: '3', t: 'No pre-verified candidate pipeline', d: <>Every candidate requires a full background check, reference verification, and security vetting from scratch. <strong>No pre-cleared pool exists.</strong> Deployment timelines stretch to 90+ days — unacceptable for operational coverage gaps.</> },
+              { n: '4', t: 'Retention failure at the lifestyle stage', d: <>Charter operators lose pilots who self-select in without understanding the lifestyle: irregular scheduling, standby requirements, extended trips, and confidentiality obligations. <strong>No platform communicates this honestly before hire — resulting in high early-tenure attrition.</strong></> },
+              { n: '5', t: 'No seniority-matched compensation framework', d: <>Operators compete for experienced pilots against airlines offering transparent seniority-based pay scales. Charter compensation is competitive but <strong>structurally opaque</strong> — operators cannot demonstrate their value proposition without a structured disclosure channel.</> },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Platform Solution</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 3 introduces a <strong>stealth pathway layer</strong> — a distinct mode of operator presence on the platform designed for sectors where public visibility is operationally inappropriate. Charter and business aviation operators can publish structured pathway requirements visible only to pilots whose verified profiles match the operator's specified criteria. <strong>No public listing. No open applications. No exposure.</strong></p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">FOR PILOTS: Charter Pathway Cards</h4>
+          <p className="text-slate-700 leading-relaxed mb-3">Matched pilots receive a charter pathway card — visible only to them, based on profile alignment. Each card contains:</p>
+          <ul className="space-y-1 mb-5 ml-4 text-slate-700 text-sm list-disc">
+            {[
+              'Operator type (light jet, mid-size, heavy, VVIP)',
+              'Base of operations and trip profile (regional, international, ultra-long-range)',
+              'Type rating requirements and preferred aircraft types',
+              'Minimum hours — total time, command time, jet time, multi-engine',
+              'Deployment timeline expectations (standby, on-call, rostered)',
+              'Compensation framework — base, per diem, trip pay, retention structure',
+              'Lifestyle disclosure — scheduling pattern, layover frequency, client interaction level',
+              'Security and confidentiality requirements',
+              'Upgrade and progression pathway (Captain timelines, fleet transitions)',
+              'Recognition Score threshold and profile gap comparison',
+            ].map((item) => <li key={item}>{item}</li>)}
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">FOR CHARTER OPERATORS: Expectations Page &amp; Stealth Protocol</h4>
+          <p className="text-slate-700 leading-relaxed mb-3">Operators on Pillar 3 configure a backend profile with five structured sections — none of which is publicly visible without a verified match:</p>
+          <ul className="space-y-1 mb-5 ml-4 text-slate-700 text-sm list-disc">
+            {[
+              'Operator Identity — aircraft type, fleet size, operational base, client sector (corporate, HNWI, government)',
+              'Deployment Requirements — timeline expectations, standby availability, contractual terms',
+              'Pilot Profile Requirements — hours minima, type ratings, language requirements, presentation standards',
+              'Compensation Structure — base salary, per diem, trip allowances, retention bonuses, comparison benchmark',
+              'Culture & Lifestyle Transparency — scheduling pattern, trip duration, client interaction expectations, crew culture',
+            ].map((item) => <li key={item}>{item}</li>)}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Access to the Pilot Database</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Charter operators access the same live verified pilot database as commercial and cargo operators — filtered specifically for charter-relevant profile criteria: jet command time, multi-engine hours, presentation history, CRM scores, and Recognition Score threshold.</p>
+          <ul className="space-y-3 mb-4">
+            {([
+              { t: 'Recognition+ Members — Priority Access', d: 'Background verified, pre-cleared pilots with a completed digital credential wallet. Highest-quality tier — ready for immediate deployment consideration. Ideal for operators with 30-day placement timelines.' },
+              { t: 'Submitted Recognition Users — Profile-Matched Pool', d: 'Platform members who have submitted interest and whose profiles align with charter pathway requirements. Filtered by jet time, command hours, and Recognition Score. Verification can be initiated immediately by the operator.' },
+            ] as { t: string; d: string }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2">Commercial Tiers — Charter Operator Access</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Charter operators access the platform through two independent products — stealth pathway listings and an operator expectations page. Both are priced independently.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 1 — Stealth Pathway Listings &amp; Pilot Database Access</h4>
+          <p className="text-slate-600 text-sm mb-3">For charter operators posting confidential pathway requirements and pulling from the verified pilot database.</p>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Tier</th>
+                  <th className="text-left px-4 py-2 font-semibold">Fee</th>
+                  <th className="text-left px-4 py-2 font-semibold">Includes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { tier: 'Basic', fee: 'Free', features: <>Post up to 2 stealth pathway cards. <strong style={{color:'#dc2626'}}>View the first 10 matched pilots</strong> — full profiles visible. <strong style={{color:'#dc2626'}}>Remaining matched pilots are blurred</strong> — live signal of interest without full pool access. <span style={{color:'#dc2626'}}>No database search. No Recognition Score access.</span></> },
+                  { tier: 'Enterprise', fee: '$1,000/yr', features: <><strong style={{color:'#dc2626'}}>Unlimited stealth pathway listings</strong>, full pilot database access, Recognition Score and jet hours data, <strong style={{color:'#dc2626'}}>dedicated account support</strong>, NDA-enforced placement protocol, API access.</> },
+                ] as { tier: string; fee: string; features: React.ReactNode }[]).map((row, i) => (
+                  <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.features}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 2 — Charter Operator Expectations Page</h4>
+          <p className="text-slate-600 text-sm mb-3">A separate product. A structured, confidential-mode operator presence — visible to pilots only after profile match, not publicly browsable.</p>
+          <div className="overflow-x-auto mb-4">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Product</th>
+                  <th className="text-left px-4 py-2 font-semibold">Annual Fee</th>
+                  <th className="text-left px-4 py-2 font-semibold">What It Includes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { tier: 'Charter Expectations Listing', fee: '$100/year', features: 'Structured operator profile — fleet type, base, trip profile, compensation framework, lifestyle transparency, culture. Visible only to profile-matched, verified pilots. Not publicly searchable.' },
+                ] as { tier: string; fee: string; features: string }[]).map((row) => (
+                  <tr key={row.tier} className="bg-slate-800">
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.features}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-slate-600 text-sm mb-8"><strong>Success Fee:</strong> $500 per confirmed placement (waived for first 5 placements)</p>
 
           <hr className="my-10 border-slate-300" />
 
