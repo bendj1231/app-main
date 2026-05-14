@@ -13,6 +13,7 @@ const navSections = [
   { id: 'pillar-2-cargo-freight', label: '→ Pillar 2: Cargo & Freight Operators', indent: true },
   { id: 'pillar-3-charter-business', label: '→ Pillar 3: Charter & Business Aviation', indent: true },
   { id: 'pillar-4-emerging-sectors', label: '→ Pillar 4: Emerging Aviation Sectors', indent: true },
+  { id: 'pillar-5-flight-training', label: '→ Pillar 5: Flight Training Organizations (ATOs)', indent: true },
   { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
 ];
 
@@ -1416,6 +1417,213 @@ export default function UCFOfficialReleasePage() {
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The first-mover advantage is real.</strong> Emerging aviation operators who publish competency frameworks on this platform define the industry standard before their competitors do. Early-career pilots who align their profile to those frameworks become the pipeline. <strong style={{color:'#f87171'}}>The operator who builds the framework owns the talent pool that grows around it.</strong></p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          <h2 id="pillar-5-flight-training" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            PILLAR 5: FLIGHT TRAINING ORGANIZATIONS (ATOs)
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub B — Training &amp; Transition</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: A Training Industry Operating in a Recognition Vacuum</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Flight training organisations produce pilots. Airlines require pilots. And yet the two sides operate in near-total informational isolation — producing a gap that costs the industry billions annually in hiring friction, washout losses, and misaligned investment. The ATO takes the fee. The industry takes the graduate. Neither side has visibility into what happens next — and neither has accountability for the distance between what training promises and what employment delivers.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Flight school graduation is transactional: hours logged, exams passed, certificate handed over. There is <strong>no emotional validation of the journey</strong>, no recognition of the personal transformation, no pride in the accomplishment beyond the paper credential. A pilot graduates with a degree and shakes the hand of the person handing it to them — and there is <strong>no structured recognition of what they built, no visible pathway forward, and no infrastructure connecting that moment to an industry that needs them</strong>.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Pillar 5 addresses this at both the institutional and individual level. It establishes a structured partnership framework for ATOs — connecting their graduates to verified operator pathways, publishing transparent placement outcomes, and integrating professional development programs directly into the graduation experience. <strong>The ATO stops being the end of the journey. It becomes the beginning of a verifiable career.</strong></p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>"If a pilot graduates with a degree and shakes the hand of the person giving him the degree without any pride, empathy, or simply recognition in his efforts — that's a problem we need to address towards flight schools as well."</strong></p>
+            <p className="text-slate-400 text-xs mt-2">— PilotRecognition founding team</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Structural Disconnect: What Schools Produce vs. What Airlines Assess</h3>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-3 font-semibold">Flight School Delivers</th>
+                  <th className="text-left px-4 py-3 font-semibold text-red-400">Industry Actually Assesses</th>
+                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>PilotRecognition Bridges</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { a: 'Hours logged', b: 'Behavioural patterns and decision-making', c: 'EBT video scoring and competency assessment' },
+                  { a: 'Checkrides passed', b: 'Simulator performance and CRM depth', c: 'CBTA-aligned assessment preparation' },
+                  { a: '"Get 1,500 hours"', b: 'Specific operator pathway alignment', c: 'Gap analysis and pathway targeting' },
+                  { a: 'Generic resume advice', b: 'ATLAS-formatted, ATS-parseable CVs', c: 'ATLAS formatting and ATS compatibility' },
+                  { a: 'Stick-and-rudder skills', b: '9 core EBT competencies', c: 'Competency framework and industry alignment' },
+                  { a: 'Graduation certificate', b: 'Verified professional identity', c: 'Recognition Profile and Day One Recognition' },
+                  { a: 'Hope and good luck', b: 'Structured evidence of readiness', c: 'Industry-ready verified portfolio' },
+                ].map((row, i) => (
+                  <tr key={row.a} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100">{row.a}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400">{row.b}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.c}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Programs: Extra-Curricular Professional Development</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition Programs are designed for <strong>both individual pilots and flight school campuses</strong> — as value-added extra-curricular offerings that sit alongside standard flight training, not replacing it. They address the gap between technical qualification and professional readiness.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Program</th>
+                  <th className="text-left px-4 py-2 font-semibold">Individual Pilot</th>
+                  <th className="text-left px-4 py-2 font-semibold">Campus Integration</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { prog: 'Foundation Program', pilot: '$49 self-enrolment', campus: 'Bulk campus licences for graduating classes' },
+                  { prog: 'Transition Program', pilot: '$299 self-enrolment', campus: 'Integrated into final semester curriculum' },
+                  { prog: 'EBT Video Scoring', pilot: 'Bundled with Transition', campus: 'Campus assessment centre partnership' },
+                ].map((row, i) => (
+                  <tr key={row.prog} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.prog}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.pilot}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.campus}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What Programs Add to Flight School Education</h4>
+          <ul className="space-y-2 mb-6">
+            {([
+              { t: 'Professional Identity Development', d: 'How pilots portray themselves to employers. Communication skills, professional presence, and the pilot mindset beyond stick-and-rudder proficiency — the behavioural profile airlines assess before they assess the hours.' },
+              { t: 'Emotional Intelligence & Recognition', d: 'Validation of the 200+ hour journey. Peer mentorship from program graduates. A structured sense of accomplishment beyond the licence — the recognition the industry currently provides no mechanism for.' },
+              { t: 'Industry Alignment', d: 'EBT and CBTA competency frameworks — what airlines actually assess. ATLAS Aviation CV formatting — what ATS systems actually parse. Interview preparation specific to each operator type in Hub A.' },
+              { t: 'Verified Competency Portfolio', d: '50-hour mentorship tracking logged and attested. Behavioural assessment scores (cognitive/constructivist alignment). Digital credentials stored in the Professional Standing Asset — portable, verified, and visible to every operator on the platform.' },
+            ] as {t: string; d: string}[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The "Day One Recognition" Vision</h4>
+          <p className="text-slate-700 leading-relaxed mb-3">Imagine a graduation day where the handshake comes with:</p>
+          <ul className="space-y-1 mb-6">
+            {[
+              'A verified Recognition Profile — not just a licence',
+              'A Recognition Score showing readiness — not just hours',
+              'A portfolio of competencies airlines can see — not just a resume',
+              'Connection to verified operator pathways — not just "good luck finding a job"',
+            ].map((item) => (
+              <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-6">That is the standard the industry should have held flight schools to from the beginning. <strong>PilotRecognition makes it possible — and makes it the competitive differentiator between an ATO that retains its graduates and one that watches them disappear into the void.</strong></p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Campus Partnership Benefits</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { t: 'Market differentiation', d: '"We don\'t just train pilots — we prepare professionals." ATOs with verified placement outcomes and program integration attract students from opaque competitors who cannot demonstrate the same.' },
+              { t: 'Verified placement rates', d: 'Graduation placement statistics published on the platform — audited, not self-reported. The first ATO to publish verified outcomes in a market owns that credibility permanently.' },
+              { t: 'Referral revenue', d: '$20 per graduate who joins the platform. Co-branded badging: "Trained at [School]" displayed on every affiliated pilot\'s Recognition Profile — a permanent, visible endorsement in front of every operator on the platform.' },
+              { t: 'Analytics dashboard', d: 'Graduate outcome tracking in real time. Which graduates are aligning with which pathways. Where gaps are occurring. What curriculum improvements are producing the strongest industry outcomes.' },
+              { t: 'Recognition-Ready status', d: 'Partner schools are listed as Recognition-Ready Training Providers on the platform — a verified signal to pilots, parents, and operators that the school\'s graduates arrive pre-aligned to industry requirements.' },
+            ] as {t: string; d: string}[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Cross-Border Training Partnerships — The Philippines ↔ Dubai Model</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots in developing aviation markets — Philippines, India, Africa — hold locally valid licences that lack global recognition. PRC licences do not travel. Meanwhile, GCC authorities (UAE, Qatar, Saudi Arabia) maintain rigorous standards respected worldwide. The <strong>18,000 AED cost for Dubai-affiliated training is prohibitive</strong> for most pilots in these markets — placing a globally recognised credential behind a capital barrier that structurally excludes qualified candidates from international airline consideration.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform resolves this through a <strong>bulk purchasing and exclusive channel model</strong>: 10+ pilots unlock a 44% discount (18,000 AED → 10,000 AED per pilot), with visa coordination, Fujairah exam scheduling, and travel logistics managed centrally. <strong>The result: a Philippines-licensed pilot arrives at the exam with a UAE-affiliated credential, at roughly half the retail cost, through a structured pathway that did not exist before.</strong></p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Component</th>
+                  <th className="text-left px-4 py-2 font-semibold">Standard Rate</th>
+                  <th className="text-left px-4 py-2 font-semibold text-red-400">Bulk Rate (10+)</th>
+                  <th className="text-left px-4 py-2 font-semibold" style={{color:'#34d399'}}>Platform Margin</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { c: 'Dubai Training', s: '18,000 AED', b: '10,000 AED', m: '8,000 AED (~$2,180)' },
+                  { c: 'Visa Coordination', s: '₱15,000', b: 'Included', m: 'Service value' },
+                  { c: 'Exam Logistics', s: '₱25,000', b: 'Included', m: 'Service value' },
+                  { c: 'Total to Pilot', s: '₱275,000', b: '₱153,000', m: '44% savings' },
+                ].map((row, i) => (
+                  <tr key={row.c} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.c}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.s}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.b}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.m}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-slate-600 text-sm mb-6">Annual cohort model creates recurring revenue. <strong>"You do this every year"</strong> — repeat cohorts of 10+ pilots generate consistent training partnership income while keeping pilots in the industry and building the platform's verified international pilot pool.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2">Commercial Tiers — ATO Access</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">ATOs access the platform through three tiers — from pathway listing only through to full CRM integration and co-branded graduate recognition.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Tier</th>
+                  <th className="text-left px-4 py-2 font-semibold">Monthly Fee</th>
+                  <th className="text-left px-4 py-2 font-semibold">Includes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { tier: 'Basic', fee: '$200/mo', features: <>Pathway listing only — ATO profile published on the platform, visible to pilots browsing training providers. Graduates can link their Recognition Profile to the ATO. <span style={{color:'#dc2626'}}>No graduate tracking or outcome analytics.</span></> },
+                  { tier: 'Analytics', fee: '$500/mo', features: <><strong style={{color:'#dc2626'}}>Graduate tracking dashboard</strong> — live visibility into which graduates are aligning with operator pathways, where gaps are occurring, and outcome metrics across the cohort. Placement rate verification and publication on ATO profile. Curriculum-to-pathway alignment documentation.</> },
+                  { tier: 'Enterprise', fee: '$1,000/mo + $20/referral', features: <><strong style={{color:'#dc2626'}}>CRM integration</strong> — graduate records sync directly with the platform. <strong>Co-branded graduation badges</strong> issued to graduates on the platform. Day One Recognition enrolment — automatic platform onboarding at graduation. Industry conference co-presentation access. Beta access to new assessment tools and curriculum alignment features.</> },
+                ] as { tier: string; fee: string; features: React.ReactNode }[]).map((row, i) => (
+                  <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.features}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What ATOs Are Required to Provide</h4>
+          <ul className="space-y-2 mb-4">
+            {([
+              { t: 'Essential', items: ['Transparent graduation placement statistics — verified by the platform, not self-reported', 'Curriculum alignment with specific operator pathways — syllabus-to-requirement mapping', 'Participation in the Graduate Pipeline program — direct operator connections for graduating cohorts'] },
+              { t: 'Preferred', items: ['Mentorship hour tracking integrated into student records', 'Scholarship program participation — 10% of available spots allocated as merit/need-based placements', 'ROI demonstration data for platform marketing and industry positioning'] },
+              { t: 'Strategic', items: ['Co-develop curriculum modules aligned with operator EBT requirements', 'Beta test Day One Recognition enrolment — automatic platform onboarding at graduation', 'Industry conference co-presentation on training innovation and placement outcomes'] },
+            ] as {t: string; items: string[]}[]).map((section) => (
+              <div key={section.t} className="mb-4">
+                <p className="text-slate-700 font-semibold mb-1">{section.t}:</p>
+                <ul className="space-y-1">
+                  {section.items.map((item) => (
+                    <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                      <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+                      <span className="text-sm">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </ul>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The first ATO to publish verified, audited placement rates in their market owns that credibility permanently.</strong> In a sector where predatory competitors make unverifiable promises, a school that publishes real outcomes — and connects graduates to real, verified operator pathways on day one — will capture enrolment from every competitor that cannot say the same. <strong style={{color:'#f87171'}}>Dominate your market by being the only school that can prove it.</strong></p>
           </div>
 
           <hr className="my-10 border-slate-300" />
