@@ -299,6 +299,42 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>PilotRecognition is the infrastructure that makes these questions answerable — structurally, verifiably, and in real time.</strong> Not from a corporate desk. Not from a brochure. From a platform built by a pilot who asked every single one of them and received nothing useful in return.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">The Founder's Testimony — What the Industry Actually Did to Its Pilots</h3>
+          <p className="text-slate-500 text-xs uppercase tracking-wide font-semibold mb-5">Written in the founder's own words. Unredacted.</p>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-6 bg-white space-y-4">
+            <p className="text-slate-700 leading-relaxed text-sm">When I first joined my flight school, I had no idea what I was getting into. I didn't know about the 1,500-hour rule. I didn't know about the real importance of licences and medicals. I was fixated. Ambitious. I believed and I trusted the process. <strong>That is the problem with flight schools — they make you believe, but they don't tell you what is actually happening in reality.</strong></p>
+
+            <p className="text-slate-700 leading-relaxed text-sm">Flight schools need to be honest and open — especially when there is an accident or incident. There needs to be thorough checking of aircraft without hiding evidence of a crash or a landing excursion. I experienced it first hand. I was on approach for a landing. A plane was 50 feet above me. The instructor didn't notice. <strong>I did.</strong> I took the call. I reported on ATC. The ATC didn't know what to do. My flying days are finished. My training days are over. Now I am here — building a platform to help pilots, and people like me, get recognition in an industry that gave us nothing when we needed it most.</p>
+
+            <div className="border-l-4 border-red-500 pl-4 py-1">
+              <p className="text-slate-800 text-sm leading-relaxed italic">PilotRecognition.com is a beacon. An ELT — an Emergency Locator Transmitter — signalling for help. For pilots who completed their training, earned their 200 hours, and then disappeared into silence.</p>
+            </div>
+
+            <p className="text-slate-700 leading-relaxed text-sm">I went hangar to hangar. Twelve different locations. Seeking any opportunity as a pilot. Every single one — a closed door. I was simply asking about their requirements. <em>"Sorry, we're not hiring."</em> That was the answer. Every time.</p>
+
+            <p className="text-slate-700 leading-relaxed text-sm">I walked into an airline reception and asked if there was someone I could speak to regarding pilot opportunities. I was told: <em>"Sorry, we don't do walk-ins. Here's an email. Thank you. Goodbye."</em> The cabin crew standing next to me was treated with more professional respect than a pilot who had already spent everything he had. <strong>That is not an exaggeration. That is what happened.</strong></p>
+
+            <p className="text-slate-700 leading-relaxed text-sm">And then you go home. And your parents — who have no aviation background, who don't understand the 1,500-hour rule, who don't know what a type rating costs — they ask: <em>"What happened to you? You spent $50,000 and you can't find a job? Why can't you get a job at McDonald's to build some experience?"</em> They are not being cruel. They simply cannot comprehend a system that takes everything from someone and gives them a licence they cannot use.</p>
+
+            <p className="text-slate-700 leading-relaxed text-sm">I watched friends stop talking about aviation. Some moved to farming. Some to construction. Because they know — the aviation dream is just a dream, even if you hold the licence. The licence proves nothing to an industry that has decided you are a low-timer, a high-risk, an inexperienced liability. <strong>The label follows you out of the gate the moment you graduate.</strong></p>
+
+            <p className="text-slate-700 leading-relaxed text-sm">I once asked a senior captain a simple question about experimental aircraft registration in the Philippines. He looked at me and said: <em>"Your CFI should have taught you that."</em> And kept walking. <strong>There is an ego problem in this industry</strong> — not just in flight schools, but in the pilot community itself. Senior pilots who know the harsh truths and guard them, who wear the difficulty as a badge and offer nothing to the person behind them. That culture is part of the damage. And it stops here.</p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What the Head of Training Said</h4>
+          <div className="bg-slate-100 border border-slate-300 rounded px-5 py-4 mb-6">
+            <p className="text-slate-700 text-sm leading-relaxed italic mb-2">"Graduates are faced with a big question mark. They don't know how to get to the airlines — or to any starting position — because a structured pathway to get there simply does not exist."</p>
+            <p className="text-slate-500 text-xs">— Head of Training, unnamed flight school (Philippines)</p>
+          </div>
+          <p className="text-slate-700 leading-relaxed mb-4">Flight schools are promoting their Advanced Operations and Management programs — not purely because they believe in their graduates' readiness, but because <strong>they cannot bear to watch what happens to those graduates after they leave.</strong> They see the backlash. They see the question mark. They feel the responsibility of having taken the money and having no structural answer for what comes next.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">That is not a condemnation of flight schools. It is a diagnosis. The system failed to build the infrastructure between training and employment, and everyone inside it — schools, pilots, airlines — is absorbing the cost in different ways. <strong>PilotRecognition is that infrastructure.</strong> It does not replace the flight school. It completes what the flight school was never equipped to finish.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>This platform was not designed in theory. It was built from inside the wreckage.</strong> Every feature, every pillar, every framework in this document exists because someone lived through the exact failure it was designed to fix. The founder is not an observer of this problem. <strong style={{color:'#f87171'}}>He is the problem's most direct product — and this platform is his answer.</strong></p>
+          </div>
+
           <p className="text-slate-700 leading-relaxed mb-6">The industry is 100 years old. Nothing in it is perfect. Accuracy is based entirely on what data exists — and until now, almost none of the right data has been structured, portable, or shared. <strong>That is what this document changes.</strong></p>
 
           <hr className="my-10 border-slate-300" />
