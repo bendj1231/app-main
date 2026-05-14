@@ -1377,7 +1377,7 @@ export default function UCFOfficialReleasePage() {
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: A Broken, Manual, Aviation-Blind Screening Industry</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Aviation background screening operates on <strong>outdated manual processes</strong> that create friction for every party in the hiring chain. Verification is not a minor inconvenience — it is a structural bottleneck that delays hiring, duplicates cost, exposes operators to fraud risk, and leaves pilots in a compliance void with no portable credential infrastructure.</p>
           <p className="text-slate-700 leading-relaxed mb-4">The deeper problem: generic background check providers treat pilots as standard employees. They have no understanding of aviation-specific credential structures — no access to CAA/FAA license databases, no awareness of Class 1 medical expiration cycles, no integration with airport security authorities for CTC and airside pass vetting. They verify employment history and run a criminal check. That is not aviation background screening. <strong>That is a generic HR process applied to a safety-critical profession it was never designed for.</strong></p>
-          <p className="text-slate-700 leading-relaxed mb-6">Pillar 11 addresses this through a <strong>unified verification layer</strong> embedded directly into the platform — background checking as a native service, not an external chore. Pilots build a verified credential wallet once. It travels with them across every operator, every regulator, and every sector. <strong>Verify once. Apply anywhere.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-6">Pillar 11 addresses this through a <strong>unified verification layer</strong> embedded directly into the platform — background checking as a native service, not an external chore. Pilots build a <strong>Professional Standing Asset</strong> — a verified, pilot-owned credential wallet — once. It travels with them across every operator, every regulator, and every sector. <strong>Verify once. Apply anywhere.</strong></p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Pain Points — Airlines &amp; Operators</h4>
           <ul className="space-y-2 mb-6">
@@ -1430,13 +1430,13 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Platform Solution — Unified Verification Layer</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">Pillar 11 integrates background checking into the platform as a native service layer. Pilots build a <strong>verified credential wallet</strong> — once — that is recognised across every operator, every regulator, and every sector on the platform. Airlines no longer initiate checks from scratch. They access a pre-verified profile and pull only what they need, in real time, with pilot consent.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 11 integrates background checking into the platform as a native service layer. Pilots build a <strong>Professional Standing Asset</strong> — a verified, portable credential record — once, recognised across every operator, every regulator, and every sector on the platform. Airlines no longer initiate checks from scratch. They access a pre-verified profile and pull only what they need, in real time, with pilot consent.</p>
           <p className="text-slate-700 leading-relaxed mb-4">The platform acts as the <strong>central coordination hub</strong> — connecting verification providers with the full aviation ecosystem they currently have no access to: aviation insurance underwriters, aviation medical examiners, aviation authority license databases, flight training organisations, airport security authorities, and airline HR requirement matrices. Verification is no longer a disconnected snapshot. It becomes a <strong>live, portable, pilot-owned credential</strong> that compounds in value with every new clearance earned.</p>
           <p className="text-slate-700 leading-relaxed mb-8">Pilots who enrol in <strong>Recognition+</strong> receive background checking as part of their membership — eliminating the cost uncertainty, the repeat burden, and the opaque requirements that currently make verification the final hidden barrier between a qualified pilot and a confirmed offer.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">The Pilot-Inputted Verification Model — Why This Changes Everything</h4>
           <p className="text-slate-700 leading-relaxed mb-4">Traditional background check providers sit downstream. They are reactive — waiting for an airline or employer to initiate a check before anything happens. <strong>This model is broken for aviation.</strong> The airline triggers the check only after a pilot has already applied, already passed screening, and is already in the offer stage. The check becomes a final-stage blocker rather than a pre-qualification signal.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">The platform flips this. <strong>The pilot initiates their own verification — before they apply to anyone.</strong> They build a verified credential wallet as part of their profile, driven by their own ambition to appear pre-cleared to any operator on the platform. This is not a passive transaction. It is an active career investment.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform flips this. <strong>The pilot initiates their own verification — before they apply to anyone.</strong> They build a <strong>Professional Standing Asset</strong> as part of their profile, driven by their own ambition to appear pre-cleared to any operator on the platform. This is not a passive transaction. It is an active career investment.</p>
           <p className="text-slate-700 leading-relaxed mb-6">This shift has three structural consequences that generic platforms and traditional providers cannot replicate:</p>
           <ul className="space-y-3 mb-6">
             {([
@@ -1538,7 +1538,7 @@ export default function UCFOfficialReleasePage() {
             <li>Pilots with current security clearances appear as "pre-cleared" on pathway cards</li>
           </ul>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Pilot Verification Wallet — Verify Once, Apply Anywhere</h4>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Professional Standing Asset — Verify Once, Apply Anywhere</h4>
           <ul className="text-sm text-slate-700 space-y-1 mb-4 ml-4 list-disc">
             <li><strong>Identity verification</strong> — government ID, biometric link</li>
             <li><strong>Employment history</strong> — previous airlines, flight schools, tenure verification</li>
@@ -1562,7 +1562,7 @@ export default function UCFOfficialReleasePage() {
             <li><strong>Employment history updates</strong> — every time a pilot adds a new employer, the new record enters the verification queue. As pilots progress through their careers — across multiple operators — each transition generates a fresh verification request.</li>
             <li><strong>Insurance and incident history</strong> — operators may request updated incident checks <strong style={{color:'#dc2626'}}>annually</strong> on retained pilots. This is not a one-time check for senior command roles — it is reviewed at <strong style={{color:'#dc2626'}}>contract renewal</strong> and pathway resubmission.</li>
           </ul>
-          <p className="text-sm text-slate-700 leading-relaxed mb-3">The platform sends <strong>automated renewal alerts</strong> to pilots ahead of each expiry window — <strong style={{color:'#dc2626'}}>90 days</strong>, <strong style={{color:'#dc2626'}}>60 days</strong>, and <strong style={{color:'#dc2626'}}>30 days</strong> prior. Pilots are directed to re-verify through the platform. Verification partners receive the renewal request through the same API integration used for initial checks. <strong>No separate pipeline. No manual handoff. The same infrastructure handles both.</strong></p>
+          <p className="text-sm text-slate-700 leading-relaxed mb-3">The platform sends <strong>automated Professional Standing alerts</strong> to pilots ahead of each expiry window — <strong style={{color:'#dc2626'}}>90 days</strong>, <strong style={{color:'#dc2626'}}>60 days</strong>, and <strong style={{color:'#dc2626'}}>30 days</strong> prior. The notification reads: <em style={{color:'#dc2626'}}>"Your Professional Standing is at risk — renew your Class 1 Medical token to maintain your Recognition+ status."</em> Pilots are directed to re-verify through the platform. Verification partners receive the renewal request through the same API integration used for initial checks. <strong>No separate pipeline. No manual handoff. The same infrastructure handles both.</strong></p>
           <div className="overflow-x-auto mb-4">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -2031,6 +2031,37 @@ export default function UCFOfficialReleasePage() {
             <li>Year 2: 13,500 checks at tiered pricing — $255K revenue potential</li>
             <li>Year 3: 36,000 checks at volume pricing — $474K revenue potential</li>
           </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Ecosystem Integration — The Pillar 11 Handshake Map</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Pillar 11 is the Central Processing Unit of the 25-pillar ecosystem. The Professional Standing Asset does not operate in isolation — it is the credential node through which every sector on the platform validates, trusts, and acts on pilot data. The following handshakes define how the verification infrastructure pulses outward across the map.</p>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Pillar</th>
+                  <th className="text-left px-4 py-2 font-semibold">The Handshake</th>
+                  <th className="text-left px-4 py-2 font-semibold">System Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { pillar: 'Pillar 04 — Emerging Sectors (eVTOL)', handshake: 'Modular Credentialling', outcome: 'Verifies the AAM-Ready tag in real time. Micro-credentials issued by ATOs or operators are pushed as signed tokens into the pilot\'s Professional Standing Asset — the competency map is live, not self-declared.' },
+                  { pillar: 'Pillar 08 — Banking & Training Finance', handshake: 'Verified ATO Transcripts', outcome: 'Banks pull the verified training completion record directly from the pilot\'s asset before releasing loan funds. Disbursement is gated on verified milestone progress — not self-declaration.' },
+                  { pillar: 'Pillar 09 — Aviation Insurance', handshake: 'Anonymised Competency Benchmarks', outcome: 'The asset provides the actuarial data set for High-Integrity Wallet premium discounts. Continuous Monitoring gives insurers a live risk pulse — replacing the static snapshot with a live stream.' },
+                  { pillar: 'Pillar 13 — Aeromedical', handshake: 'Digital Medical Tokens', outcome: 'AMEs push signed Class 1/2/3 tokens directly into the pilot\'s asset via API. Medical status is live, cryptographically verified, and continuously monitored. The renewal window triggers the highest-frequency recurring transaction in the ecosystem.' },
+                  { pillar: 'Pillar 15 — Manufacturers & OEMs', handshake: 'Software Familiarisation Credentials', outcome: 'OEMs push type-specific avionics course completions directly into the pilot\'s asset when a systems module is completed. The competency map updates without the pilot re-entering the platform.' },
+                  { pillar: 'Pillar 17 — Universities & ATOs', handshake: 'AAM-Ready Graduate Tokens', outcome: 'Institutions integrating W3C credential issuance push AAM-Ready tokens at graduation. The ATO becomes a verified node in the credential chain — not an external paper-issuing body.' },
+                  { pillar: 'Pillar 21 — Humanitarian Operations', handshake: 'Austerity Operations Credential', outcome: 'Signals readiness for high-stress, non-templated disaster-relief environments. NGO or operator sign-off is stored as a verified token — the "Special Forces" designation of the AAM credential map.' },
+                ] as { pillar: string; handshake: string; outcome: string }[]).map((row, i) => (
+                  <tr key={row.pillar} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-red-400 whitespace-nowrap align-top text-xs">{row.pillar}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-200 font-semibold align-top text-xs whitespace-nowrap">{row.handshake}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.outcome}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Operational Outcomes</h4>
           <div className="overflow-x-auto mb-8">
