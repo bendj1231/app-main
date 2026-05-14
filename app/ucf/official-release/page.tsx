@@ -130,37 +130,38 @@ export default function UCFOfficialReleasePage() {
               <span className="hidden sm:inline">Print</span>
             </button>
           </div>
-          {showLoginForm && (
-            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center" onClick={() => setShowLoginForm(false)}>
-              <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-sm mx-4" onClick={e => e.stopPropagation()}>
-                <h2 className="text-xl font-bold text-slate-900 mb-1">Admin Login</h2>
-                <p className="text-slate-500 text-sm mb-6">Sign in to access internal commercial data</p>
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    value={loginEmail}
-                    onChange={e => setLoginEmail(e.target.value)}
-                    className="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                    required
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={loginPassword}
-                    onChange={e => setLoginPassword(e.target.value)}
-                    className="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                    required
-                  />
-                  {loginError && <p className="text-red-600 text-xs">{loginError}</p>}
-                  <button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg text-sm transition-colors">Sign In</button>
-                </form>
-                <button onClick={() => setShowLoginForm(false)} className="mt-4 w-full text-slate-400 text-xs hover:text-slate-600">Cancel</button>
-              </div>
-            </div>
-          )}
         </div>
       </nav>
+
+      {showLoginForm && (
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center" onClick={() => setShowLoginForm(false)}>
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-sm mx-4" onClick={e => e.stopPropagation()}>
+            <h2 className="text-xl font-bold text-slate-900 mb-1">Admin Login</h2>
+            <p className="text-slate-500 text-sm mb-6">Sign in to access internal commercial data</p>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <input
+                type="email"
+                placeholder="Email"
+                value={loginEmail}
+                onChange={e => setLoginEmail(e.target.value)}
+                className="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                required
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={loginPassword}
+                onChange={e => setLoginPassword(e.target.value)}
+                className="w-full border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                required
+              />
+              {loginError && <p className="text-red-600 text-xs">{loginError}</p>}
+              <button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg text-sm transition-colors">Sign In</button>
+            </form>
+            <button onClick={() => setShowLoginForm(false)} className="mt-4 w-full text-slate-400 text-xs hover:text-slate-600">Cancel</button>
+          </div>
+        </div>
+      )}
 
       {/* Main layout */}
       <div className="w-full flex gap-6 pl-4 pr-6 py-8">
