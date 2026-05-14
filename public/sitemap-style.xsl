@@ -198,7 +198,7 @@
               </tr>
             </thead>
             <tbody>
-              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/airline-expectations') or contains(s:loc, '/discover-pathways') or contains(s:loc, '/what-is-the-pilot-gap') or contains(s:loc, '/pilot-shortage') or contains(s:loc, '/benefits') or contains(s:loc, '/news-updates') or contains(s:loc, '/framework') or contains(s:loc, '/store') or contains(s:loc, '/faq') or contains(s:loc, '/blog') or contains(s:loc, '/learn-about') or contains(s:loc, '/general')]">
+              <xsl:for-each select="s:urlset/s:url[contains(s:loc, '/airline-expectations') or contains(s:loc, '/discover-pathways') or contains(s:loc, '/what-is-the-pilot-gap') or contains(s:loc, '/pilot-shortage') or contains(s:loc, '/benefits') or contains(s:loc, '/news-updates') or contains(s:loc, '/framework') or contains(s:loc, '/ucf') or contains(s:loc, '/store') or contains(s:loc, '/faq') or contains(s:loc, '/blog') or contains(s:loc, '/learn-about') or contains(s:loc, '/general')]">
               <tr>
                 <td><a href="{s:loc}" target="_blank"><xsl:value-of select="s:loc"/></a></td>
                 <td><xsl:value-of select="s:lastmod"/></td>
