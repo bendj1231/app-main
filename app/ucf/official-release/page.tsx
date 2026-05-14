@@ -2576,6 +2576,101 @@ export default function UCFOfficialReleasePage() {
             <p className="text-slate-700 text-sm leading-relaxed"><strong>The platform profits from every currency zone.</strong> A PHP pilot in Manila, an AED pilot in Dubai, an SGD pilot in Singapore, and a GBP pilot in London all pay their regional rate — and in every case, the platform earns a margin on the Veremark cost basis. <strong>Geographic expansion is not a cost problem. It is a revenue multiplication event.</strong> Every new market Veremark covers is a new margin stream the platform inherits automatically — without renegotiating the partnership or rebuilding the infrastructure.</p>
           </div>
 
+          <div className="bg-emerald-50 border border-emerald-300 rounded-lg px-6 py-5 mb-6">
+            <p className="text-xs uppercase tracking-widest font-bold text-emerald-700 mb-1">White-Label Arbitrage — The Verification Profit Engine <span className="ml-2 font-normal text-emerald-600 normal-case tracking-normal">Admin Only</span></p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-4">This is the exact "White-Label Arbitrage" model that makes SaaS platforms structurally profitable at scale. By charging pilots and operators the <strong>RRP (Recommended Retail Price)</strong> and paying Veremark the <strong>Partner Price (−15%)</strong>, the platform is not passing through costs — it is turning the verification engine itself into a <strong>continuous, high-volume profit center</strong>. Every compliance transaction in the aviation industry generates a 15% margin. No separate product. No separate sales motion. Pure infrastructure arbitrage.</p>
+
+            <div className="grid md:grid-cols-2 gap-5 mb-5">
+              <div className="bg-white border border-emerald-200 rounded-lg p-4">
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Layer 1 — UK Pilot Baseline (at account creation)</p>
+                <table className="w-full text-xs mb-3">
+                  <thead>
+                    <tr className="text-slate-500 border-b border-slate-200">
+                      <th className="text-left py-1 font-semibold">Check</th>
+                      <th className="text-right py-1 font-semibold">Pilot Pays (RRP)</th>
+                      <th className="text-right py-1 font-semibold">We Pay Veremark</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {([
+                      { check: 'Identity Verification', rrp: '$15', cost: '$13' },
+                      { check: 'Criminal Record (DBS Basic)', rrp: '$56', cost: '$48' },
+                      { check: 'Licence / Prof. Qualification', rrp: '$31', cost: '$27' },
+                      { check: 'Employment Check', rrp: '$31', cost: '$27' },
+                      { check: 'Right to Work', rrp: '$14', cost: '$12' },
+                    ] as { check: string; rrp: string; cost: string }[]).map((r, i) => (
+                      <tr key={r.check} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                        <td className="py-1.5 px-2 text-slate-700">{r.check}</td>
+                        <td className="py-1.5 px-2 text-right font-semibold text-slate-800">{r.rrp}</td>
+                        <td className="py-1.5 px-2 text-right text-slate-500">{r.cost}</td>
+                      </tr>
+                    ))}
+                    <tr className="border-t-2 border-slate-300 font-bold bg-emerald-50">
+                      <td className="py-2 px-2 text-slate-800">Total</td>
+                      <td className="py-2 px-2 text-right text-slate-900">$147.00</td>
+                      <td className="py-2 px-2 text-right text-slate-600">$127.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="bg-emerald-100 border border-emerald-200 rounded px-3 py-2 text-xs">
+                  <span className="font-bold text-emerald-800">Platform profit: $20.00</span>
+                  <span className="text-emerald-600 ml-2">— on top of the $99/yr Recognition+ subscription.</span>
+                </div>
+              </div>
+
+              <div className="bg-white border border-emerald-200 rounded-lg p-4">
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Layer 2 — UAE Operator Deep Check (per candidate)</p>
+                <table className="w-full text-xs mb-3">
+                  <thead>
+                    <tr className="text-slate-500 border-b border-slate-200">
+                      <th className="text-left py-1 font-semibold">Check</th>
+                      <th className="text-right py-1 font-semibold">Operator Pays (RRP)</th>
+                      <th className="text-right py-1 font-semibold">We Pay Veremark</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {([
+                      { check: 'Adverse Financial History', rrp: '$129', cost: '$110' },
+                      { check: 'UAE Criminal Record', rrp: '$109', cost: '$93' },
+                      { check: 'Social Media Check', rrp: '$48', cost: '$41' },
+                    ] as { check: string; rrp: string; cost: string }[]).map((r, i) => (
+                      <tr key={r.check} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                        <td className="py-1.5 px-2 text-slate-700">{r.check}</td>
+                        <td className="py-1.5 px-2 text-right font-semibold text-slate-800">{r.rrp}</td>
+                        <td className="py-1.5 px-2 text-right text-slate-500">{r.cost}</td>
+                      </tr>
+                    ))}
+                    <tr className="border-t-2 border-slate-300 font-bold bg-emerald-50">
+                      <td className="py-2 px-2 text-slate-800">Total</td>
+                      <td className="py-2 px-2 text-right text-slate-900">$286.00</td>
+                      <td className="py-2 px-2 text-right text-slate-600">$244.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="bg-emerald-100 border border-emerald-200 rounded px-3 py-2 text-xs">
+                  <span className="font-bold text-emerald-800">Platform profit: $42.00 per candidate.</span>
+                  <span className="text-emerald-600 ml-2">10 finalists/month = $420 passive profit from API handoffs alone.</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg px-4 py-3 mb-4 text-sm">
+              <p className="font-bold text-slate-800 mb-2">Why This Works Psychologically — The Transparency Pitch</p>
+              <p className="text-slate-700 leading-relaxed mb-2">This model never needs to be hidden — it is inherently fair to all parties.</p>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li className="flex items-start gap-2"><span className="text-emerald-600 font-bold mt-0.5 flex-shrink-0">→</span><span><strong>To the pilot:</strong> "You are paying the exact market retail rate (RRP) for your background check. The difference is, once you buy it here, it is portable — you don't have to buy it five more times for five different airlines."</span></li>
+                <li className="flex items-start gap-2"><span className="text-emerald-600 font-bold mt-0.5 flex-shrink-0">→</span><span><strong>To the operator:</strong> "You are paying the standard market rate for a background check — but you get the results instantly via API because the pilot's base profile is already verified."</span></li>
+              </ul>
+              <p className="text-slate-600 text-xs mt-3 italic">No one feels gouged. PilotRecognition captures a 15% margin on every compliance transaction in the aviation industry.</p>
+            </div>
+
+            <div className="bg-slate-900 rounded-lg px-5 py-4 text-xs text-white">
+              <p className="font-bold text-red-400 mb-2 uppercase tracking-widest text-[10px]">Updated Commercial Model — Pillar 11 Pricing Language</p>
+              <p className="text-slate-300 leading-relaxed mb-2"><strong className="text-white">Recognition+ (Pilot-Initiated):</strong> $99/yr subscription + Standard Retail Rate (RRP) for regional authority checks. The platform captures a <strong className="text-emerald-400">15% wholesale margin</strong> on all partner verifications — creating a micro-transaction profit engine alongside subscription revenue.</p>
+              <p className="text-slate-300 leading-relaxed"><strong className="text-white">Operator Deep Check (Layer 2):</strong> Billed to the operator at Standard Retail Rate (RRP) per requested module (e.g., UAE Financial Check, UK Social Media). The operator pays market rate; the platform retains the <strong className="text-emerald-400">15% wholesale margin</strong>. At 10 finalists per month (UAE), this generates $420/month in pure passive profit from API handoffs — before any subscription or success fee revenue.</p>
+            </div>
+          </div>
+
           </>)}
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Airlines — Integrated Verification Infrastructure</h4>
