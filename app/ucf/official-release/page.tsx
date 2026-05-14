@@ -27,7 +27,7 @@ function useAuthState() {
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase.auth.getSession();
-      if (!data.session) return;
+      if (!data.session?.user?.id) return;
       setSessionUser({ email: data.session.user.email ?? '' });
       const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.session.user.id).maybeSingle();
       const role = profile?.role ?? '';
