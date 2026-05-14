@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../../../src/lib/supabase';
+import { useAuth } from '../../../src/contexts/AuthContext';
 
 const navSections = [
   { id: 'document-information', label: 'Document Information' },
@@ -21,36 +21,6 @@ const navSections = [
   { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
 ];
 
-function useAuthState() {
-  const [isInternal, setIsInternal] = useState(false);
-  const [sessionUser, setSessionUser] = useState<{ email: string } | null>(null);
-  useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session?.user?.id) return;
-      setSessionUser({ email: data.session.user.email ?? '' });
-      const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.session.user.id).maybeSingle();
-      const role = profile?.role ?? '';
-      setIsInternal(role === 'super_admin' || role === 'mentor_manager');
-    };
-    load();
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        setSessionUser({ email: session.user.email ?? '' });
-        supabase.from('profiles').select('role').eq('id', session.user.id).maybeSingle().then(({ data: profile }) => {
-          const role = profile?.role ?? '';
-          setIsInternal(role === 'super_admin' || role === 'mentor_manager');
-        });
-      } else {
-        setSessionUser(null);
-        setIsInternal(false);
-      }
-    });
-    return () => listener.subscription.unsubscribe();
-  }, []);
-  return { isInternal, sessionUser };
-}
-
 function scrollTo(id: string) {
   const el = document.getElementById(id);
   if (el) {
@@ -66,16 +36,22 @@ export default function UCFOfficialReleasePage() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const { isInternal, sessionUser } = useAuthState();
+  const { currentUser, userProfile, login, logout } = useAuth();
+  const isInternal = userProfile?.role === 'super_admin' || userProfile?.role === 'mentor_manager';
+  const sessionUser = currentUser ? { email: currentUser.email } : null;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
-    const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword });
-    if (error) { setLoginError(error.message); } else { setShowLoginForm(false); }
+    try {
+      await login(loginEmail, loginPassword);
+      setShowLoginForm(false);
+    } catch (err: any) {
+      setLoginError(err.message || 'Login failed');
+    }
   };
 
-  const handleLogout = async () => { await supabase.auth.signOut(); };
+  const handleLogout = async () => { await logout(); };
 
   return (
     <div className="min-h-screen bg-white">
