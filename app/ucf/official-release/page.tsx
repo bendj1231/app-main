@@ -827,7 +827,10 @@ export default function UCFOfficialReleasePage() {
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: A Sector That Recruits in the Dark</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Charter and business aviation is one of the most demanding and least understood sectors in professional aviation. It operates on discretion by design — operators do not post publicly, clients do not tolerate exposure, and pilots are expected to arrive pre-qualified, pre-vetted, and ready to deploy within days. <strong>The result is a recruitment model that is almost entirely invisible to the pilots who would be most suited for it.</strong></p>
           <p className="text-slate-700 leading-relaxed mb-4">Pilots qualified for charter and business aviation roles — typically experienced FOs and Captains with multi-engine command time, strong CRM records, and jet experience — are circulating in the same generic job boards as every other sector. They have no structured way to signal their suitability for VIP, VVIP, or charter operations. Operators have no structured way to find them without activating expensive executive search firms or relying on closed-network word-of-mouth.</p>
-          <p className="text-slate-700 leading-relaxed mb-6"><strong>Pillar 3 addresses this with a stealth-capable, discretion-first pathway layer — structured operator profiles visible only to matched, verified pilots, with deployment timelines, compensation frameworks, and VIP-specific competency requirements published for the first time in a structured, searchable format.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Pillar 3 addresses this with a discretion-first pathway layer — structured operator profiles accessible only to verified, profile-matched pilots, with deployment timelines, compensation frameworks, and VIP-specific competency requirements published in a structured format for the first time. <span style={{color:'#dc2626'}}>This is not a publicly browsable directory. It is a closed channel for serious aviation professionals.</span></strong></p>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>Recognition+ Exclusive Access.</strong> Pillar 3 pathways are accessible exclusively to <strong style={{color:'#f87171'}}>Recognition+ members</strong> ($99/yr) — pilots who have demonstrated commitment to their professional standing through verified credentials and a complete recognition profile. Free tier pilots can see that this pathway category exists — but access is restricted. Charter and business aviation operators require a verified, serious candidate pool. Recognition+ is the standard that qualifies a pilot for consideration.</p>
+          </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Untapped Pool: Pilots Already Ready for Charter — Facing the Wrong Direction</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The same clogged pipeline that produces cargo-ready instructors produces charter-ready pilots. <strong>Senior flight instructors and experienced passenger FOs</strong> with strong interpersonal skills, immaculate presentation, and multi-engine jet time are often ideally suited for charter and business aviation — but are never presented with the pathway. The sector's discretion works against both sides: operators don't advertise, pilots don't know to look.</p>
@@ -878,10 +881,19 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Platform Solution</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Pillar 3 introduces a <strong>stealth pathway layer</strong> — a distinct mode of operator presence on the platform designed for sectors where public visibility is operationally inappropriate. Charter and business aviation operators can publish structured pathway requirements visible only to pilots whose verified profiles match the operator's specified criteria. <strong>No public listing. No open applications. No exposure.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 3 introduces a <strong>closed, discretion-first pathway layer</strong> — a distinct mode of operator presence designed for sectors where <strong>public visibility is operationally inappropriate</strong>. Charter and business aviation operators publish structured pathway requirements accessible <strong>only to Recognition+ members whose verified profiles meet the operator's specified criteria</strong>. <strong>No public listing. No open applications. No unsolicited exposure.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">This creates a <strong>two-sided quality lock</strong>. Pilots understand that accessing charter and business aviation pathways requires <strong>Recognition+ membership</strong> — verified credentials, a complete professional profile, and a demonstrated commitment to industry standing. Operators know that <strong>every pilot who reaches their pathway card has cleared that bar</strong>. The access gate is not arbitrary — it reflects the standard that <strong>VVIP and charter operators require before any consideration begins</strong>. <strong>That quality signal is not available through any other recruitment channel.</strong></p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">How the access tiers work for pilots:</p>
+            <ul className="space-y-1 list-disc ml-4">
+              <li><strong style={{color:'#dc2626'}}>Free tier:</strong> Pilot sees "Charter &amp; Business Aviation" as a pathway category. Cards are locked. Prompted to upgrade to Recognition+ to unlock.</li>
+              <li><strong style={{color:'#dc2626'}}>Recognition+ ($99/yr):</strong> Full charter pathway card access — but only for cards where the pilot's verified profile meets the operator's stated criteria. <strong style={{color:'#dc2626'}}>Irrelevant cards remain hidden. No browsing without matching.</strong></li>
+              <li><strong style={{color:'#dc2626'}}>Recognition+ with verified wallet:</strong> <strong style={{color:'#dc2626'}}>Pre-cleared status</strong> displayed on charter pathway cards. Operators see <strong style={{color:'#dc2626'}}>verification badge</strong> alongside profile match. <strong style={{color:'#dc2626'}}>Deployment consideration prioritised.</strong></li>
+            </ul>
+          </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">FOR PILOTS: Charter Pathway Cards</h4>
-          <p className="text-slate-700 leading-relaxed mb-3">Matched pilots receive a charter pathway card — visible only to them, based on profile alignment. Each card contains:</p>
+          <p className="text-slate-700 leading-relaxed mb-3">Recognition+ members whose verified profile aligns with an operator's stated criteria receive a charter pathway card — accessible only to them, not publicly visible. Each card contains:</p>
           <ul className="space-y-1 mb-5 ml-4 text-slate-700 text-sm list-disc">
             {[
               'Operator type (light jet, mid-size, heavy, VVIP)',
@@ -897,8 +909,8 @@ export default function UCFOfficialReleasePage() {
             ].map((item) => <li key={item}>{item}</li>)}
           </ul>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">FOR CHARTER OPERATORS: Expectations Page &amp; Stealth Protocol</h4>
-          <p className="text-slate-700 leading-relaxed mb-3">Operators on Pillar 3 configure a backend profile with five structured sections — none of which is publicly visible without a verified match:</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">FOR CHARTER OPERATORS: Structured Operator Profile</h4>
+          <p className="text-slate-700 leading-relaxed mb-3">Operators on Pillar 3 configure a confidential backend profile with five structured sections — none of which is visible without a verified Recognition+ profile match:</p>
           <ul className="space-y-1 mb-5 ml-4 text-slate-700 text-sm list-disc">
             {[
               'Operator Identity — aircraft type, fleet size, operational base, client sector (corporate, HNWI, government)',
@@ -924,10 +936,10 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2">Commercial Tiers — Charter Operator Access</h3>
-          <p className="text-slate-700 leading-relaxed mb-6">Charter operators access the platform through two independent products — stealth pathway listings and an operator expectations page. Both are priced independently.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Charter operators access the platform through two independent products — confidential pathway listings and a structured operator profile. Both are priced independently and accessible only to verified Recognition+ pilot members.</p>
 
-          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 1 — Stealth Pathway Listings &amp; Pilot Database Access</h4>
-          <p className="text-slate-600 text-sm mb-3">For charter operators posting confidential pathway requirements and pulling from the verified pilot database.</p>
+          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 1 — Confidential Pathway Listings &amp; Pilot Database Access</h4>
+          <p className="text-slate-600 text-sm mb-3">For charter operators posting discretion-required pathway requirements and accessing the verified Recognition+ pilot pool.</p>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -939,8 +951,8 @@ export default function UCFOfficialReleasePage() {
               </thead>
               <tbody>
                 {([
-                  { tier: 'Basic', fee: 'Free', features: <>Post up to 2 stealth pathway cards. <strong style={{color:'#dc2626'}}>View the first 10 matched pilots</strong> — full profiles visible. <strong style={{color:'#dc2626'}}>Remaining matched pilots are blurred</strong> — live signal of interest without full pool access. <span style={{color:'#dc2626'}}>No database search. No Recognition Score access.</span></> },
-                  { tier: 'Enterprise', fee: '$1,000/yr', features: <><strong style={{color:'#dc2626'}}>Unlimited stealth pathway listings</strong>, full pilot database access, Recognition Score and jet hours data, <strong style={{color:'#dc2626'}}>dedicated account support</strong>, NDA-enforced placement protocol, API access.</> },
+                  { tier: 'Basic', fee: 'Free', features: <>Post up to 2 confidential pathway listings. <strong style={{color:'#dc2626'}}>View the first 10 matched Recognition+ pilots</strong> — full profiles visible. <strong style={{color:'#dc2626'}}>Remaining matched pilots are blurred</strong> — live signal of pool depth without full access. <span style={{color:'#dc2626'}}>No database search. No Recognition Score access.</span></> },
+                  { tier: 'Enterprise', fee: '$1,000/yr', features: <><strong style={{color:'#dc2626'}}>Unlimited confidential pathway listings</strong>, full Recognition+ pilot database access, Recognition Score and jet hours data, <strong style={{color:'#dc2626'}}>dedicated account support</strong>, NDA-enforced placement protocol, API access.</> },
                 ] as { tier: string; fee: string; features: React.ReactNode }[]).map((row, i) => (
                   <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
@@ -952,8 +964,8 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
 
-          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 2 — Charter Operator Expectations Page</h4>
-          <p className="text-slate-600 text-sm mb-3">A separate product. A structured, confidential-mode operator presence — visible to pilots only after profile match, not publicly browsable.</p>
+          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 2 — Operator Profile Listing</h4>
+          <p className="text-slate-600 text-sm mb-3">A separate product. A structured operator presence — accessible to Recognition+ members only after a verified profile match. Not publicly browsable under any circumstances.</p>
           <div className="overflow-x-auto mb-4">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -977,6 +989,60 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
           <p className="text-slate-600 text-sm mb-8"><strong>Success Fee:</strong> $500 per confirmed placement (waived for first 5 placements)</p>
+
+          <hr className="my-8 border-slate-300" />
+          <p className="text-slate-500 text-sm uppercase tracking-wide font-semibold mb-2">Section 2</p>
+          <h3 className="text-2xl font-bold text-slate-900 mt-2 mb-4">Platform Integrations — Business Aviation Operator Networks</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The business aviation sector operates on established B2B operator networks — platforms where charter operators manage trip requests, source aircraft, connect with brokers, and coordinate crew requirements across their fleet. These networks represent the operational backbone of the charter industry. <strong>Pillar 3 is designed for direct API integration with these networks, creating a live pipeline between active charter operator demand and the verified Recognition+ pilot pool.</strong></p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Core Opportunity: Pilot Outsourcing on Demand</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Charter operators regularly face a specific problem: <strong>a confirmed trip, a qualified aircraft — and a crew gap.</strong> Wet lease arrangements, sudden crew unavailability, fleet expansion, and new route activations all create short-notice demand for qualified pilots that the operator's internal roster cannot fill. The current solution is phone calls, broker networks, and expensive last-minute placements.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 3 positions the platform as the <strong>structured outsourcing channel</strong> for that gap — connecting operators on established business aviation networks directly to a pre-verified, Recognition+ pool of qualified pilots, filtered by aircraft type, hours profile, and deployment availability. <span style={{color:'#dc2626'}}><strong>The operator does not recruit broadly. They post a pathway requirement. The platform surfaces the match. The pilot is already verified.</strong></span></p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What Integration Enables</h4>
+          <ul className="space-y-2 mb-6">
+            {([
+              { t: 'Live demand signals into pilot profiles', d: 'When an operator on a connected business aviation network posts a crew requirement, that signal flows directly into matched Recognition+ pilot pathway cards — in real time. Pilots are not browsing a static listing. They are seeing an active, current requirement from a verified operator.' },
+              { t: 'Operator verification via network membership', d: 'Integration with established operator networks allows the platform to verify that a charter operator listing a pathway on Pillar 3 is a legitimate, active participant in the business aviation market — not an unverified entity. Operator credentials are cross-referenced, not self-declared.' },
+              { t: 'Fleet and activity data enrichment', d: 'Operator profile pages on Pillar 3 can be enriched with verified fleet data drawn from network records — aircraft types actively operated, not self-reported. Pilots see the actual fleet, not a marketing description.' },
+              { t: 'Pathway posting as the outsourcing trigger', d: 'Rather than activating a broker or search firm when a crew gap opens, operators post a confidential pathway requirement on the platform. The match algorithm returns a shortlist of pre-verified, deployment-ready Recognition+ pilots within hours. The outsourcing cost drops from 15–25% of annual salary to a flat placement fee.' },
+              { t: 'Reciprocal value for the network', d: 'Business aviation operator networks gain access to a verified, structured pilot supply layer they currently do not offer their members. Pillar 3 integration positions the platform as infrastructure for the network — not a competitor to it. Operators stay on their existing platform. They simply gain a direct, verified crew sourcing channel as an added capability.' },
+            ] as { t: string; d: string }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Automated Match Algorithm — The Pilot as the Beacon</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">In emergency aviation, an <strong>ELT — Emergency Locator Transmitter</strong> — is the signal that tells rescuers exactly where to look. It doesn't wait to be found. It transmits. <strong>A Recognition+ pilot profile on this platform operates the same way.</strong> It broadcasts a verified, structured signal into the industry continuously — and when an operator's criteria align with that signal, the match is made automatically.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Operators configure their pathway criteria once — aircraft type, hours minima, deployment availability, type rating requirements. The platform's match algorithm runs continuously against the live Global Pilot Database. <strong>When a Recognition+ pilot's verified profile meets those criteria, both sides are notified.</strong> The pilot doesn't apply. The operator doesn't search. The system finds the alignment and surfaces it.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Operators work in two modes. <strong>Recommended matches</strong> are delivered automatically — the algorithm surfaces the highest-aligned Recognition+ profiles on a recurring basis, at intervals, without the operator having to initiate a search. The pilot's profile is not shown once and forgotten. It re-enters the operator's view every time the match criteria remain active and the pilot's standing holds. <strong>Like an ELT pulsing at regular intervals — the signal keeps transmitting until the coordination centre locks on.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">Operators can also <strong>hand-select</strong> from the matched pool directly — browsing verified Recognition+ profiles that meet their stated criteria and shortlisting candidates without algorithmic intermediary. Both modes feed the same outcome: <strong>a pilot's profile is in constant circulation within the operator network relevant to their qualifications</strong>, not submitted once to a vacancy and discarded when the role is filled.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Notification System — Communication Is the Product</h4>
+          <ul className="space-y-2 mb-6">
+            {([
+              { t: 'For the pilot — you are being seen', d: <><strong>A Recognition+ member receives a notification: an operator in the charter or private sector has matched their profile.</strong> Not a generic marketing email. A direct signal that a real operator with a live requirement has reviewed their credentials and identified them as a potential match. For a pilot who has spent years circulating invisible CVs, that notification is the first time the industry has looked back.</>},
+              { t: 'For the operator — the crew gap closes faster', d: <>An operator with an aircraft on standby and a crew position to fill does not have days to run a search. The automated match delivers a shortlist of <strong>pre-verified, Recognition+ pilots who already meet the stated criteria</strong> — flagged the moment the profile alignment is confirmed. The time between need and candidate is measured in hours, not weeks.</> },
+              { t: 'Profile view activity — the industry is watching', d: <>Recognition+ pilots can see when their profile has been viewed by an operator from the Global Pilot Database. <strong>This is not vanity data.</strong> It tells a pilot which sectors are actively interested in their profile, which gaps are causing operators to move on, and when their recognition score is working. It closes the feedback loop that the industry has never provided.</>},
+              { t: 'Interest signals without direct contact', d: <>Operators can register interest in a matched pilot profile without initiating direct contact — a <strong>discreet intent signal</strong> that the pilot receives as a notification. No unsolicited approach. No premature commitment. The pilot decides whether to respond and consent to further contact. <strong>The operator controls who they approach. The pilot controls who reaches them.</strong></> },
+            ] as { t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The pilot is the ELT. The beacon.</strong> A verified Recognition+ profile transmits a continuous, structured signal into the industry. Operators are the coordination centre — scanning for the signal that matches their need. When the frequencies align, the platform locks on. <strong style={{color:'#f87171'}}>The pilot doesn't chase the industry. The industry finds them.</strong></p>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed mb-0"><strong style={{color:'#f87171'}}>The exchange model is straightforward.</strong> Business aviation operators gain access to a qualified, pre-verified pilot pool for on-demand crew outsourcing. In return, they post confidential pathway requirements on the platform — structured listings that give Recognition+ pilots visibility into real, active opportunities in the charter and business aviation sector for the first time. <strong style={{color:'#f87171'}}>Operators get qualified crew. Pilots get access to a sector that was previously invisible to them. The platform connects both sides without brokers, without cold calls, and without the 15–25% placement cost of executive search.</strong></p>
+          </div>
 
           <hr className="my-10 border-slate-300" />
 
