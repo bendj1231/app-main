@@ -1812,6 +1812,35 @@ export default function UCFOfficialReleasePage() {
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Partnership Value Proposition</h4>
           <p className="text-slate-700 leading-relaxed mb-3">Together, PilotRecognition and its verification partners build the <strong>Global Clearinghouse for Verified Pilots</strong> — the standard infrastructure layer the aviation industry has never had. The platform is open to all pilots — free and verified alike. Verification is not a gate. It is an <strong>upgrade path</strong> — pilots who choose to verify their credentials gain visibility, credibility, and priority access that unverified profiles cannot match. Verification partners become the <strong>trusted credential engine</strong> behind that upgrade — the infrastructure that makes a pilot's profile worth more to every operator who sees it.</p>
           <p className="text-slate-700 leading-relaxed mb-4">Pilots on this platform are choosing to be seen. <strong>They are consenting to verification checks across all relevant areas of their professional record — identity, license, medical, employment history, and operator-requested due diligence — in exchange for recognition in the industry.</strong> Not recognition as a courtesy. Recognition as a verified, credible, career-ready professional that operators can trust and act on. The verification exchange is mutual: pilots give transparency, and the platform returns standing.</p>
+
+          <h5 className="text-base font-bold text-slate-800 mt-6 mb-2">Regional Partner Architecture — Market Neutrality by Design</h5>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">The verification partner structure is intentionally <strong>regionalised</strong>. No single provider holds a global monopoly on checks processed through the platform. Each partner holds a defined geographic mandate — which means the platform is commercially neutral across every major aviation market, no single partner dependency creates a systemic risk, and pilots in any region are served by a provider with the local authority relationships and jurisdictional expertise their checks require.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Region</th>
+                  <th className="text-left px-4 py-2 font-semibold">Partner</th>
+                  <th className="text-left px-4 py-2 font-semibold">Jurisdictional Scope</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { region: 'Europe', partner: 'Veremark', scope: 'EASA member states, UK (CAA/DBS), EU GDPR compliance, right-to-work validation across EU + EEA jurisdictions' },
+                  { region: 'United States', partner: 'TBD — US-domiciled provider', scope: 'FAA license database, FBI criminal checks, TSA aviation security vetting, NTSB incident records, US right-to-work' },
+                  { region: 'Africa & Asia-Pacific', partner: 'TBD — regional provider', scope: 'CAAP (Philippines), GCAA, SACAA, regional CAA authority access, NBI clearance, local police certificate coordination across high-volume pilot supply markets' },
+                ] as { region: string; partner: string; scope: string }[]).map((row, i) => (
+                  <tr key={row.region} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100 whitespace-nowrap">{row.region}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold whitespace-nowrap">{row.partner}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.scope}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-slate-600 text-sm mb-6">Each regional partner integrates via the same standardised API layer. From the pilot's perspective, verification is seamless regardless of where their licence was issued, where they are currently based, or which operator they are applying to. From the platform's perspective, <strong>no single partner failure can disrupt global operations</strong> — regional redundancy is structural, not contingent.</p>
+
           <ul className="text-sm text-slate-700 space-y-1 mb-6 ml-4 list-disc">
             <li>10–15% revenue share on verification fees — passive income without operational overhead</li>
             <li>Volume multiplier: one verified pilot applies to 5+ airlines = 5x check volume per user</li>
