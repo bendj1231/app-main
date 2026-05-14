@@ -12,6 +12,7 @@ const navSections = [
   { id: 'pillar-1-commercial-airlines', label: '→ Pillar 1: Commercial Airlines', indent: true },
   { id: 'pillar-2-cargo-freight', label: '→ Pillar 2: Cargo & Freight Operators', indent: true },
   { id: 'pillar-3-charter-business', label: '→ Pillar 3: Charter & Business Aviation', indent: true },
+  { id: 'pillar-4-emerging-sectors', label: '→ Pillar 4: Emerging Aviation Sectors', indent: true },
   { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
 ];
 
@@ -1046,10 +1047,332 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-10 border-slate-300" />
 
+          <h2 id="pillar-4-emerging-sectors" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            PILLAR 4: EMERGING AVIATION SECTORS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Operations &amp; Recruitment</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Absence of Dedicated Talent Infrastructure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The rapid commercialisation of Advanced Air Mobility (AAM) — including eVTOL, air taxi, drone logistics, agricultural aviation, and autonomous systems — is no longer theoretical. These sectors are fully capitalised, type-certificated, and actively scaling human capital. However, they are attempting to scale in the complete absence of a dedicated recruitment infrastructure.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Emerging aviation operators cannot systematically deploy the hiring frameworks used by commercial airlines. Competency matrices differ fundamentally, certification pathways remain non-standardised, and optimal candidate profiles do not align with traditional hours-based selection models. The result is severe <strong>structural friction</strong>: legacy job cross-posting attracts misaligned candidates, while highly adaptable, digitally native, early-career pilots remain invisible within traditional pipelines — entirely disconnected from alternative aviation pathways. <strong style={{color:'#dc2626'}}>The issue is not a top-line supply deficit. It is an infrastructure and channel routing failure.</strong></p>
+
+          <div className="border border-slate-300 rounded-lg px-6 py-5 mb-6 bg-slate-50">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Case Study — Talent Acquisition Architecture Failure</p>
+            <p className="text-slate-800 font-semibold mb-1">Etihad Aviation Career Fair, January 21, 2026 — Etihad Museum, Abu Dhabi</p>
+            <p className="text-slate-500 text-xs mb-3">Direct observation by PilotRecognition founding team</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>Objective observed reality:</strong> Demand and talent supply coexisted in high volumes, yet the structural architecture failed to execute a match. An unfiltered, unsegmented, and un-prequalified attendee pool — engineers, cadets, mechanics, and licensed pilots — overwhelmed the physical infrastructure, resulting in venue gate closures. Qualified flight crew present at the event were consistently presented with a single legacy screening metric:</p>
+            <p className="text-slate-800 text-sm italic font-semibold mb-3 pl-4 border-l-4 border-red-500">"You know the requirements — 1,500 hours. Come back when you have them."</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-0"><strong>Pipeline failure diagnosis:</strong> No gap analysis was offered. No transitional pathways were identified. No existing competency validation mechanisms were applied. The event confirmed that the aviation talent challenge is not a supply-side deficit. <strong style={{color:'#dc2626'}}>It is a structural failure of talent acquisition pipelines to route, segment, and match supply to demand.</strong></p>
+          </div>
+
+          <div className="border border-slate-300 rounded-lg px-6 py-5 mb-8 bg-slate-50">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Field Intelligence — Direct Industry Interview (Disclosed, Founding Team Present)</p>
+            <p className="text-slate-800 font-semibold mb-1">Advanced Air Mobility Hiring Postures</p>
+            <p className="text-slate-500 text-xs mb-3">Interviews conducted by PilotRecognition founding team; founding partner present throughout; all parties informed</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-4">Direct industry interviews reveal a critical systemic contradiction: <strong>the eVTOL sector is defaulting to a 1,500-hour legacy benchmark solely due to the absence of an alternative validation framework.</strong> Not because aircraft type requirements demand it. Not because operational complexity mandates it. Because no structured alternative exists.</p>
+
+            <p className="text-slate-700 text-sm font-semibold mb-2">The Access Gap — Misallocated Capital</p>
+            <ul className="space-y-1 text-sm text-slate-700 list-disc ml-5 mb-4">
+              <li>A commercial pilot graduate holding <strong>200 hours</strong> represents a baseline training capitalisation of approximately <strong>$50,000 USD</strong> — a licensed professional, medically certified, and legally qualified to operate commercial aircraft</li>
+              <li>The sector's stated concession — targeting pilots <strong>below 1,000 hours</strong> as a "middle experience gap" — requires that candidate to independently finance an additional <strong>800 hours</strong> of flight time</li>
+              <li>At a market average of <strong>$200 USD per flight hour</strong>, this structural gap demands an additional <strong>$160,000 USD</strong> in capital expenditure</li>
+              <li>Aggregate investment to meet the eVTOL "accessible" minimum: <strong>over $210,000 USD</strong> (frequently exceeding <strong>$300,000 USD</strong> for integrated or extended training tracks)</li>
+              <li><strong style={{color:'#dc2626'}}>The sector is rebranding the same access barrier, not removing it.</strong> The misallocated capital cost falls entirely on the candidate.</li>
+            </ul>
+
+            <p className="text-slate-700 text-sm font-semibold mb-2">Undisclosed Cross-Training Requirements</p>
+            <ul className="space-y-1 text-sm text-slate-700 list-disc ml-5 mb-4">
+              <li><strong>Fixed-wing aviators</strong> require comprehensive rotary-wing familiarisation modules before eVTOL consideration</li>
+              <li><strong>Rotary-wing aviators</strong> require glass-cockpit, fixed-wing instrument familiarisation before eVTOL consideration</li>
+              <li>Neither background is disqualifying — but <strong>both require additional modular training investment not currently published, mapped, or factored into any existing pilot profile system</strong></li>
+            </ul>
+
+            <p className="text-slate-700 text-sm font-semibold mb-2">Regulatory Timeline Misalignment</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-0">Current market data indicates that leading eVTOL operators — including <strong>Archer Aviation</strong> — project their <strong>Air Operator Certificate (AOC) verification to occur in late Q3 2026 (approximately late September 2026)</strong>. Operators are actively evaluating candidates against legacy airline hour thresholds for commercial operations that are not yet legally cleared to fly. <strong style={{color:'#dc2626'}}>This represents a regulatory timeline misalignment that no current recruitment or verification platform is built to surface, track, or communicate to candidates.</strong></p>
+          </div>
+
+          <h3 id="pillar-4-verification-imperative" className="text-xl font-bold text-slate-800 mt-8 mb-3 scroll-mt-24">Strategic Imperative for Verification Partners</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 4 establishes the competency and verification infrastructure required to resolve this structural friction. By moving away from aggregate hour-tracking to granular, competency-based pilot profiles, the platform enables emerging operators to evaluate the true capabilities of a 200-hour candidate against role-specific requirements — not an inherited legacy threshold.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">For strategic verification partners, this structural shift creates an entirely new ecosystem of <strong>continuous credentialling</strong>. As pilots transition between fixed-wing, rotary, and eVTOL operational frameworks, the platform tracks and surfaces non-standard modular certifications, regulatory gap training completions, and specialised competency attainments in real time. <strong style={{color:'#dc2626'}}>This builds an industry-standard verification footprint for the next generation of aviation — one that does not yet exist anywhere in the market.</strong></p>
+
+          <h4 className="text-base font-bold text-slate-800 mt-6 mb-2">The Insurance Barrier — The Real Driver Behind the 1,500-Hour Default</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">The 1,500-hour threshold is not purely a regulatory construct. Its primary enforcer is the aviation insurance market. Underwriters require aggregate flight time as a proxy for risk — because no alternative data set exists to quantify pilot competency at a granular level. Operators default to 1,500 hours not because their aircraft require it, but because their insurers price coverage against it.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong style={{color:'#dc2626'}}>The Recognition Score changes this calculus.</strong> By generating a verified, multi-dimensional competency data set — incorporating simulator performance scores, EBT behavioural assessments, cognitive adaptability ratings, cross-training completions, and modular credential attainments — the platform provides insurers with the granular risk profile they currently lack. A 300-hour Recognition+ pilot with high EBT scores, completed rotary familiarisation, and documented urban operations awareness is a quantifiably lower risk profile than a 1,500-hour legacy candidate with no competency data beyond total time.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">When the insurer accepts the data set, the operator follows. <strong>The platform is not just matching pilots to operators — it is building the evidence base that unlocks lower-hour coverage for the entire emerging aviation sector.</strong></p>
+
+          <h4 className="text-base font-bold text-slate-800 mt-6 mb-2">The Data-Backed Regulatory Lever — Anonymised Competency Benchmark</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Pillar 4 does not only match pilots. It generates the industry's first <strong>Anonymised Competency Benchmark</strong>. By aggregating performance data from early-career pilots across simulator scores, EBT assessments, cognitive profiles, and modular training completions, the platform provides National Aviation Authorities (NAAs) with the empirical evidence required to shift from hours-based to competency-based licensing frameworks. The platform becomes the data infrastructure for future AAM regulation — not a consequence of it.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed mb-2"><strong style={{color:'#f87171'}}>The verification opportunity in emerging aviation is not a single background check at point of hire.</strong> It is a continuous, modular credentialling pipeline — triggered each time a pilot completes a cross-training module, attains a new competency rating, or transitions between aircraft categories. <strong style={{color:'#f87171'}}>The platform is the infrastructure. Verification partners are the engine that validates every step.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>Pathway cards are dynamic, not static.</strong> When a pilot's Recognition Score increases, or they complete a rotary familiarisation module, the platform automatically notifies matched AAM operators. The database is not a searchable list — it is an active recruitment engine that pushes verified readiness signals to operators in real time.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Misallocated Talent Pool: Early-Career Pilots Gridlocked in the Traditional Pipeline</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The structural inefficiencies within the legacy aviation pipeline do not merely delay airline recruitment — they misallocate a vast cohort of highly motivated, technically capable aviators holding between 200 and 800 total flight hours. This talent pool has exhausted traditional entry routes, yet remains ideally suited for Advanced Air Mobility and alternative aviation roles, provided those pathways are rendered visible, structured, and systematically verified.</p>
+          <ul className="space-y-4 mb-6">
+            {([
+              { t: 'Competency Over Aggregate Flight Hours', d: 'Low total flight time is not an absolute disqualifier. AAM and air taxi operators are actively designing competency frameworks where a 300-hour candidate possessing high cognitive scores, rapid situational adaptability, and urban operations awareness presents a lower operational risk profile than a 5,000-hour legacy airline pilot unaccustomed to low-altitude, high-density environments.' },
+              { t: 'Technological-Native Architecture Alignment', d: 'Pilots entering the industry within the last decade are inherently digitally native, simulator-proficient, and optimised for advanced glass-cockpit interfaces. Modern AAM platforms — which lean heavily on fly-by-wire automation, integrated digital interfaces, and high data density — align seamlessly with the cognitive architecture of this demographic.' },
+              { t: 'Freedom from Seniority Constraints', d: 'Early-career pilots have not yet accumulated years within traditional airline seniority systems. They possess full career flexibility to pivot permanently into alternative sectors. AAM operators therefore do not compete with legacy airlines for senior talent — they access an unencumbered, motivated pool with no sacrifice of position or pay scale.' },
+              { t: 'Mission-Specific and Technical Readiness', d: 'Agricultural aviation and specialised humanitarian operations require pilot profiles defined by low-altitude operational comfort, high mechanical empathy, and a mission-first mindset. These behavioural traits are naturally developed by flight instructors and regional utility pilots — yet they are entirely unmeasured and unsurfaced by the traditional airline hiring apparatus.' },
+              { t: 'Transition to Autonomous Fleet Operations', d: 'A critical yet currently invisible career pathway exists within large-scale agricultural and logistics drone operations. Fleet operators actively seek commercially licensed pilots to oversee, coordinate, and command multi-platform remotely piloted aircraft systems. A Commercial Pilot Licence (CPL) serves as an ideal regulatory and operational foundation for these roles — yet no existing recruitment platform communicates this demand to the market, leaving a pre-verified, qualified pilot pool entirely unaware of available positions.' },
+            ] as { t: string; d: string }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="border border-slate-300 rounded-lg px-6 py-5 mb-8 bg-slate-50">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Sector Spotlight — Agricultural &amp; Autonomous Fleet Operations</p>
+            <p className="text-slate-800 font-semibold mb-2">The Autonomous Fleet Pathway — Available Capacity vs. Market Deficit</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3">Agricultural and logistics drone operators — including multi-level group (MLG) structures covering land, sea, and air autonomous systems — are actively scaling their air operations tier and require commercially licensed pilots for fleet coordination, mission management, and remote pilot station operations. The Commercial Pilot Licence is a <strong>direct regulatory and competency foundation</strong> for these roles. Airspace awareness, weather interpretation, aeronautical decision-making, and SOP-based emergency response are precisely the differentiating capabilities that a CPL holder brings to an autonomous fleet operation.</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3">Two compounding market failures are preventing this match from occurring:</p>
+            <ul className="space-y-1 text-sm text-slate-700 list-disc ml-5 mb-3">
+              <li><strong>Demand is not visible to supply.</strong> No platform presents autonomous fleet management as a structured, accessible career pathway for CPL holders. Pilots with 200–800 hours gridlocked in the traditional pipeline are unaware their credentials qualify them for roles available today — not in 2027, not pending AOC certification.</li>
+              <li><strong>Supply is not visible to demand.</strong> MLG and agricultural drone fleet operators have no structured channel into a pre-verified, commercially licensed pilot database. They recruit generically, attracting unqualified applicants, while the optimally qualified cohort remains entirely invisible.</li>
+            </ul>
+            <p className="text-slate-700 text-sm leading-relaxed mb-0">Pillar 4 resolves both failures simultaneously. Autonomous fleet operator pathway cards are published on the platform. Recognition+ pilots holding commercial licences are matched, notified, and presented to operators with verified credentials confirmed. <strong style={{color:'#dc2626'}}>The demand exists. The qualified supply exists. The structural channel between them does not — until now.</strong></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Understanding the Distinction: Piloted eVTOL vs. Remotely Piloted &amp; Autonomous Drone Operations</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Emerging aviation is not a single category. It encompasses two fundamentally different operational models — and conflating them produces exactly the kind of misrouted recruitment that Pillar 4 exists to correct. The platform maps both separately, with distinct pathway cards and distinct candidate profiles for each.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="border border-slate-300 rounded-lg px-5 py-5 bg-white">
+              <p className="text-xs uppercase tracking-wide font-semibold text-red-600 mb-2">Piloted eVTOL — Manned Systems</p>
+              <p className="text-slate-800 font-semibold text-sm mb-3">Joby Aviation · Archer Aviation · Wisk · Lilium</p>
+              <ul className="space-y-2 text-sm text-slate-700 list-disc ml-4">
+                <li><strong>Manned aircraft</strong> — a certificated pilot on board for every flight</li>
+                <li><strong>City-to-city air mobility</strong> — short-distance, high-frequency urban routes. Example: Abu Dhabi to Dubai, cutting commute time by over 80% versus ground transport</li>
+                <li><strong>Standard airspace integration</strong> — IFR/VFR routing, ATC communication, regulated flight paths</li>
+                <li><strong>Public sector model (e.g. Joby Aviation)</strong> — mass-market air taxi network. Scheduled routes, high frequency, priced for general public access. Operationally comparable to an urban bus network at altitude. Pilot role: scheduled, repetitive, volume-driven</li>
+                <li><strong>Private sector model (e.g. Archer Aviation)</strong> — on-demand, premium, and corporate-focused. Closer to private charter than public transit. Target clientele: corporate travellers, VIP passengers, time-sensitive private sector demand. Pilot role: service-oriented, discretion-first, relationship-proximate. <strong>Archer's private sector positioning is analogous to how Gulfstream is positioned in business aviation today</strong> — a premium brand, a premium aircraft, and an expectation of a premium crew profile to match</li>
+                <li><strong>Pilot requirements</strong> — commercial licence, cross-training (fixed-wing ↔ rotary familiarisation), type rating on the specific eVTOL platform. Private sector operators are expected to weight presentation, discretion, client-facing competency, and verified professional standing alongside technical qualifications</li>
+                <li><strong style={{color:'#dc2626'}}>Recognition+ as the future access gate for private eVTOL pathways</strong> — as private sector eVTOL operators mature and begin publishing structured pilot requirements, the profile they will seek is not a generic commercial licence holder. It is a <strong>verified, credentialled pilot with a Recognition+ profile</strong> — identity confirmed, credentials wallet complete, EBT assessment on record, and a professional standing that can be presented to a corporate client without hesitation. The platform anticipates this requirement and positions Recognition+ members as the pre-qualified pool for private eVTOL pathway access as the sector scales toward AOC certification and beyond</li>
+                <li><strong>AOC dependency</strong> — operations cannot commence until the Air Operator Certificate is issued. Archer Aviation: projected late Q3 2026</li>
+                <li><strong>Goal</strong> — eliminate urban traffic congestion, reduce intercity travel time by 80%+, scale across both public scheduled and private on-demand networks</li>
+              </ul>
+            </div>
+            <div className="border border-slate-300 rounded-lg px-5 py-5 bg-white">
+              <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-2">Pilotless Drone Operations — Unmanned Systems</p>
+              <p className="text-slate-800 font-semibold text-sm mb-3">Agricultural · Logistics · Mapping · Multi-Domain Operations (e.g. MLG)</p>
+              <ul className="space-y-2 text-sm text-slate-700 list-disc ml-4">
+                <li><strong>Unmanned systems</strong> — remotely operated or autonomous, no pilot on board. Operators such as MLG cover <strong>land, sea, and air</strong> drone categories within a single multi-level group structure</li>
+                <li><strong>Pilot relevance — primarily air operations</strong> — commercially licensed pilots are most directly transferable to the air drone category: crop spraying, field mapping, airspace-aware logistics delivery, and precision agriculture flight operations. Land and sea drone roles require different operational expertise</li>
+                <li><strong>The remote pilot station</strong> — what appears automated to the public is not unmanaged. Passenger-carrying and high-value cargo drones are monitored and controlled from a remote operations centre — an office environment functionally analogous to a radar room. A licensed operator manages the flight in real time: routing, deconfliction, systems status, and handoff protocols</li>
+                <li><strong>SOPs for mishaps and emergencies</strong> — remote drone operators follow structured emergency procedures for signal loss, airspace incursions, mechanical anomalies, and forced landing scenarios. These are pilot-oriented SOPs. They require aeronautical judgement, not just technical interface operation</li>
+                <li><strong>Operator role</strong> — remote flight management, mission planning, airspace deconfliction, emergency response, systems oversight. The cockpit has moved to an office. The pilot function has not changed</li>
+                <li><strong>Pilot advantage</strong> — commercial licence holders bring airspace awareness, weather judgement, emergency decision-making, and SOP discipline that direct-entry drone operators lack entirely — a genuine competitive edge within the air category of any multi-domain operator</li>
+                <li><strong>Available now</strong> — no AOC pending, no type certification in progress. Air drone roles exist and are hiring today</li>
+                <li><strong>The gap</strong> — commercially licensed pilots are not being presented with these roles. The pathway is invisible to the very candidates most qualified for the air operations tier</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>Two sectors. Two completely different qualification paths. One platform that maps both.</strong> A pilot suitable for Joby or Archer requires a commercial licence, cross-training, and a type rating — and must wait for an AOC. A pilot suitable for agricultural drone fleet coordination requires a commercial licence and is hirable today. <strong style={{color:'#f87171'}}>Both are invisible to the pilots who qualify for them. Pillar 4 makes both visible.</strong></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Pilots</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'Emerging aviation is invisible as a pathway', d: <><strong>No platform presents eVTOL, air taxi, drone logistics, agricultural drone operations, or autonomous systems as structured, searchable pathways.</strong> Pilots with the right disposition — adaptive, tech-native, low-time but high-potential — never see these sectors as viable options because they are never presented as such. Critically, <strong>pilots do not know their commercial licence is a qualifying foundation for agricultural and multi-level drone operator roles</strong> — a pathway that exists now, not in 2027.</> },
+              { n: '2', t: 'No alternative certification framework', d: <><strong>Pilots locked out of the 1,500-hour airline route have no structured alternative.</strong> Emerging aviation operators are defining their own competency requirements, but those definitions are not published, searchable, or comparable. Pilots cannot build toward a target they cannot see.</> },
+              { n: '3', t: 'No cognitive or behavioural profiling', d: <>Emerging aviation roles — particularly eVTOL and autonomous systems — require specific cognitive traits: <strong>rapid decision-making, systems awareness, comfort with ambiguity, and urban spatial orientation.</strong> No platform surfaces these traits in a pilot profile or maps them to operator requirements.</> },
+              { n: '4', t: 'The pipeline default', d: <>Even pilots who would thrive in emerging aviation default to the traditional airline pipeline because <strong>no alternative is presented to them at the decision point</strong> — when they finish training, when they hit the instructor ceiling, when they consider their next move.</> },
+              { n: '5', t: 'No transition data', d: <><strong>Pilots who have made the move from traditional to emerging aviation sectors have no platform to share that transition.</strong> The data — what worked, what was required, what the lifestyle looks like — does not exist in a structured, accessible format.</> },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Emerging Aviation Operators</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'No candidate pipeline built for their requirements', d: <><strong>Emerging aviation operators cannot hire from the traditional pipeline without modification.</strong> They need pilots who meet non-standard competency frameworks — and no recruitment platform is configured to filter for those requirements.</> },
+              { n: '2', t: 'Competing against legacy airlines for the wrong candidates', d: <>When emerging operators post on standard aviation job boards, they attract high-hour candidates seeking airline alternatives — not the early-career, tech-native, adaptive pilots they actually need. <strong>The wrong pool is self-selecting in.</strong></> },
+              { n: '3', t: 'No industry standard for competency definition', d: <><strong>eVTOL and air taxi operators are individually defining their own competency frameworks</strong> with no cross-industry alignment. The platform creates the first structured format for publishing these requirements — enabling pilots to build toward them and enabling operators to compare their standards against peers.</> },
+              { n: '4', t: '40–60% higher training costs from mis-hires', d: <>Hiring a traditional pilot and retraining them for eVTOL or air taxi operations costs significantly more than hiring a candidate whose profile was matched against emerging aviation criteria from the start. <strong>The absence of a structured matching layer is a direct cost driver.</strong></> },
+              { n: '5', t: 'First-mover advantage is being lost', d: <>Operators who define competency standards early establish the industry benchmark. <strong>Without a platform to publish those standards, the first-mover advantage evaporates</strong> — competitors can match or exceed the framework without contributing to its development.</> },
+              { n: '6', t: 'No direct access to pilots who are actively interested', d: <>Because emerging aviation is new, operators have no established channel into a pool of pilots who have specifically expressed interest in eVTOL, air taxi, or drone operations. <strong>They are recruiting from a general population with no interest signal, no pre-qualification, and no awareness of the sector's specific requirements.</strong> The platform provides the first structured pipeline of pilots who have actively opted into emerging aviation pathways — interest already declared, profile already built.</> },
+              { n: '7', t: 'Aviation colleges do not yet recognise or address eVTOL demand', d: <>Flight training organisations and aviation universities have not integrated emerging aviation sector requirements into their curricula. <strong>There is no standard training module for eVTOL transition, no cross-training pathway taught at ATO level, and no graduate pipeline being built toward these operators.</strong> Pilots leave training with no awareness that these roles exist and no preparation for the cross-training they require. The platform addresses this directly — publishing the requirements, making the pathways visible to graduates at the point of career decision, and working with aviation training organisations to align curriculum to emerging sector demand.</>},
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{'->'}</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Platform Solution</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 4 introduces the <strong>Alternative Avenues pathway layer</strong> — a dedicated section of the platform where emerging aviation operators publish structured competency requirements, and pilots are matched against those requirements regardless of total hours. <strong>Hours are one data point. Cognitive profile, adaptability score, simulator comfort, and EBT alignment are weighted equally.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">For the first time, a 300-hour pilot with a strong Recognition Score, completed EBT video assessment, and a technology-native profile can be surfaced to an eVTOL operator ahead of a 2,000-hour legacy candidate who does not meet the cognitive requirements. <strong>The platform does not replicate the airline hiring model for emerging aviation. It builds a new one.</strong></p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">What Pillar 4 pathway cards include:</p>
+            <ul className="space-y-1 list-disc ml-4">
+              <li><strong>Sector type</strong> — eVTOL, air taxi, drone logistics, agricultural aviation, autonomous systems</li>
+              <li><strong>Minimum hours profile</strong> — total time, specific operation type (not a single threshold)</li>
+              <li><strong>Cognitive and behavioural requirements</strong> — operator-defined, mapped to EBT/CBTA frameworks</li>
+              <li><strong>Certification pathway</strong> — type rating, alternative certification route, or operator-specific training program</li>
+              <li><strong>Technology platform</strong> — aircraft systems, avionics stack, operational software</li>
+              <li><strong>Training cost and support</strong> — operator-funded training, bond requirements, return of service conditions</li>
+              <li><strong>Career trajectory</strong> — progression route within the emerging operator's structure</li>
+            </ul>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">The ATO-to-AAM Bridge — Pre-Filtering the Pipeline at the Source</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Aviation training organisations are currently producing CPL graduates with no awareness that Advanced Air Mobility roles exist, no curriculum alignment with AAM competency requirements, and no pathway from graduation into anything other than the traditional airline queue. The platform addresses this at the source — not after graduation, but during it.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-4 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">AAM-Ready ATO Tagging</p>
+            <p className="mb-3">The platform works with select Flight Training Organisations (ATOs/FTOs) to tag graduates as <strong style={{color:'#dc2626'}}>"AAM-Ready"</strong> — a verified designation indicating the graduate's training included eVTOL-relevant modules such as:</p>
+            <ul className="space-y-1 list-disc ml-4 mb-3">
+              <li>High-density urban navigation and low-altitude operational procedures</li>
+              <li>Glass-cockpit automation and fly-by-wire systems familiarisation</li>
+              <li>Energy management systems (applicable to electric propulsion platforms)</li>
+              <li>Remote Pilot Station (RPS) orientation and handover procedure awareness</li>
+            </ul>
+            <p>ATOs that integrate these modules into their standard CPL curriculum are listed on the platform as <strong>AAM-Affiliated Training Organisations</strong>. Their graduates enter the platform with a pre-filtered, pre-verified designation — reducing operator screening time and creating a structured pipeline from training to emerging sector employment for the first time.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">Modular Credentialling Taxonomy — The Digital Competency Map</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A pilot profile on this platform is not a resumé. It is a <strong>Competency Map</strong> — a verified, dynamic record of specific sub-competencies that directly correspond to emerging aviation role requirements. The following taxonomy defines the micro-credentials the platform tracks, verifies, and surfaces to operators:</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Micro-Credential</th>
+                  <th className="text-left px-4 py-2 font-semibold">Applicable Sector</th>
+                  <th className="text-left px-4 py-2 font-semibold">Verification Method</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { cred: 'Urban Airspace Management (UAM) Protocol', sector: 'eVTOL, Air Taxi', method: 'Simulator assessment + operator-defined competency sign-off' },
+                  { cred: 'Battery / Energy Management Systems', sector: 'eVTOL, Electric UAM', method: 'Type-specific training completion record' },
+                  { cred: 'Remote Pilot Station (RPS) Handover Procedures', sector: 'Autonomous Fleet, Drone Logistics', method: 'Operator SOP completion + platform attestation' },
+                  { cred: 'High-Frequency Short-Haul Fatigue Management', sector: 'Air Taxi, eVTOL', method: 'EBT cognitive load assessment + operator declaration' },
+                  { cred: 'Fixed-Wing to Rotary Familiarisation', sector: 'eVTOL (all)', method: 'ATO completion record, verified by platform' },
+                  { cred: 'Rotary to Fixed-Wing Familiarisation', sector: 'eVTOL (all)', method: 'ATO completion record, verified by platform' },
+                  { cred: 'Multi-Platform Fleet Coordination', sector: 'Autonomous Fleet, MLG Operations', method: 'Operator-issued module completion + platform attestation' },
+                  { cred: 'Glass-Cockpit Automation Proficiency', sector: 'eVTOL, AAM (all)', method: 'Simulator performance score, EBT alignment' },
+                  { cred: 'Humanitarian / Austerity Operations', sector: 'Autonomous Fleet, Agricultural, Disaster Relief', method: 'Mission-type declaration + operator or NGO sign-off. Elevated profile weighting for non-templated, high-stress environment competency.' },
+                ] as { cred: string; sector: string; method: string }[]).map((row, i) => (
+                  <tr key={row.cred} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                    <td className="px-4 py-2 border border-slate-200 font-medium text-slate-800">{row.cred}</td>
+                    <td className="px-4 py-2 border border-slate-200 text-slate-600">{row.sector}</td>
+                    <td className="px-4 py-2 border border-slate-200 text-slate-600">{row.method}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">Fleet Command Transition Package — CPL to Autonomous Operations</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">For commercially licensed pilots transitioning into autonomous fleet operations, the platform offers a structured <strong>Fleet Command Transition Package</strong> — a verified modular pathway that repositions the move from traditional flight to autonomous fleet management not as a downgrade, but as a <strong>specialised command function</strong>.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">Fleet Command Operations — What It Includes:</p>
+            <ul className="space-y-1 list-disc ml-4">
+              <li><strong>Multi-Platform Coordination</strong> micro-credential — verified by the platform upon operator module completion</li>
+              <li><strong>Remote Pilot Station orientation</strong> — documented SOP familiarity and emergency procedure competency</li>
+              <li><strong>Airspace deconfliction for autonomous systems</strong> — competency assessment mapped to specific fleet types</li>
+              <li><strong>Fleet Command designation</strong> on pilot profile — visible to all autonomous fleet operators browsing the Alternative Avenues layer</li>
+            </ul>
+            <p className="mt-3 text-slate-600">The CPL holder does not become a drone operator. <strong style={{color:'#dc2626'}}>They become a Fleet Commander — a licensed aviation professional managing airspace, systems, and safety from a command centre rather than a cockpit.</strong> The competency is the same. The platform makes it visible, verified, and searchable.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2">Commercial Tiers — Emerging Sector Operator Access</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Emerging aviation operators access the platform on a model designed for early-stage and scaling operations — lower entry cost, higher strategic value. Access is structured across two independent products.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 1 — Alternative Avenues Pathway Listings &amp; Pilot Database Access</h4>
+          <p className="text-slate-600 text-sm mb-3">For emerging sector operators publishing structured competency pathway cards and accessing the matched, verified pilot pool.</p>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Tier</th>
+                  <th className="text-left px-4 py-2 font-semibold">Fee</th>
+                  <th className="text-left px-4 py-2 font-semibold">Includes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { tier: 'Beta Partner', fee: 'Free', features: <><strong style={{color:'#dc2626'}}>Publish up to 3 Alternative Avenues pathway cards.</strong> Access first 10 matched pilot profiles — full profiles visible. <strong style={{color:'#dc2626'}}>Remaining matched pilots blurred</strong> — live signal of pool depth without full access. Participate in platform beta testing and competency framework co-development. <span style={{color:'#dc2626'}}>Recognition in platform as founding emerging sector partner.</span></> },
+                  { tier: 'Enterprise', fee: '$1,000/yr', features: <><strong style={{color:'#dc2626'}}>Unlimited pathway listings</strong>, full matched pilot database access filtered by cognitive score and EBT assessment results, Recognition Score filtering, EBT video assessment viewing, <strong style={{color:'#dc2626'}}>transition data reports</strong> (pilots moving from traditional to emerging sectors), advanced competency framework publishing tools, <strong style={{color:'#dc2626'}}>industry benchmark reports</strong> comparing operator standards across the emerging aviation sector. <strong style={{color:'#dc2626'}}>Full API access</strong> — when an operator opens a role internally, the platform automatically pushes the top matched Recognition+ candidates directly into the operator's existing HR system. The platform becomes invisible infrastructure: indispensable, silent, always on.</> },
+                ] as { tier: string; fee: string; features: React.ReactNode }[]).map((row, i) => (
+                  <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.features}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mb-3">Model 2 — Emerging Operator Profile Listing</h4>
+          <p className="text-slate-600 text-sm mb-3">A separate product. Emerging sector operators are new to market and require public visibility to build awareness and attract pilots at scale. Profile listings are <strong>publicly visible by default</strong> — searchable by any platform user. Operators who subsequently shift to a private or premium sector model (e.g. corporate eVTOL, VIP air mobility) may elect to restrict visibility to verified Recognition+ members only, mirroring the charter operator model in Pillar 3.</p>
+          <div className="overflow-x-auto mb-4">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Product</th>
+                  <th className="text-left px-4 py-2 font-semibold">Annual Fee</th>
+                  <th className="text-left px-4 py-2 font-semibold">What It Includes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { tier: 'Emerging Sector Expectations Listing', fee: '$500/yr', features: 'Structured operator profile — sector type, aircraft platform, operational geography, competency framework summary, AOC status, cross-training requirements, and culture. Publicly visible and searchable by default. Operator may elect to restrict to Recognition+ verified pilots only upon transitioning to a private or premium sector model.' },
+                ] as { tier: string; fee: string; features: string }[]).map((row) => (
+                  <tr key={row.tier} className="bg-slate-800">
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.features}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-8 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-3">Success Fee — Tiered by Contract Duration &amp; Role Type</p>
+            <ul className="space-y-2 list-disc ml-4 mb-3">
+              <li><strong>Short-term / Seasonal Roles</strong> (agricultural aviation, mapping, logistics drone): <strong style={{color:'#dc2626'}}>$250 per confirmed placement</strong> — or alternatively, a subscription <strong>Seat Model</strong> at $100/month per active deployed pilot, for operators with high-frequency seasonal recruitment cycles</li>
+              <li><strong>Career-Track Roles</strong> (Archer/Joby eVTOL, air taxi, fleet command): <strong style={{color:'#dc2626'}}>$500 per confirmed placement</strong> — triggered upon the pilot passing the operator's initial training programme or probation period, not at offer acceptance</li>
+              <li><strong>First 5 placements per operator:</strong> Success fee waived across all tiers</li>
+            </ul>
+            <p className="text-slate-600 mb-2"><strong>Clawback Credit Protection:</strong> If a placed pilot exits within 90 days of commencement, the operator receives a <strong>platform credit</strong> equivalent to the success fee paid — redeemable against the next matched placement. This reinforces that platform verification produces better retention outcomes than legacy hiring, and protects operators during the early deployment phase.</p>
+            <p className="text-slate-600"><strong style={{color:'#dc2626'}}>Retention Badge:</strong> Operators whose placed pilots remain in role beyond 12 months are awarded a <strong>High Retention</strong> badge on their public Model 2 profile. In a new industry where operator culture is unknown and pilot confidence is low, a verified retention signal is the most powerful recruitment asset an emerging aviation operator can display. It attracts top-tier CPL holders who are evaluating risk before committing to a sector transition.</p>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The first-mover advantage is real.</strong> Emerging aviation operators who publish competency frameworks on this platform define the industry standard before their competitors do. Early-career pilots who align their profile to those frameworks become the pipeline. <strong style={{color:'#f87171'}}>The operator who builds the framework owns the talent pool that grows around it.</strong></p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
           <h2 id="pillar-11-verification" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
             PILLAR 11: BACKGROUND CHECKS &amp; VERIFICATION PROVIDERS
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub C — Capital, Risk &amp; Compliance</p>
+
+          <div className="bg-slate-100 border border-slate-300 rounded px-5 py-3 mb-8 flex items-start gap-3">
+            <span className="text-red-500 font-bold text-lg flex-shrink-0">↗</span>
+            <p className="text-slate-700 text-sm leading-relaxed">
+              <strong>Cross-reference — Pillar 4:</strong> The emerging aviation sector introduces a new class of verification requirement that extends beyond point-of-hire background checks. As pilots transition between fixed-wing, rotary, and eVTOL frameworks, modular cross-training completions and non-standard competency certifications must be tracked and verified continuously.{' '}
+              <button
+                onClick={() => scrollTo('pillar-4-verification-imperative')}
+                className="text-red-600 font-semibold underline underline-offset-2 hover:text-red-800 cursor-pointer bg-transparent border-none p-0"
+              >
+                See: Strategic Imperative for Verification Partners — Pillar 4 ↑
+              </button>
+            </p>
+          </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: A Broken, Manual, Aviation-Blind Screening Industry</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Aviation background screening operates on <strong>outdated manual processes</strong> that create friction for every party in the hiring chain. Verification is not a minor inconvenience — it is a structural bottleneck that delays hiring, duplicates cost, exposes operators to fraud risk, and leaves pilots in a compliance void with no portable credential infrastructure.</p>
@@ -1402,7 +1725,7 @@ export default function UCFOfficialReleasePage() {
                     tier: 'Operator Deep Check — Pathway Verification',
                     by: 'Airline / Operator (optional)',
                     price: '$12/check',
-                    includes: <>Operator selects specific candidates from their shortlist and requests <strong style={{color:'#dc2626'}}>deeper, operator-specific checks</strong> not covered by the pilot's self-verification. Scope is configurable per role: <strong style={{color:'#dc2626'}}>criminal background</strong> (NBI, DBS, FBI), <strong style={{color:'#dc2626'}}>right-to-work validation</strong>, aviation security vetting, incident and insurance history, conduct records. <strong style={{color:'#dc2626'}}>Pilot must consent.</strong> Operator pays per check. Results optionally returned to pilot's wallet.</>,
+                    includes: <>Operator selects specific candidates from their shortlist and requests <strong style={{color:'#dc2626'}}>deeper, operator-specific checks</strong> not covered by the pilot's self-verification. Scope is configurable per role: <strong style={{color:'#dc2626'}}>criminal background</strong> (NBI, DBS, FBI), <strong style={{color:'#dc2626'}}>right-to-work validation</strong>, aviation security vetting, incident and insurance history, conduct records. <strong style={{color:'#dc2626'}}>Pilot must consent.</strong> Operator pays per check. Results optionally returned to pilot's wallet. <strong style={{color:'#dc2626'}}>Data Contribution Credit:</strong> Operators who contribute a verified Deep Check result back to the pilot's wallet receive a <strong>$2.00 credit</strong> against their next check fee — incentivising the creation of a shared, industry-wide trust commons where every check strengthens the global pilot data set.</>,
                   },
                 ] as { tier: string; by: string; price: string; includes: React.ReactNode }[]).map((row, i) => (
                   <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
@@ -1436,6 +1759,55 @@ export default function UCFOfficialReleasePage() {
           <div className="my-4 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
             <p className="text-slate-800 text-sm leading-relaxed"><strong>Why this matters:</strong> In traditional hiring, pilots are background checked without notification — they find out only if something fails at the offer stage. This platform inverts that. A pilot who sees <em>"[Operator Name] has initiated a deep verification on your profile"</em> knows they are on a shortlist. It is a positive signal — transparent, timely, and respectful of the pilot's ownership over their own data.</p>
           </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">A. Continuous Monitoring — From Snapshot to Active Listener</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">Traditional background checks are a snapshot — accurate on the day they are printed, potentially wrong by the following week. The platform advances this to <strong>Active Monitoring</strong>: with pilot consent, the platform maintains a continuous listener on CAA, FAA, and EASA license databases. If a pilot's licence is suspended, or a Class 1 medical is revoked on a Tuesday, <strong style={{color:'#dc2626'}}>the "Verified" badge on the platform is flagged by Tuesday afternoon.</strong></p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">This provides immediate risk mitigation that no manual check, no PDF certificate, and no periodic re-screening cycle can match. Airlines operating on this platform are not relying on a check that was accurate 90 days ago. They are receiving live credential status on every pilot in their active pipeline — continuously, automatically, and without additional cost per update.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">Active Monitoring — Trigger Events</p>
+            <ul className="space-y-1 list-disc ml-4">
+              <li><strong>Licence suspension or lapse</strong> — profile badge downgraded within hours; operators with that pilot on active shortlist notified immediately</li>
+              <li><strong>Medical certificate revocation</strong> — Class 1/2 status change pushed from AME API; pathway matching paused on roles requiring current medical</li>
+              <li><strong>Right-to-work document expiry</strong> — passport, visa, or work permit lapse triggers automated wallet flag and pilot notification</li>
+              <li><strong>New incident record</strong> — if an authority database registers a new incident involving the pilot, the insurance risk profile updates in real time</li>
+              <li><strong>Criminal record addition</strong> — jurisdiction-dependent monitoring where authority API permits continuous lookup rather than point-in-time check</li>
+            </ul>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">B. The Verification Wallet as a Premium Insurance Asset</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">The pilot verification wallet is not only a hiring credential — it is a <strong>personal financial asset</strong>. A pilot holding a <strong>High-Integrity Wallet</strong> — verified clean incident record, current Class 1 medical, EBT competency scores on file, and stable employment history — presents a quantifiably lower risk profile to personal insurance underwriters than an unverified pilot of equivalent hours.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong style={{color:'#dc2626'}}>Pilots with a High-Integrity Wallet can use their verified profile to negotiate lower personal loss-of-licence insurance premiums.</strong> Loss-of-licence insurance — which protects a pilot's income if they lose their medical — is one of the most significant recurring financial obligations in a pilot's career. A verified competency profile gives underwriters the granular data required to price risk more accurately and offer preferential rates to demonstrably low-risk candidates.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">This creates a direct financial ROI for the pilot in keeping their wallet fully verified and continuously updated — not as a hiring requirement, but as a personal financial strategy. <strong>The more complete the wallet, the lower the premium. The platform does not just help pilots get hired. It helps them save money for the duration of their career.</strong></p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">C. Self-Sovereign Identity (SSI) &amp; W3C Verifiable Credentials</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">To ensure the tamper-proof claim is technically unassailable, the platform anchors its credential architecture in the <strong>W3C Verifiable Credentials (VC) standard</strong> — the globally recognised framework for decentralised, cryptographically verifiable digital identity.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">Under this model, the platform does not store a PDF of a licence certificate. <strong>The issuing authority — the CAA, the AME, the ATO — cryptographically signs a digital credential token.</strong> When a pilot shares that credential with Etihad, Archer, or any platform operator, the receiving system verifies the issuer's cryptographic signature — not the visual appearance of an image file. This eliminates the possibility of document fraud entirely. A Photoshopped licence is not a signed token. It fails verification at the cryptographic layer before any human reviews it.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800 mb-2">How W3C Verifiable Credentials Work in the Pilot Wallet</p>
+            <ul className="space-y-1 list-disc ml-4">
+              <li><strong>Issuer</strong> — the authority that signs the credential: CAA issues the licence token; the AME issues the medical token; the ATO issues the training completion token</li>
+              <li><strong>Holder</strong> — the pilot holds the signed credential token in their wallet. They control who sees it and when</li>
+              <li><strong>Verifier</strong> — the airline or operator receiving the credential verifies the issuer's digital signature without contacting the issuing authority directly. The check is instant, automated, and cryptographically certain</li>
+              <li><strong>Self-Sovereign</strong> — the pilot owns the credential. It cannot be revoked by the platform, altered by the operator, or intercepted in transit. The data belongs to the pilot, and they decide who accesses it</li>
+            </ul>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Ecosystem Connectivity — Pillar 11 Handshakes</h4>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Pillar 11 is the data clearinghouse for the entire 25-pillar ecosystem. The verification wallet does not operate in isolation — it is the integration node that connects every credentialled interaction across every sector on the platform.</p>
+          <ul className="space-y-3 mb-6">
+            {([
+              { t: 'Pillar 13 — Aeromedical', d: 'The AME does not issue a paper certificate. They push a signed Digital Medical Token directly into the pilot\'s Pillar 11 wallet via API. Medical status is live, cryptographically verified, and continuously monitored — not a scanned PDF submitted by the pilot.' },
+              { t: 'Pillar 08 — Banking & Training Finance', d: 'When a pilot applies for a training loan through Pillar 08, the bank pulls the verified ATO transcript directly from the pilot\'s Pillar 11 wallet to confirm training progression before releasing funds. Loan disbursement is linked to verified milestone completion — not self-declaration.' },
+              { t: 'Pillar 15 — Manufacturers & OEMs', d: 'Aircraft manufacturers and avionics OEMs push Software Familiarisation credentials directly into the pilot\'s wallet when they complete a new avionics course or type-specific systems module. The pilot\'s competency map updates automatically — without re-entering the platform.' },
+              { t: 'Pillar 09 — Aviation Insurance', d: 'Pillar 11 provides insurers with the Anonymised Competency Benchmark data set required to move from hours-based to competency-based risk pricing. The wallet is the mechanism through which the platform becomes the actuarial data infrastructure for AAM underwriting.' },
+              { t: 'Pillar 17 — Universities & ATOs', d: 'Institutions that integrate W3C credential issuance into their graduation process push AAM-Ready tokens directly into graduate wallets. The university becomes a verified node in the credential chain — not a paper-issuing institution external to the platform.' },
+            ] as { t: string; d: string }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Partnership Value Proposition</h4>
           <p className="text-slate-700 leading-relaxed mb-3">Together, PilotRecognition and its verification partners build the <strong>Global Clearinghouse for Verified Pilots</strong> — the standard infrastructure layer the aviation industry has never had. The platform is open to all pilots — free and verified alike. Verification is not a gate. It is an <strong>upgrade path</strong> — pilots who choose to verify their credentials gain visibility, credibility, and priority access that unverified profiles cannot match. Verification partners become the <strong>trusted credential engine</strong> behind that upgrade — the infrastructure that makes a pilot's profile worth more to every operator who sees it.</p>
