@@ -8,6 +8,7 @@ const navSections = [
   { id: 'part-i-foundation-vision', label: 'Part I: Foundation & Vision' },
   { id: 'page-1-executive-summary', label: '→ Page 1: Executive Summary', indent: true },
   { id: 'the-aviation-industry-operating-system', label: '→ The Aviation Industry OS', indent: true },
+  { id: 'origin-story', label: '→ Why This Exists: The Origin Story', indent: true },
   { id: 'part-ii-hub-a', label: 'Hub A — Pathways & Expectations' },
   { id: 'pillar-1-commercial-airlines', label: '→ Pillar 1: Commercial Airlines', indent: true },
   { id: 'pillar-2-cargo-freight', label: '→ Pillar 2: Cargo & Freight Operators', indent: true },
@@ -205,6 +206,100 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">
             This document is the complete operational blueprint for that system. It defines what every stakeholder contributes, what they receive, how the data flows, how value is distributed, and how the global aviation economy becomes unified — for the first time — <strong>under one framework.</strong>
           </p>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* Origin Story */}
+          <h1 id="origin-story" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            WHY THIS EXISTS: THE ORIGIN OF PILOTRECOGNITION
+          </h1>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">The Founding Story — From the Pilot Who Built It</p>
+
+          <p className="text-slate-700 leading-relaxed mb-4">This platform was not built in a boardroom. It was not born from a market research report or a venture capital thesis. It was built because of a phone call. A pilot — a friend — called and said four words that changed the direction of everything: <strong style={{color:'#dc2626'}}>"Ben, I quit flying."</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">That phone call is the reason PilotRecognition.com exists. Everything in this document — every pillar, every framework, every commercial model — traces back to that moment. And to understand why it matters, you need to understand the system that produced it.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Daniel's Story</h3>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-6 bg-white">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Case Study — The Cost of a Broken System</p>
+            <p className="text-slate-700 leading-relaxed mb-3">Daniel is not an average pilot. His father is a senior AMT — an Aircraft Maintenance Technician with Rolls-Royce affiliations. The person whose signature determines whether an aircraft engine is airworthy or not. <strong>His son has direct access to Airbus-level relationships, aviation industry insiders, and the kind of network most pilots spend careers trying to build.</strong></p>
+            <p className="text-slate-700 leading-relaxed mb-3">Daniel spent four years working as an AMT mechanic because he was told — incorrectly — that he could not obtain a commercial pilot licence without a university degree. That was false. It was bad communication, lack of professional advocacy, and an industry that profits from keeping pilots in a cycle of uncertainty and spend. <strong>He was being kept in the machine, not guided out of it.</strong></p>
+            <p className="text-slate-700 leading-relaxed mb-3">He then invested <strong>₱6,000,000 Philippine pesos</strong> — approximately $100,000 USD — in an ATR type rating. He completed his simulator training. He was certified as a CFI for ATR at Clark Airport. He did everything the system told him to do.</p>
+            <p className="text-slate-700 leading-relaxed mb-3">No placement. No recognition. No return on investment.</p>
+            <p className="text-slate-700 leading-relaxed mb-4">He called and said he was quitting. That if he did not stop now, he would never financially recover. <strong>A pilot with Airbus-level family connections, a completed type rating, simulator certification, and 6 million pesos invested — had nothing to show for it.</strong></p>
+            <div className="border-l-4 border-red-500 pl-4 py-2">
+              <p className="text-slate-800 text-sm leading-relaxed italic">"If this is happening to Daniel — someone with every advantage the industry can offer — what is happening to the rest of us?"</p>
+              <p className="text-slate-500 text-xs mt-1">— Andrew Bowler, Founder, PilotRecognition.com</p>
+            </div>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">January 21st — Abu Dhabi Aviation Career Fair</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">On January 21st, the founder took a risk. As a pilot with 200 hours and a commercial licence, he travelled to the UAE to attend the Aviation Career Fair — his one opportunity to put the industry's questions directly to the airlines, manufacturers, and authorities in the room.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The first booth was Etihad. The response was immediate and familiar: <strong style={{color:'#dc2626'}}>"Sorry — you know the requirements. 1,500 hours. Come back and get that."</strong> A pilot who had spent $50,000 USD, flown across the world for a single shot at a real answer, was told to scan a QR code and leave.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Then something shifted. The same pilot approached Etihad again — this time not just as a pilot, but as someone building a platform to solve exactly the communication failure they were standing inside. <strong>The attitude changed instantly.</strong> They became engaged. Welcoming. The conversation lasted. In that shift — from dismissal to dialogue — the entire thesis of PilotRecognition was confirmed in under two minutes.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The problem was never the pilot. The problem was the absence of a structured channel for communication between the pilot and the industry.</strong> Airlines are not cruel. They are numb. They have answered the same question from 10,000 pilots and it stopped meaning anything. They don't know how to say anything different because no platform exists to give them a different answer to give. <strong style={{color:'#f87171'}}>PilotRecognition builds that channel.</strong></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Three Pilots This Platform Was Built For</h3>
+          <p className="text-slate-700 leading-relaxed mb-5">Every mechanic in this framework, every pillar, every commercial model — was designed to solve for three specific people. They are not personas. They are real.</p>
+
+          <div className="space-y-4 mb-8">
+            {([
+              {
+                label: 'The Graduate — 200 Hours, $50,000 Spent, No Direction',
+                body: <>A pilot graduates with a CPL. They have invested $50,000 USD — money owed to parents, to banks, to years of sacrifice. They were promised an industry that would absorb them. Instead: <strong>"1,500 hours. Come back."</strong> With 200 hours and no income, the path to 1,500 hours is a financial and psychological maze with no map. No one tells them which type rating to pursue, which operator is hiring for what, what the market actually demands. They are left to rely on Reddit, Discord, forum posts, and the sales pitches of simulator centres who have no obligation to tell them the truth.
+                <br /><br />
+                Studies now show that pilots with airline-employed parents are actively discouraging their children from entering aviation — not because they don't love the industry, but because they know exactly what it costs and exactly what it does not guarantee. <strong>The 2013 implementation of the 1,500-hour rule created ripples the industry is still drowning in.</strong> The Swiss Cheese model used in accident investigations applies here too: layer after layer of systemic failure, each one individually manageable, collectively catastrophic.</>
+              },
+              {
+                label: 'The Instructor — 6,000 Hours, 15 Years, Handcuffed',
+                body: <>There is an instructor at a prestigious flight school — a real person, not a hypothetical — who has been there for 15 years. 6,000 hours. He wants to move to corporate aviation. He cannot leave because if he does, he loses 15 years of seniority. He has a type rating. He has the hours. He has more real-world flying experience than most airline first officers. <strong>No one has formally recognised any of it.</strong>
+                <br /><br />
+                Meanwhile, the students in his class know he has been there 15 years and wonder privately: if this school is so good, why hasn't he left? It is a bad look for the school. It is a slow burn for the instructor. And it is a commercial problem for the ATO that cannot move throughput because the seat is permanently occupied.
+                <br /><br />
+                <strong>The clog is confirmed and occurring globally.</strong> Not just in the Philippines. This is a structural feature of an industry without a recognition layer — pilots accumulate at every floor, stuck not because of incompetence but because no structured mechanism exists to move them forward. PilotRecognition is that mechanism.</>
+              },
+              {
+                label: 'The Airline Captain — 12 Years, Bored, Trapped',
+                body: <>A Philippine Airlines captain — confirmed real conversation, pilot to pilot — 12 years in position. A330, 5,000 turbine hours. Bored. Wants change. Cannot move. The moment he leaves, his seniority resets to zero, his pay drops, and his lifestyle collapses. He is not trapped by the work. He is trapped by the system that was built around it.
+                <br /><br />
+                He does not have time to search for opportunities. He is flying international routes. His profile has never been formally presented to any operator outside his current airline because there has been no mechanism to do so. <strong>His capabilities are invisible to the market — not because he is not exceptional, but because no portable recognition infrastructure exists to make him visible.</strong>
+                <br /><br />
+                PilotRecognition manages his profile. Finds the opportunities he does not have time to find. And when the right operator sees him — he does not have to start from zero. His Recognition Score travels with him.</>
+              },
+            ] as { label: string; body: React.ReactNode }[]).map((item) => (
+              <div key={item.label} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <p className="font-bold text-slate-900 mb-3" style={{color:'#dc2626'}}>{item.label}</p>
+                <p className="text-sm text-slate-700 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">What Every Pilot Is Actually Asking</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Every pilot who has ever stood at an airline booth, filled out an application, or typed a question into an aviation forum is asking the same underlying set of questions. The industry has never built a structured answer to any of them.</p>
+          <ul className="space-y-2 mb-6">
+            {[
+              'What type rating should I pursue — and will it actually lead to employment given the current market?',
+              'Which operators are actively hiring for my profile, my hours, my geography, right now?',
+              'Has the manufacturer released new aircraft that will make my type rating obsolete or more valuable?',
+              'What does this airline actually want beyond the published minimums?',
+              'What banking or financing options exist for type rating investment, and what collateral do lenders require?',
+              'What insurance underwriter will cover me, and what do they consider low-risk vs high-risk?',
+              'I have 200 hours — is there a career pathway available to me that is not flight instruction?',
+              'If I pursue eVTOL or agricultural aviation or air taxi operations, is that a legitimate career or a dead end?',
+              'Why is my 1,000 hours on a Cessna valued differently from 1,000 hours on a jet — and by how much?',
+              'If I leave my current airline, what happens to my seniority, and is there any way to preserve my career value?',
+            ].map((q) => (
+              <li key={q} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span className="text-sm">{q}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>PilotRecognition is the infrastructure that makes these questions answerable — structurally, verifiably, and in real time.</strong> Not from a corporate desk. Not from a brochure. From a platform built by a pilot who asked every single one of them and received nothing useful in return.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The industry is 100 years old. Nothing in it is perfect. Accuracy is based entirely on what data exists — and until now, almost none of the right data has been structured, portable, or shared. <strong>That is what this document changes.</strong></p>
 
           <hr className="my-10 border-slate-300" />
 
