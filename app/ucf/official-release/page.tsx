@@ -2466,8 +2466,38 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-100 border border-slate-300 rounded px-5 py-4 mb-8">
-            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-2">Commercial Margin Logic</p>
-            <p className="text-slate-700 text-sm leading-relaxed">PilotRecognition pays Veremark at <strong>partner cost (RRP −15%)</strong>. The platform charges pilots and operators at a <strong>bundled retail rate</strong> that includes platform margin. For the Philippines launch market — the most cost-efficient jurisdiction — the Layer 1 Airside Professional Bundle costs the platform approximately <strong>$116</strong> at partner rates. Bundled to the pilot at <strong>$149–$179</strong>, this generates a <strong>$33–$63 margin per verified pilot profile</strong> while remaining substantially cheaper than any equivalent multi-check combination purchased directly. <strong>The Philippines market is the strategic entry point: lowest verification cost, highest pilot density relative to cost, and Veremark's strongest regional infrastructure.</strong></p>
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-2">Commercial Margin Logic — Multi-Currency, Multi-Market</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3">PilotRecognition pays Veremark at <strong>partner cost (RRP −15%)</strong>. The platform charges pilots at a <strong>regionally-priced bundled retail rate</strong> that reflects the cost structure of each market — meaning the platform does not absorb the cost difference between a Philippines check and a UAE check. <strong>The pilot in each market pays the rate appropriate to their jurisdiction. The margin percentage holds across all markets.</strong></p>
+            <div className="overflow-x-auto mb-3">
+              <table className="w-full text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-3 py-2 font-semibold">Market</th>
+                    <th className="text-right px-3 py-2 font-semibold">Partner Cost</th>
+                    <th className="text-right px-3 py-2 font-semibold">Retail to Pilot</th>
+                    <th className="text-right px-3 py-2 font-semibold">Platform Margin</th>
+                    <th className="text-left px-3 py-2 font-semibold">Currency Context</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { market: '🇵🇭 Philippines', cost: '~$116', retail: '$149–$179', margin: '$33–$63', note: 'PHP — high pilot volume, low absolute cost, highest ROI per check' },
+                    { market: '🇸🇬 Singapore', cost: '~$146', retail: '$189–$219', margin: '$43–$73', note: 'SGD — affluent market, pilots expect premium pricing' },
+                    { market: '🇬🇧 United Kingdom', cost: '~$192', retail: '$239–$279', margin: '$47–$87', note: 'GBP — strong aviation market, CAA-adjacent, high willingness to pay' },
+                    { market: '🇦🇪 UAE', cost: '~$327', retail: '$389–$429', margin: '$62–$102', note: 'AED — highest cost base but highest absolute margin; Gulf pilots expect enterprise-grade verification' },
+                  ] as { market: string; cost: string; retail: string; margin: string; note: string }[]).map((row, i) => (
+                    <tr key={row.market} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-3 py-2 border-b border-slate-200 font-semibold text-slate-800">{row.market}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right text-slate-600">{row.cost}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right font-semibold text-slate-800">{row.retail}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-right font-bold" style={{color:'#34d399'}}>{row.margin}</td>
+                      <td className="px-3 py-2 border-b border-slate-200 text-slate-500 italic text-xs">{row.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-slate-700 text-sm leading-relaxed"><strong>The platform profits from every currency zone.</strong> A PHP pilot in Manila, an AED pilot in Dubai, an SGD pilot in Singapore, and a GBP pilot in London all pay their regional rate — and in every case, the platform earns a margin on the Veremark cost basis. <strong>Geographic expansion is not a cost problem. It is a revenue multiplication event.</strong> Every new market Veremark covers is a new margin stream the platform inherits automatically — without renegotiating the partnership or rebuilding the infrastructure.</p>
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Airlines — Integrated Verification Infrastructure</h4>
