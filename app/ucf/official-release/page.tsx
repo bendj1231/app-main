@@ -1603,7 +1603,7 @@ export default function UCFOfficialReleasePage() {
                 </li>
               ))}
             </ul>
-            <p className="text-slate-700 text-sm leading-relaxed"><strong>Issuance is included in the Enterprise ATO tier.</strong> The school does not pay per credential issued. They pay for the account — and the issuance infrastructure is part of what that account delivers. <strong style={{color:'#dc2626'}}>If your school cannot build a blockchain for your pilots, PilotRecognition has already built it for you.</strong></p>
+            <p className="text-slate-700 text-sm leading-relaxed"><strong>Issuance is included in the Enterprise ATO tier.</strong> The school does not pay per credential issued. They pay for the account — and the issuance infrastructure is part of what that account delivers. <strong style={{color:'#dc2626'}}>If your school cannot build a blockchain for your pilots, PilotRecognition has already built it for you.</strong> This is what we have designed throughout Pillar 5 — not a layer of technology placed on top of an existing broken system, but a direct intervention at the source of the industry's biggest failures: the unrecognised graduate, the invisible instructor, the predatory school, the unprovable promise, and the missing chain of trust between training and employment. <strong>We have solved each of these at the root. The infrastructure is ready.</strong></p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Campus Partnership Benefits</h3>
