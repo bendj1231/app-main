@@ -54,6 +54,12 @@ export function useAuth() {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [currentUser, setCurrentUser] = useState<SupabaseUser | null>(null);
+    const currentUserRef = React.useRef<SupabaseUser | null>(null);
+    const oauthModalShownRef = React.useRef(false);
+    const setCurrentUserWithRef = (user: SupabaseUser | null) => {
+        currentUserRef.current = user;
+        setCurrentUser(user);
+    };
     const [userProfile, setUserProfile] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
     const [csrfToken, setCsrfToken] = useState<string | null>(null);
@@ -71,8 +77,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return localStorage.getItem('oauthModalShown') === 'true';
     });
 
-    // Persist oauthModalShown flag to localStorage
+    // Persist oauthModalShown flag to localStorage and keep ref in sync
     useEffect(() => {
+        oauthModalShownRef.current = oauthModalShown;
         if (oauthModalShown) {
             localStorage.setItem('oauthModalShown', 'true');
         }
@@ -81,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Function to reset OAuth account check state
     const resetOauthAccountCheck = () => {
         setOauthAccountCheck({ checking: false, hasAccount: null });
+        oauthModalShownRef.current = false;
         setOauthModalShown(false);
         localStorage.removeItem('oauthModalShown');
     };
@@ -88,7 +96,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Function to reset account check state only, without removing oauthModalShown flag
     const resetOauthAccountCheckOnly = () => {
         setOauthAccountCheck({ checking: false, hasAccount: null });
-        // Ensure oauthModalShown is set to true to prevent re-checking on tab switch
+        oauthModalShownRef.current = true;
         setOauthModalShown(true);
         localStorage.setItem('oauthModalShown', 'true');
     };
@@ -890,18 +898,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (event === 'SIGNED_IN' && session?.user) {
                 // User signed in via OAuth
                 console.log('User signed in via OAuth:', session.user.id);
-                console.log('oauthModalShown flag:', oauthModalShown);
+                console.log('oauthModalShown flag:', oauthModalShownRef.current);
                 console.log('oauthModalShown from localStorage:', localStorage.getItem('oauthModalShown'));
-                console.log('currentUser state:', currentUser?.id);
+                console.log('currentUser state:', currentUserRef.current?.id);
 
                 // Only check account if:
                 // 1. We haven't already shown the modal in this session
                 // 2. The user is not already set (prevents duplicate checks on tab switch)
                 // 3. The user ID is different (new user signing in)
                 const modalShownInStorage = localStorage.getItem('oauthModalShown') === 'true';
-                const isNewUser = !currentUser || currentUser.id !== session.user.id;
+                const isNewUser = !currentUserRef.current || currentUserRef.current.id !== session.user.id;
                 
-                if (!oauthModalShown && !modalShownInStorage && isNewUser) {
+                if (!oauthModalShownRef.current && !modalShownInStorage && isNewUser) {
                     console.log('Starting account check for new user...');
                     setOauthModalShown(true);
 
@@ -920,7 +928,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         updated_at: session.user.updated_at || new Date().toISOString()
                     };
 
-                    setCurrentUser(supabaseUser);
+                    setCurrentUserWithRef(supabaseUser);
                     setExplicitLogoutInStorage(false); // Clear logout flag on sign-in
 
                     // Scroll to top after successful login
@@ -992,13 +1000,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         updated_at: session.user.updated_at || new Date().toISOString()
                     };
 
-                    setCurrentUser(supabaseUser);
+                    setCurrentUserWithRef(supabaseUser);
                     setExplicitLogoutInStorage(false);
                     setLoading(false);
                 }
             } else if (event === 'SIGNED_OUT') {
                 console.log('User signed out');
-                setCurrentUser(null);
+                setCurrentUserWithRef(null);
                 setUserProfile(null);
                 setLoading(false);
                 // Reset OAuth modal flag on logout
@@ -1013,7 +1021,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return () => {
             subscription.unsubscribe();
         };
-    }, [currentUser, oauthModalShown]);
+    }, []);
 
     useEffect(() => {
         // Verify session using Supabase native session check (bypassing Edge Function due to 403 errors)
