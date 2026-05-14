@@ -1549,7 +1549,7 @@ export default function UCFOfficialReleasePage() {
             <li><strong>ATO credentials</strong> — verified training records, simulator hours, completion certificates</li>
             <li><strong>Insurance background check</strong> (pilot-consent required) — aircraft incident history including training accidents, gear-up landings, runway excursions, hull loss, insurance claims, NTSB/AAIB/TSB reports</li>
           </ul>
-          <p className="text-sm text-slate-700 mb-4">Service tiers: <strong>Standard</strong> (24–72 hour turnaround) · <strong>Expedited</strong> (4–24 hours for Recognition+ members) · <strong>Geographic transparency</strong> (estimated turnaround per country displayed before purchase)</p>
+          <p className="text-sm text-slate-700 mb-4">Service tiers: <strong>Standard</strong> (24–72 hour turnaround — included for all Recognition+ members) · <strong>Expedited</strong> (4–24 hours — available on request for Recognition+ members requiring faster processing) · <strong>Geographic transparency</strong> (estimated turnaround per country displayed before purchase)</p>
 
           <h5 className="text-base font-bold text-slate-800 mt-4 mb-2">Credential Expiry &amp; Renewal Tracking</h5>
           <p className="text-sm text-slate-700 leading-relaxed mb-2">Every verified credential in the pilot's wallet carries an <strong>expiry date</strong> — displayed live on their profile. A verification is not permanently valid. It reflects the state of the credential at the time it was issued, and the platform tracks whether that credential remains current. Pilots and operators both see the same status.</p>
