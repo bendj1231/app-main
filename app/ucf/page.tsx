@@ -52,34 +52,33 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
-      className="relative flex flex-col md:flex-row items-stretch overflow-hidden cursor-pointer"
-      style={{ minHeight: undefined }}
+      className="relative flex flex-row items-stretch overflow-hidden cursor-pointer"
+      style={{ minHeight: '140px' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Left: Dark navy panel */}
       <div
-        className="relative z-10 w-full md:w-40 lg:w-48 flex-shrink-0 flex flex-row md:flex-col items-center justify-center gap-2 md:gap-3 py-4 md:py-0 px-4 md:px-0"
+        className="relative z-10 w-16 sm:w-32 lg:w-48 flex-shrink-0 flex flex-col items-center justify-center gap-1 sm:gap-3"
         style={{
           background: HUB_COLORS[pillar.hub],
-          minHeight: '64px',
         }}
       >
         <span
           className="font-black"
           style={{
-            fontSize: '2.5rem',
+            fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
             lineHeight: 1,
             color: hovered ? '#ef4444' : '#ffffff',
             transition: 'color 0.4s ease-in-out',
           }}
         >{pillar.num}</span>
-        <span className="text-white text-xs font-bold tracking-widest uppercase opacity-90">Hub {pillar.hub}</span>
+        <span className="text-white text-[10px] sm:text-xs font-bold tracking-widest uppercase opacity-90">Hub {pillar.hub}</span>
       </div>
 
       {/* Center: Content */}
       <div
-        className="relative z-10 flex-1 px-5 md:px-8 lg:px-12 py-5 md:py-8 lg:py-10 flex flex-col justify-center"
+        className="relative z-10 flex-1 px-4 sm:px-8 lg:px-12 py-5 sm:py-8 lg:py-10 flex flex-col justify-center"
         style={{ 
           backgroundColor: hovered ? '#0f172a' : '#ffffff', 
           transition: 'all 0.4s ease-in-out',
@@ -94,7 +93,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
           </span>
         </div>
         <h3
-          className="font-bold text-xl md:text-2xl lg:text-3xl mb-2 md:mb-3 tracking-tight"
+          className="font-bold text-base sm:text-2xl lg:text-3xl mb-2 sm:mb-3 tracking-tight"
           style={{ color: hovered ? '#ef4444' : '#0f172a', transition: 'color 0.4s ease-in-out' }}
         >{pillar.name}</h3>
         <div className="flex items-start gap-3">
@@ -110,7 +109,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
       </div>
 
       {/* Right: Image */}
-      <div className="relative w-full md:w-80 lg:w-96 flex-shrink-0 overflow-hidden" style={{ minHeight: '200px' }}>
+      <div className="relative hidden sm:block sm:w-56 lg:w-96 flex-shrink-0 overflow-hidden">
         <img
           src={pillar.img}
           alt={pillar.name}
