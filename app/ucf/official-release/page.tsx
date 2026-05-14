@@ -38,6 +38,7 @@ export default function UCFOfficialReleasePage() {
   const [loginError, setLoginError] = useState('');
   const { currentUser, userProfile, login, logout } = useAuth();
   const isInternal = userProfile?.role === 'super_admin' || userProfile?.role === 'mentor_manager';
+  const isSuperAdmin = userProfile?.role === 'super_admin';
   const sessionUser = currentUser ? { email: currentUser.email } : null;
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -2670,6 +2671,150 @@ export default function UCFOfficialReleasePage() {
               <p className="text-slate-300 leading-relaxed"><strong className="text-white">Operator Deep Check (Layer 2):</strong> Billed to the operator at Standard Retail Rate (RRP) per requested module (e.g., UAE Financial Check, UK Social Media). The operator pays market rate; the platform retains the <strong className="text-emerald-400">15% wholesale margin</strong>. At 10 finalists per month (UAE), this generates $420/month in pure passive profit from API handoffs — before any subscription or success fee revenue.</p>
             </div>
           </div>
+
+          {isSuperAdmin && (<>
+          <div className="bg-slate-950 border border-slate-700 rounded-lg px-6 py-5 mb-6">
+            <p className="text-[10px] uppercase tracking-widest font-bold text-yellow-400 mb-1">Global Verification Pricing — RRP vs Partner Rate + Profit Margin <span className="ml-2 font-normal text-yellow-600 normal-case tracking-normal">Super Admin Only</span></p>
+            <p className="text-slate-400 text-xs leading-relaxed mb-5">All figures in USD. Partner rate = Veremark Standard RRP − 15%. Profit margin = RRP − Partner cost, earned on every transaction. Source: Veremark pricing communication 14 May 2026.</p>
+
+            {([
+              {
+                flag: '🇮🇳', country: 'India (IN)',
+                rows: [
+                  { service: 'Criminal Record Check', rrp: 28, partner: 24 },
+                  { service: 'Education Check', rrp: 18, partner: 16 },
+                  { service: 'Employment Check', rrp: 15, partner: 13 },
+                  { service: 'Identity Verification', rrp: 15, partner: 13 },
+                  { service: 'Social Media Check', rrp: 48, partner: 41 },
+                  { service: 'Global Sanctions & PEP', rrp: 25, partner: 22 },
+                ],
+              },
+              {
+                flag: '🇵🇭', country: 'Philippines (PH)',
+                rows: [
+                  { service: 'Criminal Record Check', rrp: 15, partner: 13 },
+                  { service: 'Education Check', rrp: 10, partner: 9 },
+                  { service: 'Employment Check', rrp: 10, partner: 9 },
+                  { service: 'Identity Verification', rrp: 10, partner: 9 },
+                  { service: 'Social Media Check', rrp: 37, partner: 32 },
+                  { service: 'Address Check (Current)', rrp: 14, partner: 12 },
+                ],
+              },
+              {
+                flag: '🇸🇬', country: 'Singapore (SG)',
+                rows: [
+                  { service: 'Education Check', rrp: 25, partner: 22 },
+                  { service: 'Employment Check', rrp: 25, partner: 22 },
+                  { service: 'MOM Accreditation Check', rrp: 71, partner: 61 },
+                  { service: 'Driving License Check', rrp: 41, partner: 35 },
+                  { service: 'Bankruptcy Check', rrp: 33, partner: 29 },
+                  { service: 'Identity Verification', rrp: 15, partner: 13 },
+                ],
+              },
+              {
+                flag: '🇦🇪', country: 'United Arab Emirates (AE)',
+                rows: [
+                  { service: 'Criminal Record Check', rrp: 109, partner: 93 },
+                  { service: 'Education Check', rrp: 41, partner: 35 },
+                  { service: 'Employment Check', rrp: 41, partner: 35 },
+                  { service: 'Professional Qualification', rrp: 116, partner: 99 },
+                  { service: 'Directorship Check', rrp: 102, partner: 87 },
+                  { service: 'Regulated Professions Check', rrp: 123, partner: 105 },
+                ],
+              },
+              {
+                flag: '🇬🇧', country: 'United Kingdom (GB)',
+                rows: [
+                  { service: 'DBS Basic (England/Wales)', rrp: 56, partner: 48 },
+                  { service: 'Education Check', rrp: 31, partner: 27 },
+                  { service: 'Employment Check', rrp: 31, partner: 27 },
+                  { service: 'UK FCA Regulated Reference', rrp: 71, partner: 61 },
+                  { service: 'Right To Work Check', rrp: 14, partner: 12 },
+                  { service: 'Identity Verification', rrp: 15, partner: 13 },
+                ],
+              },
+            ] as { flag: string; country: string; rows: { service: string; rrp: number; partner: number }[] }[]).map((market) => {
+              const totalRRP = market.rows.reduce((s, r) => s + r.rrp, 0);
+              const totalPartner = market.rows.reduce((s, r) => s + r.partner, 0);
+              const totalMargin = totalRRP - totalPartner;
+              const marginPct = ((totalMargin / totalRRP) * 100).toFixed(1);
+              return (
+                <div key={market.country} className="mb-6">
+                  <p className="text-xs font-bold text-white mb-2">{market.flag} {market.country}</p>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs border-collapse">
+                      <thead>
+                        <tr className="bg-slate-800 text-slate-300">
+                          <th className="text-left px-3 py-2 font-semibold">Service</th>
+                          <th className="text-right px-3 py-2 font-semibold">Veremark RRP</th>
+                          <th className="text-right px-3 py-2 font-semibold">Partner Cost</th>
+                          <th className="text-right px-3 py-2 font-semibold text-yellow-400">Profit Margin</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {market.rows.map((row, i) => {
+                          const margin = row.rrp - row.partner;
+                          const pct = ((margin / row.rrp) * 100).toFixed(1);
+                          return (
+                            <tr key={row.service} className={i % 2 === 0 ? 'bg-slate-900' : 'bg-slate-800/50'}>
+                              <td className="px-3 py-2 border-b border-slate-700 text-slate-200">{row.service}</td>
+                              <td className="px-3 py-2 border-b border-slate-700 text-right text-slate-300">${row.rrp}</td>
+                              <td className="px-3 py-2 border-b border-slate-700 text-right text-slate-400">${row.partner}</td>
+                              <td className="px-3 py-2 border-b border-slate-700 text-right font-bold" style={{color:'#34d399'}}>${margin} <span className="text-[10px] text-emerald-600 font-normal">({pct}%)</span></td>
+                            </tr>
+                          );
+                        })}
+                        <tr className="bg-yellow-900/40 border-t-2 border-yellow-600/50 font-bold">
+                          <td className="px-3 py-2 text-yellow-300">Total (all checks)</td>
+                          <td className="px-3 py-2 text-right text-white">${totalRRP}</td>
+                          <td className="px-3 py-2 text-right text-slate-300">${totalPartner}</td>
+                          <td className="px-3 py-2 text-right text-yellow-300">${totalMargin} <span className="text-[10px] font-normal text-yellow-500">({marginPct}%)</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              );
+            })}
+
+            <div className="bg-slate-800 border border-slate-600 rounded px-4 py-3 mt-2">
+              <p className="text-[10px] uppercase tracking-widest font-bold text-yellow-400 mb-2">Country Margin Summary</p>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-slate-400 border-b border-slate-700">
+                    <th className="text-left py-1.5 font-semibold">Market</th>
+                    <th className="text-right py-1.5 font-semibold">Total RRP</th>
+                    <th className="text-right py-1.5 font-semibold">Total Partner Cost</th>
+                    <th className="text-right py-1.5 font-semibold text-yellow-400">Total Profit</th>
+                    <th className="text-right py-1.5 font-semibold text-yellow-400">Margin %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { flag: '🇮🇳', country: 'India', rrp: 149, partner: 129 },
+                    { flag: '🇵🇭', country: 'Philippines', rrp: 96, partner: 84 },
+                    { flag: '🇸🇬', country: 'Singapore', rrp: 210, partner: 182 },
+                    { flag: '🇦🇪', country: 'UAE', rrp: 532, partner: 454 },
+                    { flag: '🇬🇧', country: 'United Kingdom', rrp: 218, partner: 188 },
+                  ] as { flag: string; country: string; rrp: number; partner: number }[]).map((r, i) => {
+                    const margin = r.rrp - r.partner;
+                    const pct = ((margin / r.rrp) * 100).toFixed(1);
+                    return (
+                      <tr key={r.country} className={i % 2 === 0 ? 'bg-slate-900/50' : ''}>
+                        <td className="py-1.5 px-1 text-white font-medium">{r.flag} {r.country}</td>
+                        <td className="py-1.5 px-1 text-right text-slate-300">${r.rrp}</td>
+                        <td className="py-1.5 px-1 text-right text-slate-400">${r.partner}</td>
+                        <td className="py-1.5 px-1 text-right font-bold" style={{color:'#34d399'}}>${margin}</td>
+                        <td className="py-1.5 px-1 text-right font-bold text-yellow-400">{pct}%</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <p className="text-slate-500 text-[10px] mt-3">Margin % is consistent at ~13–15% across all markets — reflecting the fixed Veremark partner discount. UAE yields the highest absolute margin per transaction due to elevated check costs for regulated professions and criminal records.</p>
+            </div>
+          </div>
+          </>)}
 
           </>)}
 
