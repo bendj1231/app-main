@@ -1541,7 +1541,7 @@ export default function UCFOfficialReleasePage() {
               { t: 'Professional Identity Development', d: 'How pilots portray themselves to employers. Communication skills, professional presence, and the pilot mindset beyond stick-and-rudder proficiency — the behavioural profile airlines assess before they assess the hours.' },
               { t: 'Emotional Intelligence & Recognition', d: 'Validation of the 200+ hour journey. Peer mentorship from program graduates. A structured sense of accomplishment beyond the licence — the recognition the industry currently provides no mechanism for.' },
               { t: 'Industry Alignment', d: 'EBT and CBTA competency frameworks — what airlines actually assess. ATLAS Aviation CV formatting — what ATS systems actually parse. Interview preparation specific to each operator type in Hub A.' },
-              { t: 'Verified Competency Portfolio', d: <>50-hour mentorship tracking logged and attested. Behavioural assessment scores (cognitive/constructivist alignment). Digital credentials stored in the Professional Standing Asset (Pillar 11) — portable, verified, and visible to every operator on the platform. <strong style={{color:'#dc2626'}}>Enterprise ATOs become Verified Issuers on the platform.</strong> At graduation, the school pushes a cryptographically signed digital token — "CPL-Complete", "AAM-Ready", or operator-specific designation — directly into the pilot\'s Professional Standing Asset. No paper certificates. No self-reported claims. <strong>Unforgeable trust from Day One.</strong></> },
+              { t: 'Verified Competency Portfolio', d: <>50-hour mentorship tracking logged and attested. Behavioural assessment scores (cognitive/constructivist alignment). Digital credentials stored in the Professional Standing Asset (Pillar 11) — portable, verified, and visible to every operator on the platform.</> },
             ] as {t: string; d: React.ReactNode}[]).map((item) => (
               <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                 <span className="text-red-500 mt-1 flex-shrink-0">→</span>
@@ -1566,6 +1566,25 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
           <p className="text-slate-700 leading-relaxed mb-6">That is the standard the industry should have held flight schools to from the beginning. <strong>PilotRecognition makes it possible — and makes it the competitive differentiator between an ATO that retains its graduates and one that watches them disappear into the void.</strong></p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Verified Issuers — The Digital Credential Standard for Producing Pilots</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Every flight school produces pilots. Not every flight school produces <em>verified</em> pilots. The distinction is becoming the most commercially significant gap in aviation talent infrastructure.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Enterprise ATOs on the platform become <strong style={{color:'#dc2626'}}>Verified Issuers</strong> — institutions authorised to push cryptographically signed digital tokens directly into a graduating pilot's Professional Standing Asset (Pillar 11) at the moment of graduation. These tokens are not self-reported claims. They are not paper certificates that can be forged, lost, or misread by an ATS parser. They are <strong>immutable, operator-readable, instantly verifiable credential records</strong> issued at the source — by the institution that produced the competency.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+            {[
+              { token: '"CPL-Complete"', desc: 'Issued at CPL graduation. Confirms theoretical and practical completion to the issuing ATO\'s published standard. Visible to all operators in Hub A querying the pilot database.' },
+              { token: '"AAM-Ready"', desc: 'Issued for graduates who have completed emerging aviation module integration. Flags the pilot as a viable candidate for eVTOL, autonomous systems, and Pillar 4 operator pathway matching.' },
+              { token: 'Operator-Specific', desc: 'Issued when the ATO\'s curriculum has been co-developed with a specific operator. The token signals to that operator that the graduate has been prepared to their exact pathway requirements — not a generic curriculum.' },
+            ].map((item) => (
+              <div key={item.token} className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
+                <p className="font-bold text-slate-900 mb-2" style={{color:'#dc2626'}}>{item.token}</p>
+                <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>No paper certificates. No self-reported claims. No ATS mis-parse. Unforgeable trust from Day One.</strong> The pilot leaves graduation with a digital credential that is already in the system — already visible to operators, already matched against pathway requirements, already part of their permanent Professional Standing Asset. The school that issued it is named on the token. <strong style={{color:'#f87171'}}>The credential is the school's signature on every operator database that reads it.</strong></p>
+          </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Campus Partnership Benefits</h3>
           <ul className="space-y-2 mb-6">
