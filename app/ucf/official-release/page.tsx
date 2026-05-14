@@ -1437,6 +1437,46 @@ export default function UCFOfficialReleasePage() {
             <p className="text-slate-400 text-xs mt-2">— PilotRecognition founding team</p>
           </div>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Cost of Isolation: Why ATOs Can't Afford to Stay Offline</h3>
+          <p className="text-slate-700 leading-relaxed mb-5">This section is not a threat. It is a description of a fire that is already burning. PilotRecognition is the extinguisher. The question is not whether these problems exist — they do, and every flight school owner reading this already knows it. The question is whether they address them now, with a structured solution, or let them compound.</p>
+          <ul className="space-y-4 mb-8">
+            {([
+              {
+                n: '1',
+                t: 'The Silent Brand Killer — Alumni Toxicity',
+                d: <>Every graduate sitting at home for two years with $100,000 in debt and no employment pathway is a walking anti-advertisement. In the age of Reddit, Discord, and YouTube, a single unplaced graduate with an audience is more damaging than any competitor's marketing budget. <strong>Flight schools are not losing to better competitors. They are losing to their own alumni.</strong>
+                <br /><br />
+                PilotRecognition changes the narrative at the source. By connecting graduates to a verified Professional Standing Asset and a live pathway comparison on graduation day, the ATO stops being the "debt-provider" and becomes the "pathway-provider." A graduate who is visible, verified, and actively moving toward an operator pathway — even at 300 hours — is not a liability. <strong style={{color:'#34d399'}}>They are a success story in progress. And that story is publicly attributable to the school that gave them the tools.</strong></>
+              },
+              {
+                n: '2',
+                t: 'Marketing Spend Inefficiency — The Brochure Is Dying',
+                d: <>ATOs spend thousands of dollars per month on lead generation trying to convince parents and students to trust them. Most of that spend is wasted because it produces no objective evidence — only brochure claims that sophisticated families are increasingly unable to verify. <strong>Data-literate students and their co-signing parents are not asking for a glossy prospectus. They are asking for a verified placement report.</strong>
+                <br /><br />
+                A school that refuses to publish audited placement data will — very soon — be read as a school with something to hide. Partnering with the platform is not a marketing cost. <strong style={{color:'#34d399'}}>It is the cheapest customer acquisition strategy available: let independently verified outcomes close the sale for you.</strong></>
+              },
+              {
+                n: '3',
+                t: 'The Instructor Throughput Bottleneck — The Clog',
+                d: <>Flight schools are frequently paralysed by their own success model. Graduates become instructors to build hours. But because those instructors have no visible, structured pathway to cargo, charter, or airline operations, they stay too long — blocking student seat time, slowing throughput, and quietly resenting the school that cannot show them the next door. <strong>The clog is not a staffing problem. It is a visibility problem.</strong>
+                <br /><br />
+                PilotRecognition clears it. By making the school's instructors visible and discoverable to Cargo operators (Pillar 2) and Charter operators (Pillar 3), the platform accelerates their transition out of the school and into the industry. <strong style={{color:'#34d399'}}>The instructor who finds their next role through the platform creates a vacancy. That vacancy becomes a new student. That student becomes the next revenue cycle.</strong> High-velocity throughput is not a recruitment metric. It is a commercial one.</>
+              },
+              {
+                n: '4',
+                t: 'The Financier Mandate — Banks Are Watching',
+                d: <>Lending institutions are increasingly cautious about $80,000–$120,000 unsecured pilot training loans. Default rates are rising. Employment outcomes for graduates are opaque. Underwriters have no structured data to assess whether a student at a given school has a credible pathway to the income required to service the debt. <strong>The loan approval problem is not a student problem. It is a school data problem.</strong>
+                <br /><br />
+                PilotRecognition is building the data layer that financial institutions will eventually require at point of application. A student enrolled at a Recognition-Ready ATO has a verified, mapped pathway to employment — which makes their loan a lower credit risk. <strong style={{color:'#34d399'}}>Schools that are not on the platform will find, incrementally, that their prospective students cannot secure the financing they need to enrol.</strong> The mandate will not be announced. It will simply appear — in a rejection letter from the bank.</>
+              },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-0 text-slate-700 leading-relaxed flex items-start gap-3 border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <span className="text-red-500 font-bold text-base flex-shrink-0 mt-0.5">{item.n}.</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong><br /><span className="text-sm leading-relaxed">{item.d}</span></span>
+              </li>
+            ))}
+          </ul>
+
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Structural Disconnect: What Schools Produce vs. What Airlines Assess</h3>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
