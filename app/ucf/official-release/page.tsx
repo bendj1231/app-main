@@ -339,6 +339,13 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-10 border-slate-300" />
 
+          <div className="bg-slate-50 border border-slate-300 rounded-lg px-6 py-5 mb-10">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-400 mb-3">Architectural Note — The Neutrality Shield</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3">Everything written above this line is the <strong>Vision Layer</strong> — the founding story, the moral authority, the human cost of a broken system. It exists to establish trust with every pilot, every school, and every institution that asks: <em>why does this platform exist, and who built it?</em></p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3">Everything written below this line is the <strong>Protocol Layer</strong> — hard, structured, cryptographically verifiable, and commercially defensible. It exists to establish trust with every airline, every regulator, every insurer, and every investor that asks: <em>how does this platform work, and what does it guarantee?</em></p>
+            <p className="text-slate-700 text-sm leading-relaxed"><strong>PilotRecognition operates as a neutral infrastructure layer.</strong> It does not compete with airlines. It does not replace flight schools. It does not adjudicate between operators. It is the kernel — the standardised language the industry uses to communicate with itself. The Vision gives it moral authority. The Protocol gives it technical permanence. <strong style={{color:'#dc2626'}}>Both are required. Neither replaces the other.</strong></p>
+          </div>
+
           {/* Part II */}
           <h1 id="part-ii-hub-a" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
             PART II: HUB A — OPERATIONS &amp; RECRUITMENT
