@@ -14,6 +14,7 @@ const navSections = [
   { id: 'pillar-3-charter-business', label: '→ Pillar 3: Charter & Business Aviation', indent: true },
   { id: 'pillar-4-emerging-sectors', label: '→ Pillar 4: Emerging Aviation Sectors', indent: true },
   { id: 'pillar-5-flight-training', label: '→ Pillar 5: Flight Training Organizations (ATOs)', indent: true },
+  { id: 'pillar-6-type-rating', label: '→ Pillar 6: Type Rating & Simulator Centers', indent: true },
   { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
 ];
 
@@ -1624,6 +1625,147 @@ export default function UCFOfficialReleasePage() {
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The first ATO to publish verified, audited placement rates in their market owns that credibility permanently. In regions where pilot mills prey on naive students with unverifiable promises, PilotRecognition becomes the Auditor of Truth. A school that publishes real, independently verified outcomes — and connects graduates to verified operator pathways from graduation day — will capture enrolment from every competitor that cannot say the same. The predatory school cannot fake a placement rate that the platform audits. The high-quality ATO cannot lose to one that can. Dominate your market by being the only school that can prove it.</strong></p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          <h2 id="pillar-6-type-rating" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            PILLAR 6: TYPE RATING &amp; SIMULATOR CENTERS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub B — Training &amp; Transition</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: The Most Dangerous Financial Bottleneck in a Pilot's Career</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A type rating is the most expensive single purchase most pilots will ever make in their career — and it is sold without accountability. A B737 type rating costs between <strong>$20,000 and $35,000 USD</strong>. A B777 or A350 rating can exceed <strong>$50,000</strong>. These are not training investments backed by verified employment probability. They are financial commitments made blind — to simulator centres with no obligation to disclose whether a pilot actually meets the prerequisite profile the rating is designed to serve.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The result is a predatory dynamic: pilots are sold ratings they are not ready for, on aircraft types they are not positioned to fly, without any transparency on which operators are actively hiring for that type, what hours profile those operators require beyond the rating, or whether the specific centre delivering the training is trusted by the airlines the pilot intends to apply to. <strong style={{color:'#dc2626'}}>The simulator centre takes the fee. The pilot takes the risk. The airline sees the rating and asks a question the pilot cannot answer: "But do you have the hours?"</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-6">Pillar 6 introduces <strong>ethical type rating infrastructure</strong> — a framework where simulator and type rating centres participate in the platform under a verified disclosure standard, feeding live proficiency data into pilot profiles, and publishing prerequisite requirements linked directly to operator pathway cards. <strong>No pilot buys a rating blind. No centre sells a rating irresponsibly. The chain of accountability is restored.</strong></p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Ethical Selling Standard:</strong> <strong style={{color:'#f87171'}}>No advanced type rating should be sold to a pilot who does not meet the baseline prerequisite profile for the operators that rating is designed to serve.</strong> This is not a legal obligation. It is a commercial one — simulator centres that sell mismatched ratings produce washouts, generate refund disputes, and destroy the reputation that keeps their doors open. The platform enforces this standard by linking rating listings directly to operator pathway requirements. If the pilot's verified profile does not meet the prerequisite, the pathway card flags the gap before the purchase decision is made.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Pilots</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'No visibility into which ratings operators are actually hiring for', d: <>Pilots invest $20,000–$50,000 in a type rating with <strong>no structured data on which operators are actively hiring for that type, in what volume, and at what hours profile.</strong> Type rating investment decisions are made on rumour, forum posts, and sales pitches from the centres selling the course.</> },
+              { n: '2', t: 'No prerequisite transparency before purchase', d: <>Simulator centres are not required to publish the <strong>full prerequisite profile</strong> an operator expects beyond the rating itself — command time minimums, recency requirements, fleet-specific hours thresholds. Pilots discover these requirements after they have paid. The rating is useless without the hours. <strong>No refund is available.</strong></> },
+              { n: '3', t: 'No centre quality differentiation', d: <>Not all simulator centres are equal. Some are airline-endorsed. Some are not. Some produce candidates that consistently pass airline type-specific assessments. Some do not. <strong>This information is entirely invisible to the pilot making a $30,000 purchasing decision.</strong></> },
+              { n: '4', t: 'Simulator proficiency data does not travel', d: <>A pilot\'s simulator assessment scores, grading benchmarks, and proficiency history are locked inside the simulator centre\'s internal systems. <strong>They do not appear in the pilot\'s Recognition Profile, they are not visible to operators, and they are not portable.</strong> The most relevant evidence of flight deck competency a pilot produces — their performance under pressure in a certified full-flight simulator — disappears the moment they leave the building.</> },
+              { n: '5', t: 'Type rating timing decisions made without pathway context', d: <>Pilots purchase type ratings at the wrong point in their career — before they have the hours profile that makes the rating usable, or on aircraft types that no operator in their accessible geography is currently recruiting for. <strong>The platform visibility to prevent this does not currently exist.</strong></> },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Pain Points for Type Rating &amp; Simulator Centers</h3>
+          <ul className="space-y-2 mb-6">
+            {([
+              { n: '1', t: 'High washout rates damage commercial reputation', d: <>Centres that sell ratings to under-qualified pilots produce <strong>washout rates of 35% or higher</strong>. Every washout is a refund dispute, a negative review, and a candidate who tells every pilot they know to avoid the centre. <strong>The short-term fee generates long-term reputational damage.</strong></> },
+              { n: '2', t: 'No channel into the verified pilot pipeline', d: <>Simulator centres have no structured channel into the verified, career-active pilot database. They advertise generically, compete on price, and attract unqualified enquiries. <strong>They cannot filter for pilots whose verified profile actually matches the rating they are selling.</strong></> },
+              { n: '3', t: 'Simulator performance data siloed and unused', d: <>Every full-flight simulator session produces objective, measurable proficiency data — approach stability, engine-out handling, crew coordination scores. This data sits in internal systems, contributes nothing to the pilot\'s professional profile, and is invisible to airlines who would pay a premium to see it. <strong>The most valuable aviation performance data in existence is currently worthless outside the simulator bay.</strong></> },
+              { n: '4', t: 'No airline-endorsement pathway', d: <>There is no structured mechanism for a simulator centre to demonstrate to airlines that their training produces superior candidates. <strong>Airline endorsement — a commercially valuable status — is entirely informal, relationship-based, and inaccessible to newer or smaller centres regardless of training quality.</strong></> },
+            ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.n}. {item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Platform Solution</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 6 integrates type rating and simulator centres into the platform's verification layer — creating a <strong>two-directional data flow</strong>: operator pathway requirements flow into the pilot's gap analysis (showing exactly which type rating is needed and when), and simulator proficiency data flows out of the centre and into the pilot's Professional Standing Asset.</p>
+          <ul className="space-y-2 mb-6">
+            {([
+              { t: 'Pathway-linked type rating listings', d: 'Each type rating listed by a centre is linked directly to the operator pathway cards in Hub A that require it. A pilot viewing a B737 type rating card sees which operators are currently hiring B737-rated pilots, the full hours profile those operators require beyond the rating, and whether their current verified profile positions them to use the rating within a realistic timeline.' },
+              { t: 'Prerequisite gate enforcement', d: 'Before a pilot can access a type rating listing, the platform cross-references their verified profile against the rating\'s published prerequisites. If they do not meet the threshold, they receive a structured gap analysis — not a blocked door. The centre\'s listing flags the gap, and the platform presents the pathway to close it first. Ethical selling is built into the infrastructure.' },
+              { t: 'Live simulator proficiency data integration', d: 'Centres with API integration feed verified simulator grading data directly into the pilot\'s Professional Standing Asset — approach stability scores, engine-out procedure benchmarks, EBT competency assessments. For the first time, a pilot\'s simulator performance is a live, portable, operator-visible data point in their Recognition Profile. Airlines querying the database see not just that a pilot holds a type rating — but how well they perform in a simulator under assessed conditions.' },
+              { t: 'Pre-Cleared Rating program', d: 'Simulator centres that meet the platform\'s ethical selling standard, publish verified washout rates, and integrate simulator data receive "Pre-Cleared" status — an airline-endorsed designation that tells pilots the centre\'s training produces candidates operators will consider. Pre-Cleared centres command a verified premium. Pilots pay more for certainty. Operators trust the output.' },
+              { t: 'Washout analytics and pilot-to-rating matching', d: 'Platform data on pilot profile type versus training washout rates enables the match algorithm to actively steer pilots toward type ratings they are most likely to complete successfully — and toward centres whose training profile most closely matches their cognitive and skills baseline. Better matching means fewer washouts. Fewer washouts means better reputation for centres and fewer $30,000 losses for pilots.' },
+            ] as { t: string; d: string }[]).map((item) => (
+              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2">Commercial Tiers — Simulator &amp; Type Rating Centre Access</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Centres access the platform through three tiers — from pathway listing only through to full API integration, live EBT data export, and custom assessment development.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Tier</th>
+                  <th className="text-left px-4 py-2 font-semibold">Monthly Fee</th>
+                  <th className="text-left px-4 py-2 font-semibold">Includes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { tier: 'Standard', fee: '$300/mo', features: <>Type rating pathway listings published on the platform — linked to operator pathway cards. Prerequisite requirements published. Centre profile visible to pilots browsing type rating options. <span style={{color:'#dc2626'}}>No simulator data integration or washout analytics.</span></> },
+                  { tier: 'Professional', fee: '$800/mo + $30/referral', features: <><strong style={{color:'#dc2626'}}>API integration</strong> — simulator grading software feeds verified EBT proficiency data directly into pilot Professional Standing Assets. Washout analytics by pilot profile type. Gap analysis tool integration — pilots matched to ratings based on verified profile alignment. Co-develop gap analysis features. <strong>$30 referral fee paid to centre</strong> for every platform-enrolled pilot who completes a type rating at their facility.</> },
+                  { tier: 'Enterprise', fee: '$1,500/mo', features: <><strong style={{color:'#dc2626'}}>Custom assessment development</strong> — co-build type-specific EBT competency frameworks with the platform. Priority placement in pilot match algorithm. <strong style={{color:'#dc2626'}}>Pre-Cleared Rating status</strong> — airline-endorsed designation on centre profile and all linked type rating cards. Simulator-to-airline performance correlation research access. Industry advisory role on training standardisation.</> },
+                ] as { tier: string; fee: string; features: React.ReactNode }[]).map((row, i) => (
+                  <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.features}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What Centres Are Required to Provide</h4>
+          {[
+            { t: 'Essential', items: ['Publish prerequisite requirements linked to operator pathway cards — exact hours thresholds, recency requirements, and fleet-specific criteria an operator expects beyond the rating', 'Upload verified simulator proficiency data (Professional and Enterprise tiers)', 'Participate in the ethical selling certification program — no advanced ratings sold to pilots below the published prerequisite profile'] },
+            { t: 'Preferred', items: ['Co-develop Gap Analysis tool integration — help map the delta between a pilot\'s current profile and type rating readiness', 'Share training washout analytics by pilot profile type — anonymised data used to improve matching accuracy', 'Provide type rating cost-to-outcome correlation data — which ratings produce the fastest pathway to employment'] },
+            { t: 'Strategic', items: ['Joint research on simulator-to-airline performance correlation — build the evidence base that links simulator proficiency scores to airline assessment outcomes', 'Beta test the Pre-Cleared Rating program — become the first airline-endorsed centres on the platform', 'Industry advisory role on training standardisation — shape the competency framework standards that the whole sector adopts'] },
+          ].map((section) => (
+            <div key={section.t} className="mb-4">
+              <p className="text-slate-700 font-semibold mb-1">{section.t}:</p>
+              <ul className="space-y-1">
+                {section.items.map((item) => (
+                  <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                    <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+                    <span className="text-sm">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <div className="overflow-x-auto mt-6 mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-3 font-semibold">Metric</th>
+                  <th className="text-left px-4 py-3 font-semibold text-red-400">Current Industry</th>
+                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>With Platform Integration</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { m: 'Training washout rate', curr: '35%', plat: '15% (pilot-to-rating matching)' },
+                  { m: 'Price premium achievable', curr: '0% (commoditised)', plat: '+20% avg (~$5,000/rating for Pre-Cleared status)' },
+                  { m: 'Enrolment uplift', curr: 'Baseline', plat: '+20–30% from verified Pre-Cleared status' },
+                  { m: 'Simulator data utility', curr: 'Locked in centre systems', plat: 'Live in pilot Recognition Profile, visible to operators' },
+                  { m: 'Airline endorsement', curr: 'Informal, relationship-based', plat: 'Structured Pre-Cleared program, openly verifiable' },
+                ].map((row, i) => (
+                  <tr key={row.m} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.m}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400">{row.curr}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.plat}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The airline mandate is coming.</strong> As EBT and CBTA frameworks mature, airlines will begin specifying not just that a candidate holds a type rating — but that the rating was obtained at a verified, proficiency-data-publishing centre. The centres that integrate now will be the centres airlines name on their pathway cards. <strong style={{color:'#f87171'}}>The simulator centre that owns the verified data channel owns the pilot pipeline that flows through it.</strong></p>
           </div>
 
           <hr className="my-10 border-slate-300" />
