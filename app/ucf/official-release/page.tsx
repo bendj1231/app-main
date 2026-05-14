@@ -1589,6 +1589,10 @@ export default function UCFOfficialReleasePage() {
           <div className="border border-slate-200 rounded-lg px-6 py-5 mb-8 bg-slate-50">
             <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">The Issuers Platform — Built for ATOs Without Technical Infrastructure</p>
             <p className="text-slate-800 text-sm leading-relaxed mb-3">Most flight schools do not have a blockchain engineering team. They do not need one. <strong>PilotRecognition builds and hosts the issuance infrastructure on their behalf.</strong> The Issuers Platform is accessible directly through the Enterprise ATO account — a dedicated credential management dashboard that allows the school to:</p>
+            <div className="border-l-4 border-slate-400 pl-4 mb-4 bg-slate-100 py-3 pr-3 rounded-r">
+              <p className="text-slate-700 text-xs font-semibold uppercase tracking-wide mb-1">Backend Foundation — Level 1 Baseline</p>
+              <p className="text-slate-700 text-sm leading-relaxed">The credential tokens issued through this platform are not issued into a vacuum. The <strong>Level 1 baseline</strong> — the ground-truth data layer that every token is anchored to — is produced in direct cooperation with <strong>governing aviation authorities</strong> (GCAA, CASA, CAA, FAA, EASA and their regional equivalents) and <strong>Authorised Medical Examiners (AMEs)</strong> for medical validity confirmation. This means every signed token is traceable back to a regulatory source — not a self-reported claim, not an institutional assertion alone, but a credential chain that begins at the authority that issued the licence and the examiner that certified the medical. <strong style={{color:'#dc2626'}}>The platform does not create trust. It inherits it from the institutions that already hold it — and makes it portable, digital, and permanently verifiable.</strong></p>
+            </div>
             <ul className="space-y-2 mb-4">
               {[
                 'Define the credential types they are authorised to issue — CPL-Complete, AAM-Ready, or custom operator-specific designations co-developed with the platform',
