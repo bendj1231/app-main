@@ -57,33 +57,34 @@ export default function UCFOfficialReleasePage() {
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors flex-shrink-0"
+              aria-label="Toggle navigation"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {sidebarOpen
                   ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 }
               </svg>
             </button>
-            <Link to="/ucf" className="text-slate-900 font-semibold hover:text-red-600 transition-colors text-sm">
-              ← Back to UCF
+            <Link to="/ucf" className="text-slate-900 font-semibold hover:text-red-600 transition-colors text-xs sm:text-sm flex-shrink-0">
+              ← UCF
             </Link>
             <span className="hidden sm:inline text-slate-300">|</span>
-            <span className="hidden sm:inline text-slate-500 text-sm">Official Release Document</span>
+            <span className="hidden sm:inline text-slate-500 text-sm truncate">Official Release Document</span>
           </div>
-          <div className="flex gap-3 items-center">
+          <div className="flex gap-2 items-center flex-shrink-0">
             {sessionUser ? (
-              <div className="flex items-center gap-3">
-                {isInternal && <span className="hidden sm:inline text-xs bg-red-100 text-red-700 px-2 py-1 rounded font-semibold uppercase tracking-wide">Admin</span>}
-                <span className="hidden sm:inline text-xs text-slate-500 truncate max-w-[140px]">{sessionUser.email}</span>
+              <div className="flex items-center gap-2">
+                {isInternal && <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded font-semibold uppercase tracking-wide">Admin</span>}
+                <span className="hidden lg:inline text-xs text-slate-500 truncate max-w-[140px]">{sessionUser.email}</span>
                 <button
                   onClick={handleLogout}
-                  className="text-sm font-medium text-slate-700 border border-slate-300 hover:bg-slate-100 px-3 py-2 rounded-lg transition-colors"
+                  className="text-xs sm:text-sm font-medium text-slate-700 border border-slate-300 hover:bg-slate-100 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-colors"
                 >
                   Sign Out
                 </button>
@@ -91,19 +92,19 @@ export default function UCFOfficialReleasePage() {
             ) : (
               <button
                 onClick={() => setShowLoginForm(true)}
-                className="text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors"
+                className="text-xs sm:text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors"
               >
-                Admin Login
+                <span className="hidden sm:inline">Admin </span>Login
               </button>
             )}
             <button
               onClick={() => window.print()}
-              className="text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-lg transition-colors inline-flex items-center gap-2"
+              className="hidden sm:inline-flex text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-lg transition-colors items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
-              <span className="hidden sm:inline">Print</span>
+              Print
             </button>
           </div>
         </div>
@@ -140,23 +141,28 @@ export default function UCFOfficialReleasePage() {
       )}
 
       {/* Main layout */}
-      <div className="w-full flex gap-6 pl-4 pr-6 py-8">
+      <div className="w-full flex gap-4 lg:gap-6 px-3 sm:px-4 md:pl-4 md:pr-6 py-4 sm:py-8">
 
         {/* Left Sidebar */}
         {sidebarOpen && (
           <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setSidebarOpen(false)} />
         )}
-        <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-64 pt-20 px-4' : 'hidden'} md:block md:static md:w-64 md:flex-shrink-0 md:h-fit`}>
-          <div className="sticky top-24 bg-slate-50 rounded-xl border border-slate-200 max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
-            <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl">
-              <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
-              <p className="text-xs text-slate-500 mt-1">Jump to any section</p>
+        <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-72 pt-16 px-4 bg-white shadow-2xl' : 'hidden'} md:block md:static md:w-56 lg:w-64 md:flex-shrink-0 md:h-fit`}>
+          <div className="md:sticky md:top-24 bg-slate-50 rounded-xl border border-slate-200 h-[calc(100vh-4rem)] md:max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
+            <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl flex items-center justify-between">
+              <div>
+                <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
+                <p className="text-xs text-slate-500 mt-0.5">Jump to any section</p>
+              </div>
+              <button onClick={() => setSidebarOpen(false)} className="md:hidden p-1.5 rounded-lg hover:bg-slate-100 text-slate-500" aria-label="Close navigation">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
             </div>
             <nav className="p-2 space-y-0.5">
               {navSections.map((s) => (
                 <button
                   key={s.id}
-                  onClick={() => scrollTo(s.id)}
+                  onClick={() => { scrollTo(s.id); setSidebarOpen(false); }}
                   className={`w-full text-left px-2 py-1.5 rounded-lg text-xs transition-colors hover:bg-slate-200 flex items-start gap-1.5 ${
                     s.indent ? 'pl-5 text-slate-600' : 'font-semibold text-slate-900 bg-slate-100'
                   }`}
@@ -173,12 +179,12 @@ export default function UCFOfficialReleasePage() {
         </aside>
 
         {/* Document article */}
-        <article className="max-w-4xl mx-auto flex-1 min-w-0">
+        <article className="w-full max-w-4xl mx-auto flex-1 min-w-0 overflow-x-hidden">
 
           {/* Document cover block */}
           <div id="document-information" className="mb-12 pb-10 border-b-2 border-slate-900 scroll-mt-24">
             <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-3">Official Release Document</p>
-            <h1 className="text-4xl font-bold text-slate-900 mb-4 pb-4 border-b-2 border-slate-900">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4 pb-4 border-b-2 border-slate-900">
               Universal Commercial Framework
             </h1>
             <p className="text-lg text-slate-600 mb-6">Complete Technical Specification and Implementation Guide</p>
