@@ -99,202 +99,181 @@ const SectionCard: React.FC<{ title: string; children: React.ReactNode; classNam
 );
 
 // ─── TAB: HOME ─────────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const cardVariants: any = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.1, duration: 0.4, ease: 'easeOut' },
+  }),
+};
+
 const HomeTab: React.FC<{
-  profile: any; walletChecks: any[]; pathways: any[]; setTab: (t: TabId) => void;
-}> = ({ profile, walletChecks, pathways, setTab }) => {
-  const score = profile?.recognition_score ?? 0;
-  const hours = profile?.total_flight_hours ?? 0;
-  const name = profile?.full_name || profile?.first_name || 'Pilot';
-  const level = profile?.current_occupation || 'Student Pilot';
+  profile: any; walletChecks: any[]; onNavigate: (p: string) => void; setTab: (t: TabId) => void;
+  enrolledInFoundation: boolean;
+}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation }) => {
+  const [visible, setVisible] = React.useState(false);
+  React.useEffect(() => { const t = setTimeout(() => setVisible(true), 80); return () => clearTimeout(t); }, []);
+
+  const score   = profile?.recognition_score ?? 0;
+  const hours   = profile?.total_flight_hours ?? 0;
+  const name    = profile?.full_name || profile?.first_name || 'Pilot';
+  const level   = profile?.current_occupation || 'Student Pilot';
   const initials = name.charAt(0).toUpperCase();
+  const certifications = profile?.certifications || profile?.licenses || profile?.ratings || [];
+  const certCount = Array.isArray(certifications) ? certifications.length : 0;
+  const hoursForNext = 50;
+  const progressPct = Math.min((hours / hoursForNext) * 100, 100);
 
   const expiredChecks = walletChecks.filter(c => c.status === 'expired');
-  const verifiedChecks = walletChecks.filter(c => c.status === 'verified');
-  const allVerified = walletChecks.length > 0 && walletChecks.every(c => c.status === 'verified');
 
-  const topPathways = pathways.slice(0, 3);
-
-  const shortcuts = [
-    { label: 'Pathways',      icon: Map,       tab: 'pathways'      as TabId, colour: 'bg-blue-50 text-blue-600 border-blue-100' },
-    { label: 'Wallet',        icon: Shield,    tab: 'wallet'        as TabId, colour: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
-    { label: 'Programs',      icon: BookOpen,  tab: 'programs'      as TabId, colour: 'bg-purple-50 text-purple-600 border-purple-100' },
-    { label: 'Atlas CV',      icon: FileText,  tab: 'atlas-cv'      as TabId, colour: 'bg-orange-50 text-orange-600 border-orange-100' },
-    { label: 'Airlines',      icon: Plane,     tab: 'airlines'      as TabId, colour: 'bg-sky-50 text-sky-600 border-sky-100' },
-    { label: 'Manufacturers', icon: Wrench,    tab: 'manufacturers' as TabId, colour: 'bg-slate-50 text-slate-600 border-slate-200' },
-    { label: 'Events',        icon: Calendar,  tab: 'events'        as TabId, colour: 'bg-pink-50 text-pink-600 border-pink-100' },
-    { label: 'Logbook',       icon: BookMarked,tab: 'logbook'       as TabId, colour: 'bg-yellow-50 text-yellow-600 border-yellow-100' },
+  const dashboardCards = [
+    {
+      id: 'pathways',
+      title: 'MY PATHWAYS',
+      image: '/images/airline-operations.png',
+      onClick: () => setTab('pathways'),
+    },
+    {
+      id: 'programs',
+      title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS',
+      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
+      onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program'),
+    },
+    {
+      id: 'logbook',
+      title: 'ACCESS LOGBOOK',
+      image: '/images/pilotrecognitioncompoennt.png',
+      onClick: () => onNavigate('digital-logbook'),
+    },
   ];
 
-  const gapActions = [
-    expiredChecks.length > 0 && { label: `Renew expired credential${expiredChecks.length > 1 ? 's' : ''}`, tab: 'wallet' as TabId, urgent: true },
-    score < 60 && { label: 'Complete Foundation Program to increase score', tab: 'programs' as TabId, urgent: false },
-    hours < 250 && { label: 'Log more flight hours in your Logbook', tab: 'logbook' as TabId, urgent: false },
-    !allVerified && walletChecks.length === 0 && { label: 'Set up your Credential Wallet', tab: 'wallet' as TabId, urgent: false },
-    topPathways.length === 0 && { label: 'Explore pathway matches', tab: 'pathways' as TabId, urgent: false },
-  ].filter(Boolean) as { label: string; tab: TabId; urgent: boolean }[];
-
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-      {/* Expiry alert banner */}
-      {expiredChecks.length > 0 && (
-        <div className="flex items-center gap-3 rounded-xl px-5 py-3" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)' }}>
-          <AlertTriangle size={18} className="text-red-400 flex-shrink-0" />
-          <p className="text-sm text-red-300 font-medium">
-            {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired —{' '}
-            <button className="underline font-bold text-red-200" onClick={() => setTab('wallet')}>view wallet</button>
-          </p>
-        </div>
-      )}
-
-      {/* Top row: profile card + shortcuts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        {/* Profile card */}
-        <SectionCard title="Recognition Profile" className="lg:col-span-1">
-          <div className="flex flex-col items-center text-center mb-4">
-            <div className="w-16 h-16 rounded-full bg-slate-600 flex items-center justify-center text-white text-xl font-bold mb-3 overflow-hidden">
-              {profile?.profile_image_url
-                ? <img src={profile.profile_image_url} alt={name} className="w-16 h-16 rounded-full object-cover" />
-                : initials}
-            </div>
-            <p className="font-bold text-white text-base tracking-wider">{name}</p>
-            <p className="text-xs text-orange-400 mt-0.5 uppercase tracking-wider font-semibold">{level}</p>
-            <div className="flex items-center gap-2 mt-2">
-              {allVerified
-                ? <span className="text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1" style={{ background: 'rgba(16,185,129,0.2)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)' }}><CheckCircle size={10}/>PRE-CLEARED</span>
-                : <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.12)' }}>NOT YET VERIFIED</span>}
-            </div>
-          </div>
-          <div className="space-y-3">
-            <ScoreBar score={score} label="Recognition Score" />
-            <div className="grid grid-cols-2 gap-2 pt-1">
-              <div className="rounded-lg p-3 text-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                <p className="text-lg font-bold text-white">{hours.toLocaleString()}</p>
-                <p className="text-[10px] text-white/50 uppercase tracking-wider">Hours</p>
-              </div>
-              <div className="rounded-lg p-3 text-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                <p className="text-lg font-bold text-white">{verifiedChecks.length}/{walletChecks.length || '—'}</p>
-                <p className="text-[10px] text-white/50 uppercase tracking-wider">Verified</p>
-              </div>
-            </div>
-          </div>
-          <button onClick={() => setTab('profile')} className="w-full mt-4 flex items-center justify-center gap-1 text-xs text-white/50 hover:text-white transition-colors" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.75rem' }}>
-            <span className="font-bold tracking-wider">PILOT PROFILE</span> <ChevronRight size={12} />
-          </button>
-        </SectionCard>
-
-        {/* Shortcuts grid */}
-        <SectionCard title="Quick Access" className="lg:col-span-2">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {shortcuts.map(s => {
-              const Icon = s.icon;
-              return (
-                <button
-                  key={s.tab}
-                  onClick={() => setTab(s.tab)}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all hover:scale-105"
-                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(249,115,22,0.15)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.07)')}
-                >
-                  <Icon size={20} className="text-orange-400" />
-                  <span className="text-[10px] font-bold tracking-wider text-white/70 uppercase">{s.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </SectionCard>
-      </div>
-
-      {/* Middle row: pathways + gap actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        {/* Recommended pathways */}
-        <SectionCard title="Recommended Pathways" action={
-          <button onClick={() => setTab('pathways')} className="text-xs text-orange-400 font-bold flex items-center gap-1 hover:text-orange-300 tracking-wider transition-colors">
-            VIEW ALL <ChevronRight size={12} />
-          </button>
-        }>
-          {topPathways.length === 0 ? (
-            <div className="text-center py-8">
-              <Map size={32} className="text-white/20 mx-auto mb-2" />
-              <p className="text-sm text-white/40">No pathways matched yet.</p>
-              <button onClick={() => setTab('pathways')} className="mt-3 text-xs text-orange-400 font-bold underline">Browse pathways</button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {topPathways.map((p: any, i: number) => (
-                <div key={p.id ?? i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-                  onClick={() => setTab('pathways')}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
-                >
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                    <Plane size={16} className="text-orange-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-white truncate">{p.airline_name ?? p.name ?? 'Pathway'}</p>
-                    <p className="text-xs text-white/50 truncate">{p.position ?? p.type ?? 'First Officer'}</p>
-                  </div>
-                  <div className="flex-shrink-0 text-right">
-                    <p className={`text-sm font-bold ${scoreColour(p.match_percent ?? 60)}`}>{p.match_percent ?? '—'}%</p>
-                    <p className="text-[10px] text-white/40">match</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+    <motion.div
+      className="flex gap-5 w-full"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      {/* ── LEFT: Profile Card ── */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-64 flex-shrink-0 flex flex-col"
+        style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
+      >
+        <div className="p-6 flex-1">
+          {/* Expiry warning */}
+          {expiredChecks.length > 0 && (
+            <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+              <AlertTriangle size={12} className="flex-shrink-0" />
+              {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
+            </button>
           )}
-        </SectionCard>
 
-        {/* Gap actions */}
-        <SectionCard title="Action Items" action={
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(239,68,68,0.2)', color: '#fca5a5', border: '1px solid rgba(239,68,68,0.3)' }}>{gapActions.length} TO-DO</span>
-        }>
-          {gapActions.length === 0 ? (
-            <div className="text-center py-8">
-              <CheckCircle size={32} className="text-emerald-400 mx-auto mb-2" />
-              <p className="text-sm text-white/50 font-medium">All actions complete — great work.</p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {gapActions.map((a, i) => (
-                <button
-                  key={i}
-                  onClick={() => setTab(a.tab)}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all"
-                  style={{ background: a.urgent ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.05)', border: `1px solid ${a.urgent ? 'rgba(239,68,68,0.25)' : 'rgba(255,255,255,0.08)'}` }}
-                >
-                  {a.urgent
-                    ? <AlertTriangle size={14} className="text-red-400 flex-shrink-0" />
-                    : <Target size={14} className="text-orange-400/60 flex-shrink-0" />}
-                  <span className={`text-xs font-medium flex-1 ${a.urgent ? 'text-red-300' : 'text-white/70'}`}>{a.label}</span>
-                  <ArrowRight size={12} className="text-white/20 flex-shrink-0" />
-                </button>
-              ))}
-            </div>
-          )}
-        </SectionCard>
-      </div>
-
-      {/* News feed */}
-      <SectionCard title="Recognition Feed">
-        <div className="space-y-1">
-          {[
-            { icon: TrendingUp, colour: 'text-emerald-400', msg: 'Cebu Pacific posted a new A320 First Officer pathway' },
-            { icon: Award,      colour: 'text-yellow-400', msg: 'Your Recognition Score updated — complete EBT to increase it' },
-            { icon: Globe,      colour: 'text-blue-400',   msg: 'APATS 2026 career fair registration now open — Manila, November' },
-            { icon: Zap,        colour: 'text-orange-400', msg: 'New Foundation Program cohort opens June 1 — limited spots' },
-          ].map((item, i) => {
-            const Icon = item.icon;
-            return (
-              <div key={i} className="flex items-start gap-3 py-2.5" style={{ borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
-                <Icon size={15} className={`mt-0.5 flex-shrink-0 ${item.colour}`} />
-                <p className="text-sm text-white/70">{item.msg}</p>
+          {/* Avatar */}
+          <div className="relative w-24 h-24 mx-auto mb-4">
+            {profile?.profile_image_url ? (
+              <img src={profile.profile_image_url} alt={name} className="w-full h-full object-cover rounded-full border-2 border-white/30" />
+            ) : (
+              <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: '#3b82f6' }}>
+                {initials}
               </div>
-            );
-          })}
+            )}
+          </div>
+
+          {/* Name + level */}
+          <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
+          <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">{level}</p>
+
+          {/* 2×2 stats */}
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            {[
+              { value: hours, label: 'HOURS' },
+              { value: score, label: 'SCORE' },
+              { value: certCount, label: 'CERTS', colour: '' },
+              { value: Math.max(hoursForNext - hours, 0), label: 'TO NEXT', colour: 'text-orange-400' },
+            ].map(stat => (
+              <div key={stat.label} className="text-center p-2 rounded" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <p className={`text-lg font-bold ${stat.colour ?? 'text-white'}`}>{stat.value}</p>
+                <p className="text-xs text-white/60 uppercase">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Progress bar */}
+          <div className="mb-2">
+            <div className="flex justify-between text-xs text-white/60 mb-1">
+              <span>LEVEL PROGRESS</span>
+              <span>{Math.round(progressPct)}%</span>
+            </div>
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+              <div className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500" style={{ width: `${progressPct}%` }} />
+            </div>
+          </div>
         </div>
-      </SectionCard>
+
+        {/* PILOT PROFILE link */}
+        <button
+          onClick={() => onNavigate('pilot-recognition-profile')}
+          className="w-full flex items-center gap-3 px-6 py-4 transition-colors hover:bg-white/5"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
+        >
+          <ChevronRight size={18} className="text-white/70" />
+          <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
+        </button>
+      </motion.div>
+
+      {/* ── RIGHT: Image cards ── */}
+      <div className="flex-1 grid grid-cols-2 gap-4">
+        {/* Top card — MY PATHWAYS — full width */}
+        <motion.div
+          custom={0}
+          variants={cardVariants}
+          initial="hidden"
+          animate={visible ? 'visible' : 'hidden'}
+          onClick={dashboardCards[0].onClick}
+          className="col-span-2 relative group cursor-pointer overflow-hidden"
+          style={{ height: '260px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
+        >
+          <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+            style={{ backgroundImage: `url(${dashboardCards[0].image})`, opacity: 0.7 }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center gap-3">
+            <div className="w-10 h-10 flex items-center justify-center bg-white/10 border border-white/20">
+              <ChevronRight size={22} className="text-white" />
+            </div>
+            <h3 className="text-lg font-bold text-white tracking-wider">{dashboardCards[0].title}</h3>
+          </div>
+          <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
+        </motion.div>
+
+        {/* Bottom two cards */}
+        {dashboardCards.slice(1).map((card, index) => (
+          <motion.div
+            key={card.id}
+            custom={index + 1}
+            variants={cardVariants}
+            initial="hidden"
+            animate={visible ? 'visible' : 'hidden'}
+            onClick={card.onClick}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '150px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
+          >
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: `url(${card.image})`, opacity: 0.6 }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
+              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
+                <ChevronRight size={18} className="text-white" />
+              </div>
+              <h3 className="text-sm font-bold text-white tracking-wider">{card.title}</h3>
+            </div>
+            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
+          </motion.div>
+        ))}
+      </div>
     </motion.div>
   );
 };
@@ -973,7 +952,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} pathways={[]} setTab={setTab} />;
+      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} />;
       case 'profile':       return <ProfileTab profile={profileData} onRefresh={() => setProfileData({ ...profileData })} />;
       case 'wallet':        return <WalletTab walletChecks={walletChecks} />;
       case 'pathways':      return <PathwaysTab profile={profileData} airlines={airlines} onNavigate={onNavigate} />;
