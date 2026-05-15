@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { detectRegionalPricing, type RegionalPrice } from '../../lib/regionalPricing';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ShoppingBag, 
@@ -199,6 +200,14 @@ export default function StorePage() {
   const [cart, setCart] = useState<{ product: Product; quantity: number }[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [addedToCart, setAddedToCart] = useState<string | null>(null);
+  const [regionalPricing, setRegionalPricing] = useState<RegionalPrice & { countryCode: string }>({
+    currency: 'USD', symbol: '$', annual: 99, monthly: 12, semiAnnual: 60,
+    annualNote: 'Save $45/yr vs monthly', locale: 'en-US', countryCode: 'US',
+  });
+
+  useEffect(() => {
+    setRegionalPricing(detectRegionalPricing());
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -206,9 +215,15 @@ export default function StorePage() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const filteredProducts = activeCategory === 'all' 
-    ? PRODUCTS 
-    : PRODUCTS.filter(p => p.category === activeCategory);
+  const localizedProducts = PRODUCTS.map(p =>
+    p.id === 'recognition-plus'
+      ? { ...p, price: regionalPricing.annual, originalPrice: Math.round(regionalPricing.annual * 1.5), _symbol: regionalPricing.symbol }
+      : { ...p, _symbol: '$' }
+  );
+
+  const filteredProducts = activeCategory === 'all'
+    ? localizedProducts
+    : localizedProducts.filter(p => p.category === activeCategory);
 
   const addToCart = (product: Product) => {
     setCart(prev => {
@@ -240,6 +255,7 @@ export default function StorePage() {
     }));
   };
 
+  const cartSymbol = cart.find(i => i.product.id === 'recognition-plus') ? regionalPricing.symbol : '$';
   const cartTotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -403,11 +419,11 @@ export default function StorePage() {
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold text-slate-900">
-                      ${product.price}
+                      {(product as any)._symbol || '$'}{product.price.toLocaleString()}
                     </span>
                     {product.originalPrice && (
                       <span className="text-sm text-slate-400 line-through">
-                        ${product.originalPrice}
+                        {(product as any)._symbol || '$'}{product.originalPrice.toLocaleString()}
                       </span>
                     )}
                   </div>
@@ -608,7 +624,7 @@ export default function StorePage() {
                         />
                         <div className="flex-1">
                           <h3 className="font-bold text-slate-900 text-sm">{product.name}</h3>
-                          <p className="text-red-600 font-bold">${product.price}</p>
+                          <p className="text-red-600 font-bold">{(product as any)._symbol || '$'}{product.price.toLocaleString()}</p>
                           
                           <div className="flex items-center gap-2 mt-2">
                             <button 
@@ -643,7 +659,7 @@ export default function StorePage() {
                 <div className="border-t border-slate-200 p-6 space-y-4">
                   <div className="flex items-center justify-between text-lg">
                     <span className="font-bold text-slate-900">Total</span>
-                    <span className="font-bold text-slate-900">${cartTotal.toFixed(2)}</span>
+                    <span className="font-bold text-slate-900">{cartSymbol}{cartTotal.toLocaleString()}</span>
                   </div>
                   <button className="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-4 rounded-xl transition-colors">
                     Proceed to Checkout

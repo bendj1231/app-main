@@ -1,9 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { detectRegionalPricing, formatPrice, type RegionalPrice } from '../../lib/regionalPricing';
 
 export default function RecognitionPlusComparisonPage() {
+  const [pricing, setPricing] = useState<RegionalPrice & { countryCode: string }>({
+    currency: 'USD', symbol: '$', annual: 99, monthly: 12, semiAnnual: 60,
+    annualNote: 'Save $45/yr vs monthly', locale: 'en-US', countryCode: 'US',
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    setPricing(detectRegionalPricing());
   }, []);
 
   return (
@@ -108,7 +115,7 @@ export default function RecognitionPlusComparisonPage() {
               <tr>
                 <td className="py-4 px-4 text-slate-900 font-bold bg-amber-50">Price</td>
                 <td className="py-4 px-4 text-center text-slate-900 font-bold bg-amber-50">Free</td>
-                <td className="py-4 px-4 text-center text-amber-900 font-bold bg-amber-50">$99/year</td>
+                <td className="py-4 px-4 text-center text-amber-900 font-bold bg-amber-50">{formatPrice(pricing.symbol, pricing.annual)}/year</td>
               </tr>
             </tbody>
           </table>
@@ -291,7 +298,7 @@ export default function RecognitionPlusComparisonPage() {
             {/* Monthly */}
             <div className="bg-gradient-to-br from-teal-600 to-teal-700 border-2 border-teal-500 rounded-xl p-8">
               <h3 className="text-xl font-bold text-white mb-2">Monthly Plan</h3>
-              <p className="text-4xl font-bold text-white mb-1">$12<span className="text-lg font-normal text-teal-200">/month</span></p>
+              <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.monthly)}<span className="text-lg font-normal text-teal-200">/month</span></p>
               <p className="text-sm text-teal-200 mb-2">Flexible, month-to-month</p>
               <p className="text-xs text-teal-300 mb-6 font-semibold">✓ 7-day free trial</p>
               <button className="w-full bg-white hover:bg-teal-50 text-teal-700 py-3 rounded-lg font-bold transition-colors">
@@ -302,8 +309,8 @@ export default function RecognitionPlusComparisonPage() {
             <div className="bg-gradient-to-br from-blue-600 to-blue-700 border-2 border-blue-500 rounded-xl p-8 transform scale-105">
               <div className="text-blue-200 text-xs font-bold uppercase mb-2">Best Value</div>
               <h3 className="text-xl font-bold text-white mb-2">Annual Plan</h3>
-              <p className="text-4xl font-bold text-white mb-1">$99<span className="text-lg font-normal text-blue-200">/year</span></p>
-              <p className="text-sm text-blue-200 mb-2">Saves $45/year</p>
+              <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.annual)}<span className="text-lg font-normal text-blue-200">/year</span></p>
+              <p className="text-sm text-blue-200 mb-2">{pricing.annualNote}</p>
               <p className="text-xs text-blue-300 mb-6 font-semibold">✓ 3-day free trial</p>
               <button className="w-full bg-white hover:bg-blue-50 text-blue-700 py-3 rounded-lg font-bold transition-colors">
                 Get Annual Plan
@@ -312,7 +319,7 @@ export default function RecognitionPlusComparisonPage() {
             {/* Semi-Annual */}
             <div className="bg-gradient-to-br from-purple-600 to-purple-700 border-2 border-purple-500 rounded-xl p-8">
               <h3 className="text-xl font-bold text-white mb-2">Semi-Annual Plan</h3>
-              <p className="text-4xl font-bold text-white mb-1">$60<span className="text-lg font-normal text-purple-200">/6 months</span></p>
+              <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.semiAnnual)}<span className="text-lg font-normal text-purple-200">/6 months</span></p>
               <p className="text-sm text-purple-200 mb-2">Same features, flexible payment</p>
               <p className="text-xs text-purple-300 mb-6 font-semibold">✓ 3-day free trial</p>
               <button className="w-full bg-white hover:bg-purple-50 text-purple-700 py-3 rounded-lg font-bold transition-colors">

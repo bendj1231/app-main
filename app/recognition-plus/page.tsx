@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronRight, X } from 'lucide-react';
+import { detectRegionalPricing, formatPrice, type RegionalPrice } from '../../lib/regionalPricing';
 
 const FEATURES = [
     {
@@ -169,6 +170,14 @@ export default function RecognitionPlusPage() {
     const [showCancelledBanner, setShowCancelledBanner] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [mobileNav, setMobileNav] = useState(false);
+    const [pricing, setPricing] = useState<RegionalPrice & { countryCode: string }>({
+        currency: 'USD', symbol: '$', annual: 99, monthly: 12, semiAnnual: 60,
+        annualNote: 'Save $45/yr vs monthly', locale: 'en-US', countryCode: 'US',
+    });
+
+    useEffect(() => {
+        setPricing(detectRegionalPricing());
+    }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -413,8 +422,8 @@ export default function RecognitionPlusPage() {
                     {/* Stat strip */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-8 border-t border-slate-200">
                         <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">$99</p>
-                            <p className="text-sm text-slate-500">Per year</p>
+                            <p className="text-3xl font-bold text-slate-900 mb-1">{formatPrice(pricing.symbol, pricing.annual)}</p>
+                            <p className="text-sm text-slate-500">Per year ({pricing.currency})</p>
                         </div>
                         <div>
                             <p className="text-3xl font-bold text-slate-900 mb-1">AI</p>
@@ -505,7 +514,7 @@ export default function RecognitionPlusPage() {
                         {/* Monthly Plan */}
                         <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl p-8 text-center">
                             <h3 className="text-xl font-bold text-white mb-2">Monthly</h3>
-                            <p className="text-4xl font-bold text-white mb-1">$12<span className="text-lg font-normal text-teal-200">/month</span></p>
+                            <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.monthly)}<span className="text-lg font-normal text-teal-200">/month</span></p>
                             <p className="text-sm text-teal-200 mb-2">Cancel anytime</p>
                             <p className="text-xs text-teal-300 mb-6 font-semibold">✓ 7-day free trial</p>
                             <ul className="space-y-2 mb-6 text-left text-sm text-white">
@@ -531,8 +540,8 @@ export default function RecognitionPlusPage() {
                         <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-8 text-center transform md:scale-105 scale-100 relative">
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1 rounded-full">Best Value</div>
                             <h3 className="text-xl font-bold text-white mb-2 mt-2">Annual</h3>
-                            <p className="text-4xl font-bold text-white mb-1">$99<span className="text-lg font-normal text-blue-200">/year</span></p>
-                            <p className="text-sm text-blue-200 mb-2">Save $45/year</p>
+                            <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.annual)}<span className="text-lg font-normal text-blue-200">/year</span></p>
+                            <p className="text-sm text-blue-200 mb-2">{pricing.annualNote}</p>
                             <p className="text-xs text-blue-300 mb-6 font-semibold">✓ 3-day free trial</p>
                             <ul className="space-y-2 mb-6 text-left text-sm text-white">
                                 <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Full profile comparison</span></li>
@@ -556,7 +565,7 @@ export default function RecognitionPlusPage() {
                         {/* Semi-Annual Plan */}
                         <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-8 text-center">
                             <h3 className="text-xl font-bold text-white mb-2">Semi-Annual</h3>
-                            <p className="text-4xl font-bold text-white mb-1">$60<span className="text-lg font-normal text-purple-200">/6 months</span></p>
+                            <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.semiAnnual)}<span className="text-lg font-normal text-purple-200">/6 months</span></p>
                             <p className="text-sm text-purple-200 mb-2">Flexible payment</p>
                             <p className="text-xs text-purple-300 mb-6 font-semibold">✓ 3-day free trial</p>
                             <ul className="space-y-2 mb-6 text-left text-sm text-white">
