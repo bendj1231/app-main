@@ -3,13 +3,25 @@ _Last updated: May 15, 2026_
 
 ---
 
-## Layer 1 Verification — 3 Checks
+## Layer 1 Verification — Architecture (Updated May 16, 2026)
 
-| # | Check | What it covers |
-|---|---|---|
-| 1 | **Identity** | Name, DOB, nationality — confirmed against government-issued ID registry |
-| 2 | **Education** | Flight school, certificate issuance — confirmed against institutional records |
-| 3 | **Professional Qualification** | CAAP License + Class 1 Medical + NTC Radio License — confirmed against CAAP registry |
+### Pilot Registration Check (1 check only)
+
+| # | Check | What it covers | Who pays | Cost |
+|---|---|---|---|---|
+| 1 | **Professional Qualification** | CAAP License + Class 1 Medical + NTC Radio License — confirmed against CAAP registry | Pilot ($100 sub) | $13 partner rate |
+
+### Airline Profile Pull Check (triggered at shortlist)
+
+| # | Check | What it covers | Who pays | Cost |
+|---|---|---|---|---|
+| 1 | **Identity Verification** | Name, DOB, nationality — confirmed against government-issued ID registry | Airline ($50 pull fee) | $9 partner rate |
+
+**Architecture rationale:**
+- Pilot only pays for the credential PilotRecognition uniquely verifies (CAAP registry)
+- Identity is pulled by the airline at shortlist — this is where it belongs in the hiring workflow
+- No duplication, no over-charging the pilot
+- Airline gets real value from the $50 pull (live identity confirmation, not just profile view)
 
 Fitness check removed — CAAP Class 1 Medical IS the fitness check. No duplication.
 
@@ -23,43 +35,80 @@ Veremark searches, locates, retrieves credential records independently. Full dat
 ### Workflow B — Data Verification (OUR model)
 Pilot self-submits their credentials at registration. Veremark confirms submitted data matches the issuing authority's registry. Yes/no confirmation — not a pull.
 
+**Confirmed by Oliver Lobb (Veremark) via email May 16, 2026** — positioned as "verification-led workflow rather than traditional data sourcing." Pricing shared is based on this model with 15% markup allowance for PilotRecognition.
+
 **Always negotiate Workflow B pricing with Veremark explicitly.**
 
 ---
 
-## Cost Per Pilot — Verification Only Model
+## Cost Per Pilot — Confirmed Veremark Philippines Pricing (May 16, 2026)
 
-| Check | Veremark verification cost | Profit margin |
+### Pilot Registration (1 check)
+
+| Check | RRP | Partner Rate (−15%) | Notes |
+|---|---|---|---|
+| Professional Qualification | $15 | $13 | CAAP + Medical + Radio License |
+| **Total at registration** | **$15** | **$13** | |
+
+### Airline Profile Pull (1 check, billed to airline)
+
+| Check | RRP | Partner Rate (−15%) | Airline Pays | Net Margin |
+|---|---|---|---|---|
+| Identity Verification | $10 | $9 | $50 | **$41** |
+
+### Other Philippines Checks (available, not in core bundle)
+
+| Check | RRP | Partner Rate |
 |---|---|---|
-| Identity | ~$2–3 | $1 |
-| Education | ~$2–3 | $1 |
-| Professional Qualification | ~$3–5 | $2 |
-| **Total** | **~$8** | **~$4 per check** |
+| Education Check | $10 | $9 |
+| Criminal Record Check | $15 | $13 |
+| Employment Check | $10 | $9 |
+| Right To Work | $10 | $9 |
+| Social Media Check | $37 | $32 |
+| Reference Check | $7 | $6 |
 
 ---
 
-## Unit Economics — USDC Payment (Best Case)
+## Unit Economics — USDC Payment (Updated)
 
 | | Amount |
 |---|---|
-| Subscription revenue | $99 |
-| Veremark verification cost | -$8 |
-| USDC network fee (~0.1%) | -$0.10 |
+| Subscription revenue | $100 |
+| Veremark Professional Qual. check | −$13 |
+| USDC network fee (~0.1%) | −$0.10 |
+| Infra allocation | −$1 |
 | UAE corporate tax | $0 (0% free zone) |
-| **Net profit per pilot** | **~$90.90** |
-| **Margin** | **91.8%** |
+| **Net profit per pilot** | **~$86** |
+| **Margin** | **86%** |
+
+### Airline Profile Pull Unit Economics
+
+| | Amount |
+|---|---|
+| Airline pays per pull | $50 |
+| Veremark Identity check | −$9 |
+| **Net per pull** | **$41** |
+| **Margin** | **82%** |
 
 ---
 
-## Scale Table — USDC + Verification Model
+## Scale Table — USDC + Verification Model (Updated)
 
-| Pilots | Revenue | Veremark | USDC fees | **Net profit** |
+| Pilots | Revenue | Veremark (Prof. Qual.) | USDC fees | **Net profit** | Margin |
+|---|---|---|---|---|---|
+| 100 | $10,000 | −$1,300 | −$10 | **$8,690** | 86.9% |
+| 300 | $30,000 | −$3,900 | −$30 | **$26,070** | 86.9% |
+| 500 | $50,000 | −$6,500 | −$50 | **$43,450** | 86.9% |
+| 1,000 | $100,000 | −$13,000 | −$100 | **$86,900** | 86.9% |
+| 10,000 | $1,000,000 | −$130,000 | −$1,000 | **$869,000** | 86.9% |
+
+### + Airline Pull Revenue (additive)
+
+| Airlines | Pulls/mo | Annual Pull Revenue | Annual Pull Cost | **Net Pull Profit** |
 |---|---|---|---|---|
-| 100 | $9,900 | -$800 | -$10 | **$9,090** |
-| 300 | $29,700 | -$2,400 | -$30 | **$27,270** |
-| 500 | $49,500 | -$4,000 | -$50 | **$45,450** |
-| 1,000 | $99,000 | -$8,000 | -$100 | **$90,900** |
-| 10,000 | $990,000 | -$80,000 | -$1,000 | **$909,000** |
+| 10 | 10 each | $60,000 | −$10,800 | **$49,200** |
+| 25 | 10 each | $150,000 | −$27,000 | **$123,000** |
+| 50 | 10 each | $300,000 | −$54,000 | **$246,000** |
 
 ---
 
@@ -128,7 +177,22 @@ Pilot self-submits their credentials at registration. Veremark confirms submitte
 
 ---
 
-## Veremark Email Sent — May 15, 2026
+## Veremark Correspondence Log
+
+### Email Sent — May 15, 2026
 Re: Pricing distinction between Workflow A (data sourcing) vs Workflow B (data verification).
 Requesting confirmation pricing tier for verification-only checks.
-Contact: Oliver @ Veremark
+Contact: Oliver Lobb @ Veremark
+
+### Reply Received — May 16, 2026 (Oliver Lobb, Veremark)
+Key confirmations:
+- Model confirmed as Workflow B (verification-led, not data sourcing)
+- Pilot submits data → PilotRecognition initiates → pilot completes consent in Veremark workflow → Veremark verifies against primary sources
+- Pilot receives Verepass verified record; PilotRecognition receives final verification report
+- **15% markup confirmed in writing** — "Pilot Recognition to apply an approximate 15% markup on each check"
+- Volume-based repricing door open — "happy to revisit pricing once volumes are increasing"
+- Pricing sheet provided: Philippines Professional Qualification = $15 RRP / $13 partner rate
+
+### Pending Confirmation
+- Whether Professional Qualification check covers identity by extension (CAAP registry includes photo ID)
+- Written confirmation of per-check partner rates for the 1-check bundle

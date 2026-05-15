@@ -17,38 +17,41 @@ Founder-only operation = ~$4–6k/year in fixed costs. This is the leverage poin
 
 ---
 
-## Unit Economics — Philippines Baseline (Workflow B)
+## Unit Economics — Philippines Baseline (Confirmed May 16, 2026)
 
 | | Per Pilot |
 |---|---|
-| Recognition+ subscription | $99/yr |
-| Veremark Workflow B (3 checks) | −$8 |
-| USDC payment fee | −$0.10 |
-| **Net per pilot** | **~$90.90** |
-| **Margin** | **91.8%** |
+| Subscription | $100/yr |
+| Veremark — Prof. Qualification check (1 check) | −$13 |
+| USDC payment fee (~0.1%) | −$0.10 |
+| Infra allocation | −$1 |
+| **Net per pilot** | **~$86** |
+| **Margin** | **86%** |
+
+**Architecture:** Pilot pays for 1 check (Professional Qualification — covers CAAP license, Class 1 Medical, NTC Radio License). Identity check is triggered separately by the airline at shortlist, billed to the airline at $50 ($9 cost = $41 net margin per pull).
 
 ---
 
 ## The Scale Thresholds
 
-### Threshold 1 — Break Even: ~50 pilots
+### Threshold 1 — Break Even: ~47 pilots
 
 ```
-50 × $90.90 = $4,545 net/yr
-Fixed costs  = $4,000/yr
-─────────────────────────
-Net profit   = ~$545
+47 × $86 = $4,042 net/yr
+Fixed costs = $4,000/yr
+──────────────────────
+Net profit  = ~$42
 ```
 
-Break even at **50 paying pilots**. That's the floor.
+Break even at **~47 paying pilots**. Barely changed from original model.
 
 ---
 
 ### Threshold 2 — Ramen Profitable (founder salary): ~300–500 pilots
 
 ```
-300 pilots × $90.90 = $27,270 net
-500 pilots × $90.90 = $45,450 net
+300 pilots × $86 = $25,800 net
+500 pilots × $86 = $43,000 net
 ```
 
 At 300–500 pilots a single founder is covering a modest salary in a low-cost base (Philippines/UAE). This is the "prove the model" zone.
@@ -57,13 +60,13 @@ At 300–500 pilots a single founder is covering a modest salary in a low-cost b
 
 ### Threshold 3 — True Economies of Scale: 1,000–2,000 pilots
 
-| Pilots | Subscription Rev | Veremark Cost | Net Profit | Per-Pilot Infra Cost |
+| Pilots | Revenue | Veremark (Prof. Qual.) | Net Profit | Per-Pilot Infra Cost |
 |---|---|---|---|---|
-| 100 | $9,900 | $800 | $9,090 | $40 |
-| 500 | $49,500 | $4,000 | $45,450 | $8 |
-| 1,000 | $99,000 | $8,000 | $90,900 | $4 |
-| 2,000 | $198,000 | $16,000 | $181,800 | $2 |
-| 10,000 | $990,000 | $80,000 | $909,000 | $0.40 |
+| 100 | $10,000 | −$1,300 | $8,690 | $40 |
+| 500 | $50,000 | −$6,500 | $43,450 | $8 |
+| 1,000 | $100,000 | −$13,000 | $86,900 | $4 |
+| 2,000 | $200,000 | −$26,000 | $173,800 | $2 |
+| 10,000 | $1,000,000 | −$130,000 | $869,000 | $0.40 |
 
 At 1,000 pilots: infra cost per pilot is $4. At 10,000 it's $0.40. Marginal cost approaches zero while revenue scales linearly.
 
@@ -92,9 +95,11 @@ Total net    = $81,450/yr
 
 ### Threshold 5 — Operator Profile Pulls (passive income layer)
 
-- **$50 per pull** (airline pays), **$25 to Veremark** = **$25 margin per pull**
-- 10 pilots shortlisted per month per airline = **$250 passive/mo per airline**
-- 10 airlines = **$2,500/mo = $30,000/yr** from zero additional work
+- **$50 per pull** (airline pays), **$9 to Veremark** (Identity check) = **$41 margin per pull**
+- 10 pilots shortlisted per month per airline = **$410 passive/mo per airline**
+- 10 airlines = **$4,100/mo = $49,200/yr** from zero additional work
+
+_Margin revised upward: identity check is $9 (not $25 as previously modelled) because it's a single Workflow B confirmation, not a full data pull._
 
 ---
 
@@ -104,7 +109,7 @@ Regional pricing tiers are the real economies of scale engine:
 
 | Market | Subscription | Veremark Cost | Net Margin |
 |---|---|---|---|
-| 🇵🇭 Philippines | $99 | $8 | ~$91 (91.8%) |
+| 🇵🇭 Philippines | $100 | $13 | ~$86 (86%) |
 | 🇬🇧 UK | $239 | $48 (DBS) | ~$191 (79.9%) |
 | 🇦🇪 UAE | $389 | $93 | ~$296 (76%) |
 | 🇸🇬 Singapore | $189 | $22 | ~$167 (88%) |
