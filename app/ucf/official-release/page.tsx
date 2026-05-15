@@ -65,6 +65,7 @@ const navSections = [
 
   { id: 'hub-g-discovery', label: 'Hub G — Digital Discovery', group: 'hubg' },
   { id: 'pillar-25-discovery', label: 'Pillar 25: Digital Discovery & Search', indent: true, group: 'hubg' },
+  { id: 'pillar-platform-legal-model', label: 'Pillar: Platform Legal Model & Revenue', indent: true, group: 'hubg' },
 
 ];
 
@@ -4333,6 +4334,80 @@ export default function UCFOfficialReleasePage() {
           </div>
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Discovery Flywheel:</strong> When a pilot searches "how to become an Emirates pilot" and finds verified, structured pathway data from the platform — they click through, create a profile, and enter the ecosystem. <strong style={{color:'#f87171'}}>Hub G is where the platform's network effect begins. Every discovery that returns verified data instead of forum speculation is a future pilot entering the verified pipeline.</strong></p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* PLATFORM LEGAL MODEL & REVENUE STRUCTURE */}
+          <h2 id="pillar-platform-legal-model" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PLATFORM LEGAL MODEL &amp; REVENUE STRUCTURE
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Foundational Framework · Commercial Architecture · Legal Positioning</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">What PilotRecognition Actually Is — A Domain, Not a Corporation</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition is a <strong>general platform</strong> — a domain that aggregates, structures, and displays reputable information across all UCF pillars. It is not a data company, a verification company, a staffing agency, or a financial institution. It is a <strong>neutral information and consent management layer</strong> operated through contracts with specialist providers who perform every functional role.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This model means the platform does not require traditional business establishment in every jurisdiction it operates. The legal entity is minimal. The liability exposure is minimal. The operational complexity is minimal. What the platform does require — and what it charges for — is <strong>access to structured, verified, aggregated aviation career data</strong> that no other single source provides.</p>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">What the Platform Is and Is Not</p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A domain publishing structured aviation career framework data</span></p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A consent management layer connecting pilots to vault + Veremark</span></p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A token display surface showing triangulated verification outcomes</span></p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A pathway matching interface between pilots and operators</span></p>
+            <p className="mt-2"><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A data custodian for pilot credentials</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A verification provider</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A staffing or recruitment agency</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A financial institution or payments processor</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">Liable for the accuracy of third-party verification outcomes</span></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Contract Model — $100/Year Per Pilot</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Pilots access the platform under a <strong>direct contract</strong> — not a SaaS subscription in the traditional sense, but a service agreement granting access to the platform's aggregated data layer, pathway matching, and verification token display. At <strong>$100/year per pilot</strong>, the contract is simple: the pilot pays for access to the most structured, verified, and comprehensive aviation career intelligence platform in existence. The platform provides access. Specialist providers deliver every underlying service.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Pilot Contract ($100/yr)', color: 'text-red-600', items: ['Access to all UCF pillar data and pathway cards', 'Verification wallet — token display from vault + Veremark', 'Recognition Score calculation and gap analysis', 'Pathway matching against all operator requirements', 'EBT video assessment submission', 'Priority queue status for operator pull', 'ATLAS CV generation and export', 'Consent management for operator data access'] },
+              { t: 'Operator Contract ($1,000/yr)', color: 'text-blue-600', items: ['Enterprise pull-API access to verified pilot pool', 'Pre-Cleared pilot shortlist filtered by pathway', 'Recognition Score as first-pass hiring filter', 'ATS integration — Greenhouse / Workday / Oracle', 'EBT video assessment access for shortlisted pilots', 'Pathway card publishing and management', 'Consent-gated wallet token access per pilot', 'Compliance audit trail for every data access event'] },
+              { t: 'Provider Contracts (Revenue Share)', color: 'text-emerald-600', items: ['Vault provider — data custody (DPA direct with pilot)', 'Veremark — verification (DPA direct with pilot)', 'Referral partners — $20/conversion (flight schools, TRCs)', 'Flight school referral — $20 per pilot converted', 'Manufacturer referral — $20 per pilot converted', 'Type rating center — $20 per pilot converted', 'Stripe — payment processing (no financial liability)', 'Resend — email delivery (no data custody)'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${col.color}`}>{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Revenue Model at Scale</h3>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Revenue Stream</th>
+                <th className="text-left px-4 py-2 font-semibold">Unit Price</th>
+                <th className="text-left px-4 py-2 font-semibold">1,000 Units</th>
+                <th className="text-left px-4 py-2 font-semibold">10,000 Units</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { stream: 'Pilot contracts', price: '$100/yr', k1: '$100,000', k10: '$1,000,000' },
+                  { stream: 'Operator contracts', price: '$1,000/yr', k1: '$1,000,000', k10: '$10,000,000' },
+                  { stream: 'Referral conversions', price: '$20/pilot', k1: '$20,000', k10: '$200,000' },
+                  { stream: 'Foundation Program', price: '$49/pilot', k1: '$49,000', k10: '$490,000' },
+                  { stream: 'Transition Program', price: '$299/pilot', k1: '$299,000', k10: '$2,990,000' },
+                  { stream: 'Success fees (hires)', price: '$500/hire', k1: '$500,000', k10: '$5,000,000' },
+                ] as {stream:string;price:string;k1:string;k10:string}[]).map((row, i) => (
+                  <tr key={row.stream} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                    <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.stream}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.price}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-blue-700 font-semibold">{row.k1}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-emerald-700 font-semibold">{row.k10}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-slate-900 bg-slate-900 rounded-r-lg">
+            <p className="text-sm font-bold text-white uppercase tracking-widest mb-2">The Legal Position in One Line</p>
+            <p className="text-slate-300 leading-relaxed italic">&quot;PilotRecognition is a website domain providing reputable, structured aviation career information across 25+ pillars. All specialist functions — data custody, verification, payment processing, email delivery — are handled by contracted third-party providers. The platform charges pilots $100/year for access to that aggregated intelligence layer. Nothing more.&quot;</p>
           </div>
 
           <hr className="my-10 border-slate-300" />
