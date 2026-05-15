@@ -4428,6 +4428,44 @@ export default function UCFOfficialReleasePage() {
             <p className="mt-4 text-slate-400 text-xs italic">The more liability each provider carries independently, the more neutral the platform becomes — and the more every provider needs it to function.</p>
           </div>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Redundancy — No Single Point of Failure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A single-provider engine fails when one part fails. The platform is architected with <strong>redundant providers at every functional layer</strong>. If a vault provider goes offline, a backup vault is activated. If Veremark has an outage, a secondary verification provider covers the gap. If Stripe has a processing issue, an alternative payment rail exists. The pilot experience never breaks because the engine has spares for every part.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This is not just operational resilience — it is <strong>commercial leverage</strong>. No single provider can hold the platform hostage by threatening to withdraw. The platform can switch providers without pilots noticing. That keeps every provider competitive, compliant, and motivated to maintain service quality.</p>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Function</th>
+                <th className="text-left px-4 py-2 font-semibold">Primary Provider</th>
+                <th className="text-left px-4 py-2 font-semibold">Redundant Backup</th>
+                <th className="text-left px-4 py-2 font-semibold">Failover Impact</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { fn: 'Data Vault / Custody', primary: 'Persona / Jumio', backup: 'Onfido / Veremark Vault', impact: 'Zero — pilot data stays in backup vault' },
+                  { fn: 'Credential Verification', primary: 'Veremark', backup: 'First Advantage / HireRight', impact: 'Zero — token issued by backup verifier' },
+                  { fn: 'Payment Processing', primary: 'Stripe', backup: 'PayPal / Braintree', impact: 'Zero — payment rail switches transparently' },
+                  { fn: 'Email Delivery', primary: 'Resend', backup: 'SendGrid / Postmark', impact: 'Zero — delivery route switches automatically' },
+                  { fn: 'Database Infrastructure', primary: 'Supabase (primary)', backup: 'Supabase failover replica', impact: 'Zero — automatic replica promotion' },
+                  { fn: 'Hosting / CDN', primary: 'Vercel', backup: 'Netlify / Cloudflare Pages', impact: 'Minimal — DNS switch within minutes' },
+                  { fn: 'Referral Network', primary: 'Flight schools / TRCs', backup: 'Manufacturer + airline referral tier', impact: 'Zero — multiple partner tiers active simultaneously' },
+                ] as {fn:string;primary:string;backup:string;impact:string}[]).map((row, i) => (
+                  <tr key={row.fn} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                    <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.fn}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-blue-700">{row.primary}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-yellow-700">{row.backup}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-emerald-700 font-semibold">{row.impact}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-r-lg">
+            <p className="text-sm font-bold text-yellow-700 uppercase tracking-widest mb-1">Commercial Leverage</p>
+            <p className="text-slate-700 leading-relaxed">Because the platform can switch any provider without disrupting the pilot experience, <strong>no provider has pricing power over the platform</strong>. Contracts are negotiated from a position of strength. The moment a provider raises rates or degrades service, the redundant alternative is activated. The engine keeps running.</p>
+          </div>
+
           <div className="my-6 px-5 py-4 border-l-4 border-slate-900 bg-slate-900 rounded-r-lg">
             <p className="text-sm font-bold text-white uppercase tracking-widest mb-2">The Legal Position in One Line</p>
             <p className="text-slate-300 leading-relaxed italic">&quot;PilotRecognition is a website domain providing reputable, structured aviation career information across 25+ pillars. All specialist functions — data custody, verification, payment processing, email delivery — are handled by contracted third-party providers. The platform charges pilots $100/year for access to that aggregated intelligence layer. Nothing more.&quot;</p>
