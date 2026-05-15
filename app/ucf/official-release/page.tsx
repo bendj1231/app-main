@@ -26,6 +26,12 @@ const navSections = [
   { id: 'pillar-12-flight-data', label: 'Pillar 12: Flight Data & Navigation Apps', indent: true, group: 'hubd' },
   { id: 'pillar-13-aeromedical', label: 'Pillar 13: Aeromedical Examiners', indent: true, group: 'hubd' },
   { id: 'pillar-telemetry', label: 'Pillar: Telemetry & Simulator Data', indent: true, group: 'hubd' },
+  { id: '', label: 'Security & Compliance', indent: true, group: 'hubd', subheader: true },
+  { id: 'pillar-credential-wallet', label: 'Pillar: Digital Credential Wallet', indent: true, group: 'hubd' },
+  { id: 'pillar-identity-verification', label: 'Pillar: Identity & Document Verification', indent: true, group: 'hubd' },
+  { id: 'pillar-ats-integration', label: 'Pillar: ATS & Airline Systems Integration', indent: true, group: 'hubd' },
+  { id: 'pillar-ai-matching', label: 'Pillar: AI & Matching Engine', indent: true, group: 'hubd' },
+  { id: 'pillar-data-privacy', label: 'Pillar: Data Privacy & Consent Layer', indent: true, group: 'hubd' },
 
   { id: 'part-ii-hub-a', label: 'Hub A — Aviation Operators & Training', group: 'huba' },
   { id: '', label: 'Training Organizations', indent: true, group: 'huba', subheader: true },
@@ -3953,6 +3959,145 @@ export default function UCFOfficialReleasePage() {
                 <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
               </div>
             ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* DIGITAL CREDENTIAL WALLET */}
+          <h2 id="pillar-credential-wallet" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            DIGITAL CREDENTIAL WALLET
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Credentials Are Locked, Not Portable</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A pilot's verified credentials — license, medical certificate, type ratings, background check results — are currently scattered across issuing authorities, airline HR systems, and paper files. When a pilot changes operators, those credentials must be re-verified from scratch. Every time. The verification industry exists almost entirely to redo work that has already been done. The pilot does not own their own verified record. The employer does. When the employment ends, the verification disappears.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The Digital Credential Wallet is the structural fix. One wallet per pilot. Verified once. Controlled by the pilot. Shareable to any operator with a single consent action. Built on the same data layer as the Recognition Profile — but portable, persistent, and independent of any single employer relationship.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What the Wallet Contains', items: ['CAAP / GCAA / EASA pilot license status (live pull)', 'Class 1 Medical Certificate with expiry tracking', 'Type ratings held and validity status', 'NBI / Criminal background check result', 'Identity verification — passport, citizenship, address', 'NTC Radio Operator license', 'Employer-requested verifications — timestamped', 'Consent log — who accessed what and when'] },
+              { t: 'How It Works', items: ['Pilot initiates verification once through the platform', 'Veremark runs checks and writes results to wallet', 'Wallet status: Pre-Cleared · Partial · Expired · Pending', 'Pilot shares wallet with operator via consent toggle', 'Operator receives live status — no re-verification needed', 'Wallet auto-flags expired credentials before pilot notices', 'Airlines pay Enterprise tier for pull-API wallet access'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-emerald-500 bg-emerald-50 rounded-r-lg">
+            <p className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-1">Platform Status</p>
+            <p className="text-slate-700 leading-relaxed">Wallet infrastructure is live. Tables: <code className="bg-slate-100 px-1 rounded text-xs">pilot_verification_wallet</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_checks</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Veremark Layer 1 integration built. Pre-Cleared status logic active.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* IDENTITY & DOCUMENT VERIFICATION */}
+          <h2 id="pillar-identity-verification" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            IDENTITY &amp; DOCUMENT VERIFICATION
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Foundation Layer — Who Is This Pilot?</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Background checks and license verification mean nothing without first establishing identity. A verified license attached to an unverified identity is worthless. The identity and document verification layer sits beneath all other verification checks — it is the trust foundation that makes every credential above it meaningful.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Executed through Veremark's Layer 1 pipeline, the identity layer verifies the person before verifying their credentials. Passport authenticity, citizenship, address, and biometric matching establish the individual. Everything built above that is anchored to a verified human, not just a document number.</p>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Check</th>
+                <th className="text-left px-4 py-2 font-semibold">Provider</th>
+                <th className="text-left px-4 py-2 font-semibold">Region</th>
+                <th className="text-left px-4 py-2 font-semibold">Output</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { check: 'Passport / ID Verification', provider: 'Veremark', region: 'Global', output: 'Authentic / Flagged / Expired' },
+                  { check: 'NBI Clearance', provider: 'Veremark PH', region: 'Philippines', output: 'Clear / With Record' },
+                  { check: 'Address Verification', provider: 'Veremark', region: 'PH / UAE / Global', output: 'Confirmed / Unconfirmed' },
+                  { check: 'PRC License Check', provider: 'Veremark PH', region: 'Philippines', output: 'Active / Lapsed / Not Found' },
+                  { check: 'CAAP License Status', provider: 'Veremark / CAAP API', region: 'Philippines', output: 'Valid / Expired / Suspended' },
+                  { check: 'Class 1 Medical', provider: 'AME Network', region: 'PH / Global', output: 'Valid / Expired / Date of Exam' },
+                ] as {check:string;provider:string;region:string;output:string}[]).map((row, i) => (
+                  <tr key={row.check} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100 font-medium">{row.check}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.provider}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.region}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-emerald-400">{row.output}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* ATS INTEGRATION */}
+          <h2 id="pillar-ats-integration" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            ATS &amp; AIRLINE SYSTEMS INTEGRATION
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Data &amp; Integration</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Last Mile — Verified Data Into Airline Infrastructure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Verification means nothing if it stays inside the platform. The value of a verified pilot pool is only realised when that data flows directly into the systems airlines already use to hire. Airline Tracking Systems — Greenhouse, Workday, Oracle HCM, SAP SuccessFactors, and the ATLAS Aviation CV format — are where hiring decisions are actually made. The integration layer is what converts platform data into airline infrastructure value.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Enterprise tier subscribers receive direct ATS API integration. Verified pilot profiles — credentials, Recognition Score, gap analysis, EBT video assessment — flow into the airline's existing ATS without manual export, copy-paste, or re-entry. A pilot who submits interest on the platform appears in the airline's Greenhouse instance, pre-verified, pre-scored, and pre-cleared. The hiring cycle compresses from months to weeks.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Supported Systems', items: ['Greenhouse ATS', 'Workday HCM', 'Oracle Recruiting Cloud', 'SAP SuccessFactors', 'ATLAS Aviation CV (native)', 'Custom API endpoints'] },
+              { t: 'Data Flowing Through', items: ['Verified pilot profile (structured)', 'Recognition Score + gap breakdown', 'Credential wallet status', 'EBT video assessment link', 'Pathway match percentage', 'Last verification timestamp'] },
+              { t: 'Airline Outcome', items: ['Zero manual re-entry of pilot data', 'Pre-verified candidates only in pipeline', 'Recognition Score as first filter', 'ATLAS CV auto-formatted for review', 'Audit trail of data access', 'Compliance-ready hiring record'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+            <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">Commercial Gate</p>
+            <p className="text-slate-700 leading-relaxed">ATS integration is exclusive to <strong>Enterprise tier ($1,000/yr)</strong>. It is the primary driver of enterprise subscription value. Free tier operators can view pilot interest manually through the portal. Only Enterprise subscribers receive the API integration that removes manual hiring steps entirely.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* AI & MATCHING ENGINE */}
+          <h2 id="pillar-ai-matching" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AI &amp; MATCHING ENGINE
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Data &amp; Integration</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Recognition Score — Your Currency for Pathway Access</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Recognition Score is not a rating. It is not a ranking. It is a structured gap analysis engine — a real-time comparison between a pilot's verified profile and any pathway requirement in the system. The score tells a pilot not where they stand in a league table, but precisely what they are missing, in what order to close it, and which operators they already qualify for today.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The matching engine runs across all 25 UCF pillars simultaneously. It ingests verified credentials, flight hours, program completions, EBT assessment scores, telemetry data, and behavioural signals. It outputs a structured gap report per pathway — not a generic percentage, but a line-item breakdown: hours short, type rating missing, language proficiency level, recency gap, medical certificate status. Every gap is actionable. Every action moves the score.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Score Inputs (Weighted)', items: ['Flight hours — total time, command, night, instrument (35%)', 'Verified credentials — license, medical, type ratings (25%)', 'Program completion — Foundation, Transition, EBT (20%)', 'Behavioural assessment — EBT video scoring (10%)', 'Recency — last 90-day activity, sim data (5%)', 'Peer validation and mentor endorsements (5%)'] },
+              { t: 'Score Outputs', items: ['Pathway match % per operator card', 'Ranked gap list — what to close first', 'Pre-Cleared status for verified pilots', 'Priority queue position for airline pull', 'Insurance risk score feed (Hub C)', 'Regulatory compliance flag (Hub C)'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* DATA PRIVACY & CONSENT */}
+          <h2 id="pillar-data-privacy" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            DATA PRIVACY &amp; CONSENT LAYER
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Pilot Owns Their Data — Not the Employer</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The entire platform is built on a single principle that the rest of the aviation industry has ignored: <strong>the pilot owns their verified record.</strong> Not the airline. Not the training organization. Not the background check company. The pilot. Every verification check, every credential entry, every access event is logged with the pilot's explicit consent captured before any action runs. This is not a compliance checkbox — it is the architectural foundation of the platform's trust model.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Compliance frameworks covered: GDPR (EU pilots), Data Privacy Act 2012 (Philippines), PDPA (Singapore/Thailand), UAE Data Protection Law. Every consent event is timestamped, versioned, and stored in an immutable audit log. Pilots can withdraw consent at any time. Operators who have pulled data are notified of withdrawal. No data is retained beyond the consent period without explicit renewal.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Pilot Rights', items: ['Full visibility of who accessed their wallet and when', 'Consent withdrawal at any time — instant effect', 'Data export in structured format (GDPR Art. 20)', 'Right to erasure — full wallet deletion on request', 'Version history of all consent events', 'Notification when operator accesses profile'] },
+              { t: 'Compliance Coverage', items: ['GDPR — EU General Data Protection Regulation', 'DPA 2012 — Philippines Data Privacy Act', 'PDPA — Singapore Personal Data Protection Act', 'UAE Federal Decree-Law No. 45 of 2021', 'ICAO Annex 1 — pilot record data standards', 'ISO 27001 alignment for data security management'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-emerald-500 bg-emerald-50 rounded-r-lg">
+            <p className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-1">Platform Status</p>
+            <p className="text-slate-700 leading-relaxed">Consent infrastructure is live. Table: <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Every verification check requires a logged consent event before execution. Audit trail immutable by design.</p>
           </div>
 
           <hr className="my-10 border-slate-300" />
