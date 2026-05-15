@@ -1192,8 +1192,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         </aside>
 
         {/* ── MAIN CONTENT ── */}
-        <main className="flex-1 h-screen overflow-y-auto pt-12 p-5 lg:p-7 lg:ml-60">
-          {renderContent()}
+        <main className="flex-1 h-screen overflow-y-auto pt-12 lg:ml-60">
+          <div className="max-w-[1200px] mx-auto p-5 lg:p-7">
+            {renderContent()}
+          </div>
         </main>
       </div>
     </div>
