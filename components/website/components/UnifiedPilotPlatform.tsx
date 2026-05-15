@@ -236,7 +236,7 @@ const HomeTab: React.FC<{
           animate={visible ? 'visible' : 'hidden'}
           onClick={dashboardCards[0].onClick}
           className="col-span-2 relative group cursor-pointer overflow-hidden"
-          style={{ height: '200px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
+          style={{ height: '280px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
         >
           <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
             style={{ backgroundImage: `url(${dashboardCards[0].image})`, opacity: 0.7 }} />
