@@ -18,6 +18,7 @@ import { useAuth } from '../../../../src/contexts/AuthContext';
 interface PilotRecognitionProfilePageProps {
     onNavigate: (page: string) => void;
     onBack?: () => void;
+    embedded?: boolean;
 }
 
 interface RecognitionScore {
@@ -37,7 +38,8 @@ const CategorySection: React.FC<{ title: string; description?: string; children:
 
 export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePageProps> = ({
     onNavigate,
-    onBack
+    onBack,
+    embedded = false,
 }) => {
     const [profileData, setProfileData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -738,7 +740,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 }
             `}</style>
             {/* MeshGradient Background - Same as Portal 2 */}
-            <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+            {!embedded && <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
                 <MeshGradient
                     className="w-full h-full"
                     colors={[
@@ -756,10 +758,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(100,116,139,0.2), rgba(30,41,59,0.35), rgba(15,23,42,0.6))' }} />
                 <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
-            </div>
-            <main style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '1200px', margin: '0 auto', minHeight: '100vh' }}>
+            </div>}
+            <main style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '1200px', margin: '0 auto', minHeight: embedded ? 'auto' : '100vh' }}>
                 {/* Portal 2 Navigation Bar */}
-                <div
+                {!embedded && <div
                     className="relative z-50 flex items-center justify-between px-4 py-2"
                     style={{
                         background: 'rgba(15, 23, 42, 0.9)',
@@ -1011,7 +1013,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             )}
                         </div>
                     </div>
-                </div>
+                </div>}
 
                 {/* Recognition Score Display */}
                 <div style={{ padding: '1rem 1.5rem 0', width: '100%', maxWidth: '600px', margin: '0 auto' }}>

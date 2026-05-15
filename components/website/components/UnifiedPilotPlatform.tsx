@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
+import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -279,97 +280,11 @@ const HomeTab: React.FC<{
 };
 
 // ─── TAB: PROFILE ──────────────────────────────────────────────────────────
-const ProfileTab: React.FC<{ profile: any; onRefresh: () => void }> = ({ profile, onRefresh }) => {
-  const name = profile?.full_name || profile?.first_name || 'Pilot';
-  const score = profile?.recognition_score ?? 0;
-  const hours = profile?.total_flight_hours ?? 0;
-  const level = profile?.current_occupation || 'Student Pilot';
-  const email = profile?.email || '—';
-  const license = profile?.license_number || '—';
-
-  const scoreBreakdown = [
-    { label: 'Flight Hours', weight: '35%', value: Math.min(100, Math.round((hours / 3000) * 100)) },
-    { label: 'Verified Credentials', weight: '25%', value: score > 0 ? Math.min(100, score + 10) : 0 },
-    { label: 'Program Completion', weight: '20%', value: profile?.programs_completed ? 60 : 0 },
-    { label: 'EBT Assessment', weight: '10%', value: profile?.ebt_completed ? 80 : 0 },
-    { label: 'Recency & Activity', weight: '5%', value: 40 },
-    { label: 'Peer Endorsements', weight: '5%', value: profile?.endorsements ?? 0 },
-  ];
-
-  return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        {/* Identity card */}
-        <SectionCard title="Pilot Identity" className="lg:col-span-1">
-          <div className="flex flex-col items-center text-center mb-5">
-            <div className="relative mb-3">
-              <div className="w-20 h-20 rounded-full bg-slate-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
-                {profile?.profile_image_url
-                  ? <img src={profile.profile_image_url} alt={name} className="w-20 h-20 rounded-full object-cover" />
-                  : name.charAt(0).toUpperCase()}
-              </div>
-              <button className="absolute bottom-0 right-0 w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                <Camera size={10} className="text-white" />
-              </button>
-            </div>
-            <p className="font-bold text-white text-lg tracking-wider">{name}</p>
-            <p className="text-xs text-orange-400 uppercase tracking-wider font-semibold">{level}</p>
-            <p className="text-[10px] text-white/40 mt-1">{email}</p>
-          </div>
-          <div className="space-y-1">
-            {[
-              { label: 'License', value: license },
-              { label: 'Total Hours', value: `${hours.toLocaleString()} hrs` },
-              { label: 'Level', value: level },
-            ].map(row => (
-              <div key={row.label} className="flex justify-between py-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                <span className="text-white/40 text-xs uppercase tracking-wider">{row.label}</span>
-                <span className="font-semibold text-white text-xs">{row.value}</span>
-              </div>
-            ))}
-          </div>
-          <button onClick={onRefresh} className="w-full mt-4 flex items-center justify-center gap-2 text-xs text-white/40 hover:text-white/80 transition-colors">
-            <RefreshCw size={12} /> Refresh profile
-          </button>
-        </SectionCard>
-
-        {/* Recognition Score breakdown */}
-        <SectionCard title="Recognition Score Breakdown" className="lg:col-span-2">
-          <div className="flex items-center gap-4 mb-5 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)' }}>
-            <div className={`text-5xl font-black ${scoreColour(score)}`}>{score}</div>
-            <div className="flex-1">
-              <p className="text-[10px] text-white/50 uppercase tracking-widest mb-2">Overall Score</p>
-              <ScoreBar score={score} />
-              <p className="text-xs text-white/40 mt-1">
-                {score < 40 ? 'Build fundamentals first' : score < 60 ? 'Good progress — keep going' : score < 80 ? 'Strong profile — nearly there' : 'Excellent — you are airline-ready'}
-              </p>
-            </div>
-          </div>
-          <div className="space-y-4">
-            {scoreBreakdown.map(item => (
-              <div key={item.label}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-white/70 font-medium">{item.label}</span>
-                  <span className="text-white/35">{item.weight} · <span className={scoreColour(item.value)}>{item.value}/100</span></span>
-                </div>
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                  <div className={`h-full rounded-full ${scoreBg(item.value)}`} style={{ width: `${item.value}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </SectionCard>
-      </div>
-
-      {/* Live profile note */}
-      <div className="rounded-xl p-4 flex items-start gap-3" style={{ background: 'rgba(249,115,22,0.1)', border: '1px solid rgba(249,115,22,0.25)' }}>
-        <Zap size={16} className="text-orange-400 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-white/70"><strong className="text-orange-300">Live Real-Time Profile — Not a Static CV.</strong> Your profile updates as you log hours, complete programs, and get verified. Airlines see your current status, not a document you last edited 6 months ago.</p>
-      </div>
-    </motion.div>
-  );
-};
+const ProfileTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => (
+  <div className="-m-5 lg:-m-7">
+    <PilotRecognitionProfilePage onNavigate={onNavigate} embedded={true} />
+  </div>
+);
 
 // ─── TAB: WALLET ───────────────────────────────────────────────────────────
 const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
@@ -953,7 +868,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const renderContent = () => {
     switch (activeTab) {
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} />;
-      case 'profile':       return <ProfileTab profile={profileData} onRefresh={() => setProfileData({ ...profileData })} />;
+      case 'profile':       return <ProfileTab onNavigate={onNavigate} />;
       case 'wallet':        return <WalletTab walletChecks={walletChecks} />;
       case 'pathways':      return <PathwaysTab profile={profileData} airlines={airlines} onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
