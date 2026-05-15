@@ -174,6 +174,14 @@ export const AppRoutes = () => {
       console.log('[DEBUG AppRoutes] Rendering FrameworkFullPage on enterprise');
       return <FrameworkFullPage />;
     }
+    if (path === '/ucf') {
+      console.log('[DEBUG AppRoutes] Rendering UCFPage on enterprise');
+      return <UCFPage />;
+    }
+    if (path === '/ucf/official-release' || path.startsWith('/ucf/official-release')) {
+      console.log('[DEBUG AppRoutes] Rendering UCFOfficialReleasePage on enterprise');
+      return <UCFOfficialReleasePage />;
+    }
     console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes');
   }
 
