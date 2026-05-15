@@ -32,6 +32,7 @@ const navSections = [
   { id: 'pillar-ats-integration', label: 'Pillar: ATS & Airline Systems Integration', indent: true, group: 'hubd' },
   { id: 'pillar-ai-matching', label: 'Pillar: AI & Matching Engine', indent: true, group: 'hubd' },
   { id: 'pillar-data-privacy', label: 'Pillar: Data Privacy & Consent Layer', indent: true, group: 'hubd' },
+  { id: 'pillar-third-party-vault', label: 'Pillar: Third-Party Data Integration Provider', indent: true, group: 'hubd' },
 
   { id: 'part-ii-hub-a', label: 'Hub A — Aviation Operators & Training', group: 'huba' },
   { id: '', label: 'Training Organizations', indent: true, group: 'huba', subheader: true },
@@ -4155,6 +4156,78 @@ export default function UCFOfficialReleasePage() {
           <div className="my-6 px-5 py-4 border-l-4 border-emerald-500 bg-emerald-50 rounded-r-lg">
             <p className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-1">Platform Status</p>
             <p className="text-slate-700 leading-relaxed">Consent infrastructure live. Table: <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Token-only storage confirmed across all <code className="bg-slate-100 px-1 rounded text-xs">verification_checks</code> rows. Triangulation signal comparison logic in development.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* THIRD-PARTY DATA INTEGRATION PROVIDER */}
+          <h2 id="pillar-third-party-vault" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            THIRD-PARTY DATA INTEGRATION PROVIDER
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Vault — Where Pilot Data Lives, Independent of PilotRecognition</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The third-party data integration provider is the <strong>foundational custody layer</strong> of the verification architecture. This provider holds the pilot's raw credential data — documents, scans, license records, medical certificates — in a secure, compliant vault entirely separate from PilotRecognition's infrastructure. The pilot's relationship with this provider is direct and independent. PilotRecognition never has access to the vault contents.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This provider serves two functions simultaneously: <strong>secure data custody</strong> (holding verified documents on behalf of the pilot) and <strong>data integration</strong> (feeding structured credential data to Veremark for independent verification on the pilot's explicit consent). The vault is the source of truth. Veremark checks against registries. PilotRecognition compares the two signals and issues the triangulated token.</p>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-blue-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">Vault Position in the Architecture</p>
+            <p><span className="text-blue-400 font-bold">VAULT</span> <span className="text-slate-500">← pilot uploads documents here (direct relationship)</span></p>
+            <p><span className="text-blue-400 font-bold">VAULT</span> <span className="text-slate-500">→ Veremark (structured data feed, pilot-consented)</span></p>
+            <p><span className="text-blue-400 font-bold">VAULT</span> <span className="text-slate-500">→ PilotRecognition (vault-issued token only, no raw data)</span></p>
+            <p className="mt-2 text-slate-500">Vault never communicates with Veremark on behalf of PilotRecognition.</p>
+            <p className="text-slate-500">Each relationship is governed by a separate DPA signed by the pilot.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'What the Vault Holds', items: ['Pilot license documents (CAAP / GCAA / EASA)', 'Class 1 Medical certificate', 'Passport and national ID scans', 'NBI / criminal clearance documents', 'NTC Radio Operator license', 'Type rating certificates', 'Employment history records', 'Any document the pilot chooses to custody'] },
+              { t: 'What the Vault Provides', items: ['Secure encrypted document storage', 'Structured data feed to Veremark (on consent)', 'Vault-issued token to PilotRecognition', 'Pilot-controlled access management', 'Audit log of all data sharing events', 'Right to erasure — full deletion on pilot request', 'GDPR / DPA PH compliant data handling', 'Independent of any airline or operator'] },
+              { t: 'Candidate Providers', items: ['Persona — identity vault, KYC-grade', 'Jumio — document vault, financial sector standard', 'Onfido — GDPR-native, EU pilot coverage', 'Veremark Vault — simplest: one vendor end-to-end', 'AWS S3 + Macie — custom encrypted store', 'Stripe Identity — for ID verification component', 'TBD: selected vault partner pre-launch'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Responsibility</th>
+                <th className="text-left px-4 py-2 font-semibold">Vault Provider</th>
+                <th className="text-left px-4 py-2 font-semibold">Veremark</th>
+                <th className="text-left px-4 py-2 font-semibold">PilotRecognition</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { r: 'Holds raw documents', vault: '✓ Yes', veremark: '✓ Yes (their copy)', pr: '✕ Never' },
+                  { r: 'Verifies against registries', vault: '✕ No', veremark: '✓ Yes', pr: '✕ No' },
+                  { r: 'Issues verification token', vault: '✓ Vault token', veremark: '✓ Veremark token', pr: '✕ Receives only' },
+                  { r: 'Compares both tokens', vault: '✕ No', veremark: '✕ No', pr: '✓ Yes — triangulation' },
+                  { r: 'Displays result to pilot/airline', vault: '✕ No', veremark: '✕ No', pr: '✓ Yes — token display' },
+                  { r: 'Carries data custodian liability', vault: '✓ Yes', veremark: '✓ Yes', pr: '✕ Zero' },
+                  { r: 'Pilot signs DPA with', vault: '✓ Directly', veremark: '✓ Directly', pr: '✓ Consent log only' },
+                ] as {r:string;vault:string;veremark:string;pr:string}[]).map((row, i) => (
+                  <tr key={row.r} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100 font-medium">{row.r}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-blue-300">{row.vault}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-yellow-300">{row.veremark}</td>
+                    <td className={`px-4 py-2 border-b border-slate-700 font-semibold ${row.pr.startsWith('✕') ? 'text-emerald-400' : 'text-slate-300'}`}>{row.pr}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+            <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">Why This Matters Commercially</p>
+            <p className="text-slate-700 leading-relaxed">The vault provider relationship is what allows PilotRecognition to operate as a <strong>data-neutral platform</strong>. Airlines trust the token because it comes from two independent sources. Pilots trust the platform because their data never enters it. Regulators have no basis to classify PilotRecognition as a data controller for credential data — the vault and Veremark hold that liability. This architecture is the legal foundation for global expansion without jurisdiction-by-jurisdiction data compliance registration.</p>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-slate-300 bg-slate-50 rounded-r-lg">
+            <p className="text-sm font-bold text-slate-700 uppercase tracking-widest mb-1">Pre-Launch Action</p>
+            <p className="text-slate-700 leading-relaxed">Vault provider selection and DPA framework to be finalised before platform goes live. Veremark Vault is the lowest-friction option — single vendor covers both custody and verification. Separate vault provider (Persona / Jumio) is preferred for institutional credibility and vendor independence.</p>
           </div>
 
           <hr className="my-10 border-slate-300" />
