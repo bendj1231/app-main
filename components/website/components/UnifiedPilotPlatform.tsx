@@ -886,7 +886,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const activeNavItem = NAV_ITEMS.find(n => n.id === activeTab);
 
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden font-sans">
+    <div className="relative min-h-screen flex flex-col font-sans">
 
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       <div className="fixed inset-0 z-0">
@@ -902,8 +902,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
       {/* ── TOP NAV BAR (Portal 2 style) ── */}
       <div
-        className="relative z-50 flex items-center justify-between px-4 py-2 flex-shrink-0"
-        style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2"
+        style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', height: '48px' }}
       >
         {/* Left — hamburger + nav items */}
         <div className="flex items-center gap-1">
@@ -961,17 +961,17 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       </div>
 
       {/* ── LAYOUT: sidebar + content ── */}
-      <div className="relative z-40 flex flex-1 overflow-hidden">
+      <div className="relative z-40 flex flex-1">
 
         {/* Mobile sidebar overlay */}
         {sidebarOpen && (
           <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
         )}
 
-        {/* ── SIDEBAR (glass, Portal 2 style) ── */}
+        {/* ── SIDEBAR (glass, Portal 2 style) — always fixed ── */}
         <aside
-          className={`fixed lg:static inset-y-0 left-0 z-40 flex flex-col w-60 flex-shrink-0 transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
-          style={{ background: 'rgba(15,23,42,0.85)', backdropFilter: 'blur(12px)', borderRight: '1px solid rgba(255,255,255,0.08)' }}
+          className={`fixed top-0 left-0 bottom-0 z-40 flex flex-col w-60 flex-shrink-0 transition-transform duration-200 pt-[48px] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+          style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(12px)', borderRight: '1px solid rgba(255,255,255,0.08)' }}
         >
           {/* Logo */}
           <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
@@ -1033,7 +1033,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         </aside>
 
         {/* ── MAIN CONTENT ── */}
-        <main className="flex-1 overflow-y-auto p-5 lg:p-7">
+        <main className="flex-1 min-h-screen pt-12 p-5 lg:p-7 lg:ml-60">
           {renderContent()}
         </main>
       </div>
