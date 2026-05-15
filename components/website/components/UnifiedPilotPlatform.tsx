@@ -1065,8 +1065,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', height: '48px' }}
       >
         {/* Left — hamburger + nav items */}
-        <div className="flex items-center gap-1">
-          <button className="lg:hidden mr-2 text-white/70 hover:text-white" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <div className="flex items-center gap-0 min-w-0 flex-1 overflow-x-auto scrollbar-none">
+          <button className="lg:hidden mr-2 flex-shrink-0 text-white/70 hover:text-white" onClick={() => setSidebarOpen(!sidebarOpen)}>
             <Menu size={20} />
           </button>
           {NAV_ITEMS.map(item => {
@@ -1076,22 +1076,22 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               <button
                 key={item.id}
                 onClick={() => setTab(item.id)}
-                className="relative px-3 py-2 flex items-center gap-1.5 transition-all duration-200 hidden lg:flex"
+                className="relative flex-shrink-0 px-2 py-2 flex items-center gap-1 transition-all duration-200"
                 style={{
                   background: isActive ? 'rgba(255,255,255,0.95)' : 'transparent',
                   color: isActive ? '#0f172a' : 'rgba(255,255,255,0.65)',
                   borderBottom: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
                 }}
               >
-                <Icon size={13} />
-                <span className="text-[11px] font-bold tracking-wider">{item.label.toUpperCase()}</span>
+                <Icon size={12} />
+                <span className="text-[10px] font-bold tracking-wide whitespace-nowrap">{item.label.toUpperCase()}</span>
               </button>
             );
           })}
         </div>
 
         {/* Right — search + bell + avatar */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
           {/* Search */}
           <div className="hidden md:flex items-center gap-2 bg-white/10 rounded-lg px-3 py-1.5 w-40">
             <Search size={12} className="text-white/50" />
