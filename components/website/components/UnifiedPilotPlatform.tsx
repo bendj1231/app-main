@@ -21,7 +21,7 @@ interface UnifiedPilotPlatformProps {
 type TabId =
   | 'home' | 'profile' | 'wallet' | 'pathways' | 'programs'
   | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook'
-  | 'events' | 'newsroom' | 'settings';
+  | 'events' | 'newsroom' | 'settings' | 'score';
 
 interface NavItem {
   id: TabId;
@@ -191,12 +191,17 @@ const HomeTab: React.FC<{
           {/* 2×2 stats */}
           <div className="grid grid-cols-2 gap-2 mb-4">
             {[
-              { value: hours, label: 'HOURS' },
-              { value: score, label: 'SCORE' },
-              { value: certCount, label: 'CERTS', colour: '' },
-              { value: Math.max(hoursForNext - hours, 0), label: 'TO NEXT', colour: 'text-orange-400' },
+              { value: hours, label: 'HOURS', clickable: false, colour: undefined },
+              { value: score, label: 'SCORE', clickable: true, colour: score > 0 ? 'text-sky-300' : undefined },
+              { value: certCount, label: 'CERTS', clickable: false, colour: '' },
+              { value: Math.max(hoursForNext - hours, 0), label: 'TO NEXT', clickable: false, colour: 'text-orange-400' },
             ].map(stat => (
-              <div key={stat.label} className="text-center p-2 rounded" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div
+                key={stat.label}
+                onClick={stat.clickable ? () => setTab('score' as TabId) : undefined}
+                className={`text-center p-2 rounded ${stat.clickable ? 'cursor-pointer hover:ring-1 hover:ring-sky-400/50 transition-all' : ''}`}
+                style={{ background: 'rgba(255,255,255,0.05)' }}
+              >
                 <p className={`text-lg font-bold ${stat.colour ?? 'text-white'}`}>{stat.value}</p>
                 <p className="text-xs text-white/60 uppercase">{stat.label}</p>
               </div>
@@ -226,8 +231,31 @@ const HomeTab: React.FC<{
         </button>
       </motion.div>
 
-      {/* ── RIGHT: Image cards ── */}
-      <div className="flex-1 grid grid-cols-2 gap-4 content-start">
+      {/* ── RIGHT: Alerts + cards + CTA ── */}
+      <div className="flex-1 flex flex-col gap-4">
+
+        {/* Expired credential alert */}
+        {expiredChecks.length > 0 && (
+          <button
+            onClick={() => setTab('wallet')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all hover:brightness-110"
+            style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.4)' }}
+          >
+            <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center flex-shrink-0">
+              <AlertTriangle size={15} className="text-red-300" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-red-300 leading-none mb-0.5">
+                {expiredChecks.length} Credential{expiredChecks.length > 1 ? 's' : ''} Expired — Pre-Cleared Status Inactive
+              </p>
+              <p className="text-xs text-red-400/70">Renew in Credential Wallet to restore verified status for airline operators.</p>
+            </div>
+            <ChevronRight size={16} className="text-red-400 flex-shrink-0" />
+          </button>
+        )}
+
+        {/* Bento grid */}
+        <div className="grid grid-cols-2 gap-4 content-start">
         {/* Top card — MY PATHWAYS — full width */}
         <motion.div
           custom={0}
@@ -274,6 +302,124 @@ const HomeTab: React.FC<{
             <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
           </motion.div>
         ))}
+        </div>{/* end bento grid */}
+
+        {/* Recognition+ upgrade CTA */}
+        <button
+          onClick={() => setTab('settings' as TabId)}
+          className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all hover:brightness-110"
+          style={{ background: 'linear-gradient(135deg, rgba(14,165,233,0.15) 0%, rgba(99,102,241,0.15) 100%)', border: '1px solid rgba(14,165,233,0.35)' }}
+        >
+          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(14,165,233,0.25)' }}>
+            <Star size={15} className="text-sky-300" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-sky-200 leading-none mb-0.5">Upgrade to Recognition+</p>
+            <p className="text-xs text-sky-400/70">Unlock unlimited pathway views, full profile comparison & operator visibility — $99/yr</p>
+          </div>
+          <span className="text-[10px] font-bold px-2 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(14,165,233,0.25)', color: '#7dd3fc', border: '1px solid rgba(14,165,233,0.3)' }}>$99/YR</span>
+        </button>
+
+      </div>{/* end right flex col */}
+    </motion.div>
+  );
+};
+
+// ─── TAB: SCORE BREAKDOWN ─────────────────────────────────────────────────
+const COMPETENCIES = [
+  { id: 1, name: 'Technical Knowledge', desc: 'Aircraft systems, avionics, regulations, meteorology, navigation. Verified via programs and exam scores.', weight: 15, icon: BookOpen },
+  { id: 2, name: 'Flight Hours & Currency', desc: 'Total time, PIC time, instrument time, night time, multi-engine. Raw logbook data.', weight: 15, icon: Clock },
+  { id: 3, name: 'License & Ratings', desc: 'CPL/ATPL, type ratings, endorsements. Verified via Credential Wallet token.', weight: 12, icon: Award },
+  { id: 4, name: 'Medical Validity', desc: 'Class 1 / Class 2 current status. Expires independently of license.', weight: 10, icon: Shield },
+  { id: 5, name: 'Behavioural Competency (EBT)', desc: 'Constructivism, cognitive thinking, CRM. Scored via EBT Video Interview — proprietary IP.', weight: 18, icon: Zap },
+  { id: 6, name: 'Industry Alignment', desc: 'Completion of Transition Program, 9 core competencies mapped to HINFACT/ICAO standards.', weight: 12, icon: Target },
+  { id: 7, name: 'Pathway Engagement', desc: 'Pathways submitted, matches accepted, operator interest received. Activity-based signal.', weight: 8, icon: Map },
+  { id: 8, name: 'Background Verification', desc: 'NBI clearance, employment history, reference checks via Veremark. Token-based only.', weight: 6, icon: CheckCircle },
+  { id: 9, name: 'Mentorship & Advocacy', desc: 'Pilots helped in Peer Chain. Effort-based recognition — aligns with two-tier model.', weight: 4, icon: TrendingUp },
+];
+
+const ScoreTab: React.FC<{ profile: any; setTab: (t: TabId) => void }> = ({ profile, setTab }) => {
+  const score = profile?.recognition_score ?? 0;
+  const maxScore = 100;
+  return (
+    <motion.div className="space-y-6 max-w-2xl" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+
+      {/* Score hero */}
+      <div className="rounded-xl p-6 flex items-center gap-6" style={{ background: 'rgba(14,165,233,0.12)', border: '1px solid rgba(14,165,233,0.3)' }}>
+        <div className="relative w-20 h-20 flex-shrink-0">
+          <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0ea5e9" strokeWidth="3"
+              strokeDasharray={`${(score / maxScore) * 100} 100`} strokeLinecap="round" />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-2xl font-black text-sky-300">{score}</span>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-widest text-sky-400 font-bold mb-1">Recognition Score</p>
+          <p className="text-2xl font-black text-white mb-1">{score} <span className="text-sm font-normal text-white/40">/ {maxScore}</span></p>
+          <p className="text-xs text-white/50">Composite score across 9 competency pillars. Increases as you log hours, complete programs, and verify credentials.</p>
+        </div>
+      </div>
+
+      {/* EBT callout */}
+      <div className="rounded-xl p-4 flex items-start gap-3" style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)' }}>
+        <Zap size={16} className="text-indigo-400 flex-shrink-0 mt-0.5" />
+        <div>
+          <p className="text-xs font-bold text-indigo-300 uppercase tracking-widest mb-1">Highest-Weight Competency — EBT Video Scoring (18%)</p>
+          <p className="text-xs text-white/60">The EBT Video Interview is bundled with the Transition Program. A recorded interview scored on cognitive behavioural markers. Airlines view the score — not the raw video. Proprietary to PilotRecognition.</p>
+          <button onClick={() => setTab('programs')} className="mt-2 text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+            Enrol in Transition Program <ChevronRight size={12} />
+          </button>
+        </div>
+      </div>
+
+      {/* Competency list */}
+      <div className="space-y-3">
+        <p className="text-xs uppercase tracking-widest text-white/40 font-bold">9 Competency Pillars</p>
+        {COMPETENCIES.map(c => {
+          const Icon = c.icon;
+          const earned = Math.round((score / maxScore) * c.weight);
+          return (
+            <div key={c.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(14,165,233,0.15)' }}>
+                  <Icon size={14} className="text-sky-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <p className="text-sm font-bold text-white">{c.id}. {c.name}</p>
+                    <span className="text-xs text-white/40 flex-shrink-0 ml-2">{c.weight}%</span>
+                  </div>
+                  <p className="text-xs text-white/50 mb-2">{c.desc}</p>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                    <div className="h-full bg-gradient-to-r from-sky-500 to-indigo-500 transition-all duration-700" style={{ width: `${(earned / c.weight) * 100}%` }} />
+                  </div>
+                  <p className="text-[10px] text-white/30 mt-1">{earned} / {c.weight} pts earned</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* How to improve */}
+      <div className="rounded-xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+        <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">How to Increase Your Score</p>
+        <div className="space-y-2">
+          {[
+            { action: 'Complete Foundation Program', pts: '+8 pts', tab: 'programs' as TabId },
+            { action: 'Verify credentials in Wallet', pts: '+10 pts', tab: 'wallet' as TabId },
+            { action: 'Submit pathway interest', pts: '+4 pts', tab: 'pathways' as TabId },
+            { action: 'EBT Video Interview (Transition Program)', pts: '+18 pts', tab: 'programs' as TabId },
+          ].map(item => (
+            <button key={item.action} onClick={() => setTab(item.tab)} className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs transition-all hover:brightness-110" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.15)' }}>
+              <span className="text-white/70">{item.action}</span>
+              <span className="font-bold text-emerald-400 flex-shrink-0 ml-2">{item.pts}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -1028,6 +1174,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     switch (activeTab) {
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} />;
+      case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
       case 'wallet':        return <WalletTab walletChecks={walletChecks} />;
       case 'pathways':      return <PathwaysTab profile={profileData} airlines={airlines} onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
