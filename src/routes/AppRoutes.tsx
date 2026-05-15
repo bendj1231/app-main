@@ -100,6 +100,7 @@ const SpecializedPathwaysIndex = lazy(() => import('@/portal/pages/SpecializedPa
 const SpecializedOperationsIndex = lazy(() => import('@/portal/pages/SpecializedOperationsIndex'));
 const CareerPathwaysIndex = lazy(() => import('@/portal/pages/CareerPathwaysIndex'));
 const AccessPortal2Page = lazy(() => import('@/components/website/components/AccessPortal2Page').then(m => ({ default: m.AccessPortal2Page })));
+const UnifiedPilotPlatform = lazy(() => import('@/components/website/components/UnifiedPilotPlatform').then(m => ({ default: m.UnifiedPilotPlatform })));
 const ExaminationPortal = lazy(() => import('@/components/website/components/examinations/ExaminationPortal'));
 const EnterpriseAccessPage = lazy(() => import('@/app/enterprise-access/page'));
 const EnterpriseAccessLearnMorePage = lazy(() => import('@/app/enterprise-access/learn-more/page'));
@@ -317,6 +318,7 @@ export const AppRoutes = () => {
       <Route path="/specialized-operations" element={<SpecializedOperationsIndex onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} />} />
       <Route path="/career-pathways" element={<CareerPathwaysIndex onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} />} />
       <Route path="/access-portal-2" element={<AccessPortal2Page onNavigate={handleNavigate} />} />
+      <Route path="/platform" element={<UnifiedPilotPlatform onNavigate={handleNavigate} />} />
       <Route path="/examination-portal" element={
         <ProtectedRoute>
           <ExaminationPortal />
