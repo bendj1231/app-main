@@ -4231,6 +4231,68 @@ export default function UCFOfficialReleasePage() {
             <p className="text-slate-700 leading-relaxed">Vault provider selection and DPA framework to be finalised before platform goes live. Veremark Vault is the lowest-friction option — single vendor covers both custody and verification. Separate vault provider (Persona / Jumio) is preferred for institutional credibility and vendor independence.</p>
           </div>
 
+          <hr className="my-8 border-slate-200" />
+
+          {/* PAIN POINTS: THIRD-PARTY DATA VAULT PROVIDERS */}
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Pain Points for Third-Party Data Vault Providers</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Credential vault providers face structural business challenges that make aviation — and the PilotRecognition distribution model — a compelling strategic fit.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { num: '01', title: 'One-Time Verification = One-Time Revenue', desc: 'You verify a passport once, get paid once. The document sits in your vault for years generating nothing. Most credential vaults have <5% annual access rates — 95% of stored data is financial deadweight.' },
+              { num: '02', title: 'Vertical Market Saturation', desc: 'Financial services and crypto exhausted. Aviation is an unpenetrated vertical with high-document complexity — but you have no distribution channel into it. Building airline sales teams is prohibitively expensive.' },
+              { num: '03', title: 'Integration Cost Per Client', desc: 'Each enterprise deployment costs $50K-$150K in engineering for custom data flows and DPA negotiations. Small pilots cannot afford this. You need aggregated demand to amortize integration cost.' },
+              { num: '04', title: 'Liability Concentration Without Offsetting Revenue', desc: 'You hold the risk: GDPR fines, breach liability, DPA violations. Meanwhile, the data owner pays nothing for storage and accesses rarely. Liability-to-revenue ratio is structurally unfavorable.' },
+              { num: '05', title: 'Verification Silos = Incomplete Signal', desc: 'You store documents. Someone else verifies them against registries. You never see the outcome. Your vault has no "verified" dimension — just raw files. Airlines do not trust documents without registry confirmation.' },
+              { num: '06', title: 'Pilot Acquisition Cost', desc: 'Direct B2C acquisition for credential vaults fails. Pilots will not proactively upload documents without a "reason" — pathway access, job applications, airline requirements. You have no demand-side platform.' },
+              { num: '07', title: 'Regulatory Fragmentation by Jurisdiction', desc: 'CAAP. GCAA. EASA. FAA. Each requires different DPA terms, data residency rules, and registry integration patterns. You need a standardization layer that normalizes these variations.' },
+              { num: '08', title: 'Competing Against "Good Enough" Cloud Storage', desc: 'AWS S3 + basic encryption satisfies most naive document storage needs. You compete with $0.023/GB commodity storage. Without a verification outcome layer, your premium pricing is unjustifiable.' },
+              { num: '09', title: 'Vendor Consolidation Pressure', desc: 'Airlines want fewer vendors, not more. "We already use Veremark" — your separate vault becomes "another integration" rather than infrastructure. Without workflow embedding, you are value-engineered out.' },
+              { num: '10', title: 'Data Erasure vs. Retention Conflict', desc: 'GDPR requires deletion on request. Business logic suggests retention for audit trails. You are caught between compliance and commercial utility. A clear custody termination framework clarifies this ambiguity.' },
+            ].map(p => (
+              <div key={p.num} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <div className="flex items-start gap-3">
+                  <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded">{p.num}</span>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800 mb-2">{p.title}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{p.desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm text-slate-300">
+            <p className="text-emerald-400 font-bold mb-4 font-sans text-xs uppercase tracking-widest">How PilotRecognition Addresses These</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { pain: 'One-time revenue', solve: 'Recurring access fees — pilots pay for pathway matching, vault gets per-access revenue share' },
+                { pain: 'Vertical saturation', solve: 'Aviation-specific distribution: direct pilot database access, no sales team required' },
+                { pain: 'Integration cost', solve: 'Single integration → many airlines via PilotRecognition\'s airline network' },
+                { pain: 'Liability concentration', solve: 'Zero data at PilotRecognition; liability stays with vault per explicit DPA boundaries' },
+                { pain: 'Verification silos', solve: 'Veremark integration completes the signal; vault + registry = trusted outcome' },
+                { pain: 'Pilot acquisition', solve: '"Upload to apply" trigger: pathway access creates natural upload incentive' },
+                { pain: 'Regulatory fragmentation', solve: 'PilotRecognition handles jurisdiction-specific consent flows; vault provides standardized API' },
+                { pain: 'Cloud storage competition', solve: 'Verification outcome differentiates from dumb storage; worth the premium' },
+                { pain: 'Vendor consolidation', solve: 'Embedded in pilot workflow: vault becomes invisible infrastructure, not a separate vendor' },
+                { pain: 'Erasure conflict', solve: 'Clear custody lifecycle: pilot controls deletion; PilotRecognition only holds access tokens' },
+              ].map((row, i) => (
+                <div key={i} className="flex gap-3 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">→</span>
+                  <div>
+                    <span className="text-slate-400 text-xs">{row.pain}:</span>
+                    <span className="text-slate-200 ml-1">{row.solve}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+            <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">The Pitch to Vault Providers</p>
+            <p className="text-slate-700 leading-relaxed italic">"You hold the documents. Veremark verifies them against registries. We provide the demand layer — pilots who need verified credentials to access pathways. You get recurring revenue from a new vertical without building aviation sales teams. We get clean legal separation that lets us scale globally without jurisdiction-by-jurisdiction data compliance. The pilot gets independent custody with purpose-driven access. Three parties, aligned incentives, zero overlap in liability."</p>
+          </div>
+
           <hr className="my-10 border-slate-300" />
 
           {/* HUB F GROWTH */}
