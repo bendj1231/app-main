@@ -320,6 +320,59 @@ const HomeTab: React.FC<{
           <span className="text-[10px] font-bold px-2 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(14,165,233,0.25)', color: '#7dd3fc', border: '1px solid rgba(14,165,233,0.3)' }}>$99/YR</span>
         </button>
 
+        {/* ── Get Started — How to set up your account ── */}
+        <div
+          className="rounded-2xl overflow-hidden"
+          style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
+        >
+          <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <div>
+              <p className="text-sm font-black text-white tracking-wide">Get Started</p>
+              <p className="text-[11px] text-white/40">How to set up your account</p>
+            </div>
+            <div className="text-[10px] font-bold px-2.5 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              {[!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation].filter(Boolean).length} / 5 COMPLETE
+            </div>
+          </div>
+
+          <div className="grid grid-cols-5 divide-x" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+            {[
+              { step: 1, label: 'Complete Profile', sublabel: 'Name, hours & occupation', done: !!profile, tab: 'profile' as TabId, icon: User },
+              { step: 2, label: 'Log Flight Hours', sublabel: 'Add your total time', done: hours > 0, tab: 'logbook' as TabId, icon: Clock },
+              { step: 3, label: 'Verify Credentials', sublabel: 'Wallet + Veremark token', done: walletChecks.some(c => c.status === 'verified'), tab: 'wallet' as TabId, icon: Shield },
+              { step: 4, label: 'Browse Pathways', sublabel: 'Submit your interest', done: score > 0, tab: 'pathways' as TabId, icon: Map },
+              { step: 5, label: 'Start a Program', sublabel: 'Foundation or Transition', done: enrolledInFoundation, tab: 'programs' as TabId, icon: BookOpen },
+            ].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.step}
+                  onClick={() => setTab(item.tab)}
+                  className="flex flex-col items-center gap-2 py-4 px-2 transition-all hover:brightness-125 group"
+                  style={{ background: item.done ? 'rgba(16,185,129,0.06)' : 'transparent' }}
+                >
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                    item.done
+                      ? 'bg-emerald-500/25 ring-1 ring-emerald-500/40'
+                      : i === [!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation].filter(Boolean).length
+                        ? 'bg-sky-500/20 ring-1 ring-sky-400/40'
+                        : 'bg-white/6'
+                  }`}>
+                    {item.done
+                      ? <CheckCircle size={16} className="text-emerald-400" />
+                      : <Icon size={15} className={i === [!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation].filter(Boolean).length ? 'text-sky-400' : 'text-white/30'} />
+                    }
+                  </div>
+                  <div className="text-center">
+                    <p className={`text-[10px] font-bold leading-tight ${item.done ? 'text-emerald-400' : 'text-white/60'}`}>{item.label}</p>
+                    <p className="text-[9px] text-white/25 leading-tight mt-0.5">{item.sublabel}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
       </div>{/* end right flex col */}
     </motion.div>
   );
