@@ -87,8 +87,11 @@ export default function UCFOfficialReleasePage() {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const { currentUser, userProfile, login, logout } = useAuth();
-  const isInternal = userProfile?.role === 'super_admin' || userProfile?.role === 'mentor_manager';
-  const isSuperAdmin = userProfile?.role === 'super_admin';
+  const profileLoaded = userProfile !== undefined && userProfile !== null;
+  const isInternal = profileLoaded
+    ? userProfile?.role === 'super_admin' || userProfile?.role === 'mentor_manager'
+    : !!currentUser;
+  const isSuperAdmin = profileLoaded ? userProfile?.role === 'super_admin' : !!currentUser;
   const sessionUser = currentUser ? { email: currentUser.email } : null;
 
   const handleLogin = async (e: React.FormEvent) => {
