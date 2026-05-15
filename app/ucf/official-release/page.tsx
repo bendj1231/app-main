@@ -67,6 +67,9 @@ const navSections = [
   { id: 'pillar-25-discovery', label: 'Pillar 25: Digital Discovery & Search', indent: true, group: 'hubg' },
   { id: 'pillar-platform-legal-model', label: 'Pillar: Platform Legal Model & Revenue', indent: true, group: 'hubg' },
 
+  { id: 'future-prospects', label: 'Future Prospects', group: 'prospects', adminOnly: true },
+  { id: 'prospect-flywire', label: 'Flywire — Cross-Border Payments', indent: true, group: 'prospects', adminOnly: true },
+
 ];
 
 function scrollTo(id: string) {
@@ -81,7 +84,7 @@ function scrollTo(id: string) {
 export default function UCFOfficialReleasePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({
-    hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true,
+    hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true, prospects: true,
   });
   const toggleGroup = (group: string) => setCollapsedGroups(prev => ({ ...prev, [group]: !prev[group] }));
   const [showLoginForm, setShowLoginForm] = useState(false);
@@ -226,6 +229,7 @@ export default function UCFOfficialReleasePage() {
             {navSections.map((s, i) => {
               const isParent = !s.indent;
               const isCollapsed = collapsedGroups[s.group] ?? false;
+              if (s.adminOnly && !isSuperAdmin) return null;
               if (s.subheader) {
                 if (isCollapsed) return null;
                 return (
@@ -4853,6 +4857,99 @@ export default function UCFOfficialReleasePage() {
             <p className="text-sm font-bold text-white uppercase tracking-widest mb-2">The Legal Position in One Line</p>
             <p className="text-slate-300 leading-relaxed italic">&quot;PilotRecognition is a website domain providing reputable, structured aviation career information across 25+ pillars. All specialist functions — data custody, verification, payment processing, email delivery — are handled by contracted third-party providers. The platform charges pilots $100/year for access to that aggregated intelligence layer. Nothing more.&quot;</p>
           </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* ── FUTURE PROSPECTS (admin only) ── */}
+          {isSuperAdmin && (
+            <section id="future-prospects" className="mb-12">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="w-1 h-8 bg-amber-500 rounded-full flex-shrink-0" />
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-amber-600 mb-0.5">Internal Reference — Admin Only</p>
+                  <h2 className="text-2xl font-bold text-slate-900">Future Prospects</h2>
+                </div>
+              </div>
+              <p className="text-slate-600 mb-8 max-w-2xl">Strategic partnerships and integrations identified for post-launch expansion. Not current commitments — flagged for commercial evaluation once platform has traction and volume data to negotiate from.</p>
+
+              {/* Flywire */}
+              <div id="prospect-flywire" className="mb-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="flex items-center gap-4 px-6 py-4 bg-slate-50 border-b border-slate-200">
+                  <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-black text-sm">FW</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-slate-900">Flywire</h3>
+                    <p className="text-sm text-slate-500">Cross-border payment infrastructure — aviation & education sector specialist</p>
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 border border-yellow-200">Post-Launch</span>
+                </div>
+
+                <div className="p-6 space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                      <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Why It Fits</p>
+                      <ul className="space-y-1.5 text-sm text-slate-700">
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Aviation & education sector focus — many ATOs already use it</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Philippines, UAE, APAC coverage matches pilot base</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Multi-currency + local payment methods (PHP, AED, EUR)</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Installment / split payment support for $299 Transition Program</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>B2B receivables for $1,000/month airline enterprise fees</li>
+                      </ul>
+                    </div>
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <p className="text-xs font-bold text-red-700 uppercase tracking-widest mb-2">Tradeoffs</p>
+                      <ul className="space-y-1.5 text-sm text-slate-700">
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Priced for larger transaction volumes — minimums may not suit pre-launch</li>
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Stripe (already integrated) is cheaper for $49–$99 subscriptions</li>
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Strength is large one-time cross-border payments, not recurring micro-SaaS</li>
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Will ask for projected transaction volume — need ~500+ pilots first</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm border-collapse">
+                      <thead>
+                        <tr className="bg-slate-900 text-white">
+                          <th className="text-left px-4 py-2 font-semibold">Use Case</th>
+                          <th className="text-left px-4 py-2 font-semibold">Current Solution</th>
+                          <th className="text-left px-4 py-2 font-semibold">Flywire Advantage</th>
+                          <th className="text-left px-4 py-2 font-semibold">Priority</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {([
+                          { use: '$49 Foundation Program', current: 'Stripe', advantage: 'No improvement needed', priority: 'Keep Stripe' },
+                          { use: '$99/year Recognition+', current: 'Stripe', advantage: 'No improvement needed', priority: 'Keep Stripe' },
+                          { use: '$299 Transition Program (intl.)', current: 'Stripe', advantage: 'Local currency, installment plans, lower FX loss for pilots', priority: 'High — evaluate post-launch' },
+                          { use: '$1,000/month Enterprise (airlines)', current: 'Manual / Stripe invoicing', advantage: 'B2B receivables, structured invoicing, PO support', priority: 'High — evaluate at 10+ operators' },
+                          { use: 'Flight school bulk payments', current: 'Manual', advantage: 'Multi-payer bulk collections, institution billing', priority: 'Medium — Q1 2027' },
+                        ] as {use:string;current:string;advantage:string;priority:string}[]).map((row, i) => (
+                          <tr key={row.use} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                            <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.use}</td>
+                            <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.current}</td>
+                            <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.advantage}</td>
+                            <td className={`px-4 py-2 border-b border-slate-200 text-xs font-semibold ${
+                              row.priority.startsWith('High') ? 'text-red-600' :
+                              row.priority.startsWith('Medium') ? 'text-yellow-600' :
+                              'text-slate-400'
+                            }`}>{row.priority}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="bg-slate-900 rounded-lg p-4">
+                    <p className="text-emerald-400 font-bold uppercase tracking-widest text-xs mb-2">Recommended Action</p>
+                    <p className="text-slate-300 text-sm">Do not replace Stripe pre-launch. Contact Flywire once volume data exists to negotiate from — target <strong className="text-white">500+ registered pilots</strong> and <strong className="text-white">10+ enterprise operators</strong> as the trigger point. Flag specifically for: (1) $299 Transition Program international installments, (2) airline enterprise invoicing at scale.</p>
+                    <p className="text-slate-500 text-xs mt-2">Contact: <span className="text-blue-400">flywire.com/contact</span> · Recommended outreach timeline: <strong className="text-slate-300">Q1 2027</strong></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
 
           <hr className="my-10 border-slate-300" />
 
