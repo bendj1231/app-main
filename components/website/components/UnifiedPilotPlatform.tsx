@@ -151,7 +151,7 @@ const HomeTab: React.FC<{
 
   return (
     <motion.div
-      className="flex gap-5 w-full"
+      className="flex gap-5 w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -227,7 +227,7 @@ const HomeTab: React.FC<{
       </motion.div>
 
       {/* ── RIGHT: Image cards ── */}
-      <div className="flex-1 grid grid-cols-2 gap-4">
+      <div className="flex-1 grid grid-cols-2 gap-4" style={{ gridTemplateRows: '1fr auto' }}>
         {/* Top card — MY PATHWAYS — full width */}
         <motion.div
           custom={0}
@@ -236,7 +236,7 @@ const HomeTab: React.FC<{
           animate={visible ? 'visible' : 'hidden'}
           onClick={dashboardCards[0].onClick}
           className="col-span-2 relative group cursor-pointer overflow-hidden"
-          style={{ height: '260px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
+          style={{ minHeight: '220px', flex: 1, background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
         >
           <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
             style={{ backgroundImage: `url(${dashboardCards[0].image})`, opacity: 0.7 }} />
@@ -260,7 +260,7 @@ const HomeTab: React.FC<{
             animate={visible ? 'visible' : 'hidden'}
             onClick={card.onClick}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '150px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
+            style={{ minHeight: '160px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${card.image})`, opacity: 0.6 }} />
@@ -1192,7 +1192,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         </aside>
 
         {/* ── MAIN CONTENT ── */}
-        <main className="flex-1 min-h-screen pt-12 p-5 lg:p-7 lg:ml-60">
+        <main className="flex-1 h-screen overflow-y-auto pt-12 p-5 lg:p-7 lg:ml-60">
           {renderContent()}
         </main>
       </div>

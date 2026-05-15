@@ -27,12 +27,12 @@ const navSections = [
   { id: 'pillar-13-aeromedical', label: 'Pillar 13: Aeromedical Examiners', indent: true, group: 'hubd' },
   { id: 'pillar-telemetry', label: 'Pillar: Telemetry & Simulator Data', indent: true, group: 'hubd' },
   { id: '', label: 'Security & Compliance', indent: true, group: 'hubd', subheader: true },
-  { id: 'pillar-credential-wallet', label: 'Pillar: Digital Credential Wallet', indent: true, group: 'hubd' },
-  { id: 'pillar-identity-verification', label: 'Pillar: Identity & Document Verification', indent: true, group: 'hubd' },
-  { id: 'pillar-ats-integration', label: 'Pillar: ATS & Airline Systems Integration', indent: true, group: 'hubd' },
-  { id: 'pillar-ai-matching', label: 'Pillar: AI & Matching Engine', indent: true, group: 'hubd' },
-  { id: 'pillar-data-privacy', label: 'Pillar: Data Privacy & Consent Layer', indent: true, group: 'hubd' },
-  { id: 'pillar-third-party-vault', label: 'Pillar: Third-Party Data Integration Provider', indent: true, group: 'hubd' },
+  { id: 'pillar-credential-wallet', label: 'Pillar: Digital Credential Wallet', indent: true, group: 'hubd', adminOnly: true },
+  { id: 'pillar-identity-verification', label: 'Pillar: Identity & Document Verification', indent: true, group: 'hubd', adminOnly: true },
+  { id: 'pillar-ats-integration', label: 'Pillar: ATS & Airline Systems Integration', indent: true, group: 'hubd', adminOnly: true },
+  { id: 'pillar-ai-matching', label: 'Pillar: AI & Matching Engine', indent: true, group: 'hubd', adminOnly: true },
+  { id: 'pillar-data-privacy', label: 'Pillar: Data Privacy & Consent Layer', indent: true, group: 'hubd', adminOnly: true },
+  { id: 'pillar-third-party-vault', label: 'Pillar: Third-Party Data Integration Provider', indent: true, group: 'hubd', adminOnly: true },
 
   { id: 'part-ii-hub-a', label: 'Hub A — Aviation Operators & Training', group: 'huba' },
   { id: '', label: 'Training Organizations', indent: true, group: 'huba', subheader: true },
@@ -215,15 +215,13 @@ export default function UCFOfficialReleasePage() {
           </div>
           <nav className="p-2 space-y-0.5 overflow-y-auto flex-1">
             {isInternal && (
-              <a
-                href="https://enterprise.pilotrecognition.com"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => scrollTo('part-ii-hub-a')}
                 className="w-full text-left px-2 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors flex items-center gap-1.5 border border-emerald-200 mb-1"
               >
                 <span className="text-emerald-500 flex-shrink-0">▸</span>
                 <span className="leading-tight">Business Overview (Admin)</span>
-              </a>
+              </button>
             )}
             {navSections.map((s, i) => {
               const isParent = !s.indent;
@@ -253,9 +251,9 @@ export default function UCFOfficialReleasePage() {
                 <button
                   key={s.id}
                   onClick={() => { scrollTo(s.id); setSidebarOpen(false); }}
-                  className="w-full text-left pl-5 pr-2 py-1.5 rounded-lg text-xs text-blue-900 hover:bg-slate-200 transition-colors flex items-start gap-1.5"
+                  className={`w-full text-left pl-5 pr-2 py-1.5 rounded-lg text-xs transition-colors flex items-start gap-1.5 ${s.adminOnly && isSuperAdmin ? 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 font-semibold' : 'text-blue-900 hover:bg-slate-200'}`}
                 >
-                  <span className="text-blue-900 mt-0.5 flex-shrink-0">→</span>
+                  <span className={`mt-0.5 flex-shrink-0 ${s.adminOnly && isSuperAdmin ? 'text-emerald-500' : 'text-blue-900'}`}>→</span>
                   <span className="leading-tight">{s.label}</span>
                 </button>
               );
@@ -4129,7 +4127,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-6">This means PilotRecognition is not a data custodian for sensitive credentials. It is a <strong>token display and consent management layer</strong>. The pilot controls three separate consent relationships: with the vault (data storage), with Veremark (verification), and with PilotRecognition (token display to operators). Revoking any one of the three immediately invalidates the token chain.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {[
-              { t: 'Third-Party Vault', color: 'text-blue-600', items: ['Holds raw credential data', 'Pilot uploads documents here', 'Pilot signs vault DPA directly', 'Vault carries data custodian liability', 'Sends data to Veremark on pilot consent', 'Examples: Persona, Jumio, Onfido, Veremark Vault'] },
+              { t: 'Third-Party Vault', color: 'text-blue-600', items: ['Holds raw credential data', 'Pilot uploads documents here', 'Pilot signs vault DPA directly', 'Vault carries data custodian liability', 'Sends data to verification provider on pilot consent', 'Selected via competitive procurement process'] },
               { t: 'Veremark', color: 'text-yellow-600', items: ['Receives data from vault', 'Independently checks CAAP / NBI / registries', 'Issues verification token to PilotRecognition', 'Carries verification provider liability', 'DPA signed between pilot and Veremark', 'Never shares raw data with PilotRecognition'] },
               { t: 'PilotRecognition', color: 'text-emerald-600', items: ['Receives triangulated token only', 'Stores: status, expiry date, token reference', 'Never stores documents or PII credentials', 'Displays token to pilot and consented operators', 'Manages consent log for operator access', 'Zero credential liability — neutral display layer'] },
             ].map(col => (
@@ -4183,7 +4181,7 @@ export default function UCFOfficialReleasePage() {
             {[
               { t: 'What the Vault Holds', items: ['Pilot license documents (CAAP / GCAA / EASA)', 'Class 1 Medical certificate', 'Passport and national ID scans', 'NBI / criminal clearance documents', 'NTC Radio Operator license', 'Type rating certificates', 'Employment history records', 'Any document the pilot chooses to custody'] },
               { t: 'What the Vault Provides', items: ['Secure encrypted document storage', 'Structured data feed to Veremark (on consent)', 'Vault-issued token to PilotRecognition', 'Pilot-controlled access management', 'Audit log of all data sharing events', 'Right to erasure — full deletion on pilot request', 'GDPR / DPA PH compliant data handling', 'Independent of any airline or operator'] },
-              { t: 'Candidate Providers', items: ['Persona — identity vault, KYC-grade', 'Jumio — document vault, financial sector standard', 'Onfido — GDPR-native, EU pilot coverage', 'Veremark Vault — simplest: one vendor end-to-end', 'AWS S3 + Macie — custom encrypted store', 'Stripe Identity — for ID verification component', 'TBD: selected vault partner pre-launch'] },
+              { t: 'Vault Selection Criteria', items: ['SOC 2 Type II certified infrastructure', 'Embeddable SDK for seamless pilot experience', 'Direct pilot DPA with no platform liability', 'Token-based API (no raw document exposure)', 'Multi-jurisdiction compliance (GDPR, DPA PH, etc.)', 'Per-GB or usage-based pricing (not per-seat)', 'Selected partner: TBD pre-launch'] },
             ].map(col => (
               <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
                 <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
@@ -4228,7 +4226,190 @@ export default function UCFOfficialReleasePage() {
 
           <div className="my-6 px-5 py-4 border-l-4 border-slate-300 bg-slate-50 rounded-r-lg">
             <p className="text-sm font-bold text-slate-700 uppercase tracking-widest mb-1">Pre-Launch Action</p>
-            <p className="text-slate-700 leading-relaxed">Vault provider selection and DPA framework to be finalised before platform goes live. Veremark Vault is the lowest-friction option — single vendor covers both custody and verification. Separate vault provider (Persona / Jumio) is preferred for institutional credibility and vendor independence.</p>
+            <p className="text-slate-700 leading-relaxed">Vault provider selection and DPA framework to be finalised before platform goes live. Two options under evaluation: (1) single vendor for both vault and verification — lowest integration friction; (2) separate vault provider from verification provider — preferred for institutional credibility and vendor independence. Final selection pending commercial and technical due diligence.</p>
+          </div>
+
+          {/* PUBLIC: Two-Tier Verification Model */}
+          <div className="my-6 p-5 bg-white border border-slate-200 rounded-lg">
+            <p className="text-sm font-bold text-slate-700 uppercase tracking-widest mb-3">How Pilot Data Works: Free vs Recognition+</p>
+            <p className="text-slate-600 mb-4">Two tiers of data integrity. Pilots choose their level of verification based on their career stage and pathway ambitions.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Free Tier — Claimed Credentials</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Pilot manually enters license numbers, flight hours, ratings</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Data stored in PilotRecognition profile only</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Airlines see: <span className="text-amber-600 font-semibold">⚠ Self-reported — unverified</span></li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Best for: Exploring pathways, understanding gaps</li>
+                </ul>
+              </div>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Recognition+ ($99/year) — Verified Credentials</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Pilot uploads actual documents to independent vault</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Documents verified against official registries</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Airlines see: <span className="text-emerald-600 font-semibold">✓ Verified — cleared for fast-track</span></li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Best for: Serious pathway applications, airline recruitment</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm">
+              <p className="text-emerald-400 font-bold mb-2 uppercase tracking-widest">The Upgrade Path</p>
+              <p className="text-slate-300">Free tier pilots can upgrade anytime. Their claimed data becomes "verified" once documents are uploaded and checked. Airlines trust verified pilots more — that's the Recognition+ advantage. No verification = pathway browsing only. Full verification = pathway access + priority matching.</p>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Note: EBT interview videos and training materials are stored separately on PilotRecognition infrastructure, not in the credential vault. Only official documents (licenses, medicals, clearances) require third-party vault storage.</p>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm mt-4">
+              <p className="text-emerald-400 font-bold mb-3 uppercase tracking-widest">The Engine Analogy: How Data Flows</p>
+              <div className="space-y-2 text-slate-300">
+                <p><span className="text-blue-400 font-bold">Fuel Tanks (Storage):</span> The third-party vault holds the raw pilot documents — like fuel tanks hold avgas. Independent, secure, separate from the engine.</p>
+                <p><span className="text-yellow-400 font-bold">Fuel (Pilots):</span> Pilot credentials flow into the vault. Each document is a drop of fuel waiting to be processed.</p>
+                <p><span className="text-orange-400 font-bold">Carburetor (Veremark):</span> The verification engine mixes raw documents with registry checks — CAAP, medical databases, clearance records. It "leans" the mixture: unverified claims burn off, only verified credentials pass through.</p>
+                <p><span className="text-emerald-400 font-bold">Pistons (Pathways):</span> The verified pilots — now a clean, combustible mix — power the pathways. Airlines get only the verified, cleared-for-takeoff candidates.</p>
+              </div>
+              <p className="text-slate-400 mt-3 italic text-xs">PilotRecognition is not the fuel, the tank, or the carburetor. We're the ignition timing — the platform that coordinates when verified pilots meet the right pathways. The verification happens upstream. The value flows downstream.</p>
+            </div>
+          </div>
+
+          {/* INTERNAL: Storage Boundary Clarification */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Storage Architecture</p>
+            <p className="text-sm text-slate-600 mb-4">Clear separation between credential verification (third-party vault) and program content (PilotRecognition infrastructure).</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Content Type</th>
+                    <th className="text-left px-4 py-2 font-semibold">Storage Location</th>
+                    <th className="text-left px-4 py-2 font-semibold">Typical Size</th>
+                    <th className="text-left px-4 py-2 font-semibold">Access Control</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { content: 'Pilot license (CAAP/GCAA/EASA/FAA)', location: 'Third-party vault', size: '~2-3 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'Class 1 Medical certificate', location: 'Third-party vault', size: '~2 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'Passport / National ID', location: 'Third-party vault', size: '~3 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'NBI / Criminal clearance', location: 'Third-party vault', size: '~1-2 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'Type rating certificates', location: 'Third-party vault', size: '~2-3 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'EBT interview video', location: 'PilotRecognition storage', size: '~150-300 MB', access: 'Program evaluation only' },
+                    { content: 'Training program materials', location: 'PilotRecognition storage', size: '~50-100 MB', access: 'Internal program use' },
+                    { content: 'Employment history docs', location: 'Third-party vault', size: '~1-2 MB', access: 'Pilot → Veremark → Token' },
+                  ] as { content: string; location: string; size: string; access: string }[]).map((row, i) => (
+                    <tr key={row.content} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.content}</td>
+                      <td className={`px-4 py-2 border-b border-slate-200 ${row.location.includes('Third-party') ? 'text-blue-600' : 'text-emerald-600'}`}>{row.location}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.size}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600 text-xs">{row.access}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-slate-500 mt-3 italic">Vault provider pricing based on ~15-50MB per pilot (documents only). Program content stored separately on PilotRecognition infrastructure.</p>
+          </div>
+
+          {/* INTERNAL: Provider Outreach Targets */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Vault Provider Outreach Targets</p>
+            <p className="text-sm text-slate-600 mb-4">Candidates for third-party vault partnership. Contact after UCF review and internal preparation.</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Provider</th>
+                    <th className="text-left px-4 py-2 font-semibold">Strength</th>
+                    <th className="text-left px-4 py-2 font-semibold">Contact</th>
+                    <th className="text-left px-4 py-2 font-semibold">Priority</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { provider: 'IDfy', strength: 'Philippines-based vault, CAAP compliance, local data residency', contact: 'idfy.com/contact', priority: 'High — Philippines launch priority' },
+                    { provider: 'Persona', strength: 'KYC-grade identity vault, embeddable SDK, multi-region', contact: 'partnerships@withpersona.com', priority: 'High — global expansion' },
+                    { provider: 'Jumio', strength: 'Document vault, financial sector standard, multi-region', contact: 'jumio.com/contact-sales', priority: 'High — enterprise ready' },
+                    { provider: 'Onfido', strength: 'GDPR-native, strong EU coverage', contact: 'onfido.com/contact-sales', priority: 'Medium — EU market expansion' },
+                    { provider: 'Veremark Vault', strength: 'Single vendor (already verification partner)', contact: 'Existing Veremark relationship', priority: 'Medium — lowest friction' },
+                    { provider: 'Trulioo', strength: 'Global identity verification + vault', contact: 'trulioo.com/contact', priority: 'Low — evaluate if primary options fail' },
+                  ] as { provider: string; strength: string; contact: string; priority: string }[]).map((row, i) => (
+                    <tr key={row.provider} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.provider}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.strength}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600 text-xs">{row.contact}</td>
+                      <td className={`px-4 py-2 border-b border-slate-200 text-xs ${row.priority.includes('High') ? 'text-red-600 font-semibold' : row.priority.includes('Medium') ? 'text-yellow-600' : 'text-slate-500'}`}>{row.priority}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-slate-500 mt-3 italic">Initial outreach: IDfy (Philippines priority) + Persona/Jumio (global). Local vault for CAAP compliance; global providers for multi-region expansion. Veremark vault as fallback if separate vault proves too complex for September timeline.</p>
+          </div>
+
+          {/* INTERNAL: IDfy Deep Dive — Philippines Vault Partner */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — IDfy Analysis: Philippines Vault Partner</p>
+            <p className="text-sm text-slate-600 mb-4">IDfy stands out as a viable alternative for the platform. As a dedicated Asia-focused identity and data infrastructure provider, their ecosystem natively aligns with the structural, legal, and financial parameters defined for the September launch.</p>
+
+            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+              <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Why IDfy Aligns with Architecture</p>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Compliant Local Data Custody:</strong> IDfy operates dedicated regional entities and local infrastructure, allowing clean isolation and hosting of digital archives within the Philippines. Directly satisfies data residency mandates for CAAP licenses under NPC Data Privacy Act of 2012.</li>
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Zero-Knowledge & Tokenization Infrastructure:</strong> Platform natively supports developer integrations utilizing pre-signed upload URLs and token-based access management. Structure keeps servers free of raw data handling, maintaining desired legal separation.</li>
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Target Commercial Structure:</strong> Unlike transaction-heavy engines, IDfy accommodates B2B enterprise agreements tailored around volume milestones. Flat SaaS infrastructure fee mapping to $1-2/year per pilot target achievable under volume commitments as scale reaches 10,000 users.</li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm mb-4">
+              <p className="text-blue-400 font-bold mb-3 uppercase tracking-widest">Architectural Integration Flow</p>
+              <div className="space-y-1 text-slate-300 font-mono text-xs">
+                <p><span className="text-yellow-400">[Pilot App Frontend]</span> --(1) Request Upload URL--&gt; <span className="text-yellow-400">[Pilot App Backend]</span></p>
+                <p className="pl-8">|</p>
+                <p className="pl-8">(3) Stream File</p>
+                <p className="pl-8">Direct to Vault</p>
+                <p className="pl-8">v</p>
+                <p><span className="text-emerald-400">[IDfy PH Storage Vault]</span> &lt;------(4) Issue Token------ <span className="text-blue-400">[IDfy Core API]</span></p>
+                <p className="pl-8">|</p>
+                <p className="pl-8">(5) Return Secure Token Only</p>
+                <p className="pl-8">v</p>
+                <p><span className="text-slate-500">[Pilot App Database]</span> (Zero raw document touch)</p>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Feature</th>
+                    <th className="text-left px-4 py-2 font-semibold">IDfy</th>
+                    <th className="text-left px-4 py-2 font-semibold">Jumio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { feature: 'Primary Use Case', idfy: 'Localized identity data, verification, & governance', jumio: 'Global real-time identity & biometric verification' },
+                    { feature: 'Data Residency', idfy: 'Localized within the Philippines', jumio: 'Centralized cloud regions (Global nodes)' },
+                    { feature: 'Core Architecture', idfy: 'Supports persistent tokenized asset storage', jumio: 'Ephemeral processing (Transaction verification engine)' },
+                    { feature: 'Pricing Model', idfy: 'Custom enterprise volume pricing tiers', jumio: 'High-cost per-transaction billing ($1-3+ per run)' },
+                  ] as { feature: string; idfy: string; jumio: string }[]).map((row, i) => (
+                    <tr key={row.feature} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.feature}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-emerald-600">{row.idfy}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.jumio}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded p-4">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-2">Critical Distinction</p>
+              <p className="text-sm text-slate-700">Jumio charges <strong>$1-3+ per verification transaction</strong> — destroys unit economics at scale. IDfy does <strong>flat infrastructure fees</strong> — scales with $99/year pilot subscription model. For 10,000 pilots: Jumio = $10K-30K+ per verification round. IDfy = $10K-20K/year flat.</p>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Contact: emily@idfy.com | Next: Technical DPA review + API error-handling procedures.</p>
           </div>
 
           <hr className="my-8 border-slate-200" />
@@ -4291,6 +4472,146 @@ export default function UCFOfficialReleasePage() {
           <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
             <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">The Pitch to Vault Providers</p>
             <p className="text-slate-700 leading-relaxed italic">"You hold the documents. Veremark verifies them against registries. We provide the demand layer — pilots who need verified credentials to access pathways. You get recurring revenue from a new vertical without building aviation sales teams. We get clean legal separation that lets us scale globally without jurisdiction-by-jurisdiction data compliance. The pilot gets independent custody with purpose-driven access. Three parties, aligned incentives, zero overlap in liability."</p>
+          </div>
+
+          {/* INTERNAL: Technical Integration Flow */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Technical Integration Flow (Hybrid UX)</p>
+            <p className="text-sm text-slate-600 mb-4"><strong>Recognition+ members only ($99/year).</strong> Seamless pilot experience with zero legal liability. Pilot sees "Upload through our app" — legally, document flows direct to vault.</p>
+
+            <div className="bg-white p-4 rounded-lg border border-slate-200 font-mono text-xs mb-4">
+              <p className="font-bold text-slate-800 mb-2">UPLOAD FLOW (Recognition+ Members Only):</p>
+              <div className="space-y-1 text-slate-600">
+                <p>1. <span className="text-emerald-600 font-semibold">[Recognition+ Check]</span> Verify active subscription before showing upload widget</p>
+                <p>2. Pilot clicks "Upload Documents" in PilotRecognition dashboard</p>
+                <p>3. Frontend requests <span className="text-blue-600">pre-signed upload URL</span> from Vault API</p>
+                <p>4. File streams <span className="text-emerald-600 font-semibold">DIRECT browser → Vault</span> (bypasses our servers)</p>
+                <p>5. Vault returns <span className="text-blue-600">document_token</span> to browser</p>
+                <p>6. Browser sends token (not file) to PilotRecognition backend</p>
+                <p>7. We store: <code className="bg-slate-100 px-1">{'{vault_token: "doc_xyz789", provider: "persona"}'}</code></p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+              <div className="bg-emerald-50 border border-emerald-200 rounded p-3">
+                <p className="text-xs font-bold text-emerald-700 uppercase mb-1">What Pilot Sees</p>
+                <p className="text-xs text-slate-600"><strong>Recognition+:</strong> "Upload your license" widget.<br/><strong>Free tier:</strong> "Upgrade to secure your documents" CTA.</p>
+              </div>
+              <div className="bg-blue-50 border border-blue-200 rounded p-3">
+                <p className="text-xs font-bold text-blue-700 uppercase mb-1">What Actually Happens</p>
+                <p className="text-xs text-slate-600">Direct browser-to-vault transfer via pre-signed URL</p>
+              </div>
+              <div className="bg-amber-50 border border-amber-200 rounded p-3">
+                <p className="text-xs font-bold text-amber-700 uppercase mb-1">Liability Result</p>
+                <p className="text-xs text-slate-600">We hold zero raw data. Zero breach risk. Clean DPA.</p>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-xs text-slate-300 font-mono">
+              <p className="text-emerald-400 font-bold mb-2">API CALL FOR DASHBOARD DISPLAY:</p>
+              <p className="text-slate-400">// When pilot views their verification wallet</p>
+              <p className="mb-2">const status = await vaultApi.checkStatus({'{'}</p>
+              <p className="pl-2">token: pilot.vault_token, <span className="text-slate-500">// "doc_xyz789"</span></p>
+              <p className="pl-2">userId: pilot.id</p>
+              <p>{'}'});</p>
+              <p className="text-slate-400 mt-2">// Returns verification status only — NOT the PDF</p>
+              <p>{'{'} "license": "✓ Verified", "medical": "⚠ Expires 30 days" {'}'}</p>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Key technical requirement: Vault provider must support pre-signed URL generation + embeddable iframe for "view document" functionality.</p>
+          </div>
+
+          {/* INTERNAL: Country-Specific Vault Strategy */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Country-Specific Vault Strategy</p>
+            <p className="text-sm text-slate-600 mb-4">Vault location determined by license issuing country (data residency). Verification provider (Veremark) location independent — Singapore hub can verify any global registry.</p>
+
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Pilot License</th>
+                    <th className="text-left px-4 py-2 font-semibold">Vault Location</th>
+                    <th className="text-left px-4 py-2 font-semibold">Compliance Requirement</th>
+                    <th className="text-left px-4 py-2 font-semibold">Provider Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { license: 'CAAP (Philippines)', vault: 'Philippines', compliance: 'DPA Philippines', providers: 'IDfy (local), Persona (multi-region)' },
+                    { license: 'EASA (Europe)', vault: 'EU', compliance: 'GDPR', providers: 'Onfido (EU-native), Persona, Jumio' },
+                    { license: 'FAA (USA)', vault: 'USA', compliance: 'US data residency', providers: 'Persona, Jumio (US regions)' },
+                    { license: 'GCAA (UAE)', vault: 'UAE / Middle East', compliance: 'UAE data protection', providers: 'Persona, Jumio (ME regions)' },
+                    { license: 'CASA (Australia)', vault: 'Australia', compliance: 'Privacy Act 1988', providers: 'Persona, Jumio (APAC)' },
+                  ] as { license: string; vault: string; compliance: string; providers: string }[]).map((row, i) => (
+                    <tr key={row.license} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.license}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-blue-600">{row.vault}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.compliance}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600 text-xs">{row.providers}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm">
+              <p className="text-emerald-400 font-bold mb-3 uppercase tracking-widest">Key Principle</p>
+              <div className="space-y-2 text-slate-300">
+                <p><span className="text-blue-400 font-bold">Vault location = License origin</span> (data residency compliance)</p>
+                <p><span className="text-yellow-400 font-bold">Verification location = Anywhere</span> (Veremark Singapore verifies CAAP, EASA, FAA equally)</p>
+                <p><span className="text-emerald-400 font-bold">Platform layer = Unified</span> (PilotRecognition shows one interface, routes to correct vault by license type)</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Philippines launch strategy: Start with IDfy for CAAP compliance. Add Persona/Jumio multi-region capability for global expansion (EASA, FAA, GCAA). Verification remains Veremark throughout.</p>
+          </div>
+
+          {/* INTERNAL: Two-Tier Data Model */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Two-Tier Data Model (Free vs Recognition+)</p>
+            <p className="text-sm text-slate-600 mb-4">Clear distinction between claimed data (free tier) and verified data (paid tier). Vault storage drives subscription conversion.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Free Tier — Claimed Data</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Pilot manually enters: license number, hours, ratings</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Status shown to airlines: <span className="text-amber-600 font-semibold">⚠ Unverified claim</span></li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Storage: PilotRecognition database only</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>No vault integration / zero storage cost</li>
+                </ul>
+              </div>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Recognition+ ($99/yr) — Verified Data</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Pilot uploads actual documents via vault widget</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Status shown to airlines: <span className="text-emerald-600 font-semibold">✓ Verified via [Persona/Jumio]</span></li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Storage: Token in our DB, docs in third-party vault</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Vault cost: ~$3-5/year per paid pilot</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm">
+              <p className="text-emerald-400 font-bold mb-3 uppercase tracking-widest">Strategic Implications for Vault Providers</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+                <div className="flex gap-2 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">1.</span>
+                  <p><strong className="text-slate-100">Not all pilots use storage immediately.</strong> Only Recognition+ conversions (~20-30% of signups) trigger vault costs.</p>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">2.</span>
+                  <p><strong className="text-slate-100">Free tier creates upgrade funnel.</strong> "Verify your claim → Upgrade to Recognition+" CTA drives paid conversions.</p>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">3.</span>
+                  <p><strong className="text-slate-100">Vault integration drives subscription.</strong> Secure document storage is core value prop for $99/year tier.</p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Example: 1,000 pilots sign up → ~250 upgrade to Recognition+ → 250 × $4 = $1,000/year vault storage cost. Free tier pilots (750) cost $0 in vault fees.</p>
           </div>
 
           <hr className="my-10 border-slate-300" />
