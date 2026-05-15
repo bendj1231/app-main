@@ -161,7 +161,7 @@ const HomeTab: React.FC<{
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-64 flex-shrink-0 flex flex-col"
+        className="w-64 flex-shrink-0 flex flex-col self-start"
         style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
       >
         <div className="p-6 flex-1">
