@@ -65,35 +65,13 @@ export const REGIONAL_PRICING: Record<string, RegionalPrice> = {
   },
 };
 
-const LOCALE_TO_COUNTRY: Record<string, string> = {
-  'fil': 'PH',
-  'fil-PH': 'PH',
-  'en-PH': 'PH',
-  'ar-AE': 'AE',
-  'en-AE': 'AE',
-  'en-SG': 'SG',
-  'zh-SG': 'SG',
-  'en-GB': 'GB',
-  'en-IN': 'IN',
-  'hi': 'IN',
-  'hi-IN': 'IN',
-};
-
 export function detectRegionalPricing(): RegionalPrice & { countryCode: string } {
-  const languages = navigator.languages ?? [navigator.language];
-  for (const lang of languages) {
-    const country = LOCALE_TO_COUNTRY[lang] ?? LOCALE_TO_COUNTRY[lang.split('-')[0]];
-    if (country && REGIONAL_PRICING[country]) {
-      return { ...REGIONAL_PRICING[country], countryCode: country };
-    }
-  }
+  // Primary: use the IP-detected country code cached by TopNavbar (ipapi.co)
   try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (tz.startsWith('Asia/Manila') || tz === 'Asia/Manila') return { ...REGIONAL_PRICING.PH, countryCode: 'PH' };
-    if (tz.startsWith('Asia/Dubai')) return { ...REGIONAL_PRICING.AE, countryCode: 'AE' };
-    if (tz.startsWith('Asia/Singapore')) return { ...REGIONAL_PRICING.SG, countryCode: 'SG' };
-    if (tz.startsWith('Europe/London')) return { ...REGIONAL_PRICING.GB, countryCode: 'GB' };
-    if (tz.startsWith('Asia/Kolkata') || tz.startsWith('Asia/Calcutta')) return { ...REGIONAL_PRICING.IN, countryCode: 'IN' };
+    const cached = localStorage.getItem('cachedCountryCode');
+    if (cached && REGIONAL_PRICING[cached]) {
+      return { ...REGIONAL_PRICING[cached], countryCode: cached };
+    }
   } catch {}
   return { ...REGIONAL_PRICING.DEFAULT, countryCode: 'US' };
 }
