@@ -227,7 +227,7 @@ const HomeTab: React.FC<{
       </motion.div>
 
       {/* ── RIGHT: Image cards ── */}
-      <div className="flex-1 grid grid-cols-2 gap-4" style={{ gridTemplateRows: '1fr auto' }}>
+      <div className="flex-1 grid grid-cols-2 gap-4 content-start">
         {/* Top card — MY PATHWAYS — full width */}
         <motion.div
           custom={0}
@@ -236,7 +236,7 @@ const HomeTab: React.FC<{
           animate={visible ? 'visible' : 'hidden'}
           onClick={dashboardCards[0].onClick}
           className="col-span-2 relative group cursor-pointer overflow-hidden"
-          style={{ minHeight: '220px', flex: 1, background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
+          style={{ height: '200px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
         >
           <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
             style={{ backgroundImage: `url(${dashboardCards[0].image})`, opacity: 0.7 }} />
