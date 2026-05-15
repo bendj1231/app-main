@@ -72,7 +72,9 @@ function scrollTo(id: string) {
 
 export default function UCFOfficialReleasePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({
+    hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true,
+  });
   const toggleGroup = (group: string) => setCollapsedGroups(prev => ({ ...prev, [group]: !prev[group] }));
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -201,6 +203,17 @@ export default function UCFOfficialReleasePage() {
             </button>
           </div>
           <nav className="p-2 space-y-0.5 overflow-y-auto flex-1">
+            {isInternal && (
+              <a
+                href="https://enterprise.pilotrecognition.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-left px-2 py-1.5 rounded-lg text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors flex items-center gap-1.5 border border-emerald-200 mb-1"
+              >
+                <span className="text-emerald-500 flex-shrink-0">▸</span>
+                <span className="leading-tight">Business Overview (Admin)</span>
+              </a>
+            )}
             {navSections.map((s, i) => {
               const isParent = !s.indent;
               const isCollapsed = collapsedGroups[s.group] ?? false;
