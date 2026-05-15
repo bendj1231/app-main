@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { MeshGradient } from '@paper-design/shaders-react';
 import {
   Home, User, Shield, Map, BookOpen, Plane, Wrench, FileText,
   BookMarked, Calendar, Newspaper, Settings, LogOut, Bell, Search,
@@ -61,8 +63,8 @@ const statusBadge = (status: string) => {
 
 const ScoreBar: React.FC<{ score: number; label?: string }> = ({ score, label }) => (
   <div className="w-full">
-    {label && <div className="flex justify-between text-xs text-slate-500 mb-1"><span>{label}</span><span className={scoreColour(score)}>{score}/100</span></div>}
-    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+    {label && <div className="flex justify-between text-xs text-white/50 mb-1"><span>{label}</span><span className={scoreColour(score)}>{score}/100</span></div>}
+    <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
       <div className={`h-full rounded-full transition-all duration-700 ${scoreBg(score)}`} style={{ width: `${score}%` }} />
     </div>
   </div>
@@ -78,11 +80,18 @@ const StatusPill: React.FC<{ status: string; label?: string }> = ({ status, labe
   </span>
 );
 
-const SectionCard: React.FC<{ title: string; children: React.ReactNode; className?: string; action?: React.ReactNode }> =
-  ({ title, children, className = '', action }) => (
-  <div className={`bg-white border border-slate-200 rounded-xl p-5 ${className}`}>
+const glassCard = 'rounded-xl p-5';
+const glassStyle: React.CSSProperties = {
+  background: 'rgba(30,41,59,0.75)',
+  backdropFilter: 'blur(10px)',
+  border: '1px solid rgba(255,255,255,0.1)',
+};
+
+const SectionCard: React.FC<{ title: string; children: React.ReactNode; className?: string; action?: React.ReactNode; style?: React.CSSProperties }> =
+  ({ title, children, className = '', action, style }) => (
+  <div className={`${glassCard} ${className}`} style={style ?? glassStyle}>
     <div className="flex items-center justify-between mb-4">
-      <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">{title}</h3>
+      <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest">{title}</h3>
       {action}
     </div>
     {children}
@@ -125,14 +134,14 @@ const HomeTab: React.FC<{
   ].filter(Boolean) as { label: string; tab: TabId; urgent: boolean }[];
 
   return (
-    <div className="space-y-6">
+    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       {/* Expiry alert banner */}
       {expiredChecks.length > 0 && (
-        <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl px-5 py-3">
-          <AlertTriangle size={18} className="text-red-500 flex-shrink-0" />
-          <p className="text-sm text-red-700 font-medium">
+        <div className="flex items-center gap-3 rounded-xl px-5 py-3" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)' }}>
+          <AlertTriangle size={18} className="text-red-400 flex-shrink-0" />
+          <p className="text-sm text-red-300 font-medium">
             {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired —{' '}
-            <button className="underline font-bold" onClick={() => setTab('wallet')}>view wallet</button>
+            <button className="underline font-bold text-red-200" onClick={() => setTab('wallet')}>view wallet</button>
           </p>
         </div>
       )}
@@ -143,34 +152,34 @@ const HomeTab: React.FC<{
         {/* Profile card */}
         <SectionCard title="Recognition Profile" className="lg:col-span-1">
           <div className="flex flex-col items-center text-center mb-4">
-            <div className="w-16 h-16 rounded-full bg-slate-900 flex items-center justify-center text-white text-xl font-bold mb-3">
+            <div className="w-16 h-16 rounded-full bg-slate-600 flex items-center justify-center text-white text-xl font-bold mb-3 overflow-hidden">
               {profile?.profile_image_url
                 ? <img src={profile.profile_image_url} alt={name} className="w-16 h-16 rounded-full object-cover" />
                 : initials}
             </div>
-            <p className="font-bold text-slate-900 text-base">{name}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{level}</p>
+            <p className="font-bold text-white text-base tracking-wider">{name}</p>
+            <p className="text-xs text-orange-400 mt-0.5 uppercase tracking-wider font-semibold">{level}</p>
             <div className="flex items-center gap-2 mt-2">
               {allVerified
-                ? <span className="bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><CheckCircle size={10}/>PRE-CLEARED</span>
-                : <span className="bg-slate-100 text-slate-500 border border-slate-200 text-xs font-bold px-2 py-0.5 rounded-full">NOT YET VERIFIED</span>}
+                ? <span className="text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1" style={{ background: 'rgba(16,185,129,0.2)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)' }}><CheckCircle size={10}/>PRE-CLEARED</span>
+                : <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.12)' }}>NOT YET VERIFIED</span>}
             </div>
           </div>
           <div className="space-y-3">
             <ScoreBar score={score} label="Recognition Score" />
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="bg-slate-50 rounded-lg p-3 text-center">
-                <p className="text-lg font-bold text-slate-900">{hours.toLocaleString()}</p>
-                <p className="text-xs text-slate-500">Flight Hours</p>
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <div className="rounded-lg p-3 text-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                <p className="text-lg font-bold text-white">{hours.toLocaleString()}</p>
+                <p className="text-[10px] text-white/50 uppercase tracking-wider">Hours</p>
               </div>
-              <div className="bg-slate-50 rounded-lg p-3 text-center">
-                <p className="text-lg font-bold text-slate-900">{verifiedChecks.length}/{walletChecks.length || '—'}</p>
-                <p className="text-xs text-slate-500">Verified Credentials</p>
+              <div className="rounded-lg p-3 text-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                <p className="text-lg font-bold text-white">{verifiedChecks.length}/{walletChecks.length || '—'}</p>
+                <p className="text-[10px] text-white/50 uppercase tracking-wider">Verified</p>
               </div>
             </div>
           </div>
-          <button onClick={() => setTab('profile')} className="w-full mt-4 text-xs text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1 transition-colors">
-            View full profile <ChevronRight size={12} />
+          <button onClick={() => setTab('profile')} className="w-full mt-4 flex items-center justify-center gap-1 text-xs text-white/50 hover:text-white transition-colors" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.75rem' }}>
+            <span className="font-bold tracking-wider">PILOT PROFILE</span> <ChevronRight size={12} />
           </button>
         </SectionCard>
 
@@ -183,10 +192,13 @@ const HomeTab: React.FC<{
                 <button
                   key={s.tab}
                   onClick={() => setTab(s.tab)}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all hover:scale-105 hover:shadow-sm ${s.colour}`}
+                  className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all hover:scale-105"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(249,115,22,0.15)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.07)')}
                 >
-                  <Icon size={20} />
-                  <span className="text-xs font-semibold">{s.label}</span>
+                  <Icon size={20} className="text-orange-400" />
+                  <span className="text-[10px] font-bold tracking-wider text-white/70 uppercase">{s.label}</span>
                 </button>
               );
             })}
@@ -199,30 +211,34 @@ const HomeTab: React.FC<{
 
         {/* Recommended pathways */}
         <SectionCard title="Recommended Pathways" action={
-          <button onClick={() => setTab('pathways')} className="text-xs text-red-600 font-semibold flex items-center gap-1 hover:underline">
-            View all <ChevronRight size={12} />
+          <button onClick={() => setTab('pathways')} className="text-xs text-orange-400 font-bold flex items-center gap-1 hover:text-orange-300 tracking-wider transition-colors">
+            VIEW ALL <ChevronRight size={12} />
           </button>
         }>
           {topPathways.length === 0 ? (
             <div className="text-center py-8">
-              <Map size={32} className="text-slate-300 mx-auto mb-2" />
-              <p className="text-sm text-slate-500">No pathways matched yet.</p>
-              <button onClick={() => setTab('pathways')} className="mt-3 text-xs text-red-600 font-semibold underline">Browse pathways</button>
+              <Map size={32} className="text-white/20 mx-auto mb-2" />
+              <p className="text-sm text-white/40">No pathways matched yet.</p>
+              <button onClick={() => setTab('pathways')} className="mt-3 text-xs text-orange-400 font-bold underline">Browse pathways</button>
             </div>
           ) : (
             <div className="space-y-3">
               {topPathways.map((p: any, i: number) => (
-                <div key={p.id ?? i} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" onClick={() => setTab('pathways')}>
-                  <div className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0">
-                    <Plane size={16} className="text-slate-500" />
+                <div key={p.id ?? i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+                  onClick={() => setTab('pathways')}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
+                >
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <Plane size={16} className="text-orange-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-800 truncate">{p.airline_name ?? p.name ?? 'Pathway'}</p>
-                    <p className="text-xs text-slate-500 truncate">{p.position ?? p.type ?? 'First Officer'}</p>
+                    <p className="text-sm font-semibold text-white truncate">{p.airline_name ?? p.name ?? 'Pathway'}</p>
+                    <p className="text-xs text-white/50 truncate">{p.position ?? p.type ?? 'First Officer'}</p>
                   </div>
                   <div className="flex-shrink-0 text-right">
                     <p className={`text-sm font-bold ${scoreColour(p.match_percent ?? 60)}`}>{p.match_percent ?? '—'}%</p>
-                    <p className="text-xs text-slate-400">match</p>
+                    <p className="text-[10px] text-white/40">match</p>
                   </div>
                 </div>
               ))}
@@ -232,12 +248,12 @@ const HomeTab: React.FC<{
 
         {/* Gap actions */}
         <SectionCard title="Action Items" action={
-          <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">{gapActions.length} to-do</span>
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(239,68,68,0.2)', color: '#fca5a5', border: '1px solid rgba(239,68,68,0.3)' }}>{gapActions.length} TO-DO</span>
         }>
           {gapActions.length === 0 ? (
             <div className="text-center py-8">
               <CheckCircle size={32} className="text-emerald-400 mx-auto mb-2" />
-              <p className="text-sm text-slate-500 font-medium">All actions complete — great work.</p>
+              <p className="text-sm text-white/50 font-medium">All actions complete — great work.</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -245,13 +261,14 @@ const HomeTab: React.FC<{
                 <button
                   key={i}
                   onClick={() => setTab(a.tab)}
-                  className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${a.urgent ? 'bg-red-50 hover:bg-red-100 border border-red-100' : 'bg-slate-50 hover:bg-slate-100'}`}
+                  className="w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all"
+                  style={{ background: a.urgent ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.05)', border: `1px solid ${a.urgent ? 'rgba(239,68,68,0.25)' : 'rgba(255,255,255,0.08)'}` }}
                 >
                   {a.urgent
-                    ? <AlertTriangle size={14} className="text-red-500 flex-shrink-0" />
-                    : <Target size={14} className="text-slate-400 flex-shrink-0" />}
-                  <span className={`text-xs font-medium flex-1 ${a.urgent ? 'text-red-700' : 'text-slate-600'}`}>{a.label}</span>
-                  <ArrowRight size={12} className="text-slate-300 flex-shrink-0" />
+                    ? <AlertTriangle size={14} className="text-red-400 flex-shrink-0" />
+                    : <Target size={14} className="text-orange-400/60 flex-shrink-0" />}
+                  <span className={`text-xs font-medium flex-1 ${a.urgent ? 'text-red-300' : 'text-white/70'}`}>{a.label}</span>
+                  <ArrowRight size={12} className="text-white/20 flex-shrink-0" />
                 </button>
               ))}
             </div>
@@ -261,24 +278,24 @@ const HomeTab: React.FC<{
 
       {/* News feed */}
       <SectionCard title="Recognition Feed">
-        <div className="space-y-3">
+        <div className="space-y-1">
           {[
-            { icon: TrendingUp, colour: 'text-emerald-500', msg: 'Cebu Pacific posted a new A320 First Officer pathway' },
-            { icon: Award,      colour: 'text-yellow-500', msg: 'Your Recognition Score updated — complete EBT to increase it' },
-            { icon: Globe,      colour: 'text-blue-500',   msg: 'APATS 2026 career fair registration now open — Manila, November' },
-            { icon: Zap,        colour: 'text-purple-500', msg: 'New Foundation Program cohort opens June 1 — limited spots' },
+            { icon: TrendingUp, colour: 'text-emerald-400', msg: 'Cebu Pacific posted a new A320 First Officer pathway' },
+            { icon: Award,      colour: 'text-yellow-400', msg: 'Your Recognition Score updated — complete EBT to increase it' },
+            { icon: Globe,      colour: 'text-blue-400',   msg: 'APATS 2026 career fair registration now open — Manila, November' },
+            { icon: Zap,        colour: 'text-orange-400', msg: 'New Foundation Program cohort opens June 1 — limited spots' },
           ].map((item, i) => {
             const Icon = item.icon;
             return (
-              <div key={i} className="flex items-start gap-3 py-2 border-b border-slate-100 last:border-0">
+              <div key={i} className="flex items-start gap-3 py-2.5" style={{ borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
                 <Icon size={15} className={`mt-0.5 flex-shrink-0 ${item.colour}`} />
-                <p className="text-sm text-slate-700">{item.msg}</p>
+                <p className="text-sm text-white/70">{item.msg}</p>
               </div>
             );
           })}
         </div>
       </SectionCard>
-    </div>
+    </motion.div>
   );
 };
 
@@ -301,51 +318,51 @@ const ProfileTab: React.FC<{ profile: any; onRefresh: () => void }> = ({ profile
   ];
 
   return (
-    <div className="space-y-6">
+    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* Identity card */}
         <SectionCard title="Pilot Identity" className="lg:col-span-1">
           <div className="flex flex-col items-center text-center mb-5">
             <div className="relative mb-3">
-              <div className="w-20 h-20 rounded-full bg-slate-900 flex items-center justify-center text-white text-2xl font-bold">
+              <div className="w-20 h-20 rounded-full bg-slate-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
                 {profile?.profile_image_url
                   ? <img src={profile.profile_image_url} alt={name} className="w-20 h-20 rounded-full object-cover" />
                   : name.charAt(0).toUpperCase()}
               </div>
-              <button className="absolute bottom-0 right-0 w-6 h-6 bg-white border border-slate-200 rounded-full flex items-center justify-center hover:bg-slate-50">
-                <Camera size={10} className="text-slate-600" />
+              <button className="absolute bottom-0 right-0 w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <Camera size={10} className="text-white" />
               </button>
             </div>
-            <p className="font-bold text-slate-900 text-lg">{name}</p>
-            <p className="text-sm text-slate-500">{level}</p>
-            <p className="text-xs text-slate-400 mt-1">{email}</p>
+            <p className="font-bold text-white text-lg tracking-wider">{name}</p>
+            <p className="text-xs text-orange-400 uppercase tracking-wider font-semibold">{level}</p>
+            <p className="text-[10px] text-white/40 mt-1">{email}</p>
           </div>
-          <div className="space-y-2 text-sm">
+          <div className="space-y-1">
             {[
               { label: 'License', value: license },
               { label: 'Total Hours', value: `${hours.toLocaleString()} hrs` },
               { label: 'Level', value: level },
             ].map(row => (
-              <div key={row.label} className="flex justify-between py-1.5 border-b border-slate-100">
-                <span className="text-slate-500 text-xs">{row.label}</span>
-                <span className="font-semibold text-slate-800 text-xs">{row.value}</span>
+              <div key={row.label} className="flex justify-between py-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                <span className="text-white/40 text-xs uppercase tracking-wider">{row.label}</span>
+                <span className="font-semibold text-white text-xs">{row.value}</span>
               </div>
             ))}
           </div>
-          <button onClick={onRefresh} className="w-full mt-4 flex items-center justify-center gap-2 text-xs text-slate-500 hover:text-slate-800 transition-colors">
+          <button onClick={onRefresh} className="w-full mt-4 flex items-center justify-center gap-2 text-xs text-white/40 hover:text-white/80 transition-colors">
             <RefreshCw size={12} /> Refresh profile
           </button>
         </SectionCard>
 
         {/* Recognition Score breakdown */}
         <SectionCard title="Recognition Score Breakdown" className="lg:col-span-2">
-          <div className="flex items-center gap-4 mb-5 p-4 bg-slate-50 rounded-xl">
+          <div className="flex items-center gap-4 mb-5 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.06)' }}>
             <div className={`text-5xl font-black ${scoreColour(score)}`}>{score}</div>
-            <div>
-              <p className="text-xs text-slate-500 uppercase tracking-widest mb-1">Overall Score</p>
+            <div className="flex-1">
+              <p className="text-[10px] text-white/50 uppercase tracking-widest mb-2">Overall Score</p>
               <ScoreBar score={score} />
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-white/40 mt-1">
                 {score < 40 ? 'Build fundamentals first' : score < 60 ? 'Good progress — keep going' : score < 80 ? 'Strong profile — nearly there' : 'Excellent — you are airline-ready'}
               </p>
             </div>
@@ -354,10 +371,10 @@ const ProfileTab: React.FC<{ profile: any; onRefresh: () => void }> = ({ profile
             {scoreBreakdown.map(item => (
               <div key={item.label}>
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-600 font-medium">{item.label}</span>
-                  <span className="text-slate-400">{item.weight} weight · <span className={scoreColour(item.value)}>{item.value}/100</span></span>
+                  <span className="text-white/70 font-medium">{item.label}</span>
+                  <span className="text-white/35">{item.weight} · <span className={scoreColour(item.value)}>{item.value}/100</span></span>
                 </div>
-                <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
                   <div className={`h-full rounded-full ${scoreBg(item.value)}`} style={{ width: `${item.value}%` }} />
                 </div>
               </div>
@@ -367,11 +384,11 @@ const ProfileTab: React.FC<{ profile: any; onRefresh: () => void }> = ({ profile
       </div>
 
       {/* Live profile note */}
-      <div className="bg-slate-900 rounded-xl p-4 flex items-start gap-3">
-        <Zap size={16} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-slate-300"><strong className="text-white">Live Real-Time Profile — Not a Static CV.</strong> Your profile updates as you log hours, complete programs, and get verified. Airlines see your current status, not a document you last edited 6 months ago.</p>
+      <div className="rounded-xl p-4 flex items-start gap-3" style={{ background: 'rgba(249,115,22,0.1)', border: '1px solid rgba(249,115,22,0.25)' }}>
+        <Zap size={16} className="text-orange-400 flex-shrink-0 mt-0.5" />
+        <p className="text-sm text-white/70"><strong className="text-orange-300">Live Real-Time Profile — Not a Static CV.</strong> Your profile updates as you log hours, complete programs, and get verified. Airlines see your current status, not a document you last edited 6 months ago.</p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -388,20 +405,20 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
 
       {/* Pre-Cleared status */}
-      <div className={`rounded-xl p-5 border ${allVerified ? 'bg-emerald-50 border-emerald-200' : hasExpired ? 'bg-red-50 border-red-200' : 'bg-slate-50 border-slate-200'}`}>
+      <div className="rounded-xl p-5" style={{ background: allVerified ? 'rgba(16,185,129,0.15)' : hasExpired ? 'rgba(239,68,68,0.15)' : 'rgba(255,255,255,0.07)', border: `1px solid ${allVerified ? 'rgba(16,185,129,0.3)' : hasExpired ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.1)'}` }}>
         <div className="flex items-center gap-4">
           <div className={`w-12 h-12 rounded-full flex items-center justify-center ${allVerified ? 'bg-emerald-500' : hasExpired ? 'bg-red-400' : 'bg-slate-300'}`}>
             <Shield size={22} className="text-white" />
           </div>
           <div>
             <p className="text-xs uppercase tracking-widest font-bold text-slate-500 mb-0.5">Wallet Status</p>
-            <p className={`text-xl font-black ${allVerified ? 'text-emerald-700' : hasExpired ? 'text-red-700' : 'text-slate-600'}`}>
+            <p className={`text-xl font-black tracking-wider ${allVerified ? 'text-emerald-400' : hasExpired ? 'text-red-400' : 'text-white/60'}`}>
               {allVerified ? 'PRE-CLEARED' : hasExpired ? 'ACTION REQUIRED' : 'PENDING VERIFICATION'}
             </p>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-white/50 mt-0.5">
               {allVerified
                 ? 'Both vault and Veremark signals agree. Token issued.'
                 : hasExpired
@@ -413,7 +430,7 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
       </div>
 
       {/* Architecture explanation */}
-      <div className="bg-slate-900 rounded-xl p-4">
+      <div className="rounded-xl p-4" style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.08)' }}>
         <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-2">Triangulation Architecture</p>
         <div className="grid grid-cols-3 gap-3 text-center text-xs">
           {[
@@ -421,7 +438,7 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
             { label: 'Veremark', colour: 'text-yellow-400', desc: 'Independently verifies' },
             { label: 'PilotRecognition', colour: 'text-emerald-400', desc: 'Displays token only' },
           ].map(c => (
-            <div key={c.label} className="bg-slate-800 rounded-lg p-3">
+            <div key={c.label} className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.06)' }}>
               <p className={`font-bold mb-1 ${c.colour}`}>{c.label}</p>
               <p className="text-slate-400 text-[10px]">{c.desc}</p>
             </div>
@@ -434,10 +451,10 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
       <SectionCard title="Credential Checks">
         {walletChecks.length === 0 ? (
           <div className="text-center py-10">
-            <Lock size={36} className="text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-500 text-sm font-medium mb-2">Wallet not yet set up</p>
-            <p className="text-slate-400 text-xs max-w-xs mx-auto">Initiate verification to connect your vault provider and Veremark. Your credentials stay with them — you get the token.</p>
-            <button className="mt-4 bg-slate-900 text-white text-xs font-bold px-5 py-2.5 rounded-lg hover:bg-slate-700 transition-colors">
+            <Lock size={36} className="text-white/20 mx-auto mb-3" />
+            <p className="text-white/60 text-sm font-medium mb-2">Wallet not yet set up</p>
+            <p className="text-white/40 text-xs max-w-xs mx-auto">Initiate verification to connect your vault provider and Veremark. Your credentials stay with them — you get the token.</p>
+            <button className="mt-4 text-xs font-bold px-5 py-2.5 rounded-lg transition-colors" style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
               Initiate Verification
             </button>
           </div>
@@ -448,13 +465,13 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
               const expiry = check.expiry_date ? new Date(check.expiry_date) : null;
               const isExpiringSoon = expiry && (expiry.getTime() - Date.now()) < 30 * 24 * 60 * 60 * 1000;
               return (
-                <div key={check.id} className={`border rounded-xl p-4 ${check.status === 'expired' ? 'border-red-200 bg-red-50' : isExpiringSoon ? 'border-yellow-200 bg-yellow-50' : 'border-slate-200 bg-white'}`}>
+                <div key={check.id} className="rounded-xl p-4" style={{ background: check.status === 'expired' ? 'rgba(239,68,68,0.12)' : isExpiringSoon ? 'rgba(234,179,8,0.12)' : 'rgba(255,255,255,0.06)', border: `1px solid ${check.status === 'expired' ? 'rgba(239,68,68,0.3)' : isExpiringSoon ? 'rgba(234,179,8,0.3)' : 'rgba(255,255,255,0.1)'}` }}>
                   <div className="flex items-start justify-between mb-2">
-                    <p className="text-sm font-bold text-slate-800">{label}</p>
+                    <p className="text-sm font-bold text-white tracking-wide">{label}</p>
                     <StatusPill status={check.status} />
                   </div>
                   {expiry && (
-                    <p className={`text-xs ${check.status === 'expired' ? 'text-red-600 font-semibold' : isExpiringSoon ? 'text-yellow-700 font-semibold' : 'text-slate-400'}`}>
+                    <p className={`text-xs ${check.status === 'expired' ? 'text-red-400 font-semibold' : isExpiringSoon ? 'text-yellow-400 font-semibold' : 'text-white/40'}`}>
                       {check.status === 'expired' ? '⚠ Expired: ' : 'Expires: '}
                       {expiry.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </p>
@@ -462,7 +479,7 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
                   <div className="mt-3 flex gap-2 items-center">
                     <div className="flex-1 h-px bg-slate-100" />
                     <div className="flex gap-2 text-[10px] text-slate-400">
-                      <span className="flex items-center gap-0.5"><Eye size={9}/> Token only stored</span>
+                      <span className="flex items-center gap-0.5 text-white/30"><Eye size={9}/> Token only stored</span>
                     </div>
                   </div>
                 </div>
@@ -473,13 +490,13 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
       </SectionCard>
 
       {/* Consent note */}
-      <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4">
-        <Lock size={14} className="text-blue-500 flex-shrink-0 mt-0.5" />
-        <p className="text-xs text-blue-700">
-          <strong>Your data. Your control.</strong> You manage three separate consent relationships: vault provider, Veremark, and PilotRecognition. Revoke any one and the token chain immediately invalidates.
+      <div className="flex items-start gap-3 rounded-xl p-4" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)' }}>
+        <Lock size={14} className="text-blue-400 flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-blue-200">
+          <strong className="text-white">Your data. Your control.</strong> You manage three separate consent relationships: vault provider, Veremark, and PilotRecognition. Revoke any one and the token chain immediately invalidates.
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -519,12 +536,13 @@ const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: str
       {/* Filter bar */}
       <div className="flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-[180px]">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search airlines…"
-            className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-200"
+            className="w-full pl-9 pr-4 py-2 text-sm rounded-lg text-white outline-none"
+            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'white' }}
           />
         </div>
         <div className="flex gap-2">
@@ -532,7 +550,8 @@ const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: str
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors ${filter === f ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'}`}
+              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all tracking-wider ${filter === f ? 'text-white' : 'text-white/50 hover:text-white/80'}`}
+              style={filter === f ? { background: 'rgba(249,115,22,0.25)', border: '1px solid rgba(249,115,22,0.4)' } : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
             </button>
@@ -549,7 +568,7 @@ const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: str
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map(p => (
-            <div key={p.id} className="bg-white border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+            <div key={p.id} className="rounded-xl p-5 transition-all hover:scale-[1.01]" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
@@ -558,8 +577,8 @@ const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: str
                       : <Plane size={16} className="text-slate-400" />}
                   </div>
                   <div>
-                    <p className="font-bold text-slate-900 text-sm">{p.name}</p>
-                    <p className="text-xs text-slate-500">{p.position} · {p.type}</p>
+                    <p className="font-bold text-white text-sm tracking-wide">{p.name}</p>
+                    <p className="text-xs text-white/50">{p.position} · {p.type}</p>
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
@@ -570,7 +589,7 @@ const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: str
 
               {/* Score bar */}
               <div className="mb-3">
-                <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
                   <div className={`h-full rounded-full ${scoreBg(p.match)}`} style={{ width: `${p.match}%` }} />
                 </div>
               </div>
@@ -579,7 +598,7 @@ const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: str
               {p.gaps.length > 0 && (
                 <div className="mb-4 space-y-1">
                   {p.gaps.map((gap, gi) => (
-                    <p key={gi} className="text-xs text-slate-500 flex items-center gap-1.5">
+                    <p key={gi} className="text-xs text-white/50 flex items-center gap-1.5">
                       <XCircle size={10} className="text-red-400 flex-shrink-0" /> {gap}
                     </p>
                   ))}
@@ -587,11 +606,11 @@ const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: str
               )}
 
               <div className="flex gap-2">
-                <button className="flex-1 bg-slate-900 text-white text-xs font-bold py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                  Express Interest
+                <button className="flex-1 text-xs font-bold py-2 rounded-lg transition-colors tracking-wider" style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.15)' }}>
+                  EXPRESS INTEREST
                 </button>
-                <button className="px-3 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
-                  <ChevronRight size={14} className="text-slate-400" />
+                <button className="px-3 py-2 rounded-lg transition-colors" style={{ border: '1px solid rgba(255,255,255,0.15)', background: 'transparent' }}>
+                  <ChevronRight size={14} className="text-white/40" />
                 </button>
               </div>
             </div>
@@ -644,27 +663,27 @@ const ProgramsTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {programs.map(prog => (
-        <div key={prog.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col">
-          <div className="bg-slate-900 px-5 py-4">
+        <div key={prog.id} className="rounded-xl overflow-hidden flex flex-col" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="px-5 py-4" style={{ background: 'rgba(15,23,42,0.8)' }}>
             <div className="flex items-center justify-between mb-1">
-              <p className="text-white font-bold">{prog.name}</p>
+              <p className="text-white font-bold tracking-wider">{prog.name}</p>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${prog.badgeColour}`}>{prog.badge}</span>
             </div>
             <p className="text-2xl font-black text-white">{prog.price}</p>
-            {prog.discount && <p className="text-xs text-slate-400 mt-0.5">{prog.discount}</p>}
+            {prog.discount && <p className="text-xs text-white/40 mt-0.5">{prog.discount}</p>}
           </div>
           <div className="p-5 flex flex-col flex-1">
-            <p className="text-sm text-slate-600 mb-4 leading-relaxed">{prog.desc}</p>
+            <p className="text-sm text-white/60 mb-4 leading-relaxed">{prog.desc}</p>
             <ul className="space-y-2 mb-5 flex-1">
               {prog.features.map(f => (
-                <li key={f} className="flex items-center gap-2 text-xs text-slate-700">
+                <li key={f} className="flex items-center gap-2 text-xs text-white/70">
                   <CheckCircle size={12} className="text-emerald-500 flex-shrink-0" /> {f}
                 </li>
               ))}
             </ul>
             <button
               onClick={() => onNavigate(prog.route)}
-              className="w-full bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-slate-700 transition-colors"
+              className="w-full text-xs font-bold py-2.5 rounded-lg transition-colors tracking-wider" style={{ background: 'rgba(249,115,22,0.8)', color: 'white', border: '1px solid rgba(249,115,22,0.5)' }}
             >
               {prog.cta}
             </button>
@@ -683,16 +702,17 @@ const AirlinesTab: React.FC<{ airlines: any[] }> = ({ airlines }) => {
   return (
     <div className="space-y-5">
       <div className="relative">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search airlines…"
-          className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-200" />
+          className="w-full pl-9 pr-4 py-2 text-sm rounded-lg text-white outline-none"
+          style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'white' }} />
       </div>
       {filtered.length === 0 ? (
         <div className="text-center py-16"><Plane size={40} className="text-slate-300 mx-auto mb-3" /><p className="text-slate-500 text-sm">No airlines found.</p></div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map((a: any, i: number) => (
-            <div key={a.id ?? i} className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+            <div key={a.id ?? i} className="rounded-xl p-4 transition-all hover:scale-[1.01]" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
                   {a.logo_url
@@ -700,17 +720,17 @@ const AirlinesTab: React.FC<{ airlines: any[] }> = ({ airlines }) => {
                     : <Plane size={16} className="text-slate-400" />}
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900 text-sm">{a.name ?? a.airline_name}</p>
-                  <p className="text-xs text-slate-500">{a.country ?? a.headquarters ?? '—'}</p>
+                  <p className="font-bold text-white text-sm tracking-wide">{a.name ?? a.airline_name}</p>
+                  <p className="text-xs text-white/50">{a.country ?? a.headquarters ?? '—'}</p>
                 </div>
               </div>
               {a.minimum_hours && (
-                <p className="text-xs text-slate-500"><span className="font-semibold text-slate-700">Min hours:</span> {a.minimum_hours.toLocaleString()}</p>
+                <p className="text-xs text-white/50"><span className="font-semibold text-white/70">Min hours:</span> {a.minimum_hours.toLocaleString()}</p>
               )}
               {a.fleet_type && (
-                <p className="text-xs text-slate-500 mt-1"><span className="font-semibold text-slate-700">Fleet:</span> {a.fleet_type}</p>
+                <p className="text-xs text-white/50 mt-1"><span className="font-semibold text-white/70">Fleet:</span> {a.fleet_type}</p>
               )}
-              <button className="mt-3 w-full text-xs text-red-600 font-semibold border border-red-100 rounded-lg py-1.5 hover:bg-red-50 transition-colors flex items-center justify-center gap-1">
+              <button className="mt-3 w-full text-xs font-bold rounded-lg py-1.5 transition-colors flex items-center justify-center gap-1 tracking-wider" style={{ color: '#fb923c', border: '1px solid rgba(249,115,22,0.3)', background: 'rgba(249,115,22,0.1)' }}>
                 View Pathway <ChevronRight size={12} />
               </button>
             </div>
@@ -734,20 +754,20 @@ const ManufacturersTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNav
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
       {manufacturers.map(m => (
-        <div key={m.name} className="bg-white border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+        <div key={m.name} className="rounded-xl p-5 transition-all hover:scale-[1.01]" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center">
               <span className="text-white text-xs font-black">{m.name.slice(0, 2).toUpperCase()}</span>
             </div>
-            <p className="font-bold text-slate-900">{m.name}</p>
+            <p className="font-bold text-white tracking-wider">{m.name}</p>
           </div>
-          <p className="text-xs text-slate-500 mb-3 leading-relaxed">{m.desc}</p>
+          <p className="text-xs text-white/55 mb-3 leading-relaxed">{m.desc}</p>
           <div className="flex flex-wrap gap-1 mb-4">
             {m.aircraft.map(ac => (
-              <span key={ac} className="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">{ac}</span>
+              <span key={ac} className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.65)' }}>{ac}</span>
             ))}
           </div>
-          <button onClick={() => onNavigate('type-rating-search')} className="w-full text-xs text-red-600 font-semibold border border-red-100 rounded-lg py-1.5 hover:bg-red-50 transition-colors">
+          <button onClick={() => onNavigate('type-rating-search')} className="w-full text-xs font-bold rounded-lg py-1.5 transition-colors tracking-wider" style={{ color: '#fb923c', border: '1px solid rgba(249,115,22,0.3)', background: 'rgba(249,115,22,0.1)' }}>
             Find Type Rating Centres
           </button>
         </div>
@@ -759,15 +779,15 @@ const ManufacturersTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNav
 // ─── TAB: ATLAS CV ─────────────────────────────────────────────────────────
 const AtlasCVTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => (
   <div className="space-y-6">
-    <div className="bg-slate-900 rounded-xl p-6 text-center">
+    <div className="rounded-xl p-6 text-center" style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.1)' }}>
       <FileText size={40} className="text-white mx-auto mb-3" />
       <p className="text-white font-bold text-lg mb-1">ATLAS Aviation CV</p>
-      <p className="text-slate-400 text-sm mb-4">Industry-standard formatted CV. Auto-populated from your Recognition Profile. Accepted by airlines using the ATLAS format.</p>
+      <p className="text-white/50 text-sm mb-4">Industry-standard formatted CV. Auto-populated from your Recognition Profile. Accepted by airlines using the ATLAS format.</p>
       <div className="flex gap-3 justify-center">
-        <button onClick={() => onNavigate('atlas-cv-generator')} className="bg-white text-slate-900 text-sm font-bold px-6 py-2.5 rounded-lg hover:bg-slate-100 transition-colors flex items-center gap-2">
+        <button onClick={() => onNavigate('atlas-cv-generator')} className="text-sm font-bold px-6 py-2.5 rounded-lg transition-colors flex items-center gap-2 tracking-wider" style={{ background: 'rgba(249,115,22,0.8)', color: 'white', border: '1px solid rgba(249,115,22,0.5)' }}>
           <Download size={15} /> Generate & Download
         </button>
-        <button onClick={() => onNavigate('atlas-resume')} className="border border-slate-600 text-white text-sm font-bold px-6 py-2.5 rounded-lg hover:border-slate-400 transition-colors flex items-center gap-2">
+        <button onClick={() => onNavigate('atlas-resume')} className="text-sm font-bold px-6 py-2.5 rounded-lg transition-colors flex items-center gap-2 tracking-wider" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
           <Edit3 size={15} /> Edit CV
         </button>
       </div>
@@ -775,8 +795,8 @@ const AtlasCVTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = 
     <SectionCard title="What Your Atlas CV Includes">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {['Flight Hours Summary', 'License & Ratings', 'Type Ratings Held', 'Medical Certificate Status', 'Recognition Score', 'EBT Assessment Result', 'Program Completions', 'Employment History', 'Language Proficiency'].map(item => (
-          <div key={item} className="flex items-center gap-2 text-sm text-slate-700">
-            <CheckCircle size={12} className="text-emerald-500 flex-shrink-0" /> {item}
+          <div key={item} className="flex items-center gap-2 text-xs text-white/65">
+            <CheckCircle size={12} className="text-emerald-400 flex-shrink-0" /> {item}
           </div>
         ))}
       </div>
@@ -794,18 +814,18 @@ const LogbookTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = 
         { label: 'Night Hours',     value: `${(profile?.night_hours ?? 0).toLocaleString()}` },
         { label: 'Instrument Hours',value: `${(profile?.instrument_hours ?? 0).toLocaleString()}` },
       ].map(stat => (
-        <div key={stat.label} className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-          <p className="text-2xl font-black text-slate-900">{stat.value}</p>
-          <p className="text-xs text-slate-500 mt-1">{stat.label}</p>
+        <div key={stat.label} className="rounded-xl p-4 text-center" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <p className="text-2xl font-black text-white">{stat.value}</p>
+          <p className="text-xs text-white/50 mt-1 uppercase tracking-wider">{stat.label}</p>
         </div>
       ))}
     </div>
-    <div className="bg-white border border-slate-200 rounded-xl p-6 text-center">
-      <BookMarked size={36} className="text-slate-300 mx-auto mb-3" />
-      <p className="text-slate-600 font-semibold text-sm mb-2">Digital Logbook</p>
-      <p className="text-slate-400 text-xs mb-4">Log flights, track hours by category, and sync with your Recognition Score automatically.</p>
-      <button onClick={() => onNavigate('digital-logbook')} className="bg-slate-900 text-white text-xs font-bold px-6 py-2.5 rounded-lg hover:bg-slate-700 transition-colors">
-        Open Full Logbook
+    <div className="rounded-xl p-6 text-center" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <BookMarked size={36} className="text-white/20 mx-auto mb-3" />
+      <p className="text-white font-bold text-sm mb-2 tracking-wider">DIGITAL LOGBOOK</p>
+      <p className="text-white/40 text-xs mb-4">Log flights, track hours by category, and sync with your Recognition Score automatically.</p>
+      <button onClick={() => onNavigate('digital-logbook')} className="text-xs font-bold px-6 py-2.5 rounded-lg transition-colors tracking-wider" style={{ background: 'rgba(249,115,22,0.8)', color: 'white', border: '1px solid rgba(249,115,22,0.5)' }}>
+        OPEN FULL LOGBOOK
       </button>
     </div>
   </div>
@@ -822,15 +842,15 @@ const EventsTab: React.FC = () => {
   return (
     <div className="space-y-4">
       {events.map(e => (
-        <div key={e.name} className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-shadow">
+        <div key={e.name} className="rounded-xl p-4 flex items-center gap-4 transition-all hover:scale-[1.005]" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="w-12 h-12 rounded-xl bg-slate-900 flex flex-col items-center justify-center flex-shrink-0">
             <Calendar size={18} className="text-white" />
           </div>
           <div className="flex-1">
-            <p className="font-bold text-slate-900 text-sm">{e.name}</p>
-            <p className="text-xs text-slate-500">{e.location} · {e.date}</p>
+            <p className="font-bold text-white text-sm tracking-wide">{e.name}</p>
+            <p className="text-xs text-white/50">{e.location} · {e.date}</p>
           </div>
-          <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">{e.type}</span>
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>{e.type}</span>
         </div>
       ))}
     </div>
@@ -849,13 +869,13 @@ const NewsroomTab: React.FC = () => {
   return (
     <div className="space-y-4">
       {news.map(n => (
-        <div key={n.title} className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-sm transition-shadow cursor-pointer">
+        <div key={n.title} className="rounded-xl p-4 transition-all hover:scale-[1.005] cursor-pointer" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="font-semibold text-slate-900 text-sm leading-snug mb-1">{n.title}</p>
-              <p className="text-xs text-slate-400">{n.date}</p>
+              <p className="font-semibold text-white text-sm leading-snug mb-1">{n.title}</p>
+              <p className="text-xs text-white/40">{n.date}</p>
             </div>
-            <span className="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full flex-shrink-0">{n.tag}</span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 tracking-wider" style={{ background: 'rgba(239,68,68,0.2)', color: '#fca5a5', border: '1px solid rgba(239,68,68,0.3)' }}>{n.tag}</span>
           </div>
         </div>
       ))}
@@ -872,21 +892,24 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     { title: 'Subscription', items: ['View Plan', 'Upgrade to Recognition Plus', 'Billing History'] },
   ];
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-5 max-w-2xl">
       {sections.map(s => (
         <SectionCard key={s.title} title={s.title}>
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {s.items.map(item => (
-              <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">
-                {item}
-                <ChevronRight size={14} className="text-slate-300" />
+              <button key={item} className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-white/65 rounded-lg transition-all font-bold tracking-wider hover:text-white" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              >
+                {item.toUpperCase()}
+                <ChevronRight size={12} className="text-white/25" />
               </button>
             ))}
           </div>
         </SectionCard>
       ))}
-      <button onClick={onLogout} className="flex items-center gap-2 text-sm text-red-600 font-semibold hover:text-red-800 transition-colors px-3 py-2">
-        <LogOut size={15} /> Sign Out
+      <button onClick={onLogout} className="flex items-center gap-2 text-xs text-red-400 font-bold hover:text-red-300 transition-colors px-3 py-2 tracking-wider">
+        <LogOut size={14} /> SIGN OUT
       </button>
     </div>
   );
@@ -969,30 +992,30 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const activeNavItem = NAV_ITEMS.find(n => n.id === activeTab);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <div className="relative min-h-screen flex flex-col overflow-hidden font-sans">
 
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
-      )}
+      {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
+      <div className="fixed inset-0 z-0">
+        <MeshGradient
+          className="w-full h-full"
+          colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
+          speed={0.22}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+        <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
+      </div>
 
-      {/* ── SIDEBAR ── */}
-      <aside className={`fixed lg:static inset-y-0 left-0 z-40 flex flex-col w-60 bg-white border-r border-slate-200 transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-
-        {/* Logo */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
-          <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center flex-shrink-0">
-            <Plane size={14} className="text-white" />
-          </div>
-          <div>
-            <p className="text-xs font-black text-slate-900 leading-none">PILOT</p>
-            <p className="text-xs font-black text-red-600 leading-none">RECOGNITION</p>
-          </div>
-          <button className="ml-auto lg:hidden" onClick={() => setSidebarOpen(false)}><X size={16} className="text-slate-400" /></button>
-        </div>
-
-        {/* Nav */}
-        <nav className="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
+      {/* ── TOP NAV BAR (Portal 2 style) ── */}
+      <div
+        className="relative z-50 flex items-center justify-between px-4 py-2 flex-shrink-0"
+        style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}
+      >
+        {/* Left — hamburger + nav items */}
+        <div className="flex items-center gap-1">
+          <button className="lg:hidden mr-2 text-white/70 hover:text-white" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            <Menu size={20} />
+          </button>
           {NAV_ITEMS.map(item => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -1000,74 +1023,122 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               <button
                 key={item.id}
                 onClick={() => setTab(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${isActive ? 'bg-slate-900 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
+                className="relative px-3 py-2 flex items-center gap-1.5 transition-all duration-200 hidden lg:flex"
+                style={{
+                  background: isActive ? 'rgba(255,255,255,0.95)' : 'transparent',
+                  color: isActive ? '#0f172a' : 'rgba(255,255,255,0.65)',
+                  borderBottom: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
+                }}
               >
-                <Icon size={16} className={isActive ? 'text-white' : 'text-slate-400'} />
-                <span className="flex-1 text-left">{item.label}</span>
-                {item.badge ? <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{item.badge}</span> : null}
+                <Icon size={13} />
+                <span className="text-[11px] font-bold tracking-wider">{item.label.toUpperCase()}</span>
               </button>
             );
           })}
-        </nav>
-
-        {/* Bottom user card */}
-        <div className="border-t border-slate-100 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-              {profileData?.profile_image_url
-                ? <img src={profileData.profile_image_url} alt={displayName} className="w-8 h-8 rounded-full object-cover" />
-                : initials}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-slate-800 truncate">{displayName}</p>
-              <p className="text-[10px] text-slate-400 truncate">{currentUser?.email}</p>
-            </div>
-            <button onClick={handleLogout} className="text-slate-400 hover:text-slate-700 transition-colors flex-shrink-0">
-              <LogOut size={14} />
-            </button>
-          </div>
         </div>
-      </aside>
 
-      {/* ── MAIN ── */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-
-        {/* Top bar */}
-        <header className="flex items-center gap-4 bg-white border-b border-slate-200 px-5 py-3 flex-shrink-0">
-          <button className="lg:hidden text-slate-500 hover:text-slate-800" onClick={() => setSidebarOpen(true)}>
-            <Menu size={20} />
-          </button>
-
-          <div>
-            <p className="text-base font-bold text-slate-900">{activeNavItem?.label ?? 'Platform'}</p>
-            <p className="text-xs text-slate-400 hidden sm:block">pilotrecognition.com</p>
-          </div>
-
-          <div className="flex-1" />
-
+        {/* Right — search + bell + avatar */}
+        <div className="flex items-center gap-3">
           {/* Search */}
-          <div className="hidden md:flex items-center gap-2 bg-slate-100 rounded-lg px-3 py-1.5 w-48">
-            <Search size={13} className="text-slate-400" />
-            <input placeholder="Search…" className="bg-transparent text-xs text-slate-700 outline-none placeholder:text-slate-400 w-full" />
+          <div className="hidden md:flex items-center gap-2 bg-white/10 rounded-lg px-3 py-1.5 w-40">
+            <Search size={12} className="text-white/50" />
+            <input placeholder="Search…" className="bg-transparent text-xs text-white outline-none placeholder:text-white/40 w-full" />
           </div>
 
-          {/* Notifications */}
-          <button className="relative text-slate-500 hover:text-slate-800 transition-colors">
-            <Bell size={18} />
+          {/* Notification bell */}
+          <button className="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all">
+            <Bell size={16} />
             {notifCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{notifCount}</span>
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{notifCount}</span>
             )}
           </button>
 
           {/* Avatar */}
-          <button onClick={() => setTab('profile')} className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+          <button
+            onClick={() => setTab('profile')}
+            className="w-11 h-14 bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
+            style={{ borderRadius: '45% / 50%' }}
+          >
             {profileData?.profile_image_url
-              ? <img src={profileData.profile_image_url} alt={displayName} className="w-8 h-8 rounded-full object-cover" />
-              : initials}
+              ? <img src={profileData.profile_image_url} alt={displayName} className="w-full h-full object-cover" />
+              : <span className="text-base font-bold text-slate-700">{initials}</span>}
           </button>
-        </header>
+        </div>
+      </div>
 
-        {/* Content */}
+      {/* ── LAYOUT: sidebar + content ── */}
+      <div className="relative z-40 flex flex-1 overflow-hidden">
+
+        {/* Mobile sidebar overlay */}
+        {sidebarOpen && (
+          <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        )}
+
+        {/* ── SIDEBAR (glass, Portal 2 style) ── */}
+        <aside
+          className={`fixed lg:static inset-y-0 left-0 z-40 flex flex-col w-60 flex-shrink-0 transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+          style={{ background: 'rgba(15,23,42,0.85)', backdropFilter: 'blur(12px)', borderRight: '1px solid rgba(255,255,255,0.08)' }}
+        >
+          {/* Logo */}
+          <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="w-7 h-7 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Plane size={14} className="text-white" />
+            </div>
+            <div>
+              <p className="text-[11px] font-black text-white leading-none tracking-widest">PILOT</p>
+              <p className="text-[11px] font-black text-orange-400 leading-none tracking-widest">RECOGNITION</p>
+            </div>
+            <button className="ml-auto lg:hidden text-white/50 hover:text-white" onClick={() => setSidebarOpen(false)}><X size={15} /></button>
+          </div>
+
+          {/* Nav items */}
+          <nav className="flex-1 px-2 py-3 overflow-y-auto space-y-0.5">
+            {NAV_ITEMS.map(item => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setTab(item.id)}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
+                  style={{
+                    background: isActive ? 'rgba(255,255,255,0.12)' : 'transparent',
+                    color: isActive ? '#fff' : 'rgba(255,255,255,0.55)',
+                    borderLeft: isActive ? '2px solid #f97316' : '2px solid transparent',
+                  }}
+                >
+                  <Icon size={15} className={isActive ? 'text-orange-400' : ''} />
+                  <span className={`flex-1 text-left text-xs font-bold tracking-wider ${isActive ? 'text-white' : ''}`}>
+                    {item.label.toUpperCase()}
+                  </span>
+                  {item.badge ? <span className="bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{item.badge}</span> : null}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Bottom user strip */}
+          <div className="px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="flex items-center gap-3">
+              <div
+                className="w-9 h-9 rounded-full bg-slate-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 overflow-hidden"
+              >
+                {profileData?.profile_image_url
+                  ? <img src={profileData.profile_image_url} alt={displayName} className="w-full h-full object-cover" />
+                  : initials}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-white truncate">{displayName}</p>
+                <p className="text-[10px] text-white/40 truncate">{currentUser?.email}</p>
+              </div>
+              <button onClick={handleLogout} className="text-white/30 hover:text-white/80 transition-colors flex-shrink-0">
+                <LogOut size={14} />
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        {/* ── MAIN CONTENT ── */}
         <main className="flex-1 overflow-y-auto p-5 lg:p-7">
           {renderContent()}
         </main>
