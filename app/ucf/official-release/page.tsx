@@ -3971,13 +3971,25 @@ export default function UCFOfficialReleasePage() {
             DIGITAL CREDENTIAL WALLET
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Credentials Are Locked, Not Portable</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">A pilot's verified credentials — license, medical certificate, type ratings, background check results — are currently scattered across issuing authorities, airline HR systems, and paper files. When a pilot changes operators, those credentials must be re-verified from scratch. Every time. The verification industry exists almost entirely to redo work that has already been done. The pilot does not own their own verified record. The employer does. When the employment ends, the verification disappears.</p>
-          <p className="text-slate-700 leading-relaxed mb-6">The Digital Credential Wallet is the structural fix. One wallet per pilot. Verified once. Controlled by the pilot. Shareable to any operator with a single consent action. Built on the same data layer as the Recognition Profile — but portable, persistent, and independent of any single employer relationship.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Architecture: We Display the Token. We Never Hold the Data.</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition is a <strong>neutral display layer</strong>. The platform does not store pilot credentials, document scans, license numbers, or personal identification data. Instead, credential data is held exclusively by a <strong>third-party secure vault</strong> — the pilot's chosen data custodian. Veremark independently verifies that data against official registries. PilotRecognition receives only a <strong>triangulated verification token</strong> — the outcome of both signals agreeing — and displays that token to the pilot and, with consent, to operators.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This architecture means the platform carries no credential liability. The vault holds the data. Veremark verifies it. We display the result. <strong>The pilot controls all three relationships independently.</strong></p>
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-relaxed">
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">Triangulation Signal Flow</p>
+            <p>Pilot <span className="text-slate-500">→</span> <span className="text-blue-400">Third-Party Vault</span> <span className="text-slate-500">(data stored here, pilot consent given)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ vault sends data to Veremark with pilot consent</span></p>
+            <p><span className="text-blue-400">Third-Party Vault</span> <span className="text-slate-500">→</span> <span className="text-yellow-400">Veremark</span> <span className="text-slate-500">(independent verification against CAAP / NBI / registries)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ Veremark sends token to platform</span></p>
+            <p><span className="text-yellow-400">Veremark</span> <span className="text-slate-500">→</span> <span className="text-emerald-400">PilotRecognition</span> <span className="text-slate-500">(token only — no raw data)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ platform compares both signals</span></p>
+            <p><span className="text-emerald-400">PilotRecognition</span> <span className="text-slate-500">→</span> <span className="text-white font-bold">TRIANGULATED ✓</span> <span className="text-slate-500">(vault token + Veremark token both agree)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ displayed to pilot and operators</span></p>
+            <p><span className="text-white">Wallet Status: </span><span className="text-emerald-400 font-bold">PRE-CLEARED</span></p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
-              { t: 'What the Wallet Contains', items: ['CAAP / GCAA / EASA pilot license status (live pull)', 'Class 1 Medical Certificate with expiry tracking', 'Type ratings held and validity status', 'NBI / Criminal background check result', 'Identity verification — passport, citizenship, address', 'NTC Radio Operator license', 'Employer-requested verifications — timestamped', 'Consent log — who accessed what and when'] },
-              { t: 'How It Works', items: ['Pilot initiates verification once through the platform', 'Veremark runs checks and writes results to wallet', 'Wallet status: Pre-Cleared · Partial · Expired · Pending', 'Pilot shares wallet with operator via consent toggle', 'Operator receives live status — no re-verification needed', 'Wallet auto-flags expired credentials before pilot notices', 'Airlines pay Enterprise tier for pull-API wallet access'] },
+              { t: 'What the Wallet Displays', items: ['License status: Valid / Expired / Suspended', 'Medical certificate: Valid / Expired + expiry date', 'Type ratings held and currency status', 'Background check: Clear / Flagged', 'Identity: Verified / Unverified', 'Triangulation status: Both signals agree / Mismatch flagged', 'Pre-Cleared badge — issued only on full triangulation', 'Consent log — pilot controls who sees what'] },
+              { t: 'What the Wallet Never Contains', items: ['Raw license document or scan', 'Passport or national ID image', 'License or PEL number', 'Medical certificate document', 'NBI clearance document', 'Any personally identifiable data', 'Any document stored in PilotRecognition servers', 'Any data not explicitly consented by pilot'] },
             ].map(col => (
               <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
                 <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
@@ -3987,7 +3999,7 @@ export default function UCFOfficialReleasePage() {
           </div>
           <div className="my-6 px-5 py-4 border-l-4 border-emerald-500 bg-emerald-50 rounded-r-lg">
             <p className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-1">Platform Status</p>
-            <p className="text-slate-700 leading-relaxed">Wallet infrastructure is live. Tables: <code className="bg-slate-100 px-1 rounded text-xs">pilot_verification_wallet</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_checks</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Veremark Layer 1 integration built. Pre-Cleared status logic active.</p>
+            <p className="text-slate-700 leading-relaxed">Wallet infrastructure is live. Tables: <code className="bg-slate-100 px-1 rounded text-xs">pilot_verification_wallet</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_checks</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Token-only storage confirmed — no raw credential data in any table. Triangulation logic active.</p>
           </div>
 
           <hr className="my-8 border-slate-200" />
@@ -3997,9 +4009,35 @@ export default function UCFOfficialReleasePage() {
             IDENTITY &amp; DOCUMENT VERIFICATION
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Foundation Layer — Who Is This Pilot?</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Background checks and license verification mean nothing without first establishing identity. A verified license attached to an unverified identity is worthless. The identity and document verification layer sits beneath all other verification checks — it is the trust foundation that makes every credential above it meaningful.</p>
-          <p className="text-slate-700 leading-relaxed mb-6">Executed through Veremark's Layer 1 pipeline, the identity layer verifies the person before verifying their credentials. Passport authenticity, citizenship, address, and biometric matching establish the individual. Everything built above that is anchored to a verified human, not just a document number.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Two Independent Sources. Neither Talks to the Other. Both Must Agree.</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The triangulation model is the platform's core fraud-prevention architecture. Credential data is sourced from the <strong>third-party vault</strong> — the authoritative store the pilot consented to — and independently cross-checked by <strong>Veremark</strong> against official registries (CAAP, NBI, passport authorities). PilotRecognition compares both signals. If they match, a <strong>triangulated verification token</strong> is issued. If they conflict, the check is flagged for review.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This makes fraud structurally impossible. A pilot cannot falsify a credential that must simultaneously match an independent vault record and an independent registry check that have never communicated with each other. The two signals are blind to each other — they only talk to PilotRecognition, which acts as the neutral comparison layer.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Credential</th>
+                <th className="text-left px-4 py-2 font-semibold">Vault Signal</th>
+                <th className="text-left px-4 py-2 font-semibold">Veremark Signal</th>
+                <th className="text-left px-4 py-2 font-semibold">Triangulated Result</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { cred: 'CAAP Pilot License', vault: 'Valid · Exp 2030-10-23', veremark: 'Valid · Exp 2030-10-23', result: 'MATCH → Pre-Cleared ✓', ok: true },
+                  { cred: 'Class 1 Medical', vault: 'Expired · 2026-05-02', veremark: 'Expired · 2026-05-02', result: 'MATCH → Flagged Expired ⚠️', ok: false },
+                  { cred: 'NBI Clearance', vault: 'Clear', veremark: 'Clear', result: 'MATCH → Verified ✓', ok: true },
+                  { cred: 'Identity / Passport', vault: 'Authentic', veremark: 'Authentic', result: 'MATCH → Verified ✓', ok: true },
+                  { cred: 'Any Credential', vault: 'Value A', veremark: 'Value B', result: 'MISMATCH → Flagged 🚩', ok: false },
+                ] as {cred:string;vault:string;veremark:string;result:string;ok:boolean}[]).map((row, i) => (
+                  <tr key={row.cred} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100 font-medium">{row.cred}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-blue-300">{row.vault}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-yellow-300">{row.veremark}</td>
+                    <td className={`px-4 py-2 border-b border-slate-700 font-semibold ${row.ok ? 'text-emerald-400' : 'text-red-400'}`}>{row.result}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead><tr className="bg-slate-900 text-white">
@@ -4084,12 +4122,24 @@ export default function UCFOfficialReleasePage() {
             DATA PRIVACY &amp; CONSENT LAYER
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Pilot Owns Their Data — Not the Employer</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">The entire platform is built on a single principle that the rest of the aviation industry has ignored: <strong>the pilot owns their verified record.</strong> Not the airline. Not the training organization. Not the background check company. The pilot. Every verification check, every credential entry, every access event is logged with the pilot's explicit consent captured before any action runs. This is not a compliance checkbox — it is the architectural foundation of the platform's trust model.</p>
-          <p className="text-slate-700 leading-relaxed mb-6">Compliance frameworks covered: GDPR (EU pilots), Data Privacy Act 2012 (Philippines), PDPA (Singapore/Thailand), UAE Data Protection Law. Every consent event is timestamped, versioned, and stored in an immutable audit log. Pilots can withdraw consent at any time. Operators who have pulled data are notified of withdrawal. No data is retained beyond the consent period without explicit renewal.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">We Remain Neutral. Your Data Is Never Ours.</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition's legal and architectural position is one of <strong>complete neutrality</strong>. The platform does not hold pilot credentials. Credential data is secured by the <strong>third-party vault</strong> the pilot consents to. Veremark verifies it. PilotRecognition receives only the triangulated token — an outcome signal, not the underlying data. What the platform stores is the equivalent of a pass/fail result, not the exam paper.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This means PilotRecognition is not a data custodian for sensitive credentials. It is a <strong>token display and consent management layer</strong>. The pilot controls three separate consent relationships: with the vault (data storage), with Veremark (verification), and with PilotRecognition (token display to operators). Revoking any one of the three immediately invalidates the token chain.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Third-Party Vault', color: 'text-blue-600', items: ['Holds raw credential data', 'Pilot uploads documents here', 'Pilot signs vault DPA directly', 'Vault carries data custodian liability', 'Sends data to Veremark on pilot consent', 'Examples: Persona, Jumio, Onfido, Veremark Vault'] },
+              { t: 'Veremark', color: 'text-yellow-600', items: ['Receives data from vault', 'Independently checks CAAP / NBI / registries', 'Issues verification token to PilotRecognition', 'Carries verification provider liability', 'DPA signed between pilot and Veremark', 'Never shares raw data with PilotRecognition'] },
+              { t: 'PilotRecognition', color: 'text-emerald-600', items: ['Receives triangulated token only', 'Stores: status, expiry date, token reference', 'Never stores documents or PII credentials', 'Displays token to pilot and consented operators', 'Manages consent log for operator access', 'Zero credential liability — neutral display layer'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${col.color}`}>{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
-              { t: 'Pilot Rights', items: ['Full visibility of who accessed their wallet and when', 'Consent withdrawal at any time — instant effect', 'Data export in structured format (GDPR Art. 20)', 'Right to erasure — full wallet deletion on request', 'Version history of all consent events', 'Notification when operator accesses profile'] },
+              { t: 'Pilot Rights', items: ['Revoke vault consent → data deleted from vault', 'Revoke Veremark consent → token invalidated', 'Revoke display consent → token hidden from operators', 'Data export from vault in structured format (GDPR Art. 20)', 'Full audit log of every operator access event', 'Notification when any operator views wallet token'] },
               { t: 'Compliance Coverage', items: ['GDPR — EU General Data Protection Regulation', 'DPA 2012 — Philippines Data Privacy Act', 'PDPA — Singapore Personal Data Protection Act', 'UAE Federal Decree-Law No. 45 of 2021', 'ICAO Annex 1 — pilot record data standards', 'ISO 27001 alignment for data security management'] },
             ].map(col => (
               <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
@@ -4098,9 +4148,13 @@ export default function UCFOfficialReleasePage() {
               </div>
             ))}
           </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-slate-900 bg-slate-900 rounded-r-lg">
+            <p className="text-sm font-bold text-white uppercase tracking-widest mb-2">The Pitch Position</p>
+            <p className="text-slate-300 leading-relaxed italic">"PilotRecognition holds no pilot credentials. Your data is secured by a third-party vault. Veremark verifies it independently with your consent. We display only the triangulated outcome — a token. Not your data. Not our liability. Your control."</p>
+          </div>
           <div className="my-6 px-5 py-4 border-l-4 border-emerald-500 bg-emerald-50 rounded-r-lg">
             <p className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-1">Platform Status</p>
-            <p className="text-slate-700 leading-relaxed">Consent infrastructure is live. Table: <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Every verification check requires a logged consent event before execution. Audit trail immutable by design.</p>
+            <p className="text-slate-700 leading-relaxed">Consent infrastructure live. Table: <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Token-only storage confirmed across all <code className="bg-slate-100 px-1 rounded text-xs">verification_checks</code> rows. Triangulation signal comparison logic in development.</p>
           </div>
 
           <hr className="my-10 border-slate-300" />
