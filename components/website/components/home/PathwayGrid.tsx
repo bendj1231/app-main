@@ -138,17 +138,17 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             loggedInImage: '/typeratingsearch.png',
             enrolledImage: '/typeratingsearch.png',
             enrolledImages: ['/pathway2.png', '/images/airline-operations.png', '/typeratingsearch.png'],
-            title: 'Discover Pathways',
-            loggedInTitle: 'Discover Pathways',
-            enrolledTitle: 'Discover Pathways',
-            dynamicTitles: ['Discover Pathways', 'Discover Expectations', 'Discover Type Ratings'],
-            dynamicSubtitles: ['Explore your aviation career options', 'Match your profile to airline standards', 'Find your perfect aircraft type rating'],
-            subtitle: 'Discover additional pathways and opportunities',
-            loggedInSubtitle: 'Discover additional pathways and opportunities',
-            enrolledSubtitle: 'Discover additional pathways and opportunities',
+            title: 'Know Your Gap',
+            loggedInTitle: 'Your Gap Analysis',
+            enrolledTitle: 'Your Gap Analysis',
+            dynamicTitles: ['Know Your Gap', 'See Airline Requirements', 'Close the Gap'],
+            dynamicSubtitles: ['See exactly where you stand against any airline pathway — before you apply', 'Verified hours, ratings, EBT & nationality requirements. Live and comparable.', 'Get a structured route from where you are to where airlines need you'],
+            subtitle: 'See exactly where you stand against any airline pathway — before you apply',
+            loggedInSubtitle: 'Live profile matched against verified airline requirements — see your exact gaps',
+            enrolledSubtitle: 'Live profile matched against verified airline requirements — see your exact gaps',
             icon: null,
-            badge: null,
-            accentColor: 'from-purple-500/80 to-pink-400/80',
+            badge: 'New',
+            accentColor: 'from-blue-500/80 to-cyan-400/80',
             isCarousel: true,
             isCarouselWhenLoggedIn: true,
             isCarouselWhenEnrolled: true,
@@ -926,7 +926,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
     return (
         <div 
-            className="relative z-40 flex flex-col items-center justify-start pt-16 sm:pt-20 md:pt-24 lg:pt-28 xl:pt-32 pb-10 px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 pointer-events-auto w-full"
+            className="relative z-40 flex flex-col items-center justify-start pt-0 pb-10 px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 pointer-events-auto w-full"
         >
 
             <div

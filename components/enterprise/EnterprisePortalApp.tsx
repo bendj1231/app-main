@@ -1703,9 +1703,225 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
+// ─── Business Overview (Admin Only) ──────────────────────────────────────────
+function BusinessOverview() {
+  const [region, setRegion] = useState<'PH' | 'APAC' | 'Global'>('PH');
+
+  const PILLARS = [
+    { id: 'P1', hub: 'A', name: 'Commercial Airlines', revenue: '$1,000/yr enterprise + $500 success fee', referral: true, notes: 'Free pathway listing. Enterprise pulls from verified pilot pool. Airlines refer pilots → $0 referral cost, $90.90 net/pilot.' },
+    { id: 'P2', hub: 'A', name: 'Cargo & Freight', revenue: '$1,000/yr enterprise + $100/yr listings', referral: true, notes: 'Same model as P1. Cargo operators post freighter pathway cards.' },
+    { id: 'P3', hub: 'A', name: 'Charter & Business Aviation', revenue: '$1,000/yr enterprise + $100/yr listings', referral: true, notes: 'Private jet, helicopter, VIP. Premium pathways $49 each or $199/yr bundle.' },
+    { id: 'P4', hub: 'A', name: 'Emerging Sectors (AAM)', revenue: '$500/yr + custom', referral: false, notes: 'Urban air mobility, drones, air taxi. Early adopter pricing.' },
+    { id: 'P5', hub: 'A', name: 'Flight Training (ATOs)', revenue: '$20 referral per converted pilot', referral: true, notes: '48 schools in PH × 50 grads = 2,400 pilots/yr pipeline. $20 cut per sign-up.' },
+    { id: 'P6', hub: 'A', name: 'Type Rating Centers', revenue: '$20 referral per converted pilot', referral: true, notes: '~18 centers in PH × 40 pilots/yr = 720 pilots/yr. Highest-intent segment.' },
+    { id: 'P7', hub: 'A', name: 'Military & Defense', revenue: 'Custom enterprise', referral: false, notes: 'Transition pathways from military to commercial. Custom pricing.' },
+    { id: 'P8', hub: 'C', name: 'Banking & Financial', revenue: 'Partnership / referral', referral: false, notes: 'Pilot loan products, cadet financing. Revenue share model.' },
+    { id: 'P9', hub: 'C', name: 'Aviation Insurance', revenue: 'Partnership / referral', referral: false, notes: 'Verification-linked insurance discounts. Revenue share.' },
+    { id: 'P10', hub: 'C', name: 'Legal & Regulatory Bodies', revenue: 'Data licensing', referral: false, notes: 'CAAP, GCAA, EASA. Regulatory data feeds.' },
+    { id: 'P11', hub: 'D', name: 'Background Checks & Verification', revenue: '$99/yr pilot subscription', referral: true, notes: 'Core monetization. $8 Veremark cost. $70.90 net after $20 referral. Renewals near $99 net.' },
+    { id: 'P12', hub: 'D', name: 'Flight Data & Navigation Apps', revenue: 'API partnership', referral: false, notes: 'ForeFlight, Garmin Pilot. Data feed partnerships.' },
+    { id: 'P13', hub: 'D', name: 'Aeromedical Examiners', revenue: '$100/yr listing', referral: false, notes: 'AMEs list on platform. Pilots find verified medical examiners.' },
+    { id: 'P14', hub: 'E', name: 'Pilot Mentors & Unions', revenue: 'Free / advocacy', referral: true, notes: 'Mentor network drives pilot-to-pilot referrals. $20/referral.' },
+    { id: 'P15', hub: 'E', name: 'Manufacturers & OEMs', revenue: '$20 referral + listing', referral: true, notes: 'Airbus, Boeing, ATR, Embraer, Bombardier. Post type rating requirements. Referral codes: MFR-AIRBUS etc.' },
+    { id: 'UNI', hub: 'A', name: 'Aviation Universities', revenue: '$20 referral per pilot', referral: true, notes: 'University aviation programs. Same model as ATOs.' },
+    { id: 'REC', hub: 'A', name: 'Recruitment Agencies', revenue: '$20 referral + $500 success fee', referral: true, notes: 'Aviation-specific recruiters. Referral + success fee on placement.' },
+    { id: 'INF', hub: 'E', name: 'Influencers (Aviation)', revenue: '$20 affiliate per conversion', referral: true, notes: 'Airport Guy (~500K), Financial Pilot (~100K), 74 Gear (~600K). Affiliate link never expires.' },
+  ];
+
+  const REGIONS: Record<string, { pilots: number; schools: number; trCenters: number; airlines: number; convRate: number; label: string }> = {
+    PH: { pilots: 3120, schools: 48, trCenters: 18, airlines: 4, convRate: 0.25, label: 'Philippines' },
+    APAC: { pilots: 15000, schools: 220, trCenters: 80, airlines: 35, convRate: 0.15, label: 'Asia Pacific' },
+    Global: { pilots: 80000, schools: 1200, trCenters: 400, airlines: 120, convRate: 0.10, label: 'Global' },
+  };
+
+  const r = REGIONS[region];
+  const convertedPilots = Math.round(r.pilots * r.convRate);
+  const referralPilots = Math.round(convertedPilots * 0.5);
+  const airlinePilots = Math.round(r.airlines * 1100 * r.convRate);
+  const totalPilots = convertedPilots + referralPilots + airlinePilots;
+
+  const pilotRevenue = totalPilots * 99;
+  const veremarkCost = totalPilots * 8;
+  const referralCost = (convertedPilots + referralPilots) * 20;
+  const overhead = 45 * 12;
+  const enterpriseRevenue = r.airlines * 1000;
+  const netProfit = pilotRevenue + enterpriseRevenue - veremarkCost - referralCost - overhead;
+  const margin = Math.round((netProfit / (pilotRevenue + enterpriseRevenue)) * 100);
+
+  const hubColors: Record<string, string> = {
+    A: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+    C: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+    D: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+    E: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <TrendingUp className="w-6 h-6 text-emerald-400" /> Business Overview
+        </h1>
+        <p className="text-slate-400 text-sm mt-1">UCF pillars · referral network · cost & profit model. Admin eyes only.</p>
+      </div>
+
+      {/* Region Selector */}
+      <div className="flex gap-2">
+        {(['PH', 'APAC', 'Global'] as const).map(reg => (
+          <button key={reg} onClick={() => setRegion(reg)}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+              region === reg ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30' : 'text-slate-400 hover:text-white bg-slate-800/40'
+            }`}>
+            {REGIONS[reg].label}
+          </button>
+        ))}
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: 'Total Pilots/yr', value: totalPilots.toLocaleString(), sub: `${convertedPilots.toLocaleString()} organic + ${referralPilots.toLocaleString()} p2p + ${airlinePilots.toLocaleString()} airline`, color: 'text-blue-400' },
+          { label: 'Gross Revenue', value: `$${(pilotRevenue + enterpriseRevenue).toLocaleString()}`, sub: `$${pilotRevenue.toLocaleString()} pilots + $${enterpriseRevenue.toLocaleString()} enterprise`, color: 'text-emerald-400' },
+          { label: 'Net Profit', value: `$${netProfit.toLocaleString()}`, sub: `${margin}% margin · solo operator`, color: 'text-emerald-400' },
+          { label: 'All Costs', value: `$${(veremarkCost + referralCost + overhead).toLocaleString()}`, sub: `Veremark $${veremarkCost.toLocaleString()} · Referrals $${referralCost.toLocaleString()}`, color: 'text-red-400' },
+        ].map(k => (
+          <div key={k.label} className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5">
+            <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">{k.label}</p>
+            <p className={`text-2xl font-bold ${k.color}`}>{k.value}</p>
+            <p className="text-slate-500 text-xs mt-1">{k.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Cost Breakdown */}
+      <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-6">
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><DollarSign className="w-5 h-5 text-amber-400" /> Per-Pilot Unit Economics</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr className="text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700">
+              <th className="text-left py-2 pr-4">Item</th>
+              <th className="text-right py-2 pr-4">School/TR/P2P Referral</th>
+              <th className="text-right py-2 pr-4">Airline/Manufacturer Referral</th>
+              <th className="text-right py-2">Renewal (Yr 2+)</th>
+            </tr></thead>
+            <tbody className="divide-y divide-slate-700/50">
+              {[
+                { item: 'Revenue', school: '$99.00', airline: '$99.00', renewal: '$99.00', highlight: false },
+                { item: 'Veremark cost', school: '-$8.00', airline: '-$8.00', renewal: '$0.00', highlight: false },
+                { item: 'Referral fee', school: '-$20.00', airline: '$0.00', renewal: '$0.00', highlight: false },
+                { item: 'USDC fee (~0.1%)', school: '-$0.10', airline: '-$0.10', renewal: '-$0.10', highlight: false },
+                { item: 'Net profit', school: '$70.90', airline: '$90.90', renewal: '$98.90', highlight: true },
+                { item: 'Margin', school: '71.6%', airline: '91.8%', renewal: '99.9%', highlight: true },
+              ].map(row => (
+                <tr key={row.item} className={row.highlight ? 'text-emerald-400 font-bold' : 'text-slate-300'}>
+                  <td className="py-2 pr-4">{row.item}</td>
+                  <td className="text-right py-2 pr-4">{row.school}</td>
+                  <td className="text-right py-2 pr-4">{row.airline}</td>
+                  <td className="text-right py-2">{row.renewal}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Referral Network */}
+      <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-6">
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><Users className="w-5 h-5 text-blue-400" /> Referral Network — {r.label}</h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { label: 'Flight Schools', count: r.schools, pilots: `${Math.round(r.schools * 50 * r.convRate).toLocaleString()} pilots/yr`, fee: '$20/pilot', color: 'text-blue-400' },
+            { label: 'Type Rating Centers', count: r.trCenters, pilots: `${Math.round(r.trCenters * 40 * r.convRate).toLocaleString()} pilots/yr`, fee: '$20/pilot', color: 'text-purple-400' },
+            { label: 'Airlines (free)', count: r.airlines, pilots: `${airlinePilots.toLocaleString()} pilots/yr`, fee: '$0 — free channel', color: 'text-emerald-400' },
+            { label: 'Manufacturers', count: 5, pilots: 'Seeded: Airbus, Boeing, ATR, Embraer, Bombardier', fee: '$20/pilot', color: 'text-amber-400' },
+          ].map(ch => (
+            <div key={ch.label} className="bg-slate-900/50 border border-slate-700 rounded-xl p-4">
+              <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">{ch.label}</p>
+              <p className={`text-xl font-bold ${ch.color}`}>{ch.count}</p>
+              <p className="text-slate-300 text-xs mt-1">{ch.pilots}</p>
+              <p className="text-slate-500 text-xs mt-1">{ch.fee}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 bg-slate-900/40 rounded-xl p-4 text-xs text-slate-400">
+          <span className="text-white font-semibold">Influencer channel (separate):</span> Airport Guy ~500K · Financial Pilot ~100K · 74 Gear ~600K · Mentour Pilot ~900K. Affiliate $20/conversion. 0.1% conversion = 2,100 pilots/yr, $148,890 net.
+        </div>
+      </div>
+
+      {/* UCF Pillars Table */}
+      <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-6">
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><Globe className="w-5 h-5 text-purple-400" /> UCF Pillars — Revenue Map</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr className="text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700">
+              <th className="text-left py-2 pr-3">Hub</th>
+              <th className="text-left py-2 pr-3">Pillar</th>
+              <th className="text-left py-2 pr-3">Revenue Model</th>
+              <th className="text-left py-2 pr-3">Referral</th>
+              <th className="text-left py-2">Notes</th>
+            </tr></thead>
+            <tbody className="divide-y divide-slate-700/50">
+              {PILLARS.map(p => (
+                <tr key={p.id} className="text-slate-300 hover:bg-slate-700/20 transition-colors">
+                  <td className="py-2 pr-3">
+                    <span className={`text-xs px-2 py-0.5 rounded-full border ${hubColors[p.hub] || 'bg-slate-700 text-slate-400 border-slate-600'}`}>
+                      Hub {p.hub}
+                    </span>
+                  </td>
+                  <td className="py-2 pr-3 font-medium text-white text-xs whitespace-nowrap">{p.id} — {p.name}</td>
+                  <td className="py-2 pr-3 text-emerald-400 text-xs whitespace-nowrap">{p.revenue}</td>
+                  <td className="py-2 pr-3 text-center">{p.referral ? <span className="text-emerald-400 text-xs">✓ $20</span> : <span className="text-slate-600 text-xs">—</span>}</td>
+                  <td className="py-2 text-slate-400 text-xs max-w-xs">{p.notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 3-Year Projection */}
+      <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-6">
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-emerald-400" /> 3-Year Projection — {r.label}</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr className="text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700">
+              <th className="text-left py-2 pr-4">Year</th>
+              <th className="text-right py-2 pr-4">New Pilots</th>
+              <th className="text-right py-2 pr-4">Renewals</th>
+              <th className="text-right py-2 pr-4">Gross Revenue</th>
+              <th className="text-right py-2 pr-4">All Costs</th>
+              <th className="text-right py-2">Net Profit</th>
+            </tr></thead>
+            <tbody className="divide-y divide-slate-700/50">
+              {[1, 2, 3].map(yr => {
+                const newP = totalPilots;
+                const renewals = yr === 1 ? 0 : Math.round(totalPilots * (yr - 1) * 0.5);
+                const rev = (newP * 99) + (renewals * 99) + enterpriseRevenue;
+                const costs = (newP * 8) + ((convertedPilots + referralPilots) * 20) + overhead;
+                const net = rev - costs;
+                return (
+                  <tr key={yr} className={yr === 3 ? 'text-emerald-400 font-bold' : 'text-slate-300'}>
+                    <td className="py-2 pr-4">Year {yr}</td>
+                    <td className="text-right py-2 pr-4">{newP.toLocaleString()}</td>
+                    <td className="text-right py-2 pr-4">{renewals.toLocaleString()}</td>
+                    <td className="text-right py-2 pr-4">${rev.toLocaleString()}</td>
+                    <td className="text-right py-2 pr-4 text-red-400">${costs.toLocaleString()}</td>
+                    <td className="text-right py-2">${net.toLocaleString()}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-slate-500 text-xs mt-3">Renewals = 50% of all prior year pilots renew. Veremark $0 on renewals. Referral $0 on renewals.</p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Admin Panel ───────────────────────────────────────────────────────────────
 function AdminPanel({ user }: { user: any }) {
-  const [tab, setTab] = useState<'requests' | 'users'>('requests');
+  const [tab, setTab] = useState<'requests' | 'users' | 'overview'>('requests');
   const [requests, setRequests] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1771,7 +1987,10 @@ function AdminPanel({ user }: { user: any }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
+        <button onClick={() => setTab('overview')} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${tab === 'overview' ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30' : 'text-slate-400 hover:text-white bg-slate-800/40'}`}>
+          Business Overview
+        </button>
         {(['requests', 'users'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${tab === t ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30' : 'text-slate-400 hover:text-white bg-slate-800/40'}`}>
             {t === 'requests' ? `Access Requests (${requests.length})` : `Enterprise Users (${users.length})`}
@@ -1780,7 +1999,9 @@ function AdminPanel({ user }: { user: any }) {
         <button onClick={() => { loadRequests(); loadUsers(); }} className="ml-auto text-slate-500 hover:text-white p-2 rounded-xl hover:bg-slate-800/40"><RefreshCw className="w-4 h-4" /></button>
       </div>
 
-      {loading ? <div className="flex justify-center py-12"><div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" /></div> : (
+      {tab === 'overview' && <BusinessOverview />}
+
+      {loading && tab !== 'overview' ? <div className="flex justify-center py-12"><div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" /></div> : (
         <>
           {tab === 'requests' && (
             <div className="space-y-3">

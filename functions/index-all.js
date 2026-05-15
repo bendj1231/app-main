@@ -1,6 +1,11 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
+// Verification functions (Pillar 11 — Layer 1 personal wallet)
+const verification = require('./verification');
+exports.initiateVerification = verification.initiateVerification;
+exports.veremarkWebhook = verification.veremarkWebhook;
+
 // Enterprise analytics functions
 const {
   trackCardView,

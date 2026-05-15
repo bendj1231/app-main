@@ -1,5 +1,10 @@
 const functions = require('firebase-functions/v2/https');
 
+// Verification functions (Pillar 11 — Layer 1 personal wallet)
+const verification = require('./verification');
+exports.initiateVerification = verification.initiateVerification;
+exports.veremarkWebhook = verification.veremarkWebhook;
+
 // Manufacturer functions removed - using direct Supabase client instead
 // All 63 functions were simple SELECT queries that can be done from frontend
 // Use Supabase RLS policies for security

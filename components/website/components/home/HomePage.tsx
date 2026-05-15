@@ -630,11 +630,6 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
     const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
     const [activeBillboardSlide, setActiveBillboardSlide] = useState(0);
-    const [liveActivityIndex, setLiveActivityIndex] = useState(0);
-    const [liveToastVisible, setLiveToastVisible] = useState(false);
-    const [liveCount, setLiveCount] = useState(847);
-    const [pathwayViews, setPathwayViews] = useState(2341);
-    const [profilesCreated, setProfilesCreated] = useState(312);
 
     // Auto-advance news feed carousel every 5 seconds
     useEffect(() => {
@@ -644,55 +639,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         return () => clearInterval(interval);
     }, []);
 
-    // Live activity toast cycling
-    const liveActivities = [
-        { name: 'Marcus T.', location: 'Manila, PH', action: 'just created their Recognition Profile', time: '2m ago' },
-        { name: 'Sarah K.', location: 'Dubai, UAE', action: 'viewed the Emirates Cadet Pathway', time: '4m ago' },
-        { name: 'James O.', location: 'London, UK', action: 'enrolled in the Foundation Program', time: '6m ago' },
-        { name: 'Nadia R.', location: 'Toronto, CA', action: 'matched 94% on a FlyDubai pathway', time: '8m ago' },
-        { name: 'Paulo C.', location: 'São Paulo, BR', action: 'completed their Gap Analysis', time: '11m ago' },
-        { name: 'Hana Y.', location: 'Tokyo, JP', action: 'unlocked Recognition+', time: '13m ago' },
-        { name: 'David M.', location: 'Nairobi, KE', action: 'submitted mentorship hours', time: '15m ago' },
-        { name: 'Aiko S.', location: 'Singapore', action: 'joined the waitlist for Transition Program', time: '18m ago' },
-    ];
 
-    useEffect(() => {
-        // Show toast after 3s, then cycle every 12s
-        const showDelay = setTimeout(() => {
-            setLiveToastVisible(true);
-            const cycleInterval = setInterval(() => {
-                setLiveToastVisible(false);
-                setTimeout(() => {
-                    setLiveActivityIndex(prev => (prev + 1) % liveActivities.length);
-                    setLiveToastVisible(true);
-                }, 600);
-            }, 12000);
-            return () => clearInterval(cycleInterval);
-        }, 3000);
-        return () => clearTimeout(showDelay);
-    }, []);
-
-    // Slowly increment live counters to feel organic
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setLiveCount(prev => prev + Math.floor(Math.random() * 3));
-            setPathwayViews(prev => prev + Math.floor(Math.random() * 7) + 1);
-            if (Math.random() > 0.7) setProfilesCreated(prev => prev + 1);
-        }, 8000);
-        return () => clearInterval(interval);
-    }, []);
-
-    // Auto-open newsroom modal on first visit of the session
-    useEffect(() => {
-        const hasSeenNewsroom = sessionStorage.getItem('hasSeenNewsroom');
-        if (!hasSeenNewsroom) {
-            // Small delay to allow the page to render first
-            setTimeout(() => {
-                setIsNewsroomModalOpen(true);
-                sessionStorage.setItem('hasSeenNewsroom', 'true');
-            }, 500);
-        }
-    }, []);
 
     // Check for enrollment success and show confirmation modal
     useEffect(() => {
@@ -1079,103 +1026,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
 
-            {/* Graphics Settings Button + Toast */}
-            {graphicsConfig && (
-                <div className="fixed bottom-6 left-6 z-50">
-                    {showGraphicsToast && (
-                        <div className="mb-2 bg-slate-900/95 border border-white/20 rounded-xl shadow-2xl p-4 w-64 backdrop-blur-md">
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Graphics Quality</span>
-                                <button onClick={() => setShowGraphicsToast(false)} className="text-slate-400 hover:text-white">
-                                    <X className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-                            <p className="text-[10px] text-slate-400 mb-3 leading-relaxed">
-                                <span className="text-white font-medium">{graphicsConfig.deviceLabel}</span><br />
-                                {graphicsConfig.reason}
-                            </p>
-                            <div className="flex gap-2">
-                                {(['low', 'medium', 'high'] as const).map((q) => (
-                                    <button
-                                        key={q}
-                                        onClick={() => {
-                                            setGraphicsOverride(q);
-                                            setGraphicsConfig(getHomepageGraphicsConfig());
-                                            setShowGraphicsToast(false);
-                                        }}
-                                        className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${
-                                            graphicsConfig.tier === q
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-white/10 text-slate-300 hover:bg-white/20'
-                                        }`}
-                                    >
-                                        {q}
-                                    </button>
-                                ))}
-                            </div>
-                            <button
-                                onClick={() => {
-                                    setGraphicsOverride('auto');
-                                    setGraphicsConfig(getHomepageGraphicsConfig());
-                                    setShowGraphicsToast(false);
-                                }}
-                                className="mt-2 w-full py-1 text-[10px] text-slate-400 hover:text-white transition-colors"
-                            >
-                                Reset to auto-detect
-                            </button>
-                        </div>
-                    )}
-                    <button
-                        onClick={() => setShowGraphicsToast(v => !v)}
-                        className="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-sm transition-all hover:scale-105"
-                        title={`Graphics: ${graphicsConfig.tier} · ${graphicsConfig.deviceLabel}`}
-                    >
-                        <Cpu className="w-4 h-4" />
-                        <span className={`w-2 h-2 rounded-full ${graphicsConfig.tier === 'high' ? 'bg-green-400' : graphicsConfig.tier === 'medium' ? 'bg-yellow-400' : 'bg-red-400'}`} />
-                    </button>
-                </div>
-            )}
 
-            {/* === FLOATING LIVE ACTIVITY TOAST === */}
-            <div
-                className={`fixed bottom-24 left-4 z-50 max-w-[300px] transition-all duration-500 ${
-                    liveToastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
-                }`}
-            >
-                <div className="bg-slate-900 border border-white/15 rounded-xl shadow-2xl overflow-hidden">
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border-b border-white/10">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-                        <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-emerald-300">Recent Activity</span>
-                    </div>
-                    <div className="px-3 py-2.5">
-                        <p className="text-[11px] text-white font-semibold leading-tight mb-0.5">
-                            {liveActivities[liveActivityIndex]?.name}
-                            <span className="text-slate-400 font-normal"> · {liveActivities[liveActivityIndex]?.location}</span>
-                        </p>
-                        <p className="text-[10px] text-slate-300 leading-snug">
-                            {liveActivities[liveActivityIndex]?.action}
-                        </p>
-                        <p className="text-[9px] text-slate-500 mt-1">{liveActivities[liveActivityIndex]?.time}</p>
-                    </div>
-                </div>
-            </div>
 
-            {/* Newsroom Trigger Button */}
-            <button
-                onClick={() => setIsNewsroomModalOpen(true)}
-                className="fixed bottom-6 right-6 z-50 bg-slate-900/90 hover:bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-sm transition-all hover:scale-105"
-            >
-                <Zap className="w-4 h-4" />
-                Newsroom
-            </button>
-
-            {/* Newsroom Modal */}
-            <NewsroomModal
-                isOpen={isNewsroomModalOpen}
-                onClose={() => setIsNewsroomModalOpen(false)}
-                onNavigate={onNavigate}
-                newsroomHighlights={newsroomHighlights}
-            />
 
             {/* Enrollment Confirmation Modal */}
             <AnimatePresence>
@@ -1416,7 +1268,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="flex items-center gap-2.5">
                             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                             <div>
-                                <p className="text-lg font-bold text-slate-900 leading-none">{liveCount.toLocaleString()}</p>
+                                <p className="text-lg font-bold text-slate-900 leading-none">{(847).toLocaleString()}</p>
                                 <p className="text-[10px] text-slate-500 uppercase tracking-wider">Pilots registered</p>
                             </div>
                         </div>
@@ -1424,7 +1276,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="flex items-center gap-2.5">
                             <div className="w-2 h-2 rounded-full bg-blue-500" />
                             <div>
-                                <p className="text-lg font-bold text-slate-900 leading-none">{pathwayViews.toLocaleString()}</p>
+                                <p className="text-lg font-bold text-slate-900 leading-none">{(2341).toLocaleString()}</p>
                                 <p className="text-[10px] text-slate-500 uppercase tracking-wider">Pathway views today</p>
                             </div>
                         </div>
@@ -1432,7 +1284,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="flex items-center gap-2.5">
                             <div className="w-2 h-2 rounded-full bg-red-500" />
                             <div>
-                                <p className="text-lg font-bold text-slate-900 leading-none">{profilesCreated}</p>
+                                <p className="text-lg font-bold text-slate-900 leading-none">{312}</p>
                                 <p className="text-[10px] text-slate-500 uppercase tracking-wider">Profiles created this week</p>
                             </div>
                         </div>

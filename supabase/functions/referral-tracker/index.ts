@@ -40,297 +40,134 @@ Deno.serve(async (req: Request) => {
         })
       }
 
-      // Find flight school by referral code
-      const { data: flightSchool, error: schoolError } = await supabase
-        .from('flight_schools')
+      // Resolve partner from universal referral_partners table
+      const { data: partner, error: partnerError } = await supabase
+        .from('referral_partners')
         .select('*')
         .eq('referral_code', formData.referral_code)
+        .eq('is_active', true)
         .single()
 
-      if (schoolError || !flightSchool) {
+      if (partnerError || !partner) {
         return new Response(JSON.stringify({ error: 'Invalid referral code' }), {
           status: 404,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         })
       }
 
-      // Handle different actions
+      const now = new Date().toISOString()
+
       if (formData.action === 'click') {
-        // Track referral click - create referral record if it doesn't exist
-        const { data: existingReferral } = await supabase
-          .from('referrals')
-          .select('*')
-          .eq('flight_school_id', flightSchool.id)
+        const { data: existing } = await supabase
+          .from('referral_conversions')
+          .select('id, metadata')
+          .eq('partner_id', partner.id)
           .eq('pilot_email', formData.pilot_email || '')
           .single()
 
-        if (existingReferral) {
-          // Update clicked timestamp
-          const { error: updateError } = await supabase
-            .from('referrals')
-            .update({
-              status: 'clicked',
-              clicked_at: new Date().toISOString(),
-              metadata: { ...existingReferral.metadata, user_agent: formData.user_agent, ip_address: formData.ip_address }
-            })
-            .eq('id', existingReferral.id)
-
-          if (updateError) {
-            return new Response(JSON.stringify({ error: 'Failed to update referral' }), {
-              status: 500,
-              headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-            })
-          }
-        } else if (formData.pilot_email) {
-          // Create new referral record
-          const baseUrl = 'https://pilotrecognition.com'
-          const referralLink = `${baseUrl}/ref/${flightSchool.referral_code}`
-
-          const { error: createError } = await supabase
-            .from('referrals')
-            .insert({
-              flight_school_id: flightSchool.id,
-              pilot_email: formData.pilot_email,
-              pilot_name: formData.pilot_name || null,
-              referral_code: flightSchool.referral_code,
-              referral_link: referralLink,
-              status: 'clicked',
-              clicked_at: new Date().toISOString(),
-              commission_amount: flightSchool.commission_rate,
-              metadata: { user_agent: formData.user_agent, ip_address: formData.ip_address }
-            })
-
-          if (createError) {
-            return new Response(JSON.stringify({ error: 'Failed to create referral' }), {
-              status: 500,
-              headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-            })
-          }
-
-          // Update flight school referral count
+        if (existing) {
           await supabase
-            .from('flight_schools')
-            .update({ total_referrals: flightSchool.total_referrals + 1 })
-            .eq('id', flightSchool.id)
+            .from('referral_conversions')
+            .update({ status: 'clicked', clicked_at: now, metadata: { ...existing.metadata, user_agent: formData.user_agent, ip_address: formData.ip_address } })
+            .eq('id', existing.id)
+        } else if (formData.pilot_email) {
+          await supabase.from('referral_conversions').insert({
+            partner_id: partner.id,
+            referral_code: partner.referral_code,
+            pilot_email: formData.pilot_email,
+            pilot_name: formData.pilot_name || null,
+            status: 'clicked',
+            clicked_at: now,
+            commission_amount: partner.commission_rate,
+            metadata: { user_agent: formData.user_agent, ip_address: formData.ip_address }
+          })
+          await supabase.from('referral_partners').update({ total_referrals: partner.total_referrals + 1 }).eq('id', partner.id)
         }
 
-        return new Response(
-          JSON.stringify({
-            success: true,
-            message: 'Referral click tracked',
-            flight_school: {
-              id: flightSchool.id,
-              name: flightSchool.name
-            }
-          }),
-          {
-            headers: {
-              ...corsHeaders,
-              'Content-Type': 'application/json',
-              'Connection': 'keep-alive'
-            }
-          }
-        )
+        return new Response(JSON.stringify({ success: true, message: 'Click tracked', partner: { id: partner.id, name: partner.name, type: partner.partner_type } }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
       }
 
       if (formData.action === 'sign_up') {
-        // Track pilot sign-up
         if (!formData.pilot_email || !formData.pilot_id) {
-          return new Response(JSON.stringify({ error: 'pilot_email and pilot_id are required for sign_up' }), {
-            status: 400,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-          })
+          return new Response(JSON.stringify({ error: 'pilot_email and pilot_id required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
         }
 
-        // Find or create referral record
-        const { data: existingReferral } = await supabase
-          .from('referrals')
-          .select('*')
-          .eq('flight_school_id', flightSchool.id)
+        const { data: existing } = await supabase
+          .from('referral_conversions')
+          .select('id')
+          .eq('partner_id', partner.id)
           .eq('pilot_email', formData.pilot_email)
           .single()
 
-        if (existingReferral) {
-          // Update sign-up details
-          const { error: updateError } = await supabase
-            .from('referrals')
-            .update({
-              pilot_id: formData.pilot_id,
-              status: 'signed_up',
-              signed_up_at: new Date().toISOString()
-            })
-            .eq('id', existingReferral.id)
-
-          if (updateError) {
-            return new Response(JSON.stringify({ error: 'Failed to update referral' }), {
-              status: 500,
-              headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-            })
-          }
+        if (existing) {
+          await supabase.from('referral_conversions').update({ pilot_id: formData.pilot_id, status: 'signed_up', signed_up_at: now }).eq('id', existing.id)
         } else {
-          // Create new referral with sign-up
-          const baseUrl = 'https://pilotrecognition.com'
-          const referralLink = `${baseUrl}/ref/${flightSchool.referral_code}`
-
-          const { error: createError } = await supabase
-            .from('referrals')
-            .insert({
-              flight_school_id: flightSchool.id,
-              pilot_id: formData.pilot_id,
-              pilot_email: formData.pilot_email,
-              pilot_name: formData.pilot_name || null,
-              referral_code: flightSchool.referral_code,
-              referral_link: referralLink,
-              status: 'signed_up',
-              clicked_at: new Date().toISOString(),
-              signed_up_at: new Date().toISOString(),
-              commission_amount: flightSchool.commission_rate
-            })
-
-          if (createError) {
-            return new Response(JSON.stringify({ error: 'Failed to create referral' }), {
-              status: 500,
-              headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-            })
-          }
-
-          // Update flight school referral count
-          await supabase
-            .from('flight_schools')
-            .update({ total_referrals: flightSchool.total_referrals + 1 })
-            .eq('id', flightSchool.id)
+          await supabase.from('referral_conversions').insert({
+            partner_id: partner.id,
+            referral_code: partner.referral_code,
+            pilot_id: formData.pilot_id,
+            pilot_email: formData.pilot_email,
+            pilot_name: formData.pilot_name || null,
+            status: 'signed_up',
+            clicked_at: now,
+            signed_up_at: now,
+            commission_amount: partner.commission_rate
+          })
+          await supabase.from('referral_partners').update({ total_referrals: partner.total_referrals + 1 }).eq('id', partner.id)
         }
 
-        return new Response(
-          JSON.stringify({
-            success: true,
-            message: 'Referral sign-up tracked',
-            flight_school: {
-              id: flightSchool.id,
-              name: flightSchool.name
-            }
-          }),
-          {
-            headers: {
-              ...corsHeaders,
-              'Content-Type': 'application/json',
-              'Connection': 'keep-alive'
-            }
-          }
-        )
+        return new Response(JSON.stringify({ success: true, message: 'Sign-up tracked', partner: { id: partner.id, name: partner.name, type: partner.partner_type } }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
       }
 
-      if (formData.action === 'complete') {
-        // Mark referral as completed (pilot completed program)
+      if (formData.action === 'subscribed') {
+        // Fired when pilot pays — commission becomes eligible
         if (!formData.pilot_id) {
-          return new Response(JSON.stringify({ error: 'pilot_id is required for complete' }), {
-            status: 400,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-          })
+          return new Response(JSON.stringify({ error: 'pilot_id required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
         }
 
-        // Find referral record
-        const { data: existingReferral, error: findError } = await supabase
-          .from('referrals')
-          .select('*')
-          .eq('flight_school_id', flightSchool.id)
+        const { data: existing } = await supabase
+          .from('referral_conversions')
+          .select('id, commission_amount')
+          .eq('partner_id', partner.id)
           .eq('pilot_id', formData.pilot_id)
           .single()
 
-        if (findError || !existingReferral) {
-          return new Response(JSON.stringify({ error: 'Referral not found' }), {
-            status: 404,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-          })
+        if (!existing) {
+          return new Response(JSON.stringify({ error: 'Referral not found' }), { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
         }
 
-        // Update referral as completed and eligible for commission
-        const { error: updateError } = await supabase
-          .from('referrals')
-          .update({
-            status: 'completed',
-            completed_at: new Date().toISOString(),
-            commission_status: 'eligible'
-          })
-          .eq('id', existingReferral.id)
+        await supabase.from('referral_conversions').update({ status: 'subscribed', subscribed_at: now, commission_status: 'eligible' }).eq('id', existing.id)
+        await supabase.from('referral_partners').update({
+          total_conversions: partner.total_conversions + 1,
+          pending_payouts: partner.pending_payouts + existing.commission_amount
+        }).eq('id', partner.id)
 
-        if (updateError) {
-          return new Response(JSON.stringify({ error: 'Failed to update referral' }), {
-            status: 500,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-          })
-        }
-
-        // Update flight school pending payouts
-        await supabase
-          .from('flight_schools')
-          .update({ 
-            pending_payouts: flightSchool.pending_payouts + existingReferral.commission_amount 
-          })
-          .eq('id', flightSchool.id)
-
-        return new Response(
-          JSON.stringify({
-            success: true,
-            message: 'Referral completed - commission eligible',
-            commission_amount: existingReferral.commission_amount
-          }),
-          {
-            headers: {
-              ...corsHeaders,
-              'Content-Type': 'application/json',
-              'Connection': 'keep-alive'
-            }
-          }
-        )
+        return new Response(JSON.stringify({ success: true, message: 'Subscription tracked — commission eligible', commission_amount: existing.commission_amount }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
       }
 
-      return new Response(JSON.stringify({ error: 'Invalid action' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      })
+      return new Response(JSON.stringify({ error: 'Invalid action. Use: click, sign_up, subscribed' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
     }
 
     if (req.method === 'GET') {
-      // Get referral info by code
       const url = new URL(req.url)
       const referralCode = url.searchParams.get('code')
 
       if (!referralCode) {
-        return new Response(JSON.stringify({ error: 'code parameter is required' }), {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        })
+        return new Response(JSON.stringify({ error: 'code parameter is required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
       }
 
-      // Find flight school by referral code
-      const { data: flightSchool, error: schoolError } = await supabase
-        .from('flight_schools')
-        .select('id, name, logo_url, description, commission_rate')
+      const { data: partner, error: partnerError } = await supabase
+        .from('referral_partners')
+        .select('id, name, partner_type, logo_url, description, commission_rate, country')
         .eq('referral_code', referralCode)
         .eq('is_active', true)
         .single()
 
-      if (schoolError || !flightSchool) {
-        return new Response(JSON.stringify({ error: 'Invalid or inactive referral code' }), {
-          status: 404,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        })
+      if (partnerError || !partner) {
+        return new Response(JSON.stringify({ error: 'Invalid or inactive referral code' }), { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
       }
 
-      return new Response(
-        JSON.stringify({
-          success: true,
-          flight_school: flightSchool
-        }),
-        {
-          headers: {
-            ...corsHeaders,
-            'Content-Type': 'application/json',
-            'Connection': 'keep-alive'
-          }
-        }
-      )
+      return new Response(JSON.stringify({ success: true, partner }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
     }
 
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {

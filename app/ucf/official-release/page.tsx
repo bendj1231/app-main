@@ -5,20 +5,60 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../../src/contexts/AuthContext';
 
 const navSections = [
-  { id: 'document-information', label: 'Document Information' },
-  { id: 'part-i-foundation-vision', label: 'Part I: Foundation & Vision' },
-  { id: 'page-1-executive-summary', label: '→ Page 1: Executive Summary', indent: true },
-  { id: 'the-aviation-industry-operating-system', label: '→ The Aviation Industry OS', indent: true },
-  { id: 'origin-story', label: '→ Why This Exists: The Origin Story', indent: true },
-  { id: 'part-ii-hub-a', label: 'Hub A — Pathways & Expectations' },
-  { id: 'pillar-1-commercial-airlines', label: '→ Pillar 1: Commercial Airlines', indent: true },
-  { id: 'pillar-2-cargo-freight', label: '→ Pillar 2: Cargo & Freight Operators', indent: true },
-  { id: 'pillar-3-charter-business', label: '→ Pillar 3: Charter & Business Aviation', indent: true },
-  { id: 'pillar-4-emerging-sectors', label: '→ Pillar 4: Emerging Aviation Sectors', indent: true },
-  { id: 'pillar-5-flight-training', label: '→ Pillar 5: Flight Training Organizations (ATOs)', indent: true },
-  { id: 'pillar-6-type-rating', label: '→ Pillar 6: Type Rating & Simulator Centers', indent: true },
-  { id: 'pillar-7-military', label: '→ Pillar 7: Military & Defense Commands', indent: true },
-  { id: 'pillar-11-verification', label: '→ Pillar 11: Background Checks & Verification', indent: true },
+  { id: 'document-information', label: 'Document Information', group: 'doc', standalone: true },
+
+  { id: 'pillar-foundation-program', label: 'Hub F — Foundation & Vision', group: 'hubf' },
+  { id: '', label: 'Vision Layer', indent: true, group: 'hubf', subheader: true },
+  { id: 'page-1-executive-summary', label: 'Executive Summary', indent: true, group: 'hubf' },
+  { id: 'the-aviation-industry-operating-system', label: 'The Aviation Industry OS', indent: true, group: 'hubf' },
+  { id: 'origin-story', label: 'Origin Story', indent: true, group: 'hubf' },
+  { id: '', label: 'Foundation Program', indent: true, group: 'hubf', subheader: true },
+  { id: 'foundation-discipleship', label: 'Core I: Mentorship & Formation', indent: true, group: 'hubf' },
+  { id: 'foundation-consultation', label: 'Core II: Consultation & EBT', indent: true, group: 'hubf' },
+  { id: 'foundation-peer-chain', label: 'Core III: The Peer Chain', indent: true, group: 'hubf' },
+  { id: 'foundation-recognition-score', label: 'Core IV: Recognition Score', indent: true, group: 'hubf' },
+  { id: 'foundation-missionary-model', label: 'Core V: The Advocacy Model', indent: true, group: 'hubf' },
+
+  { id: 'hub-d-infrastructure', label: 'Hub D — Infrastructure & Data', group: 'hubd' },
+  { id: '', label: 'Verification & Trust', indent: true, group: 'hubd', subheader: true },
+  { id: 'hub-b-verification', label: 'Pillar 11: Background Checks & Verification', indent: true, group: 'hubd' },
+  { id: '', label: 'Data & Integration', indent: true, group: 'hubd', subheader: true },
+  { id: 'pillar-12-flight-data', label: 'Pillar 12: Flight Data & Navigation Apps', indent: true, group: 'hubd' },
+  { id: 'pillar-13-aeromedical', label: 'Pillar 13: Aeromedical Examiners', indent: true, group: 'hubd' },
+  { id: 'pillar-telemetry', label: 'Pillar: Telemetry & Simulator Data', indent: true, group: 'hubd' },
+
+  { id: 'part-ii-hub-a', label: 'Hub A — Aviation Operators & Training', group: 'huba' },
+  { id: '', label: 'Training Organizations', indent: true, group: 'huba', subheader: true },
+  { id: 'pillar-5-flight-training', label: 'Pillar 5: Flight Training (ATOs)', indent: true, group: 'huba' },
+  { id: 'pillar-6-type-rating', label: 'Pillar 6: Type Rating Centers', indent: true, group: 'huba' },
+  { id: 'pillar-universities', label: 'Pillar: Aviation Universities & Academies', indent: true, group: 'huba' },
+  { id: '', label: 'Aviation Operators', indent: true, group: 'huba', subheader: true },
+  { id: 'pillar-1-commercial-airlines', label: 'Pillar 1: Commercial Airlines', indent: true, group: 'huba' },
+  { id: 'pillar-2-cargo-freight', label: 'Pillar 2: Cargo & Freight', indent: true, group: 'huba' },
+  { id: 'pillar-3-charter-business', label: 'Pillar 3: Charter & Business Aviation', indent: true, group: 'huba' },
+  { id: 'pillar-4-emerging-sectors', label: 'Pillar 4: Emerging Sectors (AAM)', indent: true, group: 'huba' },
+  { id: 'pillar-7-military', label: 'Pillar 7: Military & Defense', indent: true, group: 'huba' },
+  { id: 'pillar-recruitment', label: 'Pillar: Aviation Recruitment Agencies', indent: true, group: 'huba' },
+
+  { id: 'hub-c-capital', label: 'Hub C — Capital, Risk & Compliance', group: 'hubc' },
+  { id: 'pillar-8-banking', label: 'Pillar 8: Banking & Financial Institutions', indent: true, group: 'hubc' },
+  { id: 'pillar-9-insurance', label: 'Pillar 9: Aviation Insurance Providers', indent: true, group: 'hubc' },
+  { id: 'pillar-10-regulatory', label: 'Pillar 10: Legal & Regulatory Bodies', indent: true, group: 'hubc' },
+  { id: 'pillar-credit-rating', label: 'Pillar: Credit Rating Agencies', indent: true, group: 'hubc' },
+
+  { id: 'hub-e-community', label: 'Hub E — Community, Strategy & Growth', group: 'hube' },
+  { id: 'pillar-14-mentors', label: 'Pillar 14: Pilot Mentors & Unions', indent: true, group: 'hube' },
+  { id: 'pillar-15-manufacturers', label: 'Pillar 15: Manufacturers & OEMs', indent: true, group: 'hube' },
+  { id: 'pillar-media', label: 'Pillar: Aviation Media & Publications', indent: true, group: 'hube' },
+
+  { id: 'hub-f-growth', label: 'Hub F — Growth & Expansion', group: 'hubfg' },
+  { id: 'pillar-events', label: 'Pillar: Aviation Events & Career Fairs', indent: true, group: 'hubfg' },
+  { id: 'pillar-government', label: 'Pillar: Government Aviation Authorities', indent: true, group: 'hubfg' },
+  { id: 'pillar-international-orgs', label: 'Pillar: International Aviation Organizations', indent: true, group: 'hubfg' },
+
+  { id: 'hub-g-discovery', label: 'Hub G — Digital Discovery', group: 'hubg' },
+  { id: 'pillar-25-discovery', label: 'Pillar 25: Digital Discovery & Search', indent: true, group: 'hubg' },
+
 ];
 
 function scrollTo(id: string) {
@@ -32,6 +72,8 @@ function scrollTo(id: string) {
 
 export default function UCFOfficialReleasePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+  const toggleGroup = (group: string) => setCollapsedGroups(prev => ({ ...prev, [group]: !prev[group] }));
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -141,46 +183,68 @@ export default function UCFOfficialReleasePage() {
         </div>
       )}
 
-      {/* Main layout */}
-      <div className="w-full flex gap-4 lg:gap-6 px-3 sm:px-4 md:pl-4 md:pr-6 py-4 sm:py-8">
+      {/* Sidebar overlay backdrop */}
+      {sidebarOpen && (
+        <div className="fixed left-0 top-[57px] right-0 bottom-0 bg-black/40 z-30" onClick={() => setSidebarOpen(false)} />
+      )}
 
-        {/* Left Sidebar */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setSidebarOpen(false)} />
-        )}
-        <aside className={`${sidebarOpen ? 'fixed left-0 top-0 z-50 h-full w-72 pt-16 px-4 bg-white shadow-2xl' : 'hidden'} md:block md:static md:w-56 lg:w-64 md:flex-shrink-0 md:h-fit`}>
-          <div className="md:sticky md:top-24 bg-slate-50 rounded-xl border border-slate-200 h-[calc(100vh-4rem)] md:max-h-[calc(100vh-6rem)] overflow-y-auto shadow-lg md:shadow-none">
-            <div className="p-3 border-b border-slate-200 bg-white rounded-t-xl flex items-center justify-between">
-              <div>
-                <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
-                <p className="text-xs text-slate-500 mt-0.5">Jump to any section</p>
-              </div>
-              <button onClick={() => setSidebarOpen(false)} className="md:hidden p-1.5 rounded-lg hover:bg-slate-100 text-slate-500" aria-label="Close navigation">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
+      {/* Fixed sidebar panel — always overlays the page */}
+      <aside className={`fixed left-0 top-[57px] z-40 h-[calc(100vh-57px)] w-72 bg-white shadow-2xl transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex flex-col h-full">
+          <div className="p-3 border-b border-slate-200 bg-white flex items-center justify-between flex-shrink-0">
+            <div>
+              <h2 className="font-bold text-slate-900 text-sm">📑 Quick Navigation</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Jump to any section</p>
             </div>
-            <nav className="p-2 space-y-0.5">
-              {navSections.map((s) => (
+            <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500" aria-label="Close navigation">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          <nav className="p-2 space-y-0.5 overflow-y-auto flex-1">
+            {navSections.map((s, i) => {
+              const isParent = !s.indent;
+              const isCollapsed = collapsedGroups[s.group] ?? false;
+              if (s.subheader) {
+                if (isCollapsed) return null;
+                return (
+                  <div key={`sub-${i}`} className="pl-4 pt-2 pb-0.5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-red-500">{s.label}</span>
+                  </div>
+                );
+              }
+              if (s.indent && isCollapsed) return null;
+              return isParent ? (
+                <button
+                  key={s.id}
+                  onClick={() => { scrollTo(s.id); if (s.standalone) setSidebarOpen(false); else toggleGroup(s.group); }}
+                  className="w-full text-left px-2 py-1.5 rounded-lg text-xs font-semibold text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center justify-between gap-1"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-red-500 flex-shrink-0">▸</span>
+                    <span className="leading-tight">{s.label}</span>
+                  </div>
+                  {!s.standalone && <span className="text-slate-400 text-[10px] flex-shrink-0">{isCollapsed ? '▼' : '▲'}</span>}
+                </button>
+              ) : (
                 <button
                   key={s.id}
                   onClick={() => { scrollTo(s.id); setSidebarOpen(false); }}
-                  className={`w-full text-left px-2 py-1.5 rounded-lg text-xs transition-colors hover:bg-slate-200 flex items-start gap-1.5 ${
-                    s.indent ? 'pl-5 text-slate-600' : 'font-semibold text-slate-900 bg-slate-100'
-                  }`}
+                  className="w-full text-left pl-5 pr-2 py-1.5 rounded-lg text-xs text-blue-900 hover:bg-slate-200 transition-colors flex items-start gap-1.5"
                 >
-                  {s.indent
-                    ? <span className="text-blue-500 mt-0.5 flex-shrink-0">→</span>
-                    : <span className="text-red-500 mt-0.5 flex-shrink-0">▸</span>
-                  }
+                  <span className="text-blue-900 mt-0.5 flex-shrink-0">→</span>
                   <span className="leading-tight">{s.label}</span>
                 </button>
-              ))}
-            </nav>
-          </div>
-        </aside>
+              );
+            })}
+          </nav>
+        </div>
+      </aside>
+
+      {/* Main layout */}
+      <div className="w-full py-4 sm:py-8 min-h-screen">
 
         {/* Document article */}
-        <article className="w-full max-w-4xl mx-auto flex-1 min-w-0 overflow-x-hidden">
+        <article className="max-w-3xl mx-auto px-4 sm:px-8 overflow-x-hidden">
 
           {/* Document cover block */}
           <div id="document-information" className="mb-12 pb-10 border-b-2 border-slate-900 scroll-mt-24">
@@ -424,11 +488,61 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           {/* Part II */}
-          <h1 id="part-ii-hub-a" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
-            PART II: HUB A — OPERATIONS &amp; RECRUITMENT
+          <h1 id="part-ii-hub-a" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            PART II: HUB A
           </h1>
-          <p className="text-slate-500 text-sm mb-2 uppercase tracking-wide font-semibold">Pathways &amp; Expectations</p>
-          <p className="text-slate-600 leading-relaxed mb-8">Hub A covers every operator sector that recruits professional pilots — commercial airlines, cargo &amp; freight, charter &amp; business aviation, and emerging sectors. Each pillar publishes structured pathway cards with verified requirements, hiring signals, and gap analysis tools. Operators publish what they expect. Pilots see exactly where they stand.</p>
+          <h2 className="text-2xl font-bold text-slate-700 mb-2">Aviation Operators &amp; Training Organizations</h2>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Aviation Operators · Training Organizations · Pathways &amp; Expectations</p>
+
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub A is the operational core of the Universal Commercial Framework. It defines how every sector of professional aviation — from commercial airlines to military commands, from cadet flight schools to type rating simulators — connects with the verified pilot population through a single, standardised infrastructure layer.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The fundamental problem Hub A solves:</strong> Every sector in professional aviation recruits differently, publishes requirements inconsistently, and evaluates candidates against criteria that pilots have never been able to see in structured form. Hub A forces transparency — not as a policy demand, but as a commercial incentive. <strong style={{color:'#f87171'}}>Operators who publish structured pathway cards access a larger, better-aligned, pre-verified candidate pool. Operators who don't, don't.</strong></p>
+          </div>
+
+          <h3 className="text-lg font-bold text-slate-900 mb-4">Hub A Coverage — Nine Pillars, Two Categories</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="border border-slate-200 rounded-lg p-5 bg-white">
+              <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">Aviation Operators</p>
+              <ul className="space-y-2 text-sm text-slate-700">
+                {[
+                  { p: 'Pillar 1', t: 'Commercial Airlines', d: 'Pathway cards, CBTA alignment, gap analysis, pulling system' },
+                  { p: 'Pillar 2', t: 'Cargo & Freight Operators', d: 'Night hours verification, heavy jet experience, dedicated pipeline' },
+                  { p: 'Pillar 3', t: 'Charter & Business Aviation', d: 'Discretion-first matching, VIP pathway access, automated crew outsourcing' },
+                  { p: 'Pillar 4', t: 'Emerging Sectors (AAM)', d: 'eVTOL, drones, agricultural aviation — non-hours-based competency routing' },
+                  { p: 'Pillar 7', t: 'Military & Defense Commands', d: 'Civilian transition infrastructure, skills translation, verified transition pathways' },
+                ].map(item => (
+                  <li key={item.p} className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold flex-shrink-0 w-14">{item.p}</span>
+                    <span><strong>{item.t}</strong> — {item.d}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="border border-slate-200 rounded-lg p-5 bg-white">
+              <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">Training Organizations</p>
+              <ul className="space-y-2 text-sm text-slate-700">
+                {[
+                  { p: 'Pillar 5', t: 'Flight Training Organizations (ATOs)', d: 'Operator-linked curriculum tokens, graduate pathway matching, CPL verification' },
+                  { p: 'Pillar 6', t: 'Type Rating & Simulator Centers', d: 'Pathway-linked type rating listings, proficiency data integration, gap-to-rating routing' },
+                ].map(item => (
+                  <li key={item.p} className="flex items-start gap-2">
+                    <span className="text-red-500 font-bold flex-shrink-0 w-14">{item.p}</span>
+                    <span><strong>{item.t}</strong> — {item.d}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 pt-4 border-t border-slate-200">
+                <p className="text-xs text-slate-500 leading-relaxed">Training organizations in Hub A are not passive directories. They are active participants in the pilot-to-operator pipeline — their output feeds directly into the verified candidate pool that operators access.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-10 bg-slate-50">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Hub A Architecture — How the Pillars Connect</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3">Each pillar in Hub A operates as an independent module — with its own operator profile structure, pathway card format, commercial tier, and verification layer. But they share a common data substrate: the <strong>Global Pilot Database</strong>. Every verified pilot profile is visible across all Hub A pillars simultaneously. A pilot who meets the criteria for a charter operator <em>and</em> a cargo pathway <em>and</em> a military transition program does not submit separate applications. <strong>Their single verified profile is matched against all active Hub A pathway criteria in real time.</strong></p>
+            <p className="text-slate-700 text-sm leading-relaxed"><strong style={{color:'#dc2626'}}>One profile. Nine pillars. Continuous circulation.</strong> This is the structural advantage that no sector-specific job board or recruitment agency can replicate — and it is the foundation on which Hub A's commercial model is built.</p>
+          </div>
 
           <h2 id="pillar-1-commercial-airlines" className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">
             PILLAR 1: COMMERCIAL AIRLINES
@@ -755,7 +869,7 @@ export default function UCFOfficialReleasePage() {
           <h2 id="pillar-2-cargo-freight" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
             PILLAR 2: CARGO &amp; FREIGHT OPERATORS
           </h2>
-          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Operations &amp; Recruitment</p>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Aviation Operators &amp; Training Organizations</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: An Entire Aviation Sector Hidden from the Pilot Pipeline</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The industry presents pilots with a false binary: passenger airline or flight instructor. Cargo and freight aviation — a sector responsible for moving the world's goods, operating on every continent, and employing tens of thousands of professional pilots — is <strong>systematically absent from the pathways available to pilots at every level.</strong> It is not because cargo doesn't need pilots. It is because no structured channel exists to connect them.</p>
@@ -1071,7 +1185,7 @@ export default function UCFOfficialReleasePage() {
           <h2 id="pillar-3-charter-business" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
             PILLAR 3: CHARTER &amp; BUSINESS AVIATION
           </h2>
-          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Operations &amp; Recruitment</p>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Aviation Operators &amp; Training Organizations</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: A Sector That Recruits in the Dark</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Charter and business aviation is one of the most demanding and least understood sectors in professional aviation. It operates on discretion by design — operators do not post publicly, clients do not tolerate exposure, and pilots are expected to arrive pre-qualified, pre-vetted, and ready to deploy within days. <strong>The result is a recruitment model that is almost entirely invisible to the pilots who would be most suited for it.</strong></p>
@@ -1332,7 +1446,7 @@ export default function UCFOfficialReleasePage() {
           <h2 id="pillar-4-emerging-sectors" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
             PILLAR 4: EMERGING AVIATION SECTORS
           </h2>
-          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Operations &amp; Recruitment</p>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Aviation Operators &amp; Training Organizations</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Absence of Dedicated Talent Infrastructure</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The rapid commercialisation of Advanced Air Mobility (AAM) — including eVTOL, air taxi, drone logistics, agricultural aviation, and autonomous systems — is no longer theoretical. These sectors are fully capitalised, type-certificated, and actively scaling human capital. However, they are attempting to scale in the complete absence of a dedicated recruitment infrastructure.</p>
@@ -2211,10 +2325,15 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-10 border-slate-300" />
 
-          <h2 id="pillar-11-verification" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+          <h1 id="hub-b-verification" className="text-4xl font-bold text-slate-900 mt-12 mb-2 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB B — VERIFICATION &amp; TRUST
+          </h1>
+          <p className="text-slate-500 text-sm mb-8 uppercase tracking-wide font-semibold">Credential Integrity · Background Checks · Identity Verification</p>
+
+          <h2 id="pillar-11-verification" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
             PILLAR 11: BACKGROUND CHECKS &amp; VERIFICATION PROVIDERS
           </h2>
-          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub C — Capital, Risk &amp; Compliance</p>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub B — Verification &amp; Trust</p>
 
           <div className="bg-slate-100 border border-slate-300 rounded px-5 py-3 mb-8 flex items-start gap-3">
             <span className="text-red-500 font-bold text-lg flex-shrink-0">↗</span>
@@ -3313,6 +3432,619 @@ export default function UCFOfficialReleasePage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* Foundation Program Pillar */}
+          <h1 id="pillar-foundation-program" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB F — THE FOUNDATION PROGRAM
+          </h1>
+          <p className="text-slate-500 text-sm mb-2 uppercase tracking-wide font-semibold">Pilot Formation · Mentorship · Verified Identity</p>
+          <p className="text-slate-600 leading-relaxed mb-8">
+            The Foundation Program is not a course. It is not a subscription. It is a structured formation process — the entry point into the PilotRecognition ecosystem and the infrastructure that transforms a pilot's private journey into a publicly verified, industry-recognised professional identity. Every pilot who completes it becomes more than qualified. They become <strong>recognised</strong>.
+          </p>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
+            <p className="text-sm font-bold text-red-600 uppercase tracking-widest mb-1">Founding Principle</p>
+            <p className="text-slate-700 leading-relaxed">The industry produces qualified pilots. It does not produce recognised ones. The Foundation Program closes that gap — not with content, but with formation. Not with a certificate, but with a verified identity that the industry can trust and act on.</p>
+          </div>
+
+          <h2 id="foundation-discipleship" className="text-2xl font-bold text-slate-800 mt-10 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">
+            Core I — Module-Based Mentorship
+          </h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            The Foundation Program is not a training organisation. It does not assign instructors, run classrooms, or issue course completions. It is a structured handbook — a set of guided modules built around a single principle: <strong>the knowledge you already hold has value for someone behind you.</strong>
+          </p>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            A pilot with a PPL knows things a student pilot does not. A CPL holder understands what a PPL pilot is trying to figure out. An ATPL captain has navigated what a first officer is walking into. <strong>You do not need to be at the top of the industry to guide someone. You need to be one step ahead of them — and willing to share what that step looked like.</strong>
+          </p>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            The platform guides pilots through modules structured around their current licence level and experience. Each module surfaces the knowledge relevant to the pilots below them — and frames how to communicate it clearly, practically, and without ego. The pilot does not become a trainer. They become a resource. A reference point. Someone who has passed the same checkpoint and can describe what they found there.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { title: 'Based on What You Know', body: 'Modules are unlocked by your verified licence level and flight experience — not by application or approval. If you hold a PPL, the platform surfaces mentorship content relevant to students below that level. Your knowledge is the qualification.' },
+              { title: 'Self-Guided, Not Assigned', body: 'There is no matching algorithm. No assigned senior mentor. You work through the handbook at your own pace, contributing guidance in the areas where your experience is verifiable. The platform structures it. You deliver it.' },
+              { title: 'Verified Contribution Record', body: 'Every module completed and every guidance session logged is recorded on your Recognition Profile. It is not self-declared — it is timestamped and verified by the platform. A pilot with a full contribution record signals something no CV can replicate: that they understand the industry well enough to explain it.' },
+            ].map((item) => (
+              <div key={item.title} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <p className="font-bold text-red-600 mb-2 text-sm">{item.title}</p>
+                <p className="text-slate-700 text-sm leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <h2 id="foundation-consultation" className="text-2xl font-bold text-slate-800 mt-10 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">
+            Core II — Consultation &amp; EBT Alignment
+          </h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            The Foundation Program is built on a single conviction: <strong>a captain is not someone who flies well — a captain is someone who thinks like one before they are ever given the seat.</strong> The consultation component of the program is where that thinking is developed. Not through manuals. Not through checkrides. Through structured, guided reflection on real situations, real decisions, and real failures — conducted between a pilot and a mentor who has lived through them.
+          </p>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            This is Evidence-Based Training at its foundational level. The 9 ICAO core competencies are not skills performed for an examiner — they are ways of thinking, communicating, and leading that must be built over time through practice and honest feedback. The Foundation Program is the only structured environment in aviation where a low-hour pilot begins developing these competencies before they are required to demonstrate them under pressure.
+          </p>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-3 font-semibold">EBT Competency</th>
+                  <th className="text-left px-4 py-3 font-semibold text-red-400">What the Industry Expects</th>
+                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>How Foundation Builds It</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { comp: 'Application of Knowledge', expects: 'Accurate recall under pressure', builds: 'Structured consultation sessions using real-world scenarios drawn from the mentor\'s operational history' },
+                  { comp: 'Communication', expects: 'Clear, structured, confident CRM communication', builds: 'Role-play and debrief exercises — pilot explains decisions aloud while mentor challenges assumptions' },
+                  { comp: 'Flight Path Management (Manual)', expects: 'Precise manual handling in degraded conditions', builds: 'Gap analysis against simulator hour requirements; targeted pre-assessment preparation' },
+                  { comp: 'Leadership & Teamwork', expects: 'Demonstrated crew authority without ego', builds: '4th-year-to-1st-year mentorship sessions — the pilot leads before they are led' },
+                  { comp: 'Problem Solving & Decision Making', expects: 'Structured decision architecture under ambiguity', builds: 'Case-based consultation: mentor presents decisions, pilot reasons through them, outcome is debriefed' },
+                  { comp: 'Situational Awareness', expects: 'Continuous threat and error management', builds: 'Profile gap analysis — the pilot learns to read their own career environment the same way they read an aircraft environment' },
+                  { comp: 'Workload Management', expects: 'Prioritisation in high-density task environments', builds: 'Foundation Program structure itself — managing study, mentorship, assessment, and profile building simultaneously' },
+                  { comp: 'Automation Management', expects: 'Appropriate mode awareness and intervention', builds: 'Type rating pathway consultation — understanding automation profiles before committing to a rating' },
+                  { comp: 'Upset Prevention & Recovery', expects: 'Recognition and early intervention', builds: 'Career threat identification — recognising when a pilot\'s trajectory is heading toward a gap or a dead end before it becomes unrecoverable' },
+                ] as { comp: string; expects: string; builds: string }[]).map((row, i) => (
+                  <tr key={row.comp} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-red-400 align-top text-xs whitespace-nowrap">{row.comp}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs align-top">{row.expects}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100 text-xs align-top">{row.builds}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="foundation-peer-chain" className="text-2xl font-bold text-slate-800 mt-10 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">
+            Core III — The Peer Chain
+          </h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            The most structurally important mechanic of the Foundation Program is not what a senior captain passes down to a cadet. It is what a CPL holder shares with a PPL student. What a first officer explains to a flight instructor who has never sat right-seat on a jet. What a low-timer with 300 hours knows about the PPL exam that a 50-hour student is still trying to pass. <strong>Every pilot is simultaneously a student and a resource — the chain runs in both directions at every level.</strong>
+          </p>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            The platform does not wait for pilots to reach the top before they contribute. It activates the knowledge they already have — structures it through modules, verifies it through the platform, and records it as a professional contribution. A pilot who has passed their CPL skills test last month knows something a PPL student needs to hear right now. That knowledge transfer is the chain.
+          </p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed">
+              <strong style={{color:'#f87171'}}>The pilot does not contribute because they are told to. They contribute because it builds their Recognition Score, verifies their Leadership &amp; Teamwork competency, and advances their profile toward the thresholds operators require.</strong> The incentive is structural. The outcome is a self-replenishing knowledge network that grows automatically as the platform grows — no recruitment required, no senior assignment needed.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="border-l-4 border-red-500 bg-red-50 px-5 py-4 rounded-r">
+              <p className="font-bold text-slate-800 mb-2">What the 1st Year Gains</p>
+              <ul className="space-y-1 text-slate-700 text-sm">
+                {['Access to a peer who recently navigated what they are currently facing', 'A verified mentorship record from their first day on the platform', 'Honest, non-commercial guidance from someone with no financial incentive to mislead them', 'A model to follow — the 4th year is the proof that the process works', 'Recognition Score points from their very first mentorship session'].map(item => (
+                  <li key={item} className="flex items-start gap-2"><span className="text-red-500 mt-1 flex-shrink-0">→</span><span>{item}</span></li>
+                ))}
+              </ul>
+            </div>
+            <div className="border-l-4 border-slate-400 bg-slate-50 px-5 py-4 rounded-r">
+              <p className="font-bold text-slate-800 mb-2">What the 4th Year Gains</p>
+              <ul className="space-y-1 text-slate-700 text-sm">
+                {['Verified mentorship hours logged against their profile — visible to airlines', 'Recognition Score advancement in the Leadership & Teamwork competency band', 'Demonstrated consultation skills — a differentiator no type rating or logbook entry can provide', 'The formation of the habit of giving back — which defines what the platform\'s culture becomes', 'Priority pathway matching on airlines that weight mentorship hours in candidate assessment'].map(item => (
+                  <li key={item} className="flex items-start gap-2"><span className="text-slate-500 mt-1 flex-shrink-0">→</span><span>{item}</span></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-8 bg-white">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">The Flywheel — How the Chain Compounds</p>
+            <div className="flex flex-col md:flex-row items-center gap-3 text-sm text-slate-700 text-center">
+              {['1st year enrolled', '4th year assigned', 'Both earn Recognition Score', '1st year becomes 4th year', '4th year becomes senior mentor', 'Senior mentor trains the next 4th year'].map((step, i, arr) => (
+                <React.Fragment key={step}>
+                  <div className="bg-slate-900 text-white rounded-lg px-3 py-2 text-xs font-semibold flex-1 min-w-0">{step}</div>
+                  {i < arr.length - 1 && <span className="text-red-500 font-bold text-lg flex-shrink-0 hidden md:block">→</span>}
+                </React.Fragment>
+              ))}
+            </div>
+            <p className="text-slate-500 text-xs mt-4 text-center">The platform does not hire mentors. It produces them. Every pilot who is helped eventually helps another. The pool is self-replenishing.</p>
+          </div>
+
+          <h2 id="foundation-recognition-score" className="text-2xl font-bold text-slate-800 mt-10 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">
+            Core IV — Recognition Score Contribution
+          </h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            The Recognition Score is the quantified output of the Foundation Program. It is not a grade. It is not a ranking. It is a live, verified composite of everything a pilot has actually done — and the Foundation Program is the primary mechanism through which that score is built at the early career stage.
+          </p>
+          <p className="text-slate-700 leading-relaxed mb-6 font-semibold text-slate-800 italic">
+            "Your score grows when you learn. It grows again when you teach."
+          </p>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-3 font-semibold">Foundation Activity</th>
+                  <th className="text-left px-4 py-3 font-semibold text-red-400">Recognition Score Band</th>
+                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>Weighting</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { activity: 'Mentorship hours received (per 10h block)', band: 'Professional Development', weight: 'Medium — signals investment from a senior pilot' },
+                  { activity: 'Mentorship hours given (per 10h block)', band: 'Leadership & Teamwork (EBT)', weight: 'High — signals readiness to lead, not just follow' },
+                  { activity: 'EBT consultation session completed', band: 'Competency Alignment', weight: 'High — directly mapped to airline assessment criteria' },
+                  { activity: 'Gap analysis reviewed and actioned', band: 'Self-Awareness & Career Management', weight: 'Medium — signals the pilot understands where they stand' },
+                  { activity: 'Foundation Program completion (50h)', band: 'Verified Formation', weight: 'High — unlocks Recognition+ eligibility and pathway submission' },
+                  { activity: 'Peer mentorship chain contribution', band: 'Platform Contribution', weight: 'Bonus tier — pilots who give back rank higher in operator discovery pools' },
+                ] as { activity: string; band: string; weight: string }[]).map((row, i) => (
+                  <tr key={row.activity} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-200 text-xs align-top">{row.activity}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-medium text-xs align-top whitespace-nowrap">{row.band}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs align-top">{row.weight}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="foundation-missionary-model" className="text-2xl font-bold text-slate-800 mt-10 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">
+            Core V — The Advocacy Model
+          </h2>
+          <p className="text-slate-700 leading-relaxed mb-4">
+            The Foundation Program is not complete when the 50 hours are logged. It is complete when the pilot goes back out. The formation process follows a four-stage arc: <strong>Lost → Found → Transformed → Sent.</strong>
+          </p>
+
+          <div className="space-y-4 mb-8">
+            {([
+              { stage: 'Stage 1 — Lost', color: 'border-slate-400', bg: 'bg-slate-50', body: 'The pilot is trained but directionless. They have a licence. They have hours. They have debt. They do not have a map. No one has told them what the gap is, which operator is right for their profile, or what the industry actually needs from them right now. They are qualified. They are invisible.' },
+              { stage: 'Stage 2 — Found', color: 'border-blue-400', bg: 'bg-blue-50', body: 'A mentor arrives. Not a salesperson. Not an algorithm. A pilot who has been where they are and found the way through. The Foundation Program begins. The gap is mapped. The route is structured. The profile starts to build. For the first time, the pilot sees exactly where they stand — and exactly what it takes to close the distance.' },
+              { stage: 'Stage 3 — Transformed', color: 'border-amber-400', bg: 'bg-amber-50', body: 'The work is done. 50 hours of mentorship. EBT consultation sessions. Gap analysis actioned. Profile built, verified, and submitted. The pilot who emerges is not just more employable — they think differently. They carry themselves differently. They know what they\'re worth and they can prove it. Not because they say so. Because the record says so.' },
+              { stage: 'Stage 4 — Sent', color: 'border-red-500', bg: 'bg-red-50', body: 'The formation is not complete until they go out. The pilot who was found now finds others. They walk into flight schools, crew rooms, and ramp areas. They sit across from 1st-year students. Not from a brochure — from experience. They show their Recognition Score. They show what the process produced. And they invite the next pilot into it. The chain never breaks.' },
+            ] as { stage: string; color: string; bg: string; body: string }[]).map((item) => (
+              <div key={item.stage} className={`border-l-4 ${item.color} ${item.bg} px-5 py-4 rounded-r`}>
+                <p className="font-bold text-slate-900 mb-2">{item.stage}</p>
+                <p className="text-slate-700 text-sm leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed">
+              <strong style={{color:'#f87171'}}>This is not a growth hack. It is a culture.</strong> The platform does not need a sales team to recruit pilots. It needs pilots who have been through the Foundation Program and know — from lived experience — that it changed what was possible for them. <strong style={{color:'#f87171'}}>Every pilot who goes out and brings another in is a continuation of the chain that started with a single phone call: "Ben, I quit flying."</strong>
+            </p>
+          </div>
+
+          <div className="border border-slate-200 rounded-lg px-6 py-5 mb-10 bg-white">
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Commercial Model — Foundation Program</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              {[
+                { tier: 'Free Tier', desc: 'Any pilot can enroll. Profile creation, gap analysis tool, and 10 hours of peer mentorship are available at no cost. The entry barrier is zero because the formation must be accessible to every pilot the industry has failed — including those who have no money left.', color: 'text-slate-600' },
+                { tier: 'Foundation Complete', desc: '50-hour completion unlocks Recognition+ eligibility, pathway submission rights, and ATLAS CV generation. Verified by the platform. Recognised by every operator in the ecosystem.', color: 'text-blue-600' },
+                { tier: 'Mentor Tier', desc: 'Pilots who give back 50+ mentorship hours are elevated to Mentor status — a verified designation visible on their profile. Airlines actively weight Mentor-tier pilots in pathway discovery because leadership formation at this level is a direct predictor of CRM performance.', color: 'text-red-600' },
+              ].map((item) => (
+                <div key={item.tier} className="border border-slate-200 rounded-lg p-4">
+                  <p className={`font-bold mb-2 ${item.color}`}>{item.tier}</p>
+                  <p className="text-slate-600 text-xs leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-universities" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AVIATION UNIVERSITIES &amp; ACADEMIES
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Aviation Operators &amp; Training</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Universities Produce Graduates With No Verified Industry Connection</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Aviation degree programs and academies produce technically qualified graduates — and then hand them a certificate with no live connection to the industry that was supposed to receive them. Employment rates are tracked anecdotally. Operator requirements are not embedded in curriculum. A student can complete four years of aviation management or flight operations study and graduate with no verified record of what they are capable of, no pathway to the operators in their sector, and no mechanism to demonstrate that their academic training maps to real-world requirements.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Universities Must Contribute', items: ['Automatic platform enrollment for all incoming students from day one', 'Curriculum-to-pathway alignment: course modules mapped to verified operator requirements', 'Graduate outcome data: employment rates, time-to-employment, sector placement', 'Academic performance records feeding the Recognition Profile'] },
+              { t: 'What Universities Gain', items: ['Demonstrable ROI: verified placement rates attract 30% more applicants', '"Verified Graduate" status differentiating graduates from unverified degree holders', 'Direct airline partnerships through the platform ecosystem', 'Research access to anonymised industry data for evidence-based curriculum development'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-recruitment" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AVIATION RECRUITMENT AGENCIES
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub A — Aviation Operators &amp; Training</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Recruiters Are Competing on Volume, Not Quality</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Aviation recruitment agencies operate on a model that is structurally misaligned with the industry's actual problem. They charge a percentage of first-year salary — typically 15–20% — for placing pilots who are unverified, sourced from the same generic CV pool, and frequently mismatched to the operator. A $200,000 Captain placement costs the operator $40,000 in agency fees, plus full verification costs on top, plus a 60–90 day lead time. If the pilot leaves within 12 months, the entire cost is absorbed with nothing to show for it.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform ends the percentage-of-salary model. Recruitment agencies that integrate with the Pre-Cleared Pipeline access a pool of verified, pathway-matched candidates — and earn a flat success fee per verified placement, with volume bonuses and recurring revenue from candidate verified status subscriptions.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Requirements', items: ['API access to Pre-Cleared Pipeline for verified candidates only', 'Success fees only — no upfront placement fees', 'No resume spam: only pull profiles with explicit pilot consent', 'Audit trail of all candidate interactions and placement outcomes'] },
+              { t: 'What Agencies Gain', items: ['Pre-cleared candidates: no cold calling, no unverified CV screening', '3x better retention rates vs. traditional placement model', '70% reduction in candidate screening time', 'New revenue stream: annual "verified status" subscriptions for candidates in pipeline'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The fee comparison:</strong> Executive search firm = $40,000+ per Captain hire, 60–90 day lead time, no pre-verification, full background check still required. PilotRecognition Enterprise = <strong style={{color:'#f87171'}}>$1,512 total cost to hire, same day, pre-verified candidate.</strong> Agencies that price against this reality will win the market. Agencies that don't will lose it.</p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB C */}
+          <h1 id="hub-c-capital" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB C — CAPITAL, RISK &amp; COMPLIANCE
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Banking · Insurance · Regulatory Bodies · The Financial Layer</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub C connects the financial and regulatory infrastructure of aviation to the verified pilot data layer. Banks price aviation loans on incomplete information. Insurers underwrite on static logbooks. Regulators audit on paper. Hub C replaces all three models with live, cryptographically verified pilot data — making every capital and compliance decision in aviation more accurate, less risky, and faster to execute.</p>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The core proposition for Hub C partners:</strong> A pilot actively progressing through a verified pathway on this platform is the most legible financial and compliance signal in aviation. <strong style={{color:'#f87171'}}>Banks can lend against it. Insurers can price against it. Regulators can audit against it. For the first time, the financial layer of aviation has a data substrate it can actually trust.</strong></p>
+          </div>
+
+          <h2 id="pillar-8-banking" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 8: BANKING &amp; FINANCIAL INSTITUTIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub C — Capital, Risk &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Aviation Loans Are Priced on Ignorance</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Banks view pilot training loans as high-risk instruments — and with good reason. The conventional pipeline has a catastrophic ROI failure rate. A pilot borrows $50,000–$80,000 for training, graduates into a flight instructor role paying $800/month, and services the loan for a decade before reaching the salary that justified the investment. Default rates are high. Recovery is low. The result: predatory interest rates, restrictive collateral requirements, and near-total absence of structured aviation financing in most markets.</p>
+          <p className="text-slate-700 leading-relaxed mb-6"><strong>The information failure is the credit failure.</strong> Banks are not pricing the pilot — they are pricing the absence of a verifiable track record. A pilot who cannot demonstrate active pathway progression, verified hours, and operator alignment is indistinguishable from one who has abandoned training entirely.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Banks Must Publish', items: ['Transparent lending criteria and minimum thresholds', 'Recognition Score bands that unlock lower interest rates', 'Pathway-linked loan products: type rating financing, program fees', 'Repayment deferral triggers tied to verified employment status'] },
+              { t: 'What Banks Gain', items: ['Real-time pathway progression as predictive collateral', 'Verified employment event triggers for disbursement and collection', 'Dynamic risk adjustment as pilot profile strengthens', 'Access to the only structured aviation-specific borrower dataset in existence'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The platform insight:</strong> A pilot who completes the Foundation Program, maintains a Recognition+ profile, and has an active pathway submission against a verified airline is not a credit risk. They are a <strong style={{color:'#f87171'}}>measurable income event in progress.</strong> Banks that price this correctly will own the aviation training finance market. Banks that don't will keep losing it to cash-strapped pilots who borrow from family.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-9-insurance" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 9: AVIATION INSURANCE PROVIDERS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub C — Capital, Risk &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Actuaries Are Pricing Dead Paper</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Aviation insurance underwriting is built on static logbook submissions, self-reported flight hours, and historical incident records that are incomplete, manually compiled, and unverifiable at scale. Actuarial tables are calibrated on lagging indicators. A pilot who completed 200 simulator hours last month — demonstrating high recency and cognitive proficiency — is priced identically to one who has not flown in six months. <strong>The model cannot distinguish between them because the data infrastructure to do so has never existed.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-6">The result is systematic mispricing in both directions: over-pricing active, proficient pilots who are charged for risks they don't carry, and under-pricing inactive or degraded pilots whose risk has not been captured by the static record.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Insurers Must Publish', items: ['Dynamic premium pricing tiers linked to Recognition Score bands', 'Explicit simulator and EBT metric thresholds for premium reduction', 'Real-time recency weighting disclosure', 'Incident history ingestion requirements and API schema'] },
+              { t: 'What Insurers Gain', items: ['The most accurate actuarial dataset in aviation history', 'Real-time proficiency signals replacing static logbook submissions', 'Dynamic premium adjustment capability as pilot records update', 'Fraud elimination: verified credential records replace self-reported data'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The actuarial opportunity:</strong> A verified Recognition+ pilot with logged simulator sessions, EBT consultation completions, and a current medical certificate is a fundamentally different risk profile from an unverified pilot with equivalent hours on paper. <strong style={{color:'#f87171'}}>Insurers who can price that distinction will acquire the most commercially active segment of the pilot population at a structural cost advantage.</strong></p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-10-regulatory" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 10: LEGAL &amp; REGULATORY BODIES
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub C — Capital, Risk &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Compliance Audits Are Manual, Slow, and Legally Exposed</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">In the event of an aviation incident, the competency and credentialing trail of the involved crew must be reconstructed manually — from paper logbooks, employment records, medical files, and training documentation held across multiple jurisdictions and institutions. This process takes weeks, introduces error at every transfer point, and exposes hiring organisations to negligent-hiring liability when gaps in the record surface post-incident.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Regulatory authorities (CAAP, FAA, GCAA, EASA) operate compliance frameworks that assume paper-based submissions. Cross-border license recognition requires manual validation. ICAO standardisation mandates exist in policy but have no operational infrastructure to enforce them at the individual pilot level.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Regulators Must Publish', items: ['Compliance standards directly on the platform (FAA PRD mandates, ICAO Annex 1 requirements)', 'Cross-border licence recognition criteria and validation timelines', 'Jurisdiction-specific medical and recency requirements', 'Structured incident reporting schemas compatible with platform data architecture'] },
+              { t: 'What Regulators Gain', items: ['Immutable, cryptographically secured audit trail for every pilot credential event', 'Automated cross-border licence recognition validation', 'Complete insulation from negligent-hiring liability for platform-verified hires', 'Real-time compliance submission replacing periodic paper audits'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The compliance architecture:</strong> A pilot hired through a verified pathway comes with an instant, cryptographically secure compliance dossier — license status, medical currency, background check record, training history, and EBT assessment results. <strong style={{color:'#f87171'}}>A regulator reviewing a platform-verified hire does not reconstruct a record. They access one that has been continuously maintained.</strong></p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB D */}
+          <h1 id="hub-d-infrastructure" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB D — INFRASTRUCTURE &amp; DATA
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Flight Data · Aeromedical · Verified Ingestion Pipelines · The Technology Layer</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub D integrates the data sources that pilots already use — navigation apps, logbook software, medical examiners — into the verified pilot profile. Every logbook entry a pilot makes in ForeFlight, every medical certificate issued by a DAME, every simulator session logged in Navigraph should flow directly into their professional identity. Hub D builds those pipelines.</p>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The data isolation problem:</strong> Pilots use dozens of tools to manage their professional life. None of them talk to each other. None of them feed a verified professional record. The hours logged in ForeFlight are invisible to the airline reviewing a CV. The medical signed by the AME is a paper document that cannot be queried at scale. <strong style={{color:'#f87171'}}>Hub D ends the isolation. Every data source becomes a verified input to the pilot's single professional identity.</strong></p>
+          </div>
+
+          <h2 id="pillar-12-flight-data" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 12: FLIGHT DATA &amp; NAVIGATION APPS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Pilot Telemetry Is Professionally Invisible</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Navigraph, ForeFlight, Garmin Pilot, and desktop simulator platforms collectively capture millions of hours of real pilot activity every month. Route planning data, ATC simulation sessions, approach currency records, and instrument proficiency events are all logged — and all professionally invisible. They do not appear on a CV. They are not queryable by an airline. They contribute nothing to the pilot's verified professional identity.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This is a structural waste of the most granular pilot activity data in existence. A pilot who completes 50 hours of IFR simulator sessions in a month has demonstrably maintained cognitive currency. That fact should be verifiable. Currently, it is not.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Requirements', items: ['Direct API webhooks as Verified Ingestion Pipelines', 'Data portability toggles giving pilots control over what is shared', 'Telemetry timestamping and session validation protocols', 'Real-time hour validation feeding the pilot\'s Recognition Profile'] },
+              { t: 'Partner Benefits', items: ['Unprecedented user stickiness — a Navigraph subscription that fuels an airline resume is never cancelled', 'Co-marketing access to the verified pilot database', 'Differentiated market position as the only platform with professional aviation credential integration', 'Enterprise data insights on pilot training and proficiency trends'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-13-aeromedical" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 13: AEROMEDICAL EXAMINERS (AMEs)
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Medical Certificates Are the Most Forgeable Document in Aviation</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A Class 1 medical certificate is a paper document with a stamp. Airlines receive it as a self-submitted file. There is no real-time queryable record of whether it is current, whether it was issued by an authorised examiner, or whether the pilot's medical status has changed since issuance. Fraud is straightforward. Expiry is invisible. The compliance gap between issuance and airline verification is unmeasured.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">AMEs who issue medical certificates carry no structured pipeline for communicating status to hiring organisations. They operate at the end of a paper chain that has not been modernised since the introduction of the original certificate format.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What AMEs Must Provide', items: ['Digital validation signatures on issued certificates', 'Expiry dates and class designations ingested directly into pilot profiles', 'Direct authentication via secured practitioner portal', 'Real-time status updates when certificate is renewed, suspended, or revoked'] },
+              { t: 'What AMEs Gain', items: ['Elimination of verification fraud and forged certificate inquiries', 'Reduced administrative load from airline verification requests', 'Modernised digital health ledger replacing paper-based records', 'Recognised status as a verified data provider in the platform ecosystem'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The medical integrity layer:</strong> When an airline queries a pilot profile on this platform, the medical certificate status is not self-reported — it is AME-verified and timestamped. <strong style={{color:'#f87171'}}>A pilot cannot submit a pathway application with an expired or unverified medical. The system enforces what the industry currently relies on honesty to maintain.</strong></p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB E */}
+          <h1 id="hub-e-community" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB E — COMMUNITY, STRATEGY &amp; GROWTH
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Pilot Mentors · Unions · Manufacturers · OEMs · The Cultural Layer</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub E is where the platform's flywheel closes. The data produced by Hubs A through D creates macro-level intelligence that manufacturers need to build the right aircraft, unions need to negotiate the right conditions, and mentors need to guide the next generation with accurate market knowledge. Hub E connects those stakeholders to the living data layer they have never had access to before.</p>
+
+          <h2 id="pillar-14-mentors" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 14: PILOT CONTRIBUTORS, MENTORS &amp; UNIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Senior Pilots Have No Mechanism to Pass Knowledge Down</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A 15,000-hour Captain retiring from a major carrier carries an irreplaceable cargo of operational knowledge, sector intelligence, and institutional memory. There is no structured mechanism for that knowledge to be transmitted to the pilots entering the industry who need it most. Mentorship in aviation is informal, ad hoc, and entirely dependent on personal network access — which 200-hour pilots, by definition, do not have.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Unions negotiate on behalf of pilot cohorts using industry data that is incomplete, delayed, and aggregated to the point of uselessness for individual career decisions. A union negotiating salary bands does not know whether the cohort it represents has an average Recognition Score that justifies a renegotiation — because that metric has never existed.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Mentors & Unions Contribute', items: ['Senior pilots post verified mentorship availability on the platform', 'Junior pilots log consulting hours, leadership initiatives, and community contributions', 'Unions publish aggregated salary data, collective agreement terms, and negotiation precedents', 'Pre-Experience Portfolios: constructivism and leadership verified before 1,500 hours'] },
+              { t: 'What They Gain', items: ['Junior pilots: a verified professional presence that bypasses the invisible 200-hour problem', 'Senior pilots: a structured legacy mechanism with a Recognition Score multiplier for hours given', 'Unions: aggregated Recognition Score data to negotiate collective benefits and group insurance rates', 'The platform contribution that makes the entire ecosystem function — without mentors, the chain breaks'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-15-manufacturers" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 15: MANUFACTURERS &amp; OEMs
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Manufacturers Build on Lagging Indicators</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Airbus builds simulators based on fleet transition announcements that are years old by the time they reach production. Boeing calibrates type rating curriculum against operator orders that reflect decisions made two market cycles ago. Cessna targets marketing at pilot cohorts that have already moved to the next stage of training. <strong>The entire manufacturing and OEM ecosystem operates on the rear-view mirror.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-6">Meanwhile, the platform generates real-time leading indicators: which type ratings pilots are pursuing, which pathway cards are generating the most interest, which aircraft types are creating the largest gap between supply and demand. This macro-intelligence is the most commercially valuable dataset in aviation — and manufacturers have never had access to it.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Manufacturers Must Publish', items: ['Macro-level fleet transition announcements and future aircraft capability specs', 'Type rating curriculum updates and simulator availability schedules', 'OEM-specific pathway integration requirements for sponsored type ratings', 'Enterprise Data Insights subscription requirements for accessing platform trend data'] },
+              { t: 'What Manufacturers Gain', items: ['The ultimate leading indicator: real-time pathway demand data showing which type ratings pilots are pursuing before the market moves', 'If pathway data shows a shift toward A321 qualifications, Airbus adapts simulator production before the demand peak', 'Targeted marketing direct to pilots at the exact moment they are evaluating a type rating investment', 'Cessna sees every pilot seeking single-engine time-building pathways — and reaches them directly'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The A322 dilemma resolved:</strong> The platform knows — in real time — whether pilots are training toward A320 or A321 qualifications, which operators are posting those pathway requirements, and what the demand curve looks like 18 months out. <strong style={{color:'#f87171'}}>A manufacturer with access to that data does not build the wrong simulator. It builds the right one, in the right volume, before the market needs it.</strong></p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-media" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AVIATION MEDIA &amp; PUBLICATIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Aviation Career Information Is Fragmented, Unverified, and Contradictory</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A pilot searching for Emirates requirements today will find 50 different answers — none of them verified by the airline, most of them outdated, several of them wrong. Aviation media publishes career content based on anecdote, forum speculation, and press releases. The gap between what pilots read and what operators actually require is enormous, and it costs pilots real money. Training decisions made on bad information are financial disasters. The platform closes that gap by giving media partners access to verified, live, structured data — and a mechanism to publish it in a way that is provably accurate.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Media Partners Must Contribute', items: ['Publish data-driven stories using verified platform insights — not speculation', 'Accurate reporting: no sensationalism of pilot shortage, data-driven stories only', 'Privacy protection: no individual pilot identification without explicit consent', 'Source verification: platform data validation before publication'] },
+              { t: 'What Media Partners Gain', items: ['Unique content: access to verified pathway data no other publication has', '"Data-driven aviation journalism" authority positioning', 'Interactive tools that attract 2–3x reader engagement', 'Revenue diversification: sponsored insights, data reports, platform-powered webinars'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          {/* CREDIT RATING — added to Hub C section but anchored here for nav */}
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-credit-rating" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            CREDIT RATING AGENCIES
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub C — Capital, Risk &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Pilot Career Creditworthiness Is Unmeasurable</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Credit rating agencies that service the aviation sector — lending institutions, aviation finance houses, aircraft leasing firms — assess creditworthiness on the same blunt instruments used everywhere else: income history, debt ratios, employment tenure. None of these instruments are calibrated for the non-linear career trajectory of a commercial pilot. A 200-hour pilot with a clear pathway progression, verified training completions, and an active Recognition Score is a materially different credit risk from a 200-hour pilot with no verified record. The current system cannot distinguish between them.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform creates a new creditworthiness signal: pathway progression. A pilot actively advancing through verified milestones on an airline-endorsed pathway is demonstrating measurable career momentum — which is the most accurate predictor of future earnings capacity in aviation. Credit rating agencies that integrate this signal into their models gain a risk differentiation capability that does not exist anywhere else in the market.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Requirements', items: ['API access to pilot pathway progression data (with consent)', 'Recognition Score as supplementary creditworthiness input', 'Verified training completion milestones as collateral signal', 'Dynamic risk adjustment as profile progresses'] },
+              { t: 'What Rating Agencies Gain', items: ['First aviation-specific creditworthiness signal in the market', 'Ability to differentiate high-trajectory vs. stalled pilot career risk', 'Reduced default rates on aviation training loans', 'New product category: "Pathway-Verified" credit assessment for pilot applicants'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          {/* TELEMETRY — added to Hub D section */}
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-telemetry" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            TELEMETRY &amp; SIMULATOR DATA PROVIDERS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Living Proficiency Data Is Trapped Inside Consumer Applications</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots today maintain genuine cognitive currency through desktop simulators — MSFS, X-Plane — flying live, human-controlled ATC networks like VATSIM, logging complex IFR routes with real weather deviations, practising non-precision approaches, maintaining type familiarity through structured simulator sessions. None of this activity is visible to the industry. Insurance underwriters pricing policy risk cannot see it. Airlines assessing recency cannot access it. The pilot's Recognition Profile does not reflect it. The data exists, is being generated in real time, and is professionally invisible.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Telemetry and simulator data providers — VATSIM, MSFS telemetry platforms, home simulator networks — sit on the most granular pilot proficiency dataset in existence. The integration path is straightforward: verified ingestion pipelines that port telemetry data, with pilot consent, directly into the Recognition Profile. A pilot who flew a 4-hour IFR route on a desktop sim last night, handled weather deviations with live ATC, and logged 6 ILS approaches — that activity should be verifiable. The platform makes it so.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Telemetry Providers Must Integrate', items: ['Direct API webhooks acting as verified ingestion pipelines', 'Real-time telemetry data porting to pilot Recognition Profiles', 'Data portability toggles: pilot-controlled consent for professional profile sharing', 'Subscription integration linking platform accounts to simulator profiles'] },
+              { t: 'What Telemetry Providers Gain', items: ['Unprecedented user stickiness: if your simulator data builds a pilot\'s airline profile, they will never cancel their subscription', 'B2B enterprise demand: operators paying for access to telemetry-verified pilot pools', 'Platform partnership: co-branded "Verified Recency" status for active sim users', 'Insurance underwriter demand for real-time proficiency data'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB F GROWTH */}
+          <h1 id="hub-f-growth" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB F — GROWTH &amp; EXPANSION
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Aviation Events · Government Authorities · International Organizations</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub F connects the platform to the broader institutional aviation ecosystem — the events that bring the industry together, the regulatory authorities that govern it, and the international organizations that set its global standards. These stakeholders do not fit neatly into any operational pillar. They sit above the ecosystem, shaping the environment in which every other pillar operates. Integrating them is how the platform scales from a regional tool to a global industry standard.</p>
+
+          <h2 id="pillar-events" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AVIATION EVENTS &amp; CAREER FAIRS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub F — Growth &amp; Expansion</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Career Fairs Are Still Running on Paper Resumes and QR Codes</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The UAE career fair incident that catalysed this platform is the defining case study for what is wrong with aviation events. A qualified, licensed, motivated pilot approaches a major carrier's stand. He is handed a QR code and told to come back with 1,500 hours. The recruiter is numb to unverified resumes. The pilot has no mechanism to demonstrate that he is different from the 500 other pilots who walked up before him. The outcome is a mutual waste of time, money, and opportunity.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform transforms the career fair from a resume collection exercise into a live pathway matching event. Pilots pre-register on the platform. Their verified Recognition Profile is live before they arrive. Operators see matched candidates — pre-verified, pathway-aligned, Recognition Score visible — and engage with pilots who are genuinely suitable, not just physically present.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'The New Event Format', items: ['No paper resumes: QR code pathway access for every pilot at the event', 'Pre-event matching: pilots matched to relevant operators before arriving', 'Live pathway discovery: operators see verified profiles in real time at their stand', 'Post-event outcome tracking: 6-month hire, interview, and connection measurement'] },
+              { t: 'What Event Organisers Gain', items: ['50% attendance increase: "pre-matched to operators" is a far stronger attendee proposition', '3x better hire rates vs. traditional career fair format', 'Real-time analytics informing future event planning', '"Future of Aviation Recruitment" positioning vs. competitors still running paper-based events'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The UAE transformation:</strong> Instead of "Come back when you have 1,500 hours" → <strong style={{color:'#f87171'}}>"Your profile matched 3 Pathways. Schedule your interviews now."</strong></p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-government" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            GOVERNMENT AVIATION AUTHORITIES
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub F — Growth &amp; Expansion</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Regulators Still Audit on Paper in a Digital Industry</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">CAAP, FAA, EASA, GCAA — every national aviation authority in the world runs pilot credential verification on a combination of paper submissions, manual database queries, and self-declared logbook entries. The compliance process is slow, error-prone, and structurally vulnerable to fraud. An airline hiring a pilot with a forged Class 1 medical certificate has no real-time mechanism to detect the forgery at the point of hire. A regulator auditing a charter operator's pilot records does so manually, weeks after the fact, against documents that were already outdated when submitted.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform provides the regulatory infrastructure upgrade the industry has been waiting for: a cryptographically verified, real-time pilot credential database that regulators can query at the point of compliance, not weeks after it matters.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Requirements', items: ['Real-time license status verification API (read access)', 'Medical certificate validation feed from AME-linked records', 'Recognition of platform as official competency verification channel', 'Standardised data formats enabling cross-border pilot mobility'] },
+              { t: 'What Authorities Gain', items: ['83% reduction in compliance audit time: 120 hours → 20 hours per inspection', 'Fraud prevention: cryptographic verification eliminates credential forgery', 'International pilot mobility: standardised data enables seamless cross-border transfers', 'Data-driven policy: platform insights inform regulatory decision-making with live market data'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-international-orgs" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            INTERNATIONAL AVIATION ORGANIZATIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub F — Growth &amp; Expansion</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">IATA, ICAO, and the Global Standard Problem</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">ICAO sets the global standards for pilot licensing, medical certification, and competency assessment. IATA represents the commercial interests of the world's airlines. Both organisations operate on data that is years old by the time it informs policy. ICAO's EBT framework was groundbreaking when published — but its implementation across member states is inconsistent, unverifiable, and disconnected from the digital infrastructure pilots actually use. IATA's safety and workforce data relies on member airline submissions that are partial, delayed, and incompatible across systems.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform does not compete with international organisations — it provides the data layer they have never had. Real-time, anonymised, globally aggregated pilot competency data, pathway demand curves, licensing gap analysis by region, and EBT benchmark distributions. This is the dataset that makes global aviation workforce policy evidence-based rather than estimate-based.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Path', items: ['Anonymous aggregate platform data available to ICAO/IATA research bodies', 'EBT benchmark data feeding into global competency standard reviews', 'Pilot shortage data broken down by region, licence level, and sector', 'Cross-border licensing mobility data for bilateral agreement frameworks'] },
+              { t: 'What International Bodies Gain', items: ['First real-time, globally aggregated pilot workforce dataset', 'Evidence-based policy development replacing delayed survey data', 'EBT implementation verification: measure whether the standard is actually working', 'Influence: platform data becomes the industry reference for workforce planning'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB G DISCOVERY */}
+          <h1 id="hub-g-discovery" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB G — DIGITAL DISCOVERY
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Search · Professional Networks · Job Boards · AI Platforms · The Discovery Layer</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Every pilot journey begins with a search. Before a pilot contacts an airline, enrolls in flight school, or commits to a type rating — they search. They ask Google. They scroll LinkedIn. They query an AI assistant. They browse aviation job boards. The problem is that every search returns fragmented, unverified, contradictory information. Hub G is the platform's answer to that problem: structured, verified aviation career data embedded at the point of discovery, wherever that discovery happens.</p>
+
+          <h2 id="pillar-25-discovery" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 25: DIGITAL DISCOVERY &amp; SEARCH PLATFORMS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub G — Digital Discovery</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Aviation Career Information Is the Most Misinformed Category on the Internet</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A search for "Emirates pilot requirements" returns 50 different answers. None are verified by the airline. Most are outdated. Several contain requirements that no longer apply. Professional networks show pilot job posts that closed months ago. Job boards list opportunities without context about actual pathway requirements. AI assistants confidently answer aviation career questions with information scraped from forums that haven't been updated since 2019. The result: pilots make expensive training decisions based on misinformation, and airlines continue receiving applications from pilots who have no realistic chance of meeting the requirements they were never accurately told about.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Pillar 25 solves this by creating a structured data partnership between the platform and the world's discovery infrastructure. Instead of fragmented forum answers, pilots find verified, live pathway data directly in search results, career panels, and AI responses. The platform becomes the authoritative source for aviation career data across every discovery channel.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Search Platforms', items: ['Structured pathway schema markup (JobPosting + OccupationalCertification)', 'Career pathway panels displaying verified pilot requirements', 'Knowledge graph integration as authoritative aviation career source', 'Voice search: virtual assistants answer "What do I need to become an Emirates pilot?" with verified data'] },
+              { t: 'Professional Networks', items: ['Recognition Score and verified credentials displayed on pilot profiles', 'Pathway cards published as structured opportunities with live requirements', 'AI career assistant trained on verified platform data', 'Direct integration with aviation career search features'] },
+              { t: 'Aviation-Specific Platforms', items: ['Real-time pathway requirement sync: no more outdated job posts', 'API integration for live pathway data in aviation job boards', 'Framework data powering airline requirement databases', 'Reddit/Discord bot integration providing framework-backed answers to career questions'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Discovery Flywheel:</strong> When a pilot searches "how to become an Emirates pilot" and finds verified, structured pathway data from the platform — they click through, create a profile, and enter the ecosystem. <strong style={{color:'#f87171'}}>Hub G is where the platform's network effect begins. Every discovery that returns verified data instead of forum speculation is a future pilot entering the verified pipeline.</strong></p>
           </div>
 
           <hr className="my-10 border-slate-300" />
