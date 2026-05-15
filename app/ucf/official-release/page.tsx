@@ -4405,6 +4405,29 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Engine Metaphor — Many Parts, One Function</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform operates like an engine. An engine is not the fuel. It is not the exhaust. It is not the pistons individually. It is the <strong>structure that makes all the parts work together</strong>. Remove any single part and the engine stops. The parts themselves are nothing without the structure that coordinates them.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">PilotRecognition is the engine. Veremark is a part. The vault provider is a part. Stripe is a part. The referral network is a part. The airline portal is a part. Each provider is specialist, independent, and fully liable for their own function. But <strong>none of them can serve a pilot without the platform that connects them</strong>. The platform's value is not in what it holds — it holds nothing. Its value is in what it coordinates.</p>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm text-slate-300 leading-relaxed">
+            <p className="text-yellow-400 font-bold mb-4 text-xs uppercase tracking-widest font-sans">The Neutrality-Through-Liability Model</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-emerald-400 font-semibold mb-2 text-xs uppercase tracking-wide">Every Provider Needs the Platform</p>
+                <ul className="space-y-1 text-sm">
+                  {['Veremark needs the pilot pipeline we generate', 'The vault needs the consent flow we manage', 'Flight schools need the pilot discovery we provide', 'Airlines need the verified pool we aggregate', 'Referral partners need the conversion surface we operate', 'None can reach pilots at scale without the platform'].map(i => <li key={i} className="flex gap-2"><span className="text-emerald-400 flex-shrink-0">→</span>{i}</li>)}
+                </ul>
+              </div>
+              <div>
+                <p className="text-red-400 font-semibold mb-2 text-xs uppercase tracking-wide">Every Provider Carries Their Own Liability</p>
+                <ul className="space-y-1 text-sm">
+                  {['Vault: data custodian liability — not ours', 'Veremark: verification accuracy liability — not ours', 'Stripe: payment processing liability — not ours', 'Airlines: hiring decision liability — not ours', 'Referral partners: commission disputes — not ours', 'Platform liability: access to an information layer — minimal'].map(i => <li key={i} className="flex gap-2"><span className="text-red-400 flex-shrink-0">→</span>{i}</li>)}
+                </ul>
+              </div>
+            </div>
+            <p className="mt-4 text-slate-400 text-xs italic">The more liability each provider carries independently, the more neutral the platform becomes — and the more every provider needs it to function.</p>
+          </div>
+
           <div className="my-6 px-5 py-4 border-l-4 border-slate-900 bg-slate-900 rounded-r-lg">
             <p className="text-sm font-bold text-white uppercase tracking-widest mb-2">The Legal Position in One Line</p>
             <p className="text-slate-300 leading-relaxed italic">&quot;PilotRecognition is a website domain providing reputable, structured aviation career information across 25+ pillars. All specialist functions — data custody, verification, payment processing, email delivery — are handled by contracted third-party providers. The platform charges pilots $100/year for access to that aggregated intelligence layer. Nothing more.&quot;</p>
