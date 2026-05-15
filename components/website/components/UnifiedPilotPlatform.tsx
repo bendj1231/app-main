@@ -304,22 +304,6 @@ const HomeTab: React.FC<{
         ))}
         </div>{/* end bento grid */}
 
-        {/* Recognition+ upgrade CTA */}
-        <button
-          onClick={() => setTab('settings' as TabId)}
-          className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all hover:brightness-110"
-          style={{ background: 'linear-gradient(135deg, rgba(14,165,233,0.15) 0%, rgba(99,102,241,0.15) 100%)', border: '1px solid rgba(14,165,233,0.35)' }}
-        >
-          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(14,165,233,0.25)' }}>
-            <Star size={15} className="text-sky-300" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-sky-200 leading-none mb-0.5">Upgrade to Recognition+</p>
-            <p className="text-xs text-sky-400/70">Unlock unlimited pathway views, full profile comparison & operator visibility — $99/yr</p>
-          </div>
-          <span className="text-[10px] font-bold px-2 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(14,165,233,0.25)', color: '#7dd3fc', border: '1px solid rgba(14,165,233,0.3)' }}>$99/YR</span>
-        </button>
-
         {/* ── Get Started — How to set up your account ── */}
         <div
           className="rounded-2xl overflow-hidden"
@@ -331,41 +315,54 @@ const HomeTab: React.FC<{
               <p className="text-[11px] text-white/40">How to set up your account</p>
             </div>
             <div className="text-[10px] font-bold px-2.5 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              {[!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation].filter(Boolean).length} / 5 COMPLETE
+              {[!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation, false].filter(Boolean).length} / 6 COMPLETE
             </div>
           </div>
 
-          <div className="grid grid-cols-5 divide-x" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <div className="grid grid-cols-6 divide-x" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
             {[
-              { step: 1, label: 'Complete Profile', sublabel: 'Name, hours & occupation', done: !!profile, tab: 'profile' as TabId, icon: User },
-              { step: 2, label: 'Log Flight Hours', sublabel: 'Add your total time', done: hours > 0, tab: 'logbook' as TabId, icon: Clock },
-              { step: 3, label: 'Verify Credentials', sublabel: 'Wallet + Veremark token', done: walletChecks.some(c => c.status === 'verified'), tab: 'wallet' as TabId, icon: Shield },
-              { step: 4, label: 'Browse Pathways', sublabel: 'Submit your interest', done: score > 0, tab: 'pathways' as TabId, icon: Map },
-              { step: 5, label: 'Start a Program', sublabel: 'Foundation or Transition', done: enrolledInFoundation, tab: 'programs' as TabId, icon: BookOpen },
+              { step: 1, label: 'Complete Profile', sublabel: 'Name, hours & occupation', done: !!profile, tab: 'profile' as TabId, icon: User, highlight: false },
+              { step: 2, label: 'Log Flight Hours', sublabel: 'Add your total time', done: hours > 0, tab: 'logbook' as TabId, icon: Clock, highlight: false },
+              { step: 3, label: 'Verify Credentials', sublabel: 'Wallet + Veremark token', done: walletChecks.some(c => c.status === 'verified'), tab: 'wallet' as TabId, icon: Shield, highlight: false },
+              { step: 4, label: 'Browse Pathways', sublabel: 'Submit your interest', done: score > 0, tab: 'pathways' as TabId, icon: Map, highlight: false },
+              { step: 5, label: 'Start a Program', sublabel: 'Foundation or Transition', done: enrolledInFoundation, tab: 'programs' as TabId, icon: BookOpen, highlight: false },
+              { step: 6, label: 'Recognition+', sublabel: 'Unlock full access — $99/yr', done: false, tab: 'settings' as TabId, icon: Star, highlight: true },
             ].map((item, i) => {
               const Icon = item.icon;
+              const completedCount = [!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation, false].filter(Boolean).length;
+              const isNext = i === completedCount;
               return (
                 <button
                   key={item.step}
                   onClick={() => setTab(item.tab)}
-                  className="flex flex-col items-center gap-2 py-4 px-2 transition-all hover:brightness-125 group"
-                  style={{ background: item.done ? 'rgba(16,185,129,0.06)' : 'transparent' }}
+                  className="flex flex-col items-center gap-2 py-4 px-1.5 transition-all hover:brightness-125"
+                  style={{
+                    background: item.done
+                      ? 'rgba(16,185,129,0.06)'
+                      : item.highlight
+                        ? 'linear-gradient(180deg, rgba(14,165,233,0.08) 0%, rgba(99,102,241,0.08) 100%)'
+                        : 'transparent'
+                  }}
                 >
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
                     item.done
                       ? 'bg-emerald-500/25 ring-1 ring-emerald-500/40'
-                      : i === [!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation].filter(Boolean).length
+                      : item.highlight
                         ? 'bg-sky-500/20 ring-1 ring-sky-400/40'
-                        : 'bg-white/6'
+                        : isNext
+                          ? 'bg-sky-500/15 ring-1 ring-sky-400/30'
+                          : 'bg-white/5'
                   }`}>
                     {item.done
                       ? <CheckCircle size={16} className="text-emerald-400" />
-                      : <Icon size={15} className={i === [!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation].filter(Boolean).length ? 'text-sky-400' : 'text-white/30'} />
+                      : <Icon size={15} className={item.highlight ? 'text-sky-300' : isNext ? 'text-sky-400' : 'text-white/30'} />
                     }
                   </div>
                   <div className="text-center">
-                    <p className={`text-[10px] font-bold leading-tight ${item.done ? 'text-emerald-400' : 'text-white/60'}`}>{item.label}</p>
-                    <p className="text-[9px] text-white/25 leading-tight mt-0.5">{item.sublabel}</p>
+                    <p className={`text-[10px] font-bold leading-tight ${
+                      item.done ? 'text-emerald-400' : item.highlight ? 'text-sky-300' : 'text-white/60'
+                    }`}>{item.label}</p>
+                    <p className={`text-[9px] leading-tight mt-0.5 ${item.highlight ? 'text-sky-500/60' : 'text-white/25'}`}>{item.sublabel}</p>
                   </div>
                 </button>
               );
