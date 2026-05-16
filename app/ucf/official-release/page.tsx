@@ -4999,6 +4999,19 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">Logbook providers are not merely data sources — they are <strong>trusted verification partners</strong> within the PilotRecognition ecosystem. By maintaining GDPR-compliant data ownership while delivering cryptographic attestations to the pilot's career profile, these platforms become indispensable infrastructure for the global aviation hiring marketplace.</p>
           </div>
 
+          <div className="bg-slate-800 rounded-lg px-5 py-4 mb-6 text-center">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Powered By Industry Leaders</p>
+            <div className="flex flex-wrap justify-center gap-3 text-sm">
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">LogTen Pro</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ForeFlight</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Garmin Pilot</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Navigraph</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">X-Plane</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">PilotEdge</span>
+            </div>
+            <p className="text-slate-400 text-xs mt-3">A contribution platform built by API integrations from established aviation companies — further bulletproofing trust through distributed verification.</p>
+          </div>
+
           <hr className="my-8 border-slate-200" />
 
           <h2 id="pillar-13-aeromedical" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
