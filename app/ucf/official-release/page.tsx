@@ -66,6 +66,10 @@ const navSections = [
   { id: 'hub-g-discovery', label: 'Hub G — Digital Discovery', group: 'hubg' },
   { id: 'pillar-25-discovery', label: 'Pillar 25: Digital Discovery & Search', indent: true, group: 'hubg' },
   { id: 'pillar-platform-legal-model', label: 'Pillar: Platform Legal Model & Revenue', indent: true, group: 'hubg' },
+  { id: 'pillar-legal-inquiry-fees', label: 'Legal Inquiry & Response Fees', indent: true, group: 'hubg', adminOnly: true },
+  { id: 'pillar-credential-chain', label: 'Example: Credential Chain', indent: true, group: 'hubg', adminOnly: true },
+  { id: 'pillar-financial-chain', label: 'Example: Financial Chain', indent: true, group: 'hubg', adminOnly: true },
+  { id: 'pillar-verification-depth', label: 'Verification Depth Indicator', indent: true, group: 'hubg', adminOnly: true },
 
   { id: 'future-prospects', label: 'Future Prospects', group: 'prospects', adminOnly: true },
   { id: 'prospect-flywire', label: 'Flywire — Cross-Border Payments', indent: true, group: 'prospects', adminOnly: true },
@@ -2023,47 +2027,34 @@ export default function UCFOfficialReleasePage() {
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub B — Training &amp; Transition</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: A Training Industry Operating in a Recognition Vacuum</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Flight training organisations produce pilots. Airlines require pilots. And yet the two sides operate in near-total informational isolation — producing a gap that costs the industry billions annually in hiring friction, washout losses, and misaligned investment. The ATO takes the fee. The industry takes the graduate. Neither side has visibility into what happens next — and neither has accountability for the distance between what training promises and what employment delivers.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">Flight school graduation is transactional: hours logged, exams passed, certificate handed over. There is <strong>no emotional validation of the journey</strong>, no recognition of the personal transformation, no pride in the accomplishment beyond the paper credential. A pilot graduates with a degree and shakes the hand of the person handing it to them — and there is <strong>no structured recognition of what they built, no visible pathway forward, and no infrastructure connecting that moment to an industry that needs them</strong>.</p>
-          <p className="text-slate-700 leading-relaxed mb-6">Pillar 5 addresses this at both the institutional and individual level. It establishes a structured partnership framework for ATOs — connecting their graduates to verified operator pathways, publishing transparent placement outcomes, and integrating professional development programs directly into the graduation experience. <strong>The ATO stops being the end of the journey. It becomes the beginning of a verifiable career.</strong></p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">I. Executive Overview: The Informational Disconnect</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Flight Training Organizations (ATOs) are tasked with producing qualified pilots, while operators are tasked with recruiting them. Currently, these two entities operate in informational isolation. This structural gap generates measurable industry-wide friction, including elevated candidate washout rates, extended hiring timelines, and misaligned capital investment.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Currently, flight school graduation is a purely transactional event: hours are logged, examinations are passed, and paper certificates are issued. However, there is no structured recognition of the pilot's operational readiness, no verified connection to active employment pathways, and no digital infrastructure linking the graduation event to the broader aviation ecosystem.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Pillar 5 addresses this inefficiency. It establishes a structured partnership framework for ATOs, connecting graduates to verified operator pathways, publishing audited placement outcomes, and embedding professional development programs directly into the transition phase. The institution ceases to be a terminal training environment and becomes an integrated node in a verifiable career trajectory.</p>
 
-          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>"If a pilot graduates with a degree and shakes the hand of the person giving him the degree without any pride, empathy, or simply recognition in his efforts — that's a problem we need to address towards flight schools as well."</strong></p>
-            <p className="text-slate-400 text-xs mt-2">— PilotRecognition founding team</p>
-          </div>
-
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Cost of Isolation: Why ATOs Can't Afford to Stay Offline</h3>
-          <p className="text-slate-700 leading-relaxed mb-5">This section is not a threat. It is a description of a fire that is already burning. PilotRecognition is the extinguisher. The question is not whether these problems exist — they do, and every flight school owner reading this already knows it. The question is whether they address them now, with a structured solution, or let them compound.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">II. Systemic Challenges of Operational Isolation</h3>
+          <p className="text-slate-700 leading-relaxed mb-5">This section outlines the operational and commercial inefficiencies currently facing independent flight training institutions, and how integration with the PilotRecognition framework resolves these structural deficits.</p>
           <ul className="space-y-4 mb-8">
             {([
               {
                 n: '1',
-                t: 'The Silent Brand Killer — Alumni Toxicity',
-                d: <>Every graduate sitting at home for two years with $100,000 in debt and no employment pathway is a walking anti-advertisement. In the age of Reddit, Discord, and YouTube, a single unplaced graduate with an audience is more damaging than any competitor's marketing budget. <strong>Flight schools are not losing to better competitors. They are losing to their own alumni.</strong>
-                <br /><br />
-                PilotRecognition changes the narrative at the source. By connecting graduates to a verified Professional Standing Asset and a live pathway comparison on graduation day, the ATO stops being the "debt-provider" and becomes the "pathway-provider." A graduate who is visible, verified, and actively moving toward an operator pathway — even at 300 hours — is not a liability. <strong style={{color:'#34d399'}}>They are a success story in progress. And that story is publicly attributable to the school that gave them the tools.</strong></>
+                t: 'Graduate Placement Visibility and Institutional Reputation',
+                d: <>Extended periods of post-graduation unemployment result in negative reputational feedback loops. In a highly connected digital landscape, unplaced graduates deter prospective enrollment. By connecting graduates to a verified Professional Standing Asset and a live pathway comparison on graduation day, the ATO transitions from a primary training provider to a career facilitator. A graduate who is actively tracking toward a verified operator pathway remains a positive institutional outcome in progress.</>
               },
               {
                 n: '2',
-                t: 'Marketing Spend Inefficiency — The Brochure Is Dying',
-                d: <>ATOs spend thousands of dollars per month on lead generation trying to convince parents and students to trust them. Most of that spend is wasted because it produces no objective evidence — only brochure claims that sophisticated families are increasingly unable to verify. <strong>Data-literate students and their co-signing parents are not asking for a glossy prospectus. They are asking for a verified placement report.</strong>
-                <br /><br />
-                A school that refuses to publish audited placement data will — very soon — be read as a school with something to hide. Partnering with the platform is not a marketing cost. <strong style={{color:'#34d399'}}>It is the cheapest customer acquisition strategy available: let independently verified outcomes close the sale for you.</strong></>
+                t: 'Inefficiencies in Student Acquisition and Verification',
+                d: <>Standard marketing expenditures yield diminishing returns when prospective students and their financial sponsors demand objective, verifiable outcome data over traditional promotional materials. Institutions that fail to provide audited placement data risk market skepticism. Platform integration serves as an objective customer acquisition strategy, allowing independently verified outcomes to validate institutional efficacy.</>
               },
               {
                 n: '3',
-                t: 'The Instructor Throughput Bottleneck — The Clog',
-                d: <>Flight schools are frequently paralysed by their own success model. Graduates become instructors to build hours. But because those instructors have no visible, structured pathway to cargo, charter, or airline operations, they stay too long — blocking student seat time, slowing throughput, and quietly resenting the school that cannot show them the next door. <strong>The clog is not a staffing problem. It is a visibility problem.</strong>
-                <br /><br />
-                PilotRecognition clears it. By making the school's instructors visible and discoverable to Cargo operators (Pillar 2) and Charter operators (Pillar 3), the platform accelerates their transition out of the school and into the industry. <strong style={{color:'#34d399'}}>The instructor who finds their next role through the platform creates a vacancy. That vacancy becomes a new student. That student becomes the next revenue cycle.</strong> High-velocity throughput is not a recruitment metric. It is a commercial one.</>
+                t: 'Transition Friction and Resource Capacity Constraints',
+                d: <>Institutions frequently experience capacity constraints when graduates transition into instructor roles to accumulate flight hours but lack a visible pathway to commercial operators. This delays student throughput and limits instructional capacity. By providing instructors with visible, structured pathways to Cargo (Pillar 2) and Charter (Pillar 3) operators, the platform accelerates their industry transition, opening capacity for subsequent enrollment cycles.</>
               },
               {
                 n: '4',
-                t: 'The Financier Mandate — Banks Are Watching',
-                d: <>Lending institutions are increasingly cautious about $80,000–$120,000 unsecured pilot training loans. Default rates are rising. Employment outcomes for graduates are opaque. Underwriters have no structured data to assess whether a student at a given school has a credible pathway to the income required to service the debt. <strong>The loan approval problem is not a student problem. It is a school data problem.</strong>
-                <br /><br />
-                PilotRecognition is building the data layer that financial institutions will eventually require at point of application. A student enrolled at a Recognition-Ready ATO has a verified, mapped pathway to employment — which makes their loan a lower credit risk. <strong style={{color:'#34d399'}}>Schools that are not on the platform will find, incrementally, that their prospective students cannot secure the financing they need to enrol.</strong> The mandate will not be announced. It will simply appear — in a rejection letter from the bank.</>
+                t: 'Financial Underwriting and Credit Risk Exposure',
+                d: <>Financial institutions are increasingly applying strict risk-assessment models to unsecured aviation training loans. When employment outcomes are statistically opaque, underwriting risk increases, resulting in elevated default rates and loan denials. The platform provides the structured data layer required by financial institutions to assess graduate placement probability, optimizing loan approval rates for students attending Recognition-Ready ATOs.</>
               },
             ] as { n: string; t: string; d: React.ReactNode }[]).map((item) => (
               <li key={item.n} className="ml-0 text-slate-700 leading-relaxed flex items-start gap-3 border border-slate-200 rounded-lg px-5 py-4 bg-white">
@@ -2073,25 +2064,24 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Structural Disconnect: What Schools Produce vs. What Airlines Assess</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">III. The Structural Disconnect: Training Output vs. Operator Assessment</h3>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-900 text-white">
-                  <th className="text-left px-4 py-3 font-semibold">Flight School Delivers</th>
-                  <th className="text-left px-4 py-3 font-semibold text-red-400">Industry Actually Assesses</th>
-                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>PilotRecognition Bridges</th>
+                  <th className="text-left px-4 py-3 font-semibold">Institutional Deliverable</th>
+                  <th className="text-left px-4 py-3 font-semibold text-red-400">Operator Assessment Standard</th>
+                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>PilotRecognition Infrastructure</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { a: 'Hours logged', b: 'Behavioural patterns and decision-making', c: 'EBT video scoring and competency assessment' },
-                  { a: 'Checkrides passed', b: 'Simulator performance and CRM depth', c: 'CBTA-aligned assessment preparation' },
-                  { a: '"Get 1,500 hours"', b: 'Specific operator pathway alignment', c: 'Gap analysis and pathway targeting' },
-                  { a: 'Generic resume advice', b: 'ATLAS-formatted, ATS-parseable CVs', c: 'ATLAS formatting and ATS compatibility' },
-                  { a: 'Stick-and-rudder skills', b: '9 core EBT competencies', c: 'Competency framework and industry alignment' },
-                  { a: 'Graduation certificate', b: 'Verified professional identity', c: 'Recognition Profile and Day One Recognition' },
-                  { a: 'Hope and good luck', b: 'Structured evidence of readiness', c: 'Industry-ready verified portfolio' },
+                  { a: 'Accumulation of flight hours', b: 'Behavioral patterns and decision-making', c: 'EBT video scoring and competency assessment' },
+                  { a: 'Standardized checkrides passed', b: 'Simulator performance and CRM depth', c: 'CBTA-aligned assessment preparation' },
+                  { a: '"Achieve minimum hours"', b: 'Specific operator pathway alignment', c: 'Gap analysis and pathway targeting' },
+                  { a: 'General resume guidance', b: 'ATLAS-formatted, ATS-parseable CVs', c: 'ATLAS formatting and ATS system compatibility' },
+                  { a: 'Fundamental manual flying skills', b: '9 Core EBT Competencies', c: 'Competency framework and industry alignment' },
+                  { a: 'Paper graduation certificate', b: 'Verified professional identity', c: 'Recognition Profile & Day One Recognition' },
                 ].map((row, i) => (
                   <tr key={row.a} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 text-slate-100">{row.a}</td>
@@ -2103,9 +2093,9 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Programs: Extra-Curricular Professional Development</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition Programs are designed for <strong>both individual pilots and flight school campuses</strong> — as value-added extra-curricular offerings that sit alongside standard flight training, not replacing it. They address the gap between technical qualification and professional readiness.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">For flight instructors specifically, the Programs function as a structured <strong>On-the-Job Training (OJT) framework</strong> built around the three core competencies of effective instruction: <strong style={{color:'#dc2626'}}>Behaviourism</strong> — understanding how reinforcement and repetition shape pilot habits and procedural responses; <strong style={{color:'#dc2626'}}>Cognitivism</strong> — developing mental models, situational awareness, and the thinking frameworks that underpin sound aeronautical decision-making; and <strong style={{color:'#dc2626'}}>Constructivism</strong> — guiding students to build knowledge through experience, reflection, and active problem-solving rather than passive absorption. These are not academic labels. They are the operating system of every high-performing flight instructor — and for the first time, they are being formally recognised, assessed, and verified as portable professional credentials within the industry.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IV. Programs: Extracurricular Professional Development</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition Programs function as supplemental frameworks that operate alongside standard regulatory flight training. They address the operational gap between technical licensing and professional readiness.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">For flight instructors, these Programs provide a structured On-the-Job Training (OJT) framework focusing on the core competencies of effective instruction: <strong>Behaviourism</strong> (reinforcement of procedural responses), <strong>Cognitivism</strong> (situational awareness and aeronautical decision-making), and <strong>Constructivism</strong> (experience-based problem solving). These metrics are formally recognized, assessed, and verified as portable professional credentials.</p>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -2117,9 +2107,9 @@ export default function UCFOfficialReleasePage() {
               </thead>
               <tbody>
                 {[
-                  { prog: 'Foundation Program', pilot: '$49 self-enrolment', campus: 'Bulk campus licences for graduating classes' },
-                  { prog: 'Transition Program', pilot: '$299 self-enrolment', campus: 'Integrated into final semester curriculum' },
-                  { prog: 'EBT Video Scoring', pilot: 'Bundled with Transition', campus: 'Campus assessment centre partnership' },
+                  { prog: 'Foundation Program ($49)', pilot: 'Self-enrollment available', campus: 'Bulk campus licenses for graduating classes' },
+                  { prog: 'Transition Program ($299)', pilot: 'Designed for final-semester students', campus: 'Integrated into final semester curriculum' },
+                  { prog: 'EBT Video Scoring (Bundled)', pilot: 'Recorded assessment included', campus: 'Facilitated through campus assessment center partnerships' },
                 ].map((row, i) => (
                   <tr key={row.prog} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.prog}</td>
@@ -2131,13 +2121,19 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What Programs Add to Flight School Education</h4>
+          <div className="flex items-center gap-3 bg-red-50 border border-red-100 rounded-lg px-4 py-3 mb-6">
+            <span className="text-red-500 text-lg">↗</span>
+            <p className="text-sm text-slate-700">
+              <strong>Read More:</strong> These Programs are architected as part of the broader <a href="#pillar-foundation-program" className="text-red-600 hover:underline font-semibold">Foundational Program framework (Hub F)</a>, which establishes the 9 Core EBT Competencies and ATLAS Recognition standards referenced throughout this section.
+            </p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Core Value Additions</h4>
           <ul className="space-y-2 mb-6">
             {([
-              { t: 'Professional Identity Development', d: 'How pilots portray themselves to employers. Communication skills, professional presence, and the pilot mindset beyond stick-and-rudder proficiency — the behavioural profile airlines assess before they assess the hours.' },
-              { t: 'Emotional Intelligence & Recognition', d: 'Validation of the 200+ hour journey. Peer mentorship from program graduates. A structured sense of accomplishment beyond the licence — the recognition the industry currently provides no mechanism for.' },
-              { t: 'Industry Alignment', d: 'EBT and CBTA competency frameworks — what airlines actually assess. ATLAS Aviation CV formatting — what ATS systems actually parse. Interview preparation specific to each operator type in Hub A.' },
-              { t: 'Verified Competency Portfolio', d: <>50-hour mentorship tracking logged and attested. Behavioural assessment scores (cognitive/constructivist alignment). Digital credentials stored in the Professional Standing Asset (Pillar 11) — portable, verified, and visible to every operator on the platform.</> },
+              { t: 'Professional Identity Development', d: 'Enhancing communication and behavioral profiles prior to operator assessment.' },
+              { t: 'Industry Alignment', d: 'Familiarization with EBT and CBTA competency frameworks and ATLAS Aviation CV formatting.' },
+              { t: 'Verified Competency Portfolio', d: 'Mentorship tracking, behavioral assessment scores, and digital credentials permanently stored in the pilot\'s Professional Standing Asset.' },
             ] as {t: string; d: React.ReactNode}[]).map((item) => (
               <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                 <span className="text-red-500 mt-1 flex-shrink-0">→</span>
@@ -2146,31 +2142,35 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The "Day One Recognition" Vision</h4>
-          <p className="text-slate-700 leading-relaxed mb-3">Imagine a graduation day where the handshake comes with:</p>
-          <ul className="space-y-1 mb-6">
-            {[
-              'A verified Recognition Profile — not just a licence',
-              'A Recognition Score showing readiness — not just hours',
-              'A portfolio of competencies airlines can see — not just a resume',
-              'Connection to verified operator pathways — not just "good luck finding a job"',
-            ].map((item) => (
-              <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
-                <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="text-slate-700 leading-relaxed mb-6">That is the standard the industry should have held flight schools to from the beginning. <strong>PilotRecognition makes it possible — and makes it the competitive differentiator between an ATO that retains its graduates and one that watches them disappear into the void.</strong></p>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Further Reading — Interconnected Framework</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+              <a href="#pillar-foundation-program" className="flex items-center gap-2 text-slate-700 hover:text-red-600 transition-colors">
+                <span className="text-slate-400">→</span>
+                <span><strong>Hub F:</strong> Foundational Program Architecture & EBT Methodology</span>
+              </a>
+              <a href="#pillar-6-type-rating" className="flex items-center gap-2 text-slate-700 hover:text-red-600 transition-colors">
+                <span className="text-slate-400">→</span>
+                <span><strong>Pillar 6:</strong> Type Rating & Simulator Center Partnerships</span>
+              </a>
+              <a href="#pillar-11-verification" className="flex items-center gap-2 text-slate-700 hover:text-red-600 transition-colors">
+                <span className="text-slate-400">→</span>
+                <span><strong>Pillar 11:</strong> Background Checks & Verification Providers</span>
+              </a>
+              <a href="#pillar-1-commercial-airlines" className="flex items-center gap-2 text-slate-700 hover:text-red-600 transition-colors">
+                <span className="text-slate-400">→</span>
+                <span><strong>Pillar 1:</strong> Operator Assessment Standards & Pathway Alignment</span>
+              </a>
+            </div>
+          </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Verified Issuers — The Digital Credential Standard for Producing Pilots</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Every flight school produces pilots. Not every flight school produces <em>verified</em> pilots. The distinction is becoming the most commercially significant gap in aviation talent infrastructure.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">Enterprise ATOs on the platform become <strong style={{color:'#dc2626'}}>Verified Issuers</strong> — institutions authorised to push cryptographically signed digital tokens directly into a graduating pilot's Professional Standing Asset (Pillar 11) at the moment of graduation. These tokens are not self-reported claims. They are not paper certificates that can be forged, lost, or misread by an ATS parser. They are <strong>immutable, operator-readable, instantly verifiable credential records</strong> issued at the source — by the institution that produced the competency.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">V. Verified Issuers: The Digital Credential Standard</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">To eliminate document fraud and parsing errors, Enterprise ATOs are designated as <strong>Verified Issuers</strong>. These institutions are authorized to issue cryptographically signed digital tokens directly into a graduating pilot's Professional Standing Asset (Pillar 11). These credentials are immutable, operator-readable, and instantly verifiable.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
             {[
-              { token: '"CPL-Complete"', desc: 'Issued at CPL graduation. Confirms theoretical and practical completion to the issuing ATO\'s published standard. Visible to all operators in Hub A querying the pilot database.' },
-              { token: '"AAM-Ready"', desc: 'Issued for graduates who have completed emerging aviation module integration. Flags the pilot as a viable candidate for eVTOL, autonomous systems, and Pillar 4 operator pathway matching.' },
-              { token: 'Operator-Specific', desc: 'Issued when the ATO\'s curriculum has been co-developed with a specific operator. The token signals to that operator that the graduate has been prepared to their exact pathway requirements — not a generic curriculum.' },
+              { token: '"CPL-Complete" Token', desc: 'Confirms theoretical and practical completion to the issuing ATO\'s published standard. Visible to all operators in Hub A.' },
+              { token: '"AAM-Ready" Token', desc: 'Issued for graduates completing emerging aviation modules, signaling readiness for eVTOL and autonomous systems (Pillar 4).' },
+              { token: 'Operator-Specific Token', desc: 'Issued when curriculum is co-developed with a specific operator, confirming exact alignment with their pathway requirements.' },
             ].map((item) => (
               <div key={item.token} className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
                 <p className="font-bold text-slate-900 mb-2" style={{color:'#dc2626'}}>{item.token}</p>
@@ -2178,24 +2178,27 @@ export default function UCFOfficialReleasePage() {
               </div>
             ))}
           </div>
-          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>No paper certificates. No self-reported claims. No ATS mis-parse. Unforgeable trust from Day One.</strong> The pilot leaves graduation with a digital credential that is already in the system — already visible to operators, already matched against pathway requirements, already part of their permanent Professional Standing Asset. The school that issued it is named on the token. <strong style={{color:'#f87171'}}>The credential is the school's signature on every operator database that reads it.</strong></p>
+
+          <div className="flex items-center gap-3 bg-slate-100 border border-slate-200 rounded-lg px-4 py-3 mb-6">
+            <span className="text-slate-500 text-lg">↗</span>
+            <p className="text-sm text-slate-700">
+              <strong>Read More:</strong> The verification infrastructure, background check orchestration, and credential validation framework is detailed in <a href="#pillar-11-verification" className="text-red-600 hover:underline font-semibold">Pillar 11: Background Checks & Verification Providers</a>.
+            </p>
           </div>
 
           <div className="border border-slate-200 rounded-lg px-6 py-5 mb-8 bg-slate-50">
-            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">The Issuers Platform — Built for ATOs Without Technical Infrastructure</p>
-            <p className="text-slate-800 text-sm leading-relaxed mb-3">Most flight schools do not have a blockchain engineering team. They do not need one. <strong>PilotRecognition builds and hosts the issuance infrastructure on their behalf.</strong> The Issuers Platform is accessible directly through the Enterprise ATO account — a dedicated credential management dashboard that allows the school to:</p>
+            <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">The Issuers Platform (Backend Infrastructure)</p>
+            <p className="text-slate-800 text-sm leading-relaxed mb-3">PilotRecognition hosts the necessary decentralized architecture on behalf of the institution. The Enterprise ATO dashboard allows administrators to:</p>
             <div className="border-l-4 border-slate-400 pl-4 mb-4 bg-slate-100 py-3 pr-3 rounded-r">
               <p className="text-slate-700 text-xs font-semibold uppercase tracking-wide mb-1">Backend Foundation — Level 1 Baseline</p>
-              <p className="text-slate-700 text-sm leading-relaxed">The credential tokens issued through this platform are not issued into a vacuum. The <strong>Level 1 baseline</strong> — the ground-truth data layer that every token is anchored to — is produced in direct cooperation with <strong>governing aviation authorities</strong> (GCAA, CASA, CAA, FAA, EASA and their regional equivalents) and <strong>Authorised Medical Examiners (AMEs)</strong> for medical validity confirmation. This means every signed token is traceable back to a regulatory source — not a self-reported claim, not an institutional assertion alone, but a credential chain that begins at the authority that issued the licence and the examiner that certified the medical. <strong style={{color:'#dc2626'}}>The platform does not create trust. It inherits it from the institutions that already hold it — and makes it portable, digital, and permanently verifiable.</strong></p>
+              <p className="text-slate-700 text-sm leading-relaxed">The credential tokens issued through this platform are anchored to the <strong>Level 1 baseline</strong> — the ground-truth data layer produced in direct cooperation with <strong>governing aviation authorities</strong> (GCAA, CASA, CAA, FAA, EASA and regional equivalents) and <strong>Authorised Medical Examiners (AMEs)</strong> for medical validity confirmation. Every signed token is traceable back to a regulatory source — not a self-reported claim, but a credential chain that begins at the authority that issued the licence and the examiner that certified the medical.</p>
             </div>
             <ul className="space-y-2 mb-4">
               {[
-                'Define the credential types they are authorised to issue — CPL-Complete, AAM-Ready, or custom operator-specific designations co-developed with the platform',
-                'Issue signed digital tokens to individual graduates at graduation — single-click dispatch from the dashboard directly into the pilot\'s Professional Standing Asset',
-                'Manage bulk issuance for graduating cohorts — issue to an entire class simultaneously with a single verified batch action',
-                'View the live status of every credential issued — active, revoked, or expired — with a full audit trail per pilot',
-                'Revoke credentials if a graduate is later found to have not met the stated standard — the record updates instantly across every operator database that has read it',
+                'Define authorized credential types — CPL-Complete, AAM-Ready, or custom operator-specific designations',
+                'Issue signed digital tokens to individual graduates or bulk-issue to graduating cohorts',
+                'View the live status of every credential issued via an immutable audit trail',
+                'Revoke credentials if standard compliance is retroactively compromised',
               ].map((item) => (
                 <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                   <span className="text-red-500 mt-1 flex-shrink-0">→</span>
@@ -2203,153 +2206,118 @@ export default function UCFOfficialReleasePage() {
                 </li>
               ))}
             </ul>
-            <p className="text-slate-700 text-sm leading-relaxed"><strong>Issuance is included in the Enterprise ATO tier.</strong> The school does not pay per credential issued. They pay for the account — and the issuance infrastructure is part of what that account delivers. <strong style={{color:'#dc2626'}}>If your school cannot build a blockchain for your pilots, PilotRecognition has already built it for you.</strong> This is what we have designed throughout Pillar 5 — not a layer of technology placed on top of an existing broken system, but a direct intervention at the source of the industry's biggest failures: the unrecognised graduate, the invisible instructor, the predatory school, the unprovable promise, and the missing chain of trust between training and employment. <strong>We have solved each of these at the root. The infrastructure is ready.</strong></p>
+            <p className="text-slate-700 text-sm leading-relaxed"><strong>Issuance is included in the Enterprise ATO tier.</strong> The school does not pay per credential issued. They pay for the account — and the issuance infrastructure is part of what that account delivers.</p>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Campus Partnership Benefits</h3>
-          <ul className="space-y-2 mb-6">
-            {([
-              { t: 'Market differentiation', d: '"We don\'t just train pilots — we prepare professionals." ATOs with verified placement outcomes and program integration attract students from opaque competitors who cannot demonstrate the same.' },
-              { t: 'Verified placement rates', d: 'Graduation placement statistics published on the platform — audited, not self-reported. The first ATO to publish verified outcomes in a market owns that credibility permanently.' },
-              { t: 'Referral revenue', d: <><strong style={{color:'#34d399'}}>The platform pays the ATO $20 for every student who graduates and activates a paid Recognition+ profile.</strong> An Enterprise ATO graduating 50 students per month receives $1,000 back in referral commissions — effectively offsetting the monthly subscription cost entirely. The tier stops being a cost centre and becomes a profit centre. Co-branded badging: "Trained at [School]" displayed on every affiliated pilot\'s Recognition Profile — a permanent, visible endorsement in front of every operator on the platform.</> },
-              { t: 'Analytics dashboard', d: 'Graduate outcome tracking in real time. Which graduates are aligning with which pathways. Where gaps are occurring. What curriculum improvements are producing the strongest industry outcomes.' },
-              { t: 'Recognition-Ready status', d: 'Partner schools are listed as Recognition-Ready Training Providers on the platform — a verified signal to pilots, parents, and operators that the school\'s graduates arrive pre-aligned to industry requirements.' },
-            ] as {t: string; d: React.ReactNode}[]).map((item) => (
-              <li key={item.t} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
-                <span className="text-red-500 mt-1 flex-shrink-0">→</span>
-                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VI. Data Sovereignty: The Pilot-Owned Professional Record</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A fundamental operational principle of the PilotRecognition infrastructure is <strong>data sovereignty</strong>. The platform functions as a neutral conduit — not a data controller. All verified credentials, training hours, competency assessments, and professional standing metrics are cryptographically bound to the individual pilot's wallet and remain under exclusive pilot ownership.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition does not aggregate, monetize, or transfer pilot data to third parties. Enterprise ATOs, commercial operators, financial institutions, and regulatory bodies may only access specific credential elements when the pilot explicitly authorizes such disclosure via cryptographically signed consent. This architecture ensures that:</p>
+          <ul className="space-y-2 mb-5">
+            {[
+              'The pilot maintains absolute discretion over which institutions may view their verified training history',
+              'ATO-issued credentials remain portable across the ecosystem, independent of any single platform or institutional gatekeeper',
+              "Data portability is enforced by cryptographic architecture, not contractual terms -- the pilot's private keys control access",
+              'No institutional partner, including PilotRecognition itself, can unilaterally modify, revoke, or restrict access to verified credentials',
+            ].map((item) => (
+              <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+                <span className="text-sm">{item}</span>
               </li>
             ))}
           </ul>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6">
+            <p className="text-sm text-slate-600 italic">This structural neutrality ensures that ATOs participate in a credentialing ecosystem where the pilot — not the platform, not the flight school, and not the airline — retains ultimate authority over their professional identity.</p>
+          </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Verification Node — ATOs as Trusted Hour Confirmation Sources</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">No background check provider in the world offers a flight hours verification check — because pilot logbooks are not held in any government registry or authoritative database that a third party can query. Veremark, HireRight, First Advantage — none of them can confirm how many hours a pilot flew at a given school. <strong>This gap is the platform's structural advantage, and ATOs are the solution to it.</strong></p>
-          <p className="text-slate-700 leading-relaxed mb-4">Enterprise ATOs on the platform become <strong style={{color:'#dc2626'}}>Verification Nodes</strong> — trusted institutional sources that confirm their own graduates' training hours directly inside the pilot's Credential Wallet. This is not a Veremark check. It is a native platform check, issued by the school that produced the hours, triggered by the pilot themselves with explicit consent.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VII. The Verification Node: ATOs as Trusted Data Sources</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Current third-party background check providers lack the capacity to verify accumulated flight hours. PilotRecognition establishes ATOs as <strong>Verification Nodes</strong> — trusted institutional sources that mathematically confirm their own graduates' training hours directly within the platform.</p>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed mb-2"><strong style={{color:'#f87171'}}>The Flow — Pilot-Initiated, School-Confirmed</strong></p>
+            <p className="text-white text-sm leading-relaxed mb-2"><strong style={{color:'#f87171'}}>Standard Verification Protocol</strong></p>
             <ol className="space-y-1 text-slate-300 text-sm">
-              {([
-                'Pilot registers on PilotRecognition → selects their training school from the verified ATO list',
-                'Pilot consents: "I authorise PilotRecognition to verify my training hours with [School Name]"',
-                'School receives a verification request in their operator dashboard: "Student [Name] — 200hrs claimed. Confirm?"',
-                'School confirms, denies, or corrects the hours — one click',
-                'Verified Training Hours badge appears instantly in the pilot\'s Credential Wallet',
-                'School name is displayed as the issuing authority on the credential — permanently visible to every operator that views the pilot\'s profile',
+              {[
+                'Pilot registers and selects the affiliated ATO',
+                'Pilot executes explicit digital consent for hour verification',
+                'The ATO receives a verification prompt in the administrative dashboard',
+                'The ATO confirms or amends the logged hours',
+                'A "Verified Training Hours" credential is automatically minted to the pilot\'s wallet',
+                'The ATO is permanently displayed as the issuing authority',
               ].map((step, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-red-400 font-bold flex-shrink-0">{i + 1}.</span>
                   <span>{step}</span>
                 </li>
-              )))}
+              ))}
             </ol>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            {([
-              { title: 'For the Pilot', items: ['Verified hours badge without chasing the school manually', 'Happens inside the platform they\'re already using', 'No third-party cost — included in $100 subscription', 'Credential shows school name as issuing authority'] },
-              { title: 'For the Flight School', items: ['Verification requests come to them — students drive the workflow', 'School name on every verified pilot profile seen by airlines', 'Included in $1,000/yr Enterprise access — no per-check fee', 'Motivates graduates to stay connected to the school\'s platform presence'] },
-              { title: 'For PilotRecognition', items: ['Zero Veremark cost — pure margin on the Training Hours check', 'Flight school becomes invested in staying on the platform', 'Creates pull dynamic — schools want listing so students can find them', 'Verification network grows with every new school partner'] },
-            ] as {title: string; items: string[]}[]).map((col) => (
-              <div key={col.title} className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
-                <p className="font-bold text-slate-900 mb-3" style={{color:'#dc2626'}}>{col.title}</p>
-                <ul className="space-y-1">
-                  {col.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2 text-sm text-slate-600">
-                      <span className="text-red-400 mt-0.5 flex-shrink-0">→</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Commercial Case — $1,000/yr Pays for Itself</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">The ATO access fee becomes economically irrelevant at any meaningful graduate volume. The referral commission alone covers it — and past that point, the school is in profit.</p>
-          <div className="overflow-x-auto mb-5">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-slate-900 text-white">
-                  <th className="text-left px-4 py-2 font-semibold">School Size</th>
-                  <th className="text-right px-4 py-2 font-semibold">Graduates/yr</th>
-                  <th className="text-right px-4 py-2 font-semibold">Referral Earnings ($20/pilot)</th>
-                  <th className="text-right px-4 py-2 font-semibold">Access Fee</th>
-                  <th className="text-right px-4 py-2 font-semibold" style={{color:'#34d399'}}>Net Position</th>
-                </tr>
-              </thead>
-              <tbody>
-                {([
-                  { size: 'Small', grads: 50, earnings: 1000, fee: 1000, net: 0, note: 'Break even' },
-                  { size: 'Medium', grads: 150, earnings: 3000, fee: 1000, net: 2000, note: '200% ROI' },
-                  { size: 'Large', grads: 300, earnings: 6000, fee: 1000, net: 5000, note: '500% ROI' },
-                  { size: 'WCC-scale', grads: 500, earnings: 10000, fee: 1000, net: 9000, note: '900% ROI' },
-                ] as {size: string; grads: number; earnings: number; fee: number; net: number; note: string}[]).map((row, i) => (
-                  <tr key={row.size} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
-                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.size}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-right text-slate-300">{row.grads}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-right text-slate-300">${row.earnings.toLocaleString()}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-right text-red-400">−${row.fee.toLocaleString()}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-right font-bold" style={{color: row.net > 0 ? '#34d399' : '#94a3b8'}}>${row.net.toLocaleString()} <span className="text-xs font-normal opacity-70">({row.note})</span></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The $1,000/yr fee pays for itself at 50 graduates. Every school above that size is in profit.</strong> The ATO is not buying software access. They are buying a distribution channel, a verification node status, a graduate income stream, and their school name on every airline-visible pilot credential — for less than the cost of one newspaper advertisement. <strong style={{color:'#f87171'}}>No flight school CFO declines that conversation.</strong></p>
-          </div>
-
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Cross-Border Training Partnerships — The Philippines ↔ Dubai Model</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Pilots in developing aviation markets — Philippines, India, Africa — hold locally valid licences that lack global recognition. PRC licences do not travel. Meanwhile, GCC authorities (UAE, Qatar, Saudi Arabia) maintain rigorous standards respected worldwide. The <strong>18,000 AED cost for Dubai-affiliated training is prohibitive</strong> for most pilots in these markets — placing a globally recognised credential behind a capital barrier that structurally excludes qualified candidates from international airline consideration.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">The platform resolves this through a <strong>bulk purchasing and exclusive channel model</strong>: 10+ pilots unlock a 44% discount (18,000 AED → 10,000 AED per pilot), with visa coordination, Fujairah exam scheduling, and travel logistics managed centrally. <strong>The result: a Philippines-licensed pilot arrives at the exam with a UAE-affiliated credential, at roughly half the retail cost, through a structured pathway that did not exist before.</strong></p>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. The Collective Bargaining Engine: Cross-Border Model</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform leverages collective demand to optimize credential acquisition for pilots in developing aviation markets requiring globally recognized certifications (e.g., GCC Authority standards).</p>
 
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-900 text-white">
                   <th className="text-left px-4 py-2 font-semibold">Component</th>
-                  <th className="text-left px-4 py-2 font-semibold">Standard Rate</th>
-                  <th className="text-left px-4 py-2 font-semibold text-red-400">Bulk Rate (10+)</th>
-                  <th className="text-left px-4 py-2 font-semibold" style={{color:'#34d399'}}>Platform Margin</th>
+                  <th className="text-left px-4 py-2 font-semibold">Standard Protocol</th>
+                  <th className="text-left px-4 py-2 font-semibold text-red-400">Platform Bulk Cohort (10+ Pilots)</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { c: 'Dubai Training', s: '18,000 AED', b: '10,000 AED', m: '8,000 AED (~$2,180)' },
-                  { c: 'Visa Coordination', s: '₱15,000', b: 'Included', m: 'Service value' },
-                  { c: 'Exam Logistics', s: '₱25,000', b: 'Included', m: 'Service value' },
-                  { c: 'Total to Pilot', s: '₱275,000', b: '₱153,000', m: '44% savings' },
+                  { c: 'Training Rate', s: '18,000 AED per pilot', b: '10,000 AED per pilot (44% cost reduction)' },
+                  { c: 'Visa Coordination', s: 'Individual processing', b: 'Centralized visa and logistical coordination included' },
+                  { c: 'Systemic Outcome', s: 'High capital barriers to international credentialing', b: 'Reduced capital barriers with structured international training cohorts' },
                 ].map((row, i) => (
                   <tr key={row.c} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.c}</td>
                     <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.s}</td>
                     <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.b}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.m}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="text-slate-600 text-sm mb-6">Annual cohort model creates recurring revenue. <strong>"You do this every year"</strong> — repeat cohorts of 10+ pilots generate consistent training partnership income while keeping pilots in the industry and building the platform's verified international pilot pool.</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2">Commercial Tiers — ATO Access</h3>
-          <p className="text-slate-700 leading-relaxed mb-6">ATOs access the platform through three tiers — from pathway listing only through to full CRM integration and co-branded graduate recognition.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IX. The Ecosystem Revenue-Share Model</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">To align institutional incentives with ecosystem adoption, PilotRecognition employs a structured revenue-share framework for Enterprise ATOs. The platform recognizes that institutions serve as the primary onboarding nodes for the next generation of verified pilots.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Rather than functioning solely as a software expenditure, the Enterprise tier is designed to achieve cost-neutrality and subsequent profitability for the institution through an <strong>Ecosystem Dividend</strong>.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Financial Mechanism</h4>
+          <ul className="space-y-2 mb-5">
+            {[
+              'For every graduating student who transitions onto the platform and activates a Recognition+ profile, the issuing ATO receives a $20 ecosystem dividend (referral distribution).',
+              'The Enterprise access fee is fixed at $1,000 annually.',
+              'Cost-Neutrality: An institution graduating just 50 participating students per year generates $1,000 in dividends, effectively zeroing out the platform access cost.',
+              'Net-Revenue Generation: Any graduate volume beyond the 50-student threshold transitions the platform from an operational expenditure into a net-revenue generator for the school (e.g., 300 graduates yield $6,000 in ecosystem dividends against a $1,000 fixed cost, resulting in a 500% ROI).',
+            ].map((item) => (
+              <li key={item} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+                <span className="text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
+            <p className="text-sm text-slate-600 leading-relaxed">This framework ensures that the ATO is financially incentivized to maintain high-quality instruction, graduate throughput, and Day One Recognition onboarding, permanently aligning the school's commercial interests with the pilot's professional visibility.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">X. Commercial Tiers and Access Structures</h3>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-900 text-white">
                   <th className="text-left px-4 py-2 font-semibold">Tier</th>
-                  <th className="text-left px-4 py-2 font-semibold">Monthly Fee</th>
-                  <th className="text-left px-4 py-2 font-semibold">Includes</th>
+                  <th className="text-left px-4 py-2 font-semibold">Annual Fee</th>
+                  <th className="text-left px-4 py-2 font-semibold">Included Capabilities</th>
                 </tr>
               </thead>
               <tbody>
-                {([
-                  { tier: 'Basic', fee: '$200/mo', features: <>Pathway listing only — ATO profile published on the platform, visible to pilots browsing training providers. Graduates can link their Recognition Profile to the ATO. <span style={{color:'#dc2626'}}>No graduate tracking or outcome analytics.</span></> },
-                  { tier: 'Analytics', fee: '$500/mo', features: <><strong style={{color:'#dc2626'}}>Graduate tracking dashboard</strong> — live visibility into which graduates are aligning with operator pathways, where gaps are occurring, and outcome metrics across the cohort. Placement rate verification and publication on ATO profile. Curriculum-to-pathway alignment documentation.</> },
-                  { tier: 'Enterprise', fee: '$1,000/mo + $20/referral', features: <><strong style={{color:'#dc2626'}}>CRM integration</strong> — graduate records sync directly with the platform. <strong>Co-branded graduation badges</strong> issued to graduates on the platform. Day One Recognition enrolment — automatic platform onboarding at graduation. Industry conference co-presentation access. Beta access to new assessment tools and curriculum alignment features.</> },
-                ] as { tier: string; fee: string; features: React.ReactNode }[]).map((row, i) => (
+                {[
+                  { tier: 'Basic', fee: 'Free', features: 'Profile publication in the training directory. Graduate linkage enabled. No tracking, analytics, or Verification Node status.' },
+                  { tier: 'Analytics', fee: '$500/yr', features: 'Graduate tracking dashboard. Visibility into pathway alignment and outcome metrics. Audited placement rate verification and publication.' },
+                  { tier: 'Enterprise', fee: '$1,000/yr (+ $20/referral)', features: 'Direct CRM integration. Cryptographic token issuance (Verified Issuer). Verification Node status. Co-branded graduation credentials.' },
+                ].map((row, i) => (
                   <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
                     <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
@@ -2360,13 +2328,87 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">What ATOs Are Required to Provide</h4>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XI. Strategic Integrations: Systemic Benefits of ATO Participation</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The integration of an ATO into the PilotRecognition ecosystem creates multi-pillar efficiencies, transitioning the institution from an isolated facility into a highly connected infrastructural node.</p>
+          <ul className="space-y-2 mb-6">
+            {[
+              { n: '1', t: 'Centralized Airline Pipeline Standardization', d: 'As commercial operators mandate verified PilotRecognition credentials for application processing, partnered ATOs ensure uninterrupted pathway access for their student cohorts.' },
+              { n: '2', t: 'Data-Backed Financial Underwriting (Pillar 10)', d: 'Providing financial institutions with verified placement data optimizes the approval algorithms for unsecured pilot training loans, securing student enrollment capital.' },
+              { n: '3', t: 'Public Registry Discoverability', d: 'Verified placement metrics algorithms prioritize transparent ATOs in public searches, structurally disadvantageous to unverified institutions.' },
+              { n: '4', t: 'Actuarial Risk Mitigation (Pillar 12)', d: 'Utilization of EBT tracking and digital compliance logs provides insurance underwriters with granular safety data, establishing the basis for targeted hull and liability premium reductions.' },
+              { n: '5', t: 'Regulatory Audit Automation (Pillar 13)', d: 'Cryptographic hour tracking and token issuance generate immutable digital ledgers, drastically reducing the administrative burden of civil aviation authority compliance audits.' },
+              { n: '6', t: 'Graduate Recurrency Lifecycle Management', d: 'Targeted platform notifications allow ATOs to seamlessly offer simulator preparation sessions to alumni when specific operator pathways open.' },
+              { n: '7', t: 'Cross-Border Regulatory Verification', d: 'Verified placement metrics serve as objective institutional proof for foreign embassies, streamlining international student visa approvals.' },
+              { n: '8', t: 'Cryptographic Verification and Liability Mitigation', d: 'Decentralized token issuance prevents downstream logbook falsification, actively shielding the institution from secondary liability.' },
+              { n: '9', t: 'Competency Standardization', d: 'Continuous EBT metric monitoring allows Chief Flight Instructors to detect and correct internal grading bias in real time.' },
+              { n: '10', t: 'Instructor Transition Optimization (Pillars 2 & 3)', d: 'Senior instructional staff are systematically surfaced to Cargo and Charter operators, maintaining healthy operational throughput.' },
+              { n: '11', t: 'Civil-Military Transition Pathways (Pillar 8)', d: 'Platform algorithms route government-funded military veterans exclusively to Recognition-Ready ATOs to execute precise civilian conversion requirements.' },
+              { n: '12', t: 'Macro-Level Fleet Intelligence (Pillar 15)', d: 'Access to predictive OEM fleet delivery schedules provides financial officers with the macro-data required to optimize capital expenditure on simulator acquisitions.' },
+              { n: '13', t: 'Live Aeromedical Status Sync (Pillar 13)', d: 'Real-time integration with aeromedical examiner data automates dispatch compliance, preventing solo operations by students with expired certifications.' },
+            ].map((item) => (
+              <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
+                <span className="text-red-500 mt-1 flex-shrink-0">{item.n}.</span>
+                <span><strong style={{color:'#dc2626'}}>{item.t}</strong> — {item.d}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="bg-slate-100 border border-slate-300 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Ecosystem Interconnection Map</p>
+            <p className="text-sm text-slate-700 mb-3">The Strategic Integrations listed above span multiple Hubs and Pillars, demonstrating how ATO participation creates network effects across the entire framework:</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+              <a href="#pillar-1-commercial-airlines" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 1</strong> — Airlines</span>
+              </a>
+              <a href="#pillar-2-cargo-charter" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 2</strong> — Cargo/Charter</span>
+              </a>
+              <a href="#pillar-3-business-aviation" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 3</strong> — Business Aviation</span>
+              </a>
+              <a href="#pillar-8-military-conversion" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 8</strong> — Military Conversion</span>
+              </a>
+              <a href="#pillar-10-financial" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 10</strong> — Financial</span>
+              </a>
+              <a href="#pillar-12-insurance" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 12</strong> — Insurance</span>
+              </a>
+              <a href="#pillar-13-medical-ame" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 13</strong> — Medical/AME</span>
+              </a>
+              <a href="#pillar-15-manufacturers" className="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span><strong>Pillar 15</strong> — OEMs</span>
+              </a>
+            </div>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XII. The Accountability Protocol and Institutional Requirements</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Verified Issuer status and the Recognition-Ready designation are maintained through continuous alignment with established operational baselines. The platform functions as an objective evaluation framework, ensuring that credential standards remain consistent with current industry requirements.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">The Continuous Alignment Protocol</p>
+            <p className="text-slate-700 text-sm leading-relaxed">The platform operates on a framework of continuous quality assurance, designed to ensure that Partner ATOs consistently represent the highest echelon of pilot production. Every 12 months, the platform conducts a data-driven evaluation of institutional placement rates and graduate EBT competency outcomes.</p>
+            <p className="text-slate-700 text-sm leading-relaxed mt-3"><strong>Multi-Source Reporting Architecture:</strong> The assessment is executed through algorithmic aggregation of independently submitted ecosystem reports rather than platform-conducted verification. Annual institutional eligibility is determined through convergent data streams from: (a) commercial operators submitting verified placement outcomes via API; (b) financial institutions reporting graduate loan performance and credit outcomes (Pillar 10); (c) insurance underwriters documenting actuarial risk metrics and incident data (Pillar 12); (d) regulatory authorities flagging compliance events or certification actions (Pillar 13); and (e) graduate pilots providing employment outcome confirmations through their Credential Wallets. The platform functions exclusively as a neutral aggregation and communication layer — mathematically compiling third-party attestations and routing verification outcomes to relevant stakeholders without independent verification or judgment. When background check providers (Pillar 11), regulatory authorities (Pillar 13), or other ecosystem participants identify data anomalies, they utilize the platform's infrastructure to communicate findings directly to affected parties (institutions, pilots, operators). The platform does not originate these determinations; it serves as the secure conduit through which third-party verification outcomes are transmitted. This distributed reporting architecture ensures that no single entity, including the platform itself, exercises unilateral authority over institutional standing.</p>
+            <p className="text-slate-700 text-sm leading-relaxed mt-3"><strong>The Universal Annual Report:</strong> On a 12-month cycle, the platform generates a consolidated Institutional Standing Report synthesizing all ecosystem data streams. This report is algorithmically distributed to relevant stakeholders: the subject institution, prospective students querying the training directory, commercial operators reviewing pipeline partners, financial institutions assessing underwriting risk, and regulatory bodies monitoring market integrity. The platform does not determine eligibility — it transparently publishes the convergent data picture and allows ecosystem participants to make informed determinations. Institutions maintaining positive standing across all reporting vectors retain Recognition-Ready status. Persistent negative divergence across multiple independent reporting sources triggers automatic suspension protocols, executed without platform discretion or administrative intervention.</p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Minimum Institutional Provisions</h4>
           <ul className="space-y-2 mb-4">
-            {([
-              { t: 'Essential', items: ['Transparent graduation placement statistics — verified by the platform, not self-reported', 'Curriculum alignment with specific operator pathways — syllabus-to-requirement mapping', 'Participation in the Graduate Pipeline program — direct operator connections for graduating cohorts'] },
-              { t: 'Preferred', items: ['Mentorship hour tracking integrated into student records', 'Scholarship program participation — 10% of available spots allocated as merit/need-based placements', 'ROI demonstration data for platform marketing and industry positioning'] },
-              { t: 'Strategic', items: ['Co-develop curriculum modules aligned with operator EBT requirements', 'Beta test Day One Recognition enrolment — automatic platform onboarding at graduation', 'Industry conference co-presentation on training innovation and placement outcomes'] },
-            ] as {t: string; items: string[]}[]).map((section) => (
+            {[
+              { t: 'Essential', items: ['Submission to transparent, platform-audited placement statistics and participation in curriculum-to-pathway mapping.'] },
+              { t: 'Preferred', items: ['Integration of mentorship hour tracking and the allocation of merit-based scholarship capacities.'] },
+              { t: 'Strategic', items: ['Co-development of EBT-aligned curriculum modules and beta-testing of automated Day One Recognition onboarding.'] },
+            ].map((section) => (
               <div key={section.t} className="mb-4">
                 <p className="text-slate-700 font-semibold mb-1">{section.t}:</p>
                 <ul className="space-y-1">
@@ -2381,9 +2423,93 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
 
-          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The first ATO to publish verified, audited placement rates in their market owns that credibility permanently. In regions where pilot mills prey on naive students with unverifiable promises, PilotRecognition becomes the Auditor of Truth. A school that publishes real, independently verified outcomes — and connects graduates to verified operator pathways from graduation day — will capture enrolment from every competitor that cannot say the same. The predatory school cannot fake a placement rate that the platform audits. The high-quality ATO cannot lose to one that can. Dominate your market by being the only school that can prove it.</strong></p>
-          </div>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XIII. Institutional Activity and Systemic Maintenance Criteria</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">To preserve the analytical integrity and operational utility of the network, the platform enforces automated parameters governing active institutional status. The ecosystem requires that all designated entities maintain continuous, verifiable training activity to ensure that operator pipelines, financial underwriting models, and regulatory compliance data remain accurate and dynamic.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Rather than relying on manual or administrative interventions, the infrastructure utilizes objective data metrics to evaluate systemic participation and maintain network equilibrium.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Telemetry Verification and Operational Continuity</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform ingests real-time operational data via integrated flight data monitoring (FDM) telemetry and automatic dependent surveillance-broadcast (ADS-B) systems. A prolonged absence of verified flight or simulator activity triggers an automated data-integrity notification. Continued structural inactivity over a predetermined observation window results in an automated administrative pause of the institution's network interface.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. Statistical Deficits under the Continuous Alignment Protocol</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">As outlined in Section XII, institutions are required to undergo a data-driven evaluation every 12 months. An inability to generate audited placement metrics, standardized EBT competency portfolios, or verified training hour tokens due to operational cessation or insufficient throughput constitutes a non-compliance baseline.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Automated System Deactivation and Node Isolation</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Upon failure to meet minimum telemetry or alignment thresholds, the platform automatically deactivates the institution's Verified Issuer credentials and suspends its profile within the training registry. This automated isolation ensures that:</p>
+          <ul className="space-y-2 mb-4 ml-6">
+            <li className="text-slate-700 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm">Commercial operator recruitment pipelines remain unencumbered by inactive data nodes.</span>
+            </li>
+            <li className="text-slate-700 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm">Prospective student capital is systematically directed toward operationally active training providers.</span>
+            </li>
+            <li className="text-slate-700 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm">Institutional verification metrics remain reliable assets for financial and actuarial underwriters within the network.</span>
+            </li>
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">4. Ecosystem Standardization</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The programmatic exclusion of inactive or non-verifiable operations ensures that the Recognition-Ready designation represents active compliance with global aviation benchmarks. By verifying that every registered institution maintains active operational parameters and consistent graduate throughput, the framework guarantees the validity of all downstream credential chains entering the commercial aviation marketplace.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XIV. Subsidiary Program Classification and Deactivation Mechanics</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform evaluates data metrics at the distinct operating certificate and institutional level. If a primary academy manages multiple entities, subsidiary registries, or satellite programs, the network monitors each operational node independently.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Independent Telemetry Validation per Air Operator Certificate (AOC)</h4>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Baseline Parameter:</strong> The ingestion engine requires consistent transponder signals via integrated flight tracking systems (ADS-B) and verified flight data logs.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The System Reaction:</strong> If a registered operational name logs zero flight activity over a rolling observation window (e.g., standard audit protocol intervals), the system isolates that specific node. Legacy brand association or parent infrastructure backing does not exempt a non-operational entity from data flatline flags.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. Automated Token Invalidation for Inactive Entities</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">When an entity exhibits a prolonged operational baseline deficit, it is systematically restricted from injecting credentials into the network.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Privilege Revocation:</strong> The platform automatically disables the Verified Issuer credentials associated with that specific entity registration.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Pipeline Protection:</strong> This deactivation prevents an inactive entity from functioning as a passive or administrative vehicle for logging unverified or non-standard hours. By halting token minting capabilities, the system protects commercial operator databases from stale data entries.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Verification Mapping and Public Status Transparency</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">To prevent informational asymmetry for prospective student capital, the platform enforces absolute data transparency on the public registry interface.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Status Update:</strong> Inactive programs automatically transition to Operational Interface: Paused or Active Telemetry: Non-Verifiable.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Ecosystem Impact:</strong> This transparent status rendering ensures that airline sourcing pipelines, credit rating agencies (Pillar 14), and prospective applicants are immediately aware of the operational capacity limits of that specific program, independent of local market positioning or institutional legacy.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XV. Technical Mitigation of Anomalous Reporting Patterns</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">To guarantee the persistent reliability of the global talent pipeline, the platform's ingestion layer operates under an automated adversarial data-validation framework. The architecture assumes the presence of variable data quality and non-standard administrative reporting patterns. Rather than initiating manual investigation protocols, the system utilizes cross-pillar telemetry audits to systematically intercept and neutralize non-compliant data generation at the point of origin.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Predictive Discrepancy Isolation (The Telemetry Mirror)</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform is engineered to detect structural data manipulations—specifically, the administrative practice of retroactively logging operational flight hours without corresponding aircraft utilization.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Mechanism:</strong> The platform's ingestion engine runs continuous, asynchronous comparisons between institutional dispatch logs, student wallet submissions, and global ADS-B transponder tracking registries.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The System Realignment:</strong> If an institutional account attempts to execute a manual flight-hour validation (verify_hours = TRUE) that lacks a corresponding, real-time physical transponder track matching the exact tail number, altitude variance, and chronological window, the entry is automatically blocked. The system does not issue an administrative warning; it logs a Systemic Telemetry Anomaly token against the institution's permanent compliance score.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. Cryptographic Anti-Spoofing Protocols (The Localized Capture Standard)</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The framework accounts for potential attempts to subvert visual verification requirements—including the utilization of pre-recorded media, localized GPS spoofing, or administrative data-sharing overrides.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Mechanism:</strong> The portable user interface utilizes hardware-enforced cryptographic boundaries. Optical capture data (Hobbs and tachometer meter recordings) must bypass local storage directories entirely, hashing directly to the network ledger with live atomic timestamps and network-validated cellular triangulation data.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The System Realignment:</strong> Any attempt to inject file metadata that exhibits an operational variance from verified atomic time or localized cellular tower handoffs triggers an immediate administrative hold on the affected credential chain. The software structurally prevents the duplication or recycling of a single flight data log across multiple student profiles, neutralizing the practice of double-logging single operational sequences.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Decentralized Verification Decoupling (The Regulatory Bypass Shield)</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform addresses the historical vulnerability of localized administrative interference, where institutional pressure or external relationships are applied to regulatory personnel or individual students to manually override license and hour compliance states.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Mechanism:</strong> Under the Level 1 Baseline and Data Sovereignty provisions, the platform decouples verification authority. An individual pilot's Professional Standing Asset is controlled exclusively by their unique cryptographic keys, and the global hiring pipeline is governed by Hub A (Operator Sourcing Mandates).</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The System Realignment:</strong> Because international commercial operators query the network ledger via automated API endpoints, local physical document overrides or manual regulatory certifications carry no weight within the platform's matching engine. If the digital credential chain lacks the multi-source telemetry validation from the source node, the profile remains algorithmically non-discoverable to the hiring marketplace. External administrative protection of a underperforming or non-verifiable asset is rendered systemically irrelevant.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">4. Legacy Fleet Verification Protocol (Non-Telemetry Aircraft)</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform recognizes that substantial primary flight training occurs on legacy aircraft equipped with analog instrumentation and lacking integrated ADS-B transponder capabilities (e.g., Cessna 152, Cessna 150, Cessna 172). These aircraft constitute a significant portion of the global training fleet and require alternative verification methodologies that maintain data integrity standards without mandating prohibitively expensive avionics retrofits.</p>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Mechanism:</strong> For non-telemetry aircraft, the platform implements a multi-source data reconciliation protocol utilizing pilot-initiated verification workflows, third-party flight management platform integrations, and cryptographic documentation standards.</p>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Primary Verification Pathways:</strong></p>
+          <ul className="space-y-2 mb-4 ml-6">
+            <li className="text-slate-700 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm"><strong>Integrated Flight Data Management:</strong> Pilots utilizing third-party digital logbook platforms (e.g., FL.io, FlightLogger) may establish API data bridges allowing direct ingestion of verified flight entries into the Professional Standing Asset. These entries carry platform-verified timestamps and are cross-referenced with institutional dispatch records when available.</span>
+            </li>
+            <li className="text-slate-700 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm"><strong>Chronological Instrument Capture:</strong> For aircraft lacking digital data export capabilities, the platform mandates photographic verification of primary flight instruments. Pilots execute optical capture of Hobbs meter or tachometer readings at engine start and shutdown, with cryptographic hashing binding the image to live atomic timestamps, GPS coordinates, and cellular triangulation data.</span>
+            </li>
+            <li className="text-slate-700 leading-relaxed flex items-start gap-2">
+              <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
+              <span className="text-sm"><strong>Recognition+ Data Table Integration:</strong> Subscribers to the Recognition+ tier gain access to structured data table functionality within their Credential Wallet, enabling manual entry of flight parameters (tail number, departure/arrival aerodromes, flight duration, PIC/Dual breakdown) with institutional countersignature workflows. These entries require ATO verification node confirmation before minting to the ledger.</span>
+            </li>
+          </ul>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The System Realignment:</strong> Legacy aircraft verification operates under adjusted confidence scoring algorithms that weight multi-source documentation against available telemetry correlations. When an aircraft within an institutional fleet lacks ADS-B capability, the platform requires enhanced photographic verification frequency and cross-references with instructor validation tokens. This ensures that training hours accumulated on analog aircraft receive equivalent verification rigor to glass-cockpit platforms, preserving credential integrity across the entire training ecosystem.</p>
 
           <hr className="my-10 border-slate-300" />
 
@@ -5674,6 +5800,276 @@ export default function UCFOfficialReleasePage() {
             <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A financial institution or payments processor</span></p>
             <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">Liable for the accuracy of third-party verification outcomes</span></p>
           </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Sequential Accountability Protocol (Liability Chain)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform architecture establishes a structured liability cascade ensuring that accountability flows to the originating data source rather than accumulating at the aggregation layer. When discrepancies, verification failures, or data quality issues emerge, the platform operates under a sequential referral mechanism that routes liability inquiry through the verification chain to the primary attestor.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Referral Chain Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Level 1 — Platform:</strong> Receives inquiry regarding data accuracy or verification outcome. Response: "The platform functions as a neutral aggregation layer. Verification services are performed by specialist providers under direct contract with participants. Refer inquiry to Veremark (verification provider)."</p>
+              <p><strong>Level 2 — Verification Provider (Veremark):</strong> Receives inquiry regarding background check accuracy. Response: "Verification outcomes are based on data submitted by hiring operators and training institutions. Refer inquiry to the data-submitting airline or operator."</p>
+              <p><strong>Level 3 — Commercial Operator:</strong> Receives inquiry regarding placement data or hiring outcomes. Response: "Operator assessments are conducted based on credentials issued by manufacturer-affiliated training centers and ATO verification nodes. Refer inquiry to the issuing flight school or training center."</p>
+              <p><strong>Level 4 — Manufacturer / Flight School:</strong> Receives inquiry as the original attestor. Response: "This institution is the primary source of the contested data (hours, competency assessments, placement claims). Accountability rests with the originating entity per their Verification Node agreement."</p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Legal Outcome:</strong> Because every data element in the platform is cryptographically signed by its originating entity (flight school, operator, verification provider), liability cannot aggregate at the platform layer. The platform's role is limited to displaying triangulated outcomes from independently warranted sources. Each participant in the ecosystem contractually warrants the accuracy of their own submissions. The pilot, as data owner, controls which attestations appear in their Professional Standing Asset and bears ultimate responsibility for the veracity of their claimed credentials.</p>
+
+          <p className="text-slate-700 leading-relaxed mb-4">This architecture ensures that the platform is structurally incapable of being held liable for data quality because the platform itself generates no data — it only displays what independent, warranting parties have submitted. The Sequential Accountability Protocol transforms platform liability from a legal risk into a contractual impossibility.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Administrative Fee Structure for Legal Inquiries</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Sequential Accountability Protocol operates as a monetized administrative service. Each entity in the referral chain may assess fees for legal review, record retrieval, and attestation verification. This ensures that frivolous or unsubstantiated claims face economic disincentives while legitimate grievances receive proper administrative attention. Standard fee structures apply at each protocol level:</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Standard Administrative Fee Schedule</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Level 1 — Platform:</strong> Initial inquiry intake and liability chain routing: <strong>$500-2,000</strong> per matter. Includes case assessment, originating attestor identification, and Signed Liability Chain Report generation.</p>
+              <p><strong>Level 2 — Verification Provider:</strong> Background check record retrieval and accuracy warranty review: <strong>$1,000-3,000</strong> per subpoena or record request.</p>
+              <p><strong>Level 3 — Commercial Operator:</strong> Placement data audit and credential verification review: <strong>$2,000-5,000</strong> per inquiry.</p>
+              <p><strong>Level 4 — Originating Attestor:</strong> Primary source record verification, hours/competency audit: <strong>$1,500-4,000</strong> per attestation review.</p>
+              <p><strong>Full Chain Documentation:</strong> Comprehensive Signed Liability Chain Report with all cryptographic signatures and attestations: <strong>$5,000-10,000</strong>.</p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Economic Deterrent Effect:</strong> The cumulative administrative cost of pursuing a claim through the full Sequential Accountability Protocol ($10,000-24,000) ensures that only substantiated grievances with legitimate merit proceed beyond initial inquiry. This protects ecosystem participants from frivolous litigation while creating a revenue stream for legitimate administrative services. The platform and all participating providers reserve the right to assess these fees regardless of claim outcome or merit.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Universal Liability Chain (All 25 Pillars)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Sequential Accountability Protocol operates uniformly across all UCF pillars. Every data type has a defined liability pathway ensuring accountability routes to the original attestor, not the aggregation layer.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">HUB A — Aviation Operators & Training</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>P1: Commercial Airlines</strong> — Dispute: "Pilot wasn't qualified" → <em>Final: ATO (issued competency tokens)</em></p>
+              <p><strong>P2: Cargo & Freight</strong> — Dispute: "Pilot failed heavy jet transition" → <em>Final: Simulator Provider (certified proficiency)</em></p>
+              <p><strong>P3: Charter & Business</strong> — Dispute: "SIC hire washed out" → <em>Final: Pilot (owns Professional Standing Asset)</em></p>
+              <p><strong>P4: Emerging/AAM</strong> — Dispute: "eVTOL operator lacked certs" → <em>Final: OEM Training Center</em></p>
+              <p><strong>P5: Flight Training</strong> — Dispute: "Hours were falsified" → <em>Final: ATO Verification Node</em></p>
+              <p><strong>P6: Type Rating Centers</strong> — Dispute: "Simulator time didn't match logbook" → <em>Final: Simulator Center (hardware logs)</em></p>
+              <p><strong>P7: Universities</strong> — Dispute: "Degree claims inaccurate" → <em>Final: Registrar (issued academic credentials)</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">HUB B/C — Capital, Risk & Compliance</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>P8: Banking</strong> — Dispute: "Loan default on falsified placement data" → <em>Final: Institution (submitted placement metrics)</em></p>
+              <p><strong>P9: Insurance</strong> — Dispute: "Incident with pilot using fake hours" → <em>Final: ATO (issued Verification Node tokens)</em></p>
+              <p><strong>P10: Regulatory</strong> — Dispute: "Compliance data inaccurate" → <em>Final: Authority (issued official certificate)</em></p>
+              <p><strong>P13: Aeromedical</strong> — Dispute: "Medical cert expired but pilot flew" → <em>Final: AME (issued Class 1 certification)</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">HUB D/E/F/G — Infrastructure, Community, Growth</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>P11: Verification</strong> — Dispute: "Background check was wrong" → <em>Final: Verification Provider (warrants accuracy)</em></p>
+              <p><strong>P12: Flight Data</strong> — Dispute: "Telemetry data incorrect" → <em>Final: FL.io/ADS-B Provider</em></p>
+              <p><strong>P14: Mentors</strong> — Dispute: "Mentorship hours weren't logged" → <em>Final: Mentor (submitted attestation)</em></p>
+              <p><strong>P15: Manufacturers</strong> — Dispute: "Type rating competency overstated" → <em>Final: Manufacturer (issued credential)</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Pattern: Where Liability Always Lands</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Flight hours:</strong> ATO/Flight School → <em>Cryptographic Signer: ATO Verification Node</em></p>
+              <p><strong>Medical status:</strong> Aeromedical Examiner → <em>Cryptographic Signer: AME (Pillar 13)</em></p>
+              <p><strong>Background check:</strong> Veremark/HireRight → <em>Cryptographic Signer: Verification Provider (Pillar 11)</em></p>
+              <p><strong>Type rating:</strong> Simulator Center → <em>Cryptographic Signer: TRC (Pillar 6)</em></p>
+              <p><strong>Academic degree:</strong> University/Academy → <em>Cryptographic Signer: Registrar</em></p>
+              <p><strong>Operator placement:</strong> Commercial Airline → <em>Cryptographic Signer: Airline HR (Pillar 1)</em></p>
+              <p><strong>Insurance risk score:</strong> Insurance Underwriter → <em>Cryptographic Signer: Underwriter (Pillar 9)</em></p>
+              <p><strong>Credit/loan performance:</strong> Financial Institution → <em>Cryptographic Signer: Bank (Pillar 8)</em></p>
+              <p><strong>Competency tokens:</strong> Manufacturer/OEM → <em>Cryptographic Signer: OEM Training (Pillar 15)</em></p>
+              <p><strong>Profile content:</strong> Individual Pilot → <em>Cryptographic Signer: Pilot (private key owner)</em></p>
+            </div>
+          </div>
+
+          <h3 id="pillar-legal-inquiry-fees" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">Legal & Administrative Services Revenue (Detailed)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Sequential Accountability Protocol generates revenue at every level of the liability chain. This transforms legal protection into a profit center while maintaining the platform's neutral positioning.</p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Level</th>
+                  <th className="text-left px-4 py-2 font-semibold">Service</th>
+                  <th className="text-left px-4 py-2 font-semibold">Fee Range</th>
+                  <th className="text-left px-4 py-2 font-semibold">Est. Volume (Y1)</th>
+                  <th className="text-left px-4 py-2 font-semibold">Revenue</th>
+                </tr>
+              </thead>
+              <tbody className="text-slate-700">
+                <tr className="border-b border-slate-200"><td className="px-4 py-2"><strong>Level 1</strong></td><td className="px-4 py-2">Initial inquiry intake, liability chain routing</td><td className="px-4 py-2">$500-2,000</td><td className="px-4 py-2">50 inquiries</td><td className="px-4 py-2">$75,000</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2"><strong>Level 2</strong></td><td className="px-4 py-2">Verification record retrieval (Veremark)</td><td className="px-4 py-2">$1,000-3,000</td><td className="px-4 py-2">30 inquiries</td><td className="px-4 py-2">$60,000</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2"><strong>Level 3</strong></td><td className="px-4 py-2">Placement data audit, credential review</td><td className="px-4 py-2">$2,000-5,000</td><td className="px-4 py-2">20 inquiries</td><td className="px-4 py-2">$70,000</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2"><strong>Level 4</strong></td><td className="px-4 py-2">Primary source verification, hours audit</td><td className="px-4 py-2">$1,500-4,000</td><td className="px-4 py-2">15 inquiries</td><td className="px-4 py-2">$41,250</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2"><strong>Full Chain</strong></td><td className="px-4 py-2">Comprehensive report with all signatures</td><td className="px-4 py-2">$5,000-10,000</td><td className="px-4 py-2">10 cases</td><td className="px-4 py-2">$75,000</td></tr>
+                <tr className="bg-slate-900 text-white"><td className="px-4 py-2 font-bold" colSpan={4}>Legal Services Subtotal</td><td className="px-4 py-2 font-bold">$321,250</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Triple Win Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Platform:</strong> Protection + administrative routing fees per inquiry</p>
+              <p><strong>Ecosystem Providers:</strong> Cost recovery for record retrieval and verification</p>
+              <p><strong>Legitimate Claimants:</strong> Full accountability chain if claim has merit</p>
+              <p><strong>Frivolous Claims:</strong> Economic screening ($10,000-24,000 to reach liable party)</p>
+            </div>
+          </div>
+
+          <h3 id="pillar-credential-chain" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">Example: Full Liability Chain Cost Structure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A dispute over pilot credentials demonstrates how the Sequential Accountability Protocol operates as an economic screening mechanism. Each entity in the chain assesses administrative fees for record retrieval and verification routing:</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <p className="text-slate-400 mb-2">// Example: Credential Verification Dispute</p>
+            <div className="space-y-1 text-slate-300">
+              <p><span className="text-emerald-400">Level 1:</span> Platform <span className="text-slate-500">→</span> Case intake, attestor identification <span className="text-amber-400">$500</span></p>
+              <p><span className="text-emerald-400">Level 2:</span> Verification Provider <span className="text-slate-500">→</span> Background check records <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 3:</span> Regulatory Authority <span className="text-slate-500">→</span> License verification records <span className="text-amber-400">$3,000</span></p>
+              <p><span className="text-emerald-400">Level 4:</span> Type Rating Organization <span className="text-slate-500">→</span> Simulator/competency records <span className="text-amber-400">$2,000</span></p>
+              <p><span className="text-emerald-400">Level 5:</span> Flight School <span className="text-slate-500">→</span> Training hour verification <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 6:</span> Individual Pilot <span className="text-slate-500">→</span> Final attestor (no fee, owns data)</p>
+            </div>
+            <p className="text-slate-400 mt-3 pt-3 border-t border-slate-700">Total to reach liable party: <span className="text-red-400 font-bold">$8,500+</span> in administrative fees</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Structural Protection:</strong> By the time a claimant pays to traverse the full chain, one of three outcomes occurs:</p>
+          <ol className="list-decimal list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li><strong>Budget exhaustion:</strong> Claimant abandons pursuit due to cumulative costs exceeding claim value</li>
+            <li><strong>Intermediate settlement:</strong> Dispute resolves with a mid-chain entity (flight school, type rating org) rather than reaching the platform</li>
+            <li><strong>Merit validation:</strong> Only substantiated claims with genuine evidence proceed to final attestor</li>
+          </ol>
+          <p className="text-slate-700 leading-relaxed mb-6"><strong>Why this strengthens trust:</strong> The fee structure ensures that only verified, warrantied data appears on the platform. Every entity in the chain has cryptographic skin in the game — their signature is their bond. The platform displays only what independent, warranting parties have submitted under contractual attestation. This is not "pay-to-play" — it is "verify-or-be-liable" enforced through cryptographic accountability.</p>
+
+          <h3 id="pillar-financial-chain" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">Example: Financial & Risk Assessment Chain</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Disputes involving financial underwriting or insurance risk assessments follow a parallel liability pathway through the capital and compliance hubs:</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <p className="text-slate-400 mb-2">// Example: Training Loan Default Dispute</p>
+            <div className="space-y-1 text-slate-300">
+              <p><span className="text-emerald-400">Level 1:</span> Platform <span className="text-slate-500">→</span> Data routing, attestor mapping <span className="text-amber-400">$500</span></p>
+              <p><span className="text-emerald-400">Level 2:</span> Financial Institution <span className="text-slate-500">→</span> Loan underwriting records <span className="text-amber-400">$2,500</span></p>
+              <p><span className="text-emerald-400">Level 3:</span> Insurance Underwriter <span className="text-slate-500">→</span> Risk assessment documentation <span className="text-amber-400">$2,000</span></p>
+              <p><span className="text-emerald-400">Level 4:</span> Placement Data Provider <span className="text-slate-500">→</span> Employment outcome verification <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 5:</span> Flight School <span className="text-slate-500">→</span> Training completion records <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 6:</span> Individual Pilot <span className="text-slate-500">→</span> Borrower/consenting party</p>
+            </div>
+            <p className="text-slate-400 mt-3 pt-3 border-t border-slate-700">Total to reach liable party: <span className="text-red-400 font-bold">$8,000+</span> in administrative fees</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Cross-Hub Liability Routing:</strong> Financial disputes traverse through Capital Hub (Pillar 8), Risk Hub (Pillar 9), and Training Hub (Pillar 5) before reaching the individual. Each hub maintains independent cryptographic signatures on their data contributions:</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-6 ml-4">
+            <li><strong>Banking records:</strong> Financial institution warrants loan performance data</li>
+            <li><strong>Risk assessments:</strong> Insurance provider warrants underwriting calculations</li>
+            <li><strong>Placement metrics:</strong> Operator warrants employment outcome claims</li>
+            <li><strong>Training records:</strong> ATO warrants competency and hour attestations</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform aggregates these warrantied data points to generate composite scores (Creditworthiness Index, Risk Score, Placement Probability) but never generates the underlying data. Each score component traces to an independent cryptographic signature from the originating entity. This multi-source triangulation ensures that no single point of failure can compromise data integrity — and no single entity can be held liable for composite outcomes.</p>
+
+          <h3 id="pillar-verification-depth" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">The Liability Chain as Verification Depth Indicator</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The number of pillars a dispute must traverse is not a liability weakness — it is a <strong>verification strength indicator</strong>. Every additional hop in the Sequential Accountability Protocol represents an additional layer of independent attestation that the data has already passed through.</p>
+
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">Verification Depth = Liability Chain Length</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Single-source platforms:</strong> 1-2 hops to liable party → $500-1,500 dispute cost → <em>Indicates minimal verification layers, higher data risk</em></p>
+              <p><strong>PilotRecognition:</strong> 5-6 hops to liable party → $8,000-24,000 dispute cost → <em>Indicates multiple independent attestations, higher data reliability</em></p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4">When an airline views a pilot's Professional Standing Asset on PilotRecognition, they are not seeing "platform data" — they are seeing data that has already survived scrutiny from:</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li><strong>Training verification</strong> (ATO/competency attestor)</li>
+            <li><strong>Regulatory verification</strong> (licensing authority)</li>
+            <li><strong>Background verification</strong> (screening provider)</li>
+            <li><strong>Employment verification</strong> (prior operators)</li>
+            <li><strong>Financial verification</strong> (underwriting institution, if applicable)</li>
+            <li><strong>Risk verification</strong> (insurance assessment, if applicable)</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-4">Each of these entities has independently cryptographically signed their attestation. The liability chain length directly correlates with verification depth: <strong>the more expensive a claim is to pursue, the more layers of verification the data has already undergone.</strong></p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Competitive Moat</p>
+            <p className="text-sm text-slate-700 mb-2">Competitors offering "cheaper dispute resolution" are advertising their verification shallowness. A $500 dispute cost means the platform holds the data directly with minimal third-party attestation — meaning <em>they</em> are the liable party when the data is wrong.</p>
+            <p className="text-sm text-slate-700">PilotRecognition's $8,000-24,000 dispute cost signals to operators: <strong>this data has been battle-tested through multiple independent warranting parties.</strong> The cost is the proof of quality.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Platform Legal Positioning Summary</h3>
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">What the Platform IS:</p>
+            <p>• A domain publishing structured aviation career framework data</p>
+            <p>• A consent management layer connecting pilots to vault + Veremark</p>
+            <p>• A token display surface showing triangulated verification outcomes</p>
+            <p>• A pathway matching interface between pilots and operators</p>
+            <p>• A neutral aggregation and communication layer</p>
+            <p className="mt-3 text-red-400 font-bold mb-1 font-sans text-xs uppercase tracking-widest">What the Platform IS NOT:</p>
+            <p className="text-slate-400">✗ A data custodian for pilot credentials (handled by Vault provider)</p>
+            <p className="text-slate-400">✗ A verification provider (handled by Veremark)</p>
+            <p className="text-slate-400">✗ A staffing or recruitment agency</p>
+            <p className="text-slate-400">✗ A financial institution or payments processor (handled by Stripe)</p>
+            <p className="text-slate-400">✗ Liable for the accuracy of third-party verification outcomes</p>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">The Kill Shot: Platform's Standard Response</p>
+            <p className="text-sm text-slate-700 italic">"PilotRecognition functions as a neutral aggregation and communication layer. Every data element displayed on the platform is cryptographically signed by an independent third party under contractual warranty. The platform does not generate, modify, or verify data — it only routes third-party attestations to their intended recipients. Refer all inquiries regarding data accuracy to the originating attestor identified by cryptographic signature in the pilot's Professional Standing Asset."</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Strategic Positioning: Switzerland Neutrality</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The "Switzerland" neutrality is the legal shield — by explicitly NOT performing regulated activities and only acting as an information/aggregation layer, the platform avoids the specialized licensing requirements that would apply to actual flight schools, banks, or recruitment agencies.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Result:</strong> Structural invincibility through:</p>
+          <ol className="list-decimal list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li>Cryptographic signatures creating audit trails</li>
+            <li>Contractual warranties at every level</li>
+            <li>Platform never being the "author" — only the "publisher"</li>
+            <li>Safe harbor provisions (like Section 230) architected through cryptography</li>
+          </ol>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform is 4-6 hops removed from any liability, and by the time a plaintiff reaches the original attestor, they've either run out of legal budget, settled with the flight school/airline, or realized the platform has zero assets to seize.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Verdict: Legal Standing</h3>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-4">
+            <p className="text-sm text-slate-700 mb-2"><strong className="text-emerald-700">✓ Structurally untouchable for data liability</strong> — cannot be sued because "the hours were wrong."</p>
+          </div>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>Operationally touchable for:</strong></p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li>Security breaches</li>
+            <li>Platform failures (bugs, negligence)</li>
+            <li>Privacy violations (GDPR)</li>
+            <li>Contract disputes (breach of $100/yr terms)</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-6"><strong>Overall assessment:</strong> As close to "legally untouchable" as an aggregation platform can be, but not invincible. Maintain neutrality, don't editorialize, keep security tight.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Comprehensive Revenue Architecture</h3>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Revenue Stream</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y1 Conservative</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y1 Stretch</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y2 Target</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y3 Target</th>
+                </tr>
+              </thead>
+              <tbody className="text-slate-700">
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">Programs & Campus</td><td className="px-4 py-2">$307,000</td><td className="px-4 py-2">$450,000</td><td className="px-4 py-2">$1.5M</td><td className="px-4 py-2">$5M</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2">Recognition Plus</td><td className="px-4 py-2">$297,000</td><td className="px-4 py-2">$500,000</td><td className="px-4 py-2">$2M</td><td className="px-4 py-2">$8M</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">Premium Pathways</td><td className="px-4 py-2">$99,500</td><td className="px-4 py-2">$200,000</td><td className="px-4 py-2">$800K</td><td className="px-4 py-2">$3M</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2">Enterprise Operators</td><td className="px-4 py-2">$145,000</td><td className="px-4 py-2">$300,000</td><td className="px-4 py-2">$1.2M</td><td className="px-4 py-2">$5M</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">Referral Fees</td><td className="px-4 py-2">$28,000</td><td className="px-4 py-2">$50,000</td><td className="px-4 py-2">$200K</td><td className="px-4 py-2">$800K</td></tr>
+                <tr className="border-b border-slate-200 bg-emerald-50"><td className="px-4 py-2"><strong>Legal/Admin Services</strong></td><td className="px-4 py-2"><strong>$321,250</strong></td><td className="px-4 py-2"><strong>$500,000</strong></td><td className="px-4 py-2"><strong>$1M</strong></td><td className="px-4 py-2"><strong>$3M</strong></td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">OEM Intelligence</td><td className="px-4 py-2">-</td><td className="px-4 py-2">$200,000</td><td className="px-4 py-2">$1.5M</td><td className="px-4 py-2">$8M</td></tr>
+                <tr className="bg-slate-900 text-white"><td className="px-4 py-2 font-bold">Total</td><td className="px-4 py-2 font-bold">$1,197,750</td><td className="px-4 py-2 font-bold">$2,200,000</td><td className="px-4 py-2 font-bold">$8.2M</td><td className="px-4 py-2 font-bold">$32.8M</td></tr>
+                <tr className="bg-slate-800 text-white"><td className="px-4 py-2 font-bold">Exit Valuation</td><td className="px-4 py-2">-</td><td className="px-4 py-2">-</td><td className="px-4 py-2">-</td><td className="px-4 py-2 font-bold">$200-500M</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-6"><strong className="text-emerald-600">The legal telephone game is your hidden profit center</strong> — $321,250/year just from routing liability inquiries, with potential to scale to $1M+ as platform grows.</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Contract Model — $100/Year Per Pilot</h3>
           <p className="text-slate-700 leading-relaxed mb-6">Pilots access the platform under a <strong>direct contract</strong> — not a SaaS subscription in the traditional sense, but a service agreement granting access to the platform's aggregated data layer, pathway matching, and verification token display. At <strong>$100/year per pilot</strong>, the contract is simple: the pilot pays for access to the most structured, verified, and comprehensive aviation career intelligence platform in existence. The platform provides access. Specialist providers deliver every underlying service.</p>
