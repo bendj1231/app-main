@@ -4731,7 +4731,32 @@ export default function UCFOfficialReleasePage() {
             <li><strong>Level 4 — Multi-Source Triangulated:</strong> Cross-referenced with ADS-B telemetry, instructor validation tokens, and platform telemetry mirrors (see Pillar 5, Section XV).</li>
           </ul>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">4. Specific Partner Profiles</h4>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">4. Switzerland Neutrality: The Platform as Non-Competitive Infrastructure</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">A foundational principle of Pillar 12 is that <strong>PilotRecognition does not compete with flight data providers and does not favor any single platform</strong>. The platform functions as neutral infrastructure — a "Switzerland" that all sides can trust.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Neutrality Framework</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>No Verification Authority:</strong> PilotRecognition does not verify flight data itself. Verification is performed by independent Verification Nodes (ATOs, simulator centers, regulatory authorities) through cryptographic signatures. The platform is a <strong>neutral conduit</strong> — not a data validator.</p>
+              <p><strong>No Competitive Products:</strong> PilotRecognition does not build or operate its own digital logbook, EFB, or flight planning app. We do not compete with Navigraph, ForeFlight, LogTen Pro, or any partner. Our sole function is to provide the <strong>infrastructure layer</strong> that transforms their data into verified credentials.</p>
+              <p><strong>Equal Treatment Doctrine:</strong> All integrated flight data apps receive identical API access, identical verification protocols, and identical airline visibility. No partner receives preferential treatment in pathway matching or credential display. The platform is <strong>agnostic to data source</strong> — quality is determined by verification depth, not brand name.</p>
+              <p><strong>Data Sovereignty Guarantee:</strong> Pilots control which apps can push data to their wallet and which airlines can view it. PilotRecognition cannot access, modify, or monetize flight data without explicit pilot consent. The platform serves the pilot's interests, not its own.</p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Why This Matters to Partners:</strong> Flight data providers can integrate with confidence knowing that:</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
+            <li>We will never launch a competing logbook or navigation app</li>
+            <li>We will never prioritize one partner's data over another in airline queries</li>
+            <li>We will never use aggregated data to build competing analytics products</li>
+            <li>We will never sell pilot data to third parties without explicit consent</li>
+          </ul>
+
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-sm text-slate-700"><strong>The Switzerland Positioning:</strong> Just as Switzerland provides banking infrastructure without competing with banks, PilotRecognition provides credentialing infrastructure without competing with flight data apps. We are the <strong>neutral territory</strong> where all apps, all pilots, and all airlines can transact verified data with mutual trust.</p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">5. Specific Partner Profiles</h4>
 
           <div className="space-y-4 mb-6">
             <div className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
