@@ -299,6 +299,38 @@ export default function UCFOfficialReleasePage() {
             PART I: FOUNDATION &amp; VISION
           </h1>
 
+          {/* Pilot First Manifesto */}
+          <div className="bg-slate-900 rounded-xl px-8 py-8 mb-10">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-6">The Founding Principle — Read This First</p>
+
+            <p className="text-white text-2xl font-bold leading-tight mb-6">
+              Without us, you are nothing.
+            </p>
+
+            <p className="text-slate-300 leading-relaxed mb-4 text-sm">A $300 million Airbus A350 is a very expensive paperweight without two qualified pilots in the flight deck. An airline is a marketing and ticketing agency without the crew to execute the schedule. The regulators have nothing to regulate without the humans flying the machines. The manufacturers have no reason to build without the professionals to operate what they produce.</p>
+
+            <p className="text-slate-300 leading-relaxed mb-6 text-sm">For decades, the industry treated pilots like an endless, replaceable commodity — filtered by HR software, lost in manual verification queues, left waiting in hiring backlogs while the aircraft sat grounded. The global pilot shortage exposed the reality: <strong className="text-white">the power dynamic has flipped.</strong> The supply is finite. The demand is not. And the professionals who keep this industry solvent have never had the infrastructure to wield that reality.</p>
+
+            <p className="text-slate-300 leading-relaxed mb-8 text-sm">PilotRecognition is that infrastructure. Not a job board. Not an HR tool. Not another filtering system designed to make it easier for airlines to say no. <strong className="text-white">A platform built by pilots, architected around pilot-owned data, designed to flip the script — from "pilots, please apply" to "airlines, here is the verified talent pool. Prove why they should fly for you."</strong></p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              {([
+                { title: 'The Power Has Shifted', body: 'Pilots are not applicants on this platform. They are the product. Airlines access the platform because without the pilots on it, they cannot operate. That changes every negotiation.' },
+                { title: 'Airlines Apply to Pilots', body: 'The Operator Expectations Page requires airlines to publish their culture, compensation, lifestyle, and transparency — before a single pilot considers them. The power of evaluation runs both ways.' },
+                { title: 'Data Stays With the Pilot', body: 'No airline can pull your data without your explicit approval. Every credential, every verification token, every piece of your professional identity is yours — held in your wallet, released on your command.' },
+              ] as {title:string;body:string}[]).map((item) => (
+                <div key={item.title} className="border border-slate-700 rounded-lg px-4 py-4 bg-slate-800">
+                  <p className="font-bold text-white text-sm mb-2">{item.title}</p>
+                  <p className="text-slate-400 text-xs leading-relaxed">{item.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="border-t border-slate-700 pt-6">
+              <p className="text-slate-400 text-xs leading-relaxed italic">This platform is the collective bargaining tool the pilot community has never had — architected as a compliance and verification network, operating as the infrastructure that makes the aviation industry run. Every commercial model, every pricing tier, every legal structure in this document exists to serve one founding principle: <strong className="text-slate-200">pilots first.</strong></p>
+            </div>
+          </div>
+
           {/* Page 1 heading */}
           <h2 id="page-1-executive-summary" className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">
             Page 1: Executive Summary
