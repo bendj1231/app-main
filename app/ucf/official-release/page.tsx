@@ -5039,6 +5039,49 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Economics:</strong> At 10% of your base (16,000 pilots) on Recognition+ at $100/year with a 30% revenue share, LogTen earns $480,000 annually in new verification revenue — on top of reduced churn, higher retention, and enterprise airline partnerships that open B2B licensing opportunities.</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Architectural Separation: Format vs Origin Trust</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The fundamental distinction between LogTen Pro and PilotRecognition lies in <strong>where trust originates</strong>. This is not a competitive relationship — it is a complementary architectural layering where each platform serves a distinct, non-overlapping function.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">LogTen Pro: The Format Layer (Presentation Trust)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Format Trust Only:</strong> Airlines trust LogTen because its reports are perfectly formatted to match legal standards (EASA, FAA, ICAO formats). Recruiters know the mathematical calculations add up and there are no typos, saving manual auditing time.</p>
+              <p><strong>No Origin Trust:</strong> LogTen cannot prove a pilot didn't simply type in 100 fake hours of multi-engine time while sitting on their couch. The airline must still cross-reference those hours against internal crew logs (Sabre, FLICA), physical signatures, or training records to detect falsification.</p>
+              <p><strong>User-Entered Data:</strong> All data originates from pilot input. LogTen validates formatting and calculations, not authenticity. This is the inherent limitation of any personal logbook application.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">PilotRecognition: The Origin Trust Layer (Verification Authority)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Top-Down Verification:</strong> PilotRecognition pulls examination results and EBT/CBTA competency assessments directly from the source — the Approved Training Organisation (ATO) or operating airline. The airline/ATO is the origin of trust, not the pilot's personal logbook.</p>
+              <p><strong>The Architectural Flow:</strong></p>
+              <div className="bg-slate-100 p-3 rounded font-mono text-xs">
+                <p>Traditional Flow: Pilot (Inputs Data) → LogTen Pro (Formatted Output) → Airline (Must Manually Verify)</p>
+                <p className="mt-2 text-emerald-600 font-bold">Competency Flow: ATO/Airline (Logs Checkride/EBT) → PilotRecognition (Verified Data) → Recruiters (Instant Trust)</p>
+              </div>
+              <p className="mt-2"><strong>Tamper-Proof Profiles:</strong> Because data is verified at the source (airline/ATO systems), the resulting ATLAS Aviation CV provides airlines with instant trust without manual logbook auditing.</p>
+              <p><strong>Competency Over Hours:</strong> Instead of just counting raw hours, we track behavioral performance metrics from actual checkrides. Airlines see how a pilot performs in an Airbus environment, not just how many hours they sat in the seat.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>The Critical Distinction</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro accepts unverified, user-entered data. It cannot serve as the origin of the trust layer for an airline. If an airline relies solely on a LogTen export, they still must manually cross-reference hours against internal systems to ensure the pilot isn't falsifying their time.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition reverses this flow by building the trust layer from the airline/ATO <strong>downward</strong>, rather than from the pilot <strong>upward</strong>. We do not create trust — we connect to where trust already exists (the airline's own operational records) and make it portable.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">How the Layers Work Together</h5>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Complementary Function Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen's Role:</strong> Provide beautifully formatted, comprehensive, daily-logged hour baseline. The pilot's personal record of their flying activity — GPS tracks, photos, entries, memories. The <strong>presentation layer</strong>.</p>
+              <p><strong>PilotRecognition's Role:</strong> Connect to airline/ATO operational systems and attach the <strong>"verified" cryptographic stamp</strong> to specific hours. We do not create the hours — we verify which hours from the logbook match the airline's official operational records.</p>
+              <p><strong>The Synchronization:</strong> A pilot has 1,500 hours in LogTen. PilotRecognition queries the airline's FLICA/Sabre system and confirms 1,247 of those hours match official duty records. The pilot's dashboard shows: <strong>"1,247 hours verified by [Airline Name] via PilotRecognition"</strong> — with the remaining 253 hours shown as "logged but not yet verified."</p>
+              <p><strong>Airline Value:</strong> Recruiters see that 1,247 hours are cryptographically attested by a real airline. The verification burden is eliminated — they know those hours are real. The unverified 253 hours are flagged for additional scrutiny if needed.</p>
+            </div>
+          </div>
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Dual-Revenue Partnership Model</h4>
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Logbook Provider Revenue Streams</p>
