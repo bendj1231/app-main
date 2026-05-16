@@ -4731,8 +4731,8 @@ export default function UCFOfficialReleasePage() {
             <li><strong>Level 4 — Multi-Source Triangulated:</strong> Cross-referenced with ADS-B telemetry, instructor validation tokens, and platform telemetry mirrors (see Pillar 5, Section XV).</li>
           </ul>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">4. Switzerland Neutrality: The Platform as Non-Competitive Infrastructure</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">A foundational principle of Pillar 12 is that <strong>PilotRecognition does not compete with flight data providers and does not favor any single platform</strong>. The platform functions as neutral infrastructure — a "Switzerland" that all sides can trust.</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">4. Platform Neutrality: Non-Competitive Infrastructure</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">A foundational principle of Pillar 12 is that <strong>PilotRecognition does not compete with flight data providers and does not favor any single platform</strong>. The platform functions as neutral infrastructure — a trusted intermediary that all sides can rely upon without fear of displacement or preferential treatment.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Neutrality Framework</p>
@@ -4753,7 +4753,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-sm text-slate-700"><strong>The Switzerland Positioning:</strong> Just as Switzerland provides banking infrastructure without competing with banks, PilotRecognition provides credentialing infrastructure without competing with flight data apps. We are the <strong>neutral territory</strong> where all apps, all pilots, and all airlines can transact verified data with mutual trust.</p>
+            <p className="text-sm text-slate-700"><strong>The Neutral Infrastructure Positioning:</strong> PilotRecognition provides credentialing infrastructure without competing with flight data apps — similar to how payment networks enable transactions without competing with merchants. We are the <strong>neutral territory</strong> where all apps, all pilots, and all airlines can transact verified data with mutual trust.</p>
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">5. Specific Partner Profiles</h4>
