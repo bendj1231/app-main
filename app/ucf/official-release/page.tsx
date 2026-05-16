@@ -4946,136 +4946,2750 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">Because we are pilots, we know exactly where the trust breaks down between the line and corporate management. Because we are pilots, we engineered the trust shield that protects user privacy while maximizing career utility.</p>
           <p className="text-slate-700 leading-relaxed mb-6">When software giants, navigation providers, and simulator developers partner with PilotRecognition, they are not just integrating with another software application. <strong>They are plugging directly into an authentic, pilot-led ecosystem designed to elevate the entire aviation profession.</strong> We are the source. We are the cockpit. We built the infrastructure we always needed — and it is time for the industry to catch up.</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XII. The Unified Competency Framework (UCF) Integration</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition ecosystem does not rely on a single data source to validate a pilot. Instead, it utilizes a <strong>Unified Competency Framework (UCF)</strong> that triangulates three distinct streams of professional data. No single application holds the complete picture of a pilot. Logbooks provide the <strong>duration</strong>, EFBs provide the <strong>complexity</strong>, and Simulators provide the <strong>behavior</strong>. By routing all three into the PilotRecognition API, we generate a single, holistic, and mathematically objective Recognition Score.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XII. The Universal Commercial Framework (UCF) Integration</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition ecosystem does not rely on a single data source to validate a pilot. Instead, it operates on a <strong>Universal Commercial Framework (UCF)</strong> that standardizes and monetizes three distinct streams of professional data. No single application holds the complete picture of a pilot's market value. <strong>Logbooks provide the duration, EFBs provide the complexity, and Simulators provide the behavior.</strong> By routing all three into the PilotRecognition API, we generate a single, holistic, and mathematically objective Recognition Score that airlines and underwriters can transact on.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-A. Logbook Providers: The Origin Trust Layer</h4>
           <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">LogTen Pro · FLYLOG.io · capzlog.aero · IDfy</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Logbooks act as the quantitative ledger. They record the raw block hours, the regulatory compliance, and the official baseline of a pilot's history.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> They provide the <strong>verified foundation</strong> (via Veremark/ATO attestation) upon which all other complex commercial data is built. Without verified flight hours, telemetry data and simulator sessions lack the temporal anchor required for professional credibility.</p>
 
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Logbooks act as the <strong>quantitative ledger</strong>. They record the raw block hours, the regulatory compliance (PIC, cross-country, instrument time), and the official baseline of a pilot's history. This is the foundational layer — without verified hours, no amount of telemetry or simulator competency matters.</p>
-
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> Logbook providers supply the <strong>Origin Trust</strong> layer. Through Veremark attestation and ATO/airline integration, they provide the verified foundation upon which all other complex data is built. A pilot's 1,000 hours in a LogTen Pro ledger, once verified against operator records, becomes the anchor weight in their Recognition Score algorithm.</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The LogTen Pro Problem: Captured Users, Lost Professional Value</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">LogTen Pro has captured 160,000+ pilots — the largest user base in digital logbook history. Yet they face a critical strategic vulnerability: <strong>they have completely lost control of the professional valuation layer.</strong> Pilots use LogTen as a sophisticated digital diary, but the industry does not view a LogTen export as an official currency of trust.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Origin Trust: What Logbooks Provide to the UCF</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Core Pain Points for LogTen Pro</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Duration Metrics:</strong> Total flight hours, PIC time, cross-country, night, instrument — the regulatory currency that airlines must verify for hiring.</p>
-              <p><strong>Regulatory Compliance:</strong> EASA Part-FCL, FAA Part 61/141 compliance tracking — ensuring pilots meet minimums for license issuance and renewal.</p>
-              <p><strong>Verification Anchor:</strong> Through Veremark integration, logbook entries become cryptographically attested records, creating an immutable foundation that other data layers reference.</p>
-              <p><strong>The Neutral Position:</strong> Logbooks do not compete with EFBs or Simulators — they provide the temporal baseline against which complexity and behavioral metrics are weighted.</p>
+              <p><strong>1. High Churn Risk at Career Milestones:</strong> LogTen charges $129.99/year premium subscription. But once a pilot secures their dream job at a legacy airline, their logging needs change. The airline's internal scheduling systems track their legal currency, block hours, and medical dates. Because LogTen doesn't connect to an external recognition system that advances their career further, many senior captains stop paying entirely and rely on airline records.</p>
+              <p><strong>2. The "Dirty Data" Vulnerability:</strong> LogTen relies entirely on user input — it suffers from "garbage in, garbage out." If a pilot incorrectly logs night time, forgets an instrument approach, or fat-fingers an aircraft registration, the app cannot self-correct. The pilot discovers the error during a stressful pre-hiring audit, leading to frustration with LogTen's passive nature.</p>
+              <p><strong>3. Disconnect from Modern EBT/CBTA Frameworks:</strong> Aviation training has evolved from counting "raw hours" to evaluating competencies (Evidence-Based Training). LogTen is structurally built around the old way — adding up rows of numbers. It does not natively measure cognitive, behavioral, or situational awareness scores from simulator checkrides. As airlines shift to CBTA, LogTen risks becoming obsolete to recruiters who want competency metrics, not just hour totals.</p>
+              <p><strong>4. Zero Marketplace Portability:</strong> A LogTen logbook is a closed loop. Hours live inside the app or print on a static PDF. It does not actively broadcast a pilot's readiness to the industry. If a pilot seeks an upgrade, corporate gig, or pathway change, LogTen cannot push their verified readiness profile to recruiters. The pilot must export, format, and manually upload elsewhere.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The PilotRecognition Solution: Adding the Verification Layer</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen provides the ledger, PilotRecognition provides the professional destination.</strong> By linking LogTen hours to our 25-pillar neutral verification network, we turn passive personal numbers into active, certified industry credentials.</p>
+              <p><strong>The $100 Recognition+ Subscription:</strong> Pilots pay to unlock the "Verified by PilotRecognition" seal on their LogTen profile. This bridges the gap for 5,000-hour instructors who feel invisible — giving them direct exposure to recruiters, premium charter operators, and underwriters hunting for vetted talent.</p>
+              <p><strong>For Insurance Underwriters & Charter Operators:</strong> Insurance companies hate unverified logbooks because "logbook padding" costs millions in claims. A charter operator or underwriter prioritizes PilotRecognition-audited candidates because liability risk drops to near zero.</p>
+              <p><strong>The LogTen Retention Fix:</strong> Instead of users treating LogTen as a passive diary, it becomes the essential gateway to getting a pilot's identity certified. LogTen takes a revenue split of the $100 Recognition+ fee — a brand new, highly profitable B2B2C revenue stream.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Triple-Layer Verification Architecture</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">By introducing Veremark and ATO integration, we build a digital fortress around the pilot's data — transforming LogTen's personal records into triple-verified industry credentials:</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <div className="space-y-1 text-slate-300">
+              <p>┌─────────────────────────────────────────────────┐</p>
+              <p>│  <span className="text-emerald-400">TRIPLE-LAYER VERIFICATION FLOW</span>              │</p>
+              <p>│                                                 │</p>
+              <p>│  <span className="text-amber-400">┌──────────────────────────────────┐</span>          │</p>
+              <p>│  <span className="text-amber-400">│  LAYER 1: LOGTEN PRO LEDGER      │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • Daily flight entries          │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • GPS tracks, photos            │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • User-managed data origin      │</span>          │</p>
+              <p>│  <span className="text-amber-400">└──────────────────────────────────┘</span>          │</p>
+              <p>│              │                                  │</p>
+              <p>│              ▼                                  │</p>
+              <p>│  <span className="text-amber-400">┌──────────────────────────────────┐</span>          │</p>
+              <p>│  <span className="text-amber-400">│  LAYER 2: ATO/AIRLINE FEEDS      │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • Checkride records             │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • CBTA assessment scores        │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • Digital instructor signatures │</span>          │</p>
+              <p>│  <span className="text-amber-400">└──────────────────────────────────┘</span>          │</p>
+              <p>│              │                                  │</p>
+              <p>│              ▼                                  │</p>
+              <p>│  <span className="text-emerald-400">┌──────────────────────────────────┐</span>          │</p>
+              <p>│  <span className="text-emerald-400">│  LAYER 3: VEREMARK AUDIT SEAL    │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • Tamper-proof verification     │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • Legally compliant attestation │</span>          │</p>
+              <p>│  <span className="text-slate-400">│  • Blockchain-backed record      │</span>          │</p>
+              <p>│  <span className="text-emerald-400">└──────────────────────────────────┘</span>          │</p>
+              <p>│                                                 │</p>
+              <p>│  <span className="text-emerald-400">OUTPUT: VERIFIED ATLAS AVIATION CV</span>            │</p>
+              <p>└─────────────────────────────────────────────────┘</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Economics: $1,000/yr + $20 Referral + $100 Recognition+</h5>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Multi-Tier Revenue Model</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>$100 Recognition+ Subscription:</strong> Pilots pay for the audit to unlock the verified seal. LogTen earns revenue share per activation. Transforms unverified time into elite, audited industry asset.</p>
+              <p><strong>$1,000/Year Program Access Fee:</strong> Premium tier for high-hour instructors and career climbers. Grants visibility to operators who bypass traditional application pools. Charter operators and underwriters get pre-vetted candidates, reducing onboarding risk.</p>
+              <p><strong>$20 Ecosystem Referral Dividend:</strong> Viral growth engine. Flight instructors, ATOs, and current members earn $20 for each new pilot they refer. In a tight-knit flight school, an instructor telling their student "Get your LogTen verified on PilotRecognition so airlines trust your hours" becomes a self-funding acquisition model.</p>
+              <p><strong>$20/Verification Issuance Fee:</strong> Each ATO/Operator attestation generates $20 to the logbook provider (LogTen) as referral dividend — creating sustainable recurring revenue beyond subscriptions.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Powered by LogTen Pro" Display Integration</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Featuring a <strong>"Powered by LogTen Pro"</strong> visual widget directly on the PilotRecognition.com dashboard preserves LogTen's brand equity while elevating our platform's utility. The pilot's LogTen logbook displays seamlessly within their Recognition Profile, connecting pilots to networking opportunities and building a verified trust layer that their hours have been audited by Veremark and their ATO.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Unified Dashboard Experience</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen Hours Display:</strong> The pilot's complete LogTen logbook renders directly on PilotRecognition.com, with flight hours glowing with "Veemark & ATO Verified" badges. Corporate flight departments and charter operators get immediate green light to fast-track interviews.</p>
+              <p><strong>Networking Integration:</strong> Pilots can share their verified profile link (pilotrecognition.com/p/[username]) which displays their LogTen hours, Veremark verification status, and Recognition Score — a single URL that replaces static PDF resumes.</p>
+              <p><strong>Recruiter View:</strong> Airlines and operators see a dynamic dashboard where flight hours are verified in real-time, completely eliminating the weeks-long manual logbook audit process. One click shows attestation history, ATO signatures, and insurance-ready verification status.</p>
+              <p><strong>LogTen Retention Effect:</strong> Pilots who verify through LogTen are locked into the ecosystem. Switching logbook apps means losing the integrated verification history and the "Powered by LogTen" credential that recruiters recognize and trust.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Pitch to LogTen Pro Executives</h5>
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Closing Argument</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">"We are not competing for your users — we are expanding your value proposition. You have 160,000 pilots who treat LogTen as a passive diary. We give your highest-value subscribers a definitive reason to keep their subscriptions active forever. LogTen provides the ledger. PilotRecognition provides the professional destination, the network, and the elite industry exposure that transforms logbook data into career currency."</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Economics:</strong> At 10% of your base (16,000 pilots) on Recognition+ at $100/year with a 30% revenue share, LogTen earns $480,000 annually in new verification revenue — on top of reduced churn, higher retention, and enterprise airline partnerships that open B2B licensing opportunities.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Architectural Separation: Format vs Origin Trust</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The fundamental distinction between LogTen Pro and PilotRecognition lies in <strong>where trust originates</strong>. This is not a competitive relationship — it is a complementary architectural layering where each platform serves a distinct, non-overlapping function.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">LogTen Pro: The Format Layer (Presentation Trust)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Format Trust Only:</strong> Airlines trust LogTen because its reports are perfectly formatted to match legal standards (EASA, FAA, ICAO formats). Recruiters know the mathematical calculations add up and there are no typos, saving manual auditing time.</p>
+              <p><strong>No Origin Trust:</strong> LogTen cannot prove a pilot didn't simply type in 100 fake hours of multi-engine time while sitting on their couch. The airline must still cross-reference those hours against internal crew logs (Sabre, FLICA), physical signatures, or training records to detect falsification.</p>
+              <p><strong>User-Entered Data:</strong> All data originates from pilot input. LogTen validates formatting and calculations, not authenticity. This is the inherent limitation of any personal logbook application.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">PilotRecognition: The Origin Trust Layer (Verification Authority)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Top-Down Verification:</strong> PilotRecognition pulls examination results and EBT/CBTA competency assessments directly from the source — the Approved Training Organisation (ATO) or operating airline. The airline/ATO is the origin of trust, not the pilot's personal logbook.</p>
+              <p><strong>The Architectural Flow:</strong></p>
+              <div className="bg-slate-100 p-3 rounded font-mono text-xs">
+                <p>Traditional Flow: Pilot (Inputs Data) → LogTen Pro (Formatted Output) → Airline (Must Manually Verify)</p>
+                <p className="mt-2 text-emerald-600 font-bold">Competency Flow: ATO/Airline (Logs Checkride/EBT) → PilotRecognition (Verified Data) → Recruiters (Instant Trust)</p>
+              </div>
+              <p className="mt-2"><strong>Tamper-Proof Profiles:</strong> Because data is verified at the source (airline/ATO systems), the resulting ATLAS Aviation CV provides airlines with instant trust without manual logbook auditing.</p>
+              <p><strong>Competency Over Hours:</strong> Instead of just counting raw hours, we track behavioral performance metrics from actual checkrides. Airlines see how a pilot performs in an Airbus environment, not just how many hours they sat in the seat.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>The Critical Distinction</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro accepts unverified, user-entered data. It cannot serve as the origin of the trust layer for an airline. If an airline relies solely on a LogTen export, they still must manually cross-reference hours against internal systems to ensure the pilot isn't falsifying their time.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition reverses this flow by building the trust layer from the airline/ATO <strong>downward</strong>, rather than from the pilot <strong>upward</strong>. We do not create trust — we connect to where trust already exists (the airline's own operational records) and make it portable.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">How the Layers Work Together</h5>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Complementary Function Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen's Role:</strong> Provide beautifully formatted, comprehensive, daily-logged hour baseline. The pilot's personal record of their flying activity — GPS tracks, photos, entries, memories. The <strong>presentation layer</strong>.</p>
+              <p><strong>PilotRecognition's Role:</strong> Connect to airline/ATO operational systems and attach the <strong>"verified" cryptographic stamp</strong> to specific hours. We do not create the hours — we verify which hours from the logbook match the airline's official operational records.</p>
+              <p><strong>The Synchronization:</strong> A pilot has 1,500 hours in LogTen. PilotRecognition queries the airline's FLICA/Sabre system and confirms 1,247 of those hours match official duty records. The pilot's dashboard shows: <strong>"1,247 hours verified by [Airline Name] via PilotRecognition"</strong> — with the remaining 253 hours shown as "logged but not yet verified."</p>
+              <p><strong>Airline Value:</strong> Recruiters see that 1,247 hours are cryptographically attested by a real airline. The verification burden is eliminated — they know those hours are real. The unverified 253 hours are flagged for additional scrutiny if needed.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Clarifying LogTen Pro's Existing Verification Mechanisms</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">It is important to acknowledge that LogTen Pro <strong>does</strong> include verification features — but these operate through decentralized regulatory mechanisms rather than centralized validation. Understanding this distinction is crucial for positioning PilotRecognition correctly.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">How Hours Become "Legally Verified" in LogTen Pro</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>1. Digital CFI Signatures (EASA AMC1 FCL.050 / FAA):</strong> LogTen Pro features an in-app Digital Signature function. A Certified Flight Instructor (CFI) or examiner signs the pilot's iPad screen with a stylus, which legally locks that specific flight entry. If anyone tries to alter the flight hours later, the signature instantly breaks and invalidates the entry. This provides entry-level verification for training flights.</p>
+              <p><strong>2. Airline Schedule Imports:</strong> Pilots can use LogTen's Airline Schedule Importer to pull flight data directly from internal airline systems like FLICA or Sabre. Because this data mirrors the airline's official dispatch records, recruiters view it as highly credible. However, this is a <strong>pilot-initiated</strong> import — the airline does not cryptographically attest to the specific hours in the logbook.</p>
+              <p><strong>3. The "Honor" System & Legal Declaration:</strong> Aviation authorities (FAA, EASA) and airline interview panels take logbooks at face value during checkrides or interviews. They do not expect the software company to police the pilot; instead, the pilot signs a legal declaration stating the hours are accurate. The burden of truth lies with the pilot, not the logbook provider.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">PilotRecognition: The Add-On Verification Layer (Not a Competitor)</h5>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>PilotRecognition does not replace standard logbooks — we are an add-on verification layer that sits on top of them.</strong> LogTen Pro remains the personal ledger tool; we provide the centralized, external validation system that connects directly to ATOs, airlines, and competency trackers.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Relationship Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen Pro = The Personal Ledger:</strong> Beautifully formatted, user-managed, CFI-signed entries. Only as honest as the pilot typing into it — but perfectly compliant with EASA/FAA regulations for logbook maintenance.</p>
+              <p><strong>PilotRecognition = The External Validator:</strong> Centralized, neutral, airline/ATO-connected verification layer. We do not ask pilots to re-enter their hours — we verify which of their LogTen hours match official airline operational records.</p>
+              <p><strong>The Integration:</strong> Pilot pulls 1,500 hours into LogTen (via manual entry, CFI signatures, or FLICA import). PilotRecognition queries airline systems and confirms 1,247 hours. Result: LogTen displays all 1,500 hours; PilotRecognition displays "1,247 hours verified by [Airline]." Both platforms show their respective data; neither replaces the other.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>Why Origin Trust Matters</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">Without verified Origin Trust, the entire UCF collapses. A pilot can have 500 complex IFR approaches logged in ForeFlight (XII-B) and 100 engine-out scenarios practiced in X-Plane (XII-C) — but if their base flight hours are unverified, airlines cannot trust the competency stack built on top. Logbooks are the non-negotiable foundation.</p>
-            <p className="text-white text-sm leading-relaxed mt-2">In the UCF algorithm, Origin Trust carries the highest weight coefficient. 1,000 verified hours in a logbook contribute more to the Recognition Score than 1,000 unverified hours — regardless of complexity or behavioral data layered on top.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Market Positioning</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro is a personal ledger tool — it is only as honest as the pilot typing into it, backed by CFI signatures and regulatory compliance. PilotRecognition occupies a different market space: a centralized, external validation system linked directly to ATOs, airlines, and Airbus competency trackers.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We are not a competitor. We are the <strong>verification infrastructure layer</strong> that transforms a LogTen logbook from a personal record into a recruiter-trusted credential. LogTen provides the format; we provide the origin trust. Together, they create the complete professional aviation profile.</p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Dual-Revenue Partnership Model</h4>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Logbook Provider Revenue Streams</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Per-Pilot Referral Dividend ($20):</strong> When a logbook provider (e.g., ForeFlight, Garmin Pilot, LogTen Pro) connects a pilot to the PilotRecognition network and that pilot upgrades to a Recognition+ career profile, the provider receives the standard <strong>$20 Ecosystem Referral Dividend</strong> — identical to navigation and simulation partners.</p>
+              <p><strong>Enterprise Verification Tier ($1,000/year):</strong> Logbook providers managing high-volume verification pipelines (digital + physical uploads, photo proof handling, instructor attestation workflows) qualify for the <strong>Enterprise Data Checker tier</strong>. This annual subscription unlocks enhanced API rate limits, priority verification node status, and direct integration with airline ATS parsing systems.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Verification Workflow Design: ATO-First, Not LogTen-First</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A critical architectural decision: Should PilotRecognition pull flight hours <strong>from LogTen</strong> (accepting user-entered data), or pull verified data <strong>from the ATO/airline first</strong> to validate what's in the logbook?</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Wrong Approach: LogTen → PilotRecognition</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">If we simply pull 1,500 hours from LogTen Pro into PilotRecognition, we become a mirror of unverified data. We would display "1,500 hours" — but those hours carry the same trust level as the original logbook entry (i.e., user-reported). This destroys our value proposition.</p>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Correct Approach: ATO/Airline → PilotRecognition → Match Against LogTen</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition queries the airline's FLICA/Sabre system <strong>first</strong>. The airline provides official duty records: "This pilot flew 1,247 hours on our aircraft." Only then do we cryptographically attest those hours. The pilot's LogTen shows 1,500 hours; PilotRecognition shows "1,247 verified by [Airline]." The trust originates from the airline, not the logbook.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Why This Matters</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Trust Origin:</strong> If we pull from LogTen first, our "verification" is meaningless — we're just re-displaying what the pilot told us. By pulling from the airline first, we provide external, cryptographic attestation from the actual employer.</p>
+              <p><strong>Fraud Prevention:</strong> A pilot could have 500 fake hours in LogTen. If we blindly import and display "500 hours," we've become complicit in the fraud. If we query the airline and find only 250 real hours, we display "250 verified; 250 unverified" — preserving integrity.</p>
+              <p><strong>Airline Confidence:</strong> Airlines know that LogTen hours could be fabricated. They trust PilotRecognition hours because they know we verified them against their own operational systems. This is why recruiters pay attention to our platform.</p>
+              <p><strong>The LogTen Partnership Value:</strong> LogTen doesn't lose relevance — they remain the pilot's beautiful, comprehensive daily ledger. But now those hours can be selectively "upgraded" to verified status through PilotRecognition. The pilot keeps using LogTen; we add the trust layer on top.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Active vs. Passive Distinction</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen Pro = Passive Ledger:</strong> Does not contact your ATO. Does not contact airlines. Does not check if your medical is actually valid in the civil aviation authority database. Provides local calendar alerts for expirations, but these are basic reminders — not live verification. No dynamic "recognition score" or competency matrix.</p>
+              <p><strong>PilotRecognition = Active Verification Engine:</strong> Contacts ATOs and airlines directly. Queries live operational systems (FLICA, Sabre, ATO records). Checks medical validity against CAAP/FAA/EASA databases. Provides dynamic Recognition Score based on verified competency metrics, not just raw hours. Proactively alerts: "Your medical expires in 14 days — schedule renewal now."</p>
+              <p><strong>The Integration:</strong> LogTen remains the pilot's passive, highly detailed, user-controlled calculator for flight hours. PilotRecognition acts as the active, third-party verification engine and dynamic competency ledger. Together: LogTen for daily logging, PilotRecognition for external validation and career advancement.</p>
+            </div>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Data Sovereignty &amp; GDPR Architecture</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition maintains strict infrastructure neutrality. Logbook providers retain complete ownership of their data storage, photo archives, and physical document repositories.</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
+            <li><strong>Provider-Managed Storage:</strong> All photo proof, scanned logbook pages, and physical upload documentation remain housed within the logbook provider's secured infrastructure — not on PilotRecognition servers.</li>
+            <li><strong>Tokenized Display Layer:</strong> PilotRecognition displays only cryptographic verification tokens (e.g., "LogTen Verified: 1,240 Hours") on the pilot dashboard. The underlying data remains with the provider, ensuring GDPR compliance and data sovereignty are maintained by the data controller, not PilotRecognition.</li>
+            <li><strong>Privacy-by-Design:</strong> Airlines querying a pilot profile see only attestation tokens and verification status — never raw photo uploads or sensitive documentary evidence.</li>
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Glass Cockpit Dashboard Integration</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Verified logbook data appears within the pilot's PilotRecognition dashboard through a <strong>Glass Cockpit</strong> interface aesthetic — mirroring the avionics displays pilots already trust in the flight deck (Garmin G1000, ForeFlight Synthetic Vision).</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Instrument Panel Metaphor</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition profile dashboard functions exactly like an aircraft instrument panel. Each integration partner appears as a dedicated flight instrument, providing real-time telemetry on the pilot's professional standing:</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <div className="space-y-1 text-slate-300">
+              <p>┌─────────────────────────────────────────────────┐</p>
+              <p>│  <span className="text-emerald-400">PILOT RECOGNITION — GLASS COCKPIT</span>           │</p>
+              <p>│                                                 │</p>
+              <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
+              <p>│  <span className="text-amber-400">│  HOBBS      │</span>   <span className="text-amber-400">│  DATA CHECK │</span>       │</p>
+              <p>│  <span className="text-emerald-400">│ 1,240 HRS   │</span>   <span className="text-emerald-400">│ VERIFIED ✓  │</span>       │</p>
+              <p>│  <span className="text-amber-400">│ ATO/Operator│</span>   <span className="text-amber-400">│ Veremark    │</span>       │</p>
+              <p>│  <span className="text-amber-400">└─────────────┘</span>   <span className="text-amber-400">└─────────────┘</span>       │</p>
+              <p>│                                                 │</p>
+              <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
+              <p>│  <span className="text-amber-400">│ PRACTICE    │</span>   <span className="text-amber-400">│ PATHWAY NAV │</span>       │</p>
+              <p>│  <span className="text-emerald-400">│ 85 HRS ▲    │</span>   <span className="text-red-400">│ NEED IFR ⚠  │</span>       │</p>
+              <p>│  <span className="text-amber-400">│ X-Plane+FF  │</span>   <span className="text-amber-400">│ Cadet Prog  │</span>       │</p>
+              <p>│  <span className="text-amber-400">└─────────────┘</span>   <span className="text-amber-400">└─────────────┘</span>       │</p>
+              <p>│                                                 │</p>
+              <p>│  PILOT OPERATING: <span className="text-emerald-400">RECOGNITION+ ENABLED</span>      │</p>
+              <p>└─────────────────────────────────────────────────┘</p>
+            </div>
+          </div>
+
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li><strong>The Hobbs (ATO/Operator Issued, Logbook Displayed/Stored):</strong> Tallying total verified flight hours — each entry is <strong>issued and cryptographically attested</strong> by either the Flight Training Organization (ATO) or commercial operator (airline/employer) where the pilot flew. Logbook platforms (LogTen Pro, ForeFlight, etc.) <strong>do not verify or issue</strong> these hours — they function as the <strong>display and storage layer</strong> that presents the verified token from the ATO/Operator to the pilot's dashboard, while keeping all underlying flight data (GPS tracks, photos, entries) stored in their own infrastructure. This ensures pilots remain in the logbook ecosystem long-term.</li>
+            <li><strong>The Data Check (Veremark — stored in Verepass):</strong> Background verification status showing green when all data is cryptographically attested and current via Veremark's verification engine, red when discrepancies or expirations are detected. Verification records are securely stored in the pilot's Verepass digital vault.</li>
+            <li><strong>The Practice Instrument (X-Plane + ForeFlight):</strong> Aggregating all simulation and navigation app activity — desktop simulator hours (X-Plane, MSFS) plus route planning, approach practice, and procedure rehearsal logged via navigation apps (ForeFlight). This combined practice data feeds the Recognition Score and demonstrates active proficiency building beyond raw flight hours.</li>
+            <li><strong>The Pathway Navigator (Airline Integration):</strong> Color-coded alignment indicator showing whether the pilot's current profile matches their target cadet program or airline pathway requirements.</li>
+          </ul>
+
+          <p className="text-slate-700 leading-relaxed mb-4">The pilot operates this dashboard as the <strong>Pilot in Command</strong> — scanning instruments, checking for red alerts, and ensuring all systems are green before engaging their target career pathway. Just as a pilot cannot fly IFR without proper instruments, they cannot access premium pathway placements without verified data showing green across the panel.</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Commercial Airline & Operator Issuance (The Verification Authority)</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Commercial airlines and aircraft operators serve as the <strong>sole Verification Node Issuers</strong> for flight hours logged on their aircraft. Logbook companies do not have internal verification teams and cannot issue attestations — they only <strong>display</strong> the cryptographically signed tokens that ATOs and Operators generate.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Separation of Powers: Issuer vs Display</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>ATO/Operator = Issuer:</strong> The flight school or employer that operated the aircraft is the only entity authorized to issue cryptographic attestations of flight hours. They verify the flight actually occurred, check aircraft logs, and sign the attestation.</p>
+              <p><strong>Logbook App = Display & Storage Layer:</strong> LogTen Pro, ForeFlight, Garmin Pilot ingest the attestation from the ATO/Operator and present it to the pilot in their dashboard — while keeping all flight data (GPS tracks, photos, logbook entries) stored in their own infrastructure. This display-and-storage combination keeps pilots locked into their ecosystem long-term.</p>
+              <p><strong>Pilot Consent Layer:</strong> Before any flight hour attestation is issued, the pilot must authorize their employer/operator to attest hours on their behalf. This consent is revocable and auditable on-chain.</p>
+              <p><strong>Career Mobility:</strong> When a pilot transitions between employers, their verified hours from previous operators remain in their wallet as portable, cryptographically attested credentials — the logbook simply displays the accumulated tokens from multiple issuers over time.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <div className="space-y-1 text-slate-300">
+              <p>┌─────────────────────────────────────────┐</p>
+              <p>│ <span className="text-emerald-400">PILOT RECOGNITION DASHBOARD</span>           │</p>
+              <p>│ <span className="text-amber-400">┌─────────────────────────────────┐</span>   │</p>
+              <p>│ <span className="text-amber-400">│ VERIFIED FLIGHT TIME TOKEN      │</span>   │</p>
+              <p>│ <span className="text-amber-400">│ LogTen Pro: 1,240 Hours         │</span>   │</p>
+              <p>│ <span className="text-amber-400">│ Last Sync: 2 hours ago          │</span>   │</p>
+              <p>│ <span className="text-amber-400">│ Status: VERIFIED ✓              │</span>   │</p>
+              <p>│ <span className="text-amber-400">└─────────────────────────────────┘</span>   │</p>
+              <p>│                                         │</p>
+              <p>│ <span className="text-emerald-400">Recognition Score: 8,420 PTS ↑</span>        │</p>
+              <p>└─────────────────────────────────────────┘</p>
+            </div>
+          </div>
+          <p className="text-slate-700 leading-relaxed mb-4">The pilot sees their verified hours as a <strong>primary flight instrument</strong> on their career dashboard — continuously updated, cryptographically secured, and instantly shareable to airline recruiters with a single attestation signature.</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Technical Integration Workflow</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The synergy between LogTen Pro and PilotRecognition lies in connecting <strong>quantitative data</strong> (hours logged) with <strong>qualitative data</strong> (competencies achieved). Instead of a broad marketing partnership, this is a technical data integration that provides clear, differentiated value.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Three Integration Pathways</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>1. The Verification Bridge (API Link):</strong> LogTen Pro acts as the industry's gold standard for raw block hours, night landings, and instrument time. PilotRecognition relies on independent verification to build the ATLAS Aviation CV. A secure API link allows a pilot to instantly verify their LogTen flight hour metrics on their PilotRecognition profile with a single click — completely eliminating fraudulent data entry.</p>
+              <p><strong>2. Marrying CBTA to Logbook Entries:</strong> PilotRecognition uses Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA) standards aligned with Airbus frameworks. LogTen Pro has incredibly customizable data fields. An integration allows pilots to log specific flights in LogTen while simultaneously tagging the 9 core ICAO behavioral competencies monitored by PilotRecognition. The pilot logs a flight; the system asks: "Which competencies did this flight demonstrate?" — creating a dual-layer record (hours + competencies).</p>
+              <p><strong>3. Streamlining ATO-to-Airline Pipeline:</strong> Student cadets at an ATO using PilotRecognition to track their transition programs need an ironclad logbook for airline applications. If the flight hours tracked during these cadet pathways automatically populate their LogTen Pro apps, it removes paperwork barriers and accelerates the hiring workflow for partner airlines. The cadet flies at the ATO; hours appear in both PilotRecognition (verified) and LogTen (comprehensive record).</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Core Obstacle: Scale & Engineering Priority</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">LogTen Pro manages over 160,000 active users and typically reserves direct API integrations for massive global operations management platforms like Flight Schedule Pro or legacy airline crew systems (FLICA/Sabre). Because PilotRecognition is a highly specialized, competency-focused platform rather than a daily scheduling tool, LogTen Pro might prefer to let users manually export data via CSV rather than build a dedicated software partnership.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Overcoming the Priority Barrier</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>1. Lead with Revenue, Not Features:</strong> Don't pitch "integration." Pitch "$480,000/year in new verification revenue with 30% revenue share on Recognition+ subscriptions." LogTen's engineering priorities follow their revenue priorities.</p>
+              <p><strong>2. Demonstrate Pilot Demand:</strong> Before approaching LogTen, generate 500+ verified pilots in PilotRecognition who are actively requesting LogTen integration. Show LogTen: "Your users are asking for this. We have 500 pilots who want to verify their LogTen hours today."</p>
+              <p><strong>3. Offer Zero Engineering Burden:</strong> Propose that PilotRecognition builds the entire integration — LogTen only provides API documentation and a sandbox environment. We handle the dev work, the maintenance, the support. Their cost = $0. Their revenue = $20 per verification.</p>
+              <p><strong>4. Start with CSV Bridge:</strong> If direct API integration is rejected, propose a seamless CSV import workflow: Pilot exports LogTen CSV → uploads to PilotRecognition → our system parses and matches against airline records. This provides 80% of the value with 20% of the engineering complexity. Once pilot volume proves the model, API integration becomes obvious.</p>
+              <p><strong>5. The Airline Leverage:</strong> Secure partnerships with 2-3 major airlines who want verified LogTen data for their hiring. Approach LogTen: "Emirates and Etihad want to verify LogTen hours through PilotRecognition. They're asking us to integrate with you. Will you work with us or lose airline partnerships to ForeFlight?"</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Pitch Strategy</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">"You have 160,000 pilots. We can generate $480,000/year in new revenue from just 10% of them. We will build the entire integration at our cost. Your users are already asking for this. And major airlines want to verify LogTen data through our platform. Will you capture this revenue stream, or will ForeFlight beat you to it?"</p>
+            <p className="text-white text-sm leading-relaxed mt-2">The goal is to make LogTen see us not as a "specialized platform requesting engineering time" but as a "revenue partner who removes their churn problem and opens airline B2B opportunities."</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Not Recognized" Problem: How to Overcome It</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A realistic objection LogTen will raise: <strong>"PilotRecognition.com is not an active or recognized aviation software platform."</strong> This is true — today. LogTen Pro actively seeks partnerships with established, high-utility platforms (Flight Schedule Pro, FLICA, Sabre) that directly streamline pilot workflows. An unknown competency platform does not meet their criteria.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Where LogTen Actually Focuses Partnerships</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Flight Scheduling & Operations:</strong> Deep technical integrations with Flight Schedule Pro allow flight schools to push flight logs automatically from the school's schedule directly into LogTen at the push of a button.</p>
+              <p><strong>Airline Schedule Importers:</strong> Seamless data scraping from FLICA and Sabre so commercial pilots can download monthly trips directly into their logs.</p>
+              <p><strong>Professional Associations:</strong> Collaborations with training resources like Aviation Insider for discounts, and career-advancing nonprofits like Breaking Down Barriers.</p>
+              <p><strong>The Pattern:</strong> LogTen partners with platforms that eliminate redundant data entry or directly assist career progression. They do not partner with "resume builders" or unproven verification services.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">How PilotRecognition Becomes "Recognized"</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Phase 1: Build Pilot Volume First (Without LogTen):</strong> PilotRecognition must reach 5,000-10,000 verified pilots through manual CSV import, ATO partnerships, and airline connections <strong>before</strong> approaching LogTen. We cannot pitch as a "platform that wants integration" — we must pitch as a "platform that 10,000 pilots already use and are demanding better LogTen integration."</p>
+              <p><strong>Phase 2: Secure Airline Endorsements:</strong> Get 2-3 major airlines (Emirates, Etihad, Cebu Pacific) to publicly endorse PilotRecognition as their preferred verification partner for LogTen data. When airlines say "we trust PilotRecognition-verified LogTen hours," LogTen listens.</p>
+              <p><strong>Phase 3: Demonstrate Revenue Proof:</strong> Show LogTen actual revenue data: "We generated $200,000 in pilot verification fees last quarter. 40% of those pilots are your users. You're losing $80,000/quarter by not integrating." Numbers overcome skepticism.</p>
+              <p><strong>Phase 4: The Competitive Threat:</strong> Once ForeFlight integrates with PilotRecognition, LogTen faces a competitive disadvantage. Pilots switch to the logbook that offers verified credentials. We position the partnership as defensive necessity, not optional innovation.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>The Reality Check</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro will not partner with PilotRecognition until we are "recognized." We become recognized by:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">1. Reaching 10,000+ pilots without their help<br/>2. Securing airline partnerships that validate our platform<br/>3. Generating real revenue that proves pilot willingness to pay<br/>4. Creating competitive pressure from ForeFlight integration</p>
+            <p className="text-white text-sm leading-relaxed mt-2">The partnership pitch comes <strong>after</strong> we've proven the model, not before. LogTen integrates with winners, not hopefuls.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">LogTen Pro User Base Breakdown</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Understanding LogTen Pro's user composition is critical for revenue projection and partnership positioning. While the company does not disclose real-time breakdowns, the publicly stated figures provide directional guidance.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">160,000+ Active Pilots — The Composition</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Total Active Users:</strong> LogTen Pro publicly states over 160,000 active pilot users across their platform. This includes both free-tier and paid subscribers.</p>
+              <p><strong>Free Tier (Students):</strong> Up to 50 hours of free logging. Primarily student pilots in training. These users skew the total count but represent future Pro subscribers, not current revenue contributors.</p>
+              <p><strong>Paid Pro Members (Majority):</strong> The vast majority of the active base are paying Pro members — including professionals at more than 100 partner airlines. These users pay $79.99-$129.99/year for features like schedule importing (FLICA/Sabre), flight/duty compliance tracking, and advanced analytics.</p>
+              <p><strong>Partner Airlines:</strong> LogTen Pro is utilized by professionals at 100+ partner airlines, indicating a significant commercial aviation presence within their paid user base.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Revenue Implications for PilotRecognition</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Conservative Estimate:</strong> If 70% of 160,000 users are paid Pro members = 112,000 paying subscribers.</p>
+              <p><strong>Verification Revenue Potential:</strong> At 10% adoption of Recognition+ ($100/year) = 11,200 pilots × $100 = $1.12M annual revenue.</p>
+              <p><strong>LogTen's Revenue Share (30%):</strong> $336,000/year in new revenue for LogTen — without additional engineering investment if we build the integration.</p>
+              <p><strong>Referral Dividend Layer:</strong> Each verification generates $20 to LogTen. At 2 verifications/year per active pilot = 224,000 verifications × $20 = $4.48M potential referral revenue.</p>
+              <p><strong>Key Insight:</strong> The paid Pro member base represents high-intent, career-focused pilots already willing to pay for professional tools. These are our ideal early adopters for Recognition+ verification.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-blue-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#60a5fa'}}>Strategic Targeting</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Our initial PilotRecognition marketing should focus specifically on LogTen Pro paid subscribers — the 100+ airline professionals who already invest in career-advancing tools. These pilots:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• Already pay $100+/year for logbook features<br/>• Work at airlines we want to partner with<br/>• Need verified credentials for career progression<br/>• Represent the highest-lifetime-value user segment</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Free-tier students are future targets, but the paid Pro base is where immediate verification revenue lives.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The PilotRecognition Upgrade Trigger</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition acts as a <strong>natural upgrade catalyst</strong> for logbook providers. Here's how the pricing flow works:</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Freemium-to-Paid Conversion Loop</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Phase 1 — Free Tier Accumulation:</strong> Student pilot logs 40-50 hours in LogTen free tier. Approaching the limit, they see a PilotRecognition prompt: "Unlock verified flight time for airline applications — upgrade to Basic or Pro to continue logging and activate your Recognition Profile."</p>
+              <p><strong>Phase 2 — Paid Subscription:</strong> Pilot upgrades to LogTen Basic ($79.99/year) or LogTen Pro ($129.99/year). Now unlimited logging + full PilotRecognition integration unlocked.</p>
+              <p><strong>Phase 3 — Verification Activation:</strong> With paid tier, pilot can request ATO/Operator attestation of their logged hours. Each attestation generates a $20 Ecosystem Referral Dividend to the logbook provider.</p>
+              <p><strong>Phase 4 — Retention Moat:</strong> Pilot's entire flight history is stored in LogTen. Switching logbook apps means losing the integrated verification history. Display + storage = long-term lock-in.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The In-App Verification CTA</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">LogTen can add a simple, non-intrusive call-to-action directly in their app interface — "<strong>Verify your flight hours with PilotRecognition.com</strong>" — surfacing the verification option to their entire 160,000+ pilot base without disrupting the core logging experience.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Integration Touchpoints</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Hour Milestone Triggers:</strong> When pilot hits 100, 500, 1000, 1500 hours — banner appears: "Congratulations on 1,000 hours! Verify with PilotRecognition and get instant airline-ready credentials."</p>
+              <p><strong>Pre-Application Prompt:</strong> When pilot exports logbook data (CSV/PDF), dialog asks: "Applying to airlines? Skip the manual verification — verify instantly with PilotRecognition instead."</p>
+              <p><strong>Dashboard Widget:</strong> Small persistent widget in corner of LogTen interface: "Verify Hours →" — one-click access to attestation workflow.</p>
+              <p><strong>Settings Menu Integration:</strong> "Career Services" section in LogTen settings with PilotRecognition as featured partner for verification.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The "Verify with PilotRecognition" Button</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Placement:</strong> Next to "Share" and "Export" buttons in LogTen flight entry view. Non-intrusive but visible when pilots are actively managing their hours.</p>
+              <p><strong>Functionality:</strong> One click opens embedded PilotRecognition verification flow (iframe or deep link). Pilot selects ATO/Operator, consents to attestation, pays verification fee. LogTen receives $20 referral dividend instantly.</p>
+              <p><strong>Pilot Experience:</strong> Seamless — never leaves LogTen app. Verification token appears in LogTen dashboard as "Verified ✓" badge on flight hours. Pilot can click badge to view full attestation on PilotRecognition.com.</p>
+              <p><strong>LogTen Benefit:</strong> Every click = potential $20 revenue. At 10% monthly active users clicking once = 16,000 verifications = $320,000/month in referral dividends.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Executive Pitch Deck: The LogTen Pro Partnership</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">To transition from concept to corporate alliance, PilotRecognition requires a bulletproof pitch deck for LogTen's executive team. The deck must solve LogTen's retention problem while proving our verification infrastructure is enterprise-ready.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 1: The Financial Win-Win (Lead with This)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Header:</strong> "Stop the $2.4M Annual Churn — Unlock $480K in New Verification Revenue"</p>
+              <p><strong>The Problem:</strong> 2% of 160,000 pilots churn annually at career milestones = 3,200 lost subscribers × $129.99/year = <strong>$415,968 lost revenue</strong> per year. Over 5 years, compounding churn = <strong>$2.4M+ revenue erosion</strong>.</p>
+              <p><strong>The Solution:</strong> Pilots stay subscribed when their LogTen data connects to career advancement. Verification integration creates a "can't switch" moat — pilots lose verified credential history if they churn.</p>
+              <p><strong>The Revenue:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Recognition+ adoption: 10% of base = 16,000 pilots × $100/year = $1.6M</li>
+                <li>LogTen's 30% revenue share: $480,000/year new revenue</li>
+                <li>Referral dividends: 16,000 verifications × $20 = $320,000/year</li>
+                <li>Retention savings: 50% churn reduction = $208,000/year recovered</li>
+                <li><strong>Total LogTen Benefit: $1M+ annually</strong></li>
+              </ul>
+              <p><strong>The Ask:</strong> API access + sandbox environment. We build the integration at our cost. Your cost = $0. Your revenue = immediate.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 2: Technical Architecture — Privacy-First Verification</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Header:</strong> "How We Verify Without Violating Pilot Privacy or Your Data Sovereignty"</p>
+              <p><strong>The Architecture:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs mt-2">
+                <p>[LogTen Pro Ledger] ←—— Pilot's personal data (you own this)</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Pilot consents to verification via OAuth)</p>
+                <p>[PilotRecognition API] ——→ Queries airline systems only</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Matches flight dates/aircraft against FLICA/Sabre)</p>
+                <p>[Veremark Engine] ——→ Cryptographic attestation</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Token returned, raw data never leaves airline)</p>
+                <p>[Verepass Wallet] ←—— Tamper-proof verification token</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Badge displayed in LogTen dashboard)</p>
+                <p>[Pilot Dashboard] ——→ "1,247 hours verified by Emirates ✓"</p>
+              </div>
+              <p><strong>Key Privacy Guarantees:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>LogTen data never leaves LogTen servers</li>
+                <li>Pilot controls which flights are verified (opt-in per entry)</li>
+                <li>Airlines see only verification tokens, not raw logbook data</li>
+                <li>Veremark handles all PII under GDPR/CCPA compliance</li>
+                <li>Pilot can revoke attestation consent anytime</li>
+              </ul>
+              <p><strong>The Security:</strong> Triple-layer verification (LogTen entry + airline record + Veremark audit) creates a cryptographic hash that cannot be falsified. Airlines trust it because they issued the original data.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 3: The Competitive Moat — Why ForeFlight Can't Match This</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Header:</strong> "Be the First Logbook with Verified Credentials — Or Watch ForeFlight Take the Market"</p>
+              <p><strong>The Market Shift:</strong> Airlines are moving to Evidence-Based Training (EBT) and Competency-Based Training Assessment (CBTA). They no longer trust raw hour counts. They need verified, structured competency data.</p>
+              <p><strong>LogTen's Current Position:</strong> Gold standard for logbook formatting. But you have zero verification infrastructure. Pilots export CSVs and manually prove their hours to skeptical recruiters.</p>
+              <p><strong>ForeFlight's Vulnerability:</strong> Same problem — no verification layer. Whoever integrates with a neutral verification platform first wins the professional aviation segment.</p>
+              <p><strong>The Moat:</strong> Once pilots have 500+ verified hours in LogTen + PilotRecognition, switching logbooks means losing their verification history. That's a "data gravity" lock-in that ForeFlight cannot replicate without a similar partnership.</p>
+              <p><strong>The Window:</strong> 6-12 months. If ForeFlight integrates first, pilots switch. If LogTen integrates first, you lock in the professional segment forever.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Pitch Deck Sequence</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 1 (Open):</strong> Financial Win-Win — "$1M+ annual benefit to LogTen"</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 2 (Validate):</strong> Technical Architecture — "Zero privacy risk, zero engineering burden"</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 3 (Close):</strong> Competitive Moat — "ForeFlight is coming. Be first or lose the market."</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Close with: "API access + 90-day trial. We'll prove the model before you commit."</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Alternative Positioning: The True Neutrality Model</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A more defensible pitch reframes PilotRecognition not as a data repository, but as a <strong>verification layer that stores results on LogTen's own infrastructure.</strong> This positions us as genuinely neutral infrastructure rather than a competing platform.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Revised Architecture: You Store Everything</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Pitch:</strong> "We are not asking pilots to store their verified hours on our platform. We are offering you a verification engine that stores the attestation results <strong>in your database</strong>. PilotRecognition acts as the verification oracle — we query airlines, match against flight records, and return a cryptographic attestation token. You store that token alongside the pilot's flight entry. The data never leaves your infrastructure."</p>
+              <p><strong>The Neutrality:</strong> By storing verification results in LogTen's own database, we eliminate the "competing platform" objection entirely. LogTen remains the data controller. We remain the verification service provider. The pilot's verified badge appears in LogTen because that's where the data lives.</p>
+              <p><strong>The Technical Flow:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[LogTen Database] ←—— Pilot logs flight (your data)</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Pilot clicks "Verify This Flight")</p>
+                <p>[PilotRecognition API] ——→ Queries airline FLICA/Sabre</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Returns attestation result)</p>
+                <p>[LogTen Database] ←—— Stores "verified: true" + timestamp + airline</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Badge displays in your UI)</p>
+                <p>[Pilot Dashboard] ——→ "✓ Verified by Emirates (via PilotRecognition)"</p>
+              </div>
+              <p><strong>The Advantage:</strong> LogTen gains a new premium feature (verification badges) without surrendering data control. PilotRecognition earns revenue per verification without building a competing logbook. The pilot gets trusted credentials without leaving their preferred app. True three-way neutrality.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-blue-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#60a5fa'}}>Why This Positioning Wins</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen's core objection is fear of losing user data to an external platform. By offering to store verification results on <strong>their infrastructure</strong>, we become a service provider, not a competitor:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• LogTen maintains complete data sovereignty<br/>• We provide verification-as-a-service (API calls)<br/>• Pilot data never migrates to a third-party database<br/>• LogTen can white-label the feature: "LogTen Verified™ powered by PilotRecognition"<br/>• If the partnership ends, LogTen keeps all verification history — we just stop issuing new attestations</p>
+            <p className="text-white text-sm leading-relaxed mt-2">This is how Visa partners with banks — Visa doesn't hold your money, they just verify transactions. LogTen holds the data. We verify its authenticity.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Partnership Model 3: The Data Hub & Triangulation Engine</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A third partnership structure positions LogTen as the <strong>central data aggregator</strong> — ingesting both pilot-logged hours AND direct airline/flight school feeds. PilotRecognition becomes the triangulation engine that matches and verifies the two data streams.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Deal Structure: LogTen as the Hub</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Pitch:</strong> "We broker a deal where flight schools and airlines send their operational data directly to LogTen — not to us. You become the single source of truth for both pilot-logged hours AND official airline/flight school records. We provide the matching algorithm that triangulates the two datasets and flags discrepancies. You control the data. We control the verification logic."</p>
+              <p><strong>The Triangulation Flow:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[Pilot logs flight in LogTen] ──────┐</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│</p>
+                <p>[Airline sends duty record to LogTen] ─┼──→ [LogTen Database holds BOTH]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[PilotRecognition API] ──→ Triangulates: "Pilot logged 1,500 hrs, Airline confirms 1,247 hrs"</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[LogTen displays] ──→ "1,247 hrs verified ✓ | 253 hrs unverified ⚠"</p>
+              </div>
+              <p><strong>LogTen's Value:</strong> By receiving direct feeds from airlines (FLICA/Sabre) and flight schools, LogTen becomes indispensable infrastructure. Airlines send data to LogTen because it simplifies verification. Pilots stay subscribed because LogTen now has the "official record" alongside their personal log.</p>
+              <p><strong>PilotRecognition's Role:</strong> We provide the matching algorithm, discrepancy detection, and attestation tokens. We don't store the flight data — we analyze it and return verification scores. LogTen stores everything; we verify the relationship between datasets.</p>
+              <p><strong>Revenue Split:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Airline pays LogTen for data integration (new B2B revenue stream)</li>
+                <li>Pilot pays PilotRecognition for verification matching ($20/verification)</li>
+                <li>LogTen gets 30% of verification fee + enterprise airline contracts</li>
+                <li>PilotRecognition gets 70% of verification fee + volume from LogTen's 160K users</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-purple-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Why Airlines & Flight Schools Participate</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Airlines currently waste hundreds of hours manually verifying pilot logbooks during hiring. By sending operational data directly to LogTen:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• They eliminate manual verification labor<br/>• They get pre-verified pilot pools (LogTen shows "green check" candidates)<br/>• They reduce fraud liability (triangulation catches padded hours)<br/>• They pay LogTen a small API fee vs. expensive verification staff</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Flight schools get the same benefit — their graduates leave with "pre-verified" hours that airlines trust immediately.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Partnership Model 4: The IDfy Integration — No Data Holder Strategy</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots entering through PilotRecognition pathways need logbook functionality to track their hours. Rather than becoming a data holder (which creates liability and infrastructure burden), PilotRecognition partners with <strong>IDfy</strong> to provide digital logbook services while maintaining our position as the neutral verification coordinator.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Architecture: We Coordinate, Others Hold Data</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Problem:</strong> Pilots coming from our Programs (Foundation, Transition) and Pathways need to log flight hours. If we build our own logbook, we become a data holder — taking on GDPR liability, infrastructure costs, and becoming a direct competitor to LogTen/ForeFlight.</p>
+              <p><strong>The Solution:</strong> Partner with <strong>IDfy</strong> (or similar identity/logbook infrastructure provider) to handle the digital logbook layer. PilotRecognition remains the neutral coordinator that connects pilots to verified pathways, while specialized providers handle the data they do best.</p>
+              <p><strong>The Flow for New Pilots:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[Pilot joins via PilotRecognition Program/Pathway]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Prompt:] "Log your flight hours to unlock verification"</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[IDfy Logbook Integration] ←—— Pilot creates logbook account via our referral</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Pilot logs hours in IDfy] ──→ [PilotRecognition queries for verification]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Verification matched against ATO/Airline records via Veremark]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Recognition Score updates] ←—— "Verified hours from IDfy + Airline match"</p>
+              </div>
+              <p><strong>Why IDfy:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>IDfy specializes in digital identity and document verification (KYC/AML)</li>
+                <li>They already handle sensitive PII under strict compliance frameworks</li>
+                <li>They can provide white-labeled logbook infrastructure</li>
+                <li>They have APIs that integrate with our verification layer</li>
+                <li>We avoid becoming a data custodian — no GDPR liability for flight logs</li>
+              </ul>
+              <p><strong>Revenue Model:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Pilot pays IDfy for logbook subscription (white-labeled "PilotRecognition Logbook powered by IDfy")</li>
+                <li>PilotRecognition gets referral fee ($20) from IDfy for each new logbook account</li>
+                <li>Pilot pays PilotRecognition for verification matching ($20/verification)</li>
+                <li>Veremark handles background verification ($5-8 fee)</li>
+                <li>We remain the coordinator, not the data holder</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-indigo-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#818cf8'}}>The Neutrality-Through-Specialization Model</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">By partnering with specialists at every layer, PilotRecognition maintains true neutrality:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• <strong>IDfy</strong> handles logbook data (they're the data custodian)<br/>• <strong>Veremark</strong> handles background verification (they're the verification engine)<br/>• <strong>LogTen</strong> handles legacy pilot data (for existing users)<br/>• <strong>PilotRecognition</strong> coordinates the pathway matching and Recognition Score</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We don't hold flight data. We don't hold verification records. We hold the <strong>relationships</strong> that connect pilots to opportunities — and let specialists handle what they do best.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Airport Car Rental Analogy: Infrastructure, Not Competition</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition's relationship with logbook providers mirrors the airport car rental model. We are not a car rental company — we are the <strong>airport infrastructure</strong> that connects travelers to vehicles.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Analogy Explained</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>PilotRecognition = The Airport Car Rental Section</strong></p>
+              <p>We provide the infrastructure — the location, the signage, the coordination system. Pilots arrive at our platform (the airport) and find multiple logbook options (the car rental counters). We don't own the cars. We own the <strong>connection system</strong>.</p>
+              <p><strong>IDfy / Local Providers = The Budget Option (Our Own)</strong></p>
+              <p>For our $100/year Recognition+ base users, we offer a minimal-cost logbook solution: <strong>50MB storage for $3-5/month</strong>. Basic functionality for pilots who just need to log hours and get verified. Think of it as the airport's own budget rental service — functional, affordable, no frills.</p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Minimal storage (50MB = ~10,000 flight entries)</li>
+                <li>Basic CSV import/export</li>
+                <li>Direct verification pipeline to our system</li>
+                <li>We hold <strong>no liability</strong> — IDfy is the data custodian</li>
+                <li>Pilots can upgrade anytime</li>
+              </ul>
+              <p><strong>LogTen Pro = Hertz / Europcar / Enterprise</strong></p>
+              <p>Established brands with their own infrastructure, their own apps, their own user bases. They don't need us to build their logbook — they already have a premium product. What they need is <strong>infrastructure integration</strong>:</p>
+              <ul class="list-disc list-inside ml-4 space-y-1">
+                <li>Access to our 25-pillar verification network</li>
+                <li>API hooks into airline data feeds (FLICA/Sabre)</li>
+                <li>The "Recognition Score" integration that makes their users discoverable</li>
+                <li>The $20 referral dividend for each verified pilot</li>
+              </ul>
+              <p><strong>The Key Distinction:</strong> We are not competing with Hertz. We are the airport that Hertz operates within. Pilots coming through our Programs (the $100/year subscribers) get the budget option by default. But we actively promote the premium brands: <em>"Want advanced analytics, schedule imports, and professional features? Upgrade to LogTen Pro — verified and integrated with your PilotRecognition profile."</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>Why This Positioning Works for LogTen</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen's fear is that we steal their users. The airport analogy reframes us as <strong>incremental revenue</strong>, not competition:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• We bring NEW pilots into the ecosystem (our $100/year Program users)<br/>• These pilots start with basic logging needs (IDfy budget option)<br/>• As they advance, we <strong>upsell them to LogTen Pro</strong> for premium features<br/>• LogTen gets 30% revenue share on Recognition+ + $20 per verification<br/>• LogTen gets access to our airline partnerships (they couldn't build these themselves)</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We are not Hertz's competitor. We are the airport that feeds customers to Hertz's counter.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Sign In With [Logbook]" Model: Multi-Provider OAuth Strategy</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Similar to how Epic Games handles cross-platform authentication ("Sign in with Epic Games", "Sign in with PlayStation"), PilotRecognition becomes the <strong>unified verification layer</strong> that connects to ALL logbook providers. We don't compete with logbooks — we integrate with them.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Electronic Logbook User Demographics & Integration Strategy</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Market Landscape:</strong></p>
+              <div className="bg-slate-100 p-3 rounded">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-300">
+                      <th className="text-left py-1">Logbook Provider</th>
+                      <th className="text-left py-1">User Base</th>
+                      <th className="text-left py-1">Primary Market</th>
+                      <th className="text-left py-1">Integration Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">LogTen Pro</td>
+                      <td className="py-1">160,000+ pilots</td>
+                      <td className="py-1">Commercial airline pilots, corporate pilots, Apple users</td>
+                      <td className="py-1">Highest volume, premium tier integration</td>
+                    </tr>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">FLYLOG.io</td>
+                      <td className="py-1">20,000+ users</td>
+                      <td className="py-1">Flight schools, fleet managers, general aviation</td>
+                      <td className="py-1">ATO partnerships, bulk verification</td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 font-semibold">capzlog.aero</td>
+                      <td className="py-1">2,000+ paying users</td>
+                      <td className="py-1">European pilots, sailplane enthusiasts, EASA compliance</td>
+                      <td className="py-1">European market entry, regulatory compliance</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Total Addressable Market:</strong> ~182,000 active digital logbook users across these three providers alone. This represents the core professional aviation segment that already pays for logging tools.</p>
+              <p><strong>The OAuth Integration Model:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[Pilot visits PilotRecognition.com]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Sign Up Options:] "Sign in with LogTen Pro" | "Sign in with FLYLOG.io" | "Sign in with capzlog.aero" | "Create new IDfy account"</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[OAuth handshake] ←—— Pilot grants read-only access to flight hours</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[PilotRecognition queries logbook API] ──→ [Veremark matches against airline records]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Recognition Score updated] ←—— "Verified: 1,247 hrs from LogTen + Emirates match"</p>
+              </div>
+              <p><strong>Why Logbook Providers Agree:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li><strong>Zero engineering burden:</strong> Standard OAuth 2.0 implementation (same as Google/Apple sign-in)</li>
+                <li><strong>Revenue share:</strong> $20 referral dividend per verified pilot</li>
+                <li><strong>Retention boost:</strong> Pilots stay subscribed because verification is tied to their logbook</li>
+                <li><strong>No data migration:</strong> Hours stay in their database; we only read and verify</li>
+                <li><strong>Market expansion:</strong> Access to our airline partnerships and pathway network</li>
+              </ul>
+              <p><strong>Pricing Model Comparison:</strong></p>
+              <div className="bg-slate-100 p-3 rounded">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-300">
+                      <th className="text-left py-1">Provider</th>
+                      <th className="text-left py-1">Base Price</th>
+                      <th className="text-left py-1">Premium Tier</th>
+                      <th className="text-left py-1">Verification Included</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">LogTen Pro</td>
+                      <td className="py-1">$79.99/year (Basic)</td>
+                      <td className="py-1">$129.99/year (Pro)</td>
+                      <td className="py-1">❌ Manual only</td>
+                    </tr>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">FLYLOG.io</td>
+                      <td className="py-1">Free tier available</td>
+                      <td className="py-1">€49-99/year</td>
+                      <td className="py-1">❌ None</td>
+                    </tr>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">capzlog.aero</td>
+                      <td className="py-1">CHF 39/year</td>
+                      <td className="py-1">CHF 89/year (Professional)</td>
+                      <td className="py-1">❌ None</td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 font-semibold">PilotRecognition</td>
+                      <td className="py-1">$100/year (Recognition+)</td>
+                      <td className="py-1">Included in base</td>
+                      <td className="py-1">✅ Triple-verified with Veremark</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Compliance Certifications:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li><strong>LogTen Pro:</strong> FAA/EASA compliant logbook formatting, accepted by 100+ airlines for manual review</li>
+                <li><strong>FLYLOG.io:</strong> EASA Part-FCL compliant, widely used in European flight schools for training records</li>
+                <li><strong>capzlog.aero:</strong> Swiss FOCA recognized, EASA compliant, specifically designed for European sailplane and GA pilots</li>
+                <li><strong>PilotRecognition Value Add:</strong> None of these providers offer <strong>automated third-party verification</strong> — that's the gap we fill</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-cyan-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>The Unified Verification API</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition builds a single verification API that all logbook providers can connect to. Think of it like Stripe for payments — we become the "Stripe for pilot verification."</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Any logbook app can add "Connect to PilotRecognition" in their settings menu. Their users get instant access to verified credentials, and the logbook provider earns revenue without building verification infrastructure.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>The Pitch to Any Logbook:</strong> "Add one API endpoint. Unlock $20 per user in verification revenue. Offer your pilots airline-ready credentials. Takes 2 days to implement."</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Core Value Proposition: Enhancement, Not Replacement</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition does not replace logbook platforms — we add an <strong>industry-recognized verification feature</strong> that elevates the credibility of your existing service. We are not competing for your users; we are making your platform more valuable to them.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Enhancement Model: Recognition as a Premium Feature</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>For Pilots on Your Platform:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Your logbook remains their primary flight recording tool</li>
+                <li>They gain an <strong>industry-recognized "Verified Hours" badge</strong> that airlines and operators trust</li>
+                <li>Their flight hours carry more weight in pathway applications and job interviews</li>
+                <li>They remain your subscribers — verification is an add-on, not a migration</li>
+              </ul>
+              <p><strong>For Your Platform:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>You become a <strong>credible logbook platform with verified hours</strong> from operators and flight schools</li>
+                <li>You attract new users who specifically seek verified credentialing</li>
+                <li>You reduce <strong>false claims and "logbook padding"</strong> through automated triangulation with airline records</li>
+                <li>You earn revenue from every verification ($20 per pilot) without building infrastructure</li>
+                <li>You differentiate from competitors who offer <strong>unverified, user-entered data only</strong></li>
+              </ul>
+              <p><strong>The Credibility Advantage:</strong></p>
+              <p>Airlines currently view logbook exports with skepticism because they know pilots can manually enter any numbers. By integrating with PilotRecognition, your platform offers <strong>triple-verified hours</strong> (logbook entry + operator record + Veremark attestation). This transforms your logbook from a "personal diary" into a <strong>trusted professional credential</strong> that airlines can rely on for hiring decisions.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Bottom Line for Logbook Providers</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Your logbook app is already excellent at capturing flight data. We don't compete with that. We add the <strong>verification layer that makes your data valuable to employers</strong>.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Without us: Your users have beautifully formatted, self-reported hours that airlines must manually verify.<br/>With us: Your users have <strong>industry-recognized, operator-verified credentials</strong> that airlines trust immediately.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">You keep your users. You keep your data. You earn more revenue. And your platform becomes the industry standard for <strong>credible, verified flight logging</strong>.</p>
           </div>
 
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-B. EFBs & Navigation Apps: The Telemetry & Complexity Layer</h4>
           <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">ForeFlight · Garmin Pilot · Navigraph · WingX</p>
-
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> EFBs and navigation apps capture the <strong>qualitative environment</strong> in which flight hours are earned. They track routing architectures, airspace density, dynamic weather decision-making, and approach diversity. While a logbook proves a pilot flew 2 hours, the EFB proves <em>how</em> they flew it.</p>
-
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> EFB telemetry feeds the <strong>Complexity Multiplier</strong> layer of the Recognition Score. A pilot's base hours receive algorithmic weight increases based on route difficulty: mountain crossings, complex airspace (e.g., New York Class B), challenging weather diversions, and diverse approach types (ILS, RNAV, VOR, circling). The UCF answers: <em>"Were those 1,000 hours earned in straight-and-level Cessna 172 flights, or in challenging multi-airport IFR tours through complex terrain?"</em></p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> EFBs and navigation apps capture the qualitative environment. They track routing architectures, airspace density, and dynamic weather decision-making.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> While a logbook proves a pilot flew two hours, the EFB proves <strong>how they flew it</strong> — adding complexity multipliers to the pilot's baseline hours in the UCF algorithm and generating high-margin safety data for insurance underwriters.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Complexity Layer: What EFBs Provide to the UCF</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Value for EFB & Nav Providers</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Route Architecture:</strong> Cross-country complexity, international border crossings, high-altitude airways, and oceanic track systems.</p>
-              <p><strong>Airspace Density:</strong> Operations in Class B/C airspace, busy terminal environments, and international controlled airspace.</p>
-              <p><strong>Dynamic Weather Decision-Making:</strong> Diversion patterns, alternate selection, thunderstorm circumnavigation, and windshear avoidance.</p>
-              <p><strong>Approach Diversity:</strong> ILS, LPV, LNAV/VNAV, circling, visual — the breadth of instrument competency demonstrated.</p>
-              <p><strong>The Multiplier Effect:</strong> EFB data doesn't replace logbook hours — it creates complexity coefficients that amplify the base Origin Trust score.</p>
+              <p><strong>The Isolated Data Problem:</strong> EFBs and navigation apps collect incredibly rich telemetry — route diversity, approach types, weather avoidance patterns, altitude management, and airspace complexity. Yet this data lives in a silo. A pilot can fly 500 complex IFR approaches in ForeFlight, but an airline recruiter sees none of it. The data is invisible.</p>
+              <p><strong>The PilotRecognition Bridge:</strong> By routing your telemetry into our verification ecosystem, flight planning complexity directly increases a pilot's Recognition Score. A pilot using your app for challenging cross-country routes, multiple approach types, and complex airspace gets algorithmic hiring preference.</p>
+              <p><strong>The Competitive Moat:</strong> Once ForeFlight data contributes to a pilot's hiring score, pilots choose ForeFlight over competitors. The app becomes not just a planning tool, but a career investment with measurable ROI.</p>
+              <p><strong>New Revenue Stream:</strong> Anonymized, aggregate safety data from your user base becomes licensable to insurance underwriters and fleet managers. They pay for trend analysis on weather avoidance patterns, fuel efficiency, and risk profiles.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-cyan-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>Why Complexity Matters</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">Two pilots can both have 1,500 total hours. Pilot A flew 1,500 hours of straight-and-level VFR in a Cessna 172 across flat terrain. Pilot B flew 1,500 hours of challenging IFR through mountain passes, busy Class B airspace, and diverse international routes logged via ForeFlight.</p>
-            <p className="text-white text-sm leading-relaxed mt-2">Without EFB telemetry in the UCF, both pilots have the same Recognition Score. <strong>With EFB data, Pilot B's score reflects 3-5x the operational complexity weight.</strong> Airlines see the difference instantly — not just hours, but <em>experience quality</em>.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>Integration Pathway for EFBs</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Data Flow:</strong> Your app exports flight plan metadata (route complexity, approach diversity, weather conditions) via API to PilotRecognition. We weight these factors into the pilot's Recognition Score alongside verified flight hours.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Revenue Share:</strong> $15 per active integration (per pilot linking their account). Plus premium tier: airlines pay for anonymous aggregate trend data on pilot proficiency patterns.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Implementation:</strong> RESTful API with JSON flight summaries. OAuth 2.0 pilot consent flow. Read-only access to anonymized trend data. 3-sprint integration timeline.</p>
           </div>
 
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-C. Simulation & ATC Networks: The Behavioral & CBTA Layer</h4>
           <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">X-Plane · Microsoft Flight Simulator · PilotEdge · VATSIM · IVAO</p>
-
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Simulation platforms capture <strong>high-fidelity behavioral competency</strong> and procedural repetition that real-world flying cannot safely replicate. They document engine failures, emergency scenarios, complex radio phraseology, and non-standard situational management — all in a consequence-free environment where pilots can practice until mastery.</p>
-
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> As airlines shift toward <strong>Competency-Based Training and Assessment (CBTA)</strong>, simulator telemetry feeds directly into the <strong>9 Core ICAO Competencies</strong>. X-Plane sessions prove Problem-Solving and Situational Awareness. PilotEdge/VATSIM ATC interactions prove Communication and Teamwork. This layer answers: <em>"Does this pilot demonstrate the cognitive and behavioral competencies required for modern airline operations?"</em></p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Platforms like X-Plane and VATSIM capture high-fidelity procedural repetition and non-standard scenario management (e.g., engine failures, complex radio phraseology).</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> As airlines shift toward <strong>Competency-Based Training and Assessment (CBTA)</strong>, this layer translates off-duty simulator habits into verified cognitive currency, drastically reducing an airline's remedial training risk.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Behavioral Layer: What Simulators Provide to the UCF</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The CBTA Revolution Opportunity</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Procedural Repetition:</strong> High-volume practice of emergency procedures, checklists, and abnormal situations impossible to replicate safely in real aircraft.</p>
-              <p><strong>Non-Standard Scenarios:</strong> Engine failures at V1, hydraulic failures in IMC, communication failures, rapid decompression — the edge cases that define competency.</p>
-              <p><strong>ATC Communication Proficiency:</strong> Live human ATC interactions (PilotEdge/VATSIM) demonstrating radio phraseology, readback accuracy, and crew resource management.</p>
-              <p><strong>9 Core ICAO Competency Mapping:</strong> Telemetry mapped to: Communication, Teamwork, Problem-Solving, Decision-Making, Situational Awareness, Workload Management, etc.</p>
-              <p><strong>The CBTA Bridge:</strong> Simulator hours become verifiable proof of off-duty competency currency — reducing remedial training risk for airlines.</p>
+              <p><strong>The Industry Shift:</strong> Airlines are moving to Competency-Based Training and Assessment (CBTA). Raw hours matter less than demonstrated competencies — communication, decision-making, situational awareness, workload management.</p>
+              <p><strong>The Simulator Gap:</strong> X-Plane and MSFS have incredibly accurate flight models. PilotEdge and VATSIM provide live ATC interaction. Yet airlines treat simulator time as "unofficial" because there's no verification layer connecting virtual performance to real-world competency.</p>
+              <p><strong>The PilotRecognition Solution:</strong> We map simulator telemetry and ATC communication patterns to the 9 Core ICAO Competencies. Hours spent on VATSIM with professional-grade ATC communication become verifiable evidence of Communication and Teamwork skills. Complex IFR scenarios in X-Plane demonstrate Problem-Solving and Situational Awareness.</p>
+              <p><strong>The Career Impact:</strong> A pilot with 200 hours of verified VATSIM ATC interactions and 100 complex X-Plane IFR scenarios carries a demonstrably lower remedial training risk. Airlines trust this and hire faster.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-purple-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Why Behavioral Competency Matters</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">Airlines are moving away from "raw hours" toward CBTA frameworks. A pilot with 200 hours of verified VATSIM ATC interactions and 100 complex X-Plane IFR emergencies has demonstrated more <strong>Communication, Problem-Solving, and Situational Awareness</strong> than a pilot with 2,000 hours of straight-and-level flying.</p>
-            <p className="text-white text-sm leading-relaxed mt-2">The UCF's CBTA layer allows airlines to identify pilots with demonstrably lower remedial training risk before investing in expensive Type Rating programs. <strong>Simulator data becomes predictive hiring intelligence.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Integration Pathway for Simulation Platforms</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Data Capture:</strong> Simulator platforms export session telemetry — flight parameters, weather conditions, emergency scenarios handled, ATC communication logs. We verify this against competency rubrics developed with airline training departments.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Competency Scoring:</strong> Each simulator session contributes to a pilot's competency profile: "Demonstrated Problem-Solving in engine-out scenarios (X-Plane)" — "Verified Communication proficiency (PilotEdge ATC)".</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Revenue Share:</strong> $25 per pilot linking simulator profile. Premium: Airlines pay for pre-screening reports on simulator-verified competencies before investing in Type Rating training.</p>
           </div>
 
           <hr className="my-8 border-slate-300" />
 
-          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-D. The Unified Integration Architecture</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct conceptual roles within the UCF, all three data streams route through the same technical infrastructure — creating a unified ecosystem where LogTen hours, ForeFlight routes, and X-Plane competencies all contribute to a single, trusted pilot credential.</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-D. Unified Integration Architecture</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct value propositions, all integrations route through the same technical infrastructure — creating a unified ecosystem where data from LogTen, ForeFlight, X-Plane, and Veremark all contribute to a single, trusted pilot credential.</p>
 
-          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
-            <div className="space-y-1 text-slate-300">
-              <p>┌─────────────────────────────────────────────────────────┐</p>
-              <p>│  <span className="text-emerald-400">THE UCF THREE-LAYER TRIANGULATION</span>                    │</p>
-              <p>│                                                         │</p>
-              <p>│  <span className="text-amber-400">┌──────────────────────────────────────────┐</span>         │</p>
-              <p>│  <span className="text-amber-400">│  LAYER 1: ORIGIN TRUST (Logbooks)</span>      │         │</p>
-              <p>│  <span className="text-slate-400">│  • Verified block hours                  │</span>         │</p>
-              <p>│  <span className="text-slate-400">│  • Regulatory compliance (PIC/XC/Inst)   │</span>         │</p>
-              <p>│  <span className="text-slate-400">│  • Veremark attestation                  │</span>         │</p>
-              <p>│  <span className="text-amber-400">└──────────────────────────────────────────┘</span>         │</p>
-              <p>│                      │                                  │</p>
-              <p>│                      ▼                                  │</p>
-              <p>│  <span className="text-amber-400">┌──────────────────────────────────────────┐</span>         │</p>
-              <p>│  <span className="text-amber-400">│  LAYER 2: COMPLEXITY (EFBs)</span>              │         │</p>
-              <p>│  <span className="text-slate-400">│  • Route diversity multipliers           │</span>         │</p>
-              <p>│  <span className="text-slate-400">│  • Airspace density coefficients         │</span>         │</p>
-              <p>│  <span className="text-slate-400">│  • Weather decision-making weight        │</span>         │</p>
-              <p>│  <span className="text-amber-400">└──────────────────────────────────────────┘</span>         │</p>
-              <p>│                      │                                  │</p>
-              <p>│                      ▼                                  │</p>
-              <p>│  <span className="text-amber-400">┌──────────────────────────────────────────┐</span>         │</p>
-              <p>│  <span className="text-amber-400">│  LAYER 3: BEHAVIOR (Simulators)</span>          │         │</p>
-              <p>│  <span className="text-slate-400">│  • CBTA competency mapping               │</span>         │</p>
-              <p>│  <span className="text-slate-400">│  • ICAO 9-core proficiency             │</span>         │</p>
-              <p>│  <span className="text-slate-400">│  • Emergency scenario verification       │</span>         │</p>
-              <p>│  <span className="text-amber-400">└──────────────────────────────────────────┘</span>         │</p>
-              <p>│                      │                                  │</p>
-              <p>│                      ▼                                  │</p>
-              <p>│  <span className="text-emerald-400">┌──────────────────────────────────────────┐</span>         │</p>
-              <p>│  <span className="text-emerald-400">│  OUTPUT: RECOGNITION SCORE</span>               │         │</p>
-              <p>│  <span className="text-slate-400">│  Weighted algorithm combining all three  │</span>         │</p>
-              <p>│  <span className="text-slate-400">│  layers into a single industry-recognized│</span>         │</p>
-              <p>│  <span className="text-slate-400">│  pilot credential                        │</span>         │</p>
-              <p>│  <span className="text-emerald-400">└──────────────────────────────────────────┘</span>         │</p>
-              <p>└─────────────────────────────────────────────────────────┘</p>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Three-Layer Verification Stack (All Partners)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Layer 1 — Presentation Data (Logbook/EFB/Sim):</strong> User-entered or telemetry-captured flight data from the partner platform. LogTen hours, ForeFlight routes, X-Plane sessions.</p>
+              <p><strong>Layer 2 — Origin Verification (Veremark/ATO/Airline):</strong> Independent verification that the flight actually occurred — crew scheduling records, flight school documentation, simulator session authentication.</p>
+              <p><strong>Layer 3 — Recognition Score (PilotRecognition):</strong> The unified algorithm that weights verified hours, competency metrics, and professional standing into a single industry-recognized credential.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Cost Structure Reality</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Per-Verification Costs:</strong> Each attestation incurs ~$5-8 in Veremark verification fees + $20 Ecosystem Referral Dividend to the logbook provider + infrastructure costs. Total cost per verification: ~$28-32.</p>
+              <p><strong>Traditional Path:</strong> LogTen Pro ($129.99/year) + third-party verification ($50-200 per document) + notarization ($25-50) + courier ($50-100) = <strong>$255-480 per airline application</strong>.</p>
+              <p><strong>PilotRecognition Value:</strong> Pilots need predictable, lower costs — not another $140/year subscription. The model must balance accessibility with sustainability.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Aggressive Volume-Based Pricing Negotiation</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">$119.99/year is too expensive for pilots just tracking flight hours. Through <strong>guaranteed volume commitments</strong> and <strong>verification-driven revenue sharing</strong>, PilotRecognition can negotiate significantly reduced logbook subscription costs.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">LogTen's 160,000+ Pilot Base — The Scale Advantage</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Starting Point:</strong> LogTen Pro already has 160,000+ active pilots. This massive user base changes the economics entirely — even a 10% conversion to the partnership tier (16,000 pilots) generates significant verification revenue.</p>
+              <p><strong>The Partnership Model:</strong> $39.99/year total. Logbook provider receives $19.99/year (vs $79.99 standard Basic), PilotRecognition receives $20/year base fee. Includes 5 verifications/year.</p>
+              <p><strong>Why LogTen Accepts:</strong> With just 10% of their base (16,000 pilots) on the partnership tier: $319,840 in reduced subscription revenue — but each pilot averaging 8 verifications/year generates $60 in referral fees per pilot ($20 × 3 extra verifications). Total per pilot: $19.99 + $60 = $79.99 (matching standard pricing). Plus 10x higher retention and airline B2B pipeline access.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Architectural Neutrality: No Single Vendor Lock-in</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Volume Math (LogTen's 160,000 Pilots)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p>The UCF is designed for <strong>multi-provider compatibility</strong>. A pilot can use LogTen Pro <em>or</em> FLYLOG.io <em>or</em> capzlog.aero for Origin Trust. They can use ForeFlight <em>or</em> Garmin Pilot for Complexity. They can use X-Plane <em>or</em> MSFS for Behavioral data.</p>
-              <p>Each layer accepts multiple data sources. The UCF algorithm weights them equally — creating <strong>true vendor neutrality</strong> while allowing pilots to use their preferred tools. The result: a pilot's Recognition Score reflects their complete professional competency, regardless of which specific apps they chose.</p>
-              <p><strong>This is the core architectural principle:</strong> We don't force pilots to switch tools. We make their existing tools more valuable by connecting them to the unified competency framework.</p>
+              <p><strong>Conservative Scenario (25% adoption — 40,000 pilots):</strong> $799,600 subscription revenue + $4.8M in verification dividends (240,000 extra verifications × $20) = <strong>$5.6M total</strong> vs $3.2M at standard pricing.</p>
+              <p><strong>Aggressive Scenario (50% adoption — 80,000 pilots):</strong> $1.6M subscription revenue + $9.6M in verification dividends = <strong>$11.2M total</strong> vs $6.4M standard.</p>
+              <p><strong>The Retention Multiplier:</strong> Verification-integrated pilots show 85%+ annual retention vs 60% for standard subscribers. At 160,000 pilots, that's 40,000 fewer churned customers worth $3.2M in preserved revenue.</p>
             </div>
           </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Pricing Tiers (At Scale)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Pilot Starter ($39.99/year):</strong> Core logging + 5 verifications. Logbook: $19.99. PilotRecognition: $20 base. Additional verifications: $12.99 each. <em>Target: 80,000 pilots at this tier.</em></p>
+              <p><strong>Pilot Professional ($59.99/year):</strong> Advanced logging + 15 verifications. Logbook: $29.99. PilotRecognition: $30 base. <em>Target: 40,000 pilots.</em></p>
+              <p><strong>Commercial Pilot ($79.99/year):</strong> Full Pro features + unlimited verifications. Logbook: $39.99. PilotRecognition: $40 base. <em>Target: 20,000 airline pilots.</em></p>
+              <p><strong>Standard LogTen Pro:</strong> Remains available at $129.99/year for pilots who want full features without verification integration. <em>Expected: 20,000 pilots.</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Negotiation Leverage (With 160K Base)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Existing Scale:</strong> LogTen doesn't need PilotRecognition to bring pilots — they have 160,000 already. The value is unlocking verification revenue from their existing base.</p>
+              <p><strong>Verification Revenue Explosion:</strong> Even at conservative 25% adoption, LogTen earns $5.6M vs $3.2M standard — a 75% revenue increase from the same pilot base.</p>
+              <p><strong>Churn Reduction:</strong> Verification integration reduces churn from 40% to 15% annually. With 160,000 pilots, that's 40,000 additional retained subscribers worth $3.2M/year.</p>
+              <p><strong>Enterprise B2B Upsell:</strong> Airline partnerships through PilotRecognition open enterprise licensing opportunities (airlines buying bulk subscriptions for cadet programs) — a new revenue stream entirely.</p>
+            </div>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Verification Workflow</h4>
+          <ol className="list-decimal list-inside space-y-1 text-slate-700 mb-5 ml-4">
+            <li><strong>Pilot Uploads:</strong> Flight entry submitted via logbook app (digital) or photo upload (physical).</li>
+            <li><strong>Provider Verification:</strong> Logbook platform validates entry via GPS cross-reference, instructor digital signature, or photo documentation review.</li>
+            <li><strong>Token Minting:</strong> Upon verification, provider issues a cryptographically signed token to the pilot's sovereign wallet.</li>
+            <li><strong>Dashboard Display:</strong> Token appears in pilot's Glass Cockpit interface as verified flight time.</li>
+            <li><strong>Airline Query:</strong> Recruiter views attested hours via API — zero direct access to underlying raw data.</li>
+          </ol>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Partnership Value Proposition</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Logbook providers are not merely data sources — they are <strong>trusted verification partners</strong> within the PilotRecognition ecosystem. By maintaining GDPR-compliant data ownership while delivering cryptographic attestations to the pilot's career profile, these platforms become indispensable infrastructure for the global aviation hiring marketplace.</p>
+          </div>
+
+          <div className="bg-slate-800 rounded-lg px-5 py-4 mb-6 text-center">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Powered By Industry Leaders</p>
+            <div className="flex flex-wrap justify-center gap-3 text-sm">
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">LogTen Pro</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ForeFlight</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Garmin Pilot</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Navigraph</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">X-Plane</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">PilotEdge</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Veremark</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATO / Operator</span>
+            </div>
+            <p className="text-slate-400 text-xs mt-3">A contribution platform built by API integrations from established aviation and verification companies — further bulletproofing trust through distributed verification. Flight hours verified by ATOs and Operators. Verification records securely stored in Verepass.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XIII. Go-To-Market Sequencing: The Logbook Beachhead</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">While all three data pillars hold equal architectural weight within the Universal Commercial Framework, enterprise deployment requires ruthless sequencing. Attempting to integrate community-run simulation networks and corporate-owned EFBs simultaneously creates an impossible engineering bottleneck and fragmented commercial focus. Therefore, PilotRecognition's commercial deployment follows a strict phased approach:</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 1 Beachhead: Logbook Provider Acquisition</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">LogTen Pro · FLYLOG.io · capzlog.aero · IDfy</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Strategic Rationale:</strong> Logbook providers offer the highest-conviction, fastest-revenue, lowest-friction entry point. LogTen Pro's 160,000 users represent immediate monetization with established B2B relationships. ForeFlight requires navigating Boeing corporate bureaucracy. X-Plane requires convincing volunteer networks to adopt paid infrastructure. We conquer the beachhead first, then use that momentum for the harder fights.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Phase 1 Success Metrics</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>User Adoption Target:</strong> 10% of LogTen base (16,000 pilots) on partnership tier within 12 months</p>
+              <p><strong>Revenue Validation:</strong> $320K+ in verification revenue demonstrating $20/verification model</p>
+              <p><strong>Airline Partnerships:</strong> 3-5 airline pathway integrations requiring verified logbook data</p>
+              <p><strong>Retention Proof:</strong> 85%+ annual retention vs 60% for non-integrated subscribers</p>
+            </div>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 2 Expansion: EFB & Navigation App Integration</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">ForeFlight · Garmin Pilot · Navigraph</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Prerequisites:</strong> Phase 1 baseline data proving telemetry-to-Recognition-Score algorithm efficacy. Established airline partnerships requiring complexity multipliers in hiring decisions.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Timeline:</strong> Q3-Q4 following Phase 1 traction. Dedicated implementation team with pre-written SDKs for ForeFlight/Garmin APIs. 3-sprint deployment timeline.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Revenue Model:</strong> $15 per active integration + premium tier licensing anonymized aggregate safety data to insurance underwriters ($50K-200K annual contracts).</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 3 Maturity: Simulator & CBTA Integration</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">X-Plane · Microsoft Flight Simulator · PilotEdge · VATSIM</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Prerequisites:</strong> Airline training departments accepting verified simulator hours as legitimate CBTA evidence. Competency rubrics developed and validated with 2+ major carriers.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Challenge:</strong> Volunteer-run networks (VATSIM) require community governance approval. Revenue model must align with non-profit structures while providing infrastructure funding.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Revenue Model:</strong> $25 per pilot linking simulator profile. Airlines pay for pre-screening reports on simulator-verified competencies before Type Rating investment ($500-2,000 per pilot assessment).</p>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Strategic Discipline</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">This phased approach balances <strong>architectural vision</strong> (all three pillars are equal in the UCF framework) with <strong>commercial reality</strong> (sequenced deployment based on revenue velocity and integration complexity).</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We do not delay the ecosystem vision — we accelerate it by proving the model with the highest-conviction partner category first, then using that traction as leverage for the harder negotiations.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-13-aeromedical" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 13: AEROMEDICAL EXAMINERS (AMEs)
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Medical Certificates Are the Most Forgeable Document in Aviation</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A Class 1 medical certificate is a paper document with a stamp. Airlines receive it as a self-submitted file. There is no real-time queryable record of whether it is current, whether it was issued by an authorised examiner, or whether the pilot's medical status has changed since issuance. Fraud is straightforward. Expiry is invisible. The compliance gap between issuance and airline verification is unmeasured.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">AMEs who issue medical certificates carry no structured pipeline for communicating status to hiring organisations. They operate at the end of a paper chain that has not been modernised since the introduction of the original certificate format.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What AMEs Must Provide', items: ['Digital validation signatures on issued certificates', 'Expiry dates and class designations ingested directly into pilot profiles', 'Direct authentication via secured practitioner portal', 'Real-time status updates when certificate is renewed, suspended, or revoked'] },
+              { t: 'What AMEs Gain', items: ['Elimination of verification fraud and forged certificate inquiries', 'Reduced administrative load from airline verification requests', 'Modernised digital health ledger replacing paper-based records', 'Recognised status as a verified data provider in the platform ecosystem'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The medical integrity layer:</strong> When an airline queries a pilot profile on this platform, the medical certificate status is not self-reported — it is AME-verified and timestamped. <strong style={{color:'#f87171'}}>A pilot cannot submit a pathway application with an expired or unverified medical. The system enforces what the industry currently relies on honesty to maintain.</strong></p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB E */}
+          <h1 id="hub-e-community" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB E — COMMUNITY, STRATEGY &amp; GROWTH
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Pilot Mentors · Unions · Manufacturers · OEMs · The Cultural Layer</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub E is where the platform's flywheel closes. The data produced by Hubs A through D creates macro-level intelligence that manufacturers need to build the right aircraft, unions need to negotiate the right conditions, and mentors need to guide the next generation with accurate market knowledge. Hub E connects those stakeholders to the living data layer they have never had access to before.</p>
+
+          <h2 id="pillar-14-mentors" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 14: PILOT CONTRIBUTORS, MENTORS &amp; UNIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Senior Pilots Have No Mechanism to Pass Knowledge Down</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A 15,000-hour Captain retiring from a major carrier carries an irreplaceable cargo of operational knowledge, sector intelligence, and institutional memory. There is no structured mechanism for that knowledge to be transmitted to the pilots entering the industry who need it most. Mentorship in aviation is informal, ad hoc, and entirely dependent on personal network access — which 200-hour pilots, by definition, do not have.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Unions negotiate on behalf of pilot cohorts using industry data that is incomplete, delayed, and aggregated to the point of uselessness for individual career decisions. A union negotiating salary bands does not know whether the cohort it represents has an average Recognition Score that justifies a renegotiation — because that metric has never existed.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Mentors & Unions Contribute', items: ['Senior pilots post verified mentorship availability on the platform', 'Junior pilots log consulting hours, leadership initiatives, and community contributions', 'Unions publish aggregated salary data, collective agreement terms, and negotiation precedents', 'Pre-Experience Portfolios: constructivism and leadership verified before 1,500 hours'] },
+              { t: 'What They Gain', items: ['Junior pilots: a verified professional presence that bypasses the invisible 200-hour problem', 'Senior pilots: a structured legacy mechanism with a Recognition Score multiplier for hours given', 'Unions: aggregated Recognition Score data to negotiate collective benefits and group insurance rates', 'The platform contribution that makes the entire ecosystem function — without mentors, the chain breaks'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-15-manufacturers" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 15: MANUFACTURERS &amp; OEMs
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Why Airbus and Boeing Are Among the Most Strategic Enterprise Players on This Platform</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Airbus is not on PilotRecognition to hire a handful of test pilots. Their entire multi-billion-dollar business model depends on airlines being able to crew the aircraft they sell. When Airbus pitches a $10 billion order of A350s to an airline, the airline's board asks one question: <strong>"Do we have the crew to operate these in 24 months?"</strong> If the answer is no, the order gets delayed or downsized. PilotRecognition is the only platform in existence that can answer that question with live, verified data.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This makes the manufacturer relationship fundamentally different from a standard airline HR subscription. <strong>The use case is macro-intelligence and training pipeline management — not individual recruitment.</strong> The pricing, the product, and the pitch must reflect that.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {([
+              {
+                n: '1',
+                title: 'The Fleet Sale Dealbreaker',
+                color: '#f87171',
+                body: 'When Airbus pitches a $10B A350 order, the airline asks: "Do we have crew to operate these in 24 months?" PilotRecognition answers that question live. Airbus tells the airline: "Our platform data shows 1,200 A350-rated pilots in region, 800 more completing training this year." That data point closes aircraft orders. The platform is worth more to Airbus sales than it is to airline HR.',
+              },
+              {
+                n: '2',
+                title: 'The Airbus Flight Academy Pipeline',
+                color: '#60a5fa',
+                body: 'Airbus operates one of the largest pilot training organisations in the world — A320 and A330 type rating centers globally. PilotRecognition lets them publish "Airbus Verified Graduate" pathways, funnelling freshly type-rated pilots directly to the airlines that just bought their planes. Their training centers become infinitely more attractive to student pilots. Graduate placement rates are verified, not self-reported.',
+              },
+              {
+                n: '3',
+                title: 'EBT & Anonymised Competency Data',
+                color: '#34d399',
+                body: 'As aviation moves toward Evidence-Based Training (EBT), manufacturers need to understand how pilots interact with their flight decks. Anonymised, aggregated platform data answers: "What is the average transition time from a Boeing 737 to an Airbus A320?" That macro data is worth its weight in gold for engineering and training curriculum design — and it never exposes individual pilot identities.',
+              },
+            ] as {n:string;title:string;color:string;body:string}[]).map((item) => (
+              <div key={item.n} className="border border-slate-200 rounded-lg px-5 py-5 bg-white">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="font-black text-lg" style={{color: item.color}}>{item.n}</span>
+                  <p className="font-bold text-slate-900 text-sm">{item.title}</p>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The connective tissue Airbus has never had:</strong> <span className="text-slate-300">PilotRecognition is the only platform that connects the planes Airbus builds to the humans who fly them — with live, verified, real-time data. The platform tells Airbus what the demand curve for A321XLR type ratings looks like 18 months before the aircraft enter service. It tells Boeing where the 737 MAX crew shortage is most acute. It tells Cessna exactly which cohort of student pilots are actively pursuing single-engine time-building pathways right now. <strong style={{color:'#f87171'}}>None of this intelligence exists anywhere else. It only exists because pilots are using the platform.</strong></span></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Problem: Manufacturers Build on Lagging Indicators</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Airbus builds simulators based on fleet transition announcements that are years old by the time they reach production. Boeing calibrates type rating curriculum against operator orders that reflect decisions made two market cycles ago. Cessna targets marketing at pilot cohorts that have already moved to the next stage of training. <strong>The entire manufacturing and OEM ecosystem operates on the rear-view mirror.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-6">Meanwhile, the platform generates real-time leading indicators: which type ratings pilots are pursuing, which pathway cards are generating the most interest, which aircraft types are creating the largest gap between supply and demand. This macro-intelligence is the most commercially valuable dataset in aviation — and manufacturers have never had access to it.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Manufacturers Must Publish', items: ['Macro-level fleet transition announcements and future aircraft capability specs', 'Type rating curriculum updates and simulator availability schedules', 'OEM-specific pathway integration requirements for sponsored type ratings', '"OEM Verified Graduate" pathway cards for training center alumni', 'Enterprise Data Insights subscription requirements for accessing platform trend data'] },
+              { t: 'What Manufacturers Gain', items: ['Live pilot supply/demand data by aircraft type — 18 months ahead of order fulfillment', 'If pathway data shifts toward A321 qualifications, Airbus adapts simulator production before the demand peak', 'Targeted reach to pilots at the exact moment they are evaluating a type rating investment', '"OEM Verified Graduate" pipeline that makes training centers more attractive to student pilots', 'Anonymised EBT competency data for aircraft design and training curriculum development'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Pilot-First OEM Architecture — How Manufacturers Interact With This Platform</h3>
+
+          <div className="bg-slate-900 rounded-xl px-8 py-6 mb-6">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">The Governing Rule — Non-Negotiable</p>
+            <p className="text-white text-sm leading-relaxed mb-0"><strong style={{color:'#f87171'}}>The Pilot-First OEM Rule:</strong> <span className="text-slate-300">Manufacturers are granted access to platform macro-intelligence not to commoditise the pilot pool, but to invest in it. OEMs interact with aggregated, anonymised fleet-demand data only. They may interact with individual pilots solely through direct training sponsorships, OEM-certified credentialing, or explicit pilot-opted employment pathways. No OEM may passively extract individual pilot data. No OEM may use platform intelligence to suppress hiring standards or advocate for wage compression. Access is a privilege extended in exchange for contribution to the pilot ecosystem.</span></p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-6">If manufacturers are treated as pure data consumers extracting intelligence from the pilot network, the platform becomes a corporate surveillance tool. Pilots will leave. The network dies. The value of the data collapses. <strong>The only sustainable model is one where OEM access creates direct, measurable value for the pilots whose data makes the intelligence possible.</strong> These four mechanisms enforce that at the architectural level — not just as policy.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+            {([
+              {
+                n: '1',
+                title: 'Sponsor the Source — OEM Sponsorship Pathways',
+                color: '#34d399',
+                rule: 'Pilot-First mechanism: manufacturers fund the gap they identify.',
+                body: 'If macro-intelligence reveals a shortage of type-rated pilots threatening a fleet sale, the manufacturer does not lobby airlines to lower their hiring minimums. They publish an OEM Sponsorship Pathway — offering to fully or partially fund type ratings for verified, high-aptitude pilots on the platform. The manufacturer spends $1.5M to sponsor 50 type ratings. The fleet sale closes. The pilot gets a career-changing credential at zero or reduced cost. The airline gets the crew. Everyone wins — because the manufacturer invested in the foundation instead of eroding it.',
+              },
+              {
+                n: '2',
+                title: 'Zero-Knowledge Macro Data Only',
+                color: '#60a5fa',
+                rule: 'Architecturally enforced: OEMs buy trends, not targets.',
+                body: 'The data architecture hardcodes what manufacturers can see. They see: "412 verified A320 First Officers in Southeast Asia with 1,500+ hours." They never see names, contact information, or individual profiles. Individual pilots remain completely invisible unless they explicitly tap APPROVE to share their profile with a specific OEM employment pathway — such as a factory test pilot or simulator instructor role. Anonymisation is not a privacy policy. It is enforced at the data layer. There is no override.',
+              },
+              {
+                n: '3',
+                title: 'Direct Pilot-to-OEM Feedback Loop',
+                color: '#f87171',
+                rule: 'Pilots speak directly to manufacturers — bypassing airline bureaucracy.',
+                body: 'When a manufacturer wants ground-truth data on cockpit ergonomics, flight control software behaviour, or EBT training effectiveness, they currently ask airline management — who filter the truth to protect their own metrics. On this platform, the manufacturer can push an anonymous, technically verified survey directly to confirmed aircraft type operators. Pilots flying the metal tell the people who built the metal. The pilot gets a direct voice to the manufacturer. The manufacturer gets raw, verified data from actual operators. The airline\'s PR layer is bypassed entirely.',
+              },
+              {
+                n: '4',
+                title: 'The OEM-Certified Immutable Credential',
+                color: '#fbbf24',
+                rule: 'The credential that cannot be doubted.',
+                body: 'When a pilot completes training at an official manufacturer type rating centre, the OEM issues a cryptographically signed "OEM-Certified" token directly to the pilot\'s DID wallet. The token is immutable, timestamped, and manufacturer-verified. An airline cannot argue with a training credential digitally signed by the company that engineered the aircraft. The pilot\'s market value increases immediately. The manufacturer\'s training centre becomes the most credible credential source in the market. The pilot no longer has to fight to prove the quality of their training.',
+              },
+            ] as {n:string;title:string;color:string;rule:string;body:string}[]).map((item) => (
+              <div key={item.n} className="border border-slate-200 rounded-lg px-5 py-5 bg-white">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-black text-base flex-shrink-0" style={{color: item.color}}>{item.n}</span>
+                  <p className="font-bold text-slate-900 text-sm">{item.title}</p>
+                </div>
+                <p className="text-xs font-semibold mb-2" style={{color: item.color}}>{item.rule}</p>
+                <p className="text-xs text-slate-600 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The test for every OEM interaction:</strong> <span className="text-slate-300">Does this interaction make the individual pilot more valuable, more informed, or more empowered — or does it extract value from the pilot network to benefit the manufacturer? If the answer is extraction without contribution, the interaction does not exist on this platform. Every mechanism above passes this test. The OEM Sponsorship Pathway funds a pilot's career. Zero-Knowledge data protects pilot privacy by architecture. The feedback loop gives pilots a direct voice. The immutable credential makes the pilot undeniable. Manufacturers earn access by making the base layer stronger, not weaker.</span></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Paper vs. Reality Gap — A Core Pain Point Validated at Manufacturer Level</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">This specific use case was confirmed in recorded conversations with senior representatives from a major aircraft manufacturer. No names or organisations are disclosed. The pain point is not theoretical — it is a live, multi-billion-dollar constraint on manufacturer expansion models, and PilotRecognition is the only architecture in existence that resolves it.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Major manufacturers sell type ratings. Airlines buy the planes. The 200-hour type-rated pilot is legally qualified. But the airline's Safety Management System, the insurer's underwriting policy, and the EBT assessor's competency requirements all operate on a different standard from the legal minimum — <strong>and there is currently no infrastructure that bridges that gap.</strong></p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Gatekeeper</th>
+                <th className="text-left px-4 py-2 font-semibold text-red-400">What They Reject</th>
+                <th className="text-left px-4 py-2 font-semibold" style={{color:'#34d399'}}>What PilotRecognition Provides</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { g: 'Airline SMS', r: '"Legal 200hrs not sufficient — our ops manual requires 500hrs on type."', p: 'Operator Expectations Page forces airlines to publish their actual requirement, not the legal minimum. Pilots know before they pay for the rating.' },
+                  { g: 'Insurance Underwriter', r: '"200hr type-rated pilot requires 5,000hr Captain on all flights — roster unworkable. Policy denied."', p: 'EBT Token: simulator_competency_score = Top 10% + training_source_verified = OEM Training Centre. Insurer has quantified competency, not just hours.' },
+                  { g: 'EBT Assessor', r: '"Legal rating confirmed. Verified competency profile is blank. No EBT data to assess operational readiness."', p: 'Manufacturer issues Competency & EBT Tokens to graduates at point of training completion. Profile is populated before the pilot walks into an airline.' },
+                  { g: 'Airline HR', r: '"200 hours. No operator experience. Cannot verify training quality."', p: 'training_source_verified = OEM Training Centre. Placement history of manufacturer graduates visible in aggregate. Quality is provable, not assumed.' },
+                ] as {g:string;r:string;p:string}[]).map((row, i) => (
+                  <tr key={row.g} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-semibold text-slate-100 text-xs">{row.g}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 text-xs italic">{row.r}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-xs" style={{color:'#34d399'}}>{row.p}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>Why manufacturers pay for this:</strong> <span className="text-slate-300">If airlines refuse to hire 200-hour type-rated graduates, the type rating becomes commercially worthless. If type ratings become worthless, pilots stop buying them. If pilots stop buying them, manufacturer training revenue collapses — and airlines lose confidence in ordering aircraft they cannot crew. Major manufacturers have a direct commercial interest in the platform making their graduates hireable. The EBT Token structure is the mechanism that converts legal compliance into operational proof. That is worth far more than a standard enterprise subscription.</span></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">OEM Pricing — Why $1,000/Year Is a Rounding Error</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The standard airline enterprise tier is not the right commercial model for OEMs. An airline pays for recruitment infrastructure. <strong>A manufacturer pays for market intelligence that informs multi-billion-dollar production decisions.</strong> These are not the same product. The pricing must reflect that.</p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Tier</th>
+                <th className="text-left px-4 py-2 font-semibold">Annual Fee</th>
+                <th className="text-left px-4 py-2 font-semibold">What It Unlocks</th>
+                <th className="text-left px-4 py-2 font-semibold">Best For</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { tier: 'Training Center', fee: '$1,000/mo', unlocks: 'Publish "OEM Verified Graduate" pathway cards. Track training center alumni outcomes. Graduate placement rate verification and publication.', for: 'Airbus Flight Academy, Boeing Global Services training centers, CAE, FlightSafety' },
+                  { tier: 'OEM Market Intelligence', fee: '$5,000–$10,000/yr', unlocks: 'Macro-level pilot supply/demand analytics by aircraft type. Real-time type rating demand curves. Anonymised EBT competency benchmarks. Direct integration with global training centers on platform. Fleet transition demand forecasting.', for: 'Airbus, Boeing — strategic intelligence to support fleet sales and simulator production planning' },
+                  { tier: 'OEM Enterprise + Data API', fee: 'Custom', unlocks: 'Live API feed of aggregated (never individual) pilot demand data. Integration into manufacturer ATS/CRM for training pipeline management. Co-branded "Manufacturer Endorsed" pathway status. Direct dataset licensing for EBT curriculum development.', for: 'Board-level fleet strategy teams at Airbus, Boeing, Embraer, Bombardier' },
+                ] as {tier:string;fee:string;unlocks:string;for:string}[]).map((row, i) => (
+                  <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-xs" style={{color:'#34d399'}}>{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.unlocks}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs italic">{row.for}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Admin Note — OEM Pricing (Standby, Pending Review)</p>
+            <p className="text-slate-700 text-sm leading-relaxed">The OEM Market Intelligence tier ($5,000–$10,000/yr) and Training Center tier ($1,000/mo) are proposed structures. A $1,000/year standard enterprise fee applied to Airbus or Boeing is a procurement rounding error — it signals the platform does not understand the commercial value of what it is providing. The OEM tier must be positioned as market intelligence infrastructure, not HR tooling. The anonymised data angle is critical: it bypasses individual data privacy concerns entirely while providing the highest-value dataset in aviation. Review before publishing publicly.</p>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The A321 dilemma resolved:</strong> The platform knows — in real time — whether pilots are training toward A320 or A321 qualifications, which operators are posting those pathway requirements, and what the demand curve looks like 18 months out. <strong style={{color:'#f87171'}}>A manufacturer with access to that data does not build the wrong simulator. It builds the right one, in the right volume, before the market needs it.</strong></p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-media" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AVIATION MEDIA &amp; PUBLICATIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Aviation Career Information Is Fragmented, Unverified, and Contradictory</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A pilot searching for Emirates requirements today will find 50 different answers — none of them verified by the airline, most of them outdated, several of them wrong. Aviation media publishes career content based on anecdote, forum speculation, and press releases. The gap between what pilots read and what operators actually require is enormous, and it costs pilots real money. Training decisions made on bad information are financial disasters. The platform closes that gap by giving media partners access to verified, live, structured data — and a mechanism to publish it in a way that is provably accurate.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Media Partners Must Contribute', items: ['Publish data-driven stories using verified platform insights — not speculation', 'Accurate reporting: no sensationalism of pilot shortage, data-driven stories only', 'Privacy protection: no individual pilot identification without explicit consent', 'Source verification: platform data validation before publication'] },
+              { t: 'What Media Partners Gain', items: ['Unique content: access to verified pathway data no other publication has', '"Data-driven aviation journalism" authority positioning', 'Interactive tools that attract 2–3x reader engagement', 'Revenue diversification: sponsored insights, data reports, platform-powered webinars'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          {/* CREDIT RATING — added to Hub C section but anchored here for nav */}
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-credit-rating" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            CREDIT RATING AGENCIES
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub C — Capital, Risk &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Pilot Career Creditworthiness Is Unmeasurable</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Credit rating agencies that service the aviation sector — lending institutions, aviation finance houses, aircraft leasing firms — assess creditworthiness on the same blunt instruments used everywhere else: income history, debt ratios, employment tenure. None of these instruments are calibrated for the non-linear career trajectory of a commercial pilot. A 200-hour pilot with a clear pathway progression, verified training completions, and an active Recognition Score is a materially different credit risk from a 200-hour pilot with no verified record. The current system cannot distinguish between them.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform creates a new creditworthiness signal: pathway progression. A pilot actively advancing through verified milestones on an airline-endorsed pathway is demonstrating measurable career momentum — which is the most accurate predictor of future earnings capacity in aviation. Credit rating agencies that integrate this signal into their models gain a risk differentiation capability that does not exist anywhere else in the market.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Requirements', items: ['API access to pilot pathway progression data (with consent)', 'Recognition Score as supplementary creditworthiness input', 'Verified training completion milestones as collateral signal', 'Dynamic risk adjustment as profile progresses'] },
+              { t: 'What Rating Agencies Gain', items: ['First aviation-specific creditworthiness signal in the market', 'Ability to differentiate high-trajectory vs. stalled pilot career risk', 'Reduced default rates on aviation training loans', 'New product category: "Pathway-Verified" credit assessment for pilot applicants'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          {/* TELEMETRY — added to Hub D section */}
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-telemetry" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            TELEMETRY &amp; SIMULATOR DATA PROVIDERS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Living Proficiency Data Is Trapped Inside Consumer Applications</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots today maintain genuine cognitive currency through desktop simulators — MSFS, X-Plane — flying live, human-controlled ATC networks like VATSIM, logging complex IFR routes with real weather deviations, practising non-precision approaches, maintaining type familiarity through structured simulator sessions. None of this activity is visible to the industry. Insurance underwriters pricing policy risk cannot see it. Airlines assessing recency cannot access it. The pilot's Recognition Profile does not reflect it. The data exists, is being generated in real time, and is professionally invisible.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Telemetry and simulator data providers — VATSIM, MSFS telemetry platforms, home simulator networks — sit on the most granular pilot proficiency dataset in existence. The integration path is straightforward: verified ingestion pipelines that port telemetry data, with pilot consent, directly into the Recognition Profile. A pilot who flew a 4-hour IFR route on a desktop sim last night, handled weather deviations with live ATC, and logged 6 ILS approaches — that activity should be verifiable. The platform makes it so.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What Telemetry Providers Must Integrate', items: ['Direct API webhooks acting as verified ingestion pipelines', 'Real-time telemetry data porting to pilot Recognition Profiles', 'Data portability toggles: pilot-controlled consent for professional profile sharing', 'Subscription integration linking platform accounts to simulator profiles'] },
+              { t: 'What Telemetry Providers Gain', items: ['Unprecedented user stickiness: if your simulator data builds a pilot\'s airline profile, they will never cancel their subscription', 'B2B enterprise demand: operators paying for access to telemetry-verified pilot pools', 'Platform partnership: co-branded "Verified Recency" status for active sim users', 'Insurance underwriter demand for real-time proficiency data'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* DIGITAL CREDENTIAL WALLET */}
+          <h2 id="pillar-credential-wallet" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            DIGITAL CREDENTIAL WALLET
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Architecture: We Display the Token. We Never Hold the Data.</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition is a <strong>neutral display layer</strong>. The platform does not store pilot credentials, document scans, license numbers, or personal identification data. Instead, credential data is held exclusively by a <strong>third-party secure vault</strong> — the pilot's chosen data custodian. Veremark independently verifies that data against official registries. PilotRecognition receives only a <strong>triangulated verification token</strong> — the outcome of both signals agreeing — and displays that token to the pilot and, with consent, to operators.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This architecture means the platform carries no credential liability. The vault holds the data. Veremark verifies it. We display the result. <strong>The pilot controls all three relationships independently.</strong></p>
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-relaxed">
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">Triangulation Signal Flow</p>
+            <p>Pilot <span className="text-slate-500">→</span> <span className="text-blue-400">Third-Party Vault</span> <span className="text-slate-500">(data stored here, pilot consent given)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ vault sends data to Veremark with pilot consent</span></p>
+            <p><span className="text-blue-400">Third-Party Vault</span> <span className="text-slate-500">→</span> <span className="text-yellow-400">Veremark</span> <span className="text-slate-500">(independent verification against CAAP / NBI / registries)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ Veremark sends token to platform</span></p>
+            <p><span className="text-yellow-400">Veremark</span> <span className="text-slate-500">→</span> <span className="text-emerald-400">PilotRecognition</span> <span className="text-slate-500">(token only — no raw data)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ platform compares both signals</span></p>
+            <p><span className="text-emerald-400">PilotRecognition</span> <span className="text-slate-500">→</span> <span className="text-white font-bold">TRIANGULATED ✓</span> <span className="text-slate-500">(vault token + Veremark token both agree)</span></p>
+            <p className="pl-4"><span className="text-slate-500">↓ displayed to pilot and operators</span></p>
+            <p><span className="text-white">Wallet Status: </span><span className="text-emerald-400 font-bold">PRE-CLEARED</span></p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'What the Wallet Displays', items: ['License status: Valid / Expired / Suspended', 'Medical certificate: Valid / Expired + expiry date', 'Type ratings held and currency status', 'Background check: Clear / Flagged', 'Identity: Verified / Unverified', 'Triangulation status: Both signals agree / Mismatch flagged', 'Pre-Cleared badge — issued only on full triangulation', 'Consent log — pilot controls who sees what'] },
+              { t: 'What the Wallet Never Contains', items: ['Raw license document or scan', 'Passport or national ID image', 'License or PEL number', 'Medical certificate document', 'NBI clearance document', 'Any personally identifiable data', 'Any document stored in PilotRecognition servers', 'Any data not explicitly consented by pilot'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-emerald-500 bg-emerald-50 rounded-r-lg">
+            <p className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-1">Platform Status</p>
+            <p className="text-slate-700 leading-relaxed">Wallet infrastructure is live. Tables: <code className="bg-slate-100 px-1 rounded text-xs">pilot_verification_wallet</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_checks</code>, <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Token-only storage confirmed — no raw credential data in any table. Triangulation logic active.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* IDENTITY & DOCUMENT VERIFICATION */}
+          <h2 id="pillar-identity-verification" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            IDENTITY &amp; DOCUMENT VERIFICATION
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Two Independent Sources. Neither Talks to the Other. Both Must Agree.</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The triangulation model is the platform's core fraud-prevention architecture. Credential data is sourced from the <strong>third-party vault</strong> — the authoritative store the pilot consented to — and independently cross-checked by <strong>Veremark</strong> against official registries (CAAP, NBI, passport authorities). PilotRecognition compares both signals. If they match, a <strong>triangulated verification token</strong> is issued. If they conflict, the check is flagged for review.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This makes fraud structurally impossible. A pilot cannot falsify a credential that must simultaneously match an independent vault record and an independent registry check that have never communicated with each other. The two signals are blind to each other — they only talk to PilotRecognition, which acts as the neutral comparison layer.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Credential</th>
+                <th className="text-left px-4 py-2 font-semibold">Vault Signal</th>
+                <th className="text-left px-4 py-2 font-semibold">Veremark Signal</th>
+                <th className="text-left px-4 py-2 font-semibold">Triangulated Result</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { cred: 'CAAP Pilot License', vault: 'Valid · Exp 2030-10-23', veremark: 'Valid · Exp 2030-10-23', result: 'MATCH → Pre-Cleared ✓', ok: true },
+                  { cred: 'Class 1 Medical', vault: 'Expired · 2026-05-02', veremark: 'Expired · 2026-05-02', result: 'MATCH → Flagged Expired ⚠️', ok: false },
+                  { cred: 'NBI Clearance', vault: 'Clear', veremark: 'Clear', result: 'MATCH → Verified ✓', ok: true },
+                  { cred: 'Identity / Passport', vault: 'Authentic', veremark: 'Authentic', result: 'MATCH → Verified ✓', ok: true },
+                  { cred: 'Any Credential', vault: 'Value A', veremark: 'Value B', result: 'MISMATCH → Flagged 🚩', ok: false },
+                ] as {cred:string;vault:string;veremark:string;result:string;ok:boolean}[]).map((row, i) => (
+                  <tr key={row.cred} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100 font-medium">{row.cred}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-blue-300">{row.vault}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-yellow-300">{row.veremark}</td>
+                    <td className={`px-4 py-2 border-b border-slate-700 font-semibold ${row.ok ? 'text-emerald-400' : 'text-red-400'}`}>{row.result}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Check</th>
+                <th className="text-left px-4 py-2 font-semibold">Provider</th>
+                <th className="text-left px-4 py-2 font-semibold">Region</th>
+                <th className="text-left px-4 py-2 font-semibold">Output</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { check: 'Passport / ID Verification', provider: 'Veremark', region: 'Global', output: 'Authentic / Flagged / Expired' },
+                  { check: 'NBI Clearance', provider: 'Veremark PH', region: 'Philippines', output: 'Clear / With Record' },
+                  { check: 'Address Verification', provider: 'Veremark', region: 'PH / UAE / Global', output: 'Confirmed / Unconfirmed' },
+                  { check: 'PRC License Check', provider: 'Veremark PH', region: 'Philippines', output: 'Active / Lapsed / Not Found' },
+                  { check: 'CAAP License Status', provider: 'Veremark / CAAP API', region: 'Philippines', output: 'Valid / Expired / Suspended' },
+                  { check: 'Class 1 Medical', provider: 'AME Network', region: 'PH / Global', output: 'Valid / Expired / Date of Exam' },
+                ] as {check:string;provider:string;region:string;output:string}[]).map((row, i) => (
+                  <tr key={row.check} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100 font-medium">{row.check}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.provider}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.region}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-emerald-400">{row.output}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* ATS INTEGRATION */}
+          <h2 id="pillar-ats-integration" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            ATS &amp; AIRLINE SYSTEMS INTEGRATION
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Data &amp; Integration</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Last Mile — Verified Data Into Airline Infrastructure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Verification means nothing if it stays inside the platform. The value of a verified pilot pool is only realised when that data flows directly into the systems airlines already use to hire. Airline Tracking Systems — Greenhouse, Workday, Oracle HCM, SAP SuccessFactors, and the ATLAS Aviation CV format — are where hiring decisions are actually made. The integration layer is what converts platform data into airline infrastructure value.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Enterprise tier subscribers receive direct ATS API integration. Verified pilot profiles — credentials, Recognition Score, gap analysis, EBT video assessment — flow into the airline's existing ATS without manual export, copy-paste, or re-entry. A pilot who submits interest on the platform appears in the airline's Greenhouse instance, pre-verified, pre-scored, and pre-cleared. The hiring cycle compresses from months to weeks.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Supported Systems', items: ['Greenhouse ATS', 'Workday HCM', 'Oracle Recruiting Cloud', 'SAP SuccessFactors', 'ATLAS Aviation CV (native)', 'Custom API endpoints'] },
+              { t: 'Data Flowing Through', items: ['Verified pilot profile (structured)', 'Recognition Score + gap breakdown', 'Credential wallet status', 'EBT video assessment link', 'Pathway match percentage', 'Last verification timestamp'] },
+              { t: 'Airline Outcome', items: ['Zero manual re-entry of pilot data', 'Pre-verified candidates only in pipeline', 'Recognition Score as first filter', 'ATLAS CV auto-formatted for review', 'Audit trail of data access', 'Compliance-ready hiring record'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+            <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">Commercial Gate</p>
+            <p className="text-slate-700 leading-relaxed">ATS integration is exclusive to <strong>Enterprise tier ($1,000/yr)</strong>. It is the primary driver of enterprise subscription value. Free tier operators can view pilot interest manually through the portal. Only Enterprise subscribers receive the API integration that removes manual hiring steps entirely.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* AI & MATCHING ENGINE */}
+          <h2 id="pillar-ai-matching" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AI &amp; MATCHING ENGINE
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Data &amp; Integration</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Recognition Score — Your Currency for Pathway Access</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Recognition Score is not a rating. It is not a ranking. It is a structured gap analysis engine — a real-time comparison between a pilot's verified profile and any pathway requirement in the system. The score tells a pilot not where they stand in a league table, but precisely what they are missing, in what order to close it, and which operators they already qualify for today.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The matching engine runs across all 25 UCF pillars simultaneously. It ingests verified credentials, flight hours, program completions, EBT assessment scores, telemetry data, and behavioural signals. It outputs a structured gap report per pathway — not a generic percentage, but a line-item breakdown: hours short, type rating missing, language proficiency level, recency gap, medical certificate status. Every gap is actionable. Every action moves the score.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Score Inputs (Weighted)', items: ['Flight hours — total time, command, night, instrument (35%)', 'Verified credentials — license, medical, type ratings (25%)', 'Program completion — Foundation, Transition, EBT (20%)', 'Behavioural assessment — EBT video scoring (10%)', 'Recency — last 90-day activity, sim data (5%)', 'Peer validation and mentor endorsements (5%)'] },
+              { t: 'Score Outputs', items: ['Pathway match % per operator card', 'Ranked gap list — what to close first', 'Pre-Cleared status for verified pilots', 'Priority queue position for airline pull', 'Insurance risk score feed (Hub C)', 'Regulatory compliance flag (Hub C)'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* DATA PRIVACY & CONSENT */}
+          <h2 id="pillar-data-privacy" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            DATA PRIVACY &amp; CONSENT LAYER
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+
+          <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 mb-8">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Legal Architecture Review — May 16, 2026</p>
+            <p className="text-slate-700 text-sm leading-relaxed">This section reflects a full legal critique of the original "Data Processor" claim and the revised architecture that emerged from it. The original framing was logically structured but not fully defensible under regulatory scrutiny. The revised architecture below addresses every identified vulnerability and is designed to withstand NPC (Philippines), DIFC (UAE), and GDPR review.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Core Vulnerability — Corrected</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The original claim that PilotRecognition is a pure <strong>Data Processor</strong> is not fully defensible. Regulators do not assess what a platform claims in its Terms — they assess the economic and technical reality of who determines the purposes and means of processing. Because PilotRecognition defines the tokenization protocol, selects Veremark and IDfy, designs the data structure, and operates the marketplace connecting pilots to airlines — regulators will classify the platform as a <strong>Joint Controller</strong> alongside the pilot.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The correct and defensible position is not to fight this classification — it is to <strong>accept Joint Controller status and structure it transparently under GDPR Article 26</strong>. This is legally cleaner, more honest, and more robust than an indefensible processor claim.</p>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Party</th>
+                <th className="text-left px-4 py-2 font-semibold">Legal Classification</th>
+                <th className="text-left px-4 py-2 font-semibold">Responsibility</th>
+                <th className="text-left px-4 py-2 font-semibold">Legal Basis</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { party: 'Pilot', classification: 'Primary Data Controller', responsibility: 'Owns all personal data. Controls what is shared, with whom, and for how long. Can revoke consent at any time.', basis: 'GDPR Art. 4(7) · RA 10173 Sec. 3(h)' },
+                  { party: 'PilotRecognition', classification: 'Joint Controller', responsibility: 'Controls tokenization infrastructure and marketplace layer. Holds consent receipts and token metadata only. Never raw data.', basis: 'GDPR Art. 26 · RA 10173 Sec. 3(h)' },
+                  { party: 'Veremark', classification: 'Independent Data Controller', responsibility: 'Independently verifies credentials against CAAP/government registries. Maintains own compliance logs. Signs DPA directly with pilot.', basis: 'GDPR Art. 4(7) · Their own ICO registration' },
+                  { party: 'IDfy', classification: 'Independent Data Controller', responsibility: 'Independently confirms training hours with flight schools. Cross-checks Veremark results. Signs DPA directly with pilot.', basis: 'GDPR Art. 4(7) · Their own regulatory registration' },
+                ] as {party:string;classification:string;responsibility:string;basis:string}[]).map((row, i) => (
+                  <tr key={row.party} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-slate-100">{row.party}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.classification}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.responsibility}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.basis}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Five Architectural Fixes</h3>
+
+          <div className="space-y-4 mb-8">
+            {([
+              {
+                n: '1', title: 'Joint Controller Agreement (GDPR Art. 26)', color: '#34d399',
+                body: 'A transparent Joint Controller Agreement must be in place between PilotRecognition and the pilot — defining which party controls which aspect of processing. Pilot controls: data sharing decisions. PilotRecognition controls: tokenization infrastructure and marketplace routing. This agreement must be accessible to any pilot on request and must clearly state that the pilot\'s rights (access, erasure, portability, objection) are always honoured by PilotRecognition as the joint controller operating the infrastructure.',
+              },
+              {
+                n: '2', title: 'Explicit Pilot-Commanded Consent on Every Airline Pull', color: '#60a5fa',
+                body: '"Implicit consent" and "legitimate interest" are eliminated from the airline pull flow entirely. Every single identity verification request by an airline requires a separate, timestamped, explicit approval action from the pilot — via push notification and email. The pilot taps APPROVE or DECLINE. No approval = no check runs. No data moves. This satisfies GDPR Art. 7 and RA 10173 Sec. 12(a) unambiguously — explicit, specific, freely given, withdrawable.',
+              },
+              {
+                n: '3', title: 'Controller-to-Controller Agreements with Veremark and IDfy', color: '#f87171',
+                body: 'Veremark and IDfy are not sub-processors — they are Independent Data Controllers with their own legal obligations, registry access agreements, and compliance requirements. The legal agreements between PilotRecognition and each provider must be Controller-to-Controller agreements, not sub-processor DPAs. Each provider signs a separate DPA directly with the pilot at the moment of check initiation.',
+              },
+              {
+                n: '4', title: 'Binary Proof Tokens Only — No Personal Data Strings', color: '#fbbf24',
+                body: 'Cryptographic tokens containing personal data strings (e.g. "CAAP License 155660-CPL, valid until Oct 2030") are Pseudonymised Personal Data under GDPR and RA 10173 — not anonymous. The token architecture must expose only binary proofs: is_license_valid = TRUE, is_medical_current = FALSE, training_hours_confirmed = TRUE. The underlying personal data remains exclusively with Veremark and IDfy. PilotRecognition passes the proof, not the record.',
+              },
+              {
+                n: '5', title: 'Token Soulbound Architecture — Non-Transferable, Non-Financial, Utility-Only', color: '#a78bfa',
+                body: 'Tokens that can be traded, sold, fractioned, or monetised on secondary markets immediately trigger SEC Philippines, UAE SCA, and BSP securities regulations. Every token issued by PilotRecognition must be: (a) non-transferable — bound to the pilot\'s identity, cannot be assigned to another pilot; (b) non-tradable — no secondary market, no sale mechanism; (c) non-financial — zero monetary value, no yield, no reward attached; (d) utility-only — identity verification purpose exclusively. These four conditions must be embedded in the technical token architecture and explicitly stated in the platform Terms.',
+              },
+            ] as {n:string;title:string;color:string;body:string}[]).map((item) => (
+              <div key={item.n} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <div className="flex items-start gap-3">
+                  <span className="font-bold text-lg flex-shrink-0" style={{color: item.color}}>{item.n}.</span>
+                  <div>
+                    <p className="font-bold text-slate-900 mb-2">{item.title}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{item.body}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Regulatory Registration Costs — What the Joint Controller Architecture Actually Costs</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">There is no special fee for the word "Joint." Regulators do not charge extra for sharing data controllership with pilots. The Joint Controller designation is simply a legal relationship defined in Terms of Service, Privacy Policy, and Data Processing Agreements. You register under the standard <strong>Controller</strong> category — not a special joint category. Total baseline regulatory cost across all jurisdictions: <strong>under $1,000 combined.</strong></p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Jurisdiction</th>
+                <th className="text-left px-4 py-2 font-semibold">Registration Body</th>
+                <th className="text-left px-4 py-2 font-semibold">Registration Type</th>
+                <th className="text-left px-4 py-2 font-semibold">Cost</th>
+                <th className="text-left px-4 py-2 font-semibold">Timing</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { j: 'Joint Controller Designation', b: 'N/A', r: 'Legal relationship only — defined in T&Cs, Privacy Policy, DPAs', c: '$0', t: 'At launch — document drafting only' },
+                  { j: 'Philippines', b: 'National Privacy Commission (NPC)', r: 'Personal Information Controller (PIC) — RA 10173 Sec. 46', c: '~₱1,000 (~$18)', t: 'Before first Veremark check runs on any Filipino pilot' },
+                  { j: 'UAE (DIFC)', b: 'Commissioner of Data Protection', r: 'Data Protection Notification — Category II SaaS', c: '$750 initial · $250/year renewal', t: 'At DIFC incorporation or when data processing begins' },
+                  { j: 'EU (GDPR)', b: 'National DPA (per member state)', r: 'No registration fee in most EU states', c: '$0', t: 'Operational compliance only — lawyers, security, DPAs' },
+                  { j: 'UK (UK GDPR)', b: 'Information Commissioner\'s Office (ICO)', r: 'Annual Data Protection Fee — only if UK presence established', c: '£40–£60/year', t: 'Only if UK office or UK-specific processing established' },
+                ] as {j:string;b:string;r:string;c:string;t:string}[]).map((row, i) => (
+                  <tr key={row.j} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-semibold text-slate-100 text-xs">{row.j}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.b}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.r}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-xs" style={{color:'#34d399'}}>{row.c}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.t}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {([
+              {
+                title: 'What the Joint Controller Architecture Saves You',
+                color: 'border-emerald-400 bg-emerald-50',
+                titleColor: 'text-emerald-700',
+                items: [
+                  'NPC fine exposure eliminated: up to ₱5M per violation (RA 10173 Sec. 26)',
+                  'GDPR fine exposure eliminated: up to €20M or 4% global turnover',
+                  'Data breach liability eliminated: no raw data = nothing to leak',
+                  'Securities law exposure eliminated: soulbound utility tokens = no SEC/BSP jurisdiction',
+                  'Data custody liability eliminated: Veremark and IDfy hold it, not you',
+                ],
+              },
+              {
+                title: 'What You Actually Pay',
+                color: 'border-blue-400 bg-blue-50',
+                titleColor: 'text-blue-700',
+                items: [
+                  'NPC (Philippines PIC registration): ~₱1,000 (~$18) one-time',
+                  'DIFC Data Protection Notification: $750 initial + $250/year renewal',
+                  'UK ICO fee (only if UK presence): £40–£60/year',
+                  'Legal drafting (T&Cs, Privacy Policy, DPAs): one-time lawyer cost',
+                  'Total regulatory filing cost: under $1,000 combined across all jurisdictions',
+                ],
+              },
+            ] as {title:string;color:string;titleColor:string;items:string[]}[]).map(col => (
+              <div key={col.title} className={`border-l-4 rounded-r-lg px-5 py-4 ${col.color}`}>
+                <p className={`font-bold text-sm mb-3 ${col.titleColor}`}>{col.title}</p>
+                <ul className="space-y-1">{col.items.map(i => <li key={i} className="text-sm text-slate-700 flex gap-2"><span className="flex-shrink-0 text-slate-400">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The asymmetry:</strong> <span className="text-slate-300">The Joint Controller architecture costs under $1,000 in regulatory filings. The alternative — operating as an unregistered data controller or claiming processor status you cannot defend — exposes the platform to fines that would end the business in one enforcement action. This is not a compliance cost. It is the cheapest insurance policy in the entire budget.</span></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The 10,000-Pilot Regulatory Shield</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">10,000 pilots in the Philippines represents approximately <strong>83% of the entire commercial pilot workforce</strong>. At that scale, the platform is not a startup — it is infrastructure. And the pilot-commanded architecture transforms that scale into a legal shield that no regulator can dismantle without political consequence.</p>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed mb-2"><strong style={{color:'#f87171'}}>The Shield Mechanism:</strong></p>
+            <p className="text-slate-300 text-sm leading-relaxed">If PilotRecognition is built with pilot-commanded, decentralised architecture before reaching scale — any regulatory threat triggers 10,000 pilots saying: <em>"This is my data, held in my personal digital wallet, shared only by my explicit command. PilotRecognition is the radio channel. I am the pilot."</em> Regulators cannot fine a platform for data they do not hold. Regulators cannot prosecute infrastructure for transmitting data that the data subject themselves commanded to move. At 10,000 pilots, aviation unions (PALEA, ALPA international), airlines dependent on the verified pipeline, and ATOs dependent on placement data all have active commercial reasons to defend the platform. The regulatory risk becomes politically untenable.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {([
+              { t: 'Scenario A — Centralised Data (Do Not Build)', color: 'border-red-400 bg-red-50', items: ['Platform holds pilot data on servers', 'Regulator investigates → finds personal data', 'NPC fine: up to ₱5M per violation (RA 10173 Sec. 26)', 'GDPR fine: up to €20M or 4% global turnover', '10,000 pilots lose verified records overnight'] },
+              { t: 'Scenario B — Pilot-Commanded (Build This)', color: 'border-emerald-400 bg-emerald-50', items: ['Pilot holds DID wallet — platform holds receipt IDs only', 'Regulator investigates → finds nothing on platform servers', '10,000 pilots: "Our data is in our wallets. We command it."', 'Regulators have no target', 'Platform trust increases with every regulatory inquiry'] },
+            ] as {t:string;color:string;items:string[]}[]).map(col => (
+              <div key={col.t} className={`border-l-4 rounded-r-lg px-5 py-4 ${col.color}`}>
+                <p className="font-bold text-slate-900 text-sm mb-3">{col.t}</p>
+                <ul className="space-y-1">{col.items.map(i => <li key={i} className="text-sm text-slate-700 flex gap-2"><span className="flex-shrink-0 text-slate-400">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">We Remain Neutral. Your Data Is Never Ours.</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition's legal and architectural position is one of <strong>complete neutrality</strong>. The platform does not hold pilot credentials. Credential data is secured by the <strong>third-party vault</strong> the pilot consents to. Veremark verifies it. PilotRecognition receives only the triangulated token — an outcome signal, not the underlying data. What the platform stores is the equivalent of a pass/fail result, not the exam paper.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This means PilotRecognition is not a data custodian for sensitive credentials. It is a <strong>token display and consent management layer</strong>. The pilot controls three separate consent relationships: with the vault (data storage), with Veremark (verification), and with PilotRecognition (token display to operators). Revoking any one of the three immediately invalidates the token chain.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Third-Party Vault', color: 'text-blue-600', items: ['Holds raw credential data', 'Pilot uploads documents here', 'Pilot signs vault DPA directly', 'Vault carries data custodian liability', 'Sends data to verification provider on pilot consent', 'Selected via competitive procurement process'] },
+              { t: 'Veremark', color: 'text-yellow-600', items: ['Receives data from vault', 'Independently checks CAAP / NBI / registries', 'Issues verification token to PilotRecognition', 'Carries verification provider liability', 'DPA signed between pilot and Veremark', 'Never shares raw data with PilotRecognition'] },
+              { t: 'PilotRecognition', color: 'text-emerald-600', items: ['Receives triangulated token only', 'Stores: status, expiry date, token reference', 'Never stores documents or PII credentials', 'Displays token to pilot and consented operators', 'Manages consent log for operator access', 'Zero credential liability — neutral display layer'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${col.color}`}>{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Pilot Rights', items: ['Revoke vault consent → data deleted from vault', 'Revoke Veremark consent → token invalidated', 'Revoke display consent → token hidden from operators', 'Data export from vault in structured format (GDPR Art. 20)', 'Full audit log of every operator access event', 'Notification when any operator views wallet token'] },
+              { t: 'Compliance Coverage', items: ['GDPR — EU General Data Protection Regulation', 'DPA 2012 — Philippines Data Privacy Act', 'PDPA — Singapore Personal Data Protection Act', 'UAE Federal Decree-Law No. 45 of 2021', 'ICAO Annex 1 — pilot record data standards', 'ISO 27001 alignment for data security management'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-slate-900 bg-slate-900 rounded-r-lg">
+            <p className="text-sm font-bold text-white uppercase tracking-widest mb-2">The Pitch Position</p>
+            <p className="text-slate-300 leading-relaxed italic">"PilotRecognition holds no pilot credentials. Your data is secured by a third-party vault. Veremark verifies it independently with your consent. We display only the triangulated outcome — a token. Not your data. Not our liability. Your control."</p>
+          </div>
+          <div className="my-6 px-5 py-4 border-l-4 border-emerald-500 bg-emerald-50 rounded-r-lg">
+            <p className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-1">Platform Status</p>
+            <p className="text-slate-700 leading-relaxed">Consent infrastructure live. Table: <code className="bg-slate-100 px-1 rounded text-xs">verification_consent_log</code>. Token-only storage confirmed across all <code className="bg-slate-100 px-1 rounded text-xs">verification_checks</code> rows. Triangulation signal comparison logic in development.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* THIRD-PARTY DATA INTEGRATION PROVIDER */}
+          <h2 id="pillar-third-party-vault" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            THIRD-PARTY DATA INTEGRATION PROVIDER
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Vault — Where Pilot Data Lives, Independent of PilotRecognition</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The third-party data integration provider is the <strong>foundational custody layer</strong> of the verification architecture. This provider holds the pilot's raw credential data — documents, scans, license records, medical certificates — in a secure, compliant vault entirely separate from PilotRecognition's infrastructure. The pilot's relationship with this provider is direct and independent. PilotRecognition never has access to the vault contents.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This provider serves two functions simultaneously: <strong>secure data custody</strong> (holding verified documents on behalf of the pilot) and <strong>data integration</strong> (feeding structured credential data to Veremark for independent verification on the pilot's explicit consent). The vault is the source of truth. Veremark checks against registries. PilotRecognition compares the two signals and issues the triangulated token.</p>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-blue-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">Vault Position in the Architecture</p>
+            <p><span className="text-blue-400 font-bold">VAULT</span> <span className="text-slate-500">← pilot uploads documents here (direct relationship)</span></p>
+            <p><span className="text-blue-400 font-bold">VAULT</span> <span className="text-slate-500">→ Veremark (structured data feed, pilot-consented)</span></p>
+            <p><span className="text-blue-400 font-bold">VAULT</span> <span className="text-slate-500">→ PilotRecognition (vault-issued token only, no raw data)</span></p>
+            <p className="mt-2 text-slate-500">Vault never communicates with Veremark on behalf of PilotRecognition.</p>
+            <p className="text-slate-500">Each relationship is governed by a separate DPA signed by the pilot.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'What the Vault Holds', items: ['Pilot license documents (CAAP / GCAA / EASA)', 'Class 1 Medical certificate', 'Passport and national ID scans', 'NBI / criminal clearance documents', 'NTC Radio Operator license', 'Type rating certificates', 'Employment history records', 'Any document the pilot chooses to custody'] },
+              { t: 'What the Vault Provides', items: ['Secure encrypted document storage', 'Structured data feed to Veremark (on consent)', 'Vault-issued token to PilotRecognition', 'Pilot-controlled access management', 'Audit log of all data sharing events', 'Right to erasure — full deletion on pilot request', 'GDPR / DPA PH compliant data handling', 'Independent of any airline or operator'] },
+              { t: 'Vault Selection Criteria', items: ['SOC 2 Type II certified infrastructure', 'Embeddable SDK for seamless pilot experience', 'Direct pilot DPA with no platform liability', 'Token-based API (no raw document exposure)', 'Multi-jurisdiction compliance (GDPR, DPA PH, etc.)', 'Per-GB or usage-based pricing (not per-seat)', 'Selected partner: TBD pre-launch'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Responsibility</th>
+                <th className="text-left px-4 py-2 font-semibold">Vault Provider</th>
+                <th className="text-left px-4 py-2 font-semibold">Veremark</th>
+                <th className="text-left px-4 py-2 font-semibold">PilotRecognition</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { r: 'Holds raw documents', vault: '✓ Yes', veremark: '✓ Yes (their copy)', pr: '✕ Never' },
+                  { r: 'Verifies against registries', vault: '✕ No', veremark: '✓ Yes', pr: '✕ No' },
+                  { r: 'Issues verification token', vault: '✓ Vault token', veremark: '✓ Veremark token', pr: '✕ Receives only' },
+                  { r: 'Compares both tokens', vault: '✕ No', veremark: '✕ No', pr: '✓ Yes — triangulation' },
+                  { r: 'Displays result to pilot/airline', vault: '✕ No', veremark: '✕ No', pr: '✓ Yes — token display' },
+                  { r: 'Carries data custodian liability', vault: '✓ Yes', veremark: '✓ Yes', pr: '✕ Zero' },
+                  { r: 'Pilot signs DPA with', vault: '✓ Directly', veremark: '✓ Directly', pr: '✓ Consent log only' },
+                ] as {r:string;vault:string;veremark:string;pr:string}[]).map((row, i) => (
+                  <tr key={row.r} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-100 font-medium">{row.r}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-blue-300">{row.vault}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-yellow-300">{row.veremark}</td>
+                    <td className={`px-4 py-2 border-b border-slate-700 font-semibold ${row.pr.startsWith('✕') ? 'text-emerald-400' : 'text-slate-300'}`}>{row.pr}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+            <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">Why This Matters Commercially</p>
+            <p className="text-slate-700 leading-relaxed">The vault provider relationship is what allows PilotRecognition to operate as a <strong>data-neutral platform</strong>. Airlines trust the token because it comes from two independent sources. Pilots trust the platform because their data never enters it. Regulators have no basis to classify PilotRecognition as a data controller for credential data — the vault and Veremark hold that liability. This architecture is the legal foundation for global expansion without jurisdiction-by-jurisdiction data compliance registration.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Controller-to-Controller API Flow</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Legacy architectures treat background check providers as sub-processors — receiving raw data, running checks, returning results. This creates joint liability that cannot be defended under GDPR Art. 28 because Veremark and IDfy have their own independent legal obligations, registry access agreements, and compliance requirements. <strong>PilotRecognition treats them as Independent Controllers.</strong> We do not pass raw data back and forth. We pass requests and receive binary receipts.</p>
+
+          <div className="space-y-4 mb-6">
+            {([
+              {
+                provider: 'Veremark Integration',
+                color: '#34d399',
+                steps: [
+                  'Pilot initiates a Professional Qualification check via PilotRecognition UI',
+                  'PilotRecognition passes the check request to Veremark — no raw document transfer',
+                  'Veremark acts as Independent Controller: pings CAAP registry directly under their own regulatory authorisation',
+                  'Veremark holds the raw data log — their infrastructure, their liability',
+                  'PilotRecognition receives only: receipt_id + binary proof (is_license_valid = TRUE / is_medical_current = FALSE)',
+                  'Binary proof stored in Supabase alongside consent timestamp and pilot ID — zero raw credential data',
+                ],
+              },
+              {
+                provider: 'IDfy Integration',
+                color: '#60a5fa',
+                steps: [
+                  'Pilot initiates training hours confirmation — selects flight school from verified ATO list',
+                  'PilotRecognition passes the confirmation request to IDfy — no raw logbook data transfer',
+                  'IDfy acts as Independent Controller: contacts flight school directly under their own data agreements',
+                  'School confirms in their dashboard: hours confirmed, denied, or partially corrected',
+                  'IDfy also cross-checks Veremark results as triangulation failsafe — mismatch flagged for review',
+                  'PilotRecognition receives only: receipt_id + binary proof (training_hours_confirmed = TRUE, confirmed_volume = 200hrs)',
+                ],
+              },
+            ] as {provider:string;color:string;steps:string[]}[]).map((item) => (
+              <div key={item.provider} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <p className="font-bold mb-3" style={{color: item.color}}>{item.provider}</p>
+                <ol className="space-y-1">
+                  {item.steps.map((step, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                      <span className="font-bold flex-shrink-0" style={{color: item.color}}>{i + 1}.</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-6">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">What PilotRecognition Stores in Supabase — The Complete List</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {([
+                { label: 'Stored', color: '#34d399', items: ['Timestamped consent receipt', 'Pilot ID (internal reference)', 'Airline ID (for pathway submissions)', 'Receipt ID from Veremark / IDfy', 'Binary proof result (TRUE / FALSE)', 'Cryptographic signature of approval event', 'Token expiry date'] },
+                { label: 'Never Stored', color: '#f87171', items: ['Raw license documents', 'Passport or ID scans', 'Medical certificate files', 'Logbook pages or raw hour entries', 'CAAP registry query results', 'Personal data strings of any kind', 'Verepass raw credential data'] },
+              ] as {label:string;color:string;items:string[]}[]).map((col) => (
+                <div key={col.label}>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{color: col.color}}>{col.label}</p>
+                  <ul className="space-y-1">
+                    {col.items.map(i => (
+                      <li key={i} className="text-xs text-slate-300 flex gap-2">
+                        <span style={{color: col.color}} className="flex-shrink-0">→</span>{i}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-slate-300 bg-slate-50 rounded-r-lg">
+            <p className="text-sm font-bold text-slate-700 uppercase tracking-widest mb-1">Pre-Launch Action</p>
+            <p className="text-slate-700 leading-relaxed">Vault provider selection and DPA framework to be finalised before platform goes live. Two options under evaluation: (1) single vendor for both vault and verification — lowest integration friction; (2) separate vault provider from verification provider — preferred for institutional credibility and vendor independence. Final selection pending commercial and technical due diligence.</p>
+          </div>
+
+          {/* PUBLIC: Two-Tier Verification Model */}
+          <div className="my-6 p-5 bg-white border border-slate-200 rounded-lg">
+            <p className="text-sm font-bold text-slate-700 uppercase tracking-widest mb-3">How Pilot Data Works: Free vs Recognition+</p>
+            <p className="text-slate-600 mb-4">Two tiers of data integrity. Pilots choose their level of verification based on their career stage and pathway ambitions.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Free Tier — Claimed Credentials</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Pilot manually enters license numbers, flight hours, ratings</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Data stored in PilotRecognition profile only</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Airlines see: <span className="text-amber-600 font-semibold">⚠ Self-reported — unverified</span></li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Best for: Exploring pathways, understanding gaps</li>
+                </ul>
+              </div>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Recognition+ ($99/year) — Verified Credentials</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Pilot uploads actual documents to independent vault</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Documents verified against official registries</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Airlines see: <span className="text-emerald-600 font-semibold">✓ Verified — cleared for fast-track</span></li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Best for: Serious pathway applications, airline recruitment</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm">
+              <p className="text-emerald-400 font-bold mb-2 uppercase tracking-widest">The Upgrade Path</p>
+              <p className="text-slate-300">Free tier pilots can upgrade anytime. Their claimed data becomes "verified" once documents are uploaded and checked. Airlines trust verified pilots more — that's the Recognition+ advantage. No verification = pathway browsing only. Full verification = pathway access + priority matching.</p>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Note: EBT interview videos and training materials are stored separately on PilotRecognition infrastructure, not in the credential vault. Only official documents (licenses, medicals, clearances) require third-party vault storage.</p>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm mt-4">
+              <p className="text-emerald-400 font-bold mb-3 uppercase tracking-widest">The Engine Analogy: How Data Flows</p>
+              <div className="space-y-2 text-slate-300">
+                <p><span className="text-blue-400 font-bold">Fuel Tanks (Storage):</span> The third-party vault holds the raw pilot documents — like fuel tanks hold avgas. Independent, secure, separate from the engine.</p>
+                <p><span className="text-yellow-400 font-bold">Fuel (Pilots):</span> Pilot credentials flow into the vault. Each document is a drop of fuel waiting to be processed.</p>
+                <p><span className="text-orange-400 font-bold">Carburetor (Veremark):</span> The verification engine mixes raw documents with registry checks — CAAP, medical databases, clearance records. It "leans" the mixture: unverified claims burn off, only verified credentials pass through.</p>
+                <p><span className="text-emerald-400 font-bold">Pistons (Pathways):</span> The verified pilots — now a clean, combustible mix — power the pathways. Airlines get only the verified, cleared-for-takeoff candidates.</p>
+              </div>
+              <p className="text-slate-400 mt-3 italic text-xs">PilotRecognition is not the fuel, the tank, or the carburetor. We're the ignition timing — the platform that coordinates when verified pilots meet the right pathways. The verification happens upstream. The value flows downstream.</p>
+            </div>
+          </div>
+
+          {/* INTERNAL: Storage Boundary Clarification */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Storage Architecture</p>
+            <p className="text-sm text-slate-600 mb-4">Clear separation between credential verification (third-party vault) and program content (PilotRecognition infrastructure).</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Content Type</th>
+                    <th className="text-left px-4 py-2 font-semibold">Storage Location</th>
+                    <th className="text-left px-4 py-2 font-semibold">Typical Size</th>
+                    <th className="text-left px-4 py-2 font-semibold">Access Control</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { content: 'Pilot license (CAAP/GCAA/EASA/FAA)', location: 'Third-party vault', size: '~2-3 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'Class 1 Medical certificate', location: 'Third-party vault', size: '~2 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'Passport / National ID', location: 'Third-party vault', size: '~3 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'NBI / Criminal clearance', location: 'Third-party vault', size: '~1-2 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'Type rating certificates', location: 'Third-party vault', size: '~2-3 MB', access: 'Pilot → Veremark → Token' },
+                    { content: 'EBT interview video', location: 'PilotRecognition storage', size: '~150-300 MB', access: 'Program evaluation only' },
+                    { content: 'Training program materials', location: 'PilotRecognition storage', size: '~50-100 MB', access: 'Internal program use' },
+                    { content: 'Employment history docs', location: 'Third-party vault', size: '~1-2 MB', access: 'Pilot → Veremark → Token' },
+                  ] as { content: string; location: string; size: string; access: string }[]).map((row, i) => (
+                    <tr key={row.content} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.content}</td>
+                      <td className={`px-4 py-2 border-b border-slate-200 ${row.location.includes('Third-party') ? 'text-blue-600' : 'text-emerald-600'}`}>{row.location}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.size}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600 text-xs">{row.access}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-slate-500 mt-3 italic">Vault provider pricing based on ~15-50MB per pilot (documents only). Program content stored separately on PilotRecognition infrastructure.</p>
+          </div>
+
+          {/* INTERNAL: Provider Outreach Targets */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Vault Provider Outreach Targets</p>
+            <p className="text-sm text-slate-600 mb-4">Candidates for third-party vault partnership. Contact after UCF review and internal preparation.</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Provider</th>
+                    <th className="text-left px-4 py-2 font-semibold">Strength</th>
+                    <th className="text-left px-4 py-2 font-semibold">Contact</th>
+                    <th className="text-left px-4 py-2 font-semibold">Priority</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { provider: 'IDfy', strength: 'Philippines-based vault, CAAP compliance, local data residency', contact: 'idfy.com/contact', priority: 'High — Philippines launch priority' },
+                    { provider: 'Persona', strength: 'KYC-grade identity vault, embeddable SDK, multi-region', contact: 'partnerships@withpersona.com', priority: 'High — global expansion' },
+                    { provider: 'Jumio', strength: 'Document vault, financial sector standard, multi-region', contact: 'jumio.com/contact-sales', priority: 'High — enterprise ready' },
+                    { provider: 'Onfido', strength: 'GDPR-native, strong EU coverage', contact: 'onfido.com/contact-sales', priority: 'Medium — EU market expansion' },
+                    { provider: 'Veremark Vault', strength: 'Single vendor (already verification partner)', contact: 'Existing Veremark relationship', priority: 'Medium — lowest friction' },
+                    { provider: 'Trulioo', strength: 'Global identity verification + vault', contact: 'trulioo.com/contact', priority: 'Low — evaluate if primary options fail' },
+                  ] as { provider: string; strength: string; contact: string; priority: string }[]).map((row, i) => (
+                    <tr key={row.provider} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.provider}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.strength}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600 text-xs">{row.contact}</td>
+                      <td className={`px-4 py-2 border-b border-slate-200 text-xs ${row.priority.includes('High') ? 'text-red-600 font-semibold' : row.priority.includes('Medium') ? 'text-yellow-600' : 'text-slate-500'}`}>{row.priority}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-slate-500 mt-3 italic">Initial outreach: IDfy (Philippines priority) + Persona/Jumio (global). Local vault for CAAP compliance; global providers for multi-region expansion. Veremark vault as fallback if separate vault proves too complex for September timeline.</p>
+          </div>
+
+          {/* INTERNAL: IDfy Deep Dive — Philippines Vault Partner */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — IDfy Analysis: Philippines Vault Partner</p>
+            <p className="text-sm text-slate-600 mb-4">IDfy stands out as a viable alternative for the platform. As a dedicated Asia-focused identity and data infrastructure provider, their ecosystem natively aligns with the structural, legal, and financial parameters defined for the September launch.</p>
+
+            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+              <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Why IDfy Aligns with Architecture</p>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Compliant Local Data Custody:</strong> IDfy operates dedicated regional entities and local infrastructure, allowing clean isolation and hosting of digital archives within the Philippines. Directly satisfies data residency mandates for CAAP licenses under NPC Data Privacy Act of 2012.</li>
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Zero-Knowledge & Tokenization Infrastructure:</strong> Platform natively supports developer integrations utilizing pre-signed upload URLs and token-based access management. Structure keeps servers free of raw data handling, maintaining desired legal separation.</li>
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Target Commercial Structure:</strong> Unlike transaction-heavy engines, IDfy accommodates B2B enterprise agreements tailored around volume milestones. Flat SaaS infrastructure fee mapping to $1-2/year per pilot target achievable under volume commitments as scale reaches 10,000 users.</li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm mb-4">
+              <p className="text-blue-400 font-bold mb-3 uppercase tracking-widest">Architectural Integration Flow</p>
+              <div className="space-y-1 text-slate-300 font-mono text-xs">
+                <p><span className="text-yellow-400">[Pilot App Frontend]</span> --(1) Request Upload URL--&gt; <span className="text-yellow-400">[Pilot App Backend]</span></p>
+                <p className="pl-8">|</p>
+                <p className="pl-8">(3) Stream File</p>
+                <p className="pl-8">Direct to Vault</p>
+                <p className="pl-8">v</p>
+                <p><span className="text-emerald-400">[IDfy PH Storage Vault]</span> &lt;------(4) Issue Token------ <span className="text-blue-400">[IDfy Core API]</span></p>
+                <p className="pl-8">|</p>
+                <p className="pl-8">(5) Return Secure Token Only</p>
+                <p className="pl-8">v</p>
+                <p><span className="text-slate-500">[Pilot App Database]</span> (Zero raw document touch)</p>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Feature</th>
+                    <th className="text-left px-4 py-2 font-semibold">IDfy</th>
+                    <th className="text-left px-4 py-2 font-semibold">Jumio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { feature: 'Primary Use Case', idfy: 'Localized identity data, verification, & governance', jumio: 'Global real-time identity & biometric verification' },
+                    { feature: 'Data Residency', idfy: 'Localized within the Philippines', jumio: 'Centralized cloud regions (Global nodes)' },
+                    { feature: 'Core Architecture', idfy: 'Supports persistent tokenized asset storage', jumio: 'Ephemeral processing (Transaction verification engine)' },
+                    { feature: 'Pricing Model', idfy: 'Custom enterprise volume pricing tiers', jumio: 'High-cost per-transaction billing ($1-3+ per run)' },
+                  ] as { feature: string; idfy: string; jumio: string }[]).map((row, i) => (
+                    <tr key={row.feature} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.feature}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-emerald-600">{row.idfy}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.jumio}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded p-4">
+              <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-2">Critical Distinction</p>
+              <p className="text-sm text-slate-700">Jumio charges <strong>$1-3+ per verification transaction</strong> — destroys unit economics at scale. IDfy does <strong>flat infrastructure fees</strong> — scales with $99/year pilot subscription model. For 10,000 pilots: Jumio = $10K-30K+ per verification round. IDfy = $10K-20K/year flat.</p>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Contact: emily@idfy.com | Next: Technical DPA review + API error-handling procedures.</p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* PAIN POINTS: THIRD-PARTY DATA VAULT PROVIDERS */}
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Pain Points for Third-Party Data Vault Providers</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Credential vault providers face structural business challenges that make aviation — and the PilotRecognition distribution model — a compelling strategic fit.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { num: '01', title: 'One-Time Verification = One-Time Revenue', desc: 'You verify a passport once, get paid once. The document sits in your vault for years generating nothing. Most credential vaults have <5% annual access rates — 95% of stored data is financial deadweight.' },
+              { num: '02', title: 'Vertical Market Saturation', desc: 'Financial services and crypto exhausted. Aviation is an unpenetrated vertical with high-document complexity — but you have no distribution channel into it. Building airline sales teams is prohibitively expensive.' },
+              { num: '03', title: 'Integration Cost Per Client', desc: 'Each enterprise deployment costs $50K-$150K in engineering for custom data flows and DPA negotiations. Small pilots cannot afford this. You need aggregated demand to amortize integration cost.' },
+              { num: '04', title: 'Liability Concentration Without Offsetting Revenue', desc: 'You hold the risk: GDPR fines, breach liability, DPA violations. Meanwhile, the data owner pays nothing for storage and accesses rarely. Liability-to-revenue ratio is structurally unfavorable.' },
+              { num: '05', title: 'Verification Silos = Incomplete Signal', desc: 'You store documents. Someone else verifies them against registries. You never see the outcome. Your vault has no "verified" dimension — just raw files. Airlines do not trust documents without registry confirmation.' },
+              { num: '06', title: 'Pilot Acquisition Cost', desc: 'Direct B2C acquisition for credential vaults fails. Pilots will not proactively upload documents without a "reason" — pathway access, job applications, airline requirements. You have no demand-side platform.' },
+              { num: '07', title: 'Regulatory Fragmentation by Jurisdiction', desc: 'CAAP. GCAA. EASA. FAA. Each requires different DPA terms, data residency rules, and registry integration patterns. You need a standardization layer that normalizes these variations.' },
+              { num: '08', title: 'Competing Against "Good Enough" Cloud Storage', desc: 'AWS S3 + basic encryption satisfies most naive document storage needs. You compete with $0.023/GB commodity storage. Without a verification outcome layer, your premium pricing is unjustifiable.' },
+              { num: '09', title: 'Vendor Consolidation Pressure', desc: 'Airlines want fewer vendors, not more. "We already use Veremark" — your separate vault becomes "another integration" rather than infrastructure. Without workflow embedding, you are value-engineered out.' },
+              { num: '10', title: 'Data Erasure vs. Retention Conflict', desc: 'GDPR requires deletion on request. Business logic suggests retention for audit trails. You are caught between compliance and commercial utility. A clear custody termination framework clarifies this ambiguity.' },
+            ].map(p => (
+              <div key={p.num} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <div className="flex items-start gap-3">
+                  <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded">{p.num}</span>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800 mb-2">{p.title}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{p.desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm text-slate-300">
+            <p className="text-emerald-400 font-bold mb-4 font-sans text-xs uppercase tracking-widest">How PilotRecognition Addresses These</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { pain: 'One-time revenue', solve: 'Recurring access fees — pilots pay for pathway matching, vault gets per-access revenue share' },
+                { pain: 'Vertical saturation', solve: 'Aviation-specific distribution: direct pilot database access, no sales team required' },
+                { pain: 'Integration cost', solve: 'Single integration → many airlines via PilotRecognition\'s airline network' },
+                { pain: 'Liability concentration', solve: 'Zero data at PilotRecognition; liability stays with vault per explicit DPA boundaries' },
+                { pain: 'Verification silos', solve: 'Veremark integration completes the signal; vault + registry = trusted outcome' },
+                { pain: 'Pilot acquisition', solve: '"Upload to apply" trigger: pathway access creates natural upload incentive' },
+                { pain: 'Regulatory fragmentation', solve: 'PilotRecognition handles jurisdiction-specific consent flows; vault provides standardized API' },
+                { pain: 'Cloud storage competition', solve: 'Verification outcome differentiates from dumb storage; worth the premium' },
+                { pain: 'Vendor consolidation', solve: 'Embedded in pilot workflow: vault becomes invisible infrastructure, not a separate vendor' },
+                { pain: 'Erasure conflict', solve: 'Clear custody lifecycle: pilot controls deletion; PilotRecognition only holds access tokens' },
+              ].map((row, i) => (
+                <div key={i} className="flex gap-3 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">→</span>
+                  <div>
+                    <span className="text-slate-400 text-xs">{row.pain}:</span>
+                    <span className="text-slate-200 ml-1">{row.solve}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+            <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">The Pitch to Vault Providers</p>
+            <p className="text-slate-700 leading-relaxed italic">"You hold the documents. Veremark verifies them against registries. We provide the demand layer — pilots who need verified credentials to access pathways. You get recurring revenue from a new vertical without building aviation sales teams. We get clean legal separation that lets us scale globally without jurisdiction-by-jurisdiction data compliance. The pilot gets independent custody with purpose-driven access. Three parties, aligned incentives, zero overlap in liability."</p>
+          </div>
+
+          {/* INTERNAL: Technical Integration Flow */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Technical Integration Flow (Hybrid UX)</p>
+            <p className="text-sm text-slate-600 mb-4"><strong>Recognition+ members only ($99/year).</strong> Seamless pilot experience with zero legal liability. Pilot sees "Upload through our app" — legally, document flows direct to vault.</p>
+
+            <div className="bg-white p-4 rounded-lg border border-slate-200 font-mono text-xs mb-4">
+              <p className="font-bold text-slate-800 mb-2">UPLOAD FLOW (Recognition+ Members Only):</p>
+              <div className="space-y-1 text-slate-600">
+                <p>1. <span className="text-emerald-600 font-semibold">[Recognition+ Check]</span> Verify active subscription before showing upload widget</p>
+                <p>2. Pilot clicks "Upload Documents" in PilotRecognition dashboard</p>
+                <p>3. Frontend requests <span className="text-blue-600">pre-signed upload URL</span> from Vault API</p>
+                <p>4. File streams <span className="text-emerald-600 font-semibold">DIRECT browser → Vault</span> (bypasses our servers)</p>
+                <p>5. Vault returns <span className="text-blue-600">document_token</span> to browser</p>
+                <p>6. Browser sends token (not file) to PilotRecognition backend</p>
+                <p>7. We store: <code className="bg-slate-100 px-1">{'{vault_token: "doc_xyz789", provider: "persona"}'}</code></p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+              <div className="bg-emerald-50 border border-emerald-200 rounded p-3">
+                <p className="text-xs font-bold text-emerald-700 uppercase mb-1">What Pilot Sees</p>
+                <p className="text-xs text-slate-600"><strong>Recognition+:</strong> "Upload your license" widget.<br/><strong>Free tier:</strong> "Upgrade to secure your documents" CTA.</p>
+              </div>
+              <div className="bg-blue-50 border border-blue-200 rounded p-3">
+                <p className="text-xs font-bold text-blue-700 uppercase mb-1">What Actually Happens</p>
+                <p className="text-xs text-slate-600">Direct browser-to-vault transfer via pre-signed URL</p>
+              </div>
+              <div className="bg-amber-50 border border-amber-200 rounded p-3">
+                <p className="text-xs font-bold text-amber-700 uppercase mb-1">Liability Result</p>
+                <p className="text-xs text-slate-600">We hold zero raw data. Zero breach risk. Clean DPA.</p>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-xs text-slate-300 font-mono">
+              <p className="text-emerald-400 font-bold mb-2">API CALL FOR DASHBOARD DISPLAY:</p>
+              <p className="text-slate-400">// When pilot views their verification wallet</p>
+              <p className="mb-2">const status = await vaultApi.checkStatus({'{'}</p>
+              <p className="pl-2">token: pilot.vault_token, <span className="text-slate-500">// "doc_xyz789"</span></p>
+              <p className="pl-2">userId: pilot.id</p>
+              <p>{'}'});</p>
+              <p className="text-slate-400 mt-2">// Returns verification status only — NOT the PDF</p>
+              <p>{'{'} "license": "✓ Verified", "medical": "⚠ Expires 30 days" {'}'}</p>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Key technical requirement: Vault provider must support pre-signed URL generation + embeddable iframe for "view document" functionality.</p>
+          </div>
+
+          {/* INTERNAL: Country-Specific Vault Strategy */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Country-Specific Vault Strategy</p>
+            <p className="text-sm text-slate-600 mb-4">Vault location determined by license issuing country (data residency). Verification provider (Veremark) location independent — Singapore hub can verify any global registry.</p>
+
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-slate-900 text-white">
+                    <th className="text-left px-4 py-2 font-semibold">Pilot License</th>
+                    <th className="text-left px-4 py-2 font-semibold">Vault Location</th>
+                    <th className="text-left px-4 py-2 font-semibold">Compliance Requirement</th>
+                    <th className="text-left px-4 py-2 font-semibold">Provider Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { license: 'CAAP (Philippines)', vault: 'Philippines', compliance: 'DPA Philippines', providers: 'IDfy (local), Persona (multi-region)' },
+                    { license: 'EASA (Europe)', vault: 'EU', compliance: 'GDPR', providers: 'Onfido (EU-native), Persona, Jumio' },
+                    { license: 'FAA (USA)', vault: 'USA', compliance: 'US data residency', providers: 'Persona, Jumio (US regions)' },
+                    { license: 'GCAA (UAE)', vault: 'UAE / Middle East', compliance: 'UAE data protection', providers: 'Persona, Jumio (ME regions)' },
+                    { license: 'CASA (Australia)', vault: 'Australia', compliance: 'Privacy Act 1988', providers: 'Persona, Jumio (APAC)' },
+                  ] as { license: string; vault: string; compliance: string; providers: string }[]).map((row, i) => (
+                    <tr key={row.license} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.license}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-blue-600">{row.vault}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.compliance}</td>
+                      <td className="px-4 py-2 border-b border-slate-200 text-slate-600 text-xs">{row.providers}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm">
+              <p className="text-emerald-400 font-bold mb-3 uppercase tracking-widest">Key Principle</p>
+              <div className="space-y-2 text-slate-300">
+                <p><span className="text-blue-400 font-bold">Vault location = License origin</span> (data residency compliance)</p>
+                <p><span className="text-yellow-400 font-bold">Verification location = Anywhere</span> (Veremark Singapore verifies CAAP, EASA, FAA equally)</p>
+                <p><span className="text-emerald-400 font-bold">Platform layer = Unified</span> (PilotRecognition shows one interface, routes to correct vault by license type)</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Philippines launch strategy: Start with IDfy for CAAP compliance. Add Persona/Jumio multi-region capability for global expansion (EASA, FAA, GCAA). Verification remains Veremark throughout.</p>
+          </div>
+
+          {/* INTERNAL: Two-Tier Data Model */}
+          <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — Two-Tier Data Model (Free vs Recognition+)</p>
+            <p className="text-sm text-slate-600 mb-4">Clear distinction between claimed data (free tier) and verified data (paid tier). Vault storage drives subscription conversion.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Free Tier — Claimed Data</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Pilot manually enters: license number, hours, ratings</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Status shown to airlines: <span className="text-amber-600 font-semibold">⚠ Unverified claim</span></li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>Storage: PilotRecognition database only</li>
+                  <li className="flex gap-2"><span className="text-slate-400">→</span>No vault integration / zero storage cost</li>
+                </ul>
+              </div>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Recognition+ ($99/yr) — Verified Data</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Pilot uploads actual documents via vault widget</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Status shown to airlines: <span className="text-emerald-600 font-semibold">✓ Verified via [Persona/Jumio]</span></li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Storage: Token in our DB, docs in third-party vault</li>
+                  <li className="flex gap-2"><span className="text-emerald-500">→</span>Vault cost: ~$3-5/year per paid pilot</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 p-4 rounded-lg text-sm">
+              <p className="text-emerald-400 font-bold mb-3 uppercase tracking-widest">Strategic Implications for Vault Providers</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+                <div className="flex gap-2 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">1.</span>
+                  <p><strong className="text-slate-100">Not all pilots use storage immediately.</strong> Only Recognition+ conversions (~20-30% of signups) trigger vault costs.</p>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">2.</span>
+                  <p><strong className="text-slate-100">Free tier creates upgrade funnel.</strong> "Verify your claim → Upgrade to Recognition+" CTA drives paid conversions.</p>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <span className="text-emerald-400 flex-shrink-0">3.</span>
+                  <p><strong className="text-slate-100">Vault integration drives subscription.</strong> Secure document storage is core value prop for $99/year tier.</p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-3 italic">Example: 1,000 pilots sign up → ~250 upgrade to Recognition+ → 250 × $4 = $1,000/year vault storage cost. Free tier pilots (750) cost $0 in vault fees.</p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB F GROWTH */}
+          <h1 id="hub-f-growth" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB F — GROWTH &amp; EXPANSION
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Aviation Events · Government Authorities · International Organizations</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub F connects the platform to the broader institutional aviation ecosystem — the events that bring the industry together, the regulatory authorities that govern it, and the international organizations that set its global standards. These stakeholders do not fit neatly into any operational pillar. They sit above the ecosystem, shaping the environment in which every other pillar operates. Integrating them is how the platform scales from a regional tool to a global industry standard.</p>
+
+          <h2 id="pillar-events" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            AVIATION EVENTS &amp; CAREER FAIRS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub F — Growth &amp; Expansion</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Career Fairs Are Still Running on Paper Resumes and QR Codes</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The UAE career fair incident that catalysed this platform is the defining case study for what is wrong with aviation events. A qualified, licensed, motivated pilot approaches a major carrier's stand. He is handed a QR code and told to come back with 1,500 hours. The recruiter is numb to unverified resumes. The pilot has no mechanism to demonstrate that he is different from the 500 other pilots who walked up before him. The outcome is a mutual waste of time, money, and opportunity.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform transforms the career fair from a resume collection exercise into a live pathway matching event. Pilots pre-register on the platform. Their verified Recognition Profile is live before they arrive. Operators see matched candidates — pre-verified, pathway-aligned, Recognition Score visible — and engage with pilots who are genuinely suitable, not just physically present.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'The New Event Format', items: ['No paper resumes: QR code pathway access for every pilot at the event', 'Pre-event matching: pilots matched to relevant operators before arriving', 'Live pathway discovery: operators see verified profiles in real time at their stand', 'Post-event outcome tracking: 6-month hire, interview, and connection measurement'] },
+              { t: 'What Event Organisers Gain', items: ['50% attendance increase: "pre-matched to operators" is a far stronger attendee proposition', '3x better hire rates vs. traditional career fair format', 'Real-time analytics informing future event planning', '"Future of Aviation Recruitment" positioning vs. competitors still running paper-based events'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The UAE transformation:</strong> Instead of "Come back when you have 1,500 hours" → <strong style={{color:'#f87171'}}>"Your profile matched 3 Pathways. Schedule your interviews now."</strong></p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-government" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            GOVERNMENT AVIATION AUTHORITIES
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub F — Growth &amp; Expansion</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Regulators Still Audit on Paper in a Digital Industry</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">CAAP, FAA, EASA, GCAA — every national aviation authority in the world runs pilot credential verification on a combination of paper submissions, manual database queries, and self-declared logbook entries. The compliance process is slow, error-prone, and structurally vulnerable to fraud. An airline hiring a pilot with a forged Class 1 medical certificate has no real-time mechanism to detect the forgery at the point of hire. A regulator auditing a charter operator's pilot records does so manually, weeks after the fact, against documents that were already outdated when submitted.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform provides the regulatory infrastructure upgrade the industry has been waiting for: a cryptographically verified, real-time pilot credential database that regulators can query at the point of compliance, not weeks after it matters.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Requirements', items: ['Real-time license status verification API (read access)', 'Medical certificate validation feed from AME-linked records', 'Recognition of platform as official competency verification channel', 'Standardised data formats enabling cross-border pilot mobility'] },
+              { t: 'What Authorities Gain', items: ['83% reduction in compliance audit time: 120 hours → 20 hours per inspection', 'Fraud prevention: cryptographic verification eliminates credential forgery', 'International pilot mobility: standardised data enables seamless cross-border transfers', 'Data-driven policy: platform insights inform regulatory decision-making with live market data'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          <h2 id="pillar-international-orgs" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            INTERNATIONAL AVIATION ORGANIZATIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub F — Growth &amp; Expansion</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">IATA, ICAO, and the Global Standard Problem</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">ICAO sets the global standards for pilot licensing, medical certification, and competency assessment. IATA represents the commercial interests of the world's airlines. Both organisations operate on data that is years old by the time it informs policy. ICAO's EBT framework was groundbreaking when published — but its implementation across member states is inconsistent, unverifiable, and disconnected from the digital infrastructure pilots actually use. IATA's safety and workforce data relies on member airline submissions that are partial, delayed, and incompatible across systems.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform does not compete with international organisations — it provides the data layer they have never had. Real-time, anonymised, globally aggregated pilot competency data, pathway demand curves, licensing gap analysis by region, and EBT benchmark distributions. This is the dataset that makes global aviation workforce policy evidence-based rather than estimate-based.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[
+              { t: 'Integration Path', items: ['Anonymous aggregate platform data available to ICAO/IATA research bodies', 'EBT benchmark data feeding into global competency standard reviews', 'Pilot shortage data broken down by region, licence level, and sector', 'Cross-border licensing mobility data for bilateral agreement frameworks'] },
+              { t: 'What International Bodies Gain', items: ['First real-time, globally aggregated pilot workforce dataset', 'Evidence-based policy development replacing delayed survey data', 'EBT implementation verification: measure whether the standard is actually working', 'Influence: platform data becomes the industry reference for workforce planning'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* HUB G DISCOVERY */}
+          <h1 id="hub-g-discovery" className="text-4xl font-bold text-slate-900 mt-12 mb-3 pb-4 border-b-2 border-slate-900 scroll-mt-24">
+            HUB G — DIGITAL DISCOVERY
+          </h1>
+          <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Search · Professional Networks · Job Boards · AI Platforms · The Discovery Layer</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Every pilot journey begins with a search. Before a pilot contacts an airline, enrolls in flight school, or commits to a type rating — they search. They ask Google. They scroll LinkedIn. They query an AI assistant. They browse aviation job boards. The problem is that every search returns fragmented, unverified, contradictory information. Hub G is the platform's answer to that problem: structured, verified aviation career data embedded at the point of discovery, wherever that discovery happens.</p>
+
+          <h2 id="pillar-25-discovery" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 25: DIGITAL DISCOVERY &amp; SEARCH PLATFORMS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub G — Digital Discovery</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Aviation Career Information Is the Most Misinformed Category on the Internet</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A search for "Emirates pilot requirements" returns 50 different answers. None are verified by the airline. Most are outdated. Several contain requirements that no longer apply. Professional networks show pilot job posts that closed months ago. Job boards list opportunities without context about actual pathway requirements. AI assistants confidently answer aviation career questions with information scraped from forums that haven't been updated since 2019. The result: pilots make expensive training decisions based on misinformation, and airlines continue receiving applications from pilots who have no realistic chance of meeting the requirements they were never accurately told about.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Pillar 25 solves this by creating a structured data partnership between the platform and the world's discovery infrastructure. Instead of fragmented forum answers, pilots find verified, live pathway data directly in search results, career panels, and AI responses. The platform becomes the authoritative source for aviation career data across every discovery channel.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Search Platforms', items: ['Structured pathway schema markup (JobPosting + OccupationalCertification)', 'Career pathway panels displaying verified pilot requirements', 'Knowledge graph integration as authoritative aviation career source', 'Voice search: virtual assistants answer "What do I need to become an Emirates pilot?" with verified data'] },
+              { t: 'Professional Networks', items: ['Recognition Score and verified credentials displayed on pilot profiles', 'Pathway cards published as structured opportunities with live requirements', 'AI career assistant trained on verified platform data', 'Direct integration with aviation career search features'] },
+              { t: 'Aviation-Specific Platforms', items: ['Real-time pathway requirement sync: no more outdated job posts', 'API integration for live pathway data in aviation job boards', 'Framework data powering airline requirement databases', 'Reddit/Discord bot integration providing framework-backed answers to career questions'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Discovery Flywheel:</strong> When a pilot searches "how to become an Emirates pilot" and finds verified, structured pathway data from the platform — they click through, create a profile, and enter the ecosystem. <strong style={{color:'#f87171'}}>Hub G is where the platform's network effect begins. Every discovery that returns verified data instead of forum speculation is a future pilot entering the verified pipeline.</strong></p>
+          </div>
+
+          <hr className="my-8 border-slate-200" />
+
+          {/* PLATFORM LEGAL MODEL & REVENUE STRUCTURE */}
+          <h2 id="pillar-platform-legal-model" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PLATFORM LEGAL MODEL &amp; REVENUE STRUCTURE
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Foundational Framework · Commercial Architecture · Legal Positioning</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">What PilotRecognition Actually Is — A Domain, Not a Corporation</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition is a <strong>general platform</strong> — a domain that aggregates, structures, and displays reputable information across all UCF pillars. It is not a data company, a verification company, a staffing agency, or a financial institution. It is a <strong>neutral information and consent management layer</strong> operated through contracts with specialist providers who perform every functional role.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This model means the platform does not require traditional business establishment in every jurisdiction it operates. The legal entity is minimal. The liability exposure is minimal. The operational complexity is minimal. What the platform does require — and what it charges for — is <strong>access to structured, verified, aggregated aviation career data</strong> that no other single source provides.</p>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">What the Platform Is and Is Not</p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A domain publishing structured aviation career framework data</span></p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A consent management layer connecting pilots to vault + Veremark</span></p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A token display surface showing triangulated verification outcomes</span></p>
+            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A pathway matching interface between pilots and operators</span></p>
+            <p className="mt-2"><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A data custodian for pilot credentials</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A verification provider</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A staffing or recruitment agency</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A financial institution or payments processor</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">Liable for the accuracy of third-party verification outcomes</span></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Sequential Accountability Protocol (Liability Chain)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform architecture establishes a structured liability cascade ensuring that accountability flows to the originating data source rather than accumulating at the aggregation layer. When discrepancies, verification failures, or data quality issues emerge, the platform operates under a sequential referral mechanism that routes liability inquiry through the verification chain to the primary attestor.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Referral Chain Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Level 1 — Platform:</strong> Receives inquiry regarding data accuracy or verification outcome. Response: "The platform functions as a neutral aggregation layer. Verification services are performed by specialist providers under direct contract with participants. Refer inquiry to Veremark (verification provider)."</p>
+              <p><strong>Level 2 — Verification Provider (Veremark):</strong> Receives inquiry regarding background check accuracy. Response: "Verification outcomes are based on data submitted by hiring operators and training institutions. Refer inquiry to the data-submitting airline or operator."</p>
+              <p><strong>Level 3 — Commercial Operator:</strong> Receives inquiry regarding placement data or hiring outcomes. Response: "Operator assessments are conducted based on credentials issued by manufacturer-affiliated training centers and ATO verification nodes. Refer inquiry to the issuing flight school or training center."</p>
+              <p><strong>Level 4 — Manufacturer / Flight School:</strong> Receives inquiry as the original attestor. Response: "This institution is the primary source of the contested data (hours, competency assessments, placement claims). Accountability rests with the originating entity per their Verification Node agreement."</p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Legal Outcome:</strong> Because every data element in the platform is cryptographically signed by its originating entity (flight school, operator, verification provider), liability cannot aggregate at the platform layer. The platform's role is limited to displaying triangulated outcomes from independently warranted sources. Each participant in the ecosystem contractually warrants the accuracy of their own submissions. The pilot, as data owner, controls which attestations appear in their Professional Standing Asset and bears ultimate responsibility for the veracity of their claimed credentials.</p>
+
+          <p className="text-slate-700 leading-relaxed mb-4">This architecture ensures that the platform is structurally incapable of being held liable for data quality because the platform itself generates no data — it only displays what independent, warranting parties have submitted. The Sequential Accountability Protocol transforms platform liability from a legal risk into a contractual impossibility.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Administrative Fee Structure for Legal Inquiries</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Sequential Accountability Protocol operates as a monetized administrative service. Each entity in the referral chain may assess fees for legal review, record retrieval, and attestation verification. This ensures that frivolous or unsubstantiated claims face economic disincentives while legitimate grievances receive proper administrative attention. Standard fee structures apply at each protocol level:</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Standard Administrative Fee Schedule</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Level 1 — Platform:</strong> Initial inquiry intake and liability chain routing: <strong>$500-2,000</strong> per matter. Includes case assessment, originating attestor identification, and Signed Liability Chain Report generation.</p>
+              <p><strong>Level 2 — Verification Provider:</strong> Background check record retrieval and accuracy warranty review: <strong>$1,000-3,000</strong> per subpoena or record request.</p>
+              <p><strong>Level 3 — Commercial Operator:</strong> Placement data audit and credential verification review: <strong>$2,000-5,000</strong> per inquiry.</p>
+              <p><strong>Level 4 — Originating Attestor:</strong> Primary source record verification, hours/competency audit: <strong>$1,500-4,000</strong> per attestation review.</p>
+              <p><strong>Full Chain Documentation:</strong> Comprehensive Signed Liability Chain Report with all cryptographic signatures and attestations: <strong>$5,000-10,000</strong>.</p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Economic Deterrent Effect:</strong> The cumulative administrative cost of pursuing a claim through the full Sequential Accountability Protocol ($10,000-24,000) ensures that only substantiated grievances with legitimate merit proceed beyond initial inquiry. This protects ecosystem participants from frivolous litigation while creating a revenue stream for legitimate administrative services. The platform and all participating providers reserve the right to assess these fees regardless of claim outcome or merit.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Universal Liability Chain (All 25 Pillars)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Sequential Accountability Protocol operates uniformly across all UCF pillars. Every data type has a defined liability pathway ensuring accountability routes to the original attestor, not the aggregation layer.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">HUB A — Aviation Operators & Training</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>P1: Commercial Airlines</strong> — Dispute: "Pilot wasn't qualified" → <em>Final: ATO (issued competency tokens)</em></p>
+              <p><strong>P2: Cargo & Freight</strong> — Dispute: "Pilot failed heavy jet transition" → <em>Final: Simulator Provider (certified proficiency)</em></p>
+              <p><strong>P3: Charter & Business</strong> — Dispute: "SIC hire washed out" → <em>Final: Pilot (owns Professional Standing Asset)</em></p>
+              <p><strong>P4: Emerging/AAM</strong> — Dispute: "eVTOL operator lacked certs" → <em>Final: OEM Training Center</em></p>
+              <p><strong>P5: Flight Training</strong> — Dispute: "Hours were falsified" → <em>Final: ATO Verification Node</em></p>
+              <p><strong>P6: Type Rating Centers</strong> — Dispute: "Simulator time didn't match logbook" → <em>Final: Simulator Center (hardware logs)</em></p>
+              <p><strong>P7: Universities</strong> — Dispute: "Degree claims inaccurate" → <em>Final: Registrar (issued academic credentials)</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">HUB B/C — Capital, Risk & Compliance</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>P8: Banking</strong> — Dispute: "Loan default on falsified placement data" → <em>Final: Institution (submitted placement metrics)</em></p>
+              <p><strong>P9: Insurance</strong> — Dispute: "Incident with pilot using fake hours" → <em>Final: ATO (issued Verification Node tokens)</em></p>
+              <p><strong>P10: Regulatory</strong> — Dispute: "Compliance data inaccurate" → <em>Final: Authority (issued official certificate)</em></p>
+              <p><strong>P13: Aeromedical</strong> — Dispute: "Medical cert expired but pilot flew" → <em>Final: AME (issued Class 1 certification)</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">HUB D/E/F/G — Infrastructure, Community, Growth</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>P11: Verification</strong> — Dispute: "Background check was wrong" → <em>Final: Verification Provider (warrants accuracy)</em></p>
+              <p><strong>P12: Flight Data</strong> — Dispute: "Telemetry data incorrect" → <em>Final: FL.io/ADS-B Provider</em></p>
+              <p><strong>P14: Mentors</strong> — Dispute: "Mentorship hours weren't logged" → <em>Final: Mentor (submitted attestation)</em></p>
+              <p><strong>P15: Manufacturers</strong> — Dispute: "Type rating competency overstated" → <em>Final: Manufacturer (issued credential)</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Pattern: Where Liability Always Lands</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Flight hours:</strong> ATO/Flight School → <em>Cryptographic Signer: ATO Verification Node</em></p>
+              <p><strong>Medical status:</strong> Aeromedical Examiner → <em>Cryptographic Signer: AME (Pillar 13)</em></p>
+              <p><strong>Background check:</strong> Veremark/HireRight → <em>Cryptographic Signer: Verification Provider (Pillar 11)</em></p>
+              <p><strong>Type rating:</strong> Simulator Center → <em>Cryptographic Signer: TRC (Pillar 6)</em></p>
+              <p><strong>Academic degree:</strong> University/Academy → <em>Cryptographic Signer: Registrar</em></p>
+              <p><strong>Operator placement:</strong> Commercial Airline → <em>Cryptographic Signer: Airline HR (Pillar 1)</em></p>
+              <p><strong>Insurance risk score:</strong> Insurance Underwriter → <em>Cryptographic Signer: Underwriter (Pillar 9)</em></p>
+              <p><strong>Credit/loan performance:</strong> Financial Institution → <em>Cryptographic Signer: Bank (Pillar 8)</em></p>
+              <p><strong>Competency tokens:</strong> Manufacturer/OEM → <em>Cryptographic Signer: OEM Training (Pillar 15)</em></p>
+              <p><strong>Profile content:</strong> Individual Pilot → <em>Cryptographic Signer: Pilot (private key owner)</em></p>
+            </div>
+          </div>
+
+          <h3 id="pillar-legal-inquiry-fees" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">Legal & Administrative Services Revenue (Detailed)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The Sequential Accountability Protocol generates revenue at every level of the liability chain. This transforms legal protection into a profit center while maintaining the platform's neutral positioning.</p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Level</th>
+                  <th className="text-left px-4 py-2 font-semibold">Service</th>
+                  <th className="text-left px-4 py-2 font-semibold">Fee Range</th>
+                  <th className="text-left px-4 py-2 font-semibold">Est. Volume (Y1)</th>
+                  <th className="text-left px-4 py-2 font-semibold">Revenue</th>
+                </tr>
+              </thead>
+              <tbody className="text-slate-700">
+                <tr className="border-b border-slate-200"><td className="px-4 py-2"><strong>Level 1</strong></td><td className="px-4 py-2">Initial inquiry intake, liability chain routing</td><td className="px-4 py-2">$500-2,000</td><td className="px-4 py-2">50 inquiries</td><td className="px-4 py-2">$75,000</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2"><strong>Level 2</strong></td><td className="px-4 py-2">Verification record retrieval (Veremark)</td><td className="px-4 py-2">$1,000-3,000</td><td className="px-4 py-2">30 inquiries</td><td className="px-4 py-2">$60,000</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2"><strong>Level 3</strong></td><td className="px-4 py-2">Placement data audit, credential review</td><td className="px-4 py-2">$2,000-5,000</td><td className="px-4 py-2">20 inquiries</td><td className="px-4 py-2">$70,000</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2"><strong>Level 4</strong></td><td className="px-4 py-2">Primary source verification, hours audit</td><td className="px-4 py-2">$1,500-4,000</td><td className="px-4 py-2">15 inquiries</td><td className="px-4 py-2">$41,250</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2"><strong>Full Chain</strong></td><td className="px-4 py-2">Comprehensive report with all signatures</td><td className="px-4 py-2">$5,000-10,000</td><td className="px-4 py-2">10 cases</td><td className="px-4 py-2">$75,000</td></tr>
+                <tr className="bg-slate-900 text-white"><td className="px-4 py-2 font-bold" colSpan={4}>Legal Services Subtotal</td><td className="px-4 py-2 font-bold">$321,250</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Triple Win Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Platform:</strong> Protection + administrative routing fees per inquiry</p>
+              <p><strong>Ecosystem Providers:</strong> Cost recovery for record retrieval and verification</p>
+              <p><strong>Legitimate Claimants:</strong> Full accountability chain if claim has merit</p>
+              <p><strong>Frivolous Claims:</strong> Economic screening ($10,000-24,000 to reach liable party)</p>
+            </div>
+          </div>
+
+          <h3 id="pillar-credential-chain" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">Example: Full Liability Chain Cost Structure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A dispute over pilot credentials demonstrates how the Sequential Accountability Protocol operates as an economic screening mechanism. Each entity in the chain assesses administrative fees for record retrieval and verification routing:</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <p className="text-slate-400 mb-2">// Example: Credential Verification Dispute</p>
+            <div className="space-y-1 text-slate-300">
+              <p><span className="text-emerald-400">Level 1:</span> Platform <span className="text-slate-500">→</span> Case intake, attestor identification <span className="text-amber-400">$500</span></p>
+              <p><span className="text-emerald-400">Level 2:</span> Verification Provider <span className="text-slate-500">→</span> Background check records <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 3:</span> Regulatory Authority <span className="text-slate-500">→</span> License verification records <span className="text-amber-400">$3,000</span></p>
+              <p><span className="text-emerald-400">Level 4:</span> Type Rating Organization <span className="text-slate-500">→</span> Simulator/competency records <span className="text-amber-400">$2,000</span></p>
+              <p><span className="text-emerald-400">Level 5:</span> Flight School <span className="text-slate-500">→</span> Training hour verification <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 6:</span> Individual Pilot <span className="text-slate-500">→</span> Final attestor (no fee, owns data)</p>
+            </div>
+            <p className="text-slate-400 mt-3 pt-3 border-t border-slate-700">Total to reach liable party: <span className="text-red-400 font-bold">$8,500+</span> in administrative fees</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Structural Protection:</strong> By the time a claimant pays to traverse the full chain, one of three outcomes occurs:</p>
+          <ol className="list-decimal list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li><strong>Budget exhaustion:</strong> Claimant abandons pursuit due to cumulative costs exceeding claim value</li>
+            <li><strong>Intermediate settlement:</strong> Dispute resolves with a mid-chain entity (flight school, type rating org) rather than reaching the platform</li>
+            <li><strong>Merit validation:</strong> Only substantiated claims with genuine evidence proceed to final attestor</li>
+          </ol>
+          <p className="text-slate-700 leading-relaxed mb-6"><strong>Why this strengthens trust:</strong> The fee structure ensures that only verified, warrantied data appears on the platform. Every entity in the chain has cryptographic skin in the game — their signature is their bond. The platform displays only what independent, warranting parties have submitted under contractual attestation. This is not "pay-to-play" — it is "verify-or-be-liable" enforced through cryptographic accountability.</p>
+
+          <h3 id="pillar-financial-chain" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">Example: Financial & Risk Assessment Chain</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Disputes involving financial underwriting or insurance risk assessments follow a parallel liability pathway through the capital and compliance hubs:</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <p className="text-slate-400 mb-2">// Example: Training Loan Default Dispute</p>
+            <div className="space-y-1 text-slate-300">
+              <p><span className="text-emerald-400">Level 1:</span> Platform <span className="text-slate-500">→</span> Data routing, attestor mapping <span className="text-amber-400">$500</span></p>
+              <p><span className="text-emerald-400">Level 2:</span> Financial Institution <span className="text-slate-500">→</span> Loan underwriting records <span className="text-amber-400">$2,500</span></p>
+              <p><span className="text-emerald-400">Level 3:</span> Insurance Underwriter <span className="text-slate-500">→</span> Risk assessment documentation <span className="text-amber-400">$2,000</span></p>
+              <p><span className="text-emerald-400">Level 4:</span> Placement Data Provider <span className="text-slate-500">→</span> Employment outcome verification <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 5:</span> Flight School <span className="text-slate-500">→</span> Training completion records <span className="text-amber-400">$1,500</span></p>
+              <p><span className="text-emerald-400">Level 6:</span> Individual Pilot <span className="text-slate-500">→</span> Borrower/consenting party</p>
+            </div>
+            <p className="text-slate-400 mt-3 pt-3 border-t border-slate-700">Total to reach liable party: <span className="text-red-400 font-bold">$8,000+</span> in administrative fees</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Cross-Hub Liability Routing:</strong> Financial disputes traverse through Capital Hub (Pillar 8), Risk Hub (Pillar 9), and Training Hub (Pillar 5) before reaching the individual. Each hub maintains independent cryptographic signatures on their data contributions:</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-6 ml-4">
+            <li><strong>Banking records:</strong> Financial institution warrants loan performance data</li>
+            <li><strong>Risk assessments:</strong> Insurance provider warrants underwriting calculations</li>
+            <li><strong>Placement metrics:</strong> Operator warrants employment outcome claims</li>
+            <li><strong>Training records:</strong> ATO warrants competency and hour attestations</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform aggregates these warrantied data points to generate composite scores (Creditworthiness Index, Risk Score, Placement Probability) but never generates the underlying data. Each score component traces to an independent cryptographic signature from the originating entity. This multi-source triangulation ensures that no single point of failure can compromise data integrity — and no single entity can be held liable for composite outcomes.</p>
+
+          <h3 id="pillar-verification-depth" className="text-xl font-bold text-slate-800 mt-8 mb-4 scroll-mt-24">The Liability Chain as Verification Depth Indicator</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The number of pillars a dispute must traverse is not a liability weakness — it is a <strong>verification strength indicator</strong>. Every additional hop in the Sequential Accountability Protocol represents an additional layer of independent attestation that the data has already passed through.</p>
+
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">Verification Depth = Liability Chain Length</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Single-source platforms:</strong> 1-2 hops to liable party → $500-1,500 dispute cost → <em>Indicates minimal verification layers, higher data risk</em></p>
+              <p><strong>PilotRecognition:</strong> 5-6 hops to liable party → $8,000-24,000 dispute cost → <em>Indicates multiple independent attestations, higher data reliability</em></p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4">When an airline views a pilot's Professional Standing Asset on PilotRecognition, they are not seeing "platform data" — they are seeing data that has already survived scrutiny from:</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li><strong>Training verification</strong> (ATO/competency attestor)</li>
+            <li><strong>Regulatory verification</strong> (licensing authority)</li>
+            <li><strong>Background verification</strong> (screening provider)</li>
+            <li><strong>Employment verification</strong> (prior operators)</li>
+            <li><strong>Financial verification</strong> (underwriting institution, if applicable)</li>
+            <li><strong>Risk verification</strong> (insurance assessment, if applicable)</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-4">Each of these entities has independently cryptographically signed their attestation. The liability chain length directly correlates with verification depth: <strong>the more expensive a claim is to pursue, the more layers of verification the data has already undergone.</strong></p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Competitive Moat</p>
+            <p className="text-sm text-slate-700 mb-2">Competitors offering "cheaper dispute resolution" are advertising their verification shallowness. A $500 dispute cost means the platform holds the data directly with minimal third-party attestation — meaning <em>they</em> are the liable party when the data is wrong.</p>
+            <p className="text-sm text-slate-700">PilotRecognition's $8,000-24,000 dispute cost signals to operators: <strong>this data has been battle-tested through multiple independent warranting parties.</strong> The cost is the proof of quality.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Platform Legal Positioning Summary</h3>
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">What the Platform IS:</p>
+            <p>• A domain publishing structured aviation career framework data</p>
+            <p>• A consent management layer connecting pilots to vault + Veremark</p>
+            <p>• A token display surface showing triangulated verification outcomes</p>
+            <p>• A pathway matching interface between pilots and operators</p>
+            <p>• A neutral aggregation and communication layer</p>
+            <p className="mt-3 text-red-400 font-bold mb-1 font-sans text-xs uppercase tracking-widest">What the Platform IS NOT:</p>
+            <p className="text-slate-400">✗ A data custodian for pilot credentials (handled by Vault provider)</p>
+            <p className="text-slate-400">✗ A verification provider (handled by Veremark)</p>
+            <p className="text-slate-400">✗ A staffing or recruitment agency</p>
+            <p className="text-slate-400">✗ A financial institution or payments processor (handled by Stripe)</p>
+            <p className="text-slate-400">✗ Liable for the accuracy of third-party verification outcomes</p>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">The Kill Shot: Platform's Standard Response</p>
+            <p className="text-sm text-slate-700 italic">"PilotRecognition functions as a neutral aggregation and communication layer. Every data element displayed on the platform is cryptographically signed by an independent third party under contractual warranty. The platform does not generate, modify, or verify data — it only routes third-party attestations to their intended recipients. Refer all inquiries regarding data accuracy to the originating attestor identified by cryptographic signature in the pilot's Professional Standing Asset."</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Strategic Positioning: Switzerland Neutrality</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The "Switzerland" neutrality is the legal shield — by explicitly NOT performing regulated activities and only acting as an information/aggregation layer, the platform avoids the specialized licensing requirements that would apply to actual flight schools, banks, or recruitment agencies.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Result:</strong> Structural invincibility through:</p>
+          <ol className="list-decimal list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li>Cryptographic signatures creating audit trails</li>
+            <li>Contractual warranties at every level</li>
+            <li>Platform never being the "author" — only the "publisher"</li>
+            <li>Safe harbor provisions (like Section 230) architected through cryptography</li>
+          </ol>
+          <p className="text-slate-700 leading-relaxed mb-6">The platform is 4-6 hops removed from any liability, and by the time a plaintiff reaches the original attestor, they've either run out of legal budget, settled with the flight school/airline, or realized the platform has zero assets to seize.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Verdict: Legal Standing</h3>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-4">
+            <p className="text-sm text-slate-700 mb-2"><strong className="text-emerald-700">✓ Structurally untouchable for data liability</strong> — cannot be sued because "the hours were wrong."</p>
+          </div>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>Operationally touchable for:</strong></p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li>Security breaches</li>
+            <li>Platform failures (bugs, negligence)</li>
+            <li>Privacy violations (GDPR)</li>
+            <li>Contract disputes (breach of $100/yr terms)</li>
+          </ul>
+          <p className="text-slate-700 leading-relaxed mb-6"><strong>Overall assessment:</strong> As close to "legally untouchable" as an aggregation platform can be, but not invincible. Maintain neutrality, don't editorialize, keep security tight.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Comprehensive Revenue Architecture</h3>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Revenue Stream</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y1 Conservative</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y1 Stretch</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y2 Target</th>
+                  <th className="text-left px-4 py-2 font-semibold">Y3 Target</th>
+                </tr>
+              </thead>
+              <tbody className="text-slate-700">
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">Programs & Campus</td><td className="px-4 py-2">$307,000</td><td className="px-4 py-2">$450,000</td><td className="px-4 py-2">$1.5M</td><td className="px-4 py-2">$5M</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2">Recognition Plus</td><td className="px-4 py-2">$297,000</td><td className="px-4 py-2">$500,000</td><td className="px-4 py-2">$2M</td><td className="px-4 py-2">$8M</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">Premium Pathways</td><td className="px-4 py-2">$99,500</td><td className="px-4 py-2">$200,000</td><td className="px-4 py-2">$800K</td><td className="px-4 py-2">$3M</td></tr>
+                <tr className="border-b border-slate-200 bg-slate-50"><td className="px-4 py-2">Enterprise Operators</td><td className="px-4 py-2">$145,000</td><td className="px-4 py-2">$300,000</td><td className="px-4 py-2">$1.2M</td><td className="px-4 py-2">$5M</td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">Referral Fees</td><td className="px-4 py-2">$28,000</td><td className="px-4 py-2">$50,000</td><td className="px-4 py-2">$200K</td><td className="px-4 py-2">$800K</td></tr>
+                <tr className="border-b border-slate-200 bg-emerald-50"><td className="px-4 py-2"><strong>Legal/Admin Services</strong></td><td className="px-4 py-2"><strong>$321,250</strong></td><td className="px-4 py-2"><strong>$500,000</strong></td><td className="px-4 py-2"><strong>$1M</strong></td><td className="px-4 py-2"><strong>$3M</strong></td></tr>
+                <tr className="border-b border-slate-200"><td className="px-4 py-2">OEM Intelligence</td><td className="px-4 py-2">-</td><td className="px-4 py-2">$200,000</td><td className="px-4 py-2">$1.5M</td><td className="px-4 py-2">$8M</td></tr>
+                <tr className="bg-slate-900 text-white"><td className="px-4 py-2 font-bold">Total</td><td className="px-4 py-2 font-bold">$1,197,750</td><td className="px-4 py-2 font-bold">$2,200,000</td><td className="px-4 py-2 font-bold">$8.2M</td><td className="px-4 py-2 font-bold">$32.8M</td></tr>
+                <tr className="bg-slate-800 text-white"><td className="px-4 py-2 font-bold">Exit Valuation</td><td className="px-4 py-2">-</td><td className="px-4 py-2">-</td><td className="px-4 py-2">-</td><td className="px-4 py-2 font-bold">$200-500M</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-6"><strong className="text-emerald-600">The legal telephone game is your hidden profit center</strong> — $321,250/year just from routing liability inquiries, with potential to scale to $1M+ as platform grows.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Contract Model — $100/Year Per Pilot</h3>
+          <p className="text-slate-700 leading-relaxed mb-6">Pilots access the platform under a <strong>direct contract</strong> — not a SaaS subscription in the traditional sense, but a service agreement granting access to the platform's aggregated data layer, pathway matching, and verification token display. At <strong>$100/year per pilot</strong>, the contract is simple: the pilot pays for access to the most structured, verified, and comprehensive aviation career intelligence platform in existence. The platform provides access. Specialist providers deliver every underlying service.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Pilot Contract ($100/yr)', color: 'text-red-600', items: ['Access to all UCF pillar data and pathway cards', 'Verification wallet — token display from vault + Veremark', 'Recognition Score calculation and gap analysis', 'Pathway matching against all operator requirements', 'EBT video assessment submission', 'Priority queue status for operator pull', 'ATLAS CV generation and export', 'Consent management for operator data access'] },
+              { t: 'Operator Contract ($1,000/yr)', color: 'text-blue-600', items: ['Enterprise pull-API access to verified pilot pool', 'Pre-Cleared pilot shortlist filtered by pathway', 'Recognition Score as first-pass hiring filter', 'ATS integration — Greenhouse / Workday / Oracle', 'EBT video assessment access for shortlisted pilots', 'Pathway card publishing and management', 'Consent-gated wallet token access per pilot', 'Compliance audit trail for every data access event'] },
+              { t: 'Provider Contracts (Revenue Share)', color: 'text-emerald-600', items: ['Vault provider — data custody (DPA direct with pilot)', 'Veremark — verification (DPA direct with pilot)', 'Referral partners — $20/conversion (flight schools, TRCs)', 'Flight school referral — $20 per pilot converted', 'Manufacturer referral — $20 per pilot converted', 'Type rating center — $20 per pilot converted', 'Stripe — payment processing (no financial liability)', 'Resend — email delivery (no data custody)'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${col.color}`}>{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">&rarr;</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Revenue Model at Scale</h3>
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Revenue Stream</th>
+                <th className="text-left px-4 py-2 font-semibold">Unit Price</th>
+                <th className="text-left px-4 py-2 font-semibold">1,000 Units</th>
+                <th className="text-left px-4 py-2 font-semibold">10,000 Units</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { stream: 'Pilot contracts', price: '$100/yr', k1: '$100,000', k10: '$1,000,000' },
+                  { stream: 'Operator contracts', price: '$1,000/yr', k1: '$1,000,000', k10: '$10,000,000' },
+                  { stream: 'Referral conversions', price: '$20/pilot', k1: '$20,000', k10: '$200,000' },
+                  { stream: 'Foundation Program', price: '$49/pilot', k1: '$49,000', k10: '$490,000' },
+                  { stream: 'Transition Program', price: '$299/pilot', k1: '$299,000', k10: '$2,990,000' },
+                  { stream: 'Success fees (hires)', price: '$500/hire', k1: '$500,000', k10: '$5,000,000' },
+                ] as {stream:string;price:string;k1:string;k10:string}[]).map((row, i) => (
+                  <tr key={row.stream} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                    <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.stream}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.price}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-blue-700 font-semibold">{row.k1}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-emerald-700 font-semibold">{row.k10}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Engine Metaphor — Many Parts, One Function</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The platform operates like an engine. An engine is not the fuel. It is not the exhaust. It is not the pistons individually. It is the <strong>structure that makes all the parts work together</strong>. Remove any single part and the engine stops. The parts themselves are nothing without the structure that coordinates them.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">PilotRecognition is the engine. Veremark is a part. The vault provider is a part. Stripe is a part. The referral network is a part. The airline portal is a part. Each provider is specialist, independent, and fully liable for their own function. But <strong>none of them can serve a pilot without the platform that connects them</strong>. The platform's value is not in what it holds — it holds nothing. Its value is in what it coordinates.</p>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm text-slate-300 leading-relaxed">
+            <p className="text-yellow-400 font-bold mb-4 text-xs uppercase tracking-widest font-sans">The Neutrality-Through-Liability Model</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-emerald-400 font-semibold mb-2 text-xs uppercase tracking-wide">Every Provider Needs the Platform</p>
+                <ul className="space-y-1 text-sm">
+                  {['Veremark needs the pilot pipeline we generate', 'The vault needs the consent flow we manage', 'Flight schools need the pilot discovery we provide', 'Airlines need the verified pool we aggregate', 'Referral partners need the conversion surface we operate', 'None can reach pilots at scale without the platform'].map(i => <li key={i} className="flex gap-2"><span className="text-emerald-400 flex-shrink-0">→</span>{i}</li>)}
+                </ul>
+              </div>
+              <div>
+                <p className="text-red-400 font-semibold mb-2 text-xs uppercase tracking-wide">Every Provider Carries Their Own Liability</p>
+                <ul className="space-y-1 text-sm">
+                  {['Vault: data custodian liability — not ours', 'Veremark: verification accuracy liability — not ours', 'Stripe: payment processing liability — not ours', 'Airlines: hiring decision liability — not ours', 'Referral partners: commission disputes — not ours', 'Platform liability: access to an information layer — minimal'].map(i => <li key={i} className="flex gap-2"><span className="text-red-400 flex-shrink-0">→</span>{i}</li>)}
+                </ul>
+              </div>
+            </div>
+            <p className="mt-4 text-slate-400 text-xs italic">The more liability each provider carries independently, the more neutral the platform becomes — and the more every provider needs it to function.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Redundancy — No Single Point of Failure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">A single-provider engine fails when one part fails. The platform is architected with <strong>redundant providers at every functional layer</strong>. If a vault provider goes offline, a backup vault is activated. If Veremark has an outage, a secondary verification provider covers the gap. If Stripe has a processing issue, an alternative payment rail exists. The pilot experience never breaks because the engine has spares for every part.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This is not just operational resilience — it is <strong>commercial leverage</strong>. No single provider can hold the platform hostage by threatening to withdraw. The platform can switch providers without pilots noticing. That keeps every provider competitive, compliant, and motivated to maintain service quality.</p>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Function</th>
+                <th className="text-left px-4 py-2 font-semibold">Primary Provider</th>
+                <th className="text-left px-4 py-2 font-semibold">Redundant Backup</th>
+                <th className="text-left px-4 py-2 font-semibold">Failover Impact</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { fn: 'Data Vault / Custody', primary: 'Persona / Jumio', backup: 'Onfido / Veremark Vault', impact: 'Zero — pilot data stays in backup vault' },
+                  { fn: 'Credential Verification', primary: 'Veremark', backup: 'First Advantage / HireRight', impact: 'Zero — token issued by backup verifier' },
+                  { fn: 'Payment Processing', primary: 'Stripe', backup: 'PayPal / Braintree', impact: 'Zero — payment rail switches transparently' },
+                  { fn: 'Email Delivery', primary: 'Resend', backup: 'SendGrid / Postmark', impact: 'Zero — delivery route switches automatically' },
+                  { fn: 'Database Infrastructure', primary: 'Supabase (primary)', backup: 'Supabase failover replica', impact: 'Zero — automatic replica promotion' },
+                  { fn: 'Hosting / CDN', primary: 'Vercel', backup: 'Netlify / Cloudflare Pages', impact: 'Minimal — DNS switch within minutes' },
+                  { fn: 'Referral Network', primary: 'Flight schools / TRCs', backup: 'Manufacturer + airline referral tier', impact: 'Zero — multiple partner tiers active simultaneously' },
+                ] as {fn:string;primary:string;backup:string;impact:string}[]).map((row, i) => (
+                  <tr key={row.fn} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                    <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.fn}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-blue-700">{row.primary}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-yellow-700">{row.backup}</td>
+                    <td className="px-4 py-2 border-b border-slate-200 text-emerald-700 font-semibold">{row.impact}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-yellow-500 bg-yellow-50 rounded-r-lg">
+            <p className="text-sm font-bold text-yellow-700 uppercase tracking-widest mb-1">Commercial Leverage</p>
+            <p className="text-slate-700 leading-relaxed">Because the platform can switch any provider without disrupting the pilot experience, <strong>no provider has pricing power over the platform</strong>. Contracts are negotiated from a position of strength. The moment a provider raises rates or degrades service, the redundant alternative is activated. The engine keeps running.</p>
+          </div>
+
+          <div className="my-6 px-5 py-4 border-l-4 border-slate-900 bg-slate-900 rounded-r-lg">
+            <p className="text-sm font-bold text-white uppercase tracking-widest mb-2">The Legal Position in One Line</p>
+            <p className="text-slate-300 leading-relaxed italic">&quot;PilotRecognition is a website domain providing reputable, structured aviation career information across 25+ pillars. All specialist functions — data custody, verification, payment processing, email delivery — are handled by contracted third-party providers. The platform charges pilots $100/year for access to that aggregated intelligence layer. Nothing more.&quot;</p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
+          {/* ── FUTURE PROSPECTS (admin only) ── */}
+          {isSuperAdmin && (
+            <section id="future-prospects" className="mb-12">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="w-1 h-8 bg-amber-500 rounded-full flex-shrink-0" />
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-amber-600 mb-0.5">Internal Reference — Admin Only</p>
+                  <h2 className="text-2xl font-bold text-slate-900">Future Prospects</h2>
+                </div>
+              </div>
+              <p className="text-slate-600 mb-8 max-w-2xl">Strategic partnerships and integrations identified for post-launch expansion. Not current commitments — flagged for commercial evaluation once platform has traction and volume data to negotiate from.</p>
+
+              {/* Flywire */}
+              <div id="prospect-flywire" className="mb-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="flex items-center gap-4 px-6 py-4 bg-slate-50 border-b border-slate-200">
+                  <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-black text-sm">FW</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-slate-900">Flywire</h3>
+                    <p className="text-sm text-slate-500">Cross-border payment infrastructure — aviation & education sector specialist</p>
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 border border-yellow-200">Post-Launch</span>
+                </div>
+
+                <div className="p-6 space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                      <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Why It Fits</p>
+                      <ul className="space-y-1.5 text-sm text-slate-700">
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Aviation & education sector focus — many ATOs already use it</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Philippines, UAE, APAC coverage matches pilot base</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Multi-currency + local payment methods (PHP, AED, EUR)</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>Installment / split payment support for $299 Transition Program</li>
+                        <li className="flex gap-2"><span className="text-emerald-500">→</span>B2B receivables for $1,000/month airline enterprise fees</li>
+                      </ul>
+                    </div>
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <p className="text-xs font-bold text-red-700 uppercase tracking-widest mb-2">Tradeoffs</p>
+                      <ul className="space-y-1.5 text-sm text-slate-700">
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Priced for larger transaction volumes — minimums may not suit pre-launch</li>
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Stripe (already integrated) is cheaper for $49–$99 subscriptions</li>
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Strength is large one-time cross-border payments, not recurring micro-SaaS</li>
+                        <li className="flex gap-2"><span className="text-red-400">→</span>Will ask for projected transaction volume — need ~500+ pilots first</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm border-collapse">
+                      <thead>
+                        <tr className="bg-slate-900 text-white">
+                          <th className="text-left px-4 py-2 font-semibold">Use Case</th>
+                          <th className="text-left px-4 py-2 font-semibold">Current Solution</th>
+                          <th className="text-left px-4 py-2 font-semibold">Flywire Advantage</th>
+                          <th className="text-left px-4 py-2 font-semibold">Priority</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {([
+                          { use: '$49 Foundation Program', current: 'Stripe', advantage: 'No improvement needed', priority: 'Keep Stripe' },
+                          { use: '$99/year Recognition+', current: 'Stripe', advantage: 'No improvement needed', priority: 'Keep Stripe' },
+                          { use: '$299 Transition Program (intl.)', current: 'Stripe', advantage: 'Local currency, installment plans, lower FX loss for pilots', priority: 'High — evaluate post-launch' },
+                          { use: '$1,000/month Enterprise (airlines)', current: 'Manual / Stripe invoicing', advantage: 'B2B receivables, structured invoicing, PO support', priority: 'High — evaluate at 10+ operators' },
+                          { use: 'Flight school bulk payments', current: 'Manual', advantage: 'Multi-payer bulk collections, institution billing', priority: 'Medium — Q1 2027' },
+                        ] as {use:string;current:string;advantage:string;priority:string}[]).map((row, i) => (
+                          <tr key={row.use} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                            <td className="px-4 py-2 border-b border-slate-200 text-slate-800 font-medium">{row.use}</td>
+                            <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.current}</td>
+                            <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.advantage}</td>
+                            <td className={`px-4 py-2 border-b border-slate-200 text-xs font-semibold ${
+                              row.priority.startsWith('High') ? 'text-red-600' :
+                              row.priority.startsWith('Medium') ? 'text-yellow-600' :
+                              'text-slate-400'
+                            }`}>{row.priority}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="bg-slate-900 rounded-lg p-4">
+                    <p className="text-emerald-400 font-bold uppercase tracking-widest text-xs mb-2">Recommended Action</p>
+                    <p className="text-slate-300 text-sm">Do not replace Stripe pre-launch. Contact Flywire once volume data exists to negotiate from — target <strong className="text-white">500+ registered pilots</strong> and <strong className="text-white">10+ enterprise operators</strong> as the trigger point. Flag specifically for: (1) $299 Transition Program international installments, (2) airline enterprise invoicing at scale.</p>
+                    <p className="text-slate-500 text-xs mt-2">Contact: <span className="text-blue-400">flywire.com/contact</span> · Recommended outreach timeline: <strong className="text-slate-300">Q1 2027</strong></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
 
           <hr className="my-10 border-slate-300" />
 
