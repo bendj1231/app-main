@@ -4681,7 +4681,7 @@ export default function UCFOfficialReleasePage() {
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Technical Ingestion Architecture</h4>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
             <li><strong>Data Capture Layer:</strong> The integrated flight application records the active session telemetry (trajectories, approach tracking, weather variables, simulation parameters).</li>
-            <li><strong>Verification Node Processing:</strong> Telemetry is bound to an atomic timestamp, device hardware signature, and optional ATO/instructor countersignature.</li>
+            <li><strong>Verification Node Processing:</strong> Telemetry is bound to an atomic timestamp, device hardware signature, and optional verification countersignature from national Civil Aviation Authorities (FAA, EASA, CAA) or certified Flight Training Devices (FTDs).</li>
             <li><strong>API Bridge Transmission:</strong> Standardized data payloads are pushed securely to the PilotRecognition Ingestion Engine.</li>
             <li><strong>Sovereign Ledger Minting:</strong> A cryptographically signed token (e.g., Verified IFR Currency: 50 Hours) is deposited directly into the pilot's decentralized wallet.</li>
           </ul>
@@ -4691,8 +4691,8 @@ export default function UCFOfficialReleasePage() {
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
             <li><strong>Level 1 — Self-Reported:</strong> Manual logbook entries or user-exported flight files. Minimal validation weight.</li>
             <li><strong>Level 2 — Device-Verified:</strong> Automated application/GPS tracking backed by cryptographic device fingerprinting and anti-spoofing hashing.</li>
-            <li><strong>Level 3 — Institutionally Countersigned:</strong> Simulator training center, flight school, or ATO-validated sessions verifying formal instructional parameters.</li>
-            <li><strong>Level 4 — Multi-Source Triangulated:</strong> Telemetry run through the Platform Telemetry Mirror, cross-referencing log entries directly against live global ADS-B transponder tracking networks.</li>
+            <li><strong>Level 3 — Institutionally Countersigned:</strong> Civil Aviation Authority-verified sessions (FAA, EASA, CAA, GCAA) or certified FTD training center validations confirming formal instructional parameters and regulatory compliance.</li>
+            <li><strong>Level 4 — Multi-Source Triangulated:</strong> Telemetry cross-referenced via the Platform Telemetry Mirror against live global ADS-B networks, regulatory authority databases, and instructor validation tokens issued by national aviation authorities.</li>
           </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Platform Neutrality: The Non-Competitive Infrastructure Standard</h4>
@@ -4708,7 +4708,7 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IV. The Pilot-First Network Referral Loop</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">V. The Pilot-First Network Referral Loop</h3>
           <p className="text-slate-700 leading-relaxed mb-4">We believe the pilots who build this network through active flight logs and simulator tracking should be the primary beneficiaries of its growth. Rather than paying opaque corporate data brokers, PilotRecognition aligns application developers and aviators via a clean, structured financial mechanism.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The $20 Ecosystem Referral Dividend</h4>
@@ -4781,15 +4781,6 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
-          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>Why This Pitch Works on Tier-One Providers:</strong></p>
-            <ul className="text-white text-sm leading-relaxed mt-2 space-y-1 ml-4">
-              <li><strong>It uses their actual tech stack:</strong> They already have public developer portals running OpenID Connect (OIDC), OAuth 2.0, and REST APIs (like Navigraph's Developer Portal and ForeFlight's Dispatch API). Telling them they just need to plug their existing API webhooks into your framework means low engineering friction.</li>
-              <li><strong>It talks about their real problem:</strong> Churn. It frames your platform not as a nice-to-have tech piece, but as a hard financial guardrail that stops their users from hitting the "Cancel Subscription" button.</li>
-              <li><strong>It protects their business model:</strong> By highlighting your Neutrality Doctrine, they immediately realize you are not trying to build a cooler logbook or map tool to run them out of business. You are just the trusted highway their data travels on.</li>
-            </ul>
-          </div>
-
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VII. The Trust Paradigm: Overcoming the Corporate Telemetry Disconnect</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The greatest barrier to utilizing pilot flight data has never been technical; it is <strong>cultural.</strong> Line pilots harbor a deep, historic distrust of corporate data tracking. Traditionally, when a flight operator or an airline monitors cockpit telemetry (via FOQA or Flight Data Monitoring programs), that data is controlled by corporate management and frequently weaponized as a punitive tool against the crew.</p>
           <p className="text-slate-700 leading-relaxed mb-4">Because of this adversarial dynamic, pilots fiercely guard their personal flight data. They will actively resist, block, or subvert any platform that feeds their raw, unvetted flight patterns directly into a centralized corporate database.</p>
@@ -4827,16 +4818,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">Airlines want high-fidelity pilot proficiency data, but they cannot access it without a bridge of absolute trust. PilotRecognition provides that bridge by dealing directly with the sovereign source: the pilot.</p>
           <p className="text-slate-700 leading-relaxed mb-4">By prioritizing the aviator's privacy rights over corporate data-hoarding, we create the only environment where pilots willingly activate their telemetry streams. We turn raw flying data into a <strong>cooperative, high-trust asset</strong> that protects the pilot, empowers the software provider, and gives airlines the validated proficiency metrics they desperately need — on the pilot's terms.</p>
 
-          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>What This Closing Argument Accomplishes:</strong></p>
-            <ul className="text-white text-sm leading-relaxed mt-2 space-y-1 ml-4">
-              <li><strong>It positions you as the insider:</strong> It proves to enterprise executives that you actually understand the unique psychological realities and labor dynamics of professional aviation.</li>
-              <li><strong>It eliminates the PR risk for software apps:</strong> Major tech firms are terrified of user privacy backlashes. Showing them that your architecture is structurally incapable of "spying" or data brokerage removes their final hurdle to integration.</li>
-              <li><strong>It sets up the marketplace win:</strong> It frames PilotRecognition as the only neutral territory where pilots, software giants, and global carriers can securely interface without friction.</li>
-            </ul>
-          </div>
-
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">V. Application Integration Matrix</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. Application Integration Matrix</h3>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -4871,21 +4853,12 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Pilot Value Proposition:</strong> You own your data — it is time you used it to advance your career.</p>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">VIII. The Founders' Credo: Built by the Cockpit, for the Cockpit</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">IX. The Founders' Credo: Built by the Cockpit, for the Cockpit</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The architecture of PilotRecognition was not conceived in a corporate boardroom or engineered by a detached tech startup. It was built by <strong>line pilots who faced the exact informational deficits, data isolation, and systemic friction detailed in this framework.</strong> Every line of code, cryptographic protocol, and data gateway in this platform originates from a pure, pilot-first need.</p>
           <p className="text-slate-700 leading-relaxed mb-4">We spent years navigating an industry that demands absolute perfection from our flying, yet reduces our achievements to paper certificates, disconnected logbooks, and transactional log summaries. We watched our peers face extended hiring bottlenecks and proficiency vaporization simply because the industry lacked a neutral mechanism to recognize their true capabilities.</p>
           <p className="text-slate-700 leading-relaxed mb-4">We did not build this platform to monitor, audit, or surveil pilots. <strong>We built it to liberate our data and give every aviator ultimate sovereignty over their hard-earned professional footprint.</strong></p>
           <p className="text-slate-700 leading-relaxed mb-4">Because we are pilots, we know exactly where the trust breaks down between the line and corporate management. Because we are pilots, we engineered the trust shield that protects user privacy while maximizing career utility.</p>
           <p className="text-slate-700 leading-relaxed mb-6">When software giants, navigation providers, and simulator developers partner with PilotRecognition, they are not just integrating with another software application. <strong>They are plugging directly into an authentic, pilot-led ecosystem designed to elevate the entire aviation profession.</strong> We are the source. We are the cockpit. We built the infrastructure we always needed — and it is time for the industry to catch up.</p>
-
-          <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>Why This Closes the Document Perfectly:</strong></p>
-            <ul className="text-white text-sm leading-relaxed mt-2 space-y-1 ml-4">
-              <li><strong>It establishes immediate respect:</strong> Executives at places like Boeing (ForeFlight) or Garmin deal with enterprise sales pitches all day. A raw, authentic statement of founder-market fit cuts through corporate noise instantly.</li>
-              <li><strong>It turns your identity into a shield:</strong> It reinforces that your team has a built-in trust layer with the global pilot community that a multi-billion-dollar corporation can never buy or replicate from the top down.</li>
-              <li><strong>It issues a call to action:</strong> It frames integration not as a corporate data experiment, but as an opportunity for these companies to align themselves with the authentic future of pilot-first career development.</li>
-            </ul>
-          </div>
 
           <hr className="my-8 border-slate-200" />
 
