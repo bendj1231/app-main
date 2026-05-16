@@ -311,7 +311,7 @@ export default function UCFOfficialReleasePage() {
               Without us, you are nothing.
             </p>
 
-            <p className="text-slate-300 leading-relaxed mb-4 text-sm">A $300 million Airbus A350 is a very expensive paperweight without two qualified pilots in the flight deck. An airline is a marketing and ticketing agency without the crew to execute the schedule. The regulators have nothing to regulate without the humans flying the machines. The manufacturers have no reason to build without the professionals to operate what they produce.</p>
+            <p className="text-slate-300 leading-relaxed mb-4 text-sm">A $300 million OEMs A350 is a very expensive paperweight without two qualified pilots in the flight deck. An airline is a marketing and ticketing agency without the crew to execute the schedule. The regulators have nothing to regulate without the humans flying the machines. The manufacturers have no reason to build without the professionals to operate what they produce.</p>
 
             <p className="text-slate-300 leading-relaxed mb-6 text-sm">For decades, the industry treated pilots like an endless, replaceable commodity — filtered by HR software, lost in manual verification queues, left waiting in hiring backlogs while the aircraft sat grounded. The global pilot shortage exposed the reality: <strong className="text-white">the power dynamic has flipped.</strong> The supply is finite. The demand is not. And the professionals who keep this industry solvent have never had the infrastructure to wield that reality.</p>
 
@@ -585,7 +585,7 @@ export default function UCFOfficialReleasePage() {
               {
                 title: 'Controller-to-Controller',
                 color: '#f87171',
-                desc: 'Background checks are processed via independent Data Controllers (Veremark, IDfy) who issue binary cryptographic proofs (e.g. is_license_valid = TRUE) back to the pilot\'s wallet. The platform remains a neutral conduit — never touching or storing the underlying data strings.',
+                desc: 'Background checks are processed via independent Data Controllers (Veremark, infrastructure partners) who issue binary cryptographic proofs (e.g. is_license_valid = TRUE) back to the pilot\'s wallet. The platform remains a neutral conduit — never touching or storing the underlying data strings.',
               },
             ] as {title:string;color:string;desc:string}[]).map((item) => (
               <div key={item.title} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
@@ -596,11 +596,11 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-4 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>What this means for enterprise legal teams:</strong> <span className="text-slate-300">When your procurement or legal department reviews this platform, you are not entering a data processing agreement with a traditional SaaS vendor. You are accessing infrastructure that routes pilot-authorised cryptographic proofs. The liability of data custody remains with the source controllers (Veremark, IDfy). The power of data release remains entirely with the pilot. PilotRecognition operates as Joint Controller of the infrastructure only — under GDPR Article 26 and Philippine DPA RA 10173.</span></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>What this means for enterprise legal teams:</strong> <span className="text-slate-300">When your procurement or legal department reviews this platform, you are not entering a data processing agreement with a traditional SaaS vendor. You are accessing infrastructure that routes pilot-authorised cryptographic proofs. The liability of data custody remains with the source controllers (Veremark, infrastructure partners). The power of data release remains entirely with the pilot. PilotRecognition operates as Joint Controller of the infrastructure only — under GDPR Article 26 and Philippine DPA RA 10173.</span></p>
           </div>
 
           <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-3 mb-8">
-            <p className="text-amber-800 text-sm"><strong>Enterprise DPA Note:</strong> If your organisation requires a standard Data Processing Agreement (e.g. Airbus, Boeing, or airline group procurement), PilotRecognition provides an <strong>Enterprise Vendor Statement</strong> explaining the Joint Controller architecture and confirming that the platform does not act as a data processor under your organisation's DPA. Available on request from enterprise accounts.</p>
+            <p className="text-amber-800 text-sm"><strong>Enterprise DPA Note:</strong> If your organisation requires a standard Data Processing Agreement (e.g. OEMs, OEMs, or airline group procurement), PilotRecognition provides an <strong>Enterprise Vendor Statement</strong> explaining the Joint Controller architecture and confirming that the platform does not act as a data processor under your organisation's DPA. Available on request from enterprise accounts.</p>
           </div>
 
           <hr className="my-10 border-slate-300" />
@@ -618,11 +618,11 @@ export default function UCFOfficialReleasePage() {
 
           <div className="border border-slate-200 rounded-lg px-6 py-5 mb-6 bg-white">
             <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Case Study — The Cost of a Broken System</p>
-            <p className="text-slate-700 leading-relaxed mb-3">Daniel is not an average pilot. His father is a senior AMT — an Aircraft Maintenance Technician with Rolls-Royce affiliations. The person whose signature determines whether an aircraft engine is airworthy or not. <strong>His son has direct access to Airbus-level relationships, aviation industry insiders, and the kind of network most pilots spend careers trying to build.</strong></p>
+            <p className="text-slate-700 leading-relaxed mb-3">Daniel is not an average pilot. His father is a senior AMT — an Aircraft Maintenance Technician with Rolls-Royce affiliations. The person whose signature determines whether an aircraft engine is airworthy or not. <strong>His son has direct access to OEMs-level relationships, aviation industry insiders, and the kind of network most pilots spend careers trying to build.</strong></p>
             <p className="text-slate-700 leading-relaxed mb-3">Daniel spent four years working as an AMT mechanic because he was told — incorrectly — that he could not obtain a commercial pilot licence without a university degree. That was false. It was bad communication, lack of professional advocacy, and an industry that profits from keeping pilots in a cycle of uncertainty and spend. <strong>He was being kept in the machine, not guided out of it.</strong></p>
             <p className="text-slate-700 leading-relaxed mb-3">He then invested <strong>₱6,000,000 Philippine pesos</strong> — approximately $100,000 USD — in an ATR type rating. He completed his simulator training. He was certified as a CFI for ATR at Clark Airport. He did everything the system told him to do.</p>
             <p className="text-slate-700 leading-relaxed mb-3">No placement. No recognition. No return on investment.</p>
-            <p className="text-slate-700 leading-relaxed mb-4">He called and said he was quitting. That if he did not stop now, he would never financially recover. <strong>A pilot with Airbus-level family connections, a completed type rating, simulator certification, and 6 million pesos invested — had nothing to show for it.</strong></p>
+            <p className="text-slate-700 leading-relaxed mb-4">He called and said he was quitting. That if he did not stop now, he would never financially recover. <strong>A pilot with OEMs-level family connections, a completed type rating, simulator certification, and 6 million pesos invested — had nothing to show for it.</strong></p>
             <div className="border-l-4 border-red-500 pl-4 py-2">
               <p className="text-slate-800 text-sm leading-relaxed italic">"If this is happening to Daniel — someone with every advantage the industry can offer — what is happening to the rest of us?"</p>
               <p className="text-slate-500 text-xs mt-1">— Karl &amp; Benjamin, Co-Founders, PilotRecognition.com</p>
@@ -631,8 +631,8 @@ export default function UCFOfficialReleasePage() {
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">January 21st — Abu Dhabi Aviation Career Fair</h3>
           <p className="text-slate-700 leading-relaxed mb-4">On January 21st, the founder took a risk. As a pilot with 200 hours and a commercial licence, he travelled to the UAE to attend the Aviation Career Fair — his one opportunity to put the industry's questions directly to the airlines, manufacturers, and authorities in the room.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">The first booth was Etihad. The response was immediate and familiar: <strong style={{color:'#dc2626'}}>"Sorry — you know the requirements. 1,500 hours. Come back and get that."</strong> A pilot who had spent $50,000 USD, flown across the world for a single shot at a real answer, was told to scan a QR code and leave.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">Then something shifted. The same pilot approached Etihad again — this time not just as a pilot, but as someone building a platform to solve exactly the communication failure they were standing inside. <strong>The attitude changed instantly.</strong> They became engaged. Welcoming. The conversation lasted. In that shift — from dismissal to dialogue — the entire thesis of PilotRecognition was confirmed in under two minutes.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The first booth was partner airlines. The response was immediate and familiar: <strong style={{color:'#dc2626'}}>"Sorry — you know the requirements. 1,500 hours. Come back and get that."</strong> A pilot who had spent $50,000 USD, flown across the world for a single shot at a real answer, was told to scan a QR code and leave.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Then something shifted. The same pilot approached partner airlines again — this time not just as a pilot, but as someone building a platform to solve exactly the communication failure they were standing inside. <strong>The attitude changed instantly.</strong> They became engaged. Welcoming. The conversation lasted. In that shift — from dismissal to dialogue — the entire thesis of PilotRecognition was confirmed in under two minutes.</p>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The problem was never the pilot. The problem was the absence of a structured channel for communication between the pilot and the industry.</strong> Airlines are not cruel. They are numb. They have answered the same question from 10,000 pilots and it stopped meaning anything. They don't know how to say anything different because no platform exists to give them a different answer to give. <strong style={{color:'#f87171'}}>PilotRecognition builds that channel.</strong></p>
@@ -1085,7 +1085,7 @@ export default function UCFOfficialReleasePage() {
             <div className="bg-white border border-amber-200 rounded px-4 py-3 text-sm text-slate-700">
               <p className="font-bold text-slate-900 mb-2">Proposed: Enterprise / OEM Tier — $1,000/month ($12,000/year)</p>
               <ul className="space-y-1">
-                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Platform Access Fee:</strong> $1,000/month — positions as infrastructure access, not data purchase. Removes procurement friction at major enterprise accounts (Airbus, Boeing, major airline groups).</span></li>
+                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Platform Access Fee:</strong> $1,000/month — positions as infrastructure access, not data purchase. Removes procurement friction at major enterprise accounts (OEMs, OEMs, major airline groups).</span></li>
                 <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Includes:</strong> Unlimited pathway listings, full verified pilot database access, API integration with ATS (Workday, Taleo, Greenhouse), dedicated account support, enterprise SLA.</span></li>
                 <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Verification Consumption:</strong> Standard $50 transaction fee per identity pull — charged only when the pilot actively taps APPROVE to release their cryptographic proof. No data is sold. Fee covers infrastructure compute and API transit.</span></li>
                 <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Legal framing:</strong> Monthly access fee reinforces that the platform charges for infrastructure, not data — strengthening the Joint Controller legal position under enterprise DPA review.</span></li>
@@ -1724,7 +1724,7 @@ export default function UCFOfficialReleasePage() {
 
           <div className="border border-slate-300 rounded-lg px-6 py-5 mb-6 bg-slate-50">
             <p className="text-xs uppercase tracking-wide font-semibold text-slate-500 mb-3">Case Study — Talent Acquisition Architecture Failure</p>
-            <p className="text-slate-800 font-semibold mb-1">Etihad Aviation Career Fair, January 21, 2026 — Etihad Museum, Abu Dhabi</p>
+            <p className="text-slate-800 font-semibold mb-1">partner airlines Aviation Career Fair, January 21, 2026 — partner airlines Museum, Abu Dhabi</p>
             <p className="text-slate-500 text-xs mb-3">Direct observation by PilotRecognition founding team</p>
             <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>Objective observed reality:</strong> Demand and talent supply coexisted in high volumes, yet the structural architecture failed to execute a match. An unfiltered, unsegmented, and un-prequalified attendee pool — engineers, cadets, mechanics, and licensed pilots — overwhelmed the physical infrastructure, resulting in venue gate closures. Qualified flight crew present at the event were consistently presented with a single legacy screening metric:</p>
             <p className="text-slate-800 text-sm italic font-semibold mb-3 pl-4 border-l-4 border-red-500">"You know the requirements — 1,500 hours. Come back when you have them."</p>
@@ -2550,7 +2550,7 @@ export default function UCFOfficialReleasePage() {
           <ul className="space-y-2 mb-4 ml-6">
             <li className="text-slate-700 leading-relaxed flex items-start gap-2">
               <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
-              <span className="text-sm"><strong>Integrated Flight Data Management:</strong> Pilots utilizing third-party digital logbook platforms (e.g., FL.io, FlightLogger) may establish API data bridges allowing direct ingestion of verified flight entries into the Professional Standing Asset. These entries carry platform-verified timestamps and are cross-referenced with institutional dispatch records when available.</span>
+              <span className="text-sm"><strong>Integrated Flight Data Management:</strong> Pilots utilizing third-party digital logbook platforms (e.g., specialized logbook solutions) may establish API data bridges allowing direct ingestion of verified flight entries into the Professional Standing Asset. These entries carry platform-verified timestamps and are cross-referenced with institutional dispatch records when available.</span>
             </li>
             <li className="text-slate-700 leading-relaxed flex items-start gap-2">
               <span className="text-slate-400 mt-1 flex-shrink-0">•</span>
@@ -2565,7 +2565,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The System Realignment:</strong> Legacy aircraft verification operates under adjusted confidence scoring algorithms that weight multi-source documentation against available telemetry correlations. When an aircraft within an institutional fleet lacks ADS-B capability, the platform requires enhanced photographic verification frequency and cross-references with instructor validation tokens. This ensures that training hours accumulated on analog aircraft receive equivalent verification rigor to glass-cockpit platforms, preserving credential integrity across the entire training ecosystem.</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XVI. Digital Logbook Partnership Strategy: The Regional Aggregator Model</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Legacy digital logbook providers (LogTen Pro, ForeFlight, capzlog.aero, FlightLogger, FLYLOG.io) view PilotRecognition as a highly viable strategic integration partner — not a competitive threat. These platforms function as data capture tools; PilotRecognition functions as the verification and marketplace infrastructure layer. Their roles are complementary and non-overlapping.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Legacy digital logbook providers (established logbook platforms, navigation platforms, specialized logbook solutions) view PilotRecognition as a highly viable strategic integration partner — not a competitive threat. These platforms function as data capture tools; PilotRecognition functions as the verification and marketplace infrastructure layer. Their roles are complementary and non-overlapping.</p>
 
           <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">The Value Proposition for Logbook Providers</p>
@@ -2599,10 +2599,10 @@ export default function UCFOfficialReleasePage() {
               </thead>
               <tbody>
                 {[
-                  { r: 'Europe (EASA)', p: 'capzlog.aero, Logbook.aero', s: 'First EASA AMC1 FCL.050 certified digital logbooks; massive trust with European commercial and training pilots' },
-                  { r: 'Americas (FAA)', p: 'LogTen Pro, ForeFlight', s: 'Dominant US market share; deep integrations with US airline scheduling apps; iOS ecosystem lock-in' },
-                  { r: 'Asia-Pacific', p: 'FLYLOG.io, FL.io', s: 'Android/web-first platforms; essential for developing markets where Apple hardware penetration is limited' },
-                  { r: 'Middle East & Africa', p: 'FlightLogger, custom integrations', s: 'Multi-platform support; accommodates mixed-fleet training environments and cross-border operations' },
+                  { r: 'Europe (EASA)', p: 'specialized logbook solutions', s: 'First EASA AMC1 FCL.050 certified digital logbooks; massive trust with European commercial and training pilots' },
+                  { r: 'Americas (FAA)', p: 'established logbook platforms, navigation platforms', s: 'Dominant US market share; deep integrations with US airline scheduling apps; iOS ecosystem lock-in' },
+                  { r: 'Asia-Pacific', p: 'specialized logbook solutions', s: 'Android/web-first platforms; essential for developing markets where Apple hardware penetration is limited' },
+                  { r: 'Middle East & Africa', p: 'specialized logbook solutions, custom integrations', s: 'Multi-platform support; accommodates mixed-fleet training environments and cross-border operations' },
                 ].map((row, i) => (
                   <tr key={row.r} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.r}</td>
@@ -2622,7 +2622,7 @@ export default function UCFOfficialReleasePage() {
             <div className="space-y-1 text-sm font-mono text-slate-700">
               <p>[Local Pilot Data Entry]</p>
               <p className="text-slate-400">↓</p>
-              <p>[Regional Frontend Logbook] → (e.g., capzlog.aero for EASA compliance)</p>
+              <p>[Regional Frontend Logbook] → (e.g., specialized logbook solutions for EASA compliance)</p>
               <p className="text-slate-400">↓</p>
               <p>[PilotRecognition Ingestion API] → (Applies Regional Regulatory Logic)</p>
               <p className="text-slate-400">↓</p>
@@ -2636,7 +2636,7 @@ export default function UCFOfficialReleasePage() {
             <li>Re-architect around decentralized Web3 sovereign identity frameworks</li>
             <li>Legally bind flight schools into a Sequential Accountability Protocol with cryptographic liability for falsification</li>
             <li>Convince global airlines, insurance underwriters, and medical examiners to integrate with their proprietary backend</li>
-            <li>Build airline enterprise agreements and verification provider networks (Veremark, IDfy)</li>
+            <li>Build airline enterprise agreements and verification provider networks (Veremark, infrastructure partners)</li>
           </ul>
           <p className="text-slate-700 leading-relaxed mb-4">Logbook providers are software companies building tools for pilots. They do not possess the network infrastructure, airline enterprise agreements, or legal protocol design that PilotRecognition has established across Pillars 1-25.</p>
 
@@ -2653,8 +2653,8 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed italic">"We are not building a digital logbook, and we are not trying to take your users. We have built the decentralized credentialing and airline recruitment marketplace infrastructure. Keep your frontend users, but plug your data pipe into our network so your pilots can turn their logged hours into verified, airline-parseable career assets."</p>
           </div>
-          <p className="text-slate-700 leading-relaxed mb-4">When approaching regional players like capzlog.aero in Europe:</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>"LogTen Pro dominates the US, but you dominate Europe. By partnering with PilotRecognition, your European pilots get direct access to global cargo, charter, and airline pipelines that require verified credentials. We aren't competing with your EASA-certified software; we are giving your users a reason never to delete your app, because their capzlog data is what feeds their hiring profile."</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">When approaching regional players like specialized logbook solutions in Europe:</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>"established logbook platforms dominates the US, but you dominate Europe. By partnering with PilotRecognition, your European pilots get direct access to global cargo, charter, and airline pipelines that require verified credentials. We aren't competing with your EASA-certified software; we are giving your users a reason never to delete your app, because their logbook data is what feeds their hiring profile."</strong></p>
           <p className="text-slate-700 leading-relaxed mb-4">This turns regional software providers into primary user-acquisition funnels — completely free of charge to PilotRecognition.</p>
 
           <hr className="my-10 border-slate-300" />
@@ -3095,7 +3095,7 @@ export default function UCFOfficialReleasePage() {
          │              │              │
          ▼              ▼              ▼
   ┌────────────┐  ┌──────────┐  ┌───────────┐
-  │  Veremark  │  │   IDfy   │  │ Verepass  │
+  │  Veremark  │  │   infrastructure partners   │  │ Verepass  │
   │            │  │          │  │           │
   │ CAAP       │  │ Flight   │  │ Pilot's   │
   │ License    │  │ Hours    │  │ portable  │
@@ -3114,7 +3114,7 @@ export default function UCFOfficialReleasePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             {([
               { provider: 'Veremark', color: '#34d399', items: ['Workflow B — verification-led, not data sourcing', 'CAAP license + Professional Qualification check at registration ($13 partner rate)', 'Identity check triggered at airline shortlist ($9 — billed to airline at $50)', '15% markup confirmed in writing by Oliver Lobb (May 16, 2026)', 'Issues Verepass record to pilot simultaneously'] },
-              { provider: 'IDfy', color: '#60a5fa', items: ['Training hours confirmation — pilot-initiated, school-confirmed', 'Cross-checks Veremark result as triangulation failsafe', 'If Veremark result = IDfy result → double confirmed ✅✅', 'If mismatch → flagged for review ⚠️', 'No single point of failure — operates independently of Veremark'] },
+              { provider: 'infrastructure partners', color: '#60a5fa', items: ['Training hours confirmation — pilot-initiated, school-confirmed', 'Cross-checks Veremark result as triangulation failsafe', 'If Veremark result = infrastructure partners result → double confirmed ✅✅', 'If mismatch → flagged for review ⚠️', 'No single point of failure — operates independently of Veremark'] },
               { provider: 'Verepass', color: '#f87171', items: ["Veremark's pilot-facing portable credential wallet", 'Issued simultaneously with every Veremark check', 'Pilot owns this record regardless of platform', 'Travels with the pilot if they leave PilotRecognition', 'Surfaced inside PR Credential Wallet via API — pilot never leaves the platform'] },
             ] as {provider: string; color: string; items: string[]}[]).map((col) => (
               <div key={col.provider} className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
@@ -3146,9 +3146,9 @@ export default function UCFOfficialReleasePage() {
                 { step: '2', label: 'Pilot submits interest', desc: 'Pilot clicks "Submit Interest." A consent modal appears — explicitly listing every data point the airline will receive access to: flight hours, license status, Recognition Score, programs, EBT score, employment history.' },
                 { step: '3', label: 'Pilot consents', desc: '"By submitting this pathway, I authorise [Airline Name] to view my full Recognition Profile and Credential Wallet tokens for the purpose of this pathway application only." Pilot clicks: SUBMIT & CONSENT.' },
                 { step: '4', label: 'Consent receipt issued', desc: 'A timestamped consent record is generated — pilot name, airline name, date, scope of data shared, pathway ID. This is the audit trail PilotRecognition holds.' },
-                { step: '5', label: 'Airline receives full token access', desc: 'The airline\'s operator dashboard unlocks the pilot\'s full verified profile: ✅ License (Veremark) · ✅ Training Hours (IDfy) · ✅ Verepass record · ✅ Recognition Score · ✅ Programs · ✅ EBT score (if completed).' },
+                { step: '5', label: 'Airline receives full token access', desc: 'The airline\'s operator dashboard unlocks the pilot\'s full verified profile: ✅ License (Veremark) · ✅ Training Hours (infrastructure partners) · ✅ Verepass record · ✅ Recognition Score · ✅ Programs · ✅ EBT score (if completed).' },
                 { step: '6', label: 'Airline shortlists — identity pull triggered', desc: 'Airline clicks "Pull Profile" on shortlisted candidates. Identity check is triggered via Veremark ($9 cost, $50 charged to airline). Pilot is notified. $41 net margin to PilotRecognition.' },
-                { step: '7', label: 'Access is scoped and revocable', desc: 'Access is per-pathway, per-operator only. Cebu Pacific sees the profile. PAL does not — until the pilot submits to PAL separately. Pilot can withdraw consent at any time — token access revoked instantly.' },
+                { step: '7', label: 'Access is scoped and revocable', desc: 'Access is per-pathway, per-operator only. partner airlines sees the profile. PAL does not — until the pilot submits to PAL separately. Pilot can withdraw consent at any time — token access revoked instantly.' },
               ] as {step: string; label: string; desc: string}[]).map((item) => (
                 <li key={item.step} className="flex items-start gap-3">
                   <span className="text-red-400 font-bold text-sm flex-shrink-0 w-5">{item.step}.</span>
@@ -3242,7 +3242,7 @@ export default function UCFOfficialReleasePage() {
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The three principles of pilot-commanded data:</strong><br />
-            <span className="text-slate-300">1. Your data is never stored on PilotRecognition's servers — it stays with the providers you consent to independently.<br />
+            <span className="text-slate-300">1. Your data is never stored on PilotRecognition's servers — it stays with established logbook platformss you consent to independently.<br />
             2. Every airline access event requires your explicit tap of APPROVE — no implicit sharing, no background transfers.<br />
             3. Your tokens are non-transferable and non-financial — they are digital logbook stamps, not assets. They cannot be traded, sold, or used as collateral.</span></p>
           </div>
@@ -3284,7 +3284,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-slate-400 text-xs uppercase tracking-widest mb-4">Binary Proof Flow — Every Check</p>
             <ol className="space-y-3">
               {([
-                { n: '1', t: 'Pilot authorises', d: 'Pilot selects check type and authorises an independent verification partner (Veremark or IDfy) via explicit consent modal. No authorisation = no check runs.' },
+                { n: '1', t: 'Pilot authorises', d: 'Pilot selects check type and authorises an independent verification partner (Veremark or infrastructure partners) via explicit consent modal. No authorisation = no check runs.' },
                 { n: '2', t: 'Partner queries primary source', d: 'The verification partner, acting as Independent Data Controller, queries the primary source directly — CAAP registry, FAA database, flight school confirmation, or NBI records — under their own regulatory authorisation.' },
                 { n: '3', t: 'Binary Proof Token issued', d: 'The partner issues a Binary Proof Token directly to the pilot\'s DID wallet. Examples: medical_valid = TRUE · hours_verified = 1,500 · is_license_valid = TRUE · criminal_clear = TRUE. No raw data strings. Binary states only.' },
                 { n: '4', t: 'PilotRecognition stores receipt only', d: 'The platform stores only the timestamped consent receipt and the transaction hash. Not the binary result. Not the underlying data. Not the pilot\'s credentials. The token lives in the pilot\'s wallet — not on the platform.' },
@@ -3299,7 +3299,7 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-8">
-            <p className="text-slate-800 text-sm leading-relaxed"><strong>The compliance consequence for enterprise operators:</strong> Because the platform never touches or stores underlying raw data strings, operators using PilotRecognition bypass months of vendor security audits typically required for SaaS platforms handling personal data. The liability of data custody remains with the source controllers (Veremark, IDfy). The power of data release remains entirely with the pilot. PilotRecognition operates legally as <strong>Joint Controller of the infrastructure</strong> — not as a data custodian — making it the only verification-integrated pilot platform that enterprise procurement and legal teams can approve without triggering standard data processor due diligence requirements.</p>
+            <p className="text-slate-800 text-sm leading-relaxed"><strong>The compliance consequence for enterprise operators:</strong> Because the platform never touches or stores underlying raw data strings, operators using PilotRecognition bypass months of vendor security audits typically required for SaaS platforms handling personal data. The liability of data custody remains with the source controllers (Veremark, infrastructure partners). The power of data release remains entirely with the pilot. PilotRecognition operates legally as <strong>Joint Controller of the infrastructure</strong> — not as a data custodian — making it the only verification-integrated pilot platform that enterprise procurement and legal teams can approve without triggering standard data processor due diligence requirements.</p>
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Ecosystem Integration — How the Platform Connects Every Stakeholder</h4>
@@ -3669,7 +3669,7 @@ export default function UCFOfficialReleasePage() {
                 ],
               },
               {
-                flag: '🇦🇪', country: 'United Arab Emirates (AE)',
+                flag: '🇦🇪', country: 'United Arab partner airlines (AE)',
                 rows: [
                   { service: 'Criminal Record Check', rrp: 109, partner: 93 },
                   { service: 'Education Check', rrp: 41, partner: 35 },
@@ -3961,7 +3961,7 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">C. Self-Sovereign Identity (SSI) &amp; W3C Verifiable Credentials</h4>
           <p className="text-slate-700 text-sm leading-relaxed mb-3">To ensure the tamper-proof claim is technically unassailable, the platform anchors its credential architecture in the <strong>W3C Verifiable Credentials (VC) standard</strong> — the globally recognised framework for decentralised, cryptographically verifiable digital identity.</p>
-          <p className="text-slate-700 text-sm leading-relaxed mb-3">Under this model, the platform does not store a PDF of a licence certificate. <strong>The issuing authority — the CAA, the AME, the ATO — cryptographically signs a digital credential token.</strong> When a pilot shares that credential with Etihad, Archer, or any platform operator, the receiving system verifies the issuer's cryptographic signature — not the visual appearance of an image file. This eliminates the possibility of document fraud entirely. A Photoshopped licence is not a signed token. It fails verification at the cryptographic layer before any human reviews it.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-3">Under this model, the platform does not store a PDF of a licence certificate. <strong>The issuing authority — the CAA, the AME, the ATO — cryptographically signs a digital credential token.</strong> When a pilot shares that credential with partner airlines, Archer, or any platform operator, the receiving system verifies the issuer's cryptographic signature — not the visual appearance of an image file. This eliminates the possibility of document fraud entirely. A Photoshopped licence is not a signed token. It fails verification at the cryptographic layer before any human reviews it.</p>
           <div className="bg-slate-50 border border-slate-200 rounded px-5 py-4 mb-6 text-sm text-slate-700">
             <p className="font-semibold text-slate-800 mb-2">How W3C Verifiable Credentials Work in the Pilot Wallet</p>
             <ul className="space-y-1 list-disc ml-4">
@@ -4076,8 +4076,8 @@ export default function UCFOfficialReleasePage() {
             <p className="mb-3">Aviation background checks require a 5-year residency and employment history. If that history spans multiple regions, the platform automatically triggers <strong>Sub-Tasks</strong> — parallel verifications routed to the relevant regional node for each jurisdiction in the pilot's trail. The Lead Node is never asked to verify records outside its authority relationships. Each node receives only the scope it is built for.</p>
             <div className="bg-white border border-slate-200 rounded px-4 py-3 mb-3">
               <p className="font-semibold text-slate-700 mb-1">Example scenario</p>
-              <p className="text-slate-600">Pilot holds a UK CAA licence (Lead Node: European Node A). Has lived and worked in Manila for the last 3 years at Cebu Pacific.</p>
-              <p className="text-slate-600 mt-1"><strong>Workflow:</strong> European Node handles UK CAA licence validation and identity. Platform automatically triggers a sub-task to Asia-Pacific Node for NBI clearance and Cebu Pacific employment verification. Both nodes run in parallel. The Asia-Pacific Node receives a flat <strong>Sub-Task Fee</strong> from the Global Verification Pool — paid automatically upon completion.</p>
+              <p className="text-slate-600">Pilot holds a UK CAA licence (Lead Node: European Node A). Has lived and worked in Manila for the last 3 years at partner airlines.</p>
+              <p className="text-slate-600 mt-1"><strong>Workflow:</strong> European Node handles UK CAA licence validation and identity. Platform automatically triggers a sub-task to Asia-Pacific Node for NBI clearance and partner airlines employment verification. Both nodes run in parallel. The Asia-Pacific Node receives a flat <strong>Sub-Task Fee</strong> from the Global Verification Pool — paid automatically upon completion.</p>
             </div>
             <ul className="space-y-1 list-disc ml-4">
               <li>Sub-tasks are triggered per country/employer outside the Lead Node's region</li>
@@ -4616,9 +4616,9 @@ export default function UCFOfficialReleasePage() {
             HUB D — INFRASTRUCTURE &amp; DATA
           </h1>
           <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Flight Data · Aeromedical · Verified Ingestion Pipelines · The Technology Layer</p>
-          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub D integrates the data sources that pilots already use — navigation apps, logbook software, medical examiners — into the verified pilot profile. Every logbook entry a pilot makes in ForeFlight, every medical certificate issued by a DAME, every simulator session logged in Navigraph should flow directly into their professional identity. Hub D builds those pipelines.</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub D integrates the data sources that pilots already use — navigation apps, logbook software, medical examiners — into the verified pilot profile. Every logbook entry a pilot makes in navigation platforms, every medical certificate issued by a DAME, every simulator session logged in navigation platforms should flow directly into their professional identity. Hub D builds those pipelines.</p>
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The data isolation problem:</strong> Pilots use dozens of tools to manage their professional life. None of them talk to each other. None of them feed a verified professional record. The hours logged in ForeFlight are invisible to the airline reviewing a CV. The medical signed by the AME is a paper document that cannot be queried at scale. <strong style={{color:'#f87171'}}>Hub D ends the isolation. Every data source becomes a verified input to the pilot's single professional identity.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The data isolation problem:</strong> Pilots use dozens of tools to manage their professional life. None of them talk to each other. None of them feed a verified professional record. The hours logged in navigation platforms are invisible to the airline reviewing a CV. The medical signed by the AME is a paper document that cannot be queried at scale. <strong style={{color:'#f87171'}}>Hub D ends the isolation. Every data source becomes a verified input to the pilot's single professional identity.</strong></p>
           </div>
 
           <h2 id="pillar-12-flight-data" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
@@ -4627,7 +4627,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">I. Executive Overview: The Invisible Telemetry Problem</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Navigraph, ForeFlight, Garmin Pilot, SkyDemon, and desktop simulation platforms collectively capture millions of hours of granular pilot activity every month. Route planning architecture, airspace communication loops, approach currency records, and real-time weather decision-making patterns are continuously logged — yet they remain professionally invisible. They do not appear on a CV, they cannot be parsed by an airline Applicant Tracking System (ATS), and they contribute zero equity to a pilot's active job hunt.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">navigation platforms, navigation platforms, EFB platforms, navigation platforms, and desktop simulation platforms collectively capture millions of hours of granular pilot activity every month. Route planning architecture, airspace communication loops, approach currency records, and real-time weather decision-making patterns are continuously logged — yet they remain professionally invisible. They do not appear on a CV, they cannot be parsed by an airline Applicant Tracking System (ATS), and they contribute zero equity to a pilot's active job hunt.</p>
           <p className="text-slate-700 leading-relaxed mb-6">This represents a structural failure in data utilization. A pilot who logs dozens of hours mastering complex IFR routing or executing high-fidelity simulator profiles is demonstrably maintaining sharp cognitive currency. Currently, that currency is unverifiable.</p>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
@@ -4640,7 +4640,7 @@ export default function UCFOfficialReleasePage() {
           <ul className="space-y-2 mb-6">
             {[
               { n: '1', t: 'Proficiency Evaporation', d: <>Advanced metrics — such as instrument approach diversity, holding pattern precision, and weather avoidance strategies — remain locked behind closed application screens, <strong>vanishing from professional profiles</strong> during employment transitions or gaps.</> },
-              { n: '2', t: 'Orphaned Simulation Assets', d: <>High-fidelity hours logged on desktop simulators (X-Plane, MSFS) or fixed Flight Training Devices (FTDs) offer clear evidence of procedural proficiency but are <strong>entirely disregarded by airline recruiters</strong> due to a lack of source verification.</> },
+              { n: '2', t: 'Orphaned Simulation Assets', d: <>High-fidelity hours logged on desktop simulators (simulation platforms, simulation platforms) or fixed Flight Training Devices (FTDs) offer clear evidence of procedural proficiency but are <strong>entirely disregarded by airline recruiters</strong> due to a lack of source verification.</> },
               { n: '3', t: 'Proprietary Format Isolation', d: <>Closed, fragmented data structures prevent pilots from aggregating their multi-platform logs into a <strong>single, cohesive, and transportable career dossier.</strong></> },
             ].map((item) => (
               <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
@@ -4712,7 +4712,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">We believe the pilots who build this network through active flight logs and simulator tracking should be the primary beneficiaries of its growth. Rather than paying opaque corporate data brokers, PilotRecognition aligns application developers and aviators via a clean, structured financial mechanism.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The $20 Ecosystem Referral Dividend</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">When an integrated application partner (e.g., Navigraph, ForeFlight, SkyDemon) successfully onboards a pilot onto the PilotRecognition network, a <strong>$20 Ecosystem Referral Dividend</strong> is automatically unlocked upon the activation of that pilot's premium Recognition+ career profile.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">When an integrated application partner (e.g., navigation platforms, navigation platforms, navigation platforms) successfully onboards a pilot onto the PilotRecognition network, a <strong>$20 Ecosystem Referral Dividend</strong> is automatically unlocked upon the activation of that pilot's premium Recognition+ career profile.</p>
 
           <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">Referral Economics</p>
@@ -4744,7 +4744,7 @@ export default function UCFOfficialReleasePage() {
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Pillar 1 &amp; Pillar 6: Airline Pathways, Type Ratings, and Simulator Matrix Alignment</h4>
           <p className="text-slate-700 leading-relaxed mb-4">Commercial operators are actively shifting away from legacy hour-counting and moving toward Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA) models.</p>
           <p className="text-slate-700 leading-relaxed mb-2"><strong>The Interconnection:</strong> Raw application tracking data from desktop simulation platforms and advanced EFBs is directly mapped to the 9 Core EBT Competencies.</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Outcome:</strong> A pilot's high-fidelity procedure repetition on VATSIM or a home FTD doesn't just sit on a personal dashboard — it feeds directly into the carrier's automated screening matrix. This allows airlines to identify high-procedural readiness before the pilot ever steps into a multi-million-dollar airline simulator evaluation.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Outcome:</strong> A pilot's high-fidelity procedure repetition on simulation networks or a home FTD doesn't just sit on a personal dashboard — it feeds directly into the carrier's automated screening matrix. This allows airlines to identify high-procedural readiness before the pilot ever steps into a multi-million-dollar airline simulator evaluation.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. Pillar 10: Financial Underwriting &amp; Risk Mitigation</h4>
           <p className="text-slate-700 leading-relaxed mb-4">Financial institutions face severe credit risk when underwriting unsecured aviation training loans because graduate employment outcomes are historically opaque and difficult to predict.</p>
@@ -4768,7 +4768,7 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">6. Pillar 15: OEM Fleet Intelligence &amp; Training Optimization</h4>
           <p className="text-slate-700 leading-relaxed mb-4">Aircraft Manufacturers (OEMs) design advanced cockpits and type-rating frameworks based on strict engineering models, but they possess zero data on how pilots maintain procedural currency outside of mandatory, corporate-mandated simulator checks.</p>
-          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Interconnection:</strong> Decentralized simulation telemetry (from X-Plane, MSFS, and home FTD configurations) captures exact cockpit interaction patterns, autopilot management habits, and system failure responses.</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Interconnection:</strong> Decentralized simulation telemetry (from simulation platforms, simulation platforms, and home FTD configurations) captures exact cockpit interaction patterns, autopilot management habits, and system failure responses.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Outcome:</strong> OEMs can query the network to analyze pilot behavior: "How many hours of targeted, type-specific simulator training are pilots executing in their spare time prior to entering a formal type-rating course?" This raw, pilot-authorized data enables manufacturers to optimize their flight training footprints, refine human-machine interface (HMI) designs, and build data-driven curriculum structures that drastically reduce type-rating washout rates.</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VII. The Recognition Score Multiplier: Transforming Spare Time into Hiring Equity</h3>
@@ -4790,12 +4790,12 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. The ATC &amp; Phraseology Premium (The Communication Filter)</h4>
           <p className="text-slate-700 leading-relaxed mb-4">A major point of failure during initial airline line-training and simulator evaluations is a candidate's lack of situational awareness and breakdown in non-standard ATC phraseology. Low-hour pilots frequently struggle to adapt from quiet training airspaces to high-velocity, international hub environments.</p>
-          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Active hours logged on certified simulation networks (e.g., VATSIM, PilotEdge) tracking radio transmission density, read-back accuracy, and airspace boundary compliance.</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Active hours logged on certified simulation networks (e.g., simulation networks, ATC networks) tracking radio transmission density, read-back accuracy, and airspace boundary compliance.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Score Impact:</strong> Every verified hour of high-density air traffic control interaction functions as a competency multiplier. The algorithm dynamically upgrades the pilot's CRM &amp; Communication Profile, signaling to airline recruiters that this candidate possesses advanced operational readiness and will require significantly less remedial training during line orientation.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The Active Currency Weighting Matrix</h4>
           <p className="text-slate-700 leading-relaxed mb-4">A pilot with 250 hours who has sat completely idle for six months is structurally disadvantaged compared to a 250-hour pilot who has logged 30 hours of intensive instrument tracking, approach repetitions, and route-planning scenarios over the last 30 days.</p>
-          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Continuous data updates from navigation apps (ForeFlight, Navigraph) detailing real-world routing complexity, holding pattern execution, and exposure to variable instrument meteorological conditions (IMC).</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Continuous data updates from navigation apps (navigation platforms, navigation platforms) detailing real-world routing complexity, holding pattern execution, and exposure to variable instrument meteorological conditions (IMC).</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Score Impact:</strong> The platform applies an exponential decay algorithm to unverified time, while assigning a <strong>Velocity Premium</strong> to active telemetry. A pilot who maintains a high frequency of self-directed, verified preparation is automatically pushed to the top of operator search results, maximizing their discovery rate for premium pathway placements.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Institutional Validation Loops (The Multiplier Cap)</h4>
@@ -4805,7 +4805,7 @@ export default function UCFOfficialReleasePage() {
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Ultimate Executive Leverage</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">This mechanism closes the final loop for software providers. When pitching to Garmin, Navigraph, or ForeFlight, you can show them that they are no longer just selling a tool to help pilots fly from Point A to Point B. <strong>They are selling a platform that directly improves the pilot's algorithmic hiring score.</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">This mechanism closes the final loop for software providers. When pitching to Garmin, navigation platforms, or navigation platforms, you can show them that they are no longer just selling a tool to help pilots fly from Point A to Point B. <strong>They are selling a platform that directly improves the pilot's algorithmic hiring score.</strong></p>
             <p className="text-white text-sm leading-relaxed mt-2">The message to the pilot community is definitive: "Every hour you spend on our integrated partner apps planning flights, talking to ATC simulators, and flying complex procedures is a direct investment in your marketplace ranking. If you fly with an unlinked app, your hard work is a ghost. If you fly with our partners, your data actively pulls your career forward."</p>
           </div>
 
@@ -4887,13 +4887,13 @@ export default function UCFOfficialReleasePage() {
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Decoupling Corporate Control via Data Sovereignty</h4>
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition does not sell or transfer telemetry to airlines, nor do we act as a data controller. The platform operates on a <strong>Neutral Conduit Framework:</strong></p>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
-            <li><strong>The Pilot Holds the Keys:</strong> All incoming data from integrated apps (ForeFlight, Navigraph, Sims) hashes directly to the individual pilot's private cryptographic wallet.</li>
+            <li><strong>The Pilot Holds the Keys:</strong> All incoming data from integrated apps (navigation platforms, navigation platforms, Sims) hashes directly to the individual pilot's private cryptographic wallet.</li>
             <li><strong>Programmatic Consent Gate:</strong> An airline or recruiter cannot scan, query, or monitor a pilot's proficiency trends, approach histories, or simulator habits without an explicit digital signature and permission grant from the pilot.</li>
             <li><strong>A Shield, Not a Hammer:</strong> The pilot determines exactly what data is visible, when it is visible, and to whom. This completely shifts telemetry from a tool of corporate surveillance into an asset of personal professional equity.</li>
           </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The Direct Ingestion Edge for Software Partners</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">For major software providers (like ForeFlight or Garmin), trying to sell corporate data-tracking utilities directly to pilots is a marketing minefield. If your users think you are secretly packaging their flight metrics to sell to airline management, they will delete your app.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">For major software providers (like navigation platforms or Garmin), trying to sell corporate data-tracking utilities directly to pilots is a marketing minefield. If your users think you are secretly packaging their flight metrics to sell to airline management, they will delete your app.</p>
           <p className="text-slate-700 leading-relaxed mb-4">By integrating with PilotRecognition, software companies leverage our Sovereign Network Architecture as a trust shield:</p>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
             <li>You are not passing data to a corporate entity; you are <strong>passing data directly back to the pilot</strong> who generated it, via their personal wallet.</li>
@@ -4917,10 +4917,10 @@ export default function UCFOfficialReleasePage() {
               </thead>
               <tbody>
                 {[
-                  { t: 'Navigation & Charting (e.g., Navigraph, SkyDemon)', c: 'Route planning architectures, procedure selections, weather maps', v: 'Operational Currency Token (Measures routing complexity and approach diversity)', a: 'Demonstrates a pilot maintaining high cognitive familiarity with international terminal airspaces and changing weather logic.' },
-                  { t: 'EFBs & Digital Logbooks (e.g., ForeFlight, Garmin Pilot)', c: 'Flight block tracking, manual logs, airframe times', v: 'Verified Flight Time Token (Cryptographically anchored to hardware logs)', a: 'Delivers fully verified flight times that bypass manual review and instantly clear ATS parsing constraints.' },
-                  { t: 'Desktop Simulation (e.g., X-Plane, MSFS)', c: 'Systems management, failure checklists, procedure repetition', v: 'Simulator Proficiency Token (Validated via telemetry files and instructor hashes)', a: 'Showcases superior procedural familiarity and advanced type-specific cockpit readiness prior to formal airline screening.' },
-                  { t: 'ATC Simulation Networks (e.g., PilotEdge, VATSIM)', c: 'Live radio phraseology, airspace structure interactions, controller compliance', v: 'CRM & Communication Token (Tracks transmission density and phraseology precision)', a: 'Establishes objective proof of radio proficiency and situational awareness, giving low-hour pilots a clear hiring edge.' },
+                  { t: 'Navigation & Charting (e.g., navigation platforms, navigation platforms)', c: 'Route planning architectures, procedure selections, weather maps', v: 'Operational Currency Token (Measures routing complexity and approach diversity)', a: 'Demonstrates a pilot maintaining high cognitive familiarity with international terminal airspaces and changing weather logic.' },
+                  { t: 'EFBs & Digital Logbooks (e.g., navigation platforms, EFB platforms)', c: 'Flight block tracking, manual logs, airframe times', v: 'Verified Flight Time Token (Cryptographically anchored to hardware logs)', a: 'Delivers fully verified flight times that bypass manual review and instantly clear ATS parsing constraints.' },
+                  { t: 'Desktop Simulation (e.g., simulation platforms, simulation platforms)', c: 'Systems management, failure checklists, procedure repetition', v: 'Simulator Proficiency Token (Validated via telemetry files and instructor hashes)', a: 'Showcases superior procedural familiarity and advanced type-specific cockpit readiness prior to formal airline screening.' },
+                  { t: 'ATC Simulation Networks (e.g., ATC networks, simulation networks)', c: 'Live radio phraseology, airspace structure interactions, controller compliance', v: 'CRM & Communication Token (Tracks transmission density and phraseology precision)', a: 'Establishes objective proof of radio proficiency and situational awareness, giving low-hour pilots a clear hiring edge.' },
                 ].map((row, i) => (
                   <tr key={row.t} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.t}</td>
@@ -4950,35 +4950,35 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition ecosystem does not rely on a single data source to validate a pilot. Instead, it operates on a <strong>Universal Commercial Framework (UCF)</strong> that standardizes and monetizes three distinct streams of professional data. No single application holds the complete picture of a pilot's market value. <strong>Logbooks provide the duration, EFBs provide the complexity, and Simulators provide the behavior.</strong> By routing all three into the PilotRecognition API, we generate a single, holistic, and mathematically objective Recognition Score that airlines and underwriters can transact on.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-A. Logbook Providers: The Origin Trust Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">LogTen Pro · FLYLOG.io · capzlog.aero · IDfy</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">Digital Platforms · Legacy Providers · Regional Solutions</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Logbooks act as the quantitative ledger. They record the raw block hours, the regulatory compliance, and the official baseline of a pilot's history.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> They provide the <strong>verified foundation</strong> (via Veremark/ATO attestation) upon which all other complex commercial data is built. Without verified flight hours, telemetry data and simulator sessions lack the temporal anchor required for professional credibility.</p>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The LogTen Pro Problem: Captured Users, Lost Professional Value</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">LogTen Pro has captured 160,000+ pilots — the largest user base in digital logbook history. Yet they face a critical strategic vulnerability: <strong>they have completely lost control of the professional valuation layer.</strong> Pilots use LogTen as a sophisticated digital diary, but the industry does not view a LogTen export as an official currency of trust.</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Established Provider Problem: Captured Users, Lost Professional Value</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Established logbook platforms have captured hundreds of thousands of pilots — the largest user bases in digital logbook history. Yet they face a critical strategic vulnerability: <strong>they have completely lost control of the professional valuation layer.</strong> Pilots use these platforms as sophisticated digital diaries, but the industry does not view a standard logbook export as an official currency of trust.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Core Pain Points for LogTen Pro</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Core Pain Points for Established Logbook Providers</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>1. High Churn Risk at Career Milestones:</strong> LogTen charges $129.99/year premium subscription. But once a pilot secures their dream job at a legacy airline, their logging needs change. The airline's internal scheduling systems track their legal currency, block hours, and medical dates. Because LogTen doesn't connect to an external recognition system that advances their career further, many senior captains stop paying entirely and rely on airline records.</p>
-              <p><strong>2. The "Dirty Data" Vulnerability:</strong> LogTen relies entirely on user input — it suffers from "garbage in, garbage out." If a pilot incorrectly logs night time, forgets an instrument approach, or fat-fingers an aircraft registration, the app cannot self-correct. The pilot discovers the error during a stressful pre-hiring audit, leading to frustration with LogTen's passive nature.</p>
-              <p><strong>3. Disconnect from Modern EBT/CBTA Frameworks:</strong> Aviation training has evolved from counting "raw hours" to evaluating competencies (Evidence-Based Training). LogTen is structurally built around the old way — adding up rows of numbers. It does not natively measure cognitive, behavioral, or situational awareness scores from simulator checkrides. As airlines shift to CBTA, LogTen risks becoming obsolete to recruiters who want competency metrics, not just hour totals.</p>
-              <p><strong>4. Zero Marketplace Portability:</strong> A LogTen logbook is a closed loop. Hours live inside the app or print on a static PDF. It does not actively broadcast a pilot's readiness to the industry. If a pilot seeks an upgrade, corporate gig, or pathway change, LogTen cannot push their verified readiness profile to recruiters. The pilot must export, format, and manually upload elsewhere.</p>
+              <p><strong>1. High Churn Risk at Career Milestones:</strong> established logbook platforms charges $129.99/year premium subscription. But once a pilot secures their dream job at a legacy airline, their logging needs change. The airline's internal scheduling systems track their legal currency, block hours, and medical dates. Because established logbook platforms doesn't connect to an external recognition system that advances their career further, many senior captains stop paying entirely and rely on airline records.</p>
+              <p><strong>2. The "Dirty Data" Vulnerability:</strong> established logbook platforms relies entirely on user input — it suffers from "garbage in, garbage out." If a pilot incorrectly logs night time, forgets an instrument approach, or fat-fingers an aircraft registration, the app cannot self-correct. The pilot discovers the error during a stressful pre-hiring audit, leading to frustration with established logbook platforms's passive nature.</p>
+              <p><strong>3. Disconnect from Modern EBT/CBTA Frameworks:</strong> Aviation training has evolved from counting "raw hours" to evaluating competencies (Evidence-Based Training). established logbook platforms is structurally built around the old way — adding up rows of numbers. It does not natively measure cognitive, behavioral, or situational awareness scores from simulator checkrides. As airlines shift to CBTA, established logbook platforms risks becoming obsolete to recruiters who want competency metrics, not just hour totals.</p>
+              <p><strong>4. Zero Marketplace Portability:</strong> A established logbook platforms logbook is a closed loop. Hours live inside the app or print on a static PDF. It does not actively broadcast a pilot's readiness to the industry. If a pilot seeks an upgrade, corporate gig, or pathway change, established logbook platforms cannot push their verified readiness profile to recruiters. The pilot must export, format, and manually upload elsewhere.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The PilotRecognition Solution: Adding the Verification Layer</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>LogTen provides the ledger, PilotRecognition provides the professional destination.</strong> By linking LogTen hours to our 25-pillar neutral verification network, we turn passive personal numbers into active, certified industry credentials.</p>
-              <p><strong>The $100 Recognition+ Subscription:</strong> Pilots pay to unlock the "Verified by PilotRecognition" seal on their LogTen profile. This bridges the gap for 5,000-hour instructors who feel invisible — giving them direct exposure to recruiters, premium charter operators, and underwriters hunting for vetted talent.</p>
+              <p><strong>established logbook platforms provides the ledger, PilotRecognition provides the professional destination.</strong> By linking established logbook platforms hours to our 25-pillar neutral verification network, we turn passive personal numbers into active, certified industry credentials.</p>
+              <p><strong>The $100 Recognition+ Subscription:</strong> Pilots pay to unlock the "Verified by PilotRecognition" seal on their established logbook platforms profile. This bridges the gap for 5,000-hour instructors who feel invisible — giving them direct exposure to recruiters, premium charter operators, and underwriters hunting for vetted talent.</p>
               <p><strong>For Insurance Underwriters & Charter Operators:</strong> Insurance companies hate unverified logbooks because "logbook padding" costs millions in claims. A charter operator or underwriter prioritizes PilotRecognition-audited candidates because liability risk drops to near zero.</p>
-              <p><strong>The LogTen Retention Fix:</strong> Instead of users treating LogTen as a passive diary, it becomes the essential gateway to getting a pilot's identity certified. LogTen takes a revenue split of the $100 Recognition+ fee — a brand new, highly profitable B2B2C revenue stream.</p>
+              <p><strong>The established logbook platforms Retention Fix:</strong> Instead of users treating established logbook platforms as a passive diary, it becomes the essential gateway to getting a pilot's identity certified. established logbook platforms takes a revenue split of the $100 Recognition+ fee — a brand new, highly profitable B2B2C revenue stream.</p>
             </div>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Triple-Layer Verification Architecture</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">By introducing Veremark and ATO integration, we build a digital fortress around the pilot's data — transforming LogTen's personal records into triple-verified industry credentials:</p>
+          <p className="text-slate-700 leading-relaxed mb-4">By introducing Veremark and ATO integration, we build a digital fortress around the pilot's data — transforming established logbook platforms's personal records into triple-verified industry credentials:</p>
 
           <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
             <div className="space-y-1 text-slate-300">
@@ -5017,42 +5017,42 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Multi-Tier Revenue Model</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>$100 Recognition+ Subscription:</strong> Pilots pay for the audit to unlock the verified seal. LogTen earns revenue share per activation. Transforms unverified time into elite, audited industry asset.</p>
+              <p><strong>$100 Recognition+ Subscription:</strong> Pilots pay for the audit to unlock the verified seal. established logbook platforms earns revenue share per activation. Transforms unverified time into elite, audited industry asset.</p>
               <p><strong>$1,000/Year Program Access Fee:</strong> Premium tier for high-hour instructors and career climbers. Grants visibility to operators who bypass traditional application pools. Charter operators and underwriters get pre-vetted candidates, reducing onboarding risk.</p>
-              <p><strong>$20 Ecosystem Referral Dividend:</strong> Viral growth engine. Flight instructors, ATOs, and current members earn $20 for each new pilot they refer. In a tight-knit flight school, an instructor telling their student "Get your LogTen verified on PilotRecognition so airlines trust your hours" becomes a self-funding acquisition model.</p>
-              <p><strong>$20/Verification Issuance Fee:</strong> Each ATO/Operator attestation generates $20 to the logbook provider (LogTen) as referral dividend — creating sustainable recurring revenue beyond subscriptions.</p>
+              <p><strong>$20 Ecosystem Referral Dividend:</strong> Viral growth engine. Flight instructors, ATOs, and current members earn $20 for each new pilot they refer. In a tight-knit flight school, an instructor telling their student "Get your established logbook platforms verified on PilotRecognition so airlines trust your hours" becomes a self-funding acquisition model.</p>
+              <p><strong>$20/Verification Issuance Fee:</strong> Each ATO/Operator attestation generates $20 to the logbook provider (established logbook platforms) as referral dividend — creating sustainable recurring revenue beyond subscriptions.</p>
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Powered by LogTen Pro" Display Integration</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">Featuring a <strong>"Powered by LogTen Pro"</strong> visual widget directly on the PilotRecognition.com dashboard preserves LogTen's brand equity while elevating our platform's utility. The pilot's LogTen logbook displays seamlessly within their Recognition Profile, connecting pilots to networking opportunities and building a verified trust layer that their hours have been audited by Veremark and their ATO.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Powered by established logbook platforms" Display Integration</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Featuring a <strong>"Powered by established logbook platforms"</strong> visual widget directly on the PilotRecognition.com dashboard preserves established logbook platforms's brand equity while elevating our platform's utility. The pilot's established logbook platforms logbook displays seamlessly within their Recognition Profile, connecting pilots to networking opportunities and building a verified trust layer that their hours have been audited by Veremark and their ATO.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Unified Dashboard Experience</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>LogTen Hours Display:</strong> The pilot's complete LogTen logbook renders directly on PilotRecognition.com, with flight hours glowing with "Veemark & ATO Verified" badges. Corporate flight departments and charter operators get immediate green light to fast-track interviews.</p>
-              <p><strong>Networking Integration:</strong> Pilots can share their verified profile link (pilotrecognition.com/p/[username]) which displays their LogTen hours, Veremark verification status, and Recognition Score — a single URL that replaces static PDF resumes.</p>
+              <p><strong>established logbook platforms Hours Display:</strong> The pilot's complete established logbook platforms logbook renders directly on PilotRecognition.com, with flight hours glowing with "Veemark & ATO Verified" badges. Corporate flight departments and charter operators get immediate green light to fast-track interviews.</p>
+              <p><strong>Networking Integration:</strong> Pilots can share their verified profile link (pilotrecognition.com/p/[username]) which displays their established logbook platforms hours, Veremark verification status, and Recognition Score — a single URL that replaces static PDF resumes.</p>
               <p><strong>Recruiter View:</strong> Airlines and operators see a dynamic dashboard where flight hours are verified in real-time, completely eliminating the weeks-long manual logbook audit process. One click shows attestation history, ATO signatures, and insurance-ready verification status.</p>
-              <p><strong>LogTen Retention Effect:</strong> Pilots who verify through LogTen are locked into the ecosystem. Switching logbook apps means losing the integrated verification history and the "Powered by LogTen" credential that recruiters recognize and trust.</p>
+              <p><strong>established logbook platforms Retention Effect:</strong> Pilots who verify through established logbook platforms are locked into the ecosystem. Switching logbook apps means losing the integrated verification history and the "Powered by established logbook platforms" credential that recruiters recognize and trust.</p>
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Pitch to LogTen Pro Executives</h5>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Pitch to established logbook platforms Executives</h5>
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Closing Argument</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">"We are not competing for your users — we are expanding your value proposition. You have 160,000 pilots who treat LogTen as a passive diary. We give your highest-value subscribers a definitive reason to keep their subscriptions active forever. LogTen provides the ledger. PilotRecognition provides the professional destination, the network, and the elite industry exposure that transforms logbook data into career currency."</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Economics:</strong> At 10% of your base (16,000 pilots) on Recognition+ at $100/year with a 30% revenue share, LogTen earns $480,000 annually in new verification revenue — on top of reduced churn, higher retention, and enterprise airline partnerships that open B2B licensing opportunities.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">"We are not competing for your users — we are expanding your value proposition. You have 160,000 pilots who treat established logbook platforms as a passive diary. We give your highest-value subscribers a definitive reason to keep their subscriptions active forever. established logbook platforms provides the ledger. PilotRecognition provides the professional destination, the network, and the elite industry exposure that transforms logbook data into career currency."</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Economics:</strong> At 10% of your base (16,000 pilots) on Recognition+ at $100/year with a 30% revenue share, established logbook platforms earns $480,000 annually in new verification revenue — on top of reduced churn, higher retention, and enterprise airline partnerships that open B2B licensing opportunities.</p>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Architectural Separation: Format vs Origin Trust</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">The fundamental distinction between LogTen Pro and PilotRecognition lies in <strong>where trust originates</strong>. This is not a competitive relationship — it is a complementary architectural layering where each platform serves a distinct, non-overlapping function.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The fundamental distinction between established logbook platforms and PilotRecognition lies in <strong>where trust originates</strong>. This is not a competitive relationship — it is a complementary architectural layering where each platform serves a distinct, non-overlapping function.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">LogTen Pro: The Format Layer (Presentation Trust)</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">established logbook platforms: The Format Layer (Presentation Trust)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Format Trust Only:</strong> Airlines trust LogTen because its reports are perfectly formatted to match legal standards (EASA, FAA, ICAO formats). Recruiters know the mathematical calculations add up and there are no typos, saving manual auditing time.</p>
-              <p><strong>No Origin Trust:</strong> LogTen cannot prove a pilot didn't simply type in 100 fake hours of multi-engine time while sitting on their couch. The airline must still cross-reference those hours against internal crew logs (Sabre, FLICA), physical signatures, or training records to detect falsification.</p>
-              <p><strong>User-Entered Data:</strong> All data originates from pilot input. LogTen validates formatting and calculations, not authenticity. This is the inherent limitation of any personal logbook application.</p>
+              <p><strong>Format Trust Only:</strong> Airlines trust established logbook platforms because its reports are perfectly formatted to match legal standards (EASA, FAA, ICAO formats). Recruiters know the mathematical calculations add up and there are no typos, saving manual auditing time.</p>
+              <p><strong>No Origin Trust:</strong> established logbook platforms cannot prove a pilot didn't simply type in 100 fake hours of multi-engine time while sitting on their couch. The airline must still cross-reference those hours against internal crew logs (airline systems, workforce management systems), physical signatures, or training records to detect falsification.</p>
+              <p><strong>User-Entered Data:</strong> All data originates from pilot input. established logbook platforms validates formatting and calculations, not authenticity. This is the inherent limitation of any personal logbook application.</p>
             </div>
           </div>
 
@@ -5062,17 +5062,17 @@ export default function UCFOfficialReleasePage() {
               <p><strong>Top-Down Verification:</strong> PilotRecognition pulls examination results and EBT/CBTA competency assessments directly from the source — the Approved Training Organisation (ATO) or operating airline. The airline/ATO is the origin of trust, not the pilot's personal logbook.</p>
               <p><strong>The Architectural Flow:</strong></p>
               <div className="bg-slate-100 p-3 rounded font-mono text-xs">
-                <p>Traditional Flow: Pilot (Inputs Data) → LogTen Pro (Formatted Output) → Airline (Must Manually Verify)</p>
+                <p>Traditional Flow: Pilot (Inputs Data) → established logbook platforms (Formatted Output) → Airline (Must Manually Verify)</p>
                 <p className="mt-2 text-emerald-600 font-bold">Competency Flow: ATO/Airline (Logs Checkride/EBT) → PilotRecognition (Verified Data) → Recruiters (Instant Trust)</p>
               </div>
               <p className="mt-2"><strong>Tamper-Proof Profiles:</strong> Because data is verified at the source (airline/ATO systems), the resulting ATLAS Aviation CV provides airlines with instant trust without manual logbook auditing.</p>
-              <p><strong>Competency Over Hours:</strong> Instead of just counting raw hours, we track behavioral performance metrics from actual checkrides. Airlines see how a pilot performs in an Airbus environment, not just how many hours they sat in the seat.</p>
+              <p><strong>Competency Over Hours:</strong> Instead of just counting raw hours, we track behavioral performance metrics from actual checkrides. Airlines see how a pilot performs in an OEMs environment, not just how many hours they sat in the seat.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>The Critical Distinction</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro accepts unverified, user-entered data. It cannot serve as the origin of the trust layer for an airline. If an airline relies solely on a LogTen export, they still must manually cross-reference hours against internal systems to ensure the pilot isn't falsifying their time.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">established logbook platforms accepts unverified, user-entered data. It cannot serve as the origin of the trust layer for an airline. If an airline relies solely on a established logbook platforms export, they still must manually cross-reference hours against internal systems to ensure the pilot isn't falsifying their time.</p>
             <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition reverses this flow by building the trust layer from the airline/ATO <strong>downward</strong>, rather than from the pilot <strong>upward</strong>. We do not create trust — we connect to where trust already exists (the airline's own operational records) and make it portable.</p>
           </div>
 
@@ -5080,81 +5080,81 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Complementary Function Architecture</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>LogTen's Role:</strong> Provide beautifully formatted, comprehensive, daily-logged hour baseline. The pilot's personal record of their flying activity — GPS tracks, photos, entries, memories. The <strong>presentation layer</strong>.</p>
+              <p><strong>established logbook platforms's Role:</strong> Provide beautifully formatted, comprehensive, daily-logged hour baseline. The pilot's personal record of their flying activity — GPS tracks, photos, entries, memories. The <strong>presentation layer</strong>.</p>
               <p><strong>PilotRecognition's Role:</strong> Connect to airline/ATO operational systems and attach the <strong>"verified" cryptographic stamp</strong> to specific hours. We do not create the hours — we verify which hours from the logbook match the airline's official operational records.</p>
-              <p><strong>The Synchronization:</strong> A pilot has 1,500 hours in LogTen. PilotRecognition queries the airline's FLICA/Sabre system and confirms 1,247 of those hours match official duty records. The pilot's dashboard shows: <strong>"1,247 hours verified by [Airline Name] via PilotRecognition"</strong> — with the remaining 253 hours shown as "logged but not yet verified."</p>
+              <p><strong>The Synchronization:</strong> A pilot has 1,500 hours in established logbook platforms. PilotRecognition queries the airline's workforce management systems/airline systems system and confirms 1,247 of those hours match official duty records. The pilot's dashboard shows: <strong>"1,247 hours verified by [Airline Name] via PilotRecognition"</strong> — with the remaining 253 hours shown as "logged but not yet verified."</p>
               <p><strong>Airline Value:</strong> Recruiters see that 1,247 hours are cryptographically attested by a real airline. The verification burden is eliminated — they know those hours are real. The unverified 253 hours are flagged for additional scrutiny if needed.</p>
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Clarifying LogTen Pro's Existing Verification Mechanisms</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">It is important to acknowledge that LogTen Pro <strong>does</strong> include verification features — but these operate through decentralized regulatory mechanisms rather than centralized validation. Understanding this distinction is crucial for positioning PilotRecognition correctly.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Clarifying established logbook platforms's Existing Verification Mechanisms</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">It is important to acknowledge that established logbook platforms <strong>does</strong> include verification features — but these operate through decentralized regulatory mechanisms rather than centralized validation. Understanding this distinction is crucial for positioning PilotRecognition correctly.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">How Hours Become "Legally Verified" in LogTen Pro</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">How Hours Become "Legally Verified" in established logbook platforms</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>1. Digital CFI Signatures (EASA AMC1 FCL.050 / FAA):</strong> LogTen Pro features an in-app Digital Signature function. A Certified Flight Instructor (CFI) or examiner signs the pilot's iPad screen with a stylus, which legally locks that specific flight entry. If anyone tries to alter the flight hours later, the signature instantly breaks and invalidates the entry. This provides entry-level verification for training flights.</p>
-              <p><strong>2. Airline Schedule Imports:</strong> Pilots can use LogTen's Airline Schedule Importer to pull flight data directly from internal airline systems like FLICA or Sabre. Because this data mirrors the airline's official dispatch records, recruiters view it as highly credible. However, this is a <strong>pilot-initiated</strong> import — the airline does not cryptographically attest to the specific hours in the logbook.</p>
+              <p><strong>1. Digital CFI Signatures (EASA AMC1 FCL.050 / FAA):</strong> established logbook platforms features an in-app Digital Signature function. A Certified Flight Instructor (CFI) or examiner signs the pilot's iPad screen with a stylus, which legally locks that specific flight entry. If anyone tries to alter the flight hours later, the signature instantly breaks and invalidates the entry. This provides entry-level verification for training flights.</p>
+              <p><strong>2. Airline Schedule Imports:</strong> Pilots can use established logbook platforms's Airline Schedule Importer to pull flight data directly from internal airline systems like workforce management systems or airline systems. Because this data mirrors the airline's official dispatch records, recruiters view it as highly credible. However, this is a <strong>pilot-initiated</strong> import — the airline does not cryptographically attest to the specific hours in the logbook.</p>
               <p><strong>3. The "Honor" System & Legal Declaration:</strong> Aviation authorities (FAA, EASA) and airline interview panels take logbooks at face value during checkrides or interviews. They do not expect the software company to police the pilot; instead, the pilot signs a legal declaration stating the hours are accurate. The burden of truth lies with the pilot, not the logbook provider.</p>
             </div>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">PilotRecognition: The Add-On Verification Layer (Not a Competitor)</h5>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>PilotRecognition does not replace standard logbooks — we are an add-on verification layer that sits on top of them.</strong> LogTen Pro remains the personal ledger tool; we provide the centralized, external validation system that connects directly to ATOs, airlines, and competency trackers.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>PilotRecognition does not replace standard logbooks — we are an add-on verification layer that sits on top of them.</strong> established logbook platforms remains the personal ledger tool; we provide the centralized, external validation system that connects directly to ATOs, airlines, and competency trackers.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Relationship Architecture</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>LogTen Pro = The Personal Ledger:</strong> Beautifully formatted, user-managed, CFI-signed entries. Only as honest as the pilot typing into it — but perfectly compliant with EASA/FAA regulations for logbook maintenance.</p>
-              <p><strong>PilotRecognition = The External Validator:</strong> Centralized, neutral, airline/ATO-connected verification layer. We do not ask pilots to re-enter their hours — we verify which of their LogTen hours match official airline operational records.</p>
-              <p><strong>The Integration:</strong> Pilot pulls 1,500 hours into LogTen (via manual entry, CFI signatures, or FLICA import). PilotRecognition queries airline systems and confirms 1,247 hours. Result: LogTen displays all 1,500 hours; PilotRecognition displays "1,247 hours verified by [Airline]." Both platforms show their respective data; neither replaces the other.</p>
+              <p><strong>established logbook platforms = The Personal Ledger:</strong> Beautifully formatted, user-managed, CFI-signed entries. Only as honest as the pilot typing into it — but perfectly compliant with EASA/FAA regulations for logbook maintenance.</p>
+              <p><strong>PilotRecognition = The External Validator:</strong> Centralized, neutral, airline/ATO-connected verification layer. We do not ask pilots to re-enter their hours — we verify which of their established logbook platforms hours match official airline operational records.</p>
+              <p><strong>The Integration:</strong> Pilot pulls 1,500 hours into established logbook platforms (via manual entry, CFI signatures, or workforce management systems import). PilotRecognition queries airline systems and confirms 1,247 hours. Result: established logbook platforms displays all 1,500 hours; PilotRecognition displays "1,247 hours verified by [Airline]." Both platforms show their respective data; neither replaces the other.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Market Positioning</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro is a personal ledger tool — it is only as honest as the pilot typing into it, backed by CFI signatures and regulatory compliance. PilotRecognition occupies a different market space: a centralized, external validation system linked directly to ATOs, airlines, and Airbus competency trackers.</p>
-            <p className="text-white text-sm leading-relaxed mt-2">We are not a competitor. We are the <strong>verification infrastructure layer</strong> that transforms a LogTen logbook from a personal record into a recruiter-trusted credential. LogTen provides the format; we provide the origin trust. Together, they create the complete professional aviation profile.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">established logbook platforms is a personal ledger tool — it is only as honest as the pilot typing into it, backed by CFI signatures and regulatory compliance. PilotRecognition occupies a different market space: a centralized, external validation system linked directly to ATOs, airlines, and OEMs competency trackers.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We are not a competitor. We are the <strong>verification infrastructure layer</strong> that transforms a established logbook platforms logbook from a personal record into a recruiter-trusted credential. established logbook platforms provides the format; we provide the origin trust. Together, they create the complete professional aviation profile.</p>
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Dual-Revenue Partnership Model</h4>
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Logbook Provider Revenue Streams</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Per-Pilot Referral Dividend ($20):</strong> When a logbook provider (e.g., ForeFlight, Garmin Pilot, LogTen Pro) connects a pilot to the PilotRecognition network and that pilot upgrades to a Recognition+ career profile, the provider receives the standard <strong>$20 Ecosystem Referral Dividend</strong> — identical to navigation and simulation partners.</p>
+              <p><strong>Per-Pilot Referral Dividend ($20):</strong> When a logbook provider (e.g., navigation platforms, EFB platforms, established logbook platforms) connects a pilot to the PilotRecognition network and that pilot upgrades to a Recognition+ career profile, established logbook platforms receives the standard <strong>$20 Ecosystem Referral Dividend</strong> — identical to navigation and simulation partners.</p>
               <p><strong>Enterprise Verification Tier ($1,000/year):</strong> Logbook providers managing high-volume verification pipelines (digital + physical uploads, photo proof handling, instructor attestation workflows) qualify for the <strong>Enterprise Data Checker tier</strong>. This annual subscription unlocks enhanced API rate limits, priority verification node status, and direct integration with airline ATS parsing systems.</p>
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Verification Workflow Design: ATO-First, Not LogTen-First</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">A critical architectural decision: Should PilotRecognition pull flight hours <strong>from LogTen</strong> (accepting user-entered data), or pull verified data <strong>from the ATO/airline first</strong> to validate what's in the logbook?</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Verification Workflow Design: ATO-First, Not established logbook platforms-First</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A critical architectural decision: Should PilotRecognition pull flight hours <strong>from established logbook platforms</strong> (accepting user-entered data), or pull verified data <strong>from the ATO/airline first</strong> to validate what's in the logbook?</p>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Wrong Approach: LogTen → PilotRecognition</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">If we simply pull 1,500 hours from LogTen Pro into PilotRecognition, we become a mirror of unverified data. We would display "1,500 hours" — but those hours carry the same trust level as the original logbook entry (i.e., user-reported). This destroys our value proposition.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Wrong Approach: established logbook platforms → PilotRecognition</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">If we simply pull 1,500 hours from established logbook platforms into PilotRecognition, we become a mirror of unverified data. We would display "1,500 hours" — but those hours carry the same trust level as the original logbook entry (i.e., user-reported). This destroys our value proposition.</p>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Correct Approach: ATO/Airline → PilotRecognition → Match Against LogTen</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition queries the airline's FLICA/Sabre system <strong>first</strong>. The airline provides official duty records: "This pilot flew 1,247 hours on our aircraft." Only then do we cryptographically attest those hours. The pilot's LogTen shows 1,500 hours; PilotRecognition shows "1,247 verified by [Airline]." The trust originates from the airline, not the logbook.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Correct Approach: ATO/Airline → PilotRecognition → Match Against established logbook platforms</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition queries the airline's workforce management systems/airline systems system <strong>first</strong>. The airline provides official duty records: "This pilot flew 1,247 hours on our aircraft." Only then do we cryptographically attest those hours. The pilot's established logbook platforms shows 1,500 hours; PilotRecognition shows "1,247 verified by [Airline]." The trust originates from the airline, not the logbook.</p>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Why This Matters</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Trust Origin:</strong> If we pull from LogTen first, our "verification" is meaningless — we're just re-displaying what the pilot told us. By pulling from the airline first, we provide external, cryptographic attestation from the actual employer.</p>
-              <p><strong>Fraud Prevention:</strong> A pilot could have 500 fake hours in LogTen. If we blindly import and display "500 hours," we've become complicit in the fraud. If we query the airline and find only 250 real hours, we display "250 verified; 250 unverified" — preserving integrity.</p>
-              <p><strong>Airline Confidence:</strong> Airlines know that LogTen hours could be fabricated. They trust PilotRecognition hours because they know we verified them against their own operational systems. This is why recruiters pay attention to our platform.</p>
-              <p><strong>The LogTen Partnership Value:</strong> LogTen doesn't lose relevance — they remain the pilot's beautiful, comprehensive daily ledger. But now those hours can be selectively "upgraded" to verified status through PilotRecognition. The pilot keeps using LogTen; we add the trust layer on top.</p>
+              <p><strong>Trust Origin:</strong> If we pull from established logbook platforms first, our "verification" is meaningless — we're just re-displaying what the pilot told us. By pulling from the airline first, we provide external, cryptographic attestation from the actual employer.</p>
+              <p><strong>Fraud Prevention:</strong> A pilot could have 500 fake hours in established logbook platforms. If we blindly import and display "500 hours," we've become complicit in the fraud. If we query the airline and find only 250 real hours, we display "250 verified; 250 unverified" — preserving integrity.</p>
+              <p><strong>Airline Confidence:</strong> Airlines know that established logbook platforms hours could be fabricated. They trust PilotRecognition hours because they know we verified them against their own operational systems. This is why recruiters pay attention to our platform.</p>
+              <p><strong>The established logbook platforms Partnership Value:</strong> established logbook platforms doesn't lose relevance — they remain the pilot's beautiful, comprehensive daily ledger. But now those hours can be selectively "upgraded" to verified status through PilotRecognition. The pilot keeps using established logbook platforms; we add the trust layer on top.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Active vs. Passive Distinction</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>LogTen Pro = Passive Ledger:</strong> Does not contact your ATO. Does not contact airlines. Does not check if your medical is actually valid in the civil aviation authority database. Provides local calendar alerts for expirations, but these are basic reminders — not live verification. No dynamic "recognition score" or competency matrix.</p>
-              <p><strong>PilotRecognition = Active Verification Engine:</strong> Contacts ATOs and airlines directly. Queries live operational systems (FLICA, Sabre, ATO records). Checks medical validity against CAAP/FAA/EASA databases. Provides dynamic Recognition Score based on verified competency metrics, not just raw hours. Proactively alerts: "Your medical expires in 14 days — schedule renewal now."</p>
-              <p><strong>The Integration:</strong> LogTen remains the pilot's passive, highly detailed, user-controlled calculator for flight hours. PilotRecognition acts as the active, third-party verification engine and dynamic competency ledger. Together: LogTen for daily logging, PilotRecognition for external validation and career advancement.</p>
+              <p><strong>established logbook platforms = Passive Ledger:</strong> Does not contact your ATO. Does not contact airlines. Does not check if your medical is actually valid in the civil aviation authority database. Provides local calendar alerts for expirations, but these are basic reminders — not live verification. No dynamic "recognition score" or competency matrix.</p>
+              <p><strong>PilotRecognition = Active Verification Engine:</strong> Contacts ATOs and airlines directly. Queries live operational systems (workforce management systems, airline systems, ATO records). Checks medical validity against CAAP/FAA/EASA databases. Provides dynamic Recognition Score based on verified competency metrics, not just raw hours. Proactively alerts: "Your medical expires in 14 days — schedule renewal now."</p>
+              <p><strong>The Integration:</strong> established logbook platforms remains the pilot's passive, highly detailed, user-controlled calculator for flight hours. PilotRecognition acts as the active, third-party verification engine and dynamic competency ledger. Together: established logbook platforms for daily logging, PilotRecognition for external validation and career advancement.</p>
             </div>
           </div>
 
@@ -5162,12 +5162,12 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition maintains strict infrastructure neutrality. Logbook providers retain complete ownership of their data storage, photo archives, and physical document repositories.</p>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
             <li><strong>Provider-Managed Storage:</strong> All photo proof, scanned logbook pages, and physical upload documentation remain housed within the logbook provider's secured infrastructure — not on PilotRecognition servers.</li>
-            <li><strong>Tokenized Display Layer:</strong> PilotRecognition displays only cryptographic verification tokens (e.g., "LogTen Verified: 1,240 Hours") on the pilot dashboard. The underlying data remains with the provider, ensuring GDPR compliance and data sovereignty are maintained by the data controller, not PilotRecognition.</li>
+            <li><strong>Tokenized Display Layer:</strong> PilotRecognition displays only cryptographic verification tokens (e.g., "established logbook platforms Verified: 1,240 Hours") on the pilot dashboard. The underlying data remains with established logbook platforms, ensuring GDPR compliance and data sovereignty are maintained by the data controller, not PilotRecognition.</li>
             <li><strong>Privacy-by-Design:</strong> Airlines querying a pilot profile see only attestation tokens and verification status — never raw photo uploads or sensitive documentary evidence.</li>
           </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Glass Cockpit Dashboard Integration</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">Verified logbook data appears within the pilot's PilotRecognition dashboard through a <strong>Glass Cockpit</strong> interface aesthetic — mirroring the avionics displays pilots already trust in the flight deck (Garmin G1000, ForeFlight Synthetic Vision).</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Verified logbook data appears within the pilot's PilotRecognition dashboard through a <strong>Glass Cockpit</strong> interface aesthetic — mirroring the avionics displays pilots already trust in the flight deck (Garmin G1000, navigation platforms Synthetic Vision).</p>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Instrument Panel Metaphor</h5>
           <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition profile dashboard functions exactly like an aircraft instrument panel. Each integration partner appears as a dedicated flight instrument, providing real-time telemetry on the pilot's professional standing:</p>
@@ -5186,7 +5186,7 @@ export default function UCFOfficialReleasePage() {
               <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
               <p>│  <span className="text-amber-400">│ PRACTICE    │</span>   <span className="text-amber-400">│ PATHWAY NAV │</span>       │</p>
               <p>│  <span className="text-emerald-400">│ 85 HRS ▲    │</span>   <span className="text-red-400">│ NEED IFR ⚠  │</span>       │</p>
-              <p>│  <span className="text-amber-400">│ X-Plane+FF  │</span>   <span className="text-amber-400">│ Cadet Prog  │</span>       │</p>
+              <p>│  <span className="text-amber-400">│ simulation platforms+FF  │</span>   <span className="text-amber-400">│ Cadet Prog  │</span>       │</p>
               <p>│  <span className="text-amber-400">└─────────────┘</span>   <span className="text-amber-400">└─────────────┘</span>       │</p>
               <p>│                                                 │</p>
               <p>│  PILOT OPERATING: <span className="text-emerald-400">RECOGNITION+ ENABLED</span>      │</p>
@@ -5195,9 +5195,9 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
-            <li><strong>The Hobbs (ATO/Operator Issued, Logbook Displayed/Stored):</strong> Tallying total verified flight hours — each entry is <strong>issued and cryptographically attested</strong> by either the Flight Training Organization (ATO) or commercial operator (airline/employer) where the pilot flew. Logbook platforms (LogTen Pro, ForeFlight, etc.) <strong>do not verify or issue</strong> these hours — they function as the <strong>display and storage layer</strong> that presents the verified token from the ATO/Operator to the pilot's dashboard, while keeping all underlying flight data (GPS tracks, photos, entries) stored in their own infrastructure. This ensures pilots remain in the logbook ecosystem long-term.</li>
+            <li><strong>The Hobbs (ATO/Operator Issued, Logbook Displayed/Stored):</strong> Tallying total verified flight hours — each entry is <strong>issued and cryptographically attested</strong> by either the Flight Training Organization (ATO) or commercial operator (airline/employer) where the pilot flew. Logbook platforms (established logbook platforms, navigation platforms, etc.) <strong>do not verify or issue</strong> these hours — they function as the <strong>display and storage layer</strong> that presents the verified token from the ATO/Operator to the pilot's dashboard, while keeping all underlying flight data (GPS tracks, photos, entries) stored in their own infrastructure. This ensures pilots remain in the logbook ecosystem long-term.</li>
             <li><strong>The Data Check (Veremark — stored in Verepass):</strong> Background verification status showing green when all data is cryptographically attested and current via Veremark's verification engine, red when discrepancies or expirations are detected. Verification records are securely stored in the pilot's Verepass digital vault.</li>
-            <li><strong>The Practice Instrument (X-Plane + ForeFlight):</strong> Aggregating all simulation and navigation app activity — desktop simulator hours (X-Plane, MSFS) plus route planning, approach practice, and procedure rehearsal logged via navigation apps (ForeFlight). This combined practice data feeds the Recognition Score and demonstrates active proficiency building beyond raw flight hours.</li>
+            <li><strong>The Practice Instrument (simulation platforms + navigation platforms):</strong> Aggregating all simulation and navigation app activity — desktop simulator hours (simulation platforms, simulation platforms) plus route planning, approach practice, and procedure rehearsal logged via navigation apps (navigation platforms). This combined practice data feeds the Recognition Score and demonstrates active proficiency building beyond raw flight hours.</li>
             <li><strong>The Pathway Navigator (Airline Integration):</strong> Color-coded alignment indicator showing whether the pilot's current profile matches their target cadet program or airline pathway requirements.</li>
           </ul>
 
@@ -5210,7 +5210,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Separation of Powers: Issuer vs Display</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>ATO/Operator = Issuer:</strong> The flight school or employer that operated the aircraft is the only entity authorized to issue cryptographic attestations of flight hours. They verify the flight actually occurred, check aircraft logs, and sign the attestation.</p>
-              <p><strong>Logbook App = Display & Storage Layer:</strong> LogTen Pro, ForeFlight, Garmin Pilot ingest the attestation from the ATO/Operator and present it to the pilot in their dashboard — while keeping all flight data (GPS tracks, photos, logbook entries) stored in their own infrastructure. This display-and-storage combination keeps pilots locked into their ecosystem long-term.</p>
+              <p><strong>Logbook App = Display & Storage Layer:</strong> established logbook platforms, navigation platforms, EFB platforms ingest the attestation from the ATO/Operator and present it to the pilot in their dashboard — while keeping all flight data (GPS tracks, photos, logbook entries) stored in their own infrastructure. This display-and-storage combination keeps pilots locked into their ecosystem long-term.</p>
               <p><strong>Pilot Consent Layer:</strong> Before any flight hour attestation is issued, the pilot must authorize their employer/operator to attest hours on their behalf. This consent is revocable and auditable on-chain.</p>
               <p><strong>Career Mobility:</strong> When a pilot transitions between employers, their verified hours from previous operators remain in their wallet as portable, cryptographically attested credentials — the logbook simply displays the accumulated tokens from multiple issuers over time.</p>
             </div>
@@ -5222,7 +5222,7 @@ export default function UCFOfficialReleasePage() {
               <p>│ <span className="text-emerald-400">PILOT RECOGNITION DASHBOARD</span>           │</p>
               <p>│ <span className="text-amber-400">┌─────────────────────────────────┐</span>   │</p>
               <p>│ <span className="text-amber-400">│ VERIFIED FLIGHT TIME TOKEN      │</span>   │</p>
-              <p>│ <span className="text-amber-400">│ LogTen Pro: 1,240 Hours         │</span>   │</p>
+              <p>│ <span className="text-amber-400">│ established logbook platforms: 1,240 Hours         │</span>   │</p>
               <p>│ <span className="text-amber-400">│ Last Sync: 2 hours ago          │</span>   │</p>
               <p>│ <span className="text-amber-400">│ Status: VERIFIED ✓              │</span>   │</p>
               <p>│ <span className="text-amber-400">└─────────────────────────────────┘</span>   │</p>
@@ -5234,77 +5234,77 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">The pilot sees their verified hours as a <strong>primary flight instrument</strong> on their career dashboard — continuously updated, cryptographically secured, and instantly shareable to airline recruiters with a single attestation signature.</p>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Technical Integration Workflow</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">The synergy between LogTen Pro and PilotRecognition lies in connecting <strong>quantitative data</strong> (hours logged) with <strong>qualitative data</strong> (competencies achieved). Instead of a broad marketing partnership, this is a technical data integration that provides clear, differentiated value.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The synergy between established logbook platforms and PilotRecognition lies in connecting <strong>quantitative data</strong> (hours logged) with <strong>qualitative data</strong> (competencies achieved). Instead of a broad marketing partnership, this is a technical data integration that provides clear, differentiated value.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Three Integration Pathways</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>1. The Verification Bridge (API Link):</strong> LogTen Pro acts as the industry's gold standard for raw block hours, night landings, and instrument time. PilotRecognition relies on independent verification to build the ATLAS Aviation CV. A secure API link allows a pilot to instantly verify their LogTen flight hour metrics on their PilotRecognition profile with a single click — completely eliminating fraudulent data entry.</p>
-              <p><strong>2. Marrying CBTA to Logbook Entries:</strong> PilotRecognition uses Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA) standards aligned with Airbus frameworks. LogTen Pro has incredibly customizable data fields. An integration allows pilots to log specific flights in LogTen while simultaneously tagging the 9 core ICAO behavioral competencies monitored by PilotRecognition. The pilot logs a flight; the system asks: "Which competencies did this flight demonstrate?" — creating a dual-layer record (hours + competencies).</p>
-              <p><strong>3. Streamlining ATO-to-Airline Pipeline:</strong> Student cadets at an ATO using PilotRecognition to track their transition programs need an ironclad logbook for airline applications. If the flight hours tracked during these cadet pathways automatically populate their LogTen Pro apps, it removes paperwork barriers and accelerates the hiring workflow for partner airlines. The cadet flies at the ATO; hours appear in both PilotRecognition (verified) and LogTen (comprehensive record).</p>
+              <p><strong>1. The Verification Bridge (API Link):</strong> established logbook platforms acts as the industry's gold standard for raw block hours, night landings, and instrument time. PilotRecognition relies on independent verification to build the ATLAS Aviation CV. A secure API link allows a pilot to instantly verify their established logbook platforms flight hour metrics on their PilotRecognition profile with a single click — completely eliminating fraudulent data entry.</p>
+              <p><strong>2. Marrying CBTA to Logbook Entries:</strong> PilotRecognition uses Evidence-Based Training (EBT) and Competency-Based Training and Assessment (CBTA) standards aligned with OEMs frameworks. established logbook platforms has incredibly customizable data fields. An integration allows pilots to log specific flights in established logbook platforms while simultaneously tagging the 9 core ICAO behavioral competencies monitored by PilotRecognition. The pilot logs a flight; the system asks: "Which competencies did this flight demonstrate?" — creating a dual-layer record (hours + competencies).</p>
+              <p><strong>3. Streamlining ATO-to-Airline Pipeline:</strong> Student cadets at an ATO using PilotRecognition to track their transition programs need an ironclad logbook for airline applications. If the flight hours tracked during these cadet pathways automatically populate their established logbook platforms apps, it removes paperwork barriers and accelerates the hiring workflow for partner airlines. The cadet flies at the ATO; hours appear in both PilotRecognition (verified) and established logbook platforms (comprehensive record).</p>
             </div>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Core Obstacle: Scale & Engineering Priority</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">LogTen Pro manages over 160,000 active users and typically reserves direct API integrations for massive global operations management platforms like Flight Schedule Pro or legacy airline crew systems (FLICA/Sabre). Because PilotRecognition is a highly specialized, competency-focused platform rather than a daily scheduling tool, LogTen Pro might prefer to let users manually export data via CSV rather than build a dedicated software partnership.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">established logbook platforms manages over 160,000 active users and typically reserves direct API integrations for massive global operations management platforms like scheduling platforms or legacy airline crew systems (workforce management systems/airline systems). Because PilotRecognition is a highly specialized, competency-focused platform rather than a daily scheduling tool, established logbook platforms might prefer to let users manually export data via CSV rather than build a dedicated software partnership.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Overcoming the Priority Barrier</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>1. Lead with Revenue, Not Features:</strong> Don't pitch "integration." Pitch "$480,000/year in new verification revenue with 30% revenue share on Recognition+ subscriptions." LogTen's engineering priorities follow their revenue priorities.</p>
-              <p><strong>2. Demonstrate Pilot Demand:</strong> Before approaching LogTen, generate 500+ verified pilots in PilotRecognition who are actively requesting LogTen integration. Show LogTen: "Your users are asking for this. We have 500 pilots who want to verify their LogTen hours today."</p>
-              <p><strong>3. Offer Zero Engineering Burden:</strong> Propose that PilotRecognition builds the entire integration — LogTen only provides API documentation and a sandbox environment. We handle the dev work, the maintenance, the support. Their cost = $0. Their revenue = $20 per verification.</p>
-              <p><strong>4. Start with CSV Bridge:</strong> If direct API integration is rejected, propose a seamless CSV import workflow: Pilot exports LogTen CSV → uploads to PilotRecognition → our system parses and matches against airline records. This provides 80% of the value with 20% of the engineering complexity. Once pilot volume proves the model, API integration becomes obvious.</p>
-              <p><strong>5. The Airline Leverage:</strong> Secure partnerships with 2-3 major airlines who want verified LogTen data for their hiring. Approach LogTen: "Emirates and Etihad want to verify LogTen hours through PilotRecognition. They're asking us to integrate with you. Will you work with us or lose airline partnerships to ForeFlight?"</p>
+              <p><strong>1. Lead with Revenue, Not Features:</strong> Don't pitch "integration." Pitch "$480,000/year in new verification revenue with 30% revenue share on Recognition+ subscriptions." established logbook platforms's engineering priorities follow their revenue priorities.</p>
+              <p><strong>2. Demonstrate Pilot Demand:</strong> Before approaching established logbook platforms, generate 500+ verified pilots in PilotRecognition who are actively requesting established logbook platforms integration. Show established logbook platforms: "Your users are asking for this. We have 500 pilots who want to verify their established logbook platforms hours today."</p>
+              <p><strong>3. Offer Zero Engineering Burden:</strong> Propose that PilotRecognition builds the entire integration — established logbook platforms only provides API documentation and a sandbox environment. We handle the dev work, the maintenance, the support. Their cost = $0. Their revenue = $20 per verification.</p>
+              <p><strong>4. Start with CSV Bridge:</strong> If direct API integration is rejected, propose a seamless CSV import workflow: Pilot exports established logbook platforms CSV → uploads to PilotRecognition → our system parses and matches against airline records. This provides 80% of the value with 20% of the engineering complexity. Once pilot volume proves the model, API integration becomes obvious.</p>
+              <p><strong>5. The Airline Leverage:</strong> Secure partnerships with 2-3 major airlines who want verified established logbook platforms data for their hiring. Approach established logbook platforms: "partner airlines want to verify established logbook platforms hours through PilotRecognition. They're asking us to integrate with you. Will you work with us or lose airline partnerships to navigation platforms?"</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Pitch Strategy</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">"You have 160,000 pilots. We can generate $480,000/year in new revenue from just 10% of them. We will build the entire integration at our cost. Your users are already asking for this. And major airlines want to verify LogTen data through our platform. Will you capture this revenue stream, or will ForeFlight beat you to it?"</p>
-            <p className="text-white text-sm leading-relaxed mt-2">The goal is to make LogTen see us not as a "specialized platform requesting engineering time" but as a "revenue partner who removes their churn problem and opens airline B2B opportunities."</p>
+            <p className="text-white text-sm leading-relaxed mt-2">"You have 160,000 pilots. We can generate $480,000/year in new revenue from just 10% of them. We will build the entire integration at our cost. Your users are already asking for this. And major airlines want to verify established logbook platforms data through our platform. Will you capture this revenue stream, or will navigation platforms beat you to it?"</p>
+            <p className="text-white text-sm leading-relaxed mt-2">The goal is to make established logbook platforms see us not as a "specialized platform requesting engineering time" but as a "revenue partner who removes their churn problem and opens airline B2B opportunities."</p>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Not Recognized" Problem: How to Overcome It</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">A realistic objection LogTen will raise: <strong>"PilotRecognition.com is not an active or recognized aviation software platform."</strong> This is true — today. LogTen Pro actively seeks partnerships with established, high-utility platforms (Flight Schedule Pro, FLICA, Sabre) that directly streamline pilot workflows. An unknown competency platform does not meet their criteria.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">A realistic objection established logbook platforms will raise: <strong>"PilotRecognition.com is not an active or recognized aviation software platform."</strong> This is true — today. established logbook platforms actively seeks partnerships with established, high-utility platforms (scheduling platforms, workforce management systems, airline systems) that directly streamline pilot workflows. An unknown competency platform does not meet their criteria.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Where LogTen Actually Focuses Partnerships</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Where established logbook platforms Actually Focuses Partnerships</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Flight Scheduling & Operations:</strong> Deep technical integrations with Flight Schedule Pro allow flight schools to push flight logs automatically from the school's schedule directly into LogTen at the push of a button.</p>
-              <p><strong>Airline Schedule Importers:</strong> Seamless data scraping from FLICA and Sabre so commercial pilots can download monthly trips directly into their logs.</p>
+              <p><strong>Flight Scheduling & Operations:</strong> Deep technical integrations with scheduling platforms allow flight schools to push flight logs automatically from the school's schedule directly into established logbook platforms at the push of a button.</p>
+              <p><strong>Airline Schedule Importers:</strong> Seamless data scraping from workforce management systems and airline systems so commercial pilots can download monthly trips directly into their logs.</p>
               <p><strong>Professional Associations:</strong> Collaborations with training resources like Aviation Insider for discounts, and career-advancing nonprofits like Breaking Down Barriers.</p>
-              <p><strong>The Pattern:</strong> LogTen partners with platforms that eliminate redundant data entry or directly assist career progression. They do not partner with "resume builders" or unproven verification services.</p>
+              <p><strong>The Pattern:</strong> established logbook platforms partners with platforms that eliminate redundant data entry or directly assist career progression. They do not partner with "resume builders" or unproven verification services.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">How PilotRecognition Becomes "Recognized"</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Phase 1: Build Pilot Volume First (Without LogTen):</strong> PilotRecognition must reach 5,000-10,000 verified pilots through manual CSV import, ATO partnerships, and airline connections <strong>before</strong> approaching LogTen. We cannot pitch as a "platform that wants integration" — we must pitch as a "platform that 10,000 pilots already use and are demanding better LogTen integration."</p>
-              <p><strong>Phase 2: Secure Airline Endorsements:</strong> Get 2-3 major airlines (Emirates, Etihad, Cebu Pacific) to publicly endorse PilotRecognition as their preferred verification partner for LogTen data. When airlines say "we trust PilotRecognition-verified LogTen hours," LogTen listens.</p>
-              <p><strong>Phase 3: Demonstrate Revenue Proof:</strong> Show LogTen actual revenue data: "We generated $200,000 in pilot verification fees last quarter. 40% of those pilots are your users. You're losing $80,000/quarter by not integrating." Numbers overcome skepticism.</p>
-              <p><strong>Phase 4: The Competitive Threat:</strong> Once ForeFlight integrates with PilotRecognition, LogTen faces a competitive disadvantage. Pilots switch to the logbook that offers verified credentials. We position the partnership as defensive necessity, not optional innovation.</p>
+              <p><strong>Phase 1: Build Pilot Volume First (Without established logbook platforms):</strong> PilotRecognition must reach 5,000-10,000 verified pilots through manual CSV import, ATO partnerships, and airline connections <strong>before</strong> approaching established logbook platforms. We cannot pitch as a "platform that wants integration" — we must pitch as a "platform that 10,000 pilots already use and are demanding better established logbook platforms integration."</p>
+              <p><strong>Phase 2: Secure Airline Endorsements:</strong> Get 2-3 major airlines (partner airlines, partner airlines, partner airlines) to publicly endorse PilotRecognition as their preferred verification partner for established logbook platforms data. When airlines say "we trust PilotRecognition-verified established logbook platforms hours," established logbook platforms listens.</p>
+              <p><strong>Phase 3: Demonstrate Revenue Proof:</strong> Show established logbook platforms actual revenue data: "We generated $200,000 in pilot verification fees last quarter. 40% of those pilots are your users. You're losing $80,000/quarter by not integrating." Numbers overcome skepticism.</p>
+              <p><strong>Phase 4: The Competitive Threat:</strong> Once navigation platforms integrates with PilotRecognition, established logbook platforms faces a competitive disadvantage. Pilots switch to the logbook that offers verified credentials. We position the partnership as defensive necessity, not optional innovation.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>The Reality Check</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro will not partner with PilotRecognition until we are "recognized." We become recognized by:</p>
-            <p className="text-white text-sm leading-relaxed mt-2">1. Reaching 10,000+ pilots without their help<br/>2. Securing airline partnerships that validate our platform<br/>3. Generating real revenue that proves pilot willingness to pay<br/>4. Creating competitive pressure from ForeFlight integration</p>
-            <p className="text-white text-sm leading-relaxed mt-2">The partnership pitch comes <strong>after</strong> we've proven the model, not before. LogTen integrates with winners, not hopefuls.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">established logbook platforms will not partner with PilotRecognition until we are "recognized." We become recognized by:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">1. Reaching 10,000+ pilots without their help<br/>2. Securing airline partnerships that validate our platform<br/>3. Generating real revenue that proves pilot willingness to pay<br/>4. Creating competitive pressure from navigation platforms integration</p>
+            <p className="text-white text-sm leading-relaxed mt-2">The partnership pitch comes <strong>after</strong> we've proven the model, not before. established logbook platforms integrates with winners, not hopefuls.</p>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">LogTen Pro User Base Breakdown</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">Understanding LogTen Pro's user composition is critical for revenue projection and partnership positioning. While the company does not disclose real-time breakdowns, the publicly stated figures provide directional guidance.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">established logbook platforms User Base Breakdown</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Understanding established logbook platforms's user composition is critical for revenue projection and partnership positioning. While the company does not disclose real-time breakdowns, the publicly stated figures provide directional guidance.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">160,000+ Active Pilots — The Composition</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Total Active Users:</strong> LogTen Pro publicly states over 160,000 active pilot users across their platform. This includes both free-tier and paid subscribers.</p>
+              <p><strong>Total Active Users:</strong> established logbook platforms publicly states over 160,000 active pilot users across their platform. This includes both free-tier and paid subscribers.</p>
               <p><strong>Free Tier (Students):</strong> Up to 50 hours of free logging. Primarily student pilots in training. These users skew the total count but represent future Pro subscribers, not current revenue contributors.</p>
-              <p><strong>Paid Pro Members (Majority):</strong> The vast majority of the active base are paying Pro members — including professionals at more than 100 partner airlines. These users pay $79.99-$129.99/year for features like schedule importing (FLICA/Sabre), flight/duty compliance tracking, and advanced analytics.</p>
-              <p><strong>Partner Airlines:</strong> LogTen Pro is utilized by professionals at 100+ partner airlines, indicating a significant commercial aviation presence within their paid user base.</p>
+              <p><strong>Paid Pro Members (Majority):</strong> The vast majority of the active base are paying Pro members — including professionals at more than 100 partner airlines. These users pay $79.99-$129.99/year for features like schedule importing (workforce management systems/airline systems), flight/duty compliance tracking, and advanced analytics.</p>
+              <p><strong>Partner Airlines:</strong> established logbook platforms is utilized by professionals at 100+ partner airlines, indicating a significant commercial aviation presence within their paid user base.</p>
             </div>
           </div>
 
@@ -5313,15 +5313,15 @@ export default function UCFOfficialReleasePage() {
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>Conservative Estimate:</strong> If 70% of 160,000 users are paid Pro members = 112,000 paying subscribers.</p>
               <p><strong>Verification Revenue Potential:</strong> At 10% adoption of Recognition+ ($100/year) = 11,200 pilots × $100 = $1.12M annual revenue.</p>
-              <p><strong>LogTen's Revenue Share (30%):</strong> $336,000/year in new revenue for LogTen — without additional engineering investment if we build the integration.</p>
-              <p><strong>Referral Dividend Layer:</strong> Each verification generates $20 to LogTen. At 2 verifications/year per active pilot = 224,000 verifications × $20 = $4.48M potential referral revenue.</p>
+              <p><strong>established logbook platforms's Revenue Share (30%):</strong> $336,000/year in new revenue for established logbook platforms — without additional engineering investment if we build the integration.</p>
+              <p><strong>Referral Dividend Layer:</strong> Each verification generates $20 to established logbook platforms. At 2 verifications/year per active pilot = 224,000 verifications × $20 = $4.48M potential referral revenue.</p>
               <p><strong>Key Insight:</strong> The paid Pro member base represents high-intent, career-focused pilots already willing to pay for professional tools. These are our ideal early adopters for Recognition+ verification.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-blue-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#60a5fa'}}>Strategic Targeting</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">Our initial PilotRecognition marketing should focus specifically on LogTen Pro paid subscribers — the 100+ airline professionals who already invest in career-advancing tools. These pilots:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Our initial PilotRecognition marketing should focus specifically on established logbook platforms paid subscribers — the 100+ airline professionals who already invest in career-advancing tools. These pilots:</p>
             <p className="text-white text-sm leading-relaxed mt-2">• Already pay $100+/year for logbook features<br/>• Work at airlines we want to partner with<br/>• Need verified credentials for career progression<br/>• Represent the highest-lifetime-value user segment</p>
             <p className="text-white text-sm leading-relaxed mt-2">Free-tier students are future targets, but the paid Pro base is where immediate verification revenue lives.</p>
           </div>
@@ -5332,52 +5332,52 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Freemium-to-Paid Conversion Loop</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Phase 1 — Free Tier Accumulation:</strong> Student pilot logs 40-50 hours in LogTen free tier. Approaching the limit, they see a PilotRecognition prompt: "Unlock verified flight time for airline applications — upgrade to Basic or Pro to continue logging and activate your Recognition Profile."</p>
-              <p><strong>Phase 2 — Paid Subscription:</strong> Pilot upgrades to LogTen Basic ($79.99/year) or LogTen Pro ($129.99/year). Now unlimited logging + full PilotRecognition integration unlocked.</p>
+              <p><strong>Phase 1 — Free Tier Accumulation:</strong> Student pilot logs 40-50 hours in established logbook platforms free tier. Approaching the limit, they see a PilotRecognition prompt: "Unlock verified flight time for airline applications — upgrade to Basic or Pro to continue logging and activate your Recognition Profile."</p>
+              <p><strong>Phase 2 — Paid Subscription:</strong> Pilot upgrades to established logbook platforms Basic ($79.99/year) or established logbook platforms ($129.99/year). Now unlimited logging + full PilotRecognition integration unlocked.</p>
               <p><strong>Phase 3 — Verification Activation:</strong> With paid tier, pilot can request ATO/Operator attestation of their logged hours. Each attestation generates a $20 Ecosystem Referral Dividend to the logbook provider.</p>
-              <p><strong>Phase 4 — Retention Moat:</strong> Pilot's entire flight history is stored in LogTen. Switching logbook apps means losing the integrated verification history. Display + storage = long-term lock-in.</p>
+              <p><strong>Phase 4 — Retention Moat:</strong> Pilot's entire flight history is stored in established logbook platforms. Switching logbook apps means losing the integrated verification history. Display + storage = long-term lock-in.</p>
             </div>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The In-App Verification CTA</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">LogTen can add a simple, non-intrusive call-to-action directly in their app interface — "<strong>Verify your flight hours with PilotRecognition.com</strong>" — surfacing the verification option to their entire 160,000+ pilot base without disrupting the core logging experience.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">established logbook platforms can add a simple, non-intrusive call-to-action directly in their app interface — "<strong>Verify your flight hours with PilotRecognition.com</strong>" — surfacing the verification option to their entire 160,000+ pilot base without disrupting the core logging experience.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Integration Touchpoints</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>Hour Milestone Triggers:</strong> When pilot hits 100, 500, 1000, 1500 hours — banner appears: "Congratulations on 1,000 hours! Verify with PilotRecognition and get instant airline-ready credentials."</p>
               <p><strong>Pre-Application Prompt:</strong> When pilot exports logbook data (CSV/PDF), dialog asks: "Applying to airlines? Skip the manual verification — verify instantly with PilotRecognition instead."</p>
-              <p><strong>Dashboard Widget:</strong> Small persistent widget in corner of LogTen interface: "Verify Hours →" — one-click access to attestation workflow.</p>
-              <p><strong>Settings Menu Integration:</strong> "Career Services" section in LogTen settings with PilotRecognition as featured partner for verification.</p>
+              <p><strong>Dashboard Widget:</strong> Small persistent widget in corner of established logbook platforms interface: "Verify Hours →" — one-click access to attestation workflow.</p>
+              <p><strong>Settings Menu Integration:</strong> "Career Services" section in established logbook platforms settings with PilotRecognition as featured partner for verification.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The "Verify with PilotRecognition" Button</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Placement:</strong> Next to "Share" and "Export" buttons in LogTen flight entry view. Non-intrusive but visible when pilots are actively managing their hours.</p>
-              <p><strong>Functionality:</strong> One click opens embedded PilotRecognition verification flow (iframe or deep link). Pilot selects ATO/Operator, consents to attestation, pays verification fee. LogTen receives $20 referral dividend instantly.</p>
-              <p><strong>Pilot Experience:</strong> Seamless — never leaves LogTen app. Verification token appears in LogTen dashboard as "Verified ✓" badge on flight hours. Pilot can click badge to view full attestation on PilotRecognition.com.</p>
-              <p><strong>LogTen Benefit:</strong> Every click = potential $20 revenue. At 10% monthly active users clicking once = 16,000 verifications = $320,000/month in referral dividends.</p>
+              <p><strong>Placement:</strong> Next to "Share" and "Export" buttons in established logbook platforms flight entry view. Non-intrusive but visible when pilots are actively managing their hours.</p>
+              <p><strong>Functionality:</strong> One click opens embedded PilotRecognition verification flow (iframe or deep link). Pilot selects ATO/Operator, consents to attestation, pays verification fee. established logbook platforms receives $20 referral dividend instantly.</p>
+              <p><strong>Pilot Experience:</strong> Seamless — never leaves established logbook platforms app. Verification token appears in established logbook platforms dashboard as "Verified ✓" badge on flight hours. Pilot can click badge to view full attestation on PilotRecognition.com.</p>
+              <p><strong>established logbook platforms Benefit:</strong> Every click = potential $20 revenue. At 10% monthly active users clicking once = 16,000 verifications = $320,000/month in referral dividends.</p>
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Executive Pitch Deck: The LogTen Pro Partnership</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">To transition from concept to corporate alliance, PilotRecognition requires a bulletproof pitch deck for LogTen's executive team. The deck must solve LogTen's retention problem while proving our verification infrastructure is enterprise-ready.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Executive Pitch Deck: The established logbook platforms Partnership</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">To transition from concept to corporate alliance, PilotRecognition requires a bulletproof pitch deck for established logbook platforms's executive team. The deck must solve established logbook platforms's retention problem while proving our verification infrastructure is enterprise-ready.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 1: The Financial Win-Win (Lead with This)</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>Header:</strong> "Stop the $2.4M Annual Churn — Unlock $480K in New Verification Revenue"</p>
               <p><strong>The Problem:</strong> 2% of 160,000 pilots churn annually at career milestones = 3,200 lost subscribers × $129.99/year = <strong>$415,968 lost revenue</strong> per year. Over 5 years, compounding churn = <strong>$2.4M+ revenue erosion</strong>.</p>
-              <p><strong>The Solution:</strong> Pilots stay subscribed when their LogTen data connects to career advancement. Verification integration creates a "can't switch" moat — pilots lose verified credential history if they churn.</p>
+              <p><strong>The Solution:</strong> Pilots stay subscribed when their established logbook platforms data connects to career advancement. Verification integration creates a "can't switch" moat — pilots lose verified credential history if they churn.</p>
               <p><strong>The Revenue:</strong></p>
               <ul className="list-disc list-inside ml-4 space-y-1">
                 <li>Recognition+ adoption: 10% of base = 16,000 pilots × $100/year = $1.6M</li>
-                <li>LogTen's 30% revenue share: $480,000/year new revenue</li>
+                <li>established logbook platforms's 30% revenue share: $480,000/year new revenue</li>
                 <li>Referral dividends: 16,000 verifications × $20 = $320,000/year</li>
                 <li>Retention savings: 50% churn reduction = $208,000/year recovered</li>
-                <li><strong>Total LogTen Benefit: $1M+ annually</strong></li>
+                <li><strong>Total established logbook platforms Benefit: $1M+ annually</strong></li>
               </ul>
               <p><strong>The Ask:</strong> API access + sandbox environment. We build the integration at our cost. Your cost = $0. Your revenue = immediate.</p>
             </div>
@@ -5389,138 +5389,138 @@ export default function UCFOfficialReleasePage() {
               <p><strong>Header:</strong> "How We Verify Without Violating Pilot Privacy or Your Data Sovereignty"</p>
               <p><strong>The Architecture:</strong></p>
               <div className="bg-slate-100 p-2 rounded font-mono text-xs mt-2">
-                <p>[LogTen Pro Ledger] ←—— Pilot's personal data (you own this)</p>
+                <p>[established logbook platforms Ledger] ←—— Pilot's personal data (you own this)</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Pilot consents to verification via OAuth)</p>
                 <p>[PilotRecognition API] ——→ Queries airline systems only</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Matches flight dates/aircraft against FLICA/Sabre)</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Matches flight dates/aircraft against workforce management systems/airline systems)</p>
                 <p>[Veremark Engine] ——→ Cryptographic attestation</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Token returned, raw data never leaves airline)</p>
                 <p>[Verepass Wallet] ←—— Tamper-proof verification token</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Badge displayed in LogTen dashboard)</p>
-                <p>[Pilot Dashboard] ——→ "1,247 hours verified by Emirates ✓"</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Badge displayed in established logbook platforms dashboard)</p>
+                <p>[Pilot Dashboard] ——→ "1,247 hours verified by partner airlines ✓"</p>
               </div>
               <p><strong>Key Privacy Guarantees:</strong></p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li>LogTen data never leaves LogTen servers</li>
+                <li>established logbook platforms data never leaves established logbook platforms servers</li>
                 <li>Pilot controls which flights are verified (opt-in per entry)</li>
                 <li>Airlines see only verification tokens, not raw logbook data</li>
                 <li>Veremark handles all PII under GDPR/CCPA compliance</li>
                 <li>Pilot can revoke attestation consent anytime</li>
               </ul>
-              <p><strong>The Security:</strong> Triple-layer verification (LogTen entry + airline record + Veremark audit) creates a cryptographic hash that cannot be falsified. Airlines trust it because they issued the original data.</p>
+              <p><strong>The Security:</strong> Triple-layer verification (established logbook platforms entry + airline record + Veremark audit) creates a cryptographic hash that cannot be falsified. Airlines trust it because they issued the original data.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 3: The Competitive Moat — Why ForeFlight Can't Match This</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 3: The Competitive Moat — Why navigation platforms Can't Match This</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Header:</strong> "Be the First Logbook with Verified Credentials — Or Watch ForeFlight Take the Market"</p>
+              <p><strong>Header:</strong> "Be the First Logbook with Verified Credentials — Or Watch navigation platforms Take the Market"</p>
               <p><strong>The Market Shift:</strong> Airlines are moving to Evidence-Based Training (EBT) and Competency-Based Training Assessment (CBTA). They no longer trust raw hour counts. They need verified, structured competency data.</p>
-              <p><strong>LogTen's Current Position:</strong> Gold standard for logbook formatting. But you have zero verification infrastructure. Pilots export CSVs and manually prove their hours to skeptical recruiters.</p>
-              <p><strong>ForeFlight's Vulnerability:</strong> Same problem — no verification layer. Whoever integrates with a neutral verification platform first wins the professional aviation segment.</p>
-              <p><strong>The Moat:</strong> Once pilots have 500+ verified hours in LogTen + PilotRecognition, switching logbooks means losing their verification history. That's a "data gravity" lock-in that ForeFlight cannot replicate without a similar partnership.</p>
-              <p><strong>The Window:</strong> 6-12 months. If ForeFlight integrates first, pilots switch. If LogTen integrates first, you lock in the professional segment forever.</p>
+              <p><strong>established logbook platforms's Current Position:</strong> Gold standard for logbook formatting. But you have zero verification infrastructure. Pilots export CSVs and manually prove their hours to skeptical recruiters.</p>
+              <p><strong>navigation platforms's Vulnerability:</strong> Same problem — no verification layer. Whoever integrates with a neutral verification platform first wins the professional aviation segment.</p>
+              <p><strong>The Moat:</strong> Once pilots have 500+ verified hours in established logbook platforms + PilotRecognition, switching logbooks means losing their verification history. That's a "data gravity" lock-in that navigation platforms cannot replicate without a similar partnership.</p>
+              <p><strong>The Window:</strong> 6-12 months. If navigation platforms integrates first, pilots switch. If established logbook platforms integrates first, you lock in the professional segment forever.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Pitch Deck Sequence</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 1 (Open):</strong> Financial Win-Win — "$1M+ annual benefit to LogTen"</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 1 (Open):</strong> Financial Win-Win — "$1M+ annual benefit to established logbook platforms"</p>
             <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 2 (Validate):</strong> Technical Architecture — "Zero privacy risk, zero engineering burden"</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 3 (Close):</strong> Competitive Moat — "ForeFlight is coming. Be first or lose the market."</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 3 (Close):</strong> Competitive Moat — "navigation platforms is coming. Be first or lose the market."</p>
             <p className="text-white text-sm leading-relaxed mt-2">Close with: "API access + 90-day trial. We'll prove the model before you commit."</p>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Alternative Positioning: The True Neutrality Model</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">A more defensible pitch reframes PilotRecognition not as a data repository, but as a <strong>verification layer that stores results on LogTen's own infrastructure.</strong> This positions us as genuinely neutral infrastructure rather than a competing platform.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">A more defensible pitch reframes PilotRecognition not as a data repository, but as a <strong>verification layer that stores results on established logbook platforms's own infrastructure.</strong> This positions us as genuinely neutral infrastructure rather than a competing platform.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Revised Architecture: You Store Everything</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>The Pitch:</strong> "We are not asking pilots to store their verified hours on our platform. We are offering you a verification engine that stores the attestation results <strong>in your database</strong>. PilotRecognition acts as the verification oracle — we query airlines, match against flight records, and return a cryptographic attestation token. You store that token alongside the pilot's flight entry. The data never leaves your infrastructure."</p>
-              <p><strong>The Neutrality:</strong> By storing verification results in LogTen's own database, we eliminate the "competing platform" objection entirely. LogTen remains the data controller. We remain the verification service provider. The pilot's verified badge appears in LogTen because that's where the data lives.</p>
+              <p><strong>The Neutrality:</strong> By storing verification results in established logbook platforms's own database, we eliminate the "competing platform" objection entirely. established logbook platforms remains the data controller. We remain the verification service provider. The pilot's verified badge appears in established logbook platforms because that's where the data lives.</p>
               <p><strong>The Technical Flow:</strong></p>
               <div className="bg-slate-100 p-2 rounded font-mono text-xs">
-                <p>[LogTen Database] ←—— Pilot logs flight (your data)</p>
+                <p>[established logbook platforms Database] ←—— Pilot logs flight (your data)</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Pilot clicks "Verify This Flight")</p>
-                <p>[PilotRecognition API] ——→ Queries airline FLICA/Sabre</p>
+                <p>[PilotRecognition API] ——→ Queries airline workforce management systems/airline systems</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Returns attestation result)</p>
-                <p>[LogTen Database] ←—— Stores "verified: true" + timestamp + airline</p>
+                <p>[established logbook platforms Database] ←—— Stores "verified: true" + timestamp + airline</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Badge displays in your UI)</p>
-                <p>[Pilot Dashboard] ——→ "✓ Verified by Emirates (via PilotRecognition)"</p>
+                <p>[Pilot Dashboard] ——→ "✓ Verified by partner airlines (via PilotRecognition)"</p>
               </div>
-              <p><strong>The Advantage:</strong> LogTen gains a new premium feature (verification badges) without surrendering data control. PilotRecognition earns revenue per verification without building a competing logbook. The pilot gets trusted credentials without leaving their preferred app. True three-way neutrality.</p>
+              <p><strong>The Advantage:</strong> established logbook platforms gains a new premium feature (verification badges) without surrendering data control. PilotRecognition earns revenue per verification without building a competing logbook. The pilot gets trusted credentials without leaving their preferred app. True three-way neutrality.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-blue-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#60a5fa'}}>Why This Positioning Wins</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">LogTen's core objection is fear of losing user data to an external platform. By offering to store verification results on <strong>their infrastructure</strong>, we become a service provider, not a competitor:</p>
-            <p className="text-white text-sm leading-relaxed mt-2">• LogTen maintains complete data sovereignty<br/>• We provide verification-as-a-service (API calls)<br/>• Pilot data never migrates to a third-party database<br/>• LogTen can white-label the feature: "LogTen Verified™ powered by PilotRecognition"<br/>• If the partnership ends, LogTen keeps all verification history — we just stop issuing new attestations</p>
-            <p className="text-white text-sm leading-relaxed mt-2">This is how Visa partners with banks — Visa doesn't hold your money, they just verify transactions. LogTen holds the data. We verify its authenticity.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">established logbook platforms's core objection is fear of losing user data to an external platform. By offering to store verification results on <strong>their infrastructure</strong>, we become a service provider, not a competitor:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• established logbook platforms maintains complete data sovereignty<br/>• We provide verification-as-a-service (API calls)<br/>• Pilot data never migrates to a third-party database<br/>• established logbook platforms can white-label the feature: "established logbook platforms Verified™ powered by PilotRecognition"<br/>• If the partnership ends, established logbook platforms keeps all verification history — we just stop issuing new attestations</p>
+            <p className="text-white text-sm leading-relaxed mt-2">This is how Visa partners with banks — Visa doesn't hold your money, they just verify transactions. established logbook platforms holds the data. We verify its authenticity.</p>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Partnership Model 3: The Data Hub & Triangulation Engine</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">A third partnership structure positions LogTen as the <strong>central data aggregator</strong> — ingesting both pilot-logged hours AND direct airline/flight school feeds. PilotRecognition becomes the triangulation engine that matches and verifies the two data streams.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">A third partnership structure positions established logbook platforms as the <strong>central data aggregator</strong> — ingesting both pilot-logged hours AND direct airline/flight school feeds. PilotRecognition becomes the triangulation engine that matches and verifies the two data streams.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Deal Structure: LogTen as the Hub</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Deal Structure: established logbook platforms as the Hub</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>The Pitch:</strong> "We broker a deal where flight schools and airlines send their operational data directly to LogTen — not to us. You become the single source of truth for both pilot-logged hours AND official airline/flight school records. We provide the matching algorithm that triangulates the two datasets and flags discrepancies. You control the data. We control the verification logic."</p>
+              <p><strong>The Pitch:</strong> "We broker a deal where flight schools and airlines send their operational data directly to established logbook platforms — not to us. You become the single source of truth for both pilot-logged hours AND official airline/flight school records. We provide the matching algorithm that triangulates the two datasets and flags discrepancies. You control the data. We control the verification logic."</p>
               <p><strong>The Triangulation Flow:</strong></p>
               <div className="bg-slate-100 p-2 rounded font-mono text-xs">
-                <p>[Pilot logs flight in LogTen] ──────┐</p>
+                <p>[Pilot logs flight in established logbook platforms] ──────┐</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│</p>
-                <p>[Airline sends duty record to LogTen] ─┼──→ [LogTen Database holds BOTH]</p>
+                <p>[Airline sends duty record to established logbook platforms] ─┼──→ [established logbook platforms Database holds BOTH]</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
                 <p>[PilotRecognition API] ──→ Triangulates: "Pilot logged 1,500 hrs, Airline confirms 1,247 hrs"</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
-                <p>[LogTen displays] ──→ "1,247 hrs verified ✓ | 253 hrs unverified ⚠"</p>
+                <p>[established logbook platforms displays] ──→ "1,247 hrs verified ✓ | 253 hrs unverified ⚠"</p>
               </div>
-              <p><strong>LogTen's Value:</strong> By receiving direct feeds from airlines (FLICA/Sabre) and flight schools, LogTen becomes indispensable infrastructure. Airlines send data to LogTen because it simplifies verification. Pilots stay subscribed because LogTen now has the "official record" alongside their personal log.</p>
-              <p><strong>PilotRecognition's Role:</strong> We provide the matching algorithm, discrepancy detection, and attestation tokens. We don't store the flight data — we analyze it and return verification scores. LogTen stores everything; we verify the relationship between datasets.</p>
+              <p><strong>established logbook platforms's Value:</strong> By receiving direct feeds from airlines (workforce management systems/airline systems) and flight schools, established logbook platforms becomes indispensable infrastructure. Airlines send data to established logbook platforms because it simplifies verification. Pilots stay subscribed because established logbook platforms now has the "official record" alongside their personal log.</p>
+              <p><strong>PilotRecognition's Role:</strong> We provide the matching algorithm, discrepancy detection, and attestation tokens. We don't store the flight data — we analyze it and return verification scores. established logbook platforms stores everything; we verify the relationship between datasets.</p>
               <p><strong>Revenue Split:</strong></p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li>Airline pays LogTen for data integration (new B2B revenue stream)</li>
+                <li>Airline pays established logbook platforms for data integration (new B2B revenue stream)</li>
                 <li>Pilot pays PilotRecognition for verification matching ($20/verification)</li>
-                <li>LogTen gets 30% of verification fee + enterprise airline contracts</li>
-                <li>PilotRecognition gets 70% of verification fee + volume from LogTen's 160K users</li>
+                <li>established logbook platforms gets 30% of verification fee + enterprise airline contracts</li>
+                <li>PilotRecognition gets 70% of verification fee + volume from established logbook platforms's 160K users</li>
               </ul>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-purple-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Why Airlines & Flight Schools Participate</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">Airlines currently waste hundreds of hours manually verifying pilot logbooks during hiring. By sending operational data directly to LogTen:</p>
-            <p className="text-white text-sm leading-relaxed mt-2">• They eliminate manual verification labor<br/>• They get pre-verified pilot pools (LogTen shows "green check" candidates)<br/>• They reduce fraud liability (triangulation catches padded hours)<br/>• They pay LogTen a small API fee vs. expensive verification staff</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Airlines currently waste hundreds of hours manually verifying pilot logbooks during hiring. By sending operational data directly to established logbook platforms:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• They eliminate manual verification labor<br/>• They get pre-verified pilot pools (established logbook platforms shows "green check" candidates)<br/>• They reduce fraud liability (triangulation catches padded hours)<br/>• They pay established logbook platforms a small API fee vs. expensive verification staff</p>
             <p className="text-white text-sm leading-relaxed mt-2">Flight schools get the same benefit — their graduates leave with "pre-verified" hours that airlines trust immediately.</p>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Partnership Model 4: The IDfy Integration — No Data Holder Strategy</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">Pilots entering through PilotRecognition pathways need logbook functionality to track their hours. Rather than becoming a data holder (which creates liability and infrastructure burden), PilotRecognition partners with <strong>IDfy</strong> to provide digital logbook services while maintaining our position as the neutral verification coordinator.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Partnership Model 4: The infrastructure partners Integration — No Data Holder Strategy</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots entering through PilotRecognition pathways need logbook functionality to track their hours. Rather than becoming a data holder (which creates liability and infrastructure burden), PilotRecognition partners with <strong>infrastructure partners</strong> to provide digital logbook services while maintaining our position as the neutral verification coordinator.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Architecture: We Coordinate, Others Hold Data</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>The Problem:</strong> Pilots coming from our Programs (Foundation, Transition) and Pathways need to log flight hours. If we build our own logbook, we become a data holder — taking on GDPR liability, infrastructure costs, and becoming a direct competitor to LogTen/ForeFlight.</p>
-              <p><strong>The Solution:</strong> Partner with <strong>IDfy</strong> (or similar identity/logbook infrastructure provider) to handle the digital logbook layer. PilotRecognition remains the neutral coordinator that connects pilots to verified pathways, while specialized providers handle the data they do best.</p>
+              <p><strong>The Problem:</strong> Pilots coming from our Programs (Foundation, Transition) and Pathways need to log flight hours. If we build our own logbook, we become a data holder — taking on GDPR liability, infrastructure costs, and becoming a direct competitor to established logbook platforms/navigation platforms.</p>
+              <p><strong>The Solution:</strong> Partner with <strong>infrastructure partners</strong> (or similar identity/logbook infrastructure provider) to handle the digital logbook layer. PilotRecognition remains the neutral coordinator that connects pilots to verified pathways, while specialized providers handle the data they do best.</p>
               <p><strong>The Flow for New Pilots:</strong></p>
               <div className="bg-slate-100 p-2 rounded font-mono text-xs">
                 <p>[Pilot joins via PilotRecognition Program/Pathway]</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
                 <p>[Prompt:] "Log your flight hours to unlock verification"</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
-                <p>[IDfy Logbook Integration] ←—— Pilot creates logbook account via our referral</p>
+                <p>[infrastructure partners Logbook Integration] ←—— Pilot creates logbook account via our referral</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
-                <p>[Pilot logs hours in IDfy] ──→ [PilotRecognition queries for verification]</p>
+                <p>[Pilot logs hours in infrastructure partners] ──→ [PilotRecognition queries for verification]</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
                 <p>[Verification matched against ATO/Airline records via Veremark]</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
-                <p>[Recognition Score updates] ←—— "Verified hours from IDfy + Airline match"</p>
+                <p>[Recognition Score updates] ←—— "Verified hours from infrastructure partners + Airline match"</p>
               </div>
-              <p><strong>Why IDfy:</strong></p>
+              <p><strong>Why infrastructure partners:</strong></p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li>IDfy specializes in digital identity and document verification (KYC/AML)</li>
+                <li>infrastructure partners specializes in digital identity and document verification (KYC/AML)</li>
                 <li>They already handle sensitive PII under strict compliance frameworks</li>
                 <li>They can provide white-labeled logbook infrastructure</li>
                 <li>They have APIs that integrate with our verification layer</li>
@@ -5528,8 +5528,8 @@ export default function UCFOfficialReleasePage() {
               </ul>
               <p><strong>Revenue Model:</strong></p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li>Pilot pays IDfy for logbook subscription (white-labeled "PilotRecognition Logbook powered by IDfy")</li>
-                <li>PilotRecognition gets referral fee ($20) from IDfy for each new logbook account</li>
+                <li>Pilot pays infrastructure partners for logbook subscription (white-labeled "PilotRecognition Logbook powered by infrastructure partners")</li>
+                <li>PilotRecognition gets referral fee ($20) from infrastructure partners for each new logbook account</li>
                 <li>Pilot pays PilotRecognition for verification matching ($20/verification)</li>
                 <li>Veremark handles background verification ($5-8 fee)</li>
                 <li>We remain the coordinator, not the data holder</li>
@@ -5540,7 +5540,7 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-900 border-l-4 border-indigo-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#818cf8'}}>The Neutrality-Through-Specialization Model</strong></p>
             <p className="text-white text-sm leading-relaxed mt-2">By partnering with specialists at every layer, PilotRecognition maintains true neutrality:</p>
-            <p className="text-white text-sm leading-relaxed mt-2">• <strong>IDfy</strong> handles logbook data (they're the data custodian)<br/>• <strong>Veremark</strong> handles background verification (they're the verification engine)<br/>• <strong>LogTen</strong> handles legacy pilot data (for existing users)<br/>• <strong>PilotRecognition</strong> coordinates the pathway matching and Recognition Score</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• <strong>infrastructure partners</strong> handles logbook data (they're the data custodian)<br/>• <strong>Veremark</strong> handles background verification (they're the verification engine)<br/>• <strong>established logbook platforms</strong> handles legacy pilot data (for existing users)<br/>• <strong>PilotRecognition</strong> coordinates the pathway matching and Recognition Score</p>
             <p className="text-white text-sm leading-relaxed mt-2">We don't hold flight data. We don't hold verification records. We hold the <strong>relationships</strong> that connect pilots to opportunities — and let specialists handle what they do best.</p>
           </div>
 
@@ -5552,31 +5552,31 @@ export default function UCFOfficialReleasePage() {
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>PilotRecognition = The Airport Car Rental Section</strong></p>
               <p>We provide the infrastructure — the location, the signage, the coordination system. Pilots arrive at our platform (the airport) and find multiple logbook options (the car rental counters). We don't own the cars. We own the <strong>connection system</strong>.</p>
-              <p><strong>IDfy / Local Providers = The Budget Option (Our Own)</strong></p>
+              <p><strong>infrastructure partners / Local Providers = The Budget Option (Our Own)</strong></p>
               <p>For our $100/year Recognition+ base users, we offer a minimal-cost logbook solution: <strong>50MB storage for $3-5/month</strong>. Basic functionality for pilots who just need to log hours and get verified. Think of it as the airport's own budget rental service — functional, affordable, no frills.</p>
               <ul className="list-disc list-inside ml-4 space-y-1">
                 <li>Minimal storage (50MB = ~10,000 flight entries)</li>
                 <li>Basic CSV import/export</li>
                 <li>Direct verification pipeline to our system</li>
-                <li>We hold <strong>no liability</strong> — IDfy is the data custodian</li>
+                <li>We hold <strong>no liability</strong> — infrastructure partners is the data custodian</li>
                 <li>Pilots can upgrade anytime</li>
               </ul>
-              <p><strong>LogTen Pro = Hertz / Europcar / Enterprise</strong></p>
+              <p><strong>established logbook platforms = Hertz / Europcar / Enterprise</strong></p>
               <p>Established brands with their own infrastructure, their own apps, their own user bases. They don't need us to build their logbook — they already have a premium product. What they need is <strong>infrastructure integration</strong>:</p>
               <ul class="list-disc list-inside ml-4 space-y-1">
                 <li>Access to our 25-pillar verification network</li>
-                <li>API hooks into airline data feeds (FLICA/Sabre)</li>
+                <li>API hooks into airline data feeds (workforce management systems/airline systems)</li>
                 <li>The "Recognition Score" integration that makes their users discoverable</li>
                 <li>The $20 referral dividend for each verified pilot</li>
               </ul>
-              <p><strong>The Key Distinction:</strong> We are not competing with Hertz. We are the airport that Hertz operates within. Pilots coming through our Programs (the $100/year subscribers) get the budget option by default. But we actively promote the premium brands: <em>"Want advanced analytics, schedule imports, and professional features? Upgrade to LogTen Pro — verified and integrated with your PilotRecognition profile."</em></p>
+              <p><strong>The Key Distinction:</strong> We are not competing with Hertz. We are the airport that Hertz operates within. Pilots coming through our Programs (the $100/year subscribers) get the budget option by default. But we actively promote the premium brands: <em>"Want advanced analytics, schedule imports, and professional features? Upgrade to established logbook platforms — verified and integrated with your PilotRecognition profile."</em></p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>Why This Positioning Works for LogTen</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">LogTen's fear is that we steal their users. The airport analogy reframes us as <strong>incremental revenue</strong>, not competition:</p>
-            <p className="text-white text-sm leading-relaxed mt-2">• We bring NEW pilots into the ecosystem (our $100/year Program users)<br/>• These pilots start with basic logging needs (IDfy budget option)<br/>• As they advance, we <strong>upsell them to LogTen Pro</strong> for premium features<br/>• LogTen gets 30% revenue share on Recognition+ + $20 per verification<br/>• LogTen gets access to our airline partnerships (they couldn't build these themselves)</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>Why This Positioning Works for established logbook platforms</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">established logbook platforms's fear is that we steal their users. The airport analogy reframes us as <strong>incremental revenue</strong>, not competition:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• We bring NEW pilots into the ecosystem (our $100/year Program users)<br/>• These pilots start with basic logging needs (infrastructure partners budget option)<br/>• As they advance, we <strong>upsell them to established logbook platforms</strong> for premium features<br/>• established logbook platforms gets 30% revenue share on Recognition+ + $20 per verification<br/>• established logbook platforms gets access to our airline partnerships (they couldn't build these themselves)</p>
             <p className="text-white text-sm leading-relaxed mt-2">We are not Hertz's competitor. We are the airport that feeds customers to Hertz's counter.</p>
           </div>
 
@@ -5599,19 +5599,19 @@ export default function UCFOfficialReleasePage() {
                   </thead>
                   <tbody>
                     <tr className="border-b border-slate-200">
-                      <td className="py-1 font-semibold">LogTen Pro</td>
+                      <td className="py-1 font-semibold">established logbook platforms</td>
                       <td className="py-1">160,000+ pilots</td>
                       <td className="py-1">Commercial airline pilots, corporate pilots, Apple users</td>
                       <td className="py-1">Highest volume, premium tier integration</td>
                     </tr>
                     <tr className="border-b border-slate-200">
-                      <td className="py-1 font-semibold">FLYLOG.io</td>
+                      <td className="py-1 font-semibold">specialized logbook solutions</td>
                       <td className="py-1">20,000+ users</td>
                       <td className="py-1">Flight schools, fleet managers, general aviation</td>
                       <td className="py-1">ATO partnerships, bulk verification</td>
                     </tr>
                     <tr>
-                      <td className="py-1 font-semibold">capzlog.aero</td>
+                      <td className="py-1 font-semibold">specialized logbook solutions</td>
                       <td className="py-1">2,000+ paying users</td>
                       <td className="py-1">European pilots, sailplane enthusiasts, EASA compliance</td>
                       <td className="py-1">European market entry, regulatory compliance</td>
@@ -5624,13 +5624,13 @@ export default function UCFOfficialReleasePage() {
               <div className="bg-slate-100 p-2 rounded font-mono text-xs">
                 <p>[Pilot visits PilotRecognition.com]</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
-                <p>[Sign Up Options:] "Sign in with LogTen Pro" | "Sign in with FLYLOG.io" | "Sign in with capzlog.aero" | "Create new IDfy account"</p>
+                <p>[Sign Up Options:] "Sign in with established logbook platforms" | "Sign in with specialized logbook solutions" | "Sign in with specialized logbook solutions" | "Create new infrastructure partners account"</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
                 <p>[OAuth handshake] ←—— Pilot grants read-only access to flight hours</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
                 <p>[PilotRecognition queries logbook API] ──→ [Veremark matches against airline records]</p>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
-                <p>[Recognition Score updated] ←—— "Verified: 1,247 hrs from LogTen + Emirates match"</p>
+                <p>[Recognition Score updated] ←—— "Verified: 1,247 hrs from established logbook platforms + partner airlines match"</p>
               </div>
               <p><strong>Why Logbook Providers Agree:</strong></p>
               <ul className="list-disc list-inside ml-4 space-y-1">
@@ -5653,19 +5653,19 @@ export default function UCFOfficialReleasePage() {
                   </thead>
                   <tbody>
                     <tr className="border-b border-slate-200">
-                      <td className="py-1 font-semibold">LogTen Pro</td>
+                      <td className="py-1 font-semibold">established logbook platforms</td>
                       <td className="py-1">$79.99/year (Basic)</td>
                       <td className="py-1">$129.99/year (Pro)</td>
                       <td className="py-1">❌ Manual only</td>
                     </tr>
                     <tr className="border-b border-slate-200">
-                      <td className="py-1 font-semibold">FLYLOG.io</td>
+                      <td className="py-1 font-semibold">specialized logbook solutions</td>
                       <td className="py-1">Free tier available</td>
                       <td className="py-1">€49-99/year</td>
                       <td className="py-1">❌ None</td>
                     </tr>
                     <tr className="border-b border-slate-200">
-                      <td className="py-1 font-semibold">capzlog.aero</td>
+                      <td className="py-1 font-semibold">specialized logbook solutions</td>
                       <td className="py-1">CHF 39/year</td>
                       <td className="py-1">CHF 89/year (Professional)</td>
                       <td className="py-1">❌ None</td>
@@ -5681,9 +5681,9 @@ export default function UCFOfficialReleasePage() {
               </div>
               <p><strong>Compliance Certifications:</strong></p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li><strong>LogTen Pro:</strong> FAA/EASA compliant logbook formatting, accepted by 100+ airlines for manual review</li>
-                <li><strong>FLYLOG.io:</strong> EASA Part-FCL compliant, widely used in European flight schools for training records</li>
-                <li><strong>capzlog.aero:</strong> Swiss FOCA recognized, EASA compliant, specifically designed for European sailplane and GA pilots</li>
+                <li><strong>established logbook platforms:</strong> FAA/EASA compliant logbook formatting, accepted by 100+ airlines for manual review</li>
+                <li><strong>specialized logbook solutions:</strong> EASA Part-FCL compliant, widely used in European flight schools for training records</li>
+                <li><strong>specialized logbook solutions:</strong> Swiss FOCA recognized, EASA compliant, specifically designed for European sailplane and GA pilots</li>
                 <li><strong>PilotRecognition Value Add:</strong> None of these providers offer <strong>automated third-party verification</strong> — that's the gap we fill</li>
               </ul>
             </div>
@@ -5732,16 +5732,16 @@ export default function UCFOfficialReleasePage() {
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-B. EFBs & Navigation Apps: The Telemetry & Complexity Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">ForeFlight · Garmin Pilot · Navigraph · WingX</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">navigation platforms · EFB platforms · navigation platforms · navigation platforms</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> EFBs and navigation apps capture the qualitative environment. They track routing architectures, airspace density, and dynamic weather decision-making.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> While a logbook proves a pilot flew two hours, the EFB proves <strong>how they flew it</strong> — adding complexity multipliers to the pilot's baseline hours in the UCF algorithm and generating high-margin safety data for insurance underwriters.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Value for EFB & Nav Providers</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>The Isolated Data Problem:</strong> EFBs and navigation apps collect incredibly rich telemetry — route diversity, approach types, weather avoidance patterns, altitude management, and airspace complexity. Yet this data lives in a silo. A pilot can fly 500 complex IFR approaches in ForeFlight, but an airline recruiter sees none of it. The data is invisible.</p>
+              <p><strong>The Isolated Data Problem:</strong> EFBs and navigation apps collect incredibly rich telemetry — route diversity, approach types, weather avoidance patterns, altitude management, and airspace complexity. Yet this data lives in a silo. A pilot can fly 500 complex IFR approaches in navigation platforms, but an airline recruiter sees none of it. The data is invisible.</p>
               <p><strong>The PilotRecognition Bridge:</strong> By routing your telemetry into our verification ecosystem, flight planning complexity directly increases a pilot's Recognition Score. A pilot using your app for challenging cross-country routes, multiple approach types, and complex airspace gets algorithmic hiring preference.</p>
-              <p><strong>The Competitive Moat:</strong> Once ForeFlight data contributes to a pilot's hiring score, pilots choose ForeFlight over competitors. The app becomes not just a planning tool, but a career investment with measurable ROI.</p>
+              <p><strong>The Competitive Moat:</strong> Once navigation platforms data contributes to a pilot's hiring score, pilots choose navigation platforms over competitors. The app becomes not just a planning tool, but a career investment with measurable ROI.</p>
               <p><strong>New Revenue Stream:</strong> Anonymized, aggregate safety data from your user base becomes licensable to insurance underwriters and fleet managers. They pay for trend analysis on weather avoidance patterns, fuel efficiency, and risk profiles.</p>
             </div>
           </div>
@@ -5756,36 +5756,36 @@ export default function UCFOfficialReleasePage() {
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-C. Simulation & ATC Networks: The Behavioral & CBTA Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">X-Plane · Microsoft Flight Simulator · PilotEdge · VATSIM · IVAO</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Platforms like X-Plane and VATSIM capture high-fidelity procedural repetition and non-standard scenario management (e.g., engine failures, complex radio phraseology).</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">simulation platforms · simulation platforms · ATC networks · simulation networks · simulation networks</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Platforms like simulation platforms and simulation networks capture high-fidelity procedural repetition and non-standard scenario management (e.g., engine failures, complex radio phraseology).</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> As airlines shift toward <strong>Competency-Based Training and Assessment (CBTA)</strong>, this layer translates off-duty simulator habits into verified cognitive currency, drastically reducing an airline's remedial training risk.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The CBTA Revolution Opportunity</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>The Industry Shift:</strong> Airlines are moving to Competency-Based Training and Assessment (CBTA). Raw hours matter less than demonstrated competencies — communication, decision-making, situational awareness, workload management.</p>
-              <p><strong>The Simulator Gap:</strong> X-Plane and MSFS have incredibly accurate flight models. PilotEdge and VATSIM provide live ATC interaction. Yet airlines treat simulator time as "unofficial" because there's no verification layer connecting virtual performance to real-world competency.</p>
-              <p><strong>The PilotRecognition Solution:</strong> We map simulator telemetry and ATC communication patterns to the 9 Core ICAO Competencies. Hours spent on VATSIM with professional-grade ATC communication become verifiable evidence of Communication and Teamwork skills. Complex IFR scenarios in X-Plane demonstrate Problem-Solving and Situational Awareness.</p>
-              <p><strong>The Career Impact:</strong> A pilot with 200 hours of verified VATSIM ATC interactions and 100 complex X-Plane IFR scenarios carries a demonstrably lower remedial training risk. Airlines trust this and hire faster.</p>
+              <p><strong>The Simulator Gap:</strong> simulation platforms and simulation platforms have incredibly accurate flight models. ATC networks and simulation networks provide live ATC interaction. Yet airlines treat simulator time as "unofficial" because there's no verification layer connecting virtual performance to real-world competency.</p>
+              <p><strong>The PilotRecognition Solution:</strong> We map simulator telemetry and ATC communication patterns to the 9 Core ICAO Competencies. Hours spent on simulation networks with professional-grade ATC communication become verifiable evidence of Communication and Teamwork skills. Complex IFR scenarios in simulation platforms demonstrate Problem-Solving and Situational Awareness.</p>
+              <p><strong>The Career Impact:</strong> A pilot with 200 hours of verified simulation networks ATC interactions and 100 complex simulation platforms IFR scenarios carries a demonstrably lower remedial training risk. Airlines trust this and hire faster.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-purple-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Integration Pathway for Simulation Platforms</strong></p>
             <p className="text-white text-sm leading-relaxed mt-2"><strong>Data Capture:</strong> Simulator platforms export session telemetry — flight parameters, weather conditions, emergency scenarios handled, ATC communication logs. We verify this against competency rubrics developed with airline training departments.</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Competency Scoring:</strong> Each simulator session contributes to a pilot's competency profile: "Demonstrated Problem-Solving in engine-out scenarios (X-Plane)" — "Verified Communication proficiency (PilotEdge ATC)".</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Competency Scoring:</strong> Each simulator session contributes to a pilot's competency profile: "Demonstrated Problem-Solving in engine-out scenarios (simulation platforms)" — "Verified Communication proficiency (ATC networks ATC)".</p>
             <p className="text-white text-sm leading-relaxed mt-2"><strong>Revenue Share:</strong> $25 per pilot linking simulator profile. Premium: Airlines pay for pre-screening reports on simulator-verified competencies before investing in Type Rating training.</p>
           </div>
 
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-D. Unified Integration Architecture</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct value propositions, all integrations route through the same technical infrastructure — creating a unified ecosystem where data from LogTen, ForeFlight, X-Plane, and Veremark all contribute to a single, trusted pilot credential.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct value propositions, all integrations route through the same technical infrastructure — creating a unified ecosystem where data from established logbook platforms, navigation platforms, simulation platforms, and Veremark all contribute to a single, trusted pilot credential.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Three-Layer Verification Stack (All Partners)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Layer 1 — Presentation Data (Logbook/EFB/Sim):</strong> User-entered or telemetry-captured flight data from the partner platform. LogTen hours, ForeFlight routes, X-Plane sessions.</p>
+              <p><strong>Layer 1 — Presentation Data (Logbook/EFB/Sim):</strong> User-entered or telemetry-captured flight data from the partner platform. established logbook platforms hours, navigation platforms routes, simulation platforms sessions.</p>
               <p><strong>Layer 2 — Origin Verification (Veremark/ATO/Airline):</strong> Independent verification that the flight actually occurred — crew scheduling records, flight school documentation, simulator session authentication.</p>
               <p><strong>Layer 3 — Recognition Score (PilotRecognition):</strong> The unified algorithm that weights verified hours, competency metrics, and professional standing into a single industry-recognized credential.</p>
             </div>
@@ -5798,7 +5798,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Cost Structure Reality</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>Per-Verification Costs:</strong> Each attestation incurs ~$5-8 in Veremark verification fees + $20 Ecosystem Referral Dividend to the logbook provider + infrastructure costs. Total cost per verification: ~$28-32.</p>
-              <p><strong>Traditional Path:</strong> LogTen Pro ($129.99/year) + third-party verification ($50-200 per document) + notarization ($25-50) + courier ($50-100) = <strong>$255-480 per airline application</strong>.</p>
+              <p><strong>Traditional Path:</strong> established logbook platforms ($129.99/year) + third-party verification ($50-200 per document) + notarization ($25-50) + courier ($50-100) = <strong>$255-480 per airline application</strong>.</p>
               <p><strong>PilotRecognition Value:</strong> Pilots need predictable, lower costs — not another $140/year subscription. The model must balance accessibility with sustainability.</p>
             </div>
           </div>
@@ -5807,16 +5807,16 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">$119.99/year is too expensive for pilots just tracking flight hours. Through <strong>guaranteed volume commitments</strong> and <strong>verification-driven revenue sharing</strong>, PilotRecognition can negotiate significantly reduced logbook subscription costs.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">LogTen's 160,000+ Pilot Base — The Scale Advantage</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">established logbook platforms's 160,000+ Pilot Base — The Scale Advantage</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>The Starting Point:</strong> LogTen Pro already has 160,000+ active pilots. This massive user base changes the economics entirely — even a 10% conversion to the partnership tier (16,000 pilots) generates significant verification revenue.</p>
+              <p><strong>The Starting Point:</strong> established logbook platforms already has 160,000+ active pilots. This massive user base changes the economics entirely — even a 10% conversion to the partnership tier (16,000 pilots) generates significant verification revenue.</p>
               <p><strong>The Partnership Model:</strong> $39.99/year total. Logbook provider receives $19.99/year (vs $79.99 standard Basic), PilotRecognition receives $20/year base fee. Includes 5 verifications/year.</p>
-              <p><strong>Why LogTen Accepts:</strong> With just 10% of their base (16,000 pilots) on the partnership tier: $319,840 in reduced subscription revenue — but each pilot averaging 8 verifications/year generates $60 in referral fees per pilot ($20 × 3 extra verifications). Total per pilot: $19.99 + $60 = $79.99 (matching standard pricing). Plus 10x higher retention and airline B2B pipeline access.</p>
+              <p><strong>Why established logbook platforms Accepts:</strong> With just 10% of their base (16,000 pilots) on the partnership tier: $319,840 in reduced subscription revenue — but each pilot averaging 8 verifications/year generates $60 in referral fees per pilot ($20 × 3 extra verifications). Total per pilot: $19.99 + $60 = $79.99 (matching standard pricing). Plus 10x higher retention and airline B2B pipeline access.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Volume Math (LogTen's 160,000 Pilots)</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Volume Math (established logbook platforms's 160,000 Pilots)</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>Conservative Scenario (25% adoption — 40,000 pilots):</strong> $799,600 subscription revenue + $4.8M in verification dividends (240,000 extra verifications × $20) = <strong>$5.6M total</strong> vs $3.2M at standard pricing.</p>
               <p><strong>Aggressive Scenario (50% adoption — 80,000 pilots):</strong> $1.6M subscription revenue + $9.6M in verification dividends = <strong>$11.2M total</strong> vs $6.4M standard.</p>
@@ -5830,15 +5830,15 @@ export default function UCFOfficialReleasePage() {
               <p><strong>Pilot Starter ($39.99/year):</strong> Core logging + 5 verifications. Logbook: $19.99. PilotRecognition: $20 base. Additional verifications: $12.99 each. <em>Target: 80,000 pilots at this tier.</em></p>
               <p><strong>Pilot Professional ($59.99/year):</strong> Advanced logging + 15 verifications. Logbook: $29.99. PilotRecognition: $30 base. <em>Target: 40,000 pilots.</em></p>
               <p><strong>Commercial Pilot ($79.99/year):</strong> Full Pro features + unlimited verifications. Logbook: $39.99. PilotRecognition: $40 base. <em>Target: 20,000 airline pilots.</em></p>
-              <p><strong>Standard LogTen Pro:</strong> Remains available at $129.99/year for pilots who want full features without verification integration. <em>Expected: 20,000 pilots.</em></p>
+              <p><strong>Standard established logbook platforms:</strong> Remains available at $129.99/year for pilots who want full features without verification integration. <em>Expected: 20,000 pilots.</em></p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Negotiation Leverage (With 160K Base)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Existing Scale:</strong> LogTen doesn't need PilotRecognition to bring pilots — they have 160,000 already. The value is unlocking verification revenue from their existing base.</p>
-              <p><strong>Verification Revenue Explosion:</strong> Even at conservative 25% adoption, LogTen earns $5.6M vs $3.2M standard — a 75% revenue increase from the same pilot base.</p>
+              <p><strong>Existing Scale:</strong> established logbook platforms doesn't need PilotRecognition to bring pilots — they have 160,000 already. The value is unlocking verification revenue from their existing base.</p>
+              <p><strong>Verification Revenue Explosion:</strong> Even at conservative 25% adoption, established logbook platforms earns $5.6M vs $3.2M standard — a 75% revenue increase from the same pilot base.</p>
               <p><strong>Churn Reduction:</strong> Verification integration reduces churn from 40% to 15% annually. With 160,000 pilots, that's 40,000 additional retained subscribers worth $3.2M/year.</p>
               <p><strong>Enterprise B2B Upsell:</strong> Airline partnerships through PilotRecognition open enterprise licensing opportunities (airlines buying bulk subscriptions for cadet programs) — a new revenue stream entirely.</p>
             </div>
@@ -5861,12 +5861,12 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-800 rounded-lg px-5 py-4 mb-6 text-center">
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Powered By Industry Leaders</p>
             <div className="flex flex-wrap justify-center gap-3 text-sm">
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">LogTen Pro</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ForeFlight</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Garmin Pilot</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Navigraph</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">X-Plane</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">PilotEdge</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">established logbook platforms</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">navigation platforms</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">EFB platforms</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">navigation platforms</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">simulation platforms</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATC networks</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Veremark</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATO / Operator</span>
             </div>
@@ -5879,13 +5879,13 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">While all three data pillars hold equal architectural weight within the Universal Commercial Framework, enterprise deployment requires ruthless sequencing. Attempting to integrate community-run simulation networks and corporate-owned EFBs simultaneously creates an impossible engineering bottleneck and fragmented commercial focus. Therefore, PilotRecognition's commercial deployment follows a strict phased approach:</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 1 Beachhead: Logbook Provider Acquisition</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">LogTen Pro · FLYLOG.io · capzlog.aero · IDfy</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Strategic Rationale:</strong> Logbook providers offer the highest-conviction, fastest-revenue, lowest-friction entry point. LogTen Pro's 160,000 users represent immediate monetization with established B2B relationships. ForeFlight requires navigating Boeing corporate bureaucracy. X-Plane requires convincing volunteer networks to adopt paid infrastructure. We conquer the beachhead first, then use that momentum for the harder fights.</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">established logbook platforms · specialized logbook solutions · infrastructure partners</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Strategic Rationale:</strong> Logbook providers offer the highest-conviction, fastest-revenue, lowest-friction entry point. established logbook platforms's 160,000 users represent immediate monetization with established B2B relationships. navigation platforms requires navigating OEMs corporate bureaucracy. simulation platforms requires convincing volunteer networks to adopt paid infrastructure. We conquer the beachhead first, then use that momentum for the harder fights.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Phase 1 Success Metrics</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>User Adoption Target:</strong> 10% of LogTen base (16,000 pilots) on partnership tier within 12 months</p>
+              <p><strong>User Adoption Target:</strong> 10% of established logbook platforms base (16,000 pilots) on partnership tier within 12 months</p>
               <p><strong>Revenue Validation:</strong> $320K+ in verification revenue demonstrating $20/verification model</p>
               <p><strong>Airline Partnerships:</strong> 3-5 airline pathway integrations requiring verified logbook data</p>
               <p><strong>Retention Proof:</strong> 85%+ annual retention vs 60% for non-integrated subscribers</p>
@@ -5893,15 +5893,15 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 2 Expansion: EFB & Navigation App Integration</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">ForeFlight · Garmin Pilot · Navigraph</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">navigation platforms · EFB platforms · navigation platforms</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Prerequisites:</strong> Phase 1 baseline data proving telemetry-to-Recognition-Score algorithm efficacy. Established airline partnerships requiring complexity multipliers in hiring decisions.</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Timeline:</strong> Q3-Q4 following Phase 1 traction. Dedicated implementation team with pre-written SDKs for ForeFlight/Garmin APIs. 3-sprint deployment timeline.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Timeline:</strong> Q3-Q4 following Phase 1 traction. Dedicated implementation team with pre-written SDKs for navigation platforms/Garmin APIs. 3-sprint deployment timeline.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Revenue Model:</strong> $15 per active integration + premium tier licensing anonymized aggregate safety data to insurance underwriters ($50K-200K annual contracts).</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 3 Maturity: Simulator & CBTA Integration</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">X-Plane · Microsoft Flight Simulator · PilotEdge · VATSIM</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">simulation platforms · simulation platforms · ATC networks · simulation networks</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Prerequisites:</strong> Airline training departments accepting verified simulator hours as legitimate CBTA evidence. Competency rubrics developed and validated with 2+ major carriers.</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Challenge:</strong> Volunteer-run networks (VATSIM) require community governance approval. Revenue model must align with non-profit structures while providing infrastructure funding.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Challenge:</strong> Volunteer-run networks (simulation networks) require community governance approval. Revenue model must align with non-profit structures while providing infrastructure funding.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Revenue Model:</strong> $25 per pilot linking simulator profile. Airlines pay for pre-screening reports on simulator-verified competencies before Type Rating investment ($500-2,000 per pilot assessment).</p>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
@@ -5969,8 +5969,8 @@ export default function UCFOfficialReleasePage() {
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Why Airbus and Boeing Are Among the Most Strategic Enterprise Players on This Platform</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Airbus is not on PilotRecognition to hire a handful of test pilots. Their entire multi-billion-dollar business model depends on airlines being able to crew the aircraft they sell. When Airbus pitches a $10 billion order of A350s to an airline, the airline's board asks one question: <strong>"Do we have the crew to operate these in 24 months?"</strong> If the answer is no, the order gets delayed or downsized. PilotRecognition is the only platform in existence that can answer that question with live, verified data.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Why OEMs and OEMs Are Among the Most Strategic Enterprise Players on This Platform</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">OEMs is not on PilotRecognition to hire a handful of test pilots. Their entire multi-billion-dollar business model depends on airlines being able to crew the aircraft they sell. When OEMs pitches a $10 billion order of A350s to an airline, the airline's board asks one question: <strong>"Do we have the crew to operate these in 24 months?"</strong> If the answer is no, the order gets delayed or downsized. PilotRecognition is the only platform in existence that can answer that question with live, verified data.</p>
           <p className="text-slate-700 leading-relaxed mb-6">This makes the manufacturer relationship fundamentally different from a standard airline HR subscription. <strong>The use case is macro-intelligence and training pipeline management — not individual recruitment.</strong> The pricing, the product, and the pitch must reflect that.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -5979,19 +5979,19 @@ export default function UCFOfficialReleasePage() {
                 n: '1',
                 title: 'The Fleet Sale Dealbreaker',
                 color: '#f87171',
-                body: 'When Airbus pitches a $10B A350 order, the airline asks: "Do we have crew to operate these in 24 months?" PilotRecognition answers that question live. Airbus tells the airline: "Our platform data shows 1,200 A350-rated pilots in region, 800 more completing training this year." That data point closes aircraft orders. The platform is worth more to Airbus sales than it is to airline HR.',
+                body: 'When OEMs pitches a $10B A350 order, the airline asks: "Do we have crew to operate these in 24 months?" PilotRecognition answers that question live. OEMs tells the airline: "Our platform data shows 1,200 A350-rated pilots in region, 800 more completing training this year." That data point closes aircraft orders. The platform is worth more to OEMs sales than it is to airline HR.',
               },
               {
                 n: '2',
-                title: 'The Airbus Flight Academy Pipeline',
+                title: 'The OEMs Flight Academy Pipeline',
                 color: '#60a5fa',
-                body: 'Airbus operates one of the largest pilot training organisations in the world — A320 and A330 type rating centers globally. PilotRecognition lets them publish "Airbus Verified Graduate" pathways, funnelling freshly type-rated pilots directly to the airlines that just bought their planes. Their training centers become infinitely more attractive to student pilots. Graduate placement rates are verified, not self-reported.',
+                body: 'OEMs operates one of the largest pilot training organisations in the world — A320 and A330 type rating centers globally. PilotRecognition lets them publish "OEMs Verified Graduate" pathways, funnelling freshly type-rated pilots directly to the airlines that just bought their planes. Their training centers become infinitely more attractive to student pilots. Graduate placement rates are verified, not self-reported.',
               },
               {
                 n: '3',
                 title: 'EBT & Anonymised Competency Data',
                 color: '#34d399',
-                body: 'As aviation moves toward Evidence-Based Training (EBT), manufacturers need to understand how pilots interact with their flight decks. Anonymised, aggregated platform data answers: "What is the average transition time from a Boeing 737 to an Airbus A320?" That macro data is worth its weight in gold for engineering and training curriculum design — and it never exposes individual pilot identities.',
+                body: 'As aviation moves toward Evidence-Based Training (EBT), manufacturers need to understand how pilots interact with their flight decks. Anonymised, aggregated platform data answers: "What is the average transition time from a OEMs 737 to an OEMs A320?" That macro data is worth its weight in gold for engineering and training curriculum design — and it never exposes individual pilot identities.',
               },
             ] as {n:string;title:string;color:string;body:string}[]).map((item) => (
               <div key={item.n} className="border border-slate-200 rounded-lg px-5 py-5 bg-white">
@@ -6005,17 +6005,17 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The connective tissue Airbus has never had:</strong> <span className="text-slate-300">PilotRecognition is the only platform that connects the planes Airbus builds to the humans who fly them — with live, verified, real-time data. The platform tells Airbus what the demand curve for A321XLR type ratings looks like 18 months before the aircraft enter service. It tells Boeing where the 737 MAX crew shortage is most acute. It tells Cessna exactly which cohort of student pilots are actively pursuing single-engine time-building pathways right now. <strong style={{color:'#f87171'}}>None of this intelligence exists anywhere else. It only exists because pilots are using the platform.</strong></span></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The connective tissue OEMs has never had:</strong> <span className="text-slate-300">PilotRecognition is the only platform that connects the planes OEMs builds to the humans who fly them — with live, verified, real-time data. The platform tells OEMs what the demand curve for A321XLR type ratings looks like 18 months before the aircraft enter service. It tells OEMs where the 737 MAX crew shortage is most acute. It tells Cessna exactly which cohort of student pilots are actively pursuing single-engine time-building pathways right now. <strong style={{color:'#f87171'}}>None of this intelligence exists anywhere else. It only exists because pilots are using the platform.</strong></span></p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Problem: Manufacturers Build on Lagging Indicators</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Airbus builds simulators based on fleet transition announcements that are years old by the time they reach production. Boeing calibrates type rating curriculum against operator orders that reflect decisions made two market cycles ago. Cessna targets marketing at pilot cohorts that have already moved to the next stage of training. <strong>The entire manufacturing and OEM ecosystem operates on the rear-view mirror.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">OEMs builds simulators based on fleet transition announcements that are years old by the time they reach production. OEMs calibrates type rating curriculum against operator orders that reflect decisions made two market cycles ago. Cessna targets marketing at pilot cohorts that have already moved to the next stage of training. <strong>The entire manufacturing and OEM ecosystem operates on the rear-view mirror.</strong></p>
           <p className="text-slate-700 leading-relaxed mb-6">Meanwhile, the platform generates real-time leading indicators: which type ratings pilots are pursuing, which pathway cards are generating the most interest, which aircraft types are creating the largest gap between supply and demand. This macro-intelligence is the most commercially valuable dataset in aviation — and manufacturers have never had access to it.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
               { t: 'What Manufacturers Must Publish', items: ['Macro-level fleet transition announcements and future aircraft capability specs', 'Type rating curriculum updates and simulator availability schedules', 'OEM-specific pathway integration requirements for sponsored type ratings', '"OEM Verified Graduate" pathway cards for training center alumni', 'Enterprise Data Insights subscription requirements for accessing platform trend data'] },
-              { t: 'What Manufacturers Gain', items: ['Live pilot supply/demand data by aircraft type — 18 months ahead of order fulfillment', 'If pathway data shifts toward A321 qualifications, Airbus adapts simulator production before the demand peak', 'Targeted reach to pilots at the exact moment they are evaluating a type rating investment', '"OEM Verified Graduate" pipeline that makes training centers more attractive to student pilots', 'Anonymised EBT competency data for aircraft design and training curriculum development'] },
+              { t: 'What Manufacturers Gain', items: ['Live pilot supply/demand data by aircraft type — 18 months ahead of order fulfillment', 'If pathway data shifts toward A321 qualifications, OEMs adapts simulator production before the demand peak', 'Targeted reach to pilots at the exact moment they are evaluating a type rating investment', '"OEM Verified Graduate" pipeline that makes training centers more attractive to student pilots', 'Anonymised EBT competency data for aircraft design and training curriculum development'] },
             ].map(col => (
               <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
                 <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
@@ -6124,9 +6124,9 @@ export default function UCFOfficialReleasePage() {
               </tr></thead>
               <tbody>
                 {([
-                  { tier: 'Training Center', fee: '$1,000/mo', unlocks: 'Publish "OEM Verified Graduate" pathway cards. Track training center alumni outcomes. Graduate placement rate verification and publication.', for: 'Airbus Flight Academy, Boeing Global Services training centers, CAE, FlightSafety' },
-                  { tier: 'OEM Market Intelligence', fee: '$5,000–$10,000/yr', unlocks: 'Macro-level pilot supply/demand analytics by aircraft type. Real-time type rating demand curves. Anonymised EBT competency benchmarks. Direct integration with global training centers on platform. Fleet transition demand forecasting.', for: 'Airbus, Boeing — strategic intelligence to support fleet sales and simulator production planning' },
-                  { tier: 'OEM Enterprise + Data API', fee: 'Custom', unlocks: 'Live API feed of aggregated (never individual) pilot demand data. Integration into manufacturer ATS/CRM for training pipeline management. Co-branded "Manufacturer Endorsed" pathway status. Direct dataset licensing for EBT curriculum development.', for: 'Board-level fleet strategy teams at Airbus, Boeing, Embraer, Bombardier' },
+                  { tier: 'Training Center', fee: '$1,000/mo', unlocks: 'Publish "OEM Verified Graduate" pathway cards. Track training center alumni outcomes. Graduate placement rate verification and publication.', for: 'OEMs Flight Academy, OEMs Global Services training centers, CAE, FlightSafety' },
+                  { tier: 'OEM Market Intelligence', fee: '$5,000–$10,000/yr', unlocks: 'Macro-level pilot supply/demand analytics by aircraft type. Real-time type rating demand curves. Anonymised EBT competency benchmarks. Direct integration with global training centers on platform. Fleet transition demand forecasting.', for: 'OEMs, OEMs — strategic intelligence to support fleet sales and simulator production planning' },
+                  { tier: 'OEM Enterprise + Data API', fee: 'Custom', unlocks: 'Live API feed of aggregated (never individual) pilot demand data. Integration into manufacturer ATS/CRM for training pipeline management. Co-branded "Manufacturer Endorsed" pathway status. Direct dataset licensing for EBT curriculum development.', for: 'Board-level fleet strategy teams at OEMs, OEMs, Embraer, Bombardier' },
                 ] as {tier:string;fee:string;unlocks:string;for:string}[]).map((row, i) => (
                   <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-bold text-slate-100">{row.tier}</td>
@@ -6141,7 +6141,7 @@ export default function UCFOfficialReleasePage() {
 
           <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 mb-6">
             <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Admin Note — OEM Pricing (Standby, Pending Review)</p>
-            <p className="text-slate-700 text-sm leading-relaxed">The OEM Market Intelligence tier ($5,000–$10,000/yr) and Training Center tier ($1,000/mo) are proposed structures. A $1,000/year standard enterprise fee applied to Airbus or Boeing is a procurement rounding error — it signals the platform does not understand the commercial value of what it is providing. The OEM tier must be positioned as market intelligence infrastructure, not HR tooling. The anonymised data angle is critical: it bypasses individual data privacy concerns entirely while providing the highest-value dataset in aviation. Review before publishing publicly.</p>
+            <p className="text-slate-700 text-sm leading-relaxed">The OEM Market Intelligence tier ($5,000–$10,000/yr) and Training Center tier ($1,000/mo) are proposed structures. A $1,000/year standard enterprise fee applied to OEMs or OEMs is a procurement rounding error — it signals the platform does not understand the commercial value of what it is providing. The OEM tier must be positioned as market intelligence infrastructure, not HR tooling. The anonymised data angle is critical: it bypasses individual data privacy concerns entirely while providing the highest-value dataset in aviation. Review before publishing publicly.</p>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
@@ -6155,7 +6155,7 @@ export default function UCFOfficialReleasePage() {
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Aviation Career Information Is Fragmented, Unverified, and Contradictory</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">A pilot searching for Emirates requirements today will find 50 different answers — none of them verified by the airline, most of them outdated, several of them wrong. Aviation media publishes career content based on anecdote, forum speculation, and press releases. The gap between what pilots read and what operators actually require is enormous, and it costs pilots real money. Training decisions made on bad information are financial disasters. The platform closes that gap by giving media partners access to verified, live, structured data — and a mechanism to publish it in a way that is provably accurate.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">A pilot searching for partner airlines requirements today will find 50 different answers — none of them verified by the airline, most of them outdated, several of them wrong. Aviation media publishes career content based on anecdote, forum speculation, and press releases. The gap between what pilots read and what operators actually require is enormous, and it costs pilots real money. Training decisions made on bad information are financial disasters. The platform closes that gap by giving media partners access to verified, live, structured data — and a mechanism to publish it in a way that is provably accurate.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
               { t: 'What Media Partners Must Contribute', items: ['Publish data-driven stories using verified platform insights — not speculation', 'Accurate reporting: no sensationalism of pilot shortage, data-driven stories only', 'Privacy protection: no individual pilot identification without explicit consent', 'Source verification: platform data validation before publication'] },
@@ -6198,8 +6198,8 @@ export default function UCFOfficialReleasePage() {
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Living Proficiency Data Is Trapped Inside Consumer Applications</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Pilots today maintain genuine cognitive currency through desktop simulators — MSFS, X-Plane — flying live, human-controlled ATC networks like VATSIM, logging complex IFR routes with real weather deviations, practising non-precision approaches, maintaining type familiarity through structured simulator sessions. None of this activity is visible to the industry. Insurance underwriters pricing policy risk cannot see it. Airlines assessing recency cannot access it. The pilot's Recognition Profile does not reflect it. The data exists, is being generated in real time, and is professionally invisible.</p>
-          <p className="text-slate-700 leading-relaxed mb-6">Telemetry and simulator data providers — VATSIM, MSFS telemetry platforms, home simulator networks — sit on the most granular pilot proficiency dataset in existence. The integration path is straightforward: verified ingestion pipelines that port telemetry data, with pilot consent, directly into the Recognition Profile. A pilot who flew a 4-hour IFR route on a desktop sim last night, handled weather deviations with live ATC, and logged 6 ILS approaches — that activity should be verifiable. The platform makes it so.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots today maintain genuine cognitive currency through desktop simulators — simulation platforms, simulation platforms — flying live, human-controlled ATC networks like simulation networks, logging complex IFR routes with real weather deviations, practising non-precision approaches, maintaining type familiarity through structured simulator sessions. None of this activity is visible to the industry. Insurance underwriters pricing policy risk cannot see it. Airlines assessing recency cannot access it. The pilot's Recognition Profile does not reflect it. The data exists, is being generated in real time, and is professionally invisible.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">Telemetry and simulator data providers — simulation networks, simulation platforms telemetry platforms, home simulator networks — sit on the most granular pilot proficiency dataset in existence. The integration path is straightforward: verified ingestion pipelines that port telemetry data, with pilot consent, directly into the Recognition Profile. A pilot who flew a 4-hour IFR route on a desktop sim last night, handled weather deviations with live ATC, and logged 6 ILS approaches — that activity should be verifiable. The platform makes it so.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
               { t: 'What Telemetry Providers Must Integrate', items: ['Direct API webhooks acting as verified ingestion pipelines', 'Real-time telemetry data porting to pilot Recognition Profiles', 'Data portability toggles: pilot-controlled consent for professional profile sharing', 'Subscription integration linking platform accounts to simulator profiles'] },
@@ -6377,7 +6377,7 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Core Vulnerability — Corrected</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">The original claim that PilotRecognition is a pure <strong>Data Processor</strong> is not fully defensible. Regulators do not assess what a platform claims in its Terms — they assess the economic and technical reality of who determines the purposes and means of processing. Because PilotRecognition defines the tokenization protocol, selects Veremark and IDfy, designs the data structure, and operates the marketplace connecting pilots to airlines — regulators will classify the platform as a <strong>Joint Controller</strong> alongside the pilot.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The original claim that PilotRecognition is a pure <strong>Data Processor</strong> is not fully defensible. Regulators do not assess what a platform claims in its Terms — they assess the economic and technical reality of who determines the purposes and means of processing. Because PilotRecognition defines the tokenization protocol, selects Veremark and infrastructure partners, designs the data structure, and operates the marketplace connecting pilots to airlines — regulators will classify the platform as a <strong>Joint Controller</strong> alongside the pilot.</p>
           <p className="text-slate-700 leading-relaxed mb-6">The correct and defensible position is not to fight this classification — it is to <strong>accept Joint Controller status and structure it transparently under GDPR Article 26</strong>. This is legally cleaner, more honest, and more robust than an indefensible processor claim.</p>
 
           <div className="overflow-x-auto mb-8">
@@ -6393,7 +6393,7 @@ export default function UCFOfficialReleasePage() {
                   { party: 'Pilot', classification: 'Primary Data Controller', responsibility: 'Owns all personal data. Controls what is shared, with whom, and for how long. Can revoke consent at any time.', basis: 'GDPR Art. 4(7) · RA 10173 Sec. 3(h)' },
                   { party: 'PilotRecognition', classification: 'Joint Controller', responsibility: 'Controls tokenization infrastructure and marketplace layer. Holds consent receipts and token metadata only. Never raw data.', basis: 'GDPR Art. 26 · RA 10173 Sec. 3(h)' },
                   { party: 'Veremark', classification: 'Independent Data Controller', responsibility: 'Independently verifies credentials against CAAP/government registries. Maintains own compliance logs. Signs DPA directly with pilot.', basis: 'GDPR Art. 4(7) · Their own ICO registration' },
-                  { party: 'IDfy', classification: 'Independent Data Controller', responsibility: 'Independently confirms training hours with flight schools. Cross-checks Veremark results. Signs DPA directly with pilot.', basis: 'GDPR Art. 4(7) · Their own regulatory registration' },
+                  { party: 'infrastructure partners', classification: 'Independent Data Controller', responsibility: 'Independently confirms training hours with flight schools. Cross-checks Veremark results. Signs DPA directly with pilot.', basis: 'GDPR Art. 4(7) · Their own regulatory registration' },
                 ] as {party:string;classification:string;responsibility:string;basis:string}[]).map((row, i) => (
                   <tr key={row.party} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-bold text-slate-100">{row.party}</td>
@@ -6419,12 +6419,12 @@ export default function UCFOfficialReleasePage() {
                 body: '"Implicit consent" and "legitimate interest" are eliminated from the airline pull flow entirely. Every single identity verification request by an airline requires a separate, timestamped, explicit approval action from the pilot — via push notification and email. The pilot taps APPROVE or DECLINE. No approval = no check runs. No data moves. This satisfies GDPR Art. 7 and RA 10173 Sec. 12(a) unambiguously — explicit, specific, freely given, withdrawable.',
               },
               {
-                n: '3', title: 'Controller-to-Controller Agreements with Veremark and IDfy', color: '#f87171',
-                body: 'Veremark and IDfy are not sub-processors — they are Independent Data Controllers with their own legal obligations, registry access agreements, and compliance requirements. The legal agreements between PilotRecognition and each provider must be Controller-to-Controller agreements, not sub-processor DPAs. Each provider signs a separate DPA directly with the pilot at the moment of check initiation.',
+                n: '3', title: 'Controller-to-Controller Agreements with Veremark and infrastructure partners', color: '#f87171',
+                body: 'Veremark and infrastructure partners are not sub-processors — they are Independent Data Controllers with their own legal obligations, registry access agreements, and compliance requirements. The legal agreements between PilotRecognition and each provider must be Controller-to-Controller agreements, not sub-processor DPAs. Each provider signs a separate DPA directly with the pilot at the moment of check initiation.',
               },
               {
                 n: '4', title: 'Binary Proof Tokens Only — No Personal Data Strings', color: '#fbbf24',
-                body: 'Cryptographic tokens containing personal data strings (e.g. "CAAP License 155660-CPL, valid until Oct 2030") are Pseudonymised Personal Data under GDPR and RA 10173 — not anonymous. The token architecture must expose only binary proofs: is_license_valid = TRUE, is_medical_current = FALSE, training_hours_confirmed = TRUE. The underlying personal data remains exclusively with Veremark and IDfy. PilotRecognition passes the proof, not the record.',
+                body: 'Cryptographic tokens containing personal data strings (e.g. "CAAP License 155660-CPL, valid until Oct 2030") are Pseudonymised Personal Data under GDPR and RA 10173 — not anonymous. The token architecture must expose only binary proofs: is_license_valid = TRUE, is_medical_current = FALSE, training_hours_confirmed = TRUE. The underlying personal data remains exclusively with Veremark and infrastructure partners. PilotRecognition passes the proof, not the record.',
               },
               {
                 n: '5', title: 'Token Soulbound Architecture — Non-Transferable, Non-Financial, Utility-Only', color: '#a78bfa',
@@ -6486,7 +6486,7 @@ export default function UCFOfficialReleasePage() {
                   'GDPR fine exposure eliminated: up to €20M or 4% global turnover',
                   'Data breach liability eliminated: no raw data = nothing to leak',
                   'Securities law exposure eliminated: soulbound utility tokens = no SEC/BSP jurisdiction',
-                  'Data custody liability eliminated: Veremark and IDfy hold it, not you',
+                  'Data custody liability eliminated: Veremark and infrastructure partners hold it, not you',
                 ],
               },
               {
@@ -6634,7 +6634,7 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Controller-to-Controller API Flow</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Legacy architectures treat background check providers as sub-processors — receiving raw data, running checks, returning results. This creates joint liability that cannot be defended under GDPR Art. 28 because Veremark and IDfy have their own independent legal obligations, registry access agreements, and compliance requirements. <strong>PilotRecognition treats them as Independent Controllers.</strong> We do not pass raw data back and forth. We pass requests and receive binary receipts.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Legacy architectures treat background check providers as sub-processors — receiving raw data, running checks, returning results. This creates joint liability that cannot be defended under GDPR Art. 28 because Veremark and infrastructure partners have their own independent legal obligations, registry access agreements, and compliance requirements. <strong>PilotRecognition treats them as Independent Controllers.</strong> We do not pass raw data back and forth. We pass requests and receive binary receipts.</p>
 
           <div className="space-y-4 mb-6">
             {([
@@ -6651,14 +6651,14 @@ export default function UCFOfficialReleasePage() {
                 ],
               },
               {
-                provider: 'IDfy Integration',
+                provider: 'infrastructure partners Integration',
                 color: '#60a5fa',
                 steps: [
                   'Pilot initiates training hours confirmation — selects flight school from verified ATO list',
-                  'PilotRecognition passes the confirmation request to IDfy — no raw logbook data transfer',
-                  'IDfy acts as Independent Controller: contacts flight school directly under their own data agreements',
+                  'PilotRecognition passes the confirmation request to infrastructure partners — no raw logbook data transfer',
+                  'infrastructure partners acts as Independent Controller: contacts flight school directly under their own data agreements',
                   'School confirms in their dashboard: hours confirmed, denied, or partially corrected',
-                  'IDfy also cross-checks Veremark results as triangulation failsafe — mismatch flagged for review',
+                  'infrastructure partners also cross-checks Veremark results as triangulation failsafe — mismatch flagged for review',
                   'PilotRecognition receives only: receipt_id + binary proof (training_hours_confirmed = TRUE, confirmed_volume = 200hrs)',
                 ],
               },
@@ -6681,7 +6681,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">What PilotRecognition Stores in Supabase — The Complete List</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {([
-                { label: 'Stored', color: '#34d399', items: ['Timestamped consent receipt', 'Pilot ID (internal reference)', 'Airline ID (for pathway submissions)', 'Receipt ID from Veremark / IDfy', 'Binary proof result (TRUE / FALSE)', 'Cryptographic signature of approval event', 'Token expiry date'] },
+                { label: 'Stored', color: '#34d399', items: ['Timestamped consent receipt', 'Pilot ID (internal reference)', 'Airline ID (for pathway submissions)', 'Receipt ID from Veremark / infrastructure partners', 'Binary proof result (TRUE / FALSE)', 'Cryptographic signature of approval event', 'Token expiry date'] },
                 { label: 'Never Stored', color: '#f87171', items: ['Raw license documents', 'Passport or ID scans', 'Medical certificate files', 'Logbook pages or raw hour entries', 'CAAP registry query results', 'Personal data strings of any kind', 'Verepass raw credential data'] },
               ] as {label:string;color:string;items:string[]}[]).map((col) => (
                 <div key={col.label}>
@@ -6802,7 +6802,7 @@ export default function UCFOfficialReleasePage() {
                 </thead>
                 <tbody>
                   {([
-                    { provider: 'IDfy', strength: 'Philippines-based vault, CAAP compliance, local data residency', contact: 'idfy.com/contact', priority: 'High — Philippines launch priority' },
+                    { provider: 'infrastructure partners', strength: 'Philippines-based vault, CAAP compliance, local data residency', contact: 'idfy.com/contact', priority: 'High — Philippines launch priority' },
                     { provider: 'Persona', strength: 'KYC-grade identity vault, embeddable SDK, multi-region', contact: 'partnerships@withpersona.com', priority: 'High — global expansion' },
                     { provider: 'Jumio', strength: 'Document vault, financial sector standard, multi-region', contact: 'jumio.com/contact-sales', priority: 'High — enterprise ready' },
                     { provider: 'Onfido', strength: 'GDPR-native, strong EU coverage', contact: 'onfido.com/contact-sales', priority: 'Medium — EU market expansion' },
@@ -6819,20 +6819,20 @@ export default function UCFOfficialReleasePage() {
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-slate-500 mt-3 italic">Initial outreach: IDfy (Philippines priority) + Persona/Jumio (global). Local vault for CAAP compliance; global providers for multi-region expansion. Veremark vault as fallback if separate vault proves too complex for September timeline.</p>
+            <p className="text-xs text-slate-500 mt-3 italic">Initial outreach: infrastructure partners (Philippines priority) + Persona/Jumio (global). Local vault for CAAP compliance; global providers for multi-region expansion. Veremark vault as fallback if separate vault proves too complex for September timeline.</p>
           </div>
 
-          {/* INTERNAL: IDfy Deep Dive — Philippines Vault Partner */}
+          {/* INTERNAL: infrastructure partners Deep Dive — Philippines Vault Partner */}
           <div className="my-6 p-5 bg-amber-50 border border-amber-200 rounded-lg">
-            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — IDfy Analysis: Philippines Vault Partner</p>
-            <p className="text-sm text-slate-600 mb-4">IDfy stands out as a viable alternative for the platform. As a dedicated Asia-focused identity and data infrastructure provider, their ecosystem natively aligns with the structural, legal, and financial parameters defined for the September launch.</p>
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">Internal Reference — infrastructure partners Analysis: Philippines Vault Partner</p>
+            <p className="text-sm text-slate-600 mb-4">infrastructure partners stands out as a viable alternative for the platform. As a dedicated Asia-focused identity and data infrastructure provider, their ecosystem natively aligns with the structural, legal, and financial parameters defined for the September launch.</p>
 
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
-              <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Why IDfy Aligns with Architecture</p>
+              <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">Why infrastructure partners Aligns with Architecture</p>
               <ul className="space-y-2 text-sm text-slate-700">
-                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Compliant Local Data Custody:</strong> IDfy operates dedicated regional entities and local infrastructure, allowing clean isolation and hosting of digital archives within the Philippines. Directly satisfies data residency mandates for CAAP licenses under NPC Data Privacy Act of 2012.</li>
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Compliant Local Data Custody:</strong> infrastructure partners operates dedicated regional entities and local infrastructure, allowing clean isolation and hosting of digital archives within the Philippines. Directly satisfies data residency mandates for CAAP licenses under NPC Data Privacy Act of 2012.</li>
                 <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Zero-Knowledge & Tokenization Infrastructure:</strong> Platform natively supports developer integrations utilizing pre-signed upload URLs and token-based access management. Structure keeps servers free of raw data handling, maintaining desired legal separation.</li>
-                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Target Commercial Structure:</strong> Unlike transaction-heavy engines, IDfy accommodates B2B enterprise agreements tailored around volume milestones. Flat SaaS infrastructure fee mapping to $1-2/year per pilot target achievable under volume commitments as scale reaches 10,000 users.</li>
+                <li className="flex gap-2"><span className="text-emerald-500">→</span><strong>Target Commercial Structure:</strong> Unlike transaction-heavy engines, infrastructure partners accommodates B2B enterprise agreements tailored around volume milestones. Flat SaaS infrastructure fee mapping to $1-2/year per pilot target achievable under volume commitments as scale reaches 10,000 users.</li>
               </ul>
             </div>
 
@@ -6844,7 +6844,7 @@ export default function UCFOfficialReleasePage() {
                 <p className="pl-8">(3) Stream File</p>
                 <p className="pl-8">Direct to Vault</p>
                 <p className="pl-8">v</p>
-                <p><span className="text-emerald-400">[IDfy PH Storage Vault]</span> &lt;------(4) Issue Token------ <span className="text-blue-400">[IDfy Core API]</span></p>
+                <p><span className="text-emerald-400">[infrastructure partners PH Storage Vault]</span> &lt;------(4) Issue Token------ <span className="text-blue-400">[infrastructure partners Core API]</span></p>
                 <p className="pl-8">|</p>
                 <p className="pl-8">(5) Return Secure Token Only</p>
                 <p className="pl-8">v</p>
@@ -6857,7 +6857,7 @@ export default function UCFOfficialReleasePage() {
                 <thead>
                   <tr className="bg-slate-900 text-white">
                     <th className="text-left px-4 py-2 font-semibold">Feature</th>
-                    <th className="text-left px-4 py-2 font-semibold">IDfy</th>
+                    <th className="text-left px-4 py-2 font-semibold">infrastructure partners</th>
                     <th className="text-left px-4 py-2 font-semibold">Jumio</th>
                   </tr>
                 </thead>
@@ -6880,7 +6880,7 @@ export default function UCFOfficialReleasePage() {
 
             <div className="bg-blue-50 border border-blue-200 rounded p-4">
               <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-2">Critical Distinction</p>
-              <p className="text-sm text-slate-700">Jumio charges <strong>$1-3+ per verification transaction</strong> — destroys unit economics at scale. IDfy does <strong>flat infrastructure fees</strong> — scales with $99/year pilot subscription model. For 10,000 pilots: Jumio = $10K-30K+ per verification round. IDfy = $10K-20K/year flat.</p>
+              <p className="text-sm text-slate-700">Jumio charges <strong>$1-3+ per verification transaction</strong> — destroys unit economics at scale. infrastructure partners does <strong>flat infrastructure fees</strong> — scales with $99/year pilot subscription model. For 10,000 pilots: Jumio = $10K-30K+ per verification round. infrastructure partners = $10K-20K/year flat.</p>
             </div>
 
             <p className="text-xs text-slate-500 mt-3 italic">Contact: emily@idfy.com | Next: Technical DPA review + API error-handling procedures.</p>
@@ -7012,7 +7012,7 @@ export default function UCFOfficialReleasePage() {
                 </thead>
                 <tbody>
                   {([
-                    { license: 'CAAP (Philippines)', vault: 'Philippines', compliance: 'DPA Philippines', providers: 'IDfy (local), Persona (multi-region)' },
+                    { license: 'CAAP (Philippines)', vault: 'Philippines', compliance: 'DPA Philippines', providers: 'infrastructure partners (local), Persona (multi-region)' },
                     { license: 'EASA (Europe)', vault: 'EU', compliance: 'GDPR', providers: 'Onfido (EU-native), Persona, Jumio' },
                     { license: 'FAA (USA)', vault: 'USA', compliance: 'US data residency', providers: 'Persona, Jumio (US regions)' },
                     { license: 'GCAA (UAE)', vault: 'UAE / Middle East', compliance: 'UAE data protection', providers: 'Persona, Jumio (ME regions)' },
@@ -7038,7 +7038,7 @@ export default function UCFOfficialReleasePage() {
               </div>
             </div>
 
-            <p className="text-xs text-slate-500 mt-3 italic">Philippines launch strategy: Start with IDfy for CAAP compliance. Add Persona/Jumio multi-region capability for global expansion (EASA, FAA, GCAA). Verification remains Veremark throughout.</p>
+            <p className="text-xs text-slate-500 mt-3 italic">Philippines launch strategy: Start with infrastructure partners for CAAP compliance. Add Persona/Jumio multi-region capability for global expansion (EASA, FAA, GCAA). Verification remains Veremark throughout.</p>
           </div>
 
           {/* INTERNAL: Two-Tier Data Model */}
@@ -7175,11 +7175,11 @@ export default function UCFOfficialReleasePage() {
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub G — Digital Discovery</p>
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Aviation Career Information Is the Most Misinformed Category on the Internet</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">A search for "Emirates pilot requirements" returns 50 different answers. None are verified by the airline. Most are outdated. Several contain requirements that no longer apply. Professional networks show pilot job posts that closed months ago. Job boards list opportunities without context about actual pathway requirements. AI assistants confidently answer aviation career questions with information scraped from forums that haven't been updated since 2019. The result: pilots make expensive training decisions based on misinformation, and airlines continue receiving applications from pilots who have no realistic chance of meeting the requirements they were never accurately told about.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">A search for "partner airlines pilot requirements" returns 50 different answers. None are verified by the airline. Most are outdated. Several contain requirements that no longer apply. Professional networks show pilot job posts that closed months ago. Job boards list opportunities without context about actual pathway requirements. AI assistants confidently answer aviation career questions with information scraped from forums that haven't been updated since 2019. The result: pilots make expensive training decisions based on misinformation, and airlines continue receiving applications from pilots who have no realistic chance of meeting the requirements they were never accurately told about.</p>
           <p className="text-slate-700 leading-relaxed mb-6">Pillar 25 solves this by creating a structured data partnership between the platform and the world's discovery infrastructure. Instead of fragmented forum answers, pilots find verified, live pathway data directly in search results, career panels, and AI responses. The platform becomes the authoritative source for aviation career data across every discovery channel.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {[
-              { t: 'Search Platforms', items: ['Structured pathway schema markup (JobPosting + OccupationalCertification)', 'Career pathway panels displaying verified pilot requirements', 'Knowledge graph integration as authoritative aviation career source', 'Voice search: virtual assistants answer "What do I need to become an Emirates pilot?" with verified data'] },
+              { t: 'Search Platforms', items: ['Structured pathway schema markup (JobPosting + OccupationalCertification)', 'Career pathway panels displaying verified pilot requirements', 'Knowledge graph integration as authoritative aviation career source', 'Voice search: virtual assistants answer "What do I need to become an partner airlines pilot?" with verified data'] },
               { t: 'Professional Networks', items: ['Recognition Score and verified credentials displayed on pilot profiles', 'Pathway cards published as structured opportunities with live requirements', 'AI career assistant trained on verified platform data', 'Direct integration with aviation career search features'] },
               { t: 'Aviation-Specific Platforms', items: ['Real-time pathway requirement sync: no more outdated job posts', 'API integration for live pathway data in aviation job boards', 'Framework data powering airline requirement databases', 'Reddit/Discord bot integration providing framework-backed answers to career questions'] },
             ].map(col => (
@@ -7190,7 +7190,7 @@ export default function UCFOfficialReleasePage() {
             ))}
           </div>
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Discovery Flywheel:</strong> When a pilot searches "how to become an Emirates pilot" and finds verified, structured pathway data from the platform — they click through, create a profile, and enter the ecosystem. <strong style={{color:'#f87171'}}>Hub G is where the platform's network effect begins. Every discovery that returns verified data instead of forum speculation is a future pilot entering the verified pipeline.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Discovery Flywheel:</strong> When a pilot searches "how to become an partner airlines pilot" and finds verified, structured pathway data from the platform — they click through, create a profile, and enter the ecosystem. <strong style={{color:'#f87171'}}>Hub G is where the platform's network effect begins. Every discovery that returns verified data instead of forum speculation is a future pilot entering the verified pipeline.</strong></p>
           </div>
 
           <hr className="my-8 border-slate-200" />
@@ -7280,7 +7280,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">HUB D/E/F/G — Infrastructure, Community, Growth</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>P11: Verification</strong> — Dispute: "Background check was wrong" → <em>Final: Verification Provider (warrants accuracy)</em></p>
-              <p><strong>P12: Flight Data</strong> — Dispute: "Telemetry data incorrect" → <em>Final: FL.io/ADS-B Provider</em></p>
+              <p><strong>P12: Flight Data</strong> — Dispute: "Telemetry data incorrect" → <em>Final: specialized logbook solutions/ADS-B Provider</em></p>
               <p><strong>P14: Mentors</strong> — Dispute: "Mentorship hours weren't logged" → <em>Final: Mentor (submitted attestation)</em></p>
               <p><strong>P15: Manufacturers</strong> — Dispute: "Type rating competency overstated" → <em>Final: Manufacturer (issued credential)</em></p>
             </div>
