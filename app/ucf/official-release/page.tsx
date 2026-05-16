@@ -5121,6 +5121,38 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Verification Workflow Design: ATO-First, Not LogTen-First</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A critical architectural decision: Should PilotRecognition pull flight hours <strong>from LogTen</strong> (accepting user-entered data), or pull verified data <strong>from the ATO/airline first</strong> to validate what's in the logbook?</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Wrong Approach: LogTen → PilotRecognition</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">If we simply pull 1,500 hours from LogTen Pro into PilotRecognition, we become a mirror of unverified data. We would display "1,500 hours" — but those hours carry the same trust level as the original logbook entry (i.e., user-reported). This destroys our value proposition.</p>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Correct Approach: ATO/Airline → PilotRecognition → Match Against LogTen</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition queries the airline's FLICA/Sabre system <strong>first</strong>. The airline provides official duty records: "This pilot flew 1,247 hours on our aircraft." Only then do we cryptographically attest those hours. The pilot's LogTen shows 1,500 hours; PilotRecognition shows "1,247 verified by [Airline]." The trust originates from the airline, not the logbook.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Why This Matters</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Trust Origin:</strong> If we pull from LogTen first, our "verification" is meaningless — we're just re-displaying what the pilot told us. By pulling from the airline first, we provide external, cryptographic attestation from the actual employer.</p>
+              <p><strong>Fraud Prevention:</strong> A pilot could have 500 fake hours in LogTen. If we blindly import and display "500 hours," we've become complicit in the fraud. If we query the airline and find only 250 real hours, we display "250 verified; 250 unverified" — preserving integrity.</p>
+              <p><strong>Airline Confidence:</strong> Airlines know that LogTen hours could be fabricated. They trust PilotRecognition hours because they know we verified them against their own operational systems. This is why recruiters pay attention to our platform.</p>
+              <p><strong>The LogTen Partnership Value:</strong> LogTen doesn't lose relevance — they remain the pilot's beautiful, comprehensive daily ledger. But now those hours can be selectively "upgraded" to verified status through PilotRecognition. The pilot keeps using LogTen; we add the trust layer on top.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Active vs. Passive Distinction</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen Pro = Passive Ledger:</strong> Does not contact your ATO. Does not contact airlines. Does not check if your medical is actually valid in the civil aviation authority database. Provides local calendar alerts for expirations, but these are basic reminders — not live verification. No dynamic "recognition score" or competency matrix.</p>
+              <p><strong>PilotRecognition = Active Verification Engine:</strong> Contacts ATOs and airlines directly. Queries live operational systems (FLICA, Sabre, ATO records). Checks medical validity against CAAP/FAA/EASA databases. Provides dynamic Recognition Score based on verified competency metrics, not just raw hours. Proactively alerts: "Your medical expires in 14 days — schedule renewal now."</p>
+              <p><strong>The Integration:</strong> LogTen remains the pilot's passive, highly detailed, user-controlled calculator for flight hours. PilotRecognition acts as the active, third-party verification engine and dynamic competency ledger. Together: LogTen for daily logging, PilotRecognition for external validation and career advancement.</p>
+            </div>
+          </div>
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Data Sovereignty &amp; GDPR Architecture</h4>
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition maintains strict infrastructure neutrality. Logbook providers retain complete ownership of their data storage, photo archives, and physical document repositories.</p>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
