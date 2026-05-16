@@ -5357,6 +5357,75 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Executive Pitch Deck: The LogTen Pro Partnership</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">To transition from concept to corporate alliance, PilotRecognition requires a bulletproof pitch deck for LogTen's executive team. The deck must solve LogTen's retention problem while proving our verification infrastructure is enterprise-ready.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 1: The Financial Win-Win (Lead with This)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Header:</strong> "Stop the $2.4M Annual Churn — Unlock $480K in New Verification Revenue"</p>
+              <p><strong>The Problem:</strong> 2% of 160,000 pilots churn annually at career milestones = 3,200 lost subscribers × $129.99/year = <strong>$415,968 lost revenue</strong> per year. Over 5 years, compounding churn = <strong>$2.4M+ revenue erosion</strong>.</p>
+              <p><strong>The Solution:</strong> Pilots stay subscribed when their LogTen data connects to career advancement. Verification integration creates a "can't switch" moat — pilots lose verified credential history if they churn.</p>
+              <p><strong>The Revenue:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Recognition+ adoption: 10% of base = 16,000 pilots × $100/year = $1.6M</li>
+                <li>LogTen's 30% revenue share: $480,000/year new revenue</li>
+                <li>Referral dividends: 16,000 verifications × $20 = $320,000/year</li>
+                <li>Retention savings: 50% churn reduction = $208,000/year recovered</li>
+                <li><strong>Total LogTen Benefit: $1M+ annually</strong></li>
+              </ul>
+              <p><strong>The Ask:</strong> API access + sandbox environment. We build the integration at our cost. Your cost = $0. Your revenue = immediate.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 2: Technical Architecture — Privacy-First Verification</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Header:</strong> "How We Verify Without Violating Pilot Privacy or Your Data Sovereignty"</p>
+              <p><strong>The Architecture:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs mt-2">
+                <p>[LogTen Pro Ledger] ←—— Pilot's personal data (you own this)</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Pilot consents to verification via OAuth)</p>
+                <p>[PilotRecognition API] ——→ Queries airline systems only</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Matches flight dates/aircraft against FLICA/Sabre)</p>
+                <p>[Veremark Engine] ——→ Cryptographic attestation</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Token returned, raw data never leaves airline)</p>
+                <p>[Verepass Wallet] ←—— Tamper-proof verification token</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Badge displayed in LogTen dashboard)</p>
+                <p>[Pilot Dashboard] ——→ "1,247 hours verified by Emirates ✓"</p>
+              </div>
+              <p><strong>Key Privacy Guarantees:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>LogTen data never leaves LogTen servers</li>
+                <li>Pilot controls which flights are verified (opt-in per entry)</li>
+                <li>Airlines see only verification tokens, not raw logbook data</li>
+                <li>Veremark handles all PII under GDPR/CCPA compliance</li>
+                <li>Pilot can revoke attestation consent anytime</li>
+              </ul>
+              <p><strong>The Security:</strong> Triple-layer verification (LogTen entry + airline record + Veremark audit) creates a cryptographic hash that cannot be falsified. Airlines trust it because they issued the original data.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 3: The Competitive Moat — Why ForeFlight Can't Match This</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Header:</strong> "Be the First Logbook with Verified Credentials — Or Watch ForeFlight Take the Market"</p>
+              <p><strong>The Market Shift:</strong> Airlines are moving to Evidence-Based Training (EBT) and Competency-Based Training Assessment (CBTA). They no longer trust raw hour counts. They need verified, structured competency data.</p>
+              <p><strong>LogTen's Current Position:</strong> Gold standard for logbook formatting. But you have zero verification infrastructure. Pilots export CSVs and manually prove their hours to skeptical recruiters.</p>
+              <p><strong>ForeFlight's Vulnerability:</strong> Same problem — no verification layer. Whoever integrates with a neutral verification platform first wins the professional aviation segment.</p>
+              <p><strong>The Moat:</strong> Once pilots have 500+ verified hours in LogTen + PilotRecognition, switching logbooks means losing their verification history. That's a "data gravity" lock-in that ForeFlight cannot replicate without a similar partnership.</p>
+              <p><strong>The Window:</strong> 6-12 months. If ForeFlight integrates first, pilots switch. If LogTen integrates first, you lock in the professional segment forever.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Pitch Deck Sequence</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 1 (Open):</strong> Financial Win-Win — "$1M+ annual benefit to LogTen"</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 2 (Validate):</strong> Technical Architecture — "Zero privacy risk, zero engineering burden"</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 3 (Close):</strong> Competitive Moat — "ForeFlight is coming. Be first or lose the market."</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Close with: "API access + 90-day trial. We'll prove the model before you commit."</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
