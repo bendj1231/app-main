@@ -5539,6 +5539,42 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">We don't hold flight data. We don't hold verification records. We hold the <strong>relationships</strong> that connect pilots to opportunities — and let specialists handle what they do best.</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Airport Car Rental Analogy: Infrastructure, Not Competition</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition's relationship with logbook providers mirrors the airport car rental model. We are not a car rental company — we are the <strong>airport infrastructure</strong> that connects travelers to vehicles.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Analogy Explained</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>PilotRecognition = The Airport Car Rental Section</strong></p>
+              <p>We provide the infrastructure — the location, the signage, the coordination system. Pilots arrive at our platform (the airport) and find multiple logbook options (the car rental counters). We don't own the cars. We own the <strong>connection system</strong>.</p>
+              <p><strong>IDfy / Local Providers = The Budget Option (Our Own)</strong></p>
+              <p>For our $100/year Recognition+ base users, we offer a minimal-cost logbook solution: <strong>50MB storage for $3-5/month</strong>. Basic functionality for pilots who just need to log hours and get verified. Think of it as the airport's own budget rental service — functional, affordable, no frills.</p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Minimal storage (50MB = ~10,000 flight entries)</li>
+                <li>Basic CSV import/export</li>
+                <li>Direct verification pipeline to our system</li>
+                <li>We hold <strong>no liability</strong> — IDfy is the data custodian</li>
+                <li>Pilots can upgrade anytime</li>
+              </ul>
+              <p><strong>LogTen Pro = Hertz / Europcar / Enterprise</strong></p>
+              <p>Established brands with their own infrastructure, their own apps, their own user bases. They don't need us to build their logbook — they already have a premium product. What they need is <strong>infrastructure integration</strong>:</p>
+              <ul class="list-disc list-inside ml-4 space-y-1">
+                <li>Access to our 25-pillar verification network</li>
+                <li>API hooks into airline data feeds (FLICA/Sabre)</li>
+                <li>The "Recognition Score" integration that makes their users discoverable</li>
+                <li>The $20 referral dividend for each verified pilot</li>
+              </ul>
+              <p><strong>The Key Distinction:</strong> We are not competing with Hertz. We are the airport that Hertz operates within. Pilots coming through our Programs (the $100/year subscribers) get the budget option by default. But we actively promote the premium brands: <em>"Want advanced analytics, schedule imports, and professional features? Upgrade to LogTen Pro — verified and integrated with your PilotRecognition profile."</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>Why This Positioning Works for LogTen</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen's fear is that we steal their users. The airport analogy reframes us as <strong>incremental revenue</strong>, not competition:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• We bring NEW pilots into the ecosystem (our $100/year Program users)<br/>• These pilots start with basic logging needs (IDfy budget option)<br/>• As they advance, we <strong>upsell them to LogTen Pro</strong> for premium features<br/>• LogTen gets 30% revenue share on Recognition+ + $20 per verification<br/>• LogTen gets access to our airline partnerships (they couldn't build these themselves)</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We are not Hertz's competitor. We are the airport that feeds customers to Hertz's counter.</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
