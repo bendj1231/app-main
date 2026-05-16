@@ -4968,6 +4968,40 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Glass Cockpit Dashboard Integration</h4>
           <p className="text-slate-700 leading-relaxed mb-4">Verified logbook data appears within the pilot's PilotRecognition dashboard through a <strong>Glass Cockpit</strong> interface aesthetic — mirroring the avionics displays pilots already trust in the flight deck (Garmin G1000, ForeFlight Synthetic Vision).</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Instrument Panel Metaphor</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition profile dashboard functions exactly like an aircraft instrument panel. Each integration partner appears as a dedicated flight instrument, providing real-time telemetry on the pilot's professional standing:</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <div className="space-y-1 text-slate-300">
+              <p>┌─────────────────────────────────────────────────┐</p>
+              <p>│  <span className="text-emerald-400">PILOT RECOGNITION — GLASS COCKPIT</span>           │</p>
+              <p>│                                                 │</p>
+              <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
+              <p>│  <span className="text-amber-400">│  HOBBS      │</span>   <span className="text-amber-400">│  DATA CHECK │</span>       │</p>
+              <p>│  <span className="text-emerald-400">│ 1,240 HRS   │</span>   <span className="text-emerald-400">│ VERIFIED ✓  │</span>       │</p>
+              <p>│  <span className="text-amber-400">│ LogTen Pro  │</span>   <span className="text-amber-400">│ ForeFlight  │</span>       │</p>
+              <p>│  <span className="text-amber-400">└─────────────┘</span>   <span className="text-amber-400">└─────────────┘</span>       │</p>
+              <p>│                                                 │</p>
+              <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
+              <p>│  <span className="text-amber-400">│ SIM TRACKER │</span>   <span className="text-amber-400">│ PATHWAY NAV │</span>       │</p>
+              <p>│  <span className="text-emerald-400">│ 85 HRS ▲    │</span>   <span className="text-red-400">│ NEED IFR ⚠  │</span>       │</p>
+              <p>│  <span className="text-amber-400">│ X-Plane     │</span>   <span className="text-amber-400">│ Cadet Prog  │</span>       │</p>
+              <p>│  <span className="text-amber-400">└─────────────┘</span>   <span className="text-amber-400">└─────────────┘</span>       │</p>
+              <p>│                                                 │</p>
+              <p>│  PILOT OPERATING: <span className="text-emerald-400">RECOGNITION+ ENABLED</span>      │</p>
+              <p>└─────────────────────────────────────────────────┘</p>
+            </div>
+          </div>
+
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
+            <li><strong>The Hobbs (Logbook Provider):</strong> Tallying total verified flight hours — continuously updating as the pilot logs new flights via integrated logbook apps.</li>
+            <li><strong>The Data Check (Verification Node):</strong> Background verification status showing green when all data is cryptographically attested and current, red when discrepancies or expirations are detected.</li>
+            <li><strong>The Sim Tracker (Desktop Simulation):</strong> Displaying procedural currency and approach proficiency built through home simulation training.</li>
+            <li><strong>The Pathway Navigator (Airline Integration):</strong> Color-coded alignment indicator showing whether the pilot's current profile matches their target cadet program or airline pathway requirements.</li>
+          </ul>
+
+          <p className="text-slate-700 leading-relaxed mb-4">The pilot operates this dashboard as the <strong>Pilot in Command</strong> — scanning instruments, checking for red alerts, and ensuring all systems are green before engaging their target career pathway. Just as a pilot cannot fly IFR without proper instruments, they cannot access premium pathway placements without verified data showing green across the panel.</p>
           <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
             <div className="space-y-1 text-slate-300">
               <p>┌─────────────────────────────────────────┐</p>
