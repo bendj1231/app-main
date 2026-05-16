@@ -2680,6 +2680,47 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>"We issue tokens. The pilot holds the key. The airline sees only what the pilot unlocks."</strong><br /><span className="text-slate-300 text-xs">This is the data privacy answer, the security answer, the investor answer, and the airline trust answer — in one sentence.</span></p>
           </div>
 
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Built by Pilots, for Pilots — Why the Architecture Is Designed This Way</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">This platform was built by pilots who have lived through the exact frustrations it solves — the manual verification queues, the opaque hiring requirements, the career delays caused by paper-based credential systems that belong to a different era. That shared background is not just a marketing narrative. It is the reason the platform is architected the way it is.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">In aviation, nothing happens without the pilot's direct command. <strong>We have applied that exact principle to how data moves on this platform.</strong> Your data does not move because an airline requests it. It moves because you command it. Every verification, every token access, every identity pull — requires your explicit approval. That is not a compliance choice. It is an aviation philosophy.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The three principles of pilot-commanded data:</strong><br />
+            <span className="text-slate-300">1. Your data is never stored on PilotRecognition's servers — it stays with the providers you consent to independently.<br />
+            2. Every airline access event requires your explicit tap of APPROVE — no implicit sharing, no background transfers.<br />
+            3. Your tokens are non-transferable and non-financial — they are digital logbook stamps, not assets. They cannot be traded, sold, or used as collateral.</span></p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">What Happens When 10,000 Pilots Use This Platform</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">10,000 pilots in the Philippines is approximately 83% of the entire commercial pilot workforce. At that scale the platform is not a startup. It is the industry's verification infrastructure — and every stakeholder in aviation has a commercial reason to protect it.</p>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Stakeholder</th>
+                <th className="text-left px-4 py-2 font-semibold">What They Gain</th>
+                <th className="text-left px-4 py-2 font-semibold">Why They Protect the Platform</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { s: 'Pilots (10,000)', g: 'Portable verified career record — no more starting from zero at every airline', p: 'Their verified credentials live in their own wallet — not on any platform\'s server' },
+                  { s: 'Airlines', g: 'Pre-cleared pilot pool — 14–30 day verification → minutes', p: 'Their hiring pipeline depends on the verified database' },
+                  { s: 'Flight Schools (ATOs)', g: 'Verified graduate placement rates — enrolment marketing that closes itself', p: 'Their graduate tracking and referral income depend on the platform' },
+                  { s: 'CAAP / CAA', g: 'Structured data submissions — manual verification request volume drops dramatically', p: 'Platform reduces their administrative burden, not increases it' },
+                  { s: 'Aviation Unions (PALEA, ALPA)', g: 'Digital logbook standards — collective bargaining power informed by real data', p: 'Any regulatory threat to pilot-owned data activates union response' },
+                ] as {s:string;g:string;p:string}[]).map((row, i) => (
+                  <tr key={row.s} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.s}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.g}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.p}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>"We issue tokens. The pilot holds the key. The airline sees only what the pilot unlocks."</strong><br /><span className="text-slate-300 text-xs mt-1 block">This is the data privacy answer, the security answer, the investor answer, and the airline trust answer — in one sentence. Pilot-commanded infrastructure is not a legal strategy. It is the product.</span></p>
+          </div>
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Ecosystem Integration — How the Platform Connects Every Stakeholder</h4>
 
           <h5 className="text-base font-bold text-slate-800 mt-4 mb-2">For Airline HR Departments</h5>
@@ -4316,6 +4357,112 @@ export default function UCFOfficialReleasePage() {
             DATA PRIVACY &amp; CONSENT LAYER
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Security &amp; Compliance</p>
+
+          <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 mb-8">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Legal Architecture Review — May 16, 2026</p>
+            <p className="text-slate-700 text-sm leading-relaxed">This section reflects a full legal critique of the original "Data Processor" claim and the revised architecture that emerged from it. The original framing was logically structured but not fully defensible under regulatory scrutiny. The revised architecture below addresses every identified vulnerability and is designed to withstand NPC (Philippines), DIFC (UAE), and GDPR review.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Core Vulnerability — Corrected</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The original claim that PilotRecognition is a pure <strong>Data Processor</strong> is not fully defensible. Regulators do not assess what a platform claims in its Terms — they assess the economic and technical reality of who determines the purposes and means of processing. Because PilotRecognition defines the tokenization protocol, selects Veremark and IDfy, designs the data structure, and operates the marketplace connecting pilots to airlines — regulators will classify the platform as a <strong>Joint Controller</strong> alongside the pilot.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The correct and defensible position is not to fight this classification — it is to <strong>accept Joint Controller status and structure it transparently under GDPR Article 26</strong>. This is legally cleaner, more honest, and more robust than an indefensible processor claim.</p>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Party</th>
+                <th className="text-left px-4 py-2 font-semibold">Legal Classification</th>
+                <th className="text-left px-4 py-2 font-semibold">Responsibility</th>
+                <th className="text-left px-4 py-2 font-semibold">Legal Basis</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { party: 'Pilot', classification: 'Primary Data Controller', responsibility: 'Owns all personal data. Controls what is shared, with whom, and for how long. Can revoke consent at any time.', basis: 'GDPR Art. 4(7) · RA 10173 Sec. 3(h)' },
+                  { party: 'PilotRecognition', classification: 'Joint Controller', responsibility: 'Controls tokenization infrastructure and marketplace layer. Holds consent receipts and token metadata only. Never raw data.', basis: 'GDPR Art. 26 · RA 10173 Sec. 3(h)' },
+                  { party: 'Veremark', classification: 'Independent Data Controller', responsibility: 'Independently verifies credentials against CAAP/government registries. Maintains own compliance logs. Signs DPA directly with pilot.', basis: 'GDPR Art. 4(7) · Their own ICO registration' },
+                  { party: 'IDfy', classification: 'Independent Data Controller', responsibility: 'Independently confirms training hours with flight schools. Cross-checks Veremark results. Signs DPA directly with pilot.', basis: 'GDPR Art. 4(7) · Their own regulatory registration' },
+                ] as {party:string;classification:string;responsibility:string;basis:string}[]).map((row, i) => (
+                  <tr key={row.party} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-slate-100">{row.party}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.classification}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.responsibility}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.basis}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Five Architectural Fixes</h3>
+
+          <div className="space-y-4 mb-8">
+            {([
+              {
+                n: '1', title: 'Joint Controller Agreement (GDPR Art. 26)', color: '#34d399',
+                body: 'A transparent Joint Controller Agreement must be in place between PilotRecognition and the pilot — defining which party controls which aspect of processing. Pilot controls: data sharing decisions. PilotRecognition controls: tokenization infrastructure and marketplace routing. This agreement must be accessible to any pilot on request and must clearly state that the pilot\'s rights (access, erasure, portability, objection) are always honoured by PilotRecognition as the joint controller operating the infrastructure.',
+              },
+              {
+                n: '2', title: 'Explicit Pilot-Commanded Consent on Every Airline Pull', color: '#60a5fa',
+                body: '"Implicit consent" and "legitimate interest" are eliminated from the airline pull flow entirely. Every single identity verification request by an airline requires a separate, timestamped, explicit approval action from the pilot — via push notification and email. The pilot taps APPROVE or DECLINE. No approval = no check runs. No data moves. This satisfies GDPR Art. 7 and RA 10173 Sec. 12(a) unambiguously — explicit, specific, freely given, withdrawable.',
+              },
+              {
+                n: '3', title: 'Controller-to-Controller Agreements with Veremark and IDfy', color: '#f87171',
+                body: 'Veremark and IDfy are not sub-processors — they are Independent Data Controllers with their own legal obligations, registry access agreements, and compliance requirements. The legal agreements between PilotRecognition and each provider must be Controller-to-Controller agreements, not sub-processor DPAs. Each provider signs a separate DPA directly with the pilot at the moment of check initiation.',
+              },
+              {
+                n: '4', title: 'Binary Proof Tokens Only — No Personal Data Strings', color: '#fbbf24',
+                body: 'Cryptographic tokens containing personal data strings (e.g. "CAAP License 155660-CPL, valid until Oct 2030") are Pseudonymised Personal Data under GDPR and RA 10173 — not anonymous. The token architecture must expose only binary proofs: is_license_valid = TRUE, is_medical_current = FALSE, training_hours_confirmed = TRUE. The underlying personal data remains exclusively with Veremark and IDfy. PilotRecognition passes the proof, not the record.',
+              },
+              {
+                n: '5', title: 'Token Soulbound Architecture — Non-Transferable, Non-Financial, Utility-Only', color: '#a78bfa',
+                body: 'Tokens that can be traded, sold, fractioned, or monetised on secondary markets immediately trigger SEC Philippines, UAE SCA, and BSP securities regulations. Every token issued by PilotRecognition must be: (a) non-transferable — bound to the pilot\'s identity, cannot be assigned to another pilot; (b) non-tradable — no secondary market, no sale mechanism; (c) non-financial — zero monetary value, no yield, no reward attached; (d) utility-only — identity verification purpose exclusively. These four conditions must be embedded in the technical token architecture and explicitly stated in the platform Terms.',
+              },
+            ] as {n:string;title:string;color:string;body:string}[]).map((item) => (
+              <div key={item.n} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <div className="flex items-start gap-3">
+                  <span className="font-bold text-lg flex-shrink-0" style={{color: item.color}}>{item.n}.</span>
+                  <div>
+                    <p className="font-bold text-slate-900 mb-2">{item.title}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{item.body}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">NPC Registration — Philippines (Required Pre-Launch)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Under <strong>RA 10173 Section 46</strong>, any entity processing personal data of Filipino citizens must register with the <strong>National Privacy Commission (NPC)</strong> before processing at scale. As Joint Controller, PilotRecognition registers as a <strong>Personal Information Controller (PIC)</strong>.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {([
+              { t: 'Registration Type', v: 'Personal Information Controller (PIC)' },
+              { t: 'Estimated Timeline', v: '2–4 weeks via NPC online portal' },
+              { t: 'Trigger', v: 'Before first Veremark check runs on any Filipino pilot' },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg px-4 py-3 bg-slate-50 text-center">
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{col.t}</p>
+                <p className="text-sm font-semibold text-slate-800">{col.v}</p>
+              </div>
+            )))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The 10,000-Pilot Regulatory Shield</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">10,000 pilots in the Philippines represents approximately <strong>83% of the entire commercial pilot workforce</strong>. At that scale, the platform is not a startup — it is infrastructure. And the pilot-commanded architecture transforms that scale into a legal shield that no regulator can dismantle without political consequence.</p>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed mb-2"><strong style={{color:'#f87171'}}>The Shield Mechanism:</strong></p>
+            <p className="text-slate-300 text-sm leading-relaxed">If PilotRecognition is built with pilot-commanded, decentralised architecture before reaching scale — any regulatory threat triggers 10,000 pilots saying: <em>"This is my data, held in my personal digital wallet, shared only by my explicit command. PilotRecognition is the radio channel. I am the pilot."</em> Regulators cannot fine a platform for data they do not hold. Regulators cannot prosecute infrastructure for transmitting data that the data subject themselves commanded to move. At 10,000 pilots, aviation unions (PALEA, ALPA international), airlines dependent on the verified pipeline, and ATOs dependent on placement data all have active commercial reasons to defend the platform. The regulatory risk becomes politically untenable.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {([
+              { t: 'Scenario A — Centralised Data (Do Not Build)', color: 'border-red-400 bg-red-50', items: ['Platform holds pilot data on servers', 'Regulator investigates → finds personal data', 'NPC fine: up to ₱5M per violation (RA 10173 Sec. 26)', 'GDPR fine: up to €20M or 4% global turnover', '10,000 pilots lose verified records overnight'] },
+              { t: 'Scenario B — Pilot-Commanded (Build This)', color: 'border-emerald-400 bg-emerald-50', items: ['Pilot holds DID wallet — platform holds receipt IDs only', 'Regulator investigates → finds nothing on platform servers', '10,000 pilots: "Our data is in our wallets. We command it."', 'Regulators have no target', 'Platform trust increases with every regulatory inquiry'] },
+            ] as {t:string;color:string;items:string[]}[]).map(col => (
+              <div key={col.t} className={`border-l-4 rounded-r-lg px-5 py-4 ${col.color}`}>
+                <p className="font-bold text-slate-900 text-sm mb-3">{col.t}</p>
+                <ul className="space-y-1">{col.items.map(i => <li key={i} className="text-sm text-slate-700 flex gap-2"><span className="flex-shrink-0 text-slate-400">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">We Remain Neutral. Your Data Is Never Ours.</h3>
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition's legal and architectural position is one of <strong>complete neutrality</strong>. The platform does not hold pilot credentials. Credential data is secured by the <strong>third-party vault</strong> the pilot consents to. Veremark verifies it. PilotRecognition receives only the triangulated token — an outcome signal, not the underlying data. What the platform stores is the equivalent of a pass/fail result, not the exam paper.</p>
           <p className="text-slate-700 leading-relaxed mb-6">This means PilotRecognition is not a data custodian for sensitive credentials. It is a <strong>token display and consent management layer</strong>. The pilot controls three separate consent relationships: with the vault (data storage), with Veremark (verification), and with PilotRecognition (token display to operators). Revoking any one of the three immediately invalidates the token chain.</p>
