@@ -2571,25 +2571,32 @@ export default function UCFOfficialReleasePage() {
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">The Triangulated Verification Architecture</h4>
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition operates as a <strong>neutral orchestration layer</strong>. No raw pilot data is stored on the platform. Three independent providers handle distinct verification functions — each under the pilot's explicit consent, each holding only their own data, each issuing only confirmations back to the platform.</p>
 
-          <div className="bg-slate-900 rounded-lg px-6 py-5 mb-6 font-mono text-sm">
-            <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">Verification Flow — Neutral Orchestration</p>
-            <p className="text-slate-300 mb-1">Pilot submits data + pathway consent</p>
-            <p className="text-red-400 mb-3">↓</p>
-            <div className="grid grid-cols-3 gap-4 mb-3">
-              {([
-                { name: 'Veremark', role: 'CAAP License\nProfessional Qual.\nIdentity (airline pull)', color: '#34d399' },
-                { name: 'IDfy', role: 'Training Hours\nConfirmation\n+ Cross-check', color: '#60a5fa' },
-                { name: 'Verepass', role: "Pilot's portable\nverified credential\nwallet (Veremark)", color: '#f87171' },
-              ].map((p) => (
-                <div key={p.name} className="border border-slate-700 rounded px-3 py-3 text-center">
-                  <p className="font-bold mb-2" style={{color: p.color}}>{p.name}</p>
-                  <p className="text-slate-400 text-xs whitespace-pre-line leading-relaxed">{p.role}</p>
-                </div>
-              )))}
-            </div>
-            <p className="text-red-400 mb-1">↓</p>
-            <p className="text-slate-300 mb-1">Master token issued to pilot's Credential Wallet</p>
-            <p className="text-slate-500 text-xs">Raw data: stays with Veremark, IDfy, and pilot respectively · PilotRecognition holds token + receipt IDs only</p>
+          <div className="bg-slate-900 rounded-lg px-6 py-5 mb-6 font-mono text-xs leading-relaxed overflow-x-auto">
+            <p className="text-slate-400 uppercase tracking-widest mb-4 text-xs">Verification Flow — Neutral Orchestration</p>
+            <pre className="text-slate-300 whitespace-pre">{`Pilot submits data + pathway consent
+        ↓
+┌─────────────────────────────────────────────────┐
+│              PilotRecognition                   │
+│           (Neutral Orchestrator)                │
+│  Routes checks · Issues tokens · No raw storage │
+└────────┬──────────────┬──────────────┬──────────┘
+         │              │              │
+         ▼              ▼              ▼
+  ┌────────────┐  ┌──────────┐  ┌───────────┐
+  │  Veremark  │  │   IDfy   │  │ Verepass  │
+  │            │  │          │  │           │
+  │ CAAP       │  │ Flight   │  │ Pilot's   │
+  │ License    │  │ Hours    │  │ portable  │
+  │ Identity   │  │ Confirm  │  │ verified  │
+  │ Prof. Qual │  │ + Cross- │  │ credential│
+  │            │  │ check    │  │ wallet    │
+  └────────────┘  └──────────┘  └───────────┘
+         │              │              │
+         └──────────────┴──────────────┘
+                        ↓
+              Token issued to pilot
+              Verepass record updated
+              No raw data on PR platform`}</pre>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
