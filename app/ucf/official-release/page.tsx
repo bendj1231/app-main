@@ -4946,6 +4946,59 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">Because we are pilots, we know exactly where the trust breaks down between the line and corporate management. Because we are pilots, we engineered the trust shield that protects user privacy while maximizing career utility.</p>
           <p className="text-slate-700 leading-relaxed mb-6">When software giants, navigation providers, and simulator developers partner with PilotRecognition, they are not just integrating with another software application. <strong>They are plugging directly into an authentic, pilot-led ecosystem designed to elevate the entire aviation profession.</strong> We are the source. We are the cockpit. We built the infrastructure we always needed — and it is time for the industry to catch up.</p>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XII. The Logbook Provider Partnership: Digital &amp; Physical Data Verification</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Flight logbook providers occupy a unique verification layer within the PilotRecognition ecosystem. Unlike simple telemetry apps, logbook platforms handle both digital flight data and physical logbook uploads — including photo proof, instructor signatures, and cross-referenced flight documentation. This hybrid data management positions them as critical <strong>Verification Node Operators</strong> within the broader architecture.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Dual-Revenue Partnership Model</h4>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Logbook Provider Revenue Streams</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Per-Pilot Referral Dividend ($20):</strong> When a logbook provider (e.g., ForeFlight, Garmin Pilot, LogTen Pro) connects a pilot to the PilotRecognition network and that pilot upgrades to a Recognition+ career profile, the provider receives the standard <strong>$20 Ecosystem Referral Dividend</strong> — identical to navigation and simulation partners.</p>
+              <p><strong>Enterprise Verification Tier ($1,000/year):</strong> Logbook providers managing high-volume verification pipelines (digital + physical uploads, photo proof handling, instructor attestation workflows) qualify for the <strong>Enterprise Data Checker tier</strong>. This annual subscription unlocks enhanced API rate limits, priority verification node status, and direct integration with airline ATS parsing systems.</p>
+            </div>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Data Sovereignty &amp; GDPR Architecture</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition maintains strict infrastructure neutrality. Logbook providers retain complete ownership of their data storage, photo archives, and physical document repositories.</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
+            <li><strong>Provider-Managed Storage:</strong> All photo proof, scanned logbook pages, and physical upload documentation remain housed within the logbook provider's secured infrastructure — not on PilotRecognition servers.</li>
+            <li><strong>Tokenized Display Layer:</strong> PilotRecognition displays only cryptographic verification tokens (e.g., "LogTen Verified: 1,240 Hours") on the pilot dashboard. The underlying data remains with the provider, ensuring GDPR compliance and data sovereignty are maintained by the data controller, not PilotRecognition.</li>
+            <li><strong>Privacy-by-Design:</strong> Airlines querying a pilot profile see only attestation tokens and verification status — never raw photo uploads or sensitive documentary evidence.</li>
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Glass Cockpit Dashboard Integration</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Verified logbook data appears within the pilot's PilotRecognition dashboard through a <strong>Glass Cockpit</strong> interface aesthetic — mirroring the avionics displays pilots already trust in the flight deck (Garmin G1000, ForeFlight Synthetic Vision).</p>
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <div className="space-y-1 text-slate-300">
+              <p>┌─────────────────────────────────────────┐</p>
+              <p>│ <span className="text-emerald-400">PILOT RECOGNITION DASHBOARD</span>           │</p>
+              <p>│ <span className="text-amber-400">┌─────────────────────────────────┐</span>   │</p>
+              <p>│ <span className="text-amber-400">│ VERIFIED FLIGHT TIME TOKEN      │</span>   │</p>
+              <p>│ <span className="text-amber-400">│ LogTen Pro: 1,240 Hours         │</span>   │</p>
+              <p>│ <span className="text-amber-400">│ Last Sync: 2 hours ago          │</span>   │</p>
+              <p>│ <span className="text-amber-400">│ Status: VERIFIED ✓              │</span>   │</p>
+              <p>│ <span className="text-amber-400">└─────────────────────────────────┘</span>   │</p>
+              <p>│                                         │</p>
+              <p>│ <span className="text-emerald-400">Recognition Score: 8,420 PTS ↑</span>        │</p>
+              <p>└─────────────────────────────────────────┘</p>
+            </div>
+          </div>
+          <p className="text-slate-700 leading-relaxed mb-4">The pilot sees their verified hours as a <strong>primary flight instrument</strong> on their career dashboard — continuously updated, cryptographically secured, and instantly shareable to airline recruiters with a single attestation signature.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Verification Workflow</h4>
+          <ol className="list-decimal list-inside space-y-1 text-slate-700 mb-5 ml-4">
+            <li><strong>Pilot Uploads:</strong> Flight entry submitted via logbook app (digital) or photo upload (physical).</li>
+            <li><strong>Provider Verification:</strong> Logbook platform validates entry via GPS cross-reference, instructor digital signature, or photo documentation review.</li>
+            <li><strong>Token Minting:</strong> Upon verification, provider issues a cryptographically signed token to the pilot's sovereign wallet.</li>
+            <li><strong>Dashboard Display:</strong> Token appears in pilot's Glass Cockpit interface as verified flight time.</li>
+            <li><strong>Airline Query:</strong> Recruiter views attested hours via API — zero direct access to underlying raw data.</li>
+          </ol>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Partnership Value Proposition</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Logbook providers are not merely data sources — they are <strong>trusted verification partners</strong> within the PilotRecognition ecosystem. By maintaining GDPR-compliant data ownership while delivering cryptographic attestations to the pilot's career profile, these platforms become indispensable infrastructure for the global aviation hiring marketplace.</p>
+          </div>
+
           <hr className="my-8 border-slate-200" />
 
           <h2 id="pillar-13-aeromedical" className="text-3xl font-bold text-slate-900 mt-8 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
