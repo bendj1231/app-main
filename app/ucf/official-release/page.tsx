@@ -374,6 +374,42 @@ export default function UCFOfficialReleasePage() {
             This document is the complete operational blueprint for that system. It defines what every stakeholder contributes, what they receive, how the data flows, how value is distributed, and how the global aviation economy becomes unified — for the first time — <strong>under one framework.</strong>
           </p>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-4">The Architectural Imperative: Pilot-Commanded Infrastructure</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Before engaging with any specific pillar, every stakeholder — airline, operator, regulator, or investor — must understand the foundational rule that governs how data moves on this platform. PilotRecognition is not a data broker. It operates as <strong>neutral, pilot-commanded infrastructure</strong>. This is not a marketing position. It is the legal and technical architecture on which every commercial relationship in this document is built.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {([
+              {
+                title: 'Zero Data Custody',
+                color: '#34d399',
+                desc: 'The platform does not store raw license files, medical certificates, or logbook pages. Verified credentials live exclusively in the pilot\'s personal Decentralised Identifier (DID) wallet. If the platform is ever targeted by a breach, there is no personal data to leak.',
+              },
+              {
+                title: 'No Implicit Access',
+                color: '#60a5fa',
+                desc: 'Airlines and operators cannot pull candidate data passively. Every data release requires the pilot to receive a push notification and actively authorise the transaction by tapping APPROVE. Implicit consent does not exist on this platform.',
+              },
+              {
+                title: 'Controller-to-Controller',
+                color: '#f87171',
+                desc: 'Background checks are processed via independent Data Controllers (Veremark, IDfy) who issue binary cryptographic proofs (e.g. is_license_valid = TRUE) back to the pilot\'s wallet. The platform remains a neutral conduit — never touching or storing the underlying data strings.',
+              },
+            ] as {title:string;color:string;desc:string}[]).map((item) => (
+              <div key={item.title} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <p className="font-bold mb-2 text-sm" style={{color: item.color}}>{item.title}</p>
+                <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-4 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>What this means for enterprise legal teams:</strong> <span className="text-slate-300">When your procurement or legal department reviews this platform, you are not entering a data processing agreement with a traditional SaaS vendor. You are accessing infrastructure that routes pilot-authorised cryptographic proofs. The liability of data custody remains with the source controllers (Veremark, IDfy). The power of data release remains entirely with the pilot. PilotRecognition operates as Joint Controller of the infrastructure only — under GDPR Article 26 and Philippine DPA RA 10173.</span></p>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-3 mb-8">
+            <p className="text-amber-800 text-sm"><strong>Enterprise DPA Note:</strong> If your organisation requires a standard Data Processing Agreement (e.g. Airbus, Boeing, or airline group procurement), PilotRecognition provides an <strong>Enterprise Vendor Statement</strong> explaining the Joint Controller architecture and confirming that the platform does not act as a data processor under your organisation's DPA. Available on request from enterprise accounts.</p>
+          </div>
+
           <hr className="my-10 border-slate-300" />
 
           {/* Origin Story */}
@@ -848,6 +884,21 @@ export default function UCFOfficialReleasePage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-400 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">⚠ Admin Review — Pricing Restructure (Standby, Not Live)</p>
+            <p className="text-slate-700 text-sm leading-relaxed mb-3">The following enterprise pricing restructure has been proposed and is pending internal review before any live update. <strong>Do not update the public pricing table until reviewed and approved.</strong></p>
+            <div className="bg-white border border-amber-200 rounded px-4 py-3 text-sm text-slate-700">
+              <p className="font-bold text-slate-900 mb-2">Proposed: Enterprise / OEM Tier — $1,000/month ($12,000/year)</p>
+              <ul className="space-y-1">
+                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Platform Access Fee:</strong> $1,000/month — positions as infrastructure access, not data purchase. Removes procurement friction at major enterprise accounts (Airbus, Boeing, major airline groups).</span></li>
+                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Includes:</strong> Unlimited pathway listings, full verified pilot database access, API integration with ATS (Workday, Taleo, Greenhouse), dedicated account support, enterprise SLA.</span></li>
+                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Verification Consumption:</strong> Standard $50 transaction fee per identity pull — charged only when the pilot actively taps APPROVE to release their cryptographic proof. No data is sold. Fee covers infrastructure compute and API transit.</span></li>
+                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Legal framing:</strong> Monthly access fee reinforces that the platform charges for infrastructure, not data — strengthening the Joint Controller legal position under enterprise DPA review.</span></li>
+                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Current fee:</strong> $1,000/yr — below enterprise procurement thresholds, creates pricing credibility gap vs. tier. Current $1,000/yr moves to SME operator tier upon restructure.</span></li>
+              </ul>
+            </div>
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mb-3">Model 2 — Airline Expectations Page &amp; Browse Airlines Directory</h4>
@@ -2763,6 +2814,31 @@ export default function UCFOfficialReleasePage() {
           </div>
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>"We issue tokens. The pilot holds the key. The airline sees only what the pilot unlocks."</strong><br /><span className="text-slate-300 text-xs mt-1 block">This is the data privacy answer, the security answer, the investor answer, and the airline trust answer — in one sentence. Pilot-commanded infrastructure is not a legal strategy. It is the product.</span></p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">The Verification Mechanics: Binary Proofs &amp; Legal Neutrality</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">To solve the compliance bottleneck that generic verification providers have created, PilotRecognition eliminates data redundancy entirely. The platform never handles raw credential data. The flow that runs every time a check is initiated is as follows:</p>
+
+          <div className="bg-slate-900 rounded-lg px-6 py-5 mb-6">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-4">Binary Proof Flow — Every Check</p>
+            <ol className="space-y-3">
+              {([
+                { n: '1', t: 'Pilot authorises', d: 'Pilot selects check type and authorises an independent verification partner (Veremark or IDfy) via explicit consent modal. No authorisation = no check runs.' },
+                { n: '2', t: 'Partner queries primary source', d: 'The verification partner, acting as Independent Data Controller, queries the primary source directly — CAAP registry, FAA database, flight school confirmation, or NBI records — under their own regulatory authorisation.' },
+                { n: '3', t: 'Binary Proof Token issued', d: 'The partner issues a Binary Proof Token directly to the pilot\'s DID wallet. Examples: medical_valid = TRUE · hours_verified = 1,500 · is_license_valid = TRUE · criminal_clear = TRUE. No raw data strings. Binary states only.' },
+                { n: '4', t: 'PilotRecognition stores receipt only', d: 'The platform stores only the timestamped consent receipt and the transaction hash. Not the binary result. Not the underlying data. Not the pilot\'s credentials. The token lives in the pilot\'s wallet — not on the platform.' },
+                { n: '5', t: 'Airline accesses via pilot approval', d: 'When an airline shortlists the pilot, they request access. The pilot receives a push notification and taps APPROVE. The airline\'s dashboard displays the binary proof tokens. The underlying data is never transmitted.' },
+              ] as {n:string;t:string;d:string}[]).map((item) => (
+                <li key={item.n} className="flex items-start gap-3">
+                  <span className="text-red-400 font-bold text-sm flex-shrink-0 w-5">{item.n}.</span>
+                  <span className="text-sm"><strong style={{color:'#f87171'}}>{item.t}</strong> — <span className="text-slate-300">{item.d}</span></span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-8">
+            <p className="text-slate-800 text-sm leading-relaxed"><strong>The compliance consequence for enterprise operators:</strong> Because the platform never touches or stores underlying raw data strings, operators using PilotRecognition bypass months of vendor security audits typically required for SaaS platforms handling personal data. The liability of data custody remains with the source controllers (Veremark, IDfy). The power of data release remains entirely with the pilot. PilotRecognition operates legally as <strong>Joint Controller of the infrastructure</strong> — not as a data custodian — making it the only verification-integrated pilot platform that enterprise procurement and legal teams can approve without triggering standard data processor due diligence requirements.</p>
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Ecosystem Integration — How the Platform Connects Every Stakeholder</h4>
