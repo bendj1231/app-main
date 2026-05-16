@@ -5082,6 +5082,36 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Clarifying LogTen Pro's Existing Verification Mechanisms</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">It is important to acknowledge that LogTen Pro <strong>does</strong> include verification features — but these operate through decentralized regulatory mechanisms rather than centralized validation. Understanding this distinction is crucial for positioning PilotRecognition correctly.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">How Hours Become "Legally Verified" in LogTen Pro</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>1. Digital CFI Signatures (EASA AMC1 FCL.050 / FAA):</strong> LogTen Pro features an in-app Digital Signature function. A Certified Flight Instructor (CFI) or examiner signs the pilot's iPad screen with a stylus, which legally locks that specific flight entry. If anyone tries to alter the flight hours later, the signature instantly breaks and invalidates the entry. This provides entry-level verification for training flights.</p>
+              <p><strong>2. Airline Schedule Imports:</strong> Pilots can use LogTen's Airline Schedule Importer to pull flight data directly from internal airline systems like FLICA or Sabre. Because this data mirrors the airline's official dispatch records, recruiters view it as highly credible. However, this is a <strong>pilot-initiated</strong> import — the airline does not cryptographically attest to the specific hours in the logbook.</p>
+              <p><strong>3. The "Honor" System & Legal Declaration:</strong> Aviation authorities (FAA, EASA) and airline interview panels take logbooks at face value during checkrides or interviews. They do not expect the software company to police the pilot; instead, the pilot signs a legal declaration stating the hours are accurate. The burden of truth lies with the pilot, not the logbook provider.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">PilotRecognition: The Add-On Verification Layer (Not a Competitor)</h5>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>PilotRecognition does not replace standard logbooks — we are an add-on verification layer that sits on top of them.</strong> LogTen Pro remains the personal ledger tool; we provide the centralized, external validation system that connects directly to ATOs, airlines, and competency trackers.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Relationship Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen Pro = The Personal Ledger:</strong> Beautifully formatted, user-managed, CFI-signed entries. Only as honest as the pilot typing into it — but perfectly compliant with EASA/FAA regulations for logbook maintenance.</p>
+              <p><strong>PilotRecognition = The External Validator:</strong> Centralized, neutral, airline/ATO-connected verification layer. We do not ask pilots to re-enter their hours — we verify which of their LogTen hours match official airline operational records.</p>
+              <p><strong>The Integration:</strong> Pilot pulls 1,500 hours into LogTen (via manual entry, CFI signatures, or FLICA import). PilotRecognition queries airline systems and confirms 1,247 hours. Result: LogTen displays all 1,500 hours; PilotRecognition displays "1,247 hours verified by [Airline]." Both platforms show their respective data; neither replaces the other.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Market Positioning</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro is a personal ledger tool — it is only as honest as the pilot typing into it, backed by CFI signatures and regulatory compliance. PilotRecognition occupies a different market space: a centralized, external validation system linked directly to ATOs, airlines, and Airbus competency trackers.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We are not a competitor. We are the <strong>verification infrastructure layer</strong> that transforms a LogTen logbook from a personal record into a recruiter-trusted credential. LogTen provides the format; we provide the origin trust. Together, they create the complete professional aviation profile.</p>
+          </div>
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Dual-Revenue Partnership Model</h4>
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Logbook Provider Revenue Streams</p>
