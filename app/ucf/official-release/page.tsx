@@ -5074,30 +5074,40 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">$119.99/year is too expensive for pilots just tracking flight hours. Through <strong>guaranteed volume commitments</strong> and <strong>verification-driven revenue sharing</strong>, PilotRecognition can negotiate significantly reduced logbook subscription costs.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Target: $39.99/year Pilot-Facing Bundle</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">LogTen's 160,000+ Pilot Base — The Scale Advantage</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>LogTen Partnership Tier:</strong> $39.99/year total. Logbook provider receives $19.99/year (vs $79.99 standard Basic), PilotRecognition receives $20/year base fee. Includes 5 verifications/year.</p>
-              <p><strong>Why LogTen Accepts:</strong> With 10,000 pilots in the partnership program, that's $199,900 in annual subscription revenue — but critically, each verification beyond the 5 bundled generates a <strong>$20 referral dividend</strong>. If pilots average 8 verifications/year, LogTen earns $60 per pilot in referral fees ($19.99 + $60 = $79.99 per pilot — matching their standard pricing) with 10x the customer volume.</p>
-              <p><strong>The Volume Math:</strong> At 50,000 pilots: $999,500 subscription revenue + $7.5M in verification dividends (150,000 extra verifications × $20) = $8.5M total vs $4M at standard pricing. Lower per-pilot cost, 2x+ total revenue.</p>
+              <p><strong>The Starting Point:</strong> LogTen Pro already has 160,000+ active pilots. This massive user base changes the economics entirely — even a 10% conversion to the partnership tier (16,000 pilots) generates significant verification revenue.</p>
+              <p><strong>The Partnership Model:</strong> $39.99/year total. Logbook provider receives $19.99/year (vs $79.99 standard Basic), PilotRecognition receives $20/year base fee. Includes 5 verifications/year.</p>
+              <p><strong>Why LogTen Accepts:</strong> With just 10% of their base (16,000 pilots) on the partnership tier: $319,840 in reduced subscription revenue — but each pilot averaging 8 verifications/year generates $60 in referral fees per pilot ($20 × 3 extra verifications). Total per pilot: $19.99 + $60 = $79.99 (matching standard pricing). Plus 10x higher retention and airline B2B pipeline access.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Pricing Tiers (Negotiated Volume Commitments)</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Volume Math (LogTen's 160,000 Pilots)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Pilot Starter ($39.99/year):</strong> Core logging + 5 verifications. Logbook: $19.99. PilotRecognition: $20 base. Additional verifications: $12.99 each (covers $5 Veremark + $20 referral + margin).</p>
-              <p><strong>Pilot Professional ($59.99/year):</strong> Advanced logging + 15 verifications. Logbook: $29.99. PilotRecognition: $30 base. Additional verifications: $9.99 each.</p>
-              <p><strong>Commercial Pilot ($79.99/year):</strong> Full Pro features + unlimited verifications. Logbook: $39.99. PilotRecognition: $40 base. Designed for airline pilots who need frequent attestations.</p>
+              <p><strong>Conservative Scenario (25% adoption — 40,000 pilots):</strong> $799,600 subscription revenue + $4.8M in verification dividends (240,000 extra verifications × $20) = <strong>$5.6M total</strong> vs $3.2M at standard pricing.</p>
+              <p><strong>Aggressive Scenario (50% adoption — 80,000 pilots):</strong> $1.6M subscription revenue + $9.6M in verification dividends = <strong>$11.2M total</strong> vs $6.4M standard.</p>
+              <p><strong>The Retention Multiplier:</strong> Verification-integrated pilots show 85%+ annual retention vs 60% for standard subscribers. At 160,000 pilots, that's 40,000 fewer churned customers worth $3.2M in preserved revenue.</p>
             </div>
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Negotiation Leverage</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Pricing Tiers (At Scale)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Guaranteed Pilot Base:</strong> PilotRecognition brings 10,000-50,000 committed pilots to the partnership — pilots who would otherwise use free tiers or competitor logbooks. Volume justifies price reduction.</p>
-              <p><strong>Verification Revenue Stream:</strong> Logbook providers earn more from $20/verification referral dividends than from subscriptions. At scale, verification fees become the primary revenue driver.</p>
-              <p><strong>Retention Lock-In:</strong> Pilots who verify hours through LogTen are 10x less likely to churn. Lower subscription price + verification integration = lifelong customers.</p>
-              <p><strong>Airline Partnership Upsell:</strong> LogTen gains direct access to airline hiring pipelines through PilotRecognition — enterprise B2B revenue opportunities that justify reduced B2C pricing.</p>
+              <p><strong>Pilot Starter ($39.99/year):</strong> Core logging + 5 verifications. Logbook: $19.99. PilotRecognition: $20 base. Additional verifications: $12.99 each. <em>Target: 80,000 pilots at this tier.</em></p>
+              <p><strong>Pilot Professional ($59.99/year):</strong> Advanced logging + 15 verifications. Logbook: $29.99. PilotRecognition: $30 base. <em>Target: 40,000 pilots.</em></p>
+              <p><strong>Commercial Pilot ($79.99/year):</strong> Full Pro features + unlimited verifications. Logbook: $39.99. PilotRecognition: $40 base. <em>Target: 20,000 airline pilots.</em></p>
+              <p><strong>Standard LogTen Pro:</strong> Remains available at $129.99/year for pilots who want full features without verification integration. <em>Expected: 20,000 pilots.</em></p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Negotiation Leverage (With 160K Base)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Existing Scale:</strong> LogTen doesn't need PilotRecognition to bring pilots — they have 160,000 already. The value is unlocking verification revenue from their existing base.</p>
+              <p><strong>Verification Revenue Explosion:</strong> Even at conservative 25% adoption, LogTen earns $5.6M vs $3.2M standard — a 75% revenue increase from the same pilot base.</p>
+              <p><strong>Churn Reduction:</strong> Verification integration reduces churn from 40% to 15% annually. With 160,000 pilots, that's 40,000 additional retained subscribers worth $3.2M/year.</p>
+              <p><strong>Enterprise B2B Upsell:</strong> Airline partnerships through PilotRecognition open enterprise licensing opportunities (airlines buying bulk subscriptions for cadet programs) — a new revenue stream entirely.</p>
             </div>
           </div>
 
