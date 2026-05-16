@@ -5455,6 +5455,42 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">This is how Visa partners with banks — Visa doesn't hold your money, they just verify transactions. LogTen holds the data. We verify its authenticity.</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Partnership Model 3: The Data Hub & Triangulation Engine</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A third partnership structure positions LogTen as the <strong>central data aggregator</strong> — ingesting both pilot-logged hours AND direct airline/flight school feeds. PilotRecognition becomes the triangulation engine that matches and verifies the two data streams.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Deal Structure: LogTen as the Hub</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Pitch:</strong> "We broker a deal where flight schools and airlines send their operational data directly to LogTen — not to us. You become the single source of truth for both pilot-logged hours AND official airline/flight school records. We provide the matching algorithm that triangulates the two datasets and flags discrepancies. You control the data. We control the verification logic."</p>
+              <p><strong>The Triangulation Flow:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[Pilot logs flight in LogTen] ──────┐</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│</p>
+                <p>[Airline sends duty record to LogTen] ─┼──→ [LogTen Database holds BOTH]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[PilotRecognition API] ──→ Triangulates: "Pilot logged 1,500 hrs, Airline confirms 1,247 hrs"</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[LogTen displays] ──→ "1,247 hrs verified ✓ | 253 hrs unverified ⚠"</p>
+              </div>
+              <p><strong>LogTen's Value:</strong> By receiving direct feeds from airlines (FLICA/Sabre) and flight schools, LogTen becomes indispensable infrastructure. Airlines send data to LogTen because it simplifies verification. Pilots stay subscribed because LogTen now has the "official record" alongside their personal log.</p>
+              <p><strong>PilotRecognition's Role:</strong> We provide the matching algorithm, discrepancy detection, and attestation tokens. We don't store the flight data — we analyze it and return verification scores. LogTen stores everything; we verify the relationship between datasets.</p>
+              <p><strong>Revenue Split:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Airline pays LogTen for data integration (new B2B revenue stream)</li>
+                <li>Pilot pays PilotRecognition for verification matching ($20/verification)</li>
+                <li>LogTen gets 30% of verification fee + enterprise airline contracts</li>
+                <li>PilotRecognition gets 70% of verification fee + volume from LogTen's 160K users</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-purple-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Why Airlines & Flight Schools Participate</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Airlines currently waste hundreds of hours manually verifying pilot logbooks during hiring. By sending operational data directly to LogTen:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• They eliminate manual verification labor<br/>• They get pre-verified pilot pools (LogTen shows "green check" candidates)<br/>• They reduce fraud liability (triangulation catches padded hours)<br/>• They pay LogTen a small API fee vs. expensive verification staff</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Flight schools get the same benefit — their graduates leave with "pre-verified" hours that airlines trust immediately.</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
