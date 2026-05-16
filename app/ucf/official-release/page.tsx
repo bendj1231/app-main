@@ -2251,7 +2251,47 @@ export default function UCFOfficialReleasePage() {
             </ol>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. The Collective Bargaining Engine: Cross-Border Model</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. Legal Implications of Verification Node Participation</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">By participating as a Verification Node, ATOs assume <strong>cryptographic liability</strong> for every attestation issued. Each "Verified Training Hours" credential is cryptographically signed by the institution, creating an immutable, legally traceable bond between the ATO and the data accuracy.</p>
+
+          <div className="bg-red-50 border border-red-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-red-700 uppercase tracking-widest mb-3">Falsification Liability Under Sequential Accountability Protocol</p>
+            <p className="text-sm text-slate-700 mb-3">If an ATO falsifies training hours, competency assessments, or graduation records, disputes may be initiated by:</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Commercial Operators (Airlines):</strong> When a pilot washes out during type rating or line training due to skills deficiencies that should have been identified during initial training, the operator may initiate liability proceedings tracing back to the issuing ATO.</p>
+              <p><strong>Other Operators (Cargo/Charter):</strong> When placement data reveals systematic discrepancies between ATO-reported competency and actual operational performance.</p>
+              <p><strong>Individual Pilots:</strong> When falsified records result in career damage — failed checkrides, employment termination, or regulatory enforcement due to training deficiencies not reflected in verified credentials.</p>
+              <p><strong>Financial Institutions:</strong> When training loans default due to unqualified graduates failing to secure employment because credential inflation misrepresented competency levels.</p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Liability Pathway:</strong> Under the Sequential Accountability Protocol, disputes originating from any of these parties traverse through the verification chain:</p>
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <div className="space-y-1 text-slate-300">
+              <p><span className="text-emerald-400">Dispute Origin:</span> Operator/Individual/Financial Institution</p>
+              <p><span className="text-slate-500">→</span> <span className="text-amber-400">$500-2,000</span> Platform routing and attestor identification</p>
+              <p><span className="text-slate-500">→</span> <span className="text-amber-400">$1,000-3,000</span> Verification provider record retrieval</p>
+              <p><span className="text-slate-500">→</span> <span className="text-amber-400">$1,500-4,000</span> <span className="text-red-400 font-bold">ATO as Originating Attestor (Pillar 5)</span></p>
+            </div>
+            <p className="text-slate-400 mt-3 pt-3 border-t border-slate-700">The ATO is <span className="text-red-400 font-bold">Level 4</span> in the liability chain — the originating attestor bearing ultimate responsibility for training record accuracy.</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Legal Consequences of Falsification:</strong></p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
+            <li><strong>Contractual Breach:</strong> Violation of Verification Node Agreement warranting data accuracy</li>
+            <li><strong>Regulatory Reporting:</strong> Aviation authorities may be notified of credential fraud under ATO certification obligations</li>
+            <li><strong>Platform Exclusion:</strong> Permanent revocation of Verified Issuer status and removal from Recognition-Ready ATO listings</li>
+            <li><strong>Reputational Damage:</strong> Immutable audit trail of revoked credentials permanently visible to all ecosystem participants</li>
+            <li><strong>Financial Liability:</strong> Cost recovery for downstream losses (failed type ratings, employment termination, loan defaults)</li>
+            <li><strong>Criminal Liability:</strong> Potential fraud charges under aviation regulatory frameworks for systematic credential falsification</li>
+          </ul>
+
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-2">The Protection: Cryptographic Immutability</p>
+            <p className="text-sm text-slate-700">While the liability exposure is significant, the cryptographic architecture also <strong>protects honest ATOs</strong>. Once a credential is issued, it cannot be forged or falsely attributed. The digital signature proves the credential originated from the ATO's authorized issuance infrastructure. This creates evidentiary clarity — either the ATO issued the credential (accepting liability) or the credential is fraudulent (absolving the ATO). There is no ambiguity in cryptographic attestation.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IX. The Collective Bargaining Engine: Cross-Border Model</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The platform leverages collective demand to optimize credential acquisition for pilots in developing aviation markets requiring globally recognized certifications (e.g., GCC Authority standards).</p>
 
           <div className="overflow-x-auto mb-6">
