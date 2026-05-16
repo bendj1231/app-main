@@ -5033,6 +5033,41 @@ export default function UCFOfficialReleasePage() {
           </div>
           <p className="text-slate-700 leading-relaxed mb-4">The pilot sees their verified hours as a <strong>primary flight instrument</strong> on their career dashboard — continuously updated, cryptographically secured, and instantly shareable to airline recruiters with a single attestation signature.</p>
 
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Logbook Provider Pricing Models & PilotRecognition Integration</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Logbook platforms operate established freemium and subscription pricing models. PilotRecognition integrates seamlessly with these existing structures — we do not disrupt their revenue, we enhance their conversion funnel.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Example: LogTen Pro Pricing Structure</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Free Tier:</strong> Log up to 40-50 hours of flight time. Ideal for student pilots beginning training.</p>
+              <p><strong>LogTen Basic (~$79.99/year or ~$9.99/month):</strong> Best for VFR/private pilots needing core features — unlimited logging, basic reports, cloud sync.</p>
+              <p><strong>LogTen Pro (~$129.99/year or ~$14.99/month):</strong> Best for airline/commercial pilots requiring schedule imports, currency tracking, interview prep tools, and advanced analytics.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The PilotRecognition Upgrade Trigger</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition acts as a <strong>natural upgrade catalyst</strong> for logbook providers. Here's how the pricing flow works:</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Freemium-to-Paid Conversion Loop</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Phase 1 — Free Tier Accumulation:</strong> Student pilot logs 40-50 hours in LogTen free tier. Approaching the limit, they see a PilotRecognition prompt: "Unlock verified flight time for airline applications — upgrade to Basic or Pro to continue logging and activate your Recognition Profile."</p>
+              <p><strong>Phase 2 — Paid Subscription:</strong> Pilot upgrades to LogTen Basic ($79.99/year) or LogTen Pro ($129.99/year). Now unlimited logging + full PilotRecognition integration unlocked.</p>
+              <p><strong>Phase 3 — Verification Activation:</strong> With paid tier, pilot can request ATO/Operator attestation of their logged hours. Each attestation generates a $20 Ecosystem Referral Dividend to the logbook provider.</p>
+              <p><strong>Phase 4 — Retention Moat:</strong> Pilot's entire flight history is stored in LogTen. Switching logbook apps means losing the integrated verification history. Display + storage = long-term lock-in.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Management: Who Controls What</h5>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Revenue Boundaries</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Logbook Provider Controls:</strong> Subscription pricing (Basic/Pro tiers), feature gating, storage limits, premium add-ons (schedule imports, interview tools). They keep 100% of subscription revenue.</p>
+              <p><strong>PilotRecognition Controls:</strong> Recognition+ premium tier ($14.99/month), Ecosystem Referral Dividends ($20 per attestation to logbook provider), airline query fees. We never touch logbook subscription revenue.</p>
+              <p><strong>Pilot Pays Both:</strong> LogTen subscription (to logbook company) + Recognition+ (to PilotRecognition). Two separate value propositions, two separate payments, zero conflict.</p>
+            </div>
+          </div>
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Verification Workflow</h4>
           <ol className="list-decimal list-inside space-y-1 text-slate-700 mb-5 ml-4">
             <li><strong>Pilot Uploads:</strong> Flight entry submitted via logbook app (digital) or photo upload (physical).</li>
