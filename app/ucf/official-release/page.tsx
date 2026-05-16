@@ -5058,27 +5058,36 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Reducing Total Pilot Cost</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">The goal is not to stack subscriptions — it is to <strong>replace expensive legacy verification</strong> with a streamlined, lower-cost alternative that delivers more value.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Cost Comparison: Traditional vs PilotRecognition</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Cost Structure Reality</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Traditional Path:</strong> LogTen Pro ($129.99/year) + third-party verification services ($50-200 per document) + notarization ($25-50 per page) + courier fees for international applications ($50-100). Total: <strong>$255-480+ per airline application</strong>.</p>
-              <p><strong>PilotRecognition Path:</strong> LogTen Basic ($79.99/year) + Recognition+ ($14.99/month = $179.88/year). Total: <strong>$259.87/year for unlimited verifications</strong>. No per-document fees. No courier costs. Instant attestation.</p>
-              <p><strong>The Value Shift:</strong> Pilots pay slightly more annually, but eliminate per-application verification costs that traditionally cost $500-1000 per job hunt. Recognition+ pays for itself after a single airline application.</p>
+              <p><strong>Per-Verification Costs:</strong> Each attestation incurs ~$5-8 in Veremark verification fees + $20 Ecosystem Referral Dividend to the logbook provider + infrastructure costs. Total cost per verification: ~$28-32.</p>
+              <p><strong>Traditional Path:</strong> LogTen Pro ($129.99/year) + third-party verification ($50-200 per document) + notarization ($25-50) + courier ($50-100) = <strong>$255-480 per airline application</strong>.</p>
+              <p><strong>PilotRecognition Value:</strong> Pilots need predictable, lower costs — not another $140/year subscription. The model must balance accessibility with sustainability.</p>
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Bundled Partnership Pricing</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">To prevent subscription fatigue, PilotRecognition and logbook providers can offer <strong>bundled partnership tiers</strong> that reduce the total cost to the pilot:</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Proposed Partnership Pricing Agreement</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Negotiated pricing between PilotRecognition and logbook providers, funded by airline query fees and scaled by volume:</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Example: LogTen + PilotRecognition Bundle</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Pilot-Facing Bundle Pricing</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>LogTen Basic + Recognition Lite:</strong> $89.99/year (vs $99.99 separate). Core logging + 5 verifications/year.</p>
-              <p><strong>LogTen Pro + Recognition+:</strong> $139.99/year (vs $169.88 separate). Unlimited logging + unlimited verifications + priority airline matching.</p>
-              <p><strong>Revenue Share:</strong> Logbook provider keeps 70% of bundle price, PilotRecognition receives 30% — maintaining healthy margins for both while delivering 15-20% savings to the pilot.</p>
+              <p><strong>LogTen Basic + Recognition Access:</strong> $99.99/year. Logbook keeps $79.99 (standard Basic price), PilotRecognition receives $20/year base fee. Includes 3 verifications/year. Additional verifications: $9.99 each (covers Veremark + referral costs).</p>
+              <p><strong>LogTen Pro + Recognition+:</strong> $119.99/year. Logbook keeps $99.99 (discounted Pro), PilotRecognition receives $20/year base fee. Includes 10 verifications/year. Additional verifications: $7.99 each.</p>
+              <p><strong>Revenue Model:</strong> Logbook provider secures customer + $20 referral per additional verification. PilotRecognition covers per-verification costs through base fee + per-attestation charges. Airline query fees ($5-10 per candidate view) fund platform operations.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Why This Works</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>For Pilots:</strong> $99.99-119.99/year is comparable to current LogTen pricing — not double. Pay-as-you-go for additional verifications ($7.99-9.99) vs $50-200 traditional per-document fees.</p>
+              <p><strong>For Logbook Providers:</strong> Keep their standard subscription revenue + earn $20 on every verification beyond the bundled amount. Higher customer lifetime value through retention.</p>
+              <p><strong>For PilotRecognition:</strong> Base fee covers platform costs. Per-verification fees cover Veremark + referral payouts. Airline query fees provide sustainable revenue at scale.</p>
             </div>
           </div>
 
