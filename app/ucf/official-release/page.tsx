@@ -4980,7 +4980,7 @@ export default function UCFOfficialReleasePage() {
               <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
               <p>│  <span className="text-amber-400">│  HOBBS      │</span>   <span className="text-amber-400">│  DATA CHECK │</span>       │</p>
               <p>│  <span className="text-emerald-400">│ 1,240 HRS   │</span>   <span className="text-emerald-400">│ VERIFIED ✓  │</span>       │</p>
-              <p>│  <span className="text-amber-400">│ LogTen Pro  │</span>   <span className="text-amber-400">│ ForeFlight  │</span>       │</p>
+              <p>│  <span className="text-amber-400">│ LogTen Pro  │</span>   <span className="text-amber-400">│ Veremark    │</span>       │</p>
               <p>│  <span className="text-amber-400">└─────────────┘</span>   <span className="text-amber-400">└─────────────┘</span>       │</p>
               <p>│                                                 │</p>
               <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
@@ -4996,7 +4996,7 @@ export default function UCFOfficialReleasePage() {
 
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
             <li><strong>The Hobbs (Logbook Provider):</strong> Tallying total verified flight hours — continuously updating as the pilot logs new flights via integrated logbook apps.</li>
-            <li><strong>The Data Check (Verification Node):</strong> Background verification status showing green when all data is cryptographically attested and current, red when discrepancies or expirations are detected.</li>
+            <li><strong>The Data Check (Veremark — stored in Verepass):</strong> Background verification status showing green when all data is cryptographically attested and current via Veremark's verification engine, red when discrepancies or expirations are detected. Verification records are securely stored in the pilot's Verepass digital vault.</li>
             <li><strong>The Sim Tracker (Desktop Simulation):</strong> Displaying procedural currency and approach proficiency built through home simulation training.</li>
             <li><strong>The Pathway Navigator (Airline Integration):</strong> Color-coded alignment indicator showing whether the pilot's current profile matches their target cadet program or airline pathway requirements.</li>
           </ul>
@@ -5042,8 +5042,9 @@ export default function UCFOfficialReleasePage() {
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Navigraph</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">X-Plane</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">PilotEdge</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Veremark</span>
             </div>
-            <p className="text-slate-400 text-xs mt-3">A contribution platform built by API integrations from established aviation companies — further bulletproofing trust through distributed verification.</p>
+            <p className="text-slate-400 text-xs mt-3">A contribution platform built by API integrations from established aviation and verification companies — further bulletproofing trust through distributed verification. Verification records securely stored in Verepass.</p>
           </div>
 
           <hr className="my-8 border-slate-200" />
