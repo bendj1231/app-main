@@ -4237,13 +4237,54 @@ export default function UCFOfficialReleasePage() {
             PILLAR 15: MANUFACTURERS &amp; OEMs
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub E — Community, Strategy &amp; Growth</p>
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Manufacturers Build on Lagging Indicators</h3>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Why Airbus and Boeing Are Among the Most Strategic Enterprise Players on This Platform</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Airbus is not on PilotRecognition to hire a handful of test pilots. Their entire multi-billion-dollar business model depends on airlines being able to crew the aircraft they sell. When Airbus pitches a $10 billion order of A350s to an airline, the airline's board asks one question: <strong>"Do we have the crew to operate these in 24 months?"</strong> If the answer is no, the order gets delayed or downsized. PilotRecognition is the only platform in existence that can answer that question with live, verified data.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This makes the manufacturer relationship fundamentally different from a standard airline HR subscription. <strong>The use case is macro-intelligence and training pipeline management — not individual recruitment.</strong> The pricing, the product, and the pitch must reflect that.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {([
+              {
+                n: '1',
+                title: 'The Fleet Sale Dealbreaker',
+                color: '#f87171',
+                body: 'When Airbus pitches a $10B A350 order, the airline asks: "Do we have crew to operate these in 24 months?" PilotRecognition answers that question live. Airbus tells the airline: "Our platform data shows 1,200 A350-rated pilots in region, 800 more completing training this year." That data point closes aircraft orders. The platform is worth more to Airbus sales than it is to airline HR.',
+              },
+              {
+                n: '2',
+                title: 'The Airbus Flight Academy Pipeline',
+                color: '#60a5fa',
+                body: 'Airbus operates one of the largest pilot training organisations in the world — A320 and A330 type rating centers globally. PilotRecognition lets them publish "Airbus Verified Graduate" pathways, funnelling freshly type-rated pilots directly to the airlines that just bought their planes. Their training centers become infinitely more attractive to student pilots. Graduate placement rates are verified, not self-reported.',
+              },
+              {
+                n: '3',
+                title: 'EBT & Anonymised Competency Data',
+                color: '#34d399',
+                body: 'As aviation moves toward Evidence-Based Training (EBT), manufacturers need to understand how pilots interact with their flight decks. Anonymised, aggregated platform data answers: "What is the average transition time from a Boeing 737 to an Airbus A320?" That macro data is worth its weight in gold for engineering and training curriculum design — and it never exposes individual pilot identities.',
+              },
+            ] as {n:string;title:string;color:string;body:string}[]).map((item) => (
+              <div key={item.n} className="border border-slate-200 rounded-lg px-5 py-5 bg-white">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="font-black text-lg" style={{color: item.color}}>{item.n}</span>
+                  <p className="font-bold text-slate-900 text-sm">{item.title}</p>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The connective tissue Airbus has never had:</strong> <span className="text-slate-300">PilotRecognition is the only platform that connects the planes Airbus builds to the humans who fly them — with live, verified, real-time data. The platform tells Airbus what the demand curve for A321XLR type ratings looks like 18 months before the aircraft enter service. It tells Boeing where the 737 MAX crew shortage is most acute. It tells Cessna exactly which cohort of student pilots are actively pursuing single-engine time-building pathways right now. <strong style={{color:'#f87171'}}>None of this intelligence exists anywhere else. It only exists because pilots are using the platform.</strong></span></p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Problem: Manufacturers Build on Lagging Indicators</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Airbus builds simulators based on fleet transition announcements that are years old by the time they reach production. Boeing calibrates type rating curriculum against operator orders that reflect decisions made two market cycles ago. Cessna targets marketing at pilot cohorts that have already moved to the next stage of training. <strong>The entire manufacturing and OEM ecosystem operates on the rear-view mirror.</strong></p>
           <p className="text-slate-700 leading-relaxed mb-6">Meanwhile, the platform generates real-time leading indicators: which type ratings pilots are pursuing, which pathway cards are generating the most interest, which aircraft types are creating the largest gap between supply and demand. This macro-intelligence is the most commercially valuable dataset in aviation — and manufacturers have never had access to it.</p>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
-              { t: 'What Manufacturers Must Publish', items: ['Macro-level fleet transition announcements and future aircraft capability specs', 'Type rating curriculum updates and simulator availability schedules', 'OEM-specific pathway integration requirements for sponsored type ratings', 'Enterprise Data Insights subscription requirements for accessing platform trend data'] },
-              { t: 'What Manufacturers Gain', items: ['The ultimate leading indicator: real-time pathway demand data showing which type ratings pilots are pursuing before the market moves', 'If pathway data shows a shift toward A321 qualifications, Airbus adapts simulator production before the demand peak', 'Targeted marketing direct to pilots at the exact moment they are evaluating a type rating investment', 'Cessna sees every pilot seeking single-engine time-building pathways — and reaches them directly'] },
+              { t: 'What Manufacturers Must Publish', items: ['Macro-level fleet transition announcements and future aircraft capability specs', 'Type rating curriculum updates and simulator availability schedules', 'OEM-specific pathway integration requirements for sponsored type ratings', '"OEM Verified Graduate" pathway cards for training center alumni', 'Enterprise Data Insights subscription requirements for accessing platform trend data'] },
+              { t: 'What Manufacturers Gain', items: ['Live pilot supply/demand data by aircraft type — 18 months ahead of order fulfillment', 'If pathway data shifts toward A321 qualifications, Airbus adapts simulator production before the demand peak', 'Targeted reach to pilots at the exact moment they are evaluating a type rating investment', '"OEM Verified Graduate" pipeline that makes training centers more attractive to student pilots', 'Anonymised EBT competency data for aircraft design and training curriculum development'] },
             ].map(col => (
               <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
                 <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
@@ -4251,8 +4292,42 @@ export default function UCFOfficialReleasePage() {
               </div>
             ))}
           </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">OEM Pricing — Why $1,000/Year Is a Rounding Error</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The standard airline enterprise tier is not the right commercial model for OEMs. An airline pays for recruitment infrastructure. <strong>A manufacturer pays for market intelligence that informs multi-billion-dollar production decisions.</strong> These are not the same product. The pricing must reflect that.</p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Tier</th>
+                <th className="text-left px-4 py-2 font-semibold">Annual Fee</th>
+                <th className="text-left px-4 py-2 font-semibold">What It Unlocks</th>
+                <th className="text-left px-4 py-2 font-semibold">Best For</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { tier: 'Training Center', fee: '$1,000/mo', unlocks: 'Publish "OEM Verified Graduate" pathway cards. Track training center alumni outcomes. Graduate placement rate verification and publication.', for: 'Airbus Flight Academy, Boeing Global Services training centers, CAE, FlightSafety' },
+                  { tier: 'OEM Market Intelligence', fee: '$5,000–$10,000/yr', unlocks: 'Macro-level pilot supply/demand analytics by aircraft type. Real-time type rating demand curves. Anonymised EBT competency benchmarks. Direct integration with global training centers on platform. Fleet transition demand forecasting.', for: 'Airbus, Boeing — strategic intelligence to support fleet sales and simulator production planning' },
+                  { tier: 'OEM Enterprise + Data API', fee: 'Custom', unlocks: 'Live API feed of aggregated (never individual) pilot demand data. Integration into manufacturer ATS/CRM for training pipeline management. Co-branded "Manufacturer Endorsed" pathway status. Direct dataset licensing for EBT curriculum development.', for: 'Board-level fleet strategy teams at Airbus, Boeing, Embraer, Bombardier' },
+                ] as {tier:string;fee:string;unlocks:string;for:string}[]).map((row, i) => (
+                  <tr key={row.tier} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-slate-100">{row.tier}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-xs" style={{color:'#34d399'}}>{row.fee}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.unlocks}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs italic">{row.for}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Admin Note — OEM Pricing (Standby, Pending Review)</p>
+            <p className="text-slate-700 text-sm leading-relaxed">The OEM Market Intelligence tier ($5,000–$10,000/yr) and Training Center tier ($1,000/mo) are proposed structures. A $1,000/year standard enterprise fee applied to Airbus or Boeing is a procurement rounding error — it signals the platform does not understand the commercial value of what it is providing. The OEM tier must be positioned as market intelligence infrastructure, not HR tooling. The anonymised data angle is critical: it bypasses individual data privacy concerns entirely while providing the highest-value dataset in aviation. Review before publishing publicly.</p>
+          </div>
+
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The A322 dilemma resolved:</strong> The platform knows — in real time — whether pilots are training toward A320 or A321 qualifications, which operators are posting those pathway requirements, and what the demand curve looks like 18 months out. <strong style={{color:'#f87171'}}>A manufacturer with access to that data does not build the wrong simulator. It builds the right one, in the right volume, before the market needs it.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The A321 dilemma resolved:</strong> The platform knows — in real time — whether pilots are training toward A320 or A321 qualifications, which operators are posting those pathway requirements, and what the demand curve looks like 18 months out. <strong style={{color:'#f87171'}}>A manufacturer with access to that data does not build the wrong simulator. It builds the right one, in the right volume, before the market needs it.</strong></p>
           </div>
 
           <hr className="my-8 border-slate-200" />
