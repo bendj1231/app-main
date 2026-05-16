@@ -4946,7 +4946,13 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">Because we are pilots, we know exactly where the trust breaks down between the line and corporate management. Because we are pilots, we engineered the trust shield that protects user privacy while maximizing career utility.</p>
           <p className="text-slate-700 leading-relaxed mb-6">When software giants, navigation providers, and simulator developers partner with PilotRecognition, they are not just integrating with another software application. <strong>They are plugging directly into an authentic, pilot-led ecosystem designed to elevate the entire aviation profession.</strong> We are the source. We are the cockpit. We built the infrastructure we always needed — and it is time for the industry to catch up.</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XII. The Logbook Provider Partnership: Digital &amp; Physical Data Verification</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XII. Flight Data &amp; Navigation Apps Partnership Ecosystem</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition platform integrates with three distinct categories of flight data providers — each with tailored value propositions, revenue models, and technical pathways. This section provides partner-specific elevator pitches and integration frameworks for corporate development teams.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-A. Logbook Providers Partnership</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">LogTen Pro · FLYLOG.io · capzlog.aero · IDfy</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Elevator Pitch:</strong> "We turn your passive data diary into an active, monetizable industry credential."</p>
+
           <p className="text-slate-700 leading-relaxed mb-4">Flight logbook providers occupy a unique verification layer within the PilotRecognition ecosystem. Unlike simple telemetry apps, logbook platforms handle both digital flight data and physical logbook uploads — including photo proof, instructor signatures, and cross-referenced flight documentation. This hybrid data management positions them as critical <strong>Verification Node Operators</strong> within the broader architecture.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The LogTen Pro Problem: Captured Users, Lost Professional Value</h4>
@@ -5722,6 +5728,66 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">Your logbook app is already excellent at capturing flight data. We don't compete with that. We add the <strong>verification layer that makes your data valuable to employers</strong>.</p>
             <p className="text-white text-sm leading-relaxed mt-2">Without us: Your users have beautifully formatted, self-reported hours that airlines must manually verify.<br/>With us: Your users have <strong>industry-recognized, operator-verified credentials</strong> that airlines trust immediately.</p>
             <p className="text-white text-sm leading-relaxed mt-2">You keep your users. You keep your data. You earn more revenue. And your platform becomes the industry standard for <strong>credible, verified flight logging</strong>.</p>
+          </div>
+
+          <hr className="my-8 border-slate-300" />
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-B. EFBs & Navigation Apps Partnership</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">ForeFlight · Garmin Pilot · Navigraph · WingX</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Elevator Pitch:</strong> "We transform your consumer flight planning tool into a quantifiable career accelerator."</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Value for EFB & Nav Providers</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Isolated Data Problem:</strong> EFBs and navigation apps collect incredibly rich telemetry — route diversity, approach types, weather avoidance patterns, altitude management, and airspace complexity. Yet this data lives in a silo. A pilot can fly 500 complex IFR approaches in ForeFlight, but an airline recruiter sees none of it. The data is invisible.</p>
+              <p><strong>The PilotRecognition Bridge:</strong> By routing your telemetry into our verification ecosystem, flight planning complexity directly increases a pilot's Recognition Score. A pilot using your app for challenging cross-country routes, multiple approach types, and complex airspace gets algorithmic hiring preference.</p>
+              <p><strong>The Competitive Moat:</strong> Once ForeFlight data contributes to a pilot's hiring score, pilots choose ForeFlight over competitors. The app becomes not just a planning tool, but a career investment with measurable ROI.</p>
+              <p><strong>New Revenue Stream:</strong> Anonymized, aggregate safety data from your user base becomes licensable to insurance underwriters and fleet managers. They pay for trend analysis on weather avoidance patterns, fuel efficiency, and risk profiles.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-cyan-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>Integration Pathway for EFBs</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Data Flow:</strong> Your app exports flight plan metadata (route complexity, approach diversity, weather conditions) via API to PilotRecognition. We weight these factors into the pilot's Recognition Score alongside verified flight hours.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Revenue Share:</strong> $15 per active integration (per pilot linking their account). Plus premium tier: airlines pay for anonymous aggregate trend data on pilot proficiency patterns.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Implementation:</strong> RESTful API with JSON flight summaries. OAuth 2.0 pilot consent flow. Read-only access to anonymized trend data. 3-sprint integration timeline.</p>
+          </div>
+
+          <hr className="my-8 border-slate-300" />
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-C. Simulation & ATC Networks Partnership</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">X-Plane · Microsoft Flight Simulator · PilotEdge · VATSIM · IVAO</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Elevator Pitch:</strong> "We elevate your platform from a high-fidelity simulator to an official airline screening asset."</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The CBTA Revolution Opportunity</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Industry Shift:</strong> Airlines are moving to Competency-Based Training and Assessment (CBTA). Raw hours matter less than demonstrated competencies — communication, decision-making, situational awareness, workload management.</p>
+              <p><strong>The Simulator Gap:</strong> X-Plane and MSFS have incredibly accurate flight models. PilotEdge and VATSIM provide live ATC interaction. Yet airlines treat simulator time as "unofficial" because there's no verification layer connecting virtual performance to real-world competency.</p>
+              <p><strong>The PilotRecognition Solution:</strong> We map simulator telemetry and ATC communication patterns to the 9 Core ICAO Competencies. Hours spent on VATSIM with professional-grade ATC communication become verifiable evidence of Communication and Teamwork skills. Complex IFR scenarios in X-Plane demonstrate Problem-Solving and Situational Awareness.</p>
+              <p><strong>The Career Impact:</strong> A pilot with 200 hours of verified VATSIM ATC interactions and 100 complex X-Plane IFR scenarios carries a demonstrably lower remedial training risk. Airlines trust this and hire faster.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-purple-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Integration Pathway for Simulation Platforms</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Data Capture:</strong> Simulator platforms export session telemetry — flight parameters, weather conditions, emergency scenarios handled, ATC communication logs. We verify this against competency rubrics developed with airline training departments.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Competency Scoring:</strong> Each simulator session contributes to a pilot's competency profile: "Demonstrated Problem-Solving in engine-out scenarios (X-Plane)" — "Verified Communication proficiency (PilotEdge ATC)".</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Revenue Share:</strong> $25 per pilot linking simulator profile. Premium: Airlines pay for pre-screening reports on simulator-verified competencies before investing in Type Rating training.</p>
+          </div>
+
+          <hr className="my-8 border-slate-300" />
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-D. Unified Integration Architecture</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct value propositions, all integrations route through the same technical infrastructure — creating a unified ecosystem where data from LogTen, ForeFlight, X-Plane, and Veremark all contribute to a single, trusted pilot credential.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Three-Layer Verification Stack (All Partners)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Layer 1 — Presentation Data (Logbook/EFB/Sim):</strong> User-entered or telemetry-captured flight data from the partner platform. LogTen hours, ForeFlight routes, X-Plane sessions.</p>
+              <p><strong>Layer 2 — Origin Verification (Veremark/ATO/Airline):</strong> Independent verification that the flight actually occurred — crew scheduling records, flight school documentation, simulator session authentication.</p>
+              <p><strong>Layer 3 — Recognition Score (PilotRecognition):</strong> The unified algorithm that weights verified hours, competency metrics, and professional standing into a single industry-recognized credential.</p>
+            </div>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
