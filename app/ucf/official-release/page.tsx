@@ -4980,7 +4980,7 @@ export default function UCFOfficialReleasePage() {
               <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
               <p>│  <span className="text-amber-400">│  HOBBS      │</span>   <span className="text-amber-400">│  DATA CHECK │</span>       │</p>
               <p>│  <span className="text-emerald-400">│ 1,240 HRS   │</span>   <span className="text-emerald-400">│ VERIFIED ✓  │</span>       │</p>
-              <p>│  <span className="text-amber-400">│ LogTen Pro  │</span>   <span className="text-amber-400">│ Veremark    │</span>       │</p>
+              <p>│  <span className="text-amber-400">│ ATO/Operator│</span>   <span className="text-amber-400">│ Veremark    │</span>       │</p>
               <p>│  <span className="text-amber-400">└─────────────┘</span>   <span className="text-amber-400">└─────────────┘</span>       │</p>
               <p>│                                                 │</p>
               <p>│  <span className="text-amber-400">┌─────────────┐</span>   <span className="text-amber-400">┌─────────────┐</span>       │</p>
@@ -4995,7 +4995,7 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
-            <li><strong>The Hobbs (Logbook Provider):</strong> Tallying total verified flight hours — continuously updating as the pilot logs new flights via integrated logbook apps.</li>
+            <li><strong>The Hobbs (ATO/Operator Verified):</strong> Tallying total verified flight hours — each entry cryptographically attested by either the Flight Training Organization (ATO) verification issuer where training occurred, or the commercial operator (airline/employer) where the pilot flew professionally. This institutional verification transforms raw logbook entries into trusted, airline-ready flight time records.</li>
             <li><strong>The Data Check (Veremark — stored in Verepass):</strong> Background verification status showing green when all data is cryptographically attested and current via Veremark's verification engine, red when discrepancies or expirations are detected. Verification records are securely stored in the pilot's Verepass digital vault.</li>
             <li><strong>The Practice Instrument (X-Plane + ForeFlight):</strong> Aggregating all simulation and navigation app activity — desktop simulator hours (X-Plane, MSFS) plus route planning, approach practice, and procedure rehearsal logged via navigation apps (ForeFlight). This combined practice data feeds the Recognition Score and demonstrates active proficiency building beyond raw flight hours.</li>
             <li><strong>The Pathway Navigator (Airline Integration):</strong> Color-coded alignment indicator showing whether the pilot's current profile matches their target cadet program or airline pathway requirements.</li>
@@ -5043,8 +5043,9 @@ export default function UCFOfficialReleasePage() {
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">X-Plane</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">PilotEdge</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Veremark</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATO / Operator</span>
             </div>
-            <p className="text-slate-400 text-xs mt-3">A contribution platform built by API integrations from established aviation and verification companies — further bulletproofing trust through distributed verification. Verification records securely stored in Verepass.</p>
+            <p className="text-slate-400 text-xs mt-3">A contribution platform built by API integrations from established aviation and verification companies — further bulletproofing trust through distributed verification. Flight hours verified by ATOs and Operators. Verification records securely stored in Verepass.</p>
           </div>
 
           <hr className="my-8 border-slate-200" />
