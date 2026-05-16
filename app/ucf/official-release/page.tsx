@@ -2568,6 +2568,111 @@ export default function UCFOfficialReleasePage() {
           </ul>
           <p className="text-slate-600 text-sm leading-relaxed mb-8">The operator pays per check for Layer 2. The pilot's Layer 1 wallet is not replaced — it is supplemented. An operator who completes a deep verification on a candidate can choose to contribute the results back to the pilot's wallet (with consent), further strengthening the pilot's portable credential for future applications.</p>
 
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">The Triangulated Verification Architecture</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition operates as a <strong>neutral orchestration layer</strong>. No raw pilot data is stored on the platform. Three independent providers handle distinct verification functions — each under the pilot's explicit consent, each holding only their own data, each issuing only confirmations back to the platform.</p>
+
+          <div className="bg-slate-900 rounded-lg px-6 py-5 mb-6 font-mono text-sm">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">Verification Flow — Neutral Orchestration</p>
+            <p className="text-slate-300 mb-1">Pilot submits data + pathway consent</p>
+            <p className="text-red-400 mb-3">↓</p>
+            <div className="grid grid-cols-3 gap-4 mb-3">
+              {([
+                { name: 'Veremark', role: 'CAAP License\nProfessional Qual.\nIdentity (airline pull)', color: '#34d399' },
+                { name: 'IDfy', role: 'Training Hours\nConfirmation\n+ Cross-check', color: '#60a5fa' },
+                { name: 'Verepass', role: "Pilot's portable\nverified credential\nwallet (Veremark)", color: '#f87171' },
+              ].map((p) => (
+                <div key={p.name} className="border border-slate-700 rounded px-3 py-3 text-center">
+                  <p className="font-bold mb-2" style={{color: p.color}}>{p.name}</p>
+                  <p className="text-slate-400 text-xs whitespace-pre-line leading-relaxed">{p.role}</p>
+                </div>
+              )))}
+            </div>
+            <p className="text-red-400 mb-1">↓</p>
+            <p className="text-slate-300 mb-1">Master token issued to pilot's Credential Wallet</p>
+            <p className="text-slate-500 text-xs">Raw data: stays with Veremark, IDfy, and pilot respectively · PilotRecognition holds token + receipt IDs only</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {([
+              { provider: 'Veremark', color: '#34d399', items: ['Workflow B — verification-led, not data sourcing', 'CAAP license + Professional Qualification check at registration ($13 partner rate)', 'Identity check triggered at airline shortlist ($9 — billed to airline at $50)', '15% markup confirmed in writing by Oliver Lobb (May 16, 2026)', 'Issues Verepass record to pilot simultaneously'] },
+              { provider: 'IDfy', color: '#60a5fa', items: ['Training hours confirmation — pilot-initiated, school-confirmed', 'Cross-checks Veremark result as triangulation failsafe', 'If Veremark result = IDfy result → double confirmed ✅✅', 'If mismatch → flagged for review ⚠️', 'No single point of failure — operates independently of Veremark'] },
+              { provider: 'Verepass', color: '#f87171', items: ["Veremark's pilot-facing portable credential wallet", 'Issued simultaneously with every Veremark check', 'Pilot owns this record regardless of platform', 'Travels with the pilot if they leave PilotRecognition', 'Surfaced inside PR Credential Wallet via API — pilot never leaves the platform'] },
+            ] as {provider: string; color: string; items: string[]}[]).map((col) => (
+              <div key={col.provider} className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
+                <p className="font-bold mb-3 text-sm" style={{color: col.color}}>{col.provider}</p>
+                <ul className="space-y-1">
+                  {col.items.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
+                      <span className="mt-0.5 flex-shrink-0" style={{color: col.color}}>→</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The neutrality statement:</strong> <span className="text-slate-300">"PilotRecognition does not own pilot data. We are neutral infrastructure — a trust layer between pilots, training organisations, and operators. We facilitate verified confirmations. The pilot controls what is shared, with whom, and for how long. We hold receipts. They own the record."</span> Same reason SWIFT doesn't own your money. They move it.</p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">The Pathway Consent Event — When the Airline Sees Everything</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">By default, all tokens in the pilot's Credential Wallet are <strong>private</strong>. The pilot sees everything. No operator sees anything — until the pilot submits interest in a pathway. That submission is the consent event that unlocks the full token stack for that specific operator only.</p>
+
+          <div className="bg-slate-900 rounded-lg px-6 py-5 mb-6">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-4">Pathway Consent Flow — Step by Step</p>
+            <ol className="space-y-3">
+              {([
+                { step: '1', label: 'Airline posts a pathway', desc: 'Operator publishes requirements — hours, type rating, medical status, Recognition Score threshold. Visible to all pilots on the platform.' },
+                { step: '2', label: 'Pilot submits interest', desc: 'Pilot clicks "Submit Interest." A consent modal appears — explicitly listing every data point the airline will receive access to: flight hours, license status, Recognition Score, programs, EBT score, employment history.' },
+                { step: '3', label: 'Pilot consents', desc: '"By submitting this pathway, I authorise [Airline Name] to view my full Recognition Profile and Credential Wallet tokens for the purpose of this pathway application only." Pilot clicks: SUBMIT & CONSENT.' },
+                { step: '4', label: 'Consent receipt issued', desc: 'A timestamped consent record is generated — pilot name, airline name, date, scope of data shared, pathway ID. This is the audit trail PilotRecognition holds.' },
+                { step: '5', label: 'Airline receives full token access', desc: 'The airline\'s operator dashboard unlocks the pilot\'s full verified profile: ✅ License (Veremark) · ✅ Training Hours (IDfy) · ✅ Verepass record · ✅ Recognition Score · ✅ Programs · ✅ EBT score (if completed).' },
+                { step: '6', label: 'Airline shortlists — identity pull triggered', desc: 'Airline clicks "Pull Profile" on shortlisted candidates. Identity check is triggered via Veremark ($9 cost, $50 charged to airline). Pilot is notified. $41 net margin to PilotRecognition.' },
+                { step: '7', label: 'Access is scoped and revocable', desc: 'Access is per-pathway, per-operator only. Cebu Pacific sees the profile. PAL does not — until the pilot submits to PAL separately. Pilot can withdraw consent at any time — token access revoked instantly.' },
+              ] as {step: string; label: string; desc: string}[]).map((item) => (
+                <li key={item.step} className="flex items-start gap-3">
+                  <span className="text-red-400 font-bold text-sm flex-shrink-0 w-5">{item.step}.</span>
+                  <span className="text-sm"><strong style={{color:'#f87171'}}>{item.label}</strong> — <span className="text-slate-300">{item.desc}</span></span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Who</th>
+                  <th className="text-left px-4 py-2 font-semibold">What They See</th>
+                  <th className="text-left px-4 py-2 font-semibold">When</th>
+                  <th className="text-left px-4 py-2 font-semibold">How Access is Granted</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { who: 'Pilot', sees: 'Full token stack — all receipts, all confirmations, all scores', when: 'Always', how: 'Their own wallet — permanent access' },
+                  { who: 'Airline (pathway submitted)', sees: '✅ License · ✅ Hours · ✅ Verepass · ✅ Score · ✅ Programs · ✅ EBT', when: 'After pilot pathway submission', how: 'Pilot consent at submission — scoped to this pathway only' },
+                  { who: 'Airline (profile pull)', sees: '+ Identity verification (live)', when: 'After airline shortlists and pays $50', how: 'Pilot notified — implicit consent via pathway submission' },
+                  { who: 'Other operators', sees: 'Nothing', when: 'Never — unless pilot submits separately', how: 'No cross-operator data sharing without separate consent' },
+                  { who: 'PilotRecognition', sees: 'Token metadata + receipt IDs only', when: 'Always', how: 'Platform role — never raw data' },
+                  { who: 'Public', sees: 'Nothing', when: 'Never', how: 'Private by default' },
+                ] as {who: string; sees: string; when: string; how: string}[]).map((row, i) => (
+                  <tr key={row.who} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.who}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.sees}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.when}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.how}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>"We issue tokens. The pilot holds the key. The airline sees only what the pilot unlocks."</strong><br /><span className="text-slate-300 text-xs">This is the data privacy answer, the security answer, the investor answer, and the airline trust answer — in one sentence.</span></p>
+          </div>
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Ecosystem Integration — How the Platform Connects Every Stakeholder</h4>
 
           <h5 className="text-base font-bold text-slate-800 mt-4 mb-2">For Airline HR Departments</h5>
