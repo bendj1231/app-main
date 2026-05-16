@@ -2680,9 +2680,53 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>"We issue tokens. The pilot holds the key. The airline sees only what the pilot unlocks."</strong><br /><span className="text-slate-300 text-xs">This is the data privacy answer, the security answer, the investor answer, and the airline trust answer — in one sentence.</span></p>
           </div>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Built by Pilots, for Pilots — Why the Architecture Is Designed This Way</h4>
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Your Data. Your Wallet. Your Command.</h4>
           <p className="text-slate-700 leading-relaxed mb-4">This platform was built by pilots who have lived through the exact frustrations it solves — the manual verification queues, the opaque hiring requirements, the career delays caused by paper-based credential systems that belong to a different era. That shared background is not just a marketing narrative. It is the reason the platform is architected the way it is.</p>
-          <p className="text-slate-700 leading-relaxed mb-4">In aviation, nothing happens without the pilot's direct command. <strong>We have applied that exact principle to how data moves on this platform.</strong> Your data does not move because an airline requests it. It moves because you command it. Every verification, every token access, every identity pull — requires your explicit approval. That is not a compliance choice. It is an aviation philosophy.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition is not a data broker. We do not hoard your professional history. We are the secure radio channel you use to transmit your verified credentials directly to airlines. In aviation, nothing happens without the pilot's direct command. <strong>We have applied that exact principle to how data moves on this platform.</strong></p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {([
+              { title: 'Zero Data Custody', icon: '🔒', desc: 'We do not store your raw license files, medical certificates, or logbook pages on our servers. If we are ever targeted by a breach, there is no personal data to leak.' },
+              { title: 'Decentralised Ownership', icon: '🗝️', desc: 'Your verified credentials live in your personal Decentralised Identifier (DID) wallet. You own the cryptographic proofs of your career — not us, not the airline.' },
+              { title: 'Pilot-Commanded Data Releases', icon: '✈️', desc: 'Airlines cannot pull your data implicitly. Every time an airline wants to view your verified status, you receive a push notification. You must actively tap APPROVE to grant temporary access.' },
+              { title: 'The 10,000 Pilot Shield', icon: '🛡️', desc: 'When pilots control their own data, regulatory bottlenecks disappear, hiring timelines shrink from months to minutes, and the industry moves at the speed of flight.' },
+            ] as {title:string;icon:string;desc:string}[]).map((item) => (
+              <div key={item.title} className="border border-slate-200 rounded-lg px-5 py-4 bg-white flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">{item.icon}</span>
+                <div>
+                  <p className="font-bold text-slate-900 mb-1">{item.title}</p>
+                  <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">How We Compare to Legacy Aviation Hiring</h4>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Feature</th>
+                <th className="text-left px-4 py-2 font-semibold text-red-400">Legacy Aviation Hiring</th>
+                <th className="text-left px-4 py-2 font-semibold" style={{color:'#34d399'}}>PilotRecognition Platform</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { f: 'Data Ownership', legacy: 'Owned by airlines and agencies', pr: 'Owned entirely by the pilot' },
+                  { f: 'Consent Model', legacy: 'Hidden in long-form Terms and Conditions', pr: 'Explicit push notification per data request' },
+                  { f: 'Verification Speed', legacy: '14–30 days via manual CAAP requests', pr: 'Instant via verified cryptographic tokens' },
+                  { f: 'Data Storage', legacy: 'Vulnerable centralised filing cabinets and servers', pr: 'Decentralised DID wallets — pilot holds the key' },
+                  { f: 'Airline Access', legacy: 'Airlines pull CVs without pilot knowledge', pr: 'Pilot must APPROVE every access event' },
+                  { f: 'Portability', legacy: 'Credentials locked to each employer', pr: 'Credentials travel with the pilot across every operator' },
+                ] as {f:string;legacy:string;pr:string}[]).map((row, i) => (
+                  <tr key={row.f} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.f}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 text-xs">{row.legacy}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-xs" style={{color:'#34d399'}}>{row.pr}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The three principles of pilot-commanded data:</strong><br />
@@ -4563,6 +4607,71 @@ export default function UCFOfficialReleasePage() {
           <div className="my-6 px-5 py-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
             <p className="text-sm font-bold text-blue-700 uppercase tracking-widest mb-1">Why This Matters Commercially</p>
             <p className="text-slate-700 leading-relaxed">The vault provider relationship is what allows PilotRecognition to operate as a <strong>data-neutral platform</strong>. Airlines trust the token because it comes from two independent sources. Pilots trust the platform because their data never enters it. Regulators have no basis to classify PilotRecognition as a data controller for credential data — the vault and Veremark hold that liability. This architecture is the legal foundation for global expansion without jurisdiction-by-jurisdiction data compliance registration.</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Controller-to-Controller API Flow</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Legacy architectures treat background check providers as sub-processors — receiving raw data, running checks, returning results. This creates joint liability that cannot be defended under GDPR Art. 28 because Veremark and IDfy have their own independent legal obligations, registry access agreements, and compliance requirements. <strong>PilotRecognition treats them as Independent Controllers.</strong> We do not pass raw data back and forth. We pass requests and receive binary receipts.</p>
+
+          <div className="space-y-4 mb-6">
+            {([
+              {
+                provider: 'Veremark Integration',
+                color: '#34d399',
+                steps: [
+                  'Pilot initiates a Professional Qualification check via PilotRecognition UI',
+                  'PilotRecognition passes the check request to Veremark — no raw document transfer',
+                  'Veremark acts as Independent Controller: pings CAAP registry directly under their own regulatory authorisation',
+                  'Veremark holds the raw data log — their infrastructure, their liability',
+                  'PilotRecognition receives only: receipt_id + binary proof (is_license_valid = TRUE / is_medical_current = FALSE)',
+                  'Binary proof stored in Supabase alongside consent timestamp and pilot ID — zero raw credential data',
+                ],
+              },
+              {
+                provider: 'IDfy Integration',
+                color: '#60a5fa',
+                steps: [
+                  'Pilot initiates training hours confirmation — selects flight school from verified ATO list',
+                  'PilotRecognition passes the confirmation request to IDfy — no raw logbook data transfer',
+                  'IDfy acts as Independent Controller: contacts flight school directly under their own data agreements',
+                  'School confirms in their dashboard: hours confirmed, denied, or partially corrected',
+                  'IDfy also cross-checks Veremark results as triangulation failsafe — mismatch flagged for review',
+                  'PilotRecognition receives only: receipt_id + binary proof (training_hours_confirmed = TRUE, confirmed_volume = 200hrs)',
+                ],
+              },
+            ] as {provider:string;color:string;steps:string[]}[]).map((item) => (
+              <div key={item.provider} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <p className="font-bold mb-3" style={{color: item.color}}>{item.provider}</p>
+                <ol className="space-y-1">
+                  {item.steps.map((step, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                      <span className="font-bold flex-shrink-0" style={{color: item.color}}>{i + 1}.</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-6">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">What PilotRecognition Stores in Supabase — The Complete List</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {([
+                { label: 'Stored', color: '#34d399', items: ['Timestamped consent receipt', 'Pilot ID (internal reference)', 'Airline ID (for pathway submissions)', 'Receipt ID from Veremark / IDfy', 'Binary proof result (TRUE / FALSE)', 'Cryptographic signature of approval event', 'Token expiry date'] },
+                { label: 'Never Stored', color: '#f87171', items: ['Raw license documents', 'Passport or ID scans', 'Medical certificate files', 'Logbook pages or raw hour entries', 'CAAP registry query results', 'Personal data strings of any kind', 'Verepass raw credential data'] },
+              ] as {label:string;color:string;items:string[]}[]).map((col) => (
+                <div key={col.label}>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{color: col.color}}>{col.label}</p>
+                  <ul className="space-y-1">
+                    {col.items.map(i => (
+                      <li key={i} className="text-xs text-slate-300 flex gap-2">
+                        <span style={{color: col.color}} className="flex-shrink-0">→</span>{i}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="my-6 px-5 py-4 border-l-4 border-slate-300 bg-slate-50 rounded-r-lg">
