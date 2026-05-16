@@ -361,6 +361,92 @@ export default function UCFOfficialReleasePage() {
             This is not a pilot problem. This is an industry infrastructure problem.
           </p>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Base Layer Thesis — Why This Platform Cannot Be Replicated</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">In technology, the most powerful companies do not build the applications. They build the operating system that every application runs on. Microsoft did not build Office before Windows. Apple did not build the App Store before iOS. The platform that controls the base layer does not compete with what runs on top of it — <strong>it becomes the condition for everything else existing at all.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-6">The aviation industry has operated top-down for 70 years: regulators dictate to airlines, airlines dictate to training centers, and pilots are treated as the end product — interchangeable cogs inserted into the last step of the process. <strong>That model is structurally inverted from reality.</strong> The pilot is not the end product. The pilot is the foundation. Remove the verified, qualified human from the left and right seats, and every other layer of the industry collapses simultaneously.</p>
+
+          <div className="bg-slate-900 rounded-xl px-8 py-6 mb-8">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-5">The Industry Stack — Corrected</p>
+            <div className="space-y-2 mb-6">
+              {([
+                { layer: 'Layer 4 — Regulators', desc: 'Issue certificates, set standards, enforce compliance. Have nothing to regulate without the humans below.', color: '#94a3b8' },
+                { layer: 'Layer 3 — Airlines & Operators', desc: 'Move passengers and cargo. Are marketing and scheduling companies without the crew to execute. Pay access fees to reach the layer below.', color: '#94a3b8' },
+                { layer: 'Layer 2 — Training & Verification', desc: 'Produce and certify qualified pilots. Exist only to serve the layer below. Depend on the platform to place their graduates.', color: '#94a3b8' },
+                { layer: 'Layer 1 — Manufacturers & OEMs', desc: 'Build aircraft. Cannot sell what airlines cannot crew. Pay for market intelligence about the layer below.', color: '#94a3b8' },
+              ] as {layer:string;desc:string;color:string}[]).map((item, i) => (
+                <div key={item.layer} className="flex items-start gap-4 border border-slate-700 rounded-lg px-4 py-3 bg-slate-800">
+                  <span className="text-slate-500 text-xs font-mono flex-shrink-0 mt-0.5">{4 - i}</span>
+                  <div>
+                    <p className="text-slate-300 font-semibold text-sm">{item.layer}</p>
+                    <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-start gap-4 border-2 border-red-500 rounded-lg px-4 py-3 bg-slate-800">
+                <span className="text-red-400 text-xs font-mono flex-shrink-0 mt-0.5 font-bold">0</span>
+                <div>
+                  <p className="font-bold text-sm" style={{color:'#f87171'}}>Layer 0 — The Pilot · THE BASE LAYER</p>
+                  <p className="text-slate-300 text-xs leading-relaxed">The verified, qualified human. The only non-negotiable input in the entire industry. Every layer above depends on this one. <strong className="text-white">PilotRecognition owns the infrastructure where this layer lives, verifies, and commands its data.</strong></p>
+                </div>
+              </div>
+            </div>
+            <p className="text-slate-400 text-xs italic">Every stakeholder above Layer 0 must plug into the platform to access Layer 0. That is not a feature. It is the moat.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {([
+              {
+                title: 'Why Airlines Cannot Walk Away',
+                color: 'border-blue-400',
+                items: [
+                  'Their hiring pipeline depends on the verified pilot pool',
+                  'Unverified hiring means regulatory exposure and liability',
+                  'Every competitor airline is on the platform — absence signals weakness',
+                  'Their ATS integrations are wired into the platform API',
+                ],
+              },
+              {
+                title: 'Why Training Centers Cannot Walk Away',
+                color: 'border-emerald-400',
+                items: [
+                  'Their graduates need verified digital logbooks to be hired',
+                  'Their placement rates are only provable through the platform',
+                  'Students choose schools with verified placement outcomes',
+                  'Their referral income flows through the platform',
+                ],
+              },
+              {
+                title: 'Why OEMs Cannot Walk Away',
+                color: 'border-yellow-400',
+                items: [
+                  'Fleet sale decisions require live pilot supply data',
+                  'Simulator production planning requires 18-month demand curves',
+                  '"OEM Verified Graduate" pathway only exists on the platform',
+                  'EBT curriculum development requires anonymised competency benchmarks',
+                ],
+              },
+              {
+                title: 'Why Insurers Cannot Walk Away',
+                color: 'border-purple-400',
+                items: [
+                  'Source truth of verified hours is the only accurate underwriting input',
+                  'Continuous monitoring replaces static annual snapshot',
+                  'Competency-based premium pricing only possible with platform data',
+                  'Hull insurance on multi-million dollar aircraft priced on estimates — until now',
+                ],
+              },
+            ] as {title:string;color:string;items:string[]}[]).map(col => (
+              <div key={col.title} className={`border-l-4 ${col.color} rounded-r-lg px-5 py-4 bg-white border border-slate-200`}>
+                <p className="font-bold text-slate-900 text-sm mb-3">{col.title}</p>
+                <ul className="space-y-1">{col.items.map(i => <li key={i} className="text-xs text-slate-600 flex gap-2"><span className="text-slate-400 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The legal consequence of owning the base layer:</strong> <span className="text-slate-300">Because the pilot owns their data in a decentralised wallet and commands every release — and because the platform is the neutral infrastructure through which that happens — no airline's aggressive legal department can rewrite the terms of access. The airline needs the network more than the network needs any single airline. This is not a negotiating position. It is the architecture.</span></p>
+          </div>
+
           <p className="text-slate-700 leading-relaxed mb-4">
             <strong>PilotRecognition is the Aviation Industry Operating System</strong> — a neutral, centralized platform purpose-built to connect every stakeholder in aviation through <strong>verified, live, and structured data.</strong> It is not a job board. It is not a recruitment agency. It is not a resume database. It is <strong>the shared infrastructure the industry has never had:</strong> a system where every credential, every qualification, every requirement, every opportunity, and every decision point across the aviation ecosystem is <strong>connected, verified, and accessible in real time.</strong>
           </p>
