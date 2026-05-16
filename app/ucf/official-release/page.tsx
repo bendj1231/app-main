@@ -5002,6 +5002,20 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <p className="text-slate-700 leading-relaxed mb-4">The pilot operates this dashboard as the <strong>Pilot in Command</strong> — scanning instruments, checking for red alerts, and ensuring all systems are green before engaging their target career pathway. Just as a pilot cannot fly IFR without proper instruments, they cannot access premium pathway placements without verified data showing green across the panel.</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Commercial Airline & Operator Issuance</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Commercial airlines and aircraft operators serve as <strong>Verification Node Issuers</strong> for flight hours logged on their aircraft. When a pilot flies for an airline, charter operator, or commercial fleet, the operator can issue cryptographically signed attestations of those flight hours directly to the pilot's sovereign wallet — with explicit pilot consent.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Operator-Issued Flight Hours</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Pilot Consent Layer:</strong> Before any flight hour attestation is issued, the pilot must authorize their employer/operator to attest hours on their behalf. This consent is revocable and auditable on-chain.</p>
+              <p><strong>Aircraft-Specific Logging:</strong> Each attestation includes the specific aircraft registration, flight sectors, and duty periods — creating an immutable record of professional flight activity tied to the operator's fleet.</p>
+              <p><strong>Career Mobility:</strong> When a pilot transitions between employers, their verified hours from previous operators remain in their wallet as portable, cryptographically attested credentials — eliminating the traditional "logbook gap" during job changes.</p>
+              <p><strong>Operator Benefits:</strong> Airlines that issue verified hours to departing pilots maintain positive alumni relationships, reduce post-employment verification requests, and position themselves as modern, pilot-centric employers in the marketplace.</p>
+            </div>
+          </div>
+
           <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
             <div className="space-y-1 text-slate-300">
               <p>┌─────────────────────────────────────────┐</p>
