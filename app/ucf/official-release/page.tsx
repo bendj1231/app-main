@@ -2262,18 +2262,31 @@ export default function UCFOfficialReleasePage() {
               <p><strong>Other Operators (Cargo/Charter):</strong> When placement data reveals systematic discrepancies between ATO-reported competency and actual operational performance.</p>
               <p><strong>Individual Pilots:</strong> When falsified records result in career damage — failed checkrides, employment termination, or regulatory enforcement due to training deficiencies not reflected in verified credentials.</p>
               <p><strong>Financial Institutions:</strong> When training loans default due to unqualified graduates failing to secure employment because credential inflation misrepresented competency levels.</p>
+              <p><strong>Regulatory Authorities:</strong> When a pilot fails regulatory examinations (e.g., CAAP CPL checks) and must return to the flight school for remedial training, exposing the ATO's initial competency certification as premature or inaccurate. The authority may hold the ATO accountable for certifying pilots who were not examination-ready.</p>
             </div>
           </div>
 
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Liability Pathway:</strong> Under the Sequential Accountability Protocol, disputes originating from any of these parties traverse through the verification chain:</p>
           <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
             <div className="space-y-1 text-slate-300">
-              <p><span className="text-emerald-400">Dispute Origin:</span> Operator/Individual/Financial Institution</p>
+              <p><span className="text-emerald-400">Dispute Origin:</span> Operator/Individual/Financial Institution/Regulatory Authority</p>
               <p><span className="text-slate-500">→</span> <span className="text-amber-400">$500-2,000</span> Platform routing and attestor identification</p>
               <p><span className="text-slate-500">→</span> <span className="text-amber-400">$1,000-3,000</span> Verification provider record retrieval</p>
               <p><span className="text-slate-500">→</span> <span className="text-amber-400">$1,500-4,000</span> <span className="text-red-400 font-bold">ATO as Originating Attestor (Pillar 5)</span></p>
             </div>
             <p className="text-slate-400 mt-3 pt-3 border-t border-slate-700">The ATO is <span className="text-red-400 font-bold">Level 4</span> in the liability chain — the originating attestor bearing ultimate responsibility for training record accuracy.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Example: CAAP Examination Failure Chain</p>
+            <p className="text-sm text-slate-700 mb-2">When a pilot fails CAAP regulatory examinations and returns to the flight school for remedial training:</p>
+            <div className="space-y-1 text-sm text-slate-700">
+              <p><strong>1. Regulatory Authority (CAAP):</strong> Documents examination failure, identifies pilot as ATO graduate</p>
+              <p><strong>2. Authority Database:</strong> Links failure to issuing ATO's certification records</p>
+              <p><strong>3. Platform Layer:</strong> Routes inquiry to Verification Node (issuing ATO) per cryptographic signature</p>
+              <p><strong>4. Flight School (ATO):</strong> Must account for competency certification issued prior to examination</p>
+            </div>
+            <p className="text-sm text-slate-700 mt-3 pt-3 border-t border-slate-200"><strong>Result:</strong> The ATO that issued the "examination-ready" certification becomes the liable party for any costs associated with remedial training, re-examination fees, and career delays.</p>
           </div>
 
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Legal Consequences of Falsification:</strong></p>
