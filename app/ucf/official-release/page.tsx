@@ -5635,6 +5635,52 @@ export default function UCFOfficialReleasePage() {
                 <li><strong>No data migration:</strong> Hours stay in their database; we only read and verify</li>
                 <li><strong>Market expansion:</strong> Access to our airline partnerships and pathway network</li>
               </ul>
+              <p><strong>Pricing Model Comparison:</strong></p>
+              <div className="bg-slate-100 p-3 rounded">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-300">
+                      <th className="text-left py-1">Provider</th>
+                      <th className="text-left py-1">Base Price</th>
+                      <th className="text-left py-1">Premium Tier</th>
+                      <th className="text-left py-1">Verification Included</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">LogTen Pro</td>
+                      <td className="py-1">$79.99/year (Basic)</td>
+                      <td className="py-1">$129.99/year (Pro)</td>
+                      <td className="py-1">❌ Manual only</td>
+                    </tr>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">FLYLOG.io</td>
+                      <td className="py-1">Free tier available</td>
+                      <td className="py-1">€49-99/year</td>
+                      <td className="py-1">❌ None</td>
+                    </tr>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">capzlog.aero</td>
+                      <td className="py-1">CHF 39/year</td>
+                      <td className="py-1">CHF 89/year (Professional)</td>
+                      <td className="py-1">❌ None</td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 font-semibold">PilotRecognition</td>
+                      <td className="py-1">$100/year (Recognition+)</td>
+                      <td className="py-1">Included in base</td>
+                      <td className="py-1">✅ Triple-verified with Veremark</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Compliance Certifications:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li><strong>LogTen Pro:</strong> FAA/EASA compliant logbook formatting, accepted by 100+ airlines for manual review</li>
+                <li><strong>FLYLOG.io:</strong> EASA Part-FCL compliant, widely used in European flight schools for training records</li>
+                <li><strong>capzlog.aero:</strong> Swiss FOCA recognized, EASA compliant, specifically designed for European sailplane and GA pilots</li>
+                <li><strong>PilotRecognition Value Add:</strong> None of these providers offer <strong>automated third-party verification</strong> — that's the gap we fill</li>
+              </ul>
             </div>
           </div>
 
