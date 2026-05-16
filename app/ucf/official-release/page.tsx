@@ -4626,23 +4626,22 @@ export default function UCFOfficialReleasePage() {
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">I. The Problem: Pilot Telemetry Is Professionally Invisible</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Navigraph, ForeFlight, Garmin Pilot, SkyDemon, and desktop simulator platforms collectively capture millions of hours of real pilot activity every month. Route planning data, ATC simulation sessions, approach currency records, weather decision-making patterns, and instrument proficiency events are all logged — and all professionally invisible. They do not appear on a CV. They are not queryable by an airline. They contribute nothing to the pilot's verified professional identity.</p>
-          <p className="text-slate-700 leading-relaxed mb-6">This is a structural waste of the most granular pilot activity data in existence. A pilot who completes 50 hours of IFR simulator sessions in a month has demonstrably maintained cognitive currency. That fact should be verifiable. Currently, it is not.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">I. Executive Overview: The Invisible Telemetry Problem</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Navigraph, ForeFlight, Garmin Pilot, SkyDemon, and desktop simulation platforms collectively capture millions of hours of granular pilot activity every month. Route planning architecture, airspace communication loops, approach currency records, and real-time weather decision-making patterns are continuously logged — yet they remain professionally invisible. They do not appear on a CV, they cannot be parsed by an airline Applicant Tracking System (ATS), and they contribute zero equity to a pilot's active job hunt.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">This represents a structural failure in data utilization. A pilot who logs dozens of hours mastering complex IFR routing or executing high-fidelity simulator profiles is demonstrably maintaining sharp cognitive currency. Currently, that currency is unverifiable.</p>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Data Silo Crisis:</strong> Flight data apps are <strong>consumer entertainment products</strong> masquerading as professional tools. A pilot spending $200/year on Navigraph charts generates training data worth 100x that to airlines — but the airline cannot access it, the pilot cannot prove it, and the app provider cannot monetize it beyond subscription fees. <strong style={{color:'#f87171'}}>Three parties. One broken data pipe. Zero value capture.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The Data Silo Crisis:</strong> Flight applications operate primarily as <strong>consumer utilities rather than professional validation tools.</strong> A pilot generating highly predictive operational performance data has no mechanism to prove it, the airline has no way to search for it, and the application provider cannot leverage it beyond flat subscription fees. <strong style={{color:'#f87171'}}>Three distinct stakeholders, one broken data loop, zero collective value capture.</strong></p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">II. Stakeholder Pain Points</h3>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Pilots: The Invisible Competency Problem</h4>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Pilots: The Invisible Competency Bottleneck</h4>
           <ul className="space-y-2 mb-6">
             {[
-              { n: '1', t: 'Proficiency data evaporates', d: <>IFR currency, approach patterns, weather routing decisions — all logged in apps, <strong>all absent from professional profiles.</strong> A pilot cannot prove they maintained instrument competency during employment gaps.</> },
-              { n: '2', t: 'Simulator sessions are orphaned', d: <>Hours spent in X-Plane, Microsoft Flight Simulator, or certified FTDs produce <strong>demonstrable competency evidence</strong> that disappears the moment the session ends. No airline sees it. No employer values it.</> },
-              { n: '3', t: 'Subscription churn after hiring', d: <>Pilots cancel Navigraph, ForeFlight, and chart subscriptions once employed because <strong>the apps have no career utility post-hire.</strong> The data dies with the subscription.</> },
-              { n: '4', t: 'No standardized export format', d: <>Every app uses proprietary data structures. A pilot cannot aggregate their ForeFlight hours with their Navigraph approaches into <strong>a single verifiable professional record.</strong></> },
+              { n: '1', t: 'Proficiency Evaporation', d: <>Advanced metrics — such as instrument approach diversity, holding pattern precision, and weather avoidance strategies — remain locked behind closed application screens, <strong>vanishing from professional profiles</strong> during employment transitions or gaps.</> },
+              { n: '2', t: 'Orphaned Simulation Assets', d: <>High-fidelity hours logged on desktop simulators (X-Plane, MSFS) or fixed Flight Training Devices (FTDs) offer clear evidence of procedural proficiency but are <strong>entirely disregarded by airline recruiters</strong> due to a lack of source verification.</> },
+              { n: '3', t: 'Proprietary Format Isolation', d: <>Closed, fragmented data structures prevent pilots from aggregating their multi-platform logs into a <strong>single, cohesive, and transportable career dossier.</strong></> },
             ].map((item) => (
               <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                 <span className="text-red-500 mt-1 flex-shrink-0">→</span>
@@ -4651,13 +4650,11 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Flight Data Providers: The Revenue Ceiling</h4>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">For Flight Data Providers: The Commercial Glass Ceiling</h4>
           <ul className="space-y-2 mb-6">
             {[
-              { n: '1', t: 'Subscription-only monetization', d: <>Revenue capped at $80-200/year per user. <strong>No enterprise licensing.</strong> No B2B data products. No airline partnerships. The business model is structurally limited to consumer subscriptions.</> },
-              { n: '2', t: 'High post-employment churn', d: <>Pilots who secure airline positions cancel subscriptions because the app becomes professionally irrelevant. <strong>Customer lifetime value is artificially shortened</strong> by lack of career-stage utility.</> },
-              { n: '3', t: 'No differentiation in enterprise sales', d: <>All flight data apps compete on the same feature matrix: charts, weather, flight planning. <strong>No app can claim verified credential integration</strong> or professional aviation network effects.</> },
-              { n: '4', t: 'Data hoarding with no extraction value', d: <>Providers sit on petabytes of pilot behavior data with <strong>no mechanism to monetize insights</strong> to airlines, insurers, or training organizations while maintaining pilot privacy.</> },
+              { n: '1', t: 'Subscription-Locked Monetization', d: <>Revenue models remain heavily restricted to <strong>consumer-tier subscriptions</strong>, completely missing high-margin B2B enterprise licensing, airline recruitment partnerships, and insurance analytics pipelines.</> },
+              { n: '2', t: 'Post-Employment Attrition', d: <>The moment a pilot secures a mainline carrier position, the professional utility of personal flight-planning apps drops significantly, resulting in <strong>predictable, structural subscription churn.</strong></> },
             ].map((item) => (
               <li key={item.n} className="ml-6 text-slate-700 leading-relaxed flex items-start gap-2">
                 <span className="text-red-500 mt-1 flex-shrink-0">→</span>
@@ -4666,175 +4663,83 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">III. The Solution: Verified Telemetry Integration</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Pillar 12 transforms flight data platforms from consumer apps into <strong>professional credentialing infrastructure</strong>. By establishing API bridges between Navigraph, ForeFlight, Garmin Pilot, SkyDemon, and the PilotRecognition Professional Standing Asset, pilot activity data becomes cryptographically verifiable, airline-queryable, and career-portable.</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">III. The Architecture of Verified Telemetry Integration</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 12 re-architects flight data platforms into <strong>core professional credentialing infrastructure.</strong> By deploying secure API integrations between navigation providers, EFBs, simulation networks, and the PilotRecognition Professional Standing Asset, raw pilot telemetry is transformed into secure, portable Competency Tokens.</p>
 
-          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">The Integration Value Loop</p>
-            <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>For Pilots:</strong> Every simulator session, route plan, and approach flown becomes a <strong>verified competency token</strong> in their professional wallet — visible to airlines, portable across employers, immutable and fraud-resistant.</p>
-              <p><strong>For Flight Data Providers:</strong> Subscription churn drops because pilots need the app to feed their verified profile. Enterprise partnerships unlock <strong>B2B revenue streams</strong> (airline analytics, insurer data products, ATO verification services).</p>
-              <p><strong>For Airlines:</strong> Access to granular proficiency data beyond logbook hours — <strong>instrument currency patterns, weather decision-making frequency, approach diversity</strong> — enabling competency-based hiring beyond paper qualifications.</p>
-            </div>
-          </div>
-
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Technical Integration Architecture</h4>
           <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
             <div className="space-y-1 text-slate-300">
-              <p><span className="text-emerald-400">Data Capture Layer:</span> Flight data app records session (route, approaches, weather encounters, simulator hours)</p>
+              <p><span className="text-emerald-400">[Application / Simulation Session]</span></p>
               <p><span className="text-slate-500">↓</span></p>
-              <p><span className="text-emerald-400">Verification Node:</span> Cryptographic timestamp + device fingerprint + optional ATO/simulator center countersignature</p>
+              <p><span className="text-emerald-400">[Automated API Ingestion]</span> ──> <span className="text-emerald-400">[Platform Anti-Spoofing Protocols]</span></p>
               <p><span className="text-slate-500">↓</span></p>
-              <p><span className="text-emerald-400">API Bridge:</span> Standardized data payload transmitted to PilotRecognition Ingestion API</p>
+              <p><span className="text-emerald-400">[Pilot's Cryptographic Wallet Token]</span></p>
               <p><span className="text-slate-500">↓</span></p>
-              <p><span className="text-emerald-400">Pilot Sovereign Wallet:</span> Tokenized credential minted (e.g., "50 Hours IFR Currency Verified", "B737NG Simulator Proficiency")</p>
-              <p><span className="text-slate-500">↓</span></p>
-              <p><span className="text-emerald-400">Airline Query Layer:</span> Operator APIs surface verified competency data during hiring workflows</p>
+              <p><span className="text-emerald-400">[Airline Sourcing Pipeline]</span></p>
             </div>
           </div>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. Partnership Integration Tiers</h4>
-          <div className="overflow-x-auto mb-6">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-slate-900 text-white">
-                  <th className="text-left px-4 py-2 font-semibold">Tier</th>
-                  <th className="text-left px-4 py-2 font-semibold">Integration Depth</th>
-                  <th className="text-left px-4 py-2 font-semibold">Pilot Benefit</th>
-                  <th className="text-left px-4 py-2 font-semibold">Provider Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { t: 'Basic', d: 'Manual export → upload to PR wallet', b: 'Data portability; pilot-controlled sharing', r: 'No additional revenue; standard subscription' },
-                  { t: 'Standard', d: 'API webhook; automated hourly sync', b: 'Real-time profile enrichment; auto-verified tokens', r: 'Reduced churn (10-15%); enterprise data licensing' },
-                  { t: 'Verified', d: 'ATO/simulator countersignature integration', b: 'Institutionally verified simulator hours', r: 'Simulator center referral fees; premium enterprise tier' },
-                  { t: 'Strategic', d: 'Co-marketing; airline analytics dashboard', b: 'Featured partner status in pathway matching', r: 'B2B airline contracts; data insights revenue share' },
-                ].map((row, i) => (
-                  <tr key={row.t} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
-                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.t}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.d}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.b}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400">{row.r}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Data Verification Protocols</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">Not all flight data carries equal evidentiary weight. Pillar 12 implements tiered confidence scoring based on data source and verification depth:</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Technical Ingestion Architecture</h4>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
-            <li><strong>Level 1 — Self-Reported:</strong> Manual logbook entry from flight data app. Pilot-controlled privacy; minimal verification weight.</li>
-            <li><strong>Level 2 — Device-Verified:</strong> Automatic GPS/timestamp logging with device fingerprinting. Anti-spoofing via cryptographic hashing.</li>
-            <li><strong>Level 3 — Institutionally Countersigned:</strong> Flight school, simulator center, or ATO validation of simulator session or training flight.</li>
-            <li><strong>Level 4 — Multi-Source Triangulated:</strong> Cross-referenced with ADS-B telemetry, instructor validation tokens, and platform telemetry mirrors (see Pillar 5, Section XV).</li>
+            <li><strong>Data Capture Layer:</strong> The integrated flight application records the active session telemetry (trajectories, approach tracking, weather variables, simulation parameters).</li>
+            <li><strong>Verification Node Processing:</strong> Telemetry is bound to an atomic timestamp, device hardware signature, and optional ATO/instructor countersignature.</li>
+            <li><strong>API Bridge Transmission:</strong> Standardized data payloads are pushed securely to the PilotRecognition Ingestion Engine.</li>
+            <li><strong>Sovereign Ledger Minting:</strong> A cryptographically signed token (e.g., Verified IFR Currency: 50 Hours) is deposited directly into the pilot's decentralized wallet.</li>
           </ul>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">4. Platform Neutrality: Non-Competitive Infrastructure</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">A foundational principle of Pillar 12 is that <strong>PilotRecognition does not compete with flight data providers and does not favor any single platform</strong>. The platform functions as neutral infrastructure — a trusted intermediary that all sides can rely upon without fear of displacement or preferential treatment.</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. Tiered Data Verification Protocols</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">To ensure analytical integrity for airline recruiters, incoming telemetry is weighted via four strict confidence tiers:</p>
+          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
+            <li><strong>Level 1 — Self-Reported:</strong> Manual logbook entries or user-exported flight files. Minimal validation weight.</li>
+            <li><strong>Level 2 — Device-Verified:</strong> Automated application/GPS tracking backed by cryptographic device fingerprinting and anti-spoofing hashing.</li>
+            <li><strong>Level 3 — Institutionally Countersigned:</strong> Simulator training center, flight school, or ATO-validated sessions verifying formal instructional parameters.</li>
+            <li><strong>Level 4 — Multi-Source Triangulated:</strong> Telemetry run through the Platform Telemetry Mirror, cross-referencing log entries directly against live global ADS-B transponder tracking networks.</li>
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Platform Neutrality: The Non-Competitive Infrastructure Standard</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">A foundational tenet of the PilotRecognition architecture is <strong>absolute infrastructure neutrality.</strong> The platform does not compete with flight data apps, nor does it pick ecosystem winners or losers.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Neutrality Framework</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>No Verification Authority:</strong> PilotRecognition does not verify flight data itself. Verification is performed by independent Verification Nodes (ATOs, simulator centers, regulatory authorities) through cryptographic signatures. The platform is a <strong>neutral conduit</strong> — not a data validator.</p>
-              <p><strong>No Competitive Products:</strong> PilotRecognition does not build or operate its own digital logbook, EFB, or flight planning app. We do not compete with Navigraph, ForeFlight, LogTen Pro, or any partner. Our sole function is to provide the <strong>infrastructure layer</strong> that transforms their data into verified credentials.</p>
-              <p><strong>Equal Treatment Doctrine:</strong> All integrated flight data apps receive identical API access, identical verification protocols, and identical airline visibility. No partner receives preferential treatment in pathway matching or credential display. The platform is <strong>agnostic to data source</strong> — quality is determined by verification depth, not brand name.</p>
-              <p><strong>Data Sovereignty Guarantee:</strong> Pilots control which apps can push data to their wallet and which airlines can view it. PilotRecognition cannot access, modify, or monetize flight data without explicit pilot consent. The platform serves the pilot's interests, not its own.</p>
+              <p><strong>No Verification Authority:</strong> PilotRecognition never unilaterally alters or validates telemetry. It functions strictly as a secure conduit, leaving verification authority to independent decentralized nodes (ATOs, regulatory bodies, simulator centers).</p>
+              <p><strong>Zero Product Competition:</strong> PilotRecognition does not build, own, or operate digital logbooks, EFBs, or navigation chart software. We do not compete with our partners. Our sole mission is to turn their data into verified professional currency.</p>
+              <p><strong>Equal Treatment Doctrine:</strong> Every integrated platform utilizes identical API protocols, validation metrics, and carrier visibility channels. Telemetry weight is dictated purely by its verification level, never by the brand size of the application provider.</p>
+              <p><strong>Sovereign Control:</strong> Pilots retain absolute keys to their records. No data can be accessed, surfaced, or transferred without an explicit cryptographic signature from the pilot's wallet.</p>
             </div>
           </div>
 
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>Why This Matters to Partners:</strong> Flight data providers can integrate with confidence knowing that:</p>
-          <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
-            <li>We will never launch a competing logbook or navigation app</li>
-            <li>We will never prioritize one partner's data over another in airline queries</li>
-            <li>We will never use aggregated data to build competing analytics products</li>
-            <li>We will never sell pilot data to third parties without explicit consent</li>
-          </ul>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IV. The Pilot-First Network Referral Loop</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">We believe the pilots who build this network through active flight logs and simulator tracking should be the primary beneficiaries of its growth. Rather than paying opaque corporate data brokers, PilotRecognition aligns application developers and aviators via a clean, structured financial mechanism.</p>
 
-          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-sm text-slate-700"><strong>The Neutral Infrastructure Positioning:</strong> PilotRecognition provides credentialing infrastructure without competing with flight data apps — similar to how payment networks enable transactions without competing with merchants. We are the <strong>neutral territory</strong> where all apps, all pilots, and all airlines can transact verified data with mutual trust.</p>
-          </div>
-
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">5. Specific Partner Profiles</h4>
-
-          <div className="space-y-4 mb-6">
-            <div className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
-              <p className="font-bold text-slate-900 mb-2" style={{color:'#dc2626'}}>Navigraph / Chart Providers</p>
-              <p className="text-sm text-slate-600 leading-relaxed mb-2"><strong>Current State:</strong> Subscription chart and navigation data. No professional credentialing.</p>
-              <p className="text-sm text-slate-600 leading-relaxed"><strong>Pillar 12 Integration:</strong> Route planning frequency, approach diversity, weather encounter logging minted as "Operational Currency" tokens. Airlines see not just hours, but <strong>decision-making density and weather exposure patterns.</strong></p>
-            </div>
-            <div className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
-              <p className="font-bold text-slate-900 mb-2" style={{color:'#dc2626'}}>ForeFlight / Garmin Pilot</p>
-              <p className="text-sm text-slate-600 leading-relaxed mb-2"><strong>Current State:</strong> EFB (Electronic Flight Bag) with logging capabilities. Data locked in proprietary format.</p>
-              <p className="text-sm text-slate-600 leading-relaxed"><strong>Pillar 12 Integration:</strong> EFB flight logs auto-sync to Professional Standing Asset. Electronic logbook entries gain cryptographic verification. <strong>Pilots never manually transfer hours again.</strong></p>
-            </div>
-            <div className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
-              <p className="font-bold text-slate-900 mb-2" style={{color:'#dc2626'}}>Desktop Simulator Platforms (X-Plane, MSFS)</p>
-              <p className="text-sm text-slate-600 leading-relaxed mb-2"><strong>Current State:</strong> Consumer entertainment. Hours not recognized by airlines or regulators.</p>
-              <p className="text-sm text-slate-600 leading-relaxed"><strong>Pillar 12 Integration:</strong> Simulator sessions logged with aircraft type, scenario complexity, and ATO/simulator center countersignature. <strong>Produces verifiable "Simulator Proficiency" tokens for type rating preparation.</strong></p>
-            </div>
-            <div className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
-              <p className="font-bold text-slate-900 mb-2" style={{color:'#dc2626'}}>ATC Simulation Apps (PilotEdge, VATSIM)</p>
-              <p className="text-sm text-slate-600 leading-relaxed mb-2"><strong>Current State:</strong> Radio proficiency practice. No professional recognition.</p>
-              <p className="text-sm text-slate-600 leading-relaxed"><strong>Pillar 12 Integration:</strong> Communication density, ATC interaction complexity, and phraseology compliance logged as "CRM & Communication Currency" tokens. <strong>Low-hour pilots prove high communication competency before first airline interview.</strong></p>
-            </div>
-          </div>
-
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IV. Revenue Architecture for Providers</h3>
-
-          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Pilot Perspective: Your Flying Is Invisible To The Industry</p>
-            <p className="text-sm text-slate-700 mb-2">Pilots spend hundreds of dollars annually on subscriptions like Navigraph, ForeFlight, Garmin Pilot, or SkyDemon, and thousands more on simulator hours. They use these tools to build real proficiency: planning complex routes, sharpening IFR skills, flying tight instrument approaches, and mastering challenging weather.</p>
-            <p className="text-sm text-slate-700 mb-2">But right now, the aviation industry treats all of that hard work as invisible. The moment a pilot closes the app or powers down the sim, their data disappears into a commercial black hole. It doesn't count toward their CV. Airlines can't see it, recruiters can't query it, and it does absolutely nothing to help them land their next seat.</p>
-            <p className="text-sm text-slate-700"><strong>The Broken Pipe:</strong> The training data pilots generate is worth a fortune to airlines looking for sharp talent, but pilots have no way to prove it, and app providers have no way to validate it for them. Skill evaporates the moment they log off.</p>
-          </div>
-
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Direct Revenue Streams</h4>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {[
-              { t: 'Reduced Churn Revenue', items: ['Pilots maintaining subscriptions to feed verified profiles', 'Estimated 20-30% churn reduction post-employment', 'Annual subscription value preserved: $150-300 per pilot'] },
-              { t: 'Enterprise Data Licensing', items: ['Anonymous aggregate proficiency analytics to airlines', 'Training trend reports to ATOs and simulator centers', 'Insurance risk modeling data to underwriters (Pillar 10)'] },
-            ].map(col => (
-              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
-                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
-                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
-              </div>
-            ))}
-          </div>
-
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The $20 Ecosystem Referral Dividend</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">The pilots who build this network should be the ones who profit from its growth. PilotRecognition turns navigation, chart, and simulator platforms into active onboarding partners for pilot careers.</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The $20 Ecosystem Referral Dividend</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">When an integrated application partner (e.g., Navigraph, ForeFlight, SkyDemon) successfully onboards a pilot onto the PilotRecognition network, a <strong>$20 Ecosystem Referral Dividend</strong> is automatically unlocked upon the activation of that pilot's premium Recognition+ career profile.</p>
 
           <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">Referral Economics</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p>When an integrated flight application (e.g., Navigraph or ForeFlight) successfully introduces a pilot to the PilotRecognition network, a <strong>$20 Ecosystem Referral Dividend</strong> is triggered upon activation of that pilot's premium profile.</p>
-              <p><strong>Distribution:</strong> $20 paid directly to the partner app/platform infrastructure</p>
-              <p><strong>Lifetime Value:</strong> Pilot keeps app active to feed verified data to career wallet — reducing churn and increasing lifetime value</p>
+              <p><strong>Direct Allocation:</strong> The $20 dividend is distributed directly back to the originating partner application's infrastructure ledger.</p>
+              <p><strong>LTV Optimization:</strong> Pilots are incentivized to maintain active, continuous app subscriptions because those subscriptions serve as the verified data pipe driving their live hiring profile. Churn drops significantly, extending pilot customer lifetime value.</p>
+              <p><strong>Ecosystem Incentivization:</strong> This dividend motivates app developers to design deeper, cleaner, and highly advanced career-tracking utilities for pilots, transforming a basic consumer tool into an active professional accelerator.</p>
             </div>
           </div>
 
-          <p className="text-slate-700 leading-relaxed mb-4">By embedding this $20 incentive directly into software infrastructure, flight apps are financially motivated to build deeper, cleaner career tools. Instead of just selling basic chart subscriptions, providers are incentivized to help pilots get discovered by airlines, build automatic verification tools, and maintain connection to active global hiring pathways.</p>
-
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. App Integration Matrix: How Tools Adapt</h4>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">V. Application Integration Matrix</h3>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-900 text-white">
-                  <th className="text-left px-4 py-2 font-semibold">Platform Type</th>
-                  <th className="text-left px-4 py-2 font-semibold">Current Use</th>
-                  <th className="text-left px-4 py-2 font-semibold">Verified Wallet Credentials</th>
-                  <th className="text-left px-4 py-2 font-semibold">Airline Visibility</th>
+                  <th className="text-left px-4 py-2 font-semibold">Platform Classification</th>
+                  <th className="text-left px-4 py-2 font-semibold">Primary Activity Input</th>
+                  <th className="text-left px-4 py-2 font-semibold">Verified Wallet Token Generated</th>
+                  <th className="text-left px-4 py-2 font-semibold">Downstream Airline Marketplace Visibility</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { t: 'Chart & Nav Apps', c: 'Route planning, chart views, procedure selection', v: '"Operational Currency" Tokens (approach diversity, flight planning frequency)', a: 'Pilot actively maintaining cognitive familiarity with international airports and complex airspace' },
-                  { t: 'EFBs / Logbooks', c: 'Flight tracking, hour logs, airport notes', v: '"Verified Flight Time" Tokens (auto-synced, cryptographically anchored)', a: 'Instantly verifiable hours that bypass ATS parsing errors' },
-                  { t: 'Desktop Simulators', c: 'Procedure practice, type-specific handling, failures', v: '"Simulator Proficiency" Tokens (validated by hardware logs and ATO tokens)', a: 'Advanced procedural readiness before interview' },
-                  { t: 'ATC Simulations', c: 'Live phraseology, airspace communication', v: '"CRM & Communication Currency" Tokens (radio density, compliance metrics)', a: 'High-level situational awareness and radio competency edge for low-hour pilots' },
+                  { t: 'Navigation & Charting (e.g., Navigraph, SkyDemon)', c: 'Route planning architectures, procedure selections, weather maps', v: 'Operational Currency Token (Measures routing complexity and approach diversity)', a: 'Demonstrates a pilot maintaining high cognitive familiarity with international terminal airspaces and changing weather logic.' },
+                  { t: 'EFBs & Digital Logbooks (e.g., ForeFlight, Garmin Pilot)', c: 'Flight block tracking, manual logs, airframe times', v: 'Verified Flight Time Token (Cryptographically anchored to hardware logs)', a: 'Delivers fully verified flight times that bypass manual review and instantly clear ATS parsing constraints.' },
+                  { t: 'Desktop Simulation (e.g., X-Plane, MSFS)', c: 'Systems management, failure checklists, procedure repetition', v: 'Simulator Proficiency Token (Validated via telemetry files and instructor hashes)', a: 'Showcases superior procedural familiarity and advanced type-specific cockpit readiness prior to formal airline screening.' },
+                  { t: 'ATC Simulation Networks (e.g., PilotEdge, VATSIM)', c: 'Live radio phraseology, airspace structure interactions, controller compliance', v: 'CRM & Communication Token (Tracks transmission density and phraseology precision)', a: 'Establishes objective proof of radio proficiency and situational awareness, giving low-hour pilots a clear hiring edge.' },
                 ].map((row, i) => (
                   <tr key={row.t} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.t}</td>
@@ -4847,46 +4752,10 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
 
-          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Partnership Pitch to Flight Data Providers</p>
-            <p className="text-sm text-slate-700 mb-2 italic">"Your app captures the most detailed pilot activity data in aviation. Currently, that data dies when the pilot closes the app. PilotRecognition transforms it into verified, airline-queryable credentials that travel with the pilot across their entire career."</p>
-            <p className="text-sm text-slate-700 mb-2"><strong>The Ask:</strong> API integration enabling automatic, pilot-authorized data sync to Professional Standing Assets.</p>
-            <p className="text-sm text-slate-700"><strong>The Return:</strong> $20 referral dividends, reduced churn, enterprise data licensing revenue, and differentiation as the only flight data app with professional credential integration.</p>
-          </div>
-
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">V. Integration Requirements &amp; Standards</h3>
-          <div className="overflow-x-auto mb-6">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-slate-900 text-white">
-                  <th className="text-left px-4 py-2 font-semibold">Requirement Category</th>
-                  <th className="text-left px-4 py-2 font-semibold">Standard</th>
-                  <th className="text-left px-4 py-2 font-semibold">Purpose</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { c: 'API Protocol', s: 'RESTful webhooks with OAuth 2.0', p: 'Secure, standardized data transmission' },
-                  { c: 'Data Format', s: 'JSON schema with aviation-specific extensions', p: 'Interoperability across all partner platforms' },
-                  { c: 'Privacy Control', s: 'Pilot-opt-in per data category', p: 'GDPR/CCPA compliance; pilot sovereignty' },
-                  { c: 'Timestamping', s: 'Atomic clock sync + GPS validation', p: 'Anti-spoofing; evidentiary integrity' },
-                  { c: 'Cryptographic Binding', s: 'SHA-256 hashing to pilot wallet DID', p: 'Immutable attribution; fraud resistance' },
-                  { c: 'Audit Trail', s: 'Immutable ledger logging all data access', p: 'Transparency; regulatory compliance' },
-                ].map((row, i) => (
-                  <tr key={row.c} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
-                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.c}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.s}</td>
-                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400">{row.p}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Competitive Moat: Separating Toys From Tools</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">Once a flight data provider integrates with PilotRecognition, their data becomes part of the <strong>verified credential standard</strong> airlines expect. Competitors without integration are relegated to "consumer entertainment" status. The first-mover integration becomes the professional standard — and late adopters struggle to compete for serious pilot users.</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Pilot Value Proposition:</strong> You own your data; it's time you used it to fly your career forward. Apps that refuse to open their data pipes to your sovereign wallet will be left behind as consumer novelties. The platforms that empower you with data sovereignty and direct airline visibility become the absolute industry standard for serious aviators.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Competitive Moat: Separating Toys from Tools</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Once a flight application plugs into the PilotRecognition ecosystem, it shifts from an isolated consumer app to an indispensable professional asset. Platforms that refuse to provide data sovereignty to their pilots will be relegated to entertainment novelties. The platforms that champion pilot data ownership and direct airline routing will become the unquestioned industry standard for serious pilots.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Pilot Value Proposition:</strong> You own your data — it is time you used it to advance your career.</p>
           </div>
 
           <hr className="my-8 border-slate-200" />
