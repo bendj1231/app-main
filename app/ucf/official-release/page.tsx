@@ -5691,6 +5691,39 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2"><strong>The Pitch to Any Logbook:</strong> "Add one API endpoint. Unlock $20 per user in verification revenue. Offer your pilots airline-ready credentials. Takes 2 days to implement."</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Core Value Proposition: Enhancement, Not Replacement</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition does not replace logbook platforms — we add an <strong>industry-recognized verification feature</strong> that elevates the credibility of your existing service. We are not competing for your users; we are making your platform more valuable to them.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Enhancement Model: Recognition as a Premium Feature</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>For Pilots on Your Platform:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Your logbook remains their primary flight recording tool</li>
+                <li>They gain an <strong>industry-recognized "Verified Hours" badge</strong> that airlines and operators trust</li>
+                <li>Their flight hours carry more weight in pathway applications and job interviews</li>
+                <li>They remain your subscribers — verification is an add-on, not a migration</li>
+              </ul>
+              <p><strong>For Your Platform:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>You become a <strong>credible logbook platform with verified hours</strong> from operators and flight schools</li>
+                <li>You attract new users who specifically seek verified credentialing</li>
+                <li>You reduce <strong>false claims and "logbook padding"</strong> through automated triangulation with airline records</li>
+                <li>You earn revenue from every verification ($20 per pilot) without building infrastructure</li>
+                <li>You differentiate from competitors who offer <strong>unverified, user-entered data only</strong></li>
+              </ul>
+              <p><strong>The Credibility Advantage:</strong></p>
+              <p>Airlines currently view logbook exports with skepticism because they know pilots can manually enter any numbers. By integrating with PilotRecognition, your platform offers <strong>triple-verified hours</strong> (logbook entry + operator record + Veremark attestation). This transforms your logbook from a "personal diary" into a <strong>trusted professional credential</strong> that airlines can rely on for hiring decisions.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Bottom Line for Logbook Providers</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Your logbook app is already excellent at capturing flight data. We don't compete with that. We add the <strong>verification layer that makes your data valuable to employers</strong>.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Without us: Your users have beautifully formatted, self-reported hours that airlines must manually verify.<br/>With us: Your users have <strong>industry-recognized, operator-verified credentials</strong> that airlines trust immediately.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">You keep your users. You keep your data. You earn more revenue. And your platform becomes the industry standard for <strong>credible, verified flight logging</strong>.</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
