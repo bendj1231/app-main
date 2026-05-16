@@ -5058,6 +5058,29 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The In-App Verification CTA</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">LogTen can add a simple, non-intrusive call-to-action directly in their app interface — "<strong>Verify your flight hours with PilotRecognition.com</strong>" — surfacing the verification option to their entire 160,000+ pilot base without disrupting the core logging experience.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Integration Touchpoints</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Hour Milestone Triggers:</strong> When pilot hits 100, 500, 1000, 1500 hours — banner appears: "Congratulations on 1,000 hours! Verify with PilotRecognition and get instant airline-ready credentials."</p>
+              <p><strong>Pre-Application Prompt:</strong> When pilot exports logbook data (CSV/PDF), dialog asks: "Applying to airlines? Skip the manual verification — verify instantly with PilotRecognition instead."</p>
+              <p><strong>Dashboard Widget:</strong> Small persistent widget in corner of LogTen interface: "Verify Hours →" — one-click access to attestation workflow.</p>
+              <p><strong>Settings Menu Integration:</strong> "Career Services" section in LogTen settings with PilotRecognition as featured partner for verification.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The "Verify with PilotRecognition" Button</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Placement:</strong> Next to "Share" and "Export" buttons in LogTen flight entry view. Non-intrusive but visible when pilots are actively managing their hours.</p>
+              <p><strong>Functionality:</strong> One click opens embedded PilotRecognition verification flow (iframe or deep link). Pilot selects ATO/Operator, consents to attestation, pays verification fee. LogTen receives $20 referral dividend instantly.</p>
+              <p><strong>Pilot Experience:</strong> Seamless — never leaves LogTen app. Verification token appears in LogTen dashboard as "Verified ✓" badge on flight hours. Pilot can click badge to view full attestation on PilotRecognition.com.</p>
+              <p><strong>LogTen Benefit:</strong> Every click = potential $20 revenue. At 10% monthly active users clicking once = 16,000 verifications = $320,000/month in referral dividends.</p>
+            </div>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
