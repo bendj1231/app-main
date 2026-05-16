@@ -1982,6 +1982,84 @@ export default function UCFOfficialReleasePage() {
             ))}
           </ul>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Verification Node — ATOs as Trusted Hour Confirmation Sources</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">No background check provider in the world offers a flight hours verification check — because pilot logbooks are not held in any government registry or authoritative database that a third party can query. Veremark, HireRight, First Advantage — none of them can confirm how many hours a pilot flew at a given school. <strong>This gap is the platform's structural advantage, and ATOs are the solution to it.</strong></p>
+          <p className="text-slate-700 leading-relaxed mb-4">Enterprise ATOs on the platform become <strong style={{color:'#dc2626'}}>Verification Nodes</strong> — trusted institutional sources that confirm their own graduates' training hours directly inside the pilot's Credential Wallet. This is not a Veremark check. It is a native platform check, issued by the school that produced the hours, triggered by the pilot themselves with explicit consent.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed mb-2"><strong style={{color:'#f87171'}}>The Flow — Pilot-Initiated, School-Confirmed</strong></p>
+            <ol className="space-y-1 text-slate-300 text-sm">
+              {([
+                'Pilot registers on PilotRecognition → selects their training school from the verified ATO list',
+                'Pilot consents: "I authorise PilotRecognition to verify my training hours with [School Name]"',
+                'School receives a verification request in their operator dashboard: "Student [Name] — 200hrs claimed. Confirm?"',
+                'School confirms, denies, or corrects the hours — one click',
+                'Verified Training Hours badge appears instantly in the pilot\'s Credential Wallet',
+                'School name is displayed as the issuing authority on the credential — permanently visible to every operator that views the pilot\'s profile',
+              ].map((step, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="text-red-400 font-bold flex-shrink-0">{i + 1}.</span>
+                  <span>{step}</span>
+                </li>
+              )))}
+            </ol>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {([
+              { title: 'For the Pilot', items: ['Verified hours badge without chasing the school manually', 'Happens inside the platform they\'re already using', 'No third-party cost — included in $100 subscription', 'Credential shows school name as issuing authority'] },
+              { title: 'For the Flight School', items: ['Verification requests come to them — students drive the workflow', 'School name on every verified pilot profile seen by airlines', 'Included in $1,000/yr Enterprise access — no per-check fee', 'Motivates graduates to stay connected to the school\'s platform presence'] },
+              { title: 'For PilotRecognition', items: ['Zero Veremark cost — pure margin on the Training Hours check', 'Flight school becomes invested in staying on the platform', 'Creates pull dynamic — schools want listing so students can find them', 'Verification network grows with every new school partner'] },
+            ] as {title: string; items: string[]}[]).map((col) => (
+              <div key={col.title} className="border border-slate-200 rounded-lg px-4 py-4 bg-white">
+                <p className="font-bold text-slate-900 mb-3" style={{color:'#dc2626'}}>{col.title}</p>
+                <ul className="space-y-1">
+                  {col.items.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-slate-600">
+                      <span className="text-red-400 mt-0.5 flex-shrink-0">→</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Commercial Case — $1,000/yr Pays for Itself</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The ATO access fee becomes economically irrelevant at any meaningful graduate volume. The referral commission alone covers it — and past that point, the school is in profit.</p>
+          <div className="overflow-x-auto mb-5">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">School Size</th>
+                  <th className="text-right px-4 py-2 font-semibold">Graduates/yr</th>
+                  <th className="text-right px-4 py-2 font-semibold">Referral Earnings ($20/pilot)</th>
+                  <th className="text-right px-4 py-2 font-semibold">Access Fee</th>
+                  <th className="text-right px-4 py-2 font-semibold" style={{color:'#34d399'}}>Net Position</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { size: 'Small', grads: 50, earnings: 1000, fee: 1000, net: 0, note: 'Break even' },
+                  { size: 'Medium', grads: 150, earnings: 3000, fee: 1000, net: 2000, note: '200% ROI' },
+                  { size: 'Large', grads: 300, earnings: 6000, fee: 1000, net: 5000, note: '500% ROI' },
+                  { size: 'WCC-scale', grads: 500, earnings: 10000, fee: 1000, net: 9000, note: '900% ROI' },
+                ] as {size: string; grads: number; earnings: number; fee: number; net: number; note: string}[]).map((row, i) => (
+                  <tr key={row.size} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.size}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-right text-slate-300">{row.grads}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-right text-slate-300">${row.earnings.toLocaleString()}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-right text-red-400">−${row.fee.toLocaleString()}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-right font-bold" style={{color: row.net > 0 ? '#34d399' : '#94a3b8'}}>${row.net.toLocaleString()} <span className="text-xs font-normal opacity-70">({row.note})</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The $1,000/yr fee pays for itself at 50 graduates. Every school above that size is in profit.</strong> The ATO is not buying software access. They are buying a distribution channel, a verification node status, a graduate income stream, and their school name on every airline-visible pilot credential — for less than the cost of one newspaper advertisement. <strong style={{color:'#f87171'}}>No flight school CFO declines that conversation.</strong></p>
+          </div>
+
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Cross-Border Training Partnerships — The Philippines ↔ Dubai Model</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Pilots in developing aviation markets — Philippines, India, Africa — hold locally valid licences that lack global recognition. PRC licences do not travel. Meanwhile, GCC authorities (UAE, Qatar, Saudi Arabia) maintain rigorous standards respected worldwide. The <strong>18,000 AED cost for Dubai-affiliated training is prohibitive</strong> for most pilots in these markets — placing a globally recognised credential behind a capital barrier that structurally excludes qualified candidates from international airline consideration.</p>
           <p className="text-slate-700 leading-relaxed mb-4">The platform resolves this through a <strong>bulk purchasing and exclusive channel model</strong>: 10+ pilots unlock a 44% discount (18,000 AED → 10,000 AED per pilot), with visa coordination, Fujairah exam scheduling, and travel logistics managed centrally. <strong>The result: a Philippines-licensed pilot arrives at the exam with a UAE-affiliated credential, at roughly half the retail cost, through a structured pathway that did not exist before.</strong></p>
