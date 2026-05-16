@@ -4897,8 +4897,8 @@ export default function UCFOfficialReleasePage() {
           <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XII. The Universal Commercial Framework (UCF) Integration</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition ecosystem does not rely on a single data source to validate a pilot. Instead, it operates on a <strong>Universal Commercial Framework (UCF)</strong> that standardizes and monetizes three distinct streams of professional data. No single application holds the complete picture of a pilot's market value. <strong>Logbooks provide the duration, EFBs provide the complexity, and Simulators provide the behavior.</strong> By routing all three into the PilotRecognition API, we generate a single, holistic, and mathematically objective Recognition Score that airlines and underwriters can transact on.</p>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-A. Logbook Providers: The Origin Trust Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">Digital Platforms · Legacy Providers · Regional Solutions</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Section 1: Flight Logbook Platforms for Pilots — The Origin Trust Layer</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">Flight Logbook Platforms for Pilots · Digital Platforms · Legacy Providers · Regional Solutions</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Logbooks act as the quantitative ledger. They record the raw block hours, the regulatory compliance, and the official baseline of a pilot's history.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> They provide the <strong>verified foundation</strong> (via Veremark/ATO attestation) upon which all other complex commercial data is built. Without verified flight hours, telemetry data and simulator sessions lack the temporal anchor required for professional credibility.</p>
 
@@ -5679,8 +5679,8 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-8 border-slate-300" />
 
-          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-B. EFBs & Navigation Apps: The Telemetry & Complexity Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">pilot navigation platforms (charting, flight planning, EFB) · Electronic Flight Bag Platforms for Pilots</p>
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Section 2: Electronic Flight Bag Platforms for Pilots — The Telemetry & Complexity Layer</h4>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">Electronic Flight Bag Platforms for Pilots · pilot navigation platforms (charting, flight planning, EFB)</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> EFBs and navigation apps capture the qualitative environment. They track routing architectures, airspace density, and dynamic weather decision-making.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> While a logbook proves a pilot flew two hours, the EFB proves <strong>how they flew it</strong> — adding complexity multipliers to the pilot's baseline hours in the UCF algorithm and generating high-margin safety data for insurance underwriters.</p>
 
@@ -5703,7 +5703,7 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-8 border-slate-300" />
 
-          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-C. Simulation & ATC Networks: The Behavioral & CBTA Layer</h4>
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Section 3: Flight Simulation Platforms for Pilots — The Behavioral & CBTA Layer</h4>
           <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">flight simulation platforms for pilots · ATC simulation platforms</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Platforms like flight simulation platforms for pilots and ATC simulation platforms capture high-fidelity procedural repetition and non-standard scenario management (e.g., engine failures, complex radio phraseology).</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> As airlines shift toward <strong>Competency-Based Training and Assessment (CBTA)</strong>, this layer translates off-duty simulator habits into verified cognitive currency, drastically reducing an airline's remedial training risk.</p>
@@ -5727,7 +5727,7 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-8 border-slate-300" />
 
-          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-D. Unified Integration Architecture</h4>
+          <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Unified Integration Architecture</h4>
           <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct value propositions, all integrations route through the same technical infrastructure — creating a unified ecosystem where data from Flight Logbook Platforms for Pilots, pilot navigation platforms (charting, flight planning, EFB), flight simulation platforms for pilots, and Veremark all contribute to a single, trusted pilot credential.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
