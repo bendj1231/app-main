@@ -5290,6 +5290,37 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">The partnership pitch comes <strong>after</strong> we've proven the model, not before. LogTen integrates with winners, not hopefuls.</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">LogTen Pro User Base Breakdown</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Understanding LogTen Pro's user composition is critical for revenue projection and partnership positioning. While the company does not disclose real-time breakdowns, the publicly stated figures provide directional guidance.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">160,000+ Active Pilots — The Composition</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Total Active Users:</strong> LogTen Pro publicly states over 160,000 active pilot users across their platform. This includes both free-tier and paid subscribers.</p>
+              <p><strong>Free Tier (Students):</strong> Up to 50 hours of free logging. Primarily student pilots in training. These users skew the total count but represent future Pro subscribers, not current revenue contributors.</p>
+              <p><strong>Paid Pro Members (Majority):</strong> The vast majority of the active base are paying Pro members — including professionals at more than 100 partner airlines. These users pay $79.99-$129.99/year for features like schedule importing (FLICA/Sabre), flight/duty compliance tracking, and advanced analytics.</p>
+              <p><strong>Partner Airlines:</strong> LogTen Pro is utilized by professionals at 100+ partner airlines, indicating a significant commercial aviation presence within their paid user base.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Revenue Implications for PilotRecognition</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Conservative Estimate:</strong> If 70% of 160,000 users are paid Pro members = 112,000 paying subscribers.</p>
+              <p><strong>Verification Revenue Potential:</strong> At 10% adoption of Recognition+ ($100/year) = 11,200 pilots × $100 = $1.12M annual revenue.</p>
+              <p><strong>LogTen's Revenue Share (30%):</strong> $336,000/year in new revenue for LogTen — without additional engineering investment if we build the integration.</p>
+              <p><strong>Referral Dividend Layer:</strong> Each verification generates $20 to LogTen. At 2 verifications/year per active pilot = 224,000 verifications × $20 = $4.48M potential referral revenue.</p>
+              <p><strong>Key Insight:</strong> The paid Pro member base represents high-intent, career-focused pilots already willing to pay for professional tools. These are our ideal early adopters for Recognition+ verification.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-blue-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#60a5fa'}}>Strategic Targeting</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Our initial PilotRecognition marketing should focus specifically on LogTen Pro paid subscribers — the 100+ airline professionals who already invest in career-advancing tools. These pilots:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• Already pay $100+/year for logbook features<br/>• Work at airlines we want to partner with<br/>• Need verified credentials for career progression<br/>• Represent the highest-lifetime-value user segment</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Free-tier students are future targets, but the paid Pro base is where immediate verification revenue lives.</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The PilotRecognition Upgrade Trigger</h5>
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition acts as a <strong>natural upgrade catalyst</strong> for logbook providers. Here's how the pricing flow works:</p>
 
