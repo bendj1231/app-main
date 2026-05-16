@@ -4738,7 +4738,7 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. The ATC &amp; Phraseology Premium (The Communication Filter)</h4>
           <p className="text-slate-700 leading-relaxed mb-4">A major point of failure during initial airline line-training and simulator evaluations is a candidate's lack of situational awareness and breakdown in non-standard ATC phraseology. Low-hour pilots frequently struggle to adapt from quiet training airspaces to high-velocity, international hub environments.</p>
-          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Active hours logged on certified simulation networks (e.g., simulation networks, ATC networks) tracking radio transmission density, read-back accuracy, and airspace boundary compliance.</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Active hours logged on certified simulation networks (e.g., simulation networks, ATC simulation platforms) tracking radio transmission density, read-back accuracy, and airspace boundary compliance.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Score Impact:</strong> Every verified hour of high-density air traffic control interaction functions as a competency multiplier. The algorithm dynamically upgrades the pilot's CRM &amp; Communication Profile, signaling to airline recruiters that this candidate possesses advanced operational readiness and will require significantly less remedial training during line orientation.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The Active Currency Weighting Matrix</h4>
@@ -4868,7 +4868,7 @@ export default function UCFOfficialReleasePage() {
                   { t: 'Navigation & Charting (e.g., pilot navigation platforms (charting, flight planning, EFB))', c: 'Route planning architectures, procedure selections, weather maps', v: 'Operational Currency Token (Measures routing complexity and approach diversity)', a: 'Demonstrates a pilot maintaining high cognitive familiarity with international terminal airspaces and changing weather logic.' },
                   { t: 'EFBs & Digital Logbooks (e.g., pilot navigation platforms (charting, flight planning, EFB), EFB platforms)', c: 'Flight block tracking, manual logs, airframe times', v: 'Verified Flight Time Token (Cryptographically anchored to hardware logs)', a: 'Delivers fully verified flight times that bypass manual review and instantly clear ATS parsing constraints.' },
                   { t: 'Desktop Simulation (e.g., flight simulation platforms for pilots)', c: 'Systems management, failure checklists, procedure repetition', v: 'Simulator Proficiency Token (Validated via telemetry files and instructor hashes)', a: 'Showcases superior procedural familiarity and advanced type-specific cockpit readiness prior to formal airline screening.' },
-                  { t: 'ATC Simulation Networks (e.g., ATC networks, simulation networks)', c: 'Live radio phraseology, airspace structure interactions, controller compliance', v: 'CRM & Communication Token (Tracks transmission density and phraseology precision)', a: 'Establishes objective proof of radio proficiency and situational awareness, giving low-hour pilots a clear hiring edge.' },
+                  { t: 'ATC Simulation Networks (e.g., ATC simulation platforms, simulation networks)', c: 'Live radio phraseology, airspace structure interactions, controller compliance', v: 'CRM & Communication Token (Tracks transmission density and phraseology precision)', a: 'Establishes objective proof of radio proficiency and situational awareness, giving low-hour pilots a clear hiring edge.' },
                 ].map((row, i) => (
                   <tr key={row.t} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.t}</td>
@@ -5704,7 +5704,7 @@ export default function UCFOfficialReleasePage() {
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-C. Simulation & ATC Networks: The Behavioral & CBTA Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">flight simulation platforms for pilots · ATC networks · simulation networks</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">flight simulation platforms for pilots · ATC simulation platforms · simulation networks</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> Platforms like flight simulation platforms for pilots and simulation networks capture high-fidelity procedural repetition and non-standard scenario management (e.g., engine failures, complex radio phraseology).</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> As airlines shift toward <strong>Competency-Based Training and Assessment (CBTA)</strong>, this layer translates off-duty simulator habits into verified cognitive currency, drastically reducing an airline's remedial training risk.</p>
 
@@ -5712,7 +5712,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The CBTA Revolution Opportunity</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>The Industry Shift:</strong> Airlines are moving to Competency-Based Training and Assessment (CBTA). Raw hours matter less than demonstrated competencies — communication, decision-making, situational awareness, workload management.</p>
-              <p><strong>The Simulator Gap:</strong> flight simulation platforms for pilots have incredibly accurate flight models. ATC networks and simulation networks provide live ATC interaction. Yet airlines treat simulator time as "unofficial" because there's no verification layer connecting virtual performance to real-world competency.</p>
+              <p><strong>The Simulator Gap:</strong> flight simulation platforms for pilots have incredibly accurate flight models. ATC simulation platforms and simulation networks provide live ATC interaction. Yet airlines treat simulator time as "unofficial" because there's no verification layer connecting virtual performance to real-world competency.</p>
               <p><strong>The PilotRecognition Solution:</strong> We map simulator telemetry and ATC communication patterns to the 9 Core ICAO Competencies. Hours spent on simulation networks with professional-grade ATC communication become verifiable evidence of Communication and Teamwork skills. Complex IFR scenarios in flight simulation platforms for pilots demonstrate Problem-Solving and Situational Awareness.</p>
               <p><strong>The Career Impact:</strong> A pilot with 200 hours of verified simulation networks ATC interactions and 100 complex flight simulation platforms for pilots IFR scenarios carries a demonstrably lower remedial training risk. Airlines trust this and hire faster.</p>
             </div>
@@ -5721,7 +5721,7 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-900 border-l-4 border-purple-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#a78bfa'}}>Integration Pathway for Simulation Platforms</strong></p>
             <p className="text-white text-sm leading-relaxed mt-2"><strong>Data Capture:</strong> Simulator platforms export session telemetry — flight parameters, weather conditions, emergency scenarios handled, ATC communication logs. We verify this against competency rubrics developed with airline training departments.</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Competency Scoring:</strong> Each simulator session contributes to a pilot's competency profile: "Demonstrated Problem-Solving in engine-out scenarios (flight simulation platforms for pilots)" — "Verified Communication proficiency (ATC networks ATC)".</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Competency Scoring:</strong> Each simulator session contributes to a pilot's competency profile: "Demonstrated Problem-Solving in engine-out scenarios (flight simulation platforms for pilots)" — "Verified Communication proficiency (ATC simulation platforms)".</p>
             <p className="text-white text-sm leading-relaxed mt-2"><strong>Revenue Share:</strong> $25 per pilot linking simulator profile. Premium: Airlines pay for pre-screening reports on simulator-verified competencies before investing in Type Rating training.</p>
           </div>
 
@@ -5814,7 +5814,7 @@ export default function UCFOfficialReleasePage() {
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">EFB platforms</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">pilot navigation platforms (charting, flight planning, EFB)</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">flight simulation platforms for pilots</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATC networks</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATC simulation platforms</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Veremark</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATO / Operator</span>
             </div>
@@ -5847,7 +5847,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Revenue Model:</strong> $15 per active integration + premium tier licensing anonymized aggregate safety data to insurance underwriters ($50K-200K annual contracts).</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 3 Maturity: Simulator & CBTA Integration</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">flight simulation platforms for pilots · ATC networks · simulation networks</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">flight simulation platforms for pilots · ATC simulation platforms · simulation networks</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Prerequisites:</strong> Airline training departments accepting verified simulator hours as legitimate CBTA evidence. Competency rubrics developed and validated with 2+ major carriers.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Challenge:</strong> Volunteer-run networks (simulation networks) require community governance approval. Revenue model must align with non-profit structures while providing infrastructure funding.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Revenue Model:</strong> $25 per pilot linking simulator profile. Airlines pay for pre-screening reports on simulator-verified competencies before Type Rating investment ($500-2,000 per pilot assessment).</p>
@@ -6146,7 +6146,7 @@ export default function UCFOfficialReleasePage() {
           </h2>
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Problem: Living Proficiency Data Is Trapped Inside Consumer Applications</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Pilots today maintain genuine cognitive currency through desktop simulators — flight simulation platforms for pilots — flying live, human-controlled ATC networks like simulation networks, logging complex IFR routes with real weather deviations, practising non-precision approaches, maintaining type familiarity through structured simulator sessions. None of this activity is visible to the industry. Insurance underwriters pricing policy risk cannot see it. Airlines assessing recency cannot access it. The pilot's Recognition Profile does not reflect it. The data exists, is being generated in real time, and is professionally invisible.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots today maintain genuine cognitive currency through desktop simulators — flight simulation platforms for pilots — flying live, human-controlled ATC simulation platforms like simulation networks, logging complex IFR routes with real weather deviations, practising non-precision approaches, maintaining type familiarity through structured simulator sessions. None of this activity is visible to the industry. Insurance underwriters pricing policy risk cannot see it. Airlines assessing recency cannot access it. The pilot's Recognition Profile does not reflect it. The data exists, is being generated in real time, and is professionally invisible.</p>
           <p className="text-slate-700 leading-relaxed mb-6">Telemetry and simulator data providers — simulation networks, flight simulation platforms for pilots, home simulator networks — sit on the most granular pilot proficiency dataset in existence. The integration path is straightforward: verified ingestion pipelines that port telemetry data, with pilot consent, directly into the Recognition Profile. A pilot who flew a 4-hour IFR route on a desktop sim last night, handled weather deviations with live ATC, and logged 6 ILS approaches — that activity should be verifiable. The platform makes it so.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
