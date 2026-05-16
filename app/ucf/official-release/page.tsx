@@ -5575,6 +5575,76 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">We are not Hertz's competitor. We are the airport that feeds customers to Hertz's counter.</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Sign In With [Logbook]" Model: Multi-Provider OAuth Strategy</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Similar to how Epic Games handles cross-platform authentication ("Sign in with Epic Games", "Sign in with PlayStation"), PilotRecognition becomes the <strong>unified verification layer</strong> that connects to ALL logbook providers. We don't compete with logbooks — we integrate with them.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Electronic Logbook User Demographics & Integration Strategy</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Market Landscape:</strong></p>
+              <div className="bg-slate-100 p-3 rounded">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-300">
+                      <th className="text-left py-1">Logbook Provider</th>
+                      <th className="text-left py-1">User Base</th>
+                      <th className="text-left py-1">Primary Market</th>
+                      <th className="text-left py-1">Integration Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">LogTen Pro</td>
+                      <td className="py-1">160,000+ pilots</td>
+                      <td className="py-1">Commercial airline pilots, corporate pilots, Apple users</td>
+                      <td className="py-1">Highest volume, premium tier integration</td>
+                    </tr>
+                    <tr className="border-b border-slate-200">
+                      <td className="py-1 font-semibold">FLYLOG.io</td>
+                      <td className="py-1">20,000+ users</td>
+                      <td className="py-1">Flight schools, fleet managers, general aviation</td>
+                      <td className="py-1">ATO partnerships, bulk verification</td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 font-semibold">capzlog.aero</td>
+                      <td className="py-1">2,000+ paying users</td>
+                      <td className="py-1">European pilots, sailplane enthusiasts, EASA compliance</td>
+                      <td className="py-1">European market entry, regulatory compliance</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Total Addressable Market:</strong> ~182,000 active digital logbook users across these three providers alone. This represents the core professional aviation segment that already pays for logging tools.</p>
+              <p><strong>The OAuth Integration Model:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[Pilot visits PilotRecognition.com]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Sign Up Options:] "Sign in with LogTen Pro" | "Sign in with FLYLOG.io" | "Sign in with capzlog.aero" | "Create new IDfy account"</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[OAuth handshake] ←—— Pilot grants read-only access to flight hours</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[PilotRecognition queries logbook API] ──→ [Veremark matches against airline records]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Recognition Score updated] ←—— "Verified: 1,247 hrs from LogTen + Emirates match"</p>
+              </div>
+              <p><strong>Why Logbook Providers Agree:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li><strong>Zero engineering burden:</strong> Standard OAuth 2.0 implementation (same as Google/Apple sign-in)</li>
+                <li><strong>Revenue share:</strong> $20 referral dividend per verified pilot</li>
+                <li><strong>Retention boost:</strong> Pilots stay subscribed because verification is tied to their logbook</li>
+                <li><strong>No data migration:</strong> Hours stay in their database; we only read and verify</li>
+                <li><strong>Market expansion:</strong> Access to our airline partnerships and pathway network</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-cyan-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>The Unified Verification API</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">PilotRecognition builds a single verification API that all logbook providers can connect to. Think of it like Stripe for payments — we become the "Stripe for pilot verification."</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Any logbook app can add "Connect to PilotRecognition" in their settings menu. Their users get instant access to verified credentials, and the logbook provider earns revenue without building verification infrastructure.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>The Pitch to Any Logbook:</strong> "Add one API endpoint. Unlock $20 per user in verification revenue. Offer your pilots airline-ready credentials. Takes 2 days to implement."</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
