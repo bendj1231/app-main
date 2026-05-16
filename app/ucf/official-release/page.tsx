@@ -4474,19 +4474,74 @@ export default function UCFOfficialReleasePage() {
             ))}
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">NPC Registration — Philippines (Required Pre-Launch)</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">Under <strong>RA 10173 Section 46</strong>, any entity processing personal data of Filipino citizens must register with the <strong>National Privacy Commission (NPC)</strong> before processing at scale. As Joint Controller, PilotRecognition registers as a <strong>Personal Information Controller (PIC)</strong>.</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">Regulatory Registration Costs — What the Joint Controller Architecture Actually Costs</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">There is no special fee for the word "Joint." Regulators do not charge extra for sharing data controllership with pilots. The Joint Controller designation is simply a legal relationship defined in Terms of Service, Privacy Policy, and Data Processing Agreements. You register under the standard <strong>Controller</strong> category — not a special joint category. Total baseline regulatory cost across all jurisdictions: <strong>under $1,000 combined.</strong></p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Jurisdiction</th>
+                <th className="text-left px-4 py-2 font-semibold">Registration Body</th>
+                <th className="text-left px-4 py-2 font-semibold">Registration Type</th>
+                <th className="text-left px-4 py-2 font-semibold">Cost</th>
+                <th className="text-left px-4 py-2 font-semibold">Timing</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { j: 'Joint Controller Designation', b: 'N/A', r: 'Legal relationship only — defined in T&Cs, Privacy Policy, DPAs', c: '$0', t: 'At launch — document drafting only' },
+                  { j: 'Philippines', b: 'National Privacy Commission (NPC)', r: 'Personal Information Controller (PIC) — RA 10173 Sec. 46', c: '~₱1,000 (~$18)', t: 'Before first Veremark check runs on any Filipino pilot' },
+                  { j: 'UAE (DIFC)', b: 'Commissioner of Data Protection', r: 'Data Protection Notification — Category II SaaS', c: '$750 initial · $250/year renewal', t: 'At DIFC incorporation or when data processing begins' },
+                  { j: 'EU (GDPR)', b: 'National DPA (per member state)', r: 'No registration fee in most EU states', c: '$0', t: 'Operational compliance only — lawyers, security, DPAs' },
+                  { j: 'UK (UK GDPR)', b: 'Information Commissioner\'s Office (ICO)', r: 'Annual Data Protection Fee — only if UK presence established', c: '£40–£60/year', t: 'Only if UK office or UK-specific processing established' },
+                ] as {j:string;b:string;r:string;c:string;t:string}[]).map((row, i) => (
+                  <tr key={row.j} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-semibold text-slate-100 text-xs">{row.j}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.b}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.r}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 font-bold text-xs" style={{color:'#34d399'}}>{row.c}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.t}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             {([
-              { t: 'Registration Type', v: 'Personal Information Controller (PIC)' },
-              { t: 'Estimated Timeline', v: '2–4 weeks via NPC online portal' },
-              { t: 'Trigger', v: 'Before first Veremark check runs on any Filipino pilot' },
-            ].map(col => (
-              <div key={col.t} className="border border-slate-200 rounded-lg px-4 py-3 bg-slate-50 text-center">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{col.t}</p>
-                <p className="text-sm font-semibold text-slate-800">{col.v}</p>
+              {
+                title: 'What the Joint Controller Architecture Saves You',
+                color: 'border-emerald-400 bg-emerald-50',
+                titleColor: 'text-emerald-700',
+                items: [
+                  'NPC fine exposure eliminated: up to ₱5M per violation (RA 10173 Sec. 26)',
+                  'GDPR fine exposure eliminated: up to €20M or 4% global turnover',
+                  'Data breach liability eliminated: no raw data = nothing to leak',
+                  'Securities law exposure eliminated: soulbound utility tokens = no SEC/BSP jurisdiction',
+                  'Data custody liability eliminated: Veremark and IDfy hold it, not you',
+                ],
+              },
+              {
+                title: 'What You Actually Pay',
+                color: 'border-blue-400 bg-blue-50',
+                titleColor: 'text-blue-700',
+                items: [
+                  'NPC (Philippines PIC registration): ~₱1,000 (~$18) one-time',
+                  'DIFC Data Protection Notification: $750 initial + $250/year renewal',
+                  'UK ICO fee (only if UK presence): £40–£60/year',
+                  'Legal drafting (T&Cs, Privacy Policy, DPAs): one-time lawyer cost',
+                  'Total regulatory filing cost: under $1,000 combined across all jurisdictions',
+                ],
+              },
+            ] as {title:string;color:string;titleColor:string;items:string[]}[]).map(col => (
+              <div key={col.title} className={`border-l-4 rounded-r-lg px-5 py-4 ${col.color}`}>
+                <p className={`font-bold text-sm mb-3 ${col.titleColor}`}>{col.title}</p>
+                <ul className="space-y-1">{col.items.map(i => <li key={i} className="text-sm text-slate-700 flex gap-2"><span className="flex-shrink-0 text-slate-400">→</span>{i}</li>)}</ul>
               </div>
-            )))}
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The asymmetry:</strong> <span className="text-slate-300">The Joint Controller architecture costs under $1,000 in regulatory filings. The alternative — operating as an unregistered data controller or claiming processor status you cannot defend — exposes the platform to fines that would end the business in one enforcement action. This is not a compliance cost. It is the cheapest insurance policy in the entire budget.</span></p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The 10,000-Pilot Regulatory Shield</h3>
