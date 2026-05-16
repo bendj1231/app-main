@@ -4564,9 +4564,9 @@ export default function UCFOfficialReleasePage() {
             HUB D — INFRASTRUCTURE &amp; DATA
           </h1>
           <p className="text-xs font-bold tracking-widest uppercase text-red-600 mb-6">Flight Data · Aeromedical · Verified Ingestion Pipelines · The Technology Layer</p>
-          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub D integrates the data sources that pilots already use — navigation apps, logbook software, medical examiners — into the verified pilot profile. Every logbook entry a pilot makes in navigation platforms, every medical certificate issued by a DAME, every simulator session logged in navigation platforms should flow directly into their professional identity. Hub D builds those pipelines.</p>
+          <p className="text-slate-700 leading-relaxed mb-6 text-lg">Hub D integrates the data sources that pilots already use — navigation apps, logbook software, medical examiners — into the verified pilot profile. Every logbook entry a pilot makes in pilot navigation platforms (charting, flight planning, EFB), every medical certificate issued by a DAME, every simulator session logged in simulation platforms should flow directly into their professional identity. Hub D builds those pipelines.</p>
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The data isolation problem:</strong> Pilots use dozens of tools to manage their professional life. None of them talk to each other. None of them feed a verified professional record. The hours logged in navigation platforms are invisible to the airline reviewing a CV. The medical signed by the AME is a paper document that cannot be queried at scale. <strong style={{color:'#f87171'}}>Hub D ends the isolation. Every data source becomes a verified input to the pilot's single professional identity.</strong></p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The data isolation problem:</strong> Pilots use dozens of tools to manage their professional life. None of them talk to each other. None of them feed a verified professional record. The hours logged in pilot navigation platforms (charting, flight planning, EFB) are invisible to the airline reviewing a CV. The medical signed by the AME is a paper document that cannot be queried at scale. <strong style={{color:'#f87171'}}>Hub D ends the isolation. Every data source becomes a verified input to the pilot's single professional identity.</strong></p>
           </div>
 
           <h2 id="pillar-12-flight-data" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
@@ -4575,7 +4575,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">I. Executive Overview: The Invisible Telemetry Problem</h3>
-          <p className="text-slate-700 leading-relaxed mb-4">navigation platforms, navigation platforms, EFB platforms, navigation platforms, and desktop simulation platforms collectively capture millions of hours of granular pilot activity every month. Route planning architecture, airspace communication loops, approach currency records, and real-time weather decision-making patterns are continuously logged — yet they remain professionally invisible. They do not appear on a CV, they cannot be parsed by an airline Applicant Tracking System (ATS), and they contribute zero equity to a pilot's active job hunt.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">pilot navigation platforms (charting, flight planning, EFB), EFB platforms, simulation platforms collectively capture millions of hours of granular pilot activity every month. Route planning architecture, airspace communication loops, approach currency records, and real-time weather decision-making patterns are continuously logged — yet they remain professionally invisible. They do not appear on a CV, they cannot be parsed by an airline Applicant Tracking System (ATS), and they contribute zero equity to a pilot's active job hunt.</p>
           <p className="text-slate-700 leading-relaxed mb-6">This represents a structural failure in data utilization. A pilot who logs dozens of hours mastering complex IFR routing or executing high-fidelity simulator profiles is demonstrably maintaining sharp cognitive currency. Currently, that currency is unverifiable.</p>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
@@ -4660,7 +4660,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">We believe the pilots who build this network through active flight logs and simulator tracking should be the primary beneficiaries of its growth. Rather than paying opaque corporate data brokers, PilotRecognition aligns application developers and aviators via a clean, structured financial mechanism.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The $20 Ecosystem Referral Dividend</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">When an integrated application partner (e.g., navigation platforms, navigation platforms, navigation platforms) successfully onboards a pilot onto the PilotRecognition network, a <strong>$20 Ecosystem Referral Dividend</strong> is automatically unlocked upon the activation of that pilot's premium Recognition+ career profile.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">When an integrated application partner (e.g., pilot navigation platforms (charting, flight planning, EFB), EFB platforms) successfully onboards a pilot onto the PilotRecognition network, a <strong>$20 Ecosystem Referral Dividend</strong> is automatically unlocked upon the activation of that pilot's premium Recognition+ career profile.</p>
 
           <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">Referral Economics</p>
@@ -4743,7 +4743,7 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The Active Currency Weighting Matrix</h4>
           <p className="text-slate-700 leading-relaxed mb-4">A pilot with 250 hours who has sat completely idle for six months is structurally disadvantaged compared to a 250-hour pilot who has logged 30 hours of intensive instrument tracking, approach repetitions, and route-planning scenarios over the last 30 days.</p>
-          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Continuous data updates from navigation apps (navigation platforms, navigation platforms) detailing real-world routing complexity, holding pattern execution, and exposure to variable instrument meteorological conditions (IMC).</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Continuous data updates from navigation apps (pilot navigation platforms (charting, flight planning, EFB)) detailing real-world routing complexity, holding pattern execution, and exposure to variable instrument meteorological conditions (IMC).</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Score Impact:</strong> The platform applies an exponential decay algorithm to unverified time, while assigning a <strong>Velocity Premium</strong> to active telemetry. A pilot who maintains a high frequency of self-directed, verified preparation is automatically pushed to the top of operator search results, maximizing their discovery rate for premium pathway placements.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Institutional Validation Loops (The Multiplier Cap)</h4>
@@ -4753,7 +4753,7 @@ export default function UCFOfficialReleasePage() {
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Ultimate Executive Leverage</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">This mechanism closes the final loop for software providers. When pitching to Garmin, navigation platforms, or navigation platforms, you can show them that they are no longer just selling a tool to help pilots fly from Point A to Point B. <strong>They are selling a platform that directly improves the pilot's algorithmic hiring score.</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">This mechanism closes the final loop for software providers. When pitching to Garmin, pilot navigation platforms (charting, flight planning, EFB), or EFB platforms, you can show them that they are no longer just selling a tool to help pilots fly from Point A to Point B. <strong>They are selling a platform that directly improves the pilot's algorithmic hiring score.</strong></p>
             <p className="text-white text-sm leading-relaxed mt-2">The message to the pilot community is definitive: "Every hour you spend on our integrated partner apps planning flights, talking to ATC simulators, and flying complex procedures is a direct investment in your marketplace ranking. If you fly with an unlinked app, your hard work is a ghost. If you fly with our partners, your data actively pulls your career forward."</p>
           </div>
 
@@ -4835,13 +4835,13 @@ export default function UCFOfficialReleasePage() {
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Decoupling Corporate Control via Data Sovereignty</h4>
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition does not sell or transfer telemetry to airlines, nor do we act as a data controller. The platform operates on a <strong>Neutral Conduit Framework:</strong></p>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
-            <li><strong>The Pilot Holds the Keys:</strong> All incoming data from integrated apps (navigation platforms, navigation platforms, Sims) hashes directly to the individual pilot's private cryptographic wallet.</li>
+            <li><strong>The Pilot Holds the Keys:</strong> All incoming data from integrated apps (pilot navigation platforms (charting, flight planning, EFB), Sims) hashes directly to the individual pilot's private cryptographic wallet.</li>
             <li><strong>Programmatic Consent Gate:</strong> An airline or recruiter cannot scan, query, or monitor a pilot's proficiency trends, approach histories, or simulator habits without an explicit digital signature and permission grant from the pilot.</li>
             <li><strong>A Shield, Not a Hammer:</strong> The pilot determines exactly what data is visible, when it is visible, and to whom. This completely shifts telemetry from a tool of corporate surveillance into an asset of personal professional equity.</li>
           </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The Direct Ingestion Edge for Software Partners</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">For major software providers (like navigation platforms or Garmin), trying to sell corporate data-tracking utilities directly to pilots is a marketing minefield. If your users think you are secretly packaging their flight metrics to sell to airline management, they will delete your app.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">For major software providers (like pilot navigation platforms (charting, flight planning, EFB) or Garmin), trying to sell corporate data-tracking utilities directly to pilots is a marketing minefield. If your users think you are secretly packaging their flight metrics to sell to airline management, they will delete your app.</p>
           <p className="text-slate-700 leading-relaxed mb-4">By integrating with PilotRecognition, software companies leverage our Sovereign Network Architecture as a trust shield:</p>
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-5 ml-4">
             <li>You are not passing data to a corporate entity; you are <strong>passing data directly back to the pilot</strong> who generated it, via their personal wallet.</li>
@@ -4865,8 +4865,8 @@ export default function UCFOfficialReleasePage() {
               </thead>
               <tbody>
                 {[
-                  { t: 'Navigation & Charting (e.g., navigation platforms, navigation platforms)', c: 'Route planning architectures, procedure selections, weather maps', v: 'Operational Currency Token (Measures routing complexity and approach diversity)', a: 'Demonstrates a pilot maintaining high cognitive familiarity with international terminal airspaces and changing weather logic.' },
-                  { t: 'EFBs & Digital Logbooks (e.g., navigation platforms, EFB platforms)', c: 'Flight block tracking, manual logs, airframe times', v: 'Verified Flight Time Token (Cryptographically anchored to hardware logs)', a: 'Delivers fully verified flight times that bypass manual review and instantly clear ATS parsing constraints.' },
+                  { t: 'Navigation & Charting (e.g., pilot navigation platforms (charting, flight planning, EFB))', c: 'Route planning architectures, procedure selections, weather maps', v: 'Operational Currency Token (Measures routing complexity and approach diversity)', a: 'Demonstrates a pilot maintaining high cognitive familiarity with international terminal airspaces and changing weather logic.' },
+                  { t: 'EFBs & Digital Logbooks (e.g., pilot navigation platforms (charting, flight planning, EFB), EFB platforms)', c: 'Flight block tracking, manual logs, airframe times', v: 'Verified Flight Time Token (Cryptographically anchored to hardware logs)', a: 'Delivers fully verified flight times that bypass manual review and instantly clear ATS parsing constraints.' },
                   { t: 'Desktop Simulation (e.g., simulation platforms, simulation platforms)', c: 'Systems management, failure checklists, procedure repetition', v: 'Simulator Proficiency Token (Validated via telemetry files and instructor hashes)', a: 'Showcases superior procedural familiarity and advanced type-specific cockpit readiness prior to formal airline screening.' },
                   { t: 'ATC Simulation Networks (e.g., ATC networks, simulation networks)', c: 'Live radio phraseology, airspace structure interactions, controller compliance', v: 'CRM & Communication Token (Tracks transmission density and phraseology precision)', a: 'Establishes objective proof of radio proficiency and situational awareness, giving low-hour pilots a clear hiring edge.' },
                 ].map((row, i) => (
@@ -5069,7 +5069,7 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Logbook Provider Revenue Streams</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Per-Pilot Referral Dividend ($20):</strong> When a logbook provider (e.g., navigation platforms, EFB platforms, major pilot flight logbook platforms) connects a pilot to the PilotRecognition network and that pilot upgrades to a Recognition+ career profile, major pilot flight logbook platforms receives the standard <strong>$20 Ecosystem Referral Dividend</strong> — identical to navigation and simulation partners.</p>
+              <p><strong>Per-Pilot Referral Dividend ($20):</strong> When a logbook provider (e.g., pilot navigation platforms (charting, flight planning, EFB), EFB platforms, major pilot flight logbook platforms) connects a pilot to the PilotRecognition network and that pilot upgrades to a Recognition+ career profile, major pilot flight logbook platforms receives the standard <strong>$20 Ecosystem Referral Dividend</strong> — identical to navigation and simulation partners.</p>
               <p><strong>Enterprise Verification Tier ($1,000/year):</strong> Logbook providers managing high-volume verification pipelines (digital + physical uploads, photo proof handling, instructor attestation workflows) qualify for the <strong>Enterprise Data Checker tier</strong>. This annual subscription unlocks enhanced API rate limits, priority verification node status, and direct integration with airline ATS parsing systems.</p>
             </div>
           </div>
@@ -5115,7 +5115,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Glass Cockpit Dashboard Integration</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">Verified logbook data appears within the pilot's PilotRecognition dashboard through a <strong>Glass Cockpit</strong> interface aesthetic — mirroring the avionics displays pilots already trust in the flight deck (Garmin G1000, navigation platforms Synthetic Vision).</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Verified logbook data appears within the pilot's PilotRecognition dashboard through a <strong>Glass Cockpit</strong> interface aesthetic — mirroring the avionics displays pilots already trust in the flight deck (Garmin G1000, pilot navigation platforms (charting, flight planning, EFB) Synthetic Vision).</p>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The Instrument Panel Metaphor</h5>
           <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition profile dashboard functions exactly like an aircraft instrument panel. Each integration partner appears as a dedicated flight instrument, providing real-time telemetry on the pilot's professional standing:</p>
@@ -5143,9 +5143,9 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
-            <li><strong>The Hobbs (ATO/Operator Issued, Logbook Displayed/Stored):</strong> Tallying total verified flight hours — each entry is <strong>issued and cryptographically attested</strong> by either the Flight Training Organization (ATO) or commercial operator (airline/employer) where the pilot flew. Logbook platforms (major pilot flight logbook platforms, navigation platforms, etc.) <strong>do not verify or issue</strong> these hours — they function as the <strong>display and storage layer</strong> that presents the verified token from the ATO/Operator to the pilot's dashboard, while keeping all underlying flight data (GPS tracks, photos, entries) stored in their own infrastructure. This ensures pilots remain in the logbook ecosystem long-term.</li>
+            <li><strong>The Hobbs (ATO/Operator Issued, Logbook Displayed/Stored):</strong> Tallying total verified flight hours — each entry is <strong>issued and cryptographically attested</strong> by either the Flight Training Organization (ATO) or commercial operator (airline/employer) where the pilot flew. Logbook platforms (major pilot flight logbook platforms, pilot navigation platforms (charting, flight planning, EFB), etc.) <strong>do not verify or issue</strong> these hours — they function as the <strong>display and storage layer</strong> that presents the verified token from the ATO/Operator to the pilot's dashboard, while keeping all underlying flight data (GPS tracks, photos, entries) stored in their own infrastructure. This ensures pilots remain in the logbook ecosystem long-term.</li>
             <li><strong>The Data Check (Veremark — stored in Verepass):</strong> Background verification status showing green when all data is cryptographically attested and current via Veremark's verification engine, red when discrepancies or expirations are detected. Verification records are securely stored in the pilot's Verepass digital vault.</li>
-            <li><strong>The Practice Instrument (simulation platforms + navigation platforms):</strong> Aggregating all simulation and navigation app activity — desktop simulator hours (simulation platforms, simulation platforms) plus route planning, approach practice, and procedure rehearsal logged via navigation apps (navigation platforms). This combined practice data feeds the Recognition Score and demonstrates active proficiency building beyond raw flight hours.</li>
+            <li><strong>The Practice Instrument (simulation platforms + pilot navigation platforms (charting, flight planning, EFB)):</strong> Aggregating all simulation and navigation app activity — desktop simulator hours (simulation platforms, simulation platforms) plus route planning, approach practice, and procedure rehearsal logged via navigation apps (pilot navigation platforms (charting, flight planning, EFB)). This combined practice data feeds the Recognition Score and demonstrates active proficiency building beyond raw flight hours.</li>
             <li><strong>The Pathway Navigator (Airline Integration):</strong> Color-coded alignment indicator showing whether the pilot's current profile matches their target cadet program or airline pathway requirements.</li>
           </ul>
 
@@ -5158,7 +5158,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Separation of Powers: Issuer vs Display</p>
             <div className="space-y-2 text-sm text-slate-700">
               <p><strong>ATO/Operator = Issuer:</strong> The flight school or employer that operated the aircraft is the only entity authorized to issue cryptographic attestations of flight hours. They verify the flight actually occurred, check aircraft logs, and sign the attestation.</p>
-              <p><strong>Logbook App = Display & Storage Layer:</strong> major pilot flight logbook platforms, navigation platforms, EFB platforms ingest the attestation from the ATO/Operator and present it to the pilot in their dashboard — while keeping all flight data (GPS tracks, photos, logbook entries) stored in their own infrastructure. This display-and-storage combination keeps pilots locked into their ecosystem long-term.</p>
+              <p><strong>Logbook App = Display & Storage Layer:</strong> major pilot flight logbook platforms, pilot navigation platforms (charting, flight planning, EFB), EFB platforms ingest the attestation from the ATO/Operator and present it to the pilot in their dashboard — while keeping all flight data (GPS tracks, photos, logbook entries) stored in their own infrastructure. This display-and-storage combination keeps pilots locked into their ecosystem long-term.</p>
               <p><strong>Pilot Consent Layer:</strong> Before any flight hour attestation is issued, the pilot must authorize their employer/operator to attest hours on their behalf. This consent is revocable and auditable on-chain.</p>
               <p><strong>Career Mobility:</strong> When a pilot transitions between employers, their verified hours from previous operators remain in their wallet as portable, cryptographically attested credentials — the logbook simply displays the accumulated tokens from multiple issuers over time.</p>
             </div>
@@ -5203,13 +5203,13 @@ export default function UCFOfficialReleasePage() {
               <p><strong>2. Demonstrate Pilot Demand:</strong> Before approaching major pilot flight logbook platforms, generate 500+ verified pilots in PilotRecognition who are actively requesting major pilot flight logbook platforms integration. Show major pilot flight logbook platforms: "Your users are asking for this. We have 500 pilots who want to verify their major pilot flight logbook platforms hours today."</p>
               <p><strong>3. Offer Zero Engineering Burden:</strong> Propose that PilotRecognition builds the entire integration — major pilot flight logbook platforms only provides API documentation and a sandbox environment. We handle the dev work, the maintenance, the support. Their cost = $0. Their revenue = $20 per verification.</p>
               <p><strong>4. Start with CSV Bridge:</strong> If direct API integration is rejected, propose a seamless CSV import workflow: Pilot exports major pilot flight logbook platforms CSV → uploads to PilotRecognition → our system parses and matches against airline records. This provides 80% of the value with 20% of the engineering complexity. Once pilot volume proves the model, API integration becomes obvious.</p>
-              <p><strong>5. The Airline Leverage:</strong> Secure partnerships with 2-3 major airlines who want verified major pilot flight logbook platforms data for their hiring. Approach major pilot flight logbook platforms: "partner airlines want to verify major pilot flight logbook platforms hours through PilotRecognition. They're asking us to integrate with you. Will you work with us or lose airline partnerships to navigation platforms?"</p>
+              <p><strong>5. The Airline Leverage:</strong> Secure partnerships with 2-3 major airlines who want verified major pilot flight logbook platforms data for their hiring. Approach major pilot flight logbook platforms: "partner airlines want to verify major pilot flight logbook platforms hours through PilotRecognition. They're asking us to integrate with you. Will you work with us or lose airline partnerships to pilot navigation platforms (charting, flight planning, EFB)?"</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Pitch Strategy</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2">"You have 160,000 pilots. We can generate $480,000/year in new revenue from just 10% of them. We will build the entire integration at our cost. Your users are already asking for this. And major airlines want to verify major pilot flight logbook platforms data through our platform. Will you capture this revenue stream, or will navigation platforms beat you to it?"</p>
+            <p className="text-white text-sm leading-relaxed mt-2">"You have 160,000 pilots. We can generate $480,000/year in new revenue from just 10% of them. We will build the entire integration at our cost. Your users are already asking for this. And major airlines want to verify major pilot flight logbook platforms data through our platform. Will you capture this revenue stream, or will pilot navigation platforms (charting, flight planning, EFB) beat you to it?"</p>
             <p className="text-white text-sm leading-relaxed mt-2">The goal is to make major pilot flight logbook platforms see us not as a "specialized platform requesting engineering time" but as a "revenue partner who removes their churn problem and opens airline B2B opportunities."</p>
           </div>
 
@@ -5232,14 +5232,14 @@ export default function UCFOfficialReleasePage() {
               <p><strong>Phase 1: Build Pilot Volume First (Without major pilot flight logbook platforms):</strong> PilotRecognition must reach 5,000-10,000 verified pilots through manual CSV import, ATO partnerships, and airline connections <strong>before</strong> approaching major pilot flight logbook platforms. We cannot pitch as a "platform that wants integration" — we must pitch as a "platform that 10,000 pilots already use and are demanding better major pilot flight logbook platforms integration."</p>
               <p><strong>Phase 2: Secure Airline Endorsements:</strong> Get 2-3 major airlines (partner airlines, partner airlines, partner airlines) to publicly endorse PilotRecognition as their preferred verification partner for major pilot flight logbook platforms data. When airlines say "we trust PilotRecognition-verified major pilot flight logbook platforms hours," major pilot flight logbook platforms listens.</p>
               <p><strong>Phase 3: Demonstrate Revenue Proof:</strong> Show major pilot flight logbook platforms actual revenue data: "We generated $200,000 in pilot verification fees last quarter. 40% of those pilots are your users. You're losing $80,000/quarter by not integrating." Numbers overcome skepticism.</p>
-              <p><strong>Phase 4: The Competitive Threat:</strong> Once navigation platforms integrates with PilotRecognition, major pilot flight logbook platforms faces a competitive disadvantage. Pilots switch to the logbook that offers verified credentials. We position the partnership as defensive necessity, not optional innovation.</p>
+              <p><strong>Phase 4: The Competitive Threat:</strong> Once pilot navigation platforms (charting, flight planning, EFB) integrates with PilotRecognition, major pilot flight logbook platforms faces a competitive disadvantage. Pilots switch to the logbook that offers verified credentials. We position the partnership as defensive necessity, not optional innovation.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>The Reality Check</strong></p>
             <p className="text-white text-sm leading-relaxed mt-2">major pilot flight logbook platforms will not partner with PilotRecognition until we are "recognized." We become recognized by:</p>
-            <p className="text-white text-sm leading-relaxed mt-2">1. Reaching 10,000+ pilots without their help<br/>2. Securing airline partnerships that validate our platform<br/>3. Generating real revenue that proves pilot willingness to pay<br/>4. Creating competitive pressure from navigation platforms integration</p>
+            <p className="text-white text-sm leading-relaxed mt-2">1. Reaching 10,000+ pilots without their help<br/>2. Securing airline partnerships that validate our platform<br/>3. Generating real revenue that proves pilot willingness to pay<br/>4. Creating competitive pressure from pilot navigation platforms (charting, flight planning, EFB) integration</p>
             <p className="text-white text-sm leading-relaxed mt-2">The partnership pitch comes <strong>after</strong> we've proven the model, not before. major pilot flight logbook platforms integrates with winners, not hopefuls.</p>
           </div>
 
@@ -5360,14 +5360,14 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 3: The Competitive Moat — Why navigation platforms Can't Match This</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Slide 3: The Competitive Moat — Why pilot navigation platforms (charting, flight planning, EFB) Can't Match This</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Header:</strong> "Be the First Logbook with Verified Credentials — Or Watch navigation platforms Take the Market"</p>
+              <p><strong>Header:</strong> "Be the First Logbook with Verified Credentials — Or Watch pilot navigation platforms (charting, flight planning, EFB) Take the Market"</p>
               <p><strong>The Market Shift:</strong> Airlines are moving to Evidence-Based Training (EBT) and Competency-Based Training Assessment (CBTA). They no longer trust raw hour counts. They need verified, structured competency data.</p>
               <p><strong>major pilot flight logbook platforms's Current Position:</strong> Gold standard for logbook formatting. But you have zero verification infrastructure. Pilots export CSVs and manually prove their hours to skeptical recruiters.</p>
-              <p><strong>navigation platforms's Vulnerability:</strong> Same problem — no verification layer. Whoever integrates with a neutral verification platform first wins the professional aviation segment.</p>
-              <p><strong>The Moat:</strong> Once pilots have 500+ verified hours in major pilot flight logbook platforms + PilotRecognition, switching logbooks means losing their verification history. That's a "data gravity" lock-in that navigation platforms cannot replicate without a similar partnership.</p>
-              <p><strong>The Window:</strong> 6-12 months. If navigation platforms integrates first, pilots switch. If major pilot flight logbook platforms integrates first, you lock in the professional segment forever.</p>
+              <p><strong>pilot navigation platforms (charting, flight planning, EFB)'s Vulnerability:</strong> Same problem — no verification layer. Whoever integrates with a neutral verification platform first wins the professional aviation segment.</p>
+              <p><strong>The Moat:</strong> Once pilots have 500+ verified hours in major pilot flight logbook platforms + PilotRecognition, switching logbooks means losing their verification history. That's a "data gravity" lock-in that pilot navigation platforms (charting, flight planning, EFB) cannot replicate without a similar partnership.</p>
+              <p><strong>The Window:</strong> 6-12 months. If pilot navigation platforms (charting, flight planning, EFB) integrates first, pilots switch. If major pilot flight logbook platforms integrates first, you lock in the professional segment forever.</p>
             </div>
           </div>
 
@@ -5375,7 +5375,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Pitch Deck Sequence</strong></p>
             <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 1 (Open):</strong> Financial Win-Win — "$1M+ annual benefit to major pilot flight logbook platforms"</p>
             <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 2 (Validate):</strong> Technical Architecture — "Zero privacy risk, zero engineering burden"</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 3 (Close):</strong> Competitive Moat — "navigation platforms is coming. Be first or lose the market."</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong>Slide 3 (Close):</strong> Competitive Moat — "pilot navigation platforms (charting, flight planning, EFB) is coming. Be first or lose the market."</p>
             <p className="text-white text-sm leading-relaxed mt-2">Close with: "API access + 90-day trial. We'll prove the model before you commit."</p>
           </div>
 
@@ -5450,7 +5450,7 @@ export default function UCFOfficialReleasePage() {
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Architecture: We Coordinate, Others Hold Data</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>The Problem:</strong> Pilots coming from our Programs (Foundation, Transition) and Pathways need to log flight hours. If we build our own logbook, we become a data holder — taking on GDPR liability, infrastructure costs, and becoming a direct competitor to major pilot flight logbook platforms/navigation platforms.</p>
+              <p><strong>The Problem:</strong> Pilots coming from our Programs (Foundation, Transition) and Pathways need to log flight hours. If we build our own logbook, we become a data holder — taking on GDPR liability, infrastructure costs, and becoming a direct competitor to major pilot flight logbook platforms/pilot navigation platforms (charting, flight planning, EFB).</p>
               <p><strong>The Solution:</strong> Partner with <strong>infrastructure partners</strong> (or similar identity/logbook infrastructure provider) to handle the digital logbook layer. PilotRecognition remains the neutral coordinator that connects pilots to verified pathways, while specialized providers handle the data they do best.</p>
               <p><strong>The Flow for New Pilots:</strong></p>
               <div className="bg-slate-100 p-2 rounded font-mono text-xs">
@@ -5680,16 +5680,16 @@ export default function UCFOfficialReleasePage() {
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-B. EFBs & Navigation Apps: The Telemetry & Complexity Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">navigation platforms · EFB platforms · navigation platforms · navigation platforms</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">pilot navigation platforms (charting, flight planning, EFB) · EFB platforms</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> EFBs and navigation apps capture the qualitative environment. They track routing architectures, airspace density, and dynamic weather decision-making.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> While a logbook proves a pilot flew two hours, the EFB proves <strong>how they flew it</strong> — adding complexity multipliers to the pilot's baseline hours in the UCF algorithm and generating high-margin safety data for insurance underwriters.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Value for EFB & Nav Providers</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>The Isolated Data Problem:</strong> EFBs and navigation apps collect incredibly rich telemetry — route diversity, approach types, weather avoidance patterns, altitude management, and airspace complexity. Yet this data lives in a silo. A pilot can fly 500 complex IFR approaches in navigation platforms, but an airline recruiter sees none of it. The data is invisible.</p>
+              <p><strong>The Isolated Data Problem:</strong> EFBs and navigation apps collect incredibly rich telemetry — route diversity, approach types, weather avoidance patterns, altitude management, and airspace complexity. Yet this data lives in a silo. A pilot can fly 500 complex IFR approaches in pilot navigation platforms (charting, flight planning, EFB), but an airline recruiter sees none of it. The data is invisible.</p>
               <p><strong>The PilotRecognition Bridge:</strong> By routing your telemetry into our verification ecosystem, flight planning complexity directly increases a pilot's Recognition Score. A pilot using your app for challenging cross-country routes, multiple approach types, and complex airspace gets algorithmic hiring preference.</p>
-              <p><strong>The Competitive Moat:</strong> Once navigation platforms data contributes to a pilot's hiring score, pilots choose navigation platforms over competitors. The app becomes not just a planning tool, but a career investment with measurable ROI.</p>
+              <p><strong>The Competitive Moat:</strong> Once pilot navigation platforms (charting, flight planning, EFB) data contributes to a pilot's hiring score, pilots choose your platform over competitors. The app becomes not just a planning tool, but a career investment with measurable ROI.</p>
               <p><strong>New Revenue Stream:</strong> Anonymized, aggregate safety data from your user base becomes licensable to insurance underwriters and fleet managers. They pay for trend analysis on weather avoidance patterns, fuel efficiency, and risk profiles.</p>
             </div>
           </div>
@@ -5728,12 +5728,12 @@ export default function UCFOfficialReleasePage() {
           <hr className="my-8 border-slate-300" />
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">XII-D. Unified Integration Architecture</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct value propositions, all integrations route through the same technical infrastructure — creating a unified ecosystem where data from major pilot flight logbook platforms, navigation platforms, simulation platforms, and Veremark all contribute to a single, trusted pilot credential.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">While each partner category has distinct value propositions, all integrations route through the same technical infrastructure — creating a unified ecosystem where data from major pilot flight logbook platforms, pilot navigation platforms (charting, flight planning, EFB), simulation platforms, and Veremark all contribute to a single, trusted pilot credential.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Three-Layer Verification Stack (All Partners)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Layer 1 — Presentation Data (Logbook/EFB/Sim):</strong> User-entered or telemetry-captured flight data from the partner platform. major pilot flight logbook platforms hours, navigation platforms routes, simulation platforms sessions.</p>
+              <p><strong>Layer 1 — Presentation Data (Logbook/EFB/Sim):</strong> User-entered or telemetry-captured flight data from the partner platform. major pilot flight logbook platforms hours, pilot navigation platforms (charting, flight planning, EFB) routes, simulation platforms sessions.</p>
               <p><strong>Layer 2 — Origin Verification (Veremark/ATO/Airline):</strong> Independent verification that the flight actually occurred — crew scheduling records, flight school documentation, simulator session authentication.</p>
               <p><strong>Layer 3 — Recognition Score (PilotRecognition):</strong> The unified algorithm that weights verified hours, competency metrics, and professional standing into a single industry-recognized credential.</p>
             </div>
@@ -5810,9 +5810,9 @@ export default function UCFOfficialReleasePage() {
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Powered By Industry Leaders</p>
             <div className="flex flex-wrap justify-center gap-3 text-sm">
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">major pilot flight logbook platforms</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">navigation platforms</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">pilot navigation platforms (charting, flight planning, EFB)</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">EFB platforms</span>
-              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">navigation platforms</span>
+              <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">pilot navigation platforms (charting, flight planning, EFB)</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">simulation platforms</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">ATC networks</span>
               <span className="bg-slate-700 px-3 py-1 rounded text-emerald-400">Veremark</span>
@@ -5828,7 +5828,7 @@ export default function UCFOfficialReleasePage() {
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 1 Beachhead: Logbook Provider Acquisition</h4>
           <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">major pilot flight logbook platforms · EASA-certified pilot logbook platforms · infrastructure partners</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Strategic Rationale:</strong> Logbook providers offer the highest-conviction, fastest-revenue, lowest-friction entry point. major pilot flight logbook platforms's 160,000 users represent immediate monetization with established B2B relationships. navigation platforms requires navigating OEMs corporate bureaucracy. simulation platforms requires convincing volunteer networks to adopt paid infrastructure. We conquer the beachhead first, then use that momentum for the harder fights.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Strategic Rationale:</strong> Logbook providers offer the highest-conviction, fastest-revenue, lowest-friction entry point. major pilot flight logbook platforms's 160,000 users represent immediate monetization with established B2B relationships. pilot navigation platforms (charting, flight planning, EFB) requires navigating OEMs corporate bureaucracy. simulation platforms requires convincing volunteer networks to adopt paid infrastructure. We conquer the beachhead first, then use that momentum for the harder fights.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Phase 1 Success Metrics</p>
@@ -5841,9 +5841,9 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 2 Expansion: EFB & Navigation App Integration</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">navigation platforms · EFB platforms · navigation platforms</p>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">pilot navigation platforms (charting, flight planning, EFB) · EFB platforms</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Prerequisites:</strong> Phase 1 baseline data proving telemetry-to-Recognition-Score algorithm efficacy. Established airline partnerships requiring complexity multipliers in hiring decisions.</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Timeline:</strong> Q3-Q4 following Phase 1 traction. Dedicated implementation team with pre-written SDKs for navigation platforms/Garmin APIs. 3-sprint deployment timeline.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Execution Timeline:</strong> Q3-Q4 following Phase 1 traction. Dedicated implementation team with pre-written SDKs for pilot navigation platforms (charting, flight planning, EFB)/Garmin APIs. 3-sprint deployment timeline.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Revenue Model:</strong> $15 per active integration + premium tier licensing anonymized aggregate safety data to insurance underwriters ($50K-200K annual contracts).</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Phase 3 Maturity: Simulator & CBTA Integration</h4>
