@@ -4758,6 +4758,15 @@ export default function UCFOfficialReleasePage() {
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IV. Revenue Architecture for Providers</h3>
 
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Pilot Perspective: Your Flying Is Invisible To The Industry</p>
+            <p className="text-sm text-slate-700 mb-2">Pilots spend hundreds of dollars annually on subscriptions like Navigraph, ForeFlight, Garmin Pilot, or SkyDemon, and thousands more on simulator hours. They use these tools to build real proficiency: planning complex routes, sharpening IFR skills, flying tight instrument approaches, and mastering challenging weather.</p>
+            <p className="text-sm text-slate-700 mb-2">But right now, the aviation industry treats all of that hard work as invisible. The moment a pilot closes the app or powers down the sim, their data disappears into a commercial black hole. It doesn't count toward their CV. Airlines can't see it, recruiters can't query it, and it does absolutely nothing to help them land their next seat.</p>
+            <p className="text-sm text-slate-700"><strong>The Broken Pipe:</strong> The training data pilots generate is worth a fortune to airlines looking for sharp talent, but pilots have no way to prove it, and app providers have no way to validate it for them. Skill evaporates the moment they log off.</p>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. Direct Revenue Streams</h4>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             {[
               { t: 'Reduced Churn Revenue', items: ['Pilots maintaining subscriptions to feed verified profiles', 'Estimated 20-30% churn reduction post-employment', 'Annual subscription value preserved: $150-300 per pilot'] },
@@ -4770,11 +4779,54 @@ export default function UCFOfficialReleasePage() {
             ))}
           </div>
 
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The $20 Ecosystem Referral Dividend</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">The pilots who build this network should be the ones who profit from its growth. PilotRecognition turns navigation, chart, and simulator platforms into active onboarding partners for pilot careers.</p>
+
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-3">Referral Economics</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p>When an integrated flight application (e.g., Navigraph or ForeFlight) successfully introduces a pilot to the PilotRecognition network, a <strong>$20 Ecosystem Referral Dividend</strong> is triggered upon activation of that pilot's premium profile.</p>
+              <p><strong>Distribution:</strong> $20 paid directly to the partner app/platform infrastructure</p>
+              <p><strong>Lifetime Value:</strong> Pilot keeps app active to feed verified data to career wallet — reducing churn and increasing lifetime value</p>
+            </div>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4">By embedding this $20 incentive directly into software infrastructure, flight apps are financially motivated to build deeper, cleaner career tools. Instead of just selling basic chart subscriptions, providers are incentivized to help pilots get discovered by airlines, build automatic verification tools, and maintain connection to active global hiring pathways.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. App Integration Matrix: How Tools Adapt</h4>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Platform Type</th>
+                  <th className="text-left px-4 py-2 font-semibold">Current Use</th>
+                  <th className="text-left px-4 py-2 font-semibold">Verified Wallet Credentials</th>
+                  <th className="text-left px-4 py-2 font-semibold">Airline Visibility</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { t: 'Chart & Nav Apps', c: 'Route planning, chart views, procedure selection', v: '"Operational Currency" Tokens (approach diversity, flight planning frequency)', a: 'Pilot actively maintaining cognitive familiarity with international airports and complex airspace' },
+                  { t: 'EFBs / Logbooks', c: 'Flight tracking, hour logs, airport notes', v: '"Verified Flight Time" Tokens (auto-synced, cryptographically anchored)', a: 'Instantly verifiable hours that bypass ATS parsing errors' },
+                  { t: 'Desktop Simulators', c: 'Procedure practice, type-specific handling, failures', v: '"Simulator Proficiency" Tokens (validated by hardware logs and ATO tokens)', a: 'Advanced procedural readiness before interview' },
+                  { t: 'ATC Simulations', c: 'Live phraseology, airspace communication', v: '"CRM & Communication Currency" Tokens (radio density, compliance metrics)', a: 'High-level situational awareness and radio competency edge for low-hour pilots' },
+                ].map((row, i) => (
+                  <tr key={row.t} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.t}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.c}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300">{row.v}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400">{row.a}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Partnership Pitch to Flight Data Providers</p>
             <p className="text-sm text-slate-700 mb-2 italic">"Your app captures the most detailed pilot activity data in aviation. Currently, that data dies when the pilot closes the app. PilotRecognition transforms it into verified, airline-queryable credentials that travel with the pilot across their entire career."</p>
             <p className="text-sm text-slate-700 mb-2"><strong>The Ask:</strong> API integration enabling automatic, pilot-authorized data sync to Professional Standing Assets.</p>
-            <p className="text-sm text-slate-700"><strong>The Return:</strong> Reduced churn, enterprise data licensing revenue, and differentiation as the only flight data app with professional credential integration.</p>
+            <p className="text-sm text-slate-700"><strong>The Return:</strong> $20 referral dividends, reduced churn, enterprise data licensing revenue, and differentiation as the only flight data app with professional credential integration.</p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">V. Integration Requirements &amp; Standards</h3>
@@ -4807,7 +4859,9 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Competitive Moat:</strong> Once a flight data provider integrates with PilotRecognition, their data becomes part of the <strong>verified credential standard</strong> airlines expect. Competitors without integration are relegated to "consumer entertainment" status. The first-mover integration becomes the professional standard — and late adopters struggle to compete for serious pilot users.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Competitive Moat: Separating Toys From Tools</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Once a flight data provider integrates with PilotRecognition, their data becomes part of the <strong>verified credential standard</strong> airlines expect. Competitors without integration are relegated to "consumer entertainment" status. The first-mover integration becomes the professional standard — and late adopters struggle to compete for serious pilot users.</p>
+            <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Pilot Value Proposition:</strong> You own your data; it's time you used it to fly your career forward. Apps that refuse to open their data pipes to your sovereign wallet will be left behind as consumer novelties. The platforms that empower you with data sovereignty and direct airline visibility become the absolute industry standard for serious aviators.</p>
           </div>
 
           <hr className="my-8 border-slate-200" />
