@@ -4482,6 +4482,61 @@ export default function UCFOfficialReleasePage() {
             ))}
           </div>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Pilot-First OEM Architecture — How Manufacturers Interact With This Platform</h3>
+
+          <div className="bg-slate-900 rounded-xl px-8 py-6 mb-6">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">The Governing Rule — Non-Negotiable</p>
+            <p className="text-white text-sm leading-relaxed mb-0"><strong style={{color:'#f87171'}}>The Pilot-First OEM Rule:</strong> <span className="text-slate-300">Manufacturers are granted access to platform macro-intelligence not to commoditise the pilot pool, but to invest in it. OEMs interact with aggregated, anonymised fleet-demand data only. They may interact with individual pilots solely through direct training sponsorships, OEM-certified credentialing, or explicit pilot-opted employment pathways. No OEM may passively extract individual pilot data. No OEM may use platform intelligence to suppress hiring standards or advocate for wage compression. Access is a privilege extended in exchange for contribution to the pilot ecosystem.</span></p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-6">If manufacturers are treated as pure data consumers extracting intelligence from the pilot network, the platform becomes a corporate surveillance tool. Pilots will leave. The network dies. The value of the data collapses. <strong>The only sustainable model is one where OEM access creates direct, measurable value for the pilots whose data makes the intelligence possible.</strong> These four mechanisms enforce that at the architectural level — not just as policy.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+            {([
+              {
+                n: '1',
+                title: 'Sponsor the Source — OEM Sponsorship Pathways',
+                color: '#34d399',
+                rule: 'Pilot-First mechanism: manufacturers fund the gap they identify.',
+                body: 'If macro-intelligence reveals a shortage of type-rated pilots threatening a fleet sale, the manufacturer does not lobby airlines to lower their hiring minimums. They publish an OEM Sponsorship Pathway — offering to fully or partially fund type ratings for verified, high-aptitude pilots on the platform. The manufacturer spends $1.5M to sponsor 50 type ratings. The fleet sale closes. The pilot gets a career-changing credential at zero or reduced cost. The airline gets the crew. Everyone wins — because the manufacturer invested in the foundation instead of eroding it.',
+              },
+              {
+                n: '2',
+                title: 'Zero-Knowledge Macro Data Only',
+                color: '#60a5fa',
+                rule: 'Architecturally enforced: OEMs buy trends, not targets.',
+                body: 'The data architecture hardcodes what manufacturers can see. They see: "412 verified A320 First Officers in Southeast Asia with 1,500+ hours." They never see names, contact information, or individual profiles. Individual pilots remain completely invisible unless they explicitly tap APPROVE to share their profile with a specific OEM employment pathway — such as a factory test pilot or simulator instructor role. Anonymisation is not a privacy policy. It is enforced at the data layer. There is no override.',
+              },
+              {
+                n: '3',
+                title: 'Direct Pilot-to-OEM Feedback Loop',
+                color: '#f87171',
+                rule: 'Pilots speak directly to manufacturers — bypassing airline bureaucracy.',
+                body: 'When a manufacturer wants ground-truth data on cockpit ergonomics, flight control software behaviour, or EBT training effectiveness, they currently ask airline management — who filter the truth to protect their own metrics. On this platform, the manufacturer can push an anonymous, technically verified survey directly to confirmed aircraft type operators. Pilots flying the metal tell the people who built the metal. The pilot gets a direct voice to the manufacturer. The manufacturer gets raw, verified data from actual operators. The airline\'s PR layer is bypassed entirely.',
+              },
+              {
+                n: '4',
+                title: 'The OEM-Certified Immutable Credential',
+                color: '#fbbf24',
+                rule: 'The credential that cannot be doubted.',
+                body: 'When a pilot completes training at an official manufacturer type rating centre, the OEM issues a cryptographically signed "OEM-Certified" token directly to the pilot\'s DID wallet. The token is immutable, timestamped, and manufacturer-verified. An airline cannot argue with a training credential digitally signed by the company that engineered the aircraft. The pilot\'s market value increases immediately. The manufacturer\'s training centre becomes the most credible credential source in the market. The pilot no longer has to fight to prove the quality of their training.',
+              },
+            ] as {n:string;title:string;color:string;rule:string;body:string}[]).map((item) => (
+              <div key={item.n} className="border border-slate-200 rounded-lg px-5 py-5 bg-white">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-black text-base flex-shrink-0" style={{color: item.color}}>{item.n}</span>
+                  <p className="font-bold text-slate-900 text-sm">{item.title}</p>
+                </div>
+                <p className="text-xs font-semibold mb-2" style={{color: item.color}}>{item.rule}</p>
+                <p className="text-xs text-slate-600 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-10 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The test for every OEM interaction:</strong> <span className="text-slate-300">Does this interaction make the individual pilot more valuable, more informed, or more empowered — or does it extract value from the pilot network to benefit the manufacturer? If the answer is extraction without contribution, the interaction does not exist on this platform. Every mechanism above passes this test. The OEM Sponsorship Pathway funds a pilot's career. Zero-Knowledge data protects pilot privacy by architecture. The feedback loop gives pilots a direct voice. The immutable credential makes the pilot undeniable. Manufacturers earn access by making the base layer stronger, not weaker.</span></p>
+          </div>
+
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Paper vs. Reality Gap — A Core Pain Point Validated at Manufacturer Level</h3>
           <p className="text-slate-700 leading-relaxed mb-4">This specific use case was confirmed in recorded conversations with senior representatives from a major aircraft manufacturer. No names or organisations are disclosed. The pain point is not theoretical — it is a live, multi-billion-dollar constraint on manufacturer expansion models, and PilotRecognition is the only architecture in existence that resolves it.</p>
           <p className="text-slate-700 leading-relaxed mb-4">Major manufacturers sell type ratings. Airlines buy the planes. The 200-hour type-rated pilot is legally qualified. But the airline's Safety Management System, the insurer's underwriting policy, and the EBT assessor's competency requirements all operate on a different standard from the legal minimum — <strong>and there is currently no infrastructure that bridges that gap.</strong></p>
