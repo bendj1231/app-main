@@ -5426,6 +5426,35 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">Close with: "API access + 90-day trial. We'll prove the model before you commit."</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Alternative Positioning: The True Neutrality Model</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A more defensible pitch reframes PilotRecognition not as a data repository, but as a <strong>verification layer that stores results on LogTen's own infrastructure.</strong> This positions us as genuinely neutral infrastructure rather than a competing platform.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Revised Architecture: You Store Everything</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Pitch:</strong> "We are not asking pilots to store their verified hours on our platform. We are offering you a verification engine that stores the attestation results <strong>in your database</strong>. PilotRecognition acts as the verification oracle — we query airlines, match against flight records, and return a cryptographic attestation token. You store that token alongside the pilot's flight entry. The data never leaves your infrastructure."</p>
+              <p><strong>The Neutrality:</strong> By storing verification results in LogTen's own database, we eliminate the "competing platform" objection entirely. LogTen remains the data controller. We remain the verification service provider. The pilot's verified badge appears in LogTen because that's where the data lives.</p>
+              <p><strong>The Technical Flow:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[LogTen Database] ←—— Pilot logs flight (your data)</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Pilot clicks "Verify This Flight")</p>
+                <p>[PilotRecognition API] ——→ Queries airline FLICA/Sabre</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Returns attestation result)</p>
+                <p>[LogTen Database] ←—— Stores "verified: true" + timestamp + airline</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓ (Badge displays in your UI)</p>
+                <p>[Pilot Dashboard] ——→ "✓ Verified by Emirates (via PilotRecognition)"</p>
+              </div>
+              <p><strong>The Advantage:</strong> LogTen gains a new premium feature (verification badges) without surrendering data control. PilotRecognition earns revenue per verification without building a competing logbook. The pilot gets trusted credentials without leaving their preferred app. True three-way neutrality.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-blue-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#60a5fa'}}>Why This Positioning Wins</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen's core objection is fear of losing user data to an external platform. By offering to store verification results on <strong>their infrastructure</strong>, we become a service provider, not a competitor:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• LogTen maintains complete data sovereignty<br/>• We provide verification-as-a-service (API calls)<br/>• Pilot data never migrates to a third-party database<br/>• LogTen can white-label the feature: "LogTen Verified™ powered by PilotRecognition"<br/>• If the partnership ends, LogTen keeps all verification history — we just stop issuing new attestations</p>
+            <p className="text-white text-sm leading-relaxed mt-2">This is how Visa partners with banks — Visa doesn't hold your money, they just verify transactions. LogTen holds the data. We verify its authenticity.</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
