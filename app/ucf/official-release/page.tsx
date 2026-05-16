@@ -4995,7 +4995,7 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <ul className="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-4">
-            <li><strong>The Hobbs (ATO/Operator Verified):</strong> Tallying total verified flight hours — each entry cryptographically attested by either the Flight Training Organization (ATO) verification issuer where training occurred, or the commercial operator (airline/employer) where the pilot flew professionally. This institutional verification transforms raw logbook entries into trusted, airline-ready flight time records.</li>
+            <li><strong>The Hobbs (ATO/Operator Issued, Logbook Displayed):</strong> Tallying total verified flight hours — each entry is <strong>issued and cryptographically attested</strong> by either the Flight Training Organization (ATO) or commercial operator (airline/employer) where the pilot flew. Logbook platforms (LogTen Pro, ForeFlight, etc.) <strong>do not verify or issue</strong> these hours — they function as the <strong>display layer</strong> that presents the verified token from the ATO/Operator to the pilot's dashboard. The logbook app ingests the attestation, the ATO/Operator issues it.</li>
             <li><strong>The Data Check (Veremark — stored in Verepass):</strong> Background verification status showing green when all data is cryptographically attested and current via Veremark's verification engine, red when discrepancies or expirations are detected. Verification records are securely stored in the pilot's Verepass digital vault.</li>
             <li><strong>The Practice Instrument (X-Plane + ForeFlight):</strong> Aggregating all simulation and navigation app activity — desktop simulator hours (X-Plane, MSFS) plus route planning, approach practice, and procedure rehearsal logged via navigation apps (ForeFlight). This combined practice data feeds the Recognition Score and demonstrates active proficiency building beyond raw flight hours.</li>
             <li><strong>The Pathway Navigator (Airline Integration):</strong> Color-coded alignment indicator showing whether the pilot's current profile matches their target cadet program or airline pathway requirements.</li>
@@ -5003,16 +5003,16 @@ export default function UCFOfficialReleasePage() {
 
           <p className="text-slate-700 leading-relaxed mb-4">The pilot operates this dashboard as the <strong>Pilot in Command</strong> — scanning instruments, checking for red alerts, and ensuring all systems are green before engaging their target career pathway. Just as a pilot cannot fly IFR without proper instruments, they cannot access premium pathway placements without verified data showing green across the panel.</p>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Commercial Airline & Operator Issuance</h5>
-          <p className="text-slate-700 leading-relaxed mb-4">Commercial airlines and aircraft operators serve as <strong>Verification Node Issuers</strong> for flight hours logged on their aircraft. When a pilot flies for an airline, charter operator, or commercial fleet, the operator can issue cryptographically signed attestations of those flight hours directly to the pilot's sovereign wallet — with explicit pilot consent.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Commercial Airline & Operator Issuance (The Verification Authority)</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Commercial airlines and aircraft operators serve as the <strong>sole Verification Node Issuers</strong> for flight hours logged on their aircraft. Logbook companies do not have internal verification teams and cannot issue attestations — they only <strong>display</strong> the cryptographically signed tokens that ATOs and Operators generate.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Operator-Issued Flight Hours</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Separation of Powers: Issuer vs Display</p>
             <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>ATO/Operator = Issuer:</strong> The flight school or employer that operated the aircraft is the only entity authorized to issue cryptographic attestations of flight hours. They verify the flight actually occurred, check aircraft logs, and sign the attestation.</p>
+              <p><strong>Logbook App = Display Layer:</strong> LogTen Pro, ForeFlight, Garmin Pilot ingest the attestation from the ATO/Operator and present it to the pilot in their dashboard. They provide data storage and UI — not verification authority.</p>
               <p><strong>Pilot Consent Layer:</strong> Before any flight hour attestation is issued, the pilot must authorize their employer/operator to attest hours on their behalf. This consent is revocable and auditable on-chain.</p>
-              <p><strong>Aircraft-Specific Logging:</strong> Each attestation includes the specific aircraft registration, flight sectors, and duty periods — creating an immutable record of professional flight activity tied to the operator's fleet.</p>
-              <p><strong>Career Mobility:</strong> When a pilot transitions between employers, their verified hours from previous operators remain in their wallet as portable, cryptographically attested credentials — eliminating the traditional "logbook gap" during job changes.</p>
-              <p><strong>Operator Benefits:</strong> Airlines that issue verified hours to departing pilots maintain positive alumni relationships, reduce post-employment verification requests, and position themselves as modern, pilot-centric employers in the marketplace.</p>
+              <p><strong>Career Mobility:</strong> When a pilot transitions between employers, their verified hours from previous operators remain in their wallet as portable, cryptographically attested credentials — the logbook simply displays the accumulated tokens from multiple issuers over time.</p>
             </div>
           </div>
 
