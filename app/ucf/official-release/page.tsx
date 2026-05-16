@@ -4771,7 +4771,45 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-2"><strong>The Interconnection:</strong> Decentralized simulation telemetry (from X-Plane, MSFS, and home FTD configurations) captures exact cockpit interaction patterns, autopilot management habits, and system failure responses.</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The Outcome:</strong> OEMs can query the network to analyze pilot behavior: "How many hours of targeted, type-specific simulator training are pilots executing in their spare time prior to entering a formal type-rating course?" This raw, pilot-authorized data enables manufacturers to optimize their flight training footprints, refine human-machine interface (HMI) designs, and build data-driven curriculum structures that drastically reduce type-rating washout rates.</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VII. The Corporate Value Proposition: Why Flight Data Giants Must Integrate</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VII. The Recognition Score Multiplier: Transforming Spare Time into Hiring Equity</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">The ultimate destination for all data ingested through Pillar 12 is the pilot's centralized <strong>Recognition Score.</strong> Within the PilotRecognition marketplace, airlines do not simply sort applicants by raw, static logbook hours. Instead, the sourcing engine utilizes an algorithmic weight matrix that prioritizes active proficiency, cognitive currency, and targeted preparation. When a pilot spends their spare time executing high-density ATC simulations or practicing complex procedural profiles, the platform treats this data as an elite validation metric.</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
+            <div className="space-y-1 text-slate-300">
+              <p><span className="text-slate-400">[Raw Logbook Hours]</span> {'->'} (Static Baseline / Bare Minimum Qualification)</p>
+              <p>┼</p>
+              <p><span className="text-emerald-400">[Verified Telemetry]</span> {'->'} (Active App &amp; Sim Processing / ATC Prep Logs)</p>
+              <p>│</p>
+              <p>▼</p>
+              <p><span className="text-amber-400">[ALGORITHMIC RECOGNITION SCORE MULTIPLIER]</span></p>
+              <p>│</p>
+              <p>▼</p>
+              <p>(Top-Tier Discovery Placement on Airline Hiring Matrices)</p>
+            </div>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">1. The ATC &amp; Phraseology Premium (The Communication Filter)</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">A major point of failure during initial airline line-training and simulator evaluations is a candidate's lack of situational awareness and breakdown in non-standard ATC phraseology. Low-hour pilots frequently struggle to adapt from quiet training airspaces to high-velocity, international hub environments.</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Active hours logged on certified simulation networks (e.g., VATSIM, PilotEdge) tracking radio transmission density, read-back accuracy, and airspace boundary compliance.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Score Impact:</strong> Every verified hour of high-density air traffic control interaction functions as a competency multiplier. The algorithm dynamically upgrades the pilot's CRM &amp; Communication Profile, signaling to airline recruiters that this candidate possesses advanced operational readiness and will require significantly less remedial training during line orientation.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">2. The Active Currency Weighting Matrix</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">A pilot with 250 hours who has sat completely idle for six months is structurally disadvantaged compared to a 250-hour pilot who has logged 30 hours of intensive instrument tracking, approach repetitions, and route-planning scenarios over the last 30 days.</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> Continuous data updates from navigation apps (ForeFlight, Navigraph) detailing real-world routing complexity, holding pattern execution, and exposure to variable instrument meteorological conditions (IMC).</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Score Impact:</strong> The platform applies an exponential decay algorithm to unverified time, while assigning a <strong>Velocity Premium</strong> to active telemetry. A pilot who maintains a high frequency of self-directed, verified preparation is automatically pushed to the top of operator search results, maximizing their discovery rate for premium pathway placements.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">3. Institutional Validation Loops (The Multiplier Cap)</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">While independent desktop preparation builds significant score equity, the platform applies a compounding bonus when that data intersects with professional oversight.</p>
+          <p className="text-slate-700 leading-relaxed mb-2"><strong>The Telemetry Input:</strong> A pilot practices a highly complex B737 or A320 failure profile on their home simulator platform, which is then reviewed, verified, and countersigned via an ATO Instructor Token (Pillar 5).</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Score Impact:</strong> This transforms a standard Level 2 (Device-Verified) log into a Level 3 (Institutionally Countersigned) asset. The Recognition Score multiplies exponentially, proving to corporate airlines that the pilot is actively executing structured, standardized professional development entirely on their own initiative.</p>
+
+          <div className="bg-slate-900 border-l-4 border-emerald-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#34d399'}}>The Ultimate Executive Leverage</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">This mechanism closes the final loop for software providers. When pitching to Garmin, Navigraph, or ForeFlight, you can show them that they are no longer just selling a tool to help pilots fly from Point A to Point B. <strong>They are selling a platform that directly improves the pilot's algorithmic hiring score.</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">The message to the pilot community is definitive: "Every hour you spend on our integrated partner apps planning flights, talking to ATC simulators, and flying complex procedures is a direct investment in your marketplace ranking. If you fly with an unlinked app, your hard work is a ghost. If you fly with our partners, your data actively pulls your career forward."</p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. The Corporate Value Proposition: Why Flight Data Giants Must Integrate</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The decision for a flight data platform to partner with PilotRecognition is driven by clear commercial incentives: stopping post-employment subscription churn, unlocking high-margin enterprise data streams, and activating a risk-free $20 user acquisition loop.</p>
 
           <div className="bg-slate-900 rounded-lg px-5 py-4 mb-5 text-sm font-mono">
@@ -4829,7 +4867,7 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. The Trust Paradigm: Overcoming the Corporate Telemetry Disconnect</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IX. The Trust Paradigm: Overcoming the Corporate Telemetry Disconnect</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The greatest barrier to utilizing pilot flight data has never been technical; it is <strong>cultural.</strong> Line pilots harbor a deep, historic distrust of corporate data tracking. Traditionally, when a flight operator or an airline monitors cockpit telemetry (via FOQA or Flight Data Monitoring programs), that data is controlled by corporate management and frequently weaponized as a punitive tool against the crew.</p>
           <p className="text-slate-700 leading-relaxed mb-4">Because of this adversarial dynamic, pilots fiercely guard their personal flight data. They will actively resist, block, or subvert any platform that feeds their raw, unvetted flight patterns directly into a centralized corporate database.</p>
           <p className="text-slate-700 leading-relaxed mb-6">This cultural disconnect is precisely why legacy corporate attempts to aggregate pilot performance data fail. PilotRecognition resolves this structural standoff through its decentralized, pilot-first architecture.</p>
@@ -4866,7 +4904,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">Airlines want high-fidelity pilot proficiency data, but they cannot access it without a bridge of absolute trust. PilotRecognition provides that bridge by dealing directly with the sovereign source: the pilot.</p>
           <p className="text-slate-700 leading-relaxed mb-4">By prioritizing the aviator's privacy rights over corporate data-hoarding, we create the only environment where pilots willingly activate their telemetry streams. We turn raw flying data into a <strong>cooperative, high-trust asset</strong> that protects the pilot, empowers the software provider, and gives airlines the validated proficiency metrics they desperately need — on the pilot's terms.</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IX. Application Integration Matrix</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">X. Application Integration Matrix</h3>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -4901,7 +4939,7 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2"><strong style={{color:'#34d399'}}>The Pilot Value Proposition:</strong> You own your data — it is time you used it to advance your career.</p>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">X. The Founders' Credo: Built by the Cockpit, for the Cockpit</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-10 mb-3">XI. The Founders' Credo: Built by the Cockpit, for the Cockpit</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The architecture of PilotRecognition was not conceived in a corporate boardroom or engineered by a detached tech startup. It was built by <strong>line pilots who faced the exact informational deficits, data isolation, and systemic friction detailed in this framework.</strong> Every line of code, cryptographic protocol, and data gateway in this platform originates from a pure, pilot-first need.</p>
           <p className="text-slate-700 leading-relaxed mb-4">We spent years navigating an industry that demands absolute perfection from our flying, yet reduces our achievements to paper certificates, disconnected logbooks, and transactional log summaries. We watched our peers face extended hiring bottlenecks and proficiency vaporization simply because the industry lacked a neutral mechanism to recognize their true capabilities.</p>
           <p className="text-slate-700 leading-relaxed mb-4">We did not build this platform to monitor, audit, or surveil pilots. <strong>We built it to liberate our data and give every aviator ultimate sovereignty over their hard-earned professional footprint.</strong></p>
