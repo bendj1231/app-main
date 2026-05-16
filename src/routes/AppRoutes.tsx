@@ -63,6 +63,9 @@ const FoundationalVerificationPage = lazy(() => import('@/components/website/com
 const PilotRecognitionPage = lazy(() => import('@/components/website/components/pilot-recognition/PilotRecognitionPage').then(m => ({ default: m.PilotRecognitionPage })));
 const PilotRecognitionProfilePage = lazy(() => import('@/components/website/components/pilot-recognition/PilotRecognitionProfilePage').then(m => ({ default: m.PilotRecognitionProfilePage })));
 const PilotLicensureExperiencePage = lazy(() => import('@/components/website/components/pilot-recognition/PilotLicensureExperiencePage').then(m => ({ default: m.PilotLicensureExperiencePage })));
+const VerificationInitiatePage = lazy(() => import('@/components/website/components/pilot-recognition/VerificationInitiatePage').then(m => ({ default: m.VerificationInitiatePage })));
+const ATOAttestationPage = lazy(() => import('@/components/website/components/pilot-recognition/ATOAttestationPage').then(m => ({ default: m.ATOAttestationPage })));
+const ConflictResolutionDashboard = lazy(() => import('@/components/website/components/pilot-recognition/ConflictResolutionDashboard').then(m => ({ default: m.ConflictResolutionDashboard })));
 const WhatIsPilotRecognitionPage = lazy(() => import('../../components/website/components/WhatIsPilotRecognitionPage'));
 const ScoreOptimizationPage = lazy(() => import('@/components/website/components/pilot-recognition/ScoreOptimizationPage').then(m => ({ default: m.ScoreOptimizationPage })));
 const RecognitionScoreInfoPage = lazy(() => import('@/components/website/components/pilot-recognition/RecognitionScoreInfoPage').then(m => ({ default: m.RecognitionScoreInfoPage })));
@@ -273,6 +276,9 @@ export const AppRoutes = () => {
       <Route path="/recognition-plus-comparison" element={<RecognitionPlusComparisonPage />} />
       <Route path="/pilot-recognition-profile" element={<PilotRecognitionProfilePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/pilot-licensure-experience" element={<PilotLicensureExperiencePage onBack={() => handleBack('/pilot-recognition-profile')} />} />
+      <Route path="/verification" element={<VerificationInitiatePage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/ato-attestation" element={<ATOAttestationPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/verification-conflicts" element={<ConflictResolutionDashboard onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/score-optimization" element={<ScoreOptimizationPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-score-info" element={<RecognitionScoreInfoPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-career-matches" element={<RecognitionCareerMatchesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />

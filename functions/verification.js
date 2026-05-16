@@ -109,20 +109,7 @@ exports.initiateVerification = onRequest(async (req, res) => {
   if (!pilot_id) return res.status(400).json({ error: 'pilot_id required' });
 
   try {
-    // 1. Check Recognition+ subscription
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('id, status, plan')
-      .eq('user_id', pilot_id)
-      .eq('status', 'active')
-      .eq('plan', 'recognition_plus')
-      .single();
-
-    if (!subscription) {
-      return res.status(403).json({ error: 'Recognition+ subscription required to initiate verification' });
-    }
-
-    // 2. Check if wallet already exists
+    // 1. Check if wallet already exists
     const { data: existingWallet } = await supabase
       .from('pilot_verification_wallet')
       .select('id, wallet_status')
@@ -369,7 +356,28 @@ exports.veremarkWebhook = onRequest(async (req, res) => {
       })
       .eq('id', wallet.id);
 
-    // 8. Send notifications
+    // 8. If check failed, raise a conflict record for pilot to respond to
+    if (mappedStatus === 'failed') {
+      const conflictTypeMap = {
+        identity: 'identity_mismatch',
+        education: 'other',
+        professional_qualification: 'license_mismatch',
+      };
+      await supabase
+        .from('verification_conflicts')
+        .insert({
+          pilot_id: wallet.pilot_id,
+          wallet_id: wallet.id,
+          check_id: null,
+          conflict_type: conflictTypeMap[check_type] ?? 'other',
+          declared_value: null,
+          returned_value: notes ?? 'Check failed — see report',
+          source_authority: 'Veremark',
+          status: 'open',
+        });
+    }
+
+    // 9. Send notifications
     if (allVerified) {
       await supabase.from('notifications').insert({
         user_id: wallet.pilot_id,
