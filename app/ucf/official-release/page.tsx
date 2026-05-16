@@ -2262,7 +2262,7 @@ export default function UCFOfficialReleasePage() {
               <p><strong>Other Operators (Cargo/Charter):</strong> When placement data reveals systematic discrepancies between ATO-reported competency and actual operational performance.</p>
               <p><strong>Individual Pilots:</strong> When falsified records result in career damage — failed checkrides, employment termination, or regulatory enforcement due to training deficiencies not reflected in verified credentials.</p>
               <p><strong>Financial Institutions:</strong> When training loans default due to unqualified graduates failing to secure employment because credential inflation misrepresented competency levels.</p>
-              <p><strong>Regulatory Authorities:</strong> When a pilot fails regulatory examinations (e.g., CAAP CPL checks) and must return to the flight school for remedial training, exposing the ATO's initial competency certification as premature or inaccurate. The authority may hold the ATO accountable for certifying pilots who were not examination-ready.</p>
+              <p><strong>Regulatory Authorities (Civil Aviation Authorities / CAAs):</strong> When a pilot fails regulatory examinations (e.g., CPL checks conducted by Civil Aviation Authorities) and must return to the flight school for remedial training, exposing the ATO's initial competency certification as premature or inaccurate. The authority may hold the ATO accountable for certifying pilots who were not examination-ready.</p>
             </div>
           </div>
 
@@ -2278,10 +2278,10 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Example: CAAP Examination Failure Chain</p>
-            <p className="text-sm text-slate-700 mb-2">When a pilot fails CAAP regulatory examinations and returns to the flight school for remedial training:</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Example: Regulatory Examination Failure Chain</p>
+            <p className="text-sm text-slate-700 mb-2">When a pilot fails regulatory authority examinations (e.g., Civil Aviation Authority CPL checks) and returns to the flight school for remedial training:</p>
             <div className="space-y-1 text-sm text-slate-700">
-              <p><strong>1. Regulatory Authority (CAAP):</strong> Documents examination failure, identifies pilot as ATO graduate</p>
+              <p><strong>1. Regulatory Authority:</strong> Documents examination failure, identifies pilot as ATO graduate</p>
               <p><strong>2. Authority Database:</strong> Links failure to issuing ATO's certification records</p>
               <p><strong>3. Platform Layer:</strong> Routes inquiry to Verification Node (issuing ATO) per cryptographic signature</p>
               <p><strong>4. Flight School (ATO):</strong> Must account for competency certification issued prior to examination</p>
