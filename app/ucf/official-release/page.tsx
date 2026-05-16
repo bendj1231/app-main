@@ -447,6 +447,77 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>The legal consequence of owning the base layer:</strong> <span className="text-slate-300">Because the pilot owns their data in a decentralised wallet and commands every release — and because the platform is the neutral infrastructure through which that happens — no airline's aggressive legal department can rewrite the terms of access. The airline needs the network more than the network needs any single airline. This is not a negotiating position. It is the architecture.</span></p>
           </div>
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">The Most Expensive Lie in Aviation — Validated by Airbus</h3>
+
+          <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 mb-6">
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-1">Industry Validation</p>
+            <p className="text-slate-700 text-sm leading-relaxed">The following pain point was confirmed in recorded interviews with Airbus representatives. This is not a hypothesis. It is the core thesis of the platform, validated by the largest aircraft manufacturer in the world as a live, unresolved problem costing the industry billions in stalled expansion.</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4">Flight schools and Type Rating Organisations — including Airbus's own training arms — sell a legally accurate but operationally misleading promise: <em>"Get your 200 hours, complete an A320 Type Rating, and you are qualified to sit in the right seat of an airliner."</em> They are correct. The Civil Aviation Authority will print the license. The pilot is legally compliant. <strong>And then the pilot walks into an airline, and the industry reality hits them like a brick wall.</strong></p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {([
+              {
+                source: 'The Airline Says',
+                color: '#f87171',
+                quote: '"Our internal Safety Management System requires 500 hours on type before solo rostering. Legal minimum is irrelevant to our ops manual."',
+              },
+              {
+                source: 'The Insurer Says',
+                color: '#fbbf24',
+                quote: '"We will not cover a 200-hour pilot in an A320 unless the Captain has 5,000 hours — which destroys our roster flexibility. Policy denied."',
+              },
+              {
+                source: 'The EBT Assessor Says',
+                color: '#60a5fa',
+                quote: '"This pilot holds the legal rating. Their verified competency profile is blank. We have no EBT data to assess actual readiness."',
+              },
+            ] as {source:string;color:string;quote:string}[]).map((item) => (
+              <div key={item.source} className="border border-slate-200 rounded-lg px-5 py-4 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{color: item.color}}>{item.source}</p>
+                <p className="text-sm text-slate-600 leading-relaxed italic">{item.quote}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Airbus hates this disconnect.</strong> If airlines refuse to hire 200-hour type-rated pilots, the pilot pipeline stalls. If the pipeline stalls, airlines cannot expand their fleets. If airlines cannot expand, Airbus cannot sell more aircraft. The gap between legal compliance and operational reality is not a pilot problem — it is a multi-billion-dollar constraint on Airbus's entire revenue model.</p>
+
+          <div className="bg-slate-900 rounded-xl px-8 py-6 mb-8">
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-4">How PilotRecognition Fixes This — The Truth Layer</p>
+            <div className="space-y-3">
+              {([
+                {
+                  n: '1',
+                  title: 'Connecting Legal to Operational Reality',
+                  body: 'If an airline requires more than the legal 200 hours, they must state it on their Operator Expectations Page. Pilots stop blindly spending $30,000 on a type rating hoping for a job. They pursue pathways where they know they meet the operational — not just the legal — requirement. The information gap closes. The waste stops.',
+                },
+                {
+                  n: '2',
+                  title: 'Giving Airbus a Data-Backed Shield for Their Graduates',
+                  body: 'Airbus attaches Competency & EBT Tokens to their 200-hour graduates. Instead of an airline seeing "200 hours" and rejecting on insurance grounds, they see: is_type_rated = TRUE · simulator_competency_score = Top 10% · training_source_verified = Airbus Training Centre. The airline and insurer get the proof they need. Airbus gets the pipeline they need. The pilot gets the job.',
+                },
+                {
+                  n: '3',
+                  title: 'The Broken Feedback Loop — Closed',
+                  body: 'PilotRecognition becomes the feedback channel between manufacturers building the planes, schools selling the training, and airlines facing the operational reality. For the first time, that loop is visible, structured, and actionable. Airbus sees which of their graduates are being hired, which are being rejected, and precisely why — in real time.',
+                },
+              ] as {n:string;title:string;body:string}[]).map((item) => (
+                <div key={item.n} className="flex items-start gap-4 border border-slate-700 rounded-lg px-4 py-3 bg-slate-800">
+                  <span className="text-red-400 font-bold text-sm flex-shrink-0 mt-0.5">{item.n}.</span>
+                  <div>
+                    <p className="font-bold text-white text-sm mb-1">{item.title}</p>
+                    <p className="text-slate-400 text-xs leading-relaxed">{item.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>This is not a recruitment tool. It is the Truth Layer.</strong> <span className="text-slate-300">The gap between the license on paper and the readiness the industry demands is the most expensive information failure in aviation. PilotRecognition closes it — and Airbus has confirmed, on record, that they need exactly this to exist.</span></p>
+          </div>
+
           <p className="text-slate-700 leading-relaxed mb-4">
             <strong>PilotRecognition is the Aviation Industry Operating System</strong> — a neutral, centralized platform purpose-built to connect every stakeholder in aviation through <strong>verified, live, and structured data.</strong> It is not a job board. It is not a recruitment agency. It is not a resume database. It is <strong>the shared infrastructure the industry has never had:</strong> a system where every credential, every qualification, every requirement, every opportunity, and every decision point across the aviation ecosystem is <strong>connected, verified, and accessible in real time.</strong>
           </p>
@@ -4409,6 +4480,38 @@ export default function UCFOfficialReleasePage() {
                 <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
               </div>
             ))}
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">The Paper vs. Reality Gap — Airbus's Core Pain Point (On Record)</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">This specific use case was confirmed in recorded interviews with Airbus representatives. The pain point is not theoretical. It is a live, multi-billion-dollar constraint on Airbus's expansion model — and PilotRecognition is the only architecture in existence that resolves it.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Airbus sells type ratings. Airlines buy the planes. The 200-hour type-rated pilot is legally qualified. But the airline's Safety Management System, the insurer's underwriting policy, and the EBT assessor's competency requirements all operate on a different standard from the legal minimum — <strong>and there is currently no infrastructure that bridges that gap.</strong></p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-slate-900 text-white">
+                <th className="text-left px-4 py-2 font-semibold">Gatekeeper</th>
+                <th className="text-left px-4 py-2 font-semibold text-red-400">What They Reject</th>
+                <th className="text-left px-4 py-2 font-semibold" style={{color:'#34d399'}}>What PilotRecognition Provides</th>
+              </tr></thead>
+              <tbody>
+                {([
+                  { g: 'Airline SMS', r: '"Legal 200hrs not sufficient — our ops manual requires 500hrs on type."', p: 'Operator Expectations Page forces airlines to publish their actual requirement, not the legal minimum. Pilots know before they pay for the rating.' },
+                  { g: 'Insurance Underwriter', r: '"200hr A320 pilot requires 5,000hr Captain on all flights — roster unworkable. Policy denied."', p: 'EBT Token: simulator_competency_score = Top 10% + training_source_verified = Airbus Training Centre. Insurer has quantified competency, not just hours.' },
+                  { g: 'EBT Assessor', r: '"Legal rating confirmed. Verified competency profile is blank. No EBT data to assess operational readiness."', p: 'Airbus issues Competency & EBT Tokens to graduates. Profile is populated at the point of training completion — not empty on airline arrival.' },
+                  { g: 'Airline HR', r: '"200 hours. No operator experience. Cannot verify training quality."', p: 'training_source_verified = Airbus Training Centre. Placement history of Airbus graduates visible in aggregate. Quality is provable, not assumed.' },
+                ] as {g:string;r:string;p:string}[]).map((row, i) => (
+                  <tr key={row.g} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-semibold text-slate-100 text-xs">{row.g}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-red-400 text-xs italic">{row.r}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-xs" style={{color:'#34d399'}}>{row.p}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>Why Airbus pays for this:</strong> <span className="text-slate-300">If airlines refuse to hire 200-hour Airbus graduates, the type rating becomes commercially worthless. If type ratings become worthless, pilots stop buying them. If pilots stop buying them, Airbus's training revenue collapses — and airlines lose confidence in ordering aircraft they cannot crew. Airbus has a direct commercial interest in the platform making their graduates hireable. The EBT Token structure is the mechanism that converts their legal compliance into operational proof. That is worth far more than a standard enterprise subscription.</span></p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">OEM Pricing — Why $1,000/Year Is a Rounding Error</h3>
