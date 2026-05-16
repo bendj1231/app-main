@@ -5058,13 +5058,27 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
-          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Management: Who Controls What</h5>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Reducing Total Pilot Cost</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The goal is not to stack subscriptions — it is to <strong>replace expensive legacy verification</strong> with a streamlined, lower-cost alternative that delivers more value.</p>
+
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Revenue Boundaries</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Cost Comparison: Traditional vs PilotRecognition</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Logbook Provider Controls:</strong> Subscription pricing (Basic/Pro tiers), feature gating, storage limits, premium add-ons (schedule imports, interview tools). They keep 100% of subscription revenue.</p>
-              <p><strong>PilotRecognition Controls:</strong> Recognition+ premium tier ($14.99/month), Ecosystem Referral Dividends ($20 per attestation to logbook provider), airline query fees. We never touch logbook subscription revenue.</p>
-              <p><strong>Pilot Pays Both:</strong> LogTen subscription (to logbook company) + Recognition+ (to PilotRecognition). Two separate value propositions, two separate payments, zero conflict.</p>
+              <p><strong>Traditional Path:</strong> LogTen Pro ($129.99/year) + third-party verification services ($50-200 per document) + notarization ($25-50 per page) + courier fees for international applications ($50-100). Total: <strong>$255-480+ per airline application</strong>.</p>
+              <p><strong>PilotRecognition Path:</strong> LogTen Basic ($79.99/year) + Recognition+ ($14.99/month = $179.88/year). Total: <strong>$259.87/year for unlimited verifications</strong>. No per-document fees. No courier costs. Instant attestation.</p>
+              <p><strong>The Value Shift:</strong> Pilots pay slightly more annually, but eliminate per-application verification costs that traditionally cost $500-1000 per job hunt. Recognition+ pays for itself after a single airline application.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Bundled Partnership Pricing</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">To prevent subscription fatigue, PilotRecognition and logbook providers can offer <strong>bundled partnership tiers</strong> that reduce the total cost to the pilot:</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Example: LogTen + PilotRecognition Bundle</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>LogTen Basic + Recognition Lite:</strong> $89.99/year (vs $99.99 separate). Core logging + 5 verifications/year.</p>
+              <p><strong>LogTen Pro + Recognition+:</strong> $139.99/year (vs $169.88 separate). Unlimited logging + unlimited verifications + priority airline matching.</p>
+              <p><strong>Revenue Share:</strong> Logbook provider keeps 70% of bundle price, PilotRecognition receives 30% — maintaining healthy margins for both while delivering 15-20% savings to the pilot.</p>
             </div>
           </div>
 
