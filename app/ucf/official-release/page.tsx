@@ -5491,6 +5491,54 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">Flight schools get the same benefit — their graduates leave with "pre-verified" hours that airlines trust immediately.</p>
           </div>
 
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Partnership Model 4: The IDfy Integration — No Data Holder Strategy</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilots entering through PilotRecognition pathways need logbook functionality to track their hours. Rather than becoming a data holder (which creates liability and infrastructure burden), PilotRecognition partners with <strong>IDfy</strong> to provide digital logbook services while maintaining our position as the neutral verification coordinator.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Architecture: We Coordinate, Others Hold Data</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Problem:</strong> Pilots coming from our Programs (Foundation, Transition) and Pathways need to log flight hours. If we build our own logbook, we become a data holder — taking on GDPR liability, infrastructure costs, and becoming a direct competitor to LogTen/ForeFlight.</p>
+              <p><strong>The Solution:</strong> Partner with <strong>IDfy</strong> (or similar identity/logbook infrastructure provider) to handle the digital logbook layer. PilotRecognition remains the neutral coordinator that connects pilots to verified pathways, while specialized providers handle the data they do best.</p>
+              <p><strong>The Flow for New Pilots:</strong></p>
+              <div className="bg-slate-100 p-2 rounded font-mono text-xs">
+                <p>[Pilot joins via PilotRecognition Program/Pathway]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Prompt:] "Log your flight hours to unlock verification"</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[IDfy Logbook Integration] ←—— Pilot creates logbook account via our referral</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Pilot logs hours in IDfy] ──→ [PilotRecognition queries for verification]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Verification matched against ATO/Airline records via Veremark]</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                <p>[Recognition Score updates] ←—— "Verified hours from IDfy + Airline match"</p>
+              </div>
+              <p><strong>Why IDfy:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>IDfy specializes in digital identity and document verification (KYC/AML)</li>
+                <li>They already handle sensitive PII under strict compliance frameworks</li>
+                <li>They can provide white-labeled logbook infrastructure</li>
+                <li>They have APIs that integrate with our verification layer</li>
+                <li>We avoid becoming a data custodian — no GDPR liability for flight logs</li>
+              </ul>
+              <p><strong>Revenue Model:</strong></p>
+              <ul className="list-disc list-inside ml-4 space-y-1">
+                <li>Pilot pays IDfy for logbook subscription (white-labeled "PilotRecognition Logbook powered by IDfy")</li>
+                <li>PilotRecognition gets referral fee ($20) from IDfy for each new logbook account</li>
+                <li>Pilot pays PilotRecognition for verification matching ($20/verification)</li>
+                <li>Veremark handles background verification ($5-8 fee)</li>
+                <li>We remain the coordinator, not the data holder</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-indigo-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#818cf8'}}>The Neutrality-Through-Specialization Model</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">By partnering with specialists at every layer, PilotRecognition maintains true neutrality:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">• <strong>IDfy</strong> handles logbook data (they're the data custodian)<br/>• <strong>Veremark</strong> handles background verification (they're the verification engine)<br/>• <strong>LogTen</strong> handles legacy pilot data (for existing users)<br/>• <strong>PilotRecognition</strong> coordinates the pathway matching and Recognition Score</p>
+            <p className="text-white text-sm leading-relaxed mt-2">We don't hold flight data. We don't hold verification records. We hold the <strong>relationships</strong> that connect pilots to opportunities — and let specialists handle what they do best.</p>
+          </div>
+
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Pricing Philosophy: Sustainable Economics for All Parties</h5>
           <p className="text-slate-700 leading-relaxed mb-4">Pricing must account for real operational costs — Veremark verification fees, $20 referral dividends to logbook providers, infrastructure, and support — while remaining accessible to pilots. The goal is a <strong>volume-based, sustainable model</strong> rather than high-margin extraction.</p>
 
