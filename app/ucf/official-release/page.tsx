@@ -5260,16 +5260,34 @@ export default function UCFOfficialReleasePage() {
             <p className="text-white text-sm leading-relaxed mt-2">The goal is to make LogTen see us not as a "specialized platform requesting engineering time" but as a "revenue partner who removes their churn problem and opens airline B2B opportunities."</p>
           </div>
 
-          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Logbook Provider Pricing Models & PilotRecognition Integration</h4>
-          <p className="text-slate-700 leading-relaxed mb-4">Logbook platforms operate established freemium and subscription pricing models. PilotRecognition integrates seamlessly with these existing structures — we do not disrupt their revenue, we enhance their conversion funnel.</p>
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The "Not Recognized" Problem: How to Overcome It</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">A realistic objection LogTen will raise: <strong>"PilotRecognition.com is not an active or recognized aviation software platform."</strong> This is true — today. LogTen Pro actively seeks partnerships with established, high-utility platforms (Flight Schedule Pro, FLICA, Sabre) that directly streamline pilot workflows. An unknown competency platform does not meet their criteria.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Example: LogTen Pro Pricing Structure</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Where LogTen Actually Focuses Partnerships</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>Free Tier:</strong> Log up to 40-50 hours of flight time. Ideal for student pilots beginning training.</p>
-              <p><strong>LogTen Basic (~$79.99/year or ~$9.99/month):</strong> Best for VFR/private pilots needing core features — unlimited logging, basic reports, cloud sync.</p>
-              <p><strong>LogTen Pro (~$129.99/year or ~$14.99/month):</strong> Best for airline/commercial pilots requiring schedule imports, currency tracking, interview prep tools, and advanced analytics.</p>
+              <p><strong>Flight Scheduling & Operations:</strong> Deep technical integrations with Flight Schedule Pro allow flight schools to push flight logs automatically from the school's schedule directly into LogTen at the push of a button.</p>
+              <p><strong>Airline Schedule Importers:</strong> Seamless data scraping from FLICA and Sabre so commercial pilots can download monthly trips directly into their logs.</p>
+              <p><strong>Professional Associations:</strong> Collaborations with training resources like Aviation Insider for discounts, and career-advancing nonprofits like Breaking Down Barriers.</p>
+              <p><strong>The Pattern:</strong> LogTen partners with platforms that eliminate redundant data entry or directly assist career progression. They do not partner with "resume builders" or unproven verification services.</p>
             </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">How PilotRecognition Becomes "Recognized"</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Phase 1: Build Pilot Volume First (Without LogTen):</strong> PilotRecognition must reach 5,000-10,000 verified pilots through manual CSV import, ATO partnerships, and airline connections <strong>before</strong> approaching LogTen. We cannot pitch as a "platform that wants integration" — we must pitch as a "platform that 10,000 pilots already use and are demanding better LogTen integration."</p>
+              <p><strong>Phase 2: Secure Airline Endorsements:</strong> Get 2-3 major airlines (Emirates, Etihad, Cebu Pacific) to publicly endorse PilotRecognition as their preferred verification partner for LogTen data. When airlines say "we trust PilotRecognition-verified LogTen hours," LogTen listens.</p>
+              <p><strong>Phase 3: Demonstrate Revenue Proof:</strong> Show LogTen actual revenue data: "We generated $200,000 in pilot verification fees last quarter. 40% of those pilots are your users. You're losing $80,000/quarter by not integrating." Numbers overcome skepticism.</p>
+              <p><strong>Phase 4: The Competitive Threat:</strong> Once ForeFlight integrates with PilotRecognition, LogTen faces a competitive disadvantage. Pilots switch to the logbook that offers verified credentials. We position the partnership as defensive necessity, not optional innovation.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-amber-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#fbbf24'}}>The Reality Check</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">LogTen Pro will not partner with PilotRecognition until we are "recognized." We become recognized by:</p>
+            <p className="text-white text-sm leading-relaxed mt-2">1. Reaching 10,000+ pilots without their help<br/>2. Securing airline partnerships that validate our platform<br/>3. Generating real revenue that proves pilot willingness to pay<br/>4. Creating competitive pressure from ForeFlight integration</p>
+            <p className="text-white text-sm leading-relaxed mt-2">The partnership pitch comes <strong>after</strong> we've proven the model, not before. LogTen integrates with winners, not hopefuls.</p>
           </div>
 
           <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">The PilotRecognition Upgrade Trigger</h5>
