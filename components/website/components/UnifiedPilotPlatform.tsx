@@ -189,7 +189,7 @@ const HomeTab: React.FC<{
 
   return (
     <motion.div
-      className="flex gap-5 w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
+      className="flex gap-4 w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -204,86 +204,70 @@ const HomeTab: React.FC<{
       >
 
         {/* ── TIER 1: Identity ── */}
-        <div className="px-5 pt-5 pb-4">
+        <div className="px-4 pt-4 pb-3">
           {expiredChecks.length > 0 && (
-            <button onClick={() => setTab('wallet')} className="w-full mb-3 flex items-center gap-2 px-3 py-1.5 text-[10px] text-red-300 font-bold tracking-wide" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}>
-              <AlertTriangle size={10} className="flex-shrink-0" />
-              {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired — tap to resolve
+            <button onClick={() => setTab('wallet')} className="w-full mb-2 flex items-center gap-2 px-2 py-1 text-[9px] text-red-300 font-bold tracking-wide" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}>
+              <AlertTriangle size={9} className="flex-shrink-0" />
+              {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
             </button>
           )}
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-3 mb-2">
             <div className="relative flex-shrink-0">
               {profile?.profile_image_url
-                ? <img src={profile.profile_image_url} alt={name} className="w-12 h-12 object-cover rounded-full border-2 border-white/20" />
-                : <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-base" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>{initials}</div>
+                ? <img src={profile.profile_image_url} alt={name} className="w-10 h-10 object-cover rounded-full border-2 border-white/20" />
+                : <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-sm" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>{initials}</div>
               }
-              <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center" style={{ background: walletChecks.some(c => c.status === 'verified') ? '#10b981' : '#64748b', border: '2px solid rgba(30,41,59,0.9)' }}>
-                <Shield size={7} className="text-white" />
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full flex items-center justify-center" style={{ background: walletChecks.some(c => c.status === 'verified') ? '#10b981' : '#64748b', border: '2px solid rgba(30,41,59,0.9)' }}>
+                <Shield size={6} className="text-white" />
               </div>
             </div>
-            <div className="min-w-0">
-              <h2 className="text-sm font-black text-white tracking-wide truncate">{name}</h2>
-              <p className="text-[10px] text-orange-400 font-bold uppercase tracking-wider mt-0.5">{level}</p>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-xs font-black text-white tracking-wide truncate">{name}</h2>
+              <p className="text-[9px] text-orange-400 font-bold uppercase tracking-wider">{level}</p>
             </div>
           </div>
 
           {/* Progress bar */}
-          <div className="mb-1">
-            <div className="flex justify-between mb-1">
-              <span className="text-[9px] text-white/35 uppercase tracking-wider">LEVEL PROGRESS</span>
-              <span className={`text-[9px] font-bold ${progressPct > 0 ? 'text-orange-400' : 'text-white/20'}`}>{Math.round(progressPct)}%</span>
-            </div>
-            <div className="h-1.5 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
               <div className="h-full transition-all duration-700" style={{ width: `${Math.max(progressPct, progressPct > 0 ? 3 : 0)}%`, background: 'linear-gradient(90deg,#f97316,#ef4444)' }} />
             </div>
+            <span className={`text-[8px] font-bold flex-shrink-0 ${progressPct > 0 ? 'text-orange-400' : 'text-white/20'}`}>{Math.round(progressPct)}%</span>
           </div>
         </div>
 
-        {/* ── TIER 2: Core Recognition Metrics ── */}
-        <div className="px-5 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <p className="text-[9px] font-black tracking-[0.15em] text-white/25 uppercase mb-3">Recognition Metrics</p>
-
-          {/* Score — ring display */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="relative w-12 h-12 flex-shrink-0">
-              <svg viewBox="0 0 44 44" className="w-full h-full -rotate-90">
-                <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3.5" />
-                <circle cx="22" cy="22" r="18" fill="none" stroke="#38bdf8" strokeWidth="3.5"
-                  strokeDasharray={`${(score / 100) * 113} 113`} strokeLinecap="round" />
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-[11px] font-black text-sky-300">{score || '—'}</span>
-            </div>
-            <div>
-              <p className="text-xs font-black text-white">Recognition Score</p>
-              <p className="text-[9px] text-white/30 mt-0.5">{score > 0 ? `Top ${Math.max(100 - score, 5)}% of platform` : 'Complete profile to score'}</p>
-            </div>
-          </div>
-
-          {/* Avg pathway match */}
-          <div className="flex items-center justify-between p-2 mb-2" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="flex items-center gap-2">
-              <TrendingUp size={11} className="text-emerald-400" />
-              <span className="text-[10px] text-white/60">Avg. Pathway Match</span>
-            </div>
-            <span className={`text-[10px] font-black ${matchPct >= 60 ? 'text-emerald-400' : matchPct >= 30 ? 'text-yellow-400' : 'text-white/40'}`}>{matchPct}%</span>
-          </div>
-
-          {/* Hours + Certs row */}
-          <div className="grid grid-cols-2 gap-2">
-            <div className="p-2 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className={`text-base font-black ${hours > 0 ? 'text-white' : 'text-white/20'}`}>{hours > 0 ? hours : '—'}</p>
-              <p className="text-[9px] text-white/35 uppercase tracking-wider mt-0.5">HRS</p>
-            </div>
-            <button
-              onClick={() => setTab('wallet')}
-              className="p-2 text-center transition-all hover:brightness-110"
-              style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${walletChecks.some(c => c.status === 'verified') ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.06)'}` }}
-            >
-              <div className="flex items-center justify-center gap-1 mb-0.5">
-                <p className={`text-base font-black ${certCount > 0 ? 'text-white' : 'text-white/20'}`}>{certCount > 0 ? certCount : '—'}</p>
-                {walletChecks.some(c => c.status === 'verified') && <Shield size={9} className="text-emerald-400" />}
+        {/* ── TIER 2: Core Recognition Metrics — compact single row ── */}
+        <div className="px-4 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+          <div className="grid grid-cols-4 gap-1.5">
+            {/* Score ring */}
+            <div className="col-span-1 flex flex-col items-center justify-center p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="relative w-9 h-9">
+                <svg viewBox="0 0 44 44" className="w-full h-full -rotate-90">
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="4" />
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="#38bdf8" strokeWidth="4"
+                    strokeDasharray={`${(score / 100) * 113} 113`} strokeLinecap="round" />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-[9px] font-black text-sky-300">{score || '—'}</span>
               </div>
-              <p className="text-[9px] text-white/35 uppercase tracking-wider">CERTS</p>
+              <p className="text-[8px] text-white/30 uppercase tracking-wide mt-0.5">SCORE</p>
+            </div>
+            {/* Avg match */}
+            <div className="flex flex-col items-center justify-center p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <p className={`text-sm font-black ${matchPct >= 60 ? 'text-emerald-400' : matchPct >= 30 ? 'text-yellow-400' : 'text-white/40'}`}>{matchPct}%</p>
+              <p className="text-[8px] text-white/30 uppercase tracking-wide">MATCH</p>
+            </div>
+            {/* Hours */}
+            <div className="flex flex-col items-center justify-center p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <p className={`text-sm font-black ${hours > 0 ? 'text-white' : 'text-white/20'}`}>{hours > 0 ? hours : '—'}</p>
+              <p className="text-[8px] text-white/30 uppercase tracking-wide">HRS</p>
+            </div>
+            {/* Certs */}
+            <button onClick={() => setTab('wallet')} className="flex flex-col items-center justify-center p-1.5 transition-all hover:brightness-110" style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${walletChecks.some(c => c.status === 'verified') ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.06)'}` }}>
+              <div className="flex items-center gap-0.5">
+                <p className={`text-sm font-black ${certCount > 0 ? 'text-white' : 'text-white/20'}`}>{certCount > 0 ? certCount : '—'}</p>
+                {walletChecks.some(c => c.status === 'verified') && <Shield size={8} className="text-emerald-400" />}
+              </div>
+              <p className="text-[8px] text-white/30 uppercase tracking-wide">CERTS</p>
             </button>
           </div>
         </div>
@@ -291,39 +275,36 @@ const HomeTab: React.FC<{
         {/* ── PILOT PROFILE CTA ── */}
         <button
           onClick={() => onNavigate('pilot-recognition-profile')}
-          className="w-full flex items-center gap-3 px-5 py-3 transition-colors hover:bg-white/5"
+          className="w-full flex items-center gap-2.5 px-4 py-2 transition-colors hover:bg-white/5"
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.25)' }}>
-            <User size={12} className="text-sky-400" />
+          <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.25)' }}>
+            <User size={11} className="text-sky-400" />
           </div>
-          <span className="text-[11px] font-black text-white tracking-wider flex-1 text-left">PILOT PROFILE</span>
-          <ChevronRight size={13} className="text-white/30" />
+          <span className="text-[10px] font-black text-white tracking-wider flex-1 text-left">PILOT PROFILE</span>
+          <ChevronRight size={12} className="text-white/30" />
         </button>
 
         {/* ── TIER 3: Live Activity & Operator Requests ── */}
-        <div className="px-5 py-3 flex-1">
-          <div className="flex items-center justify-between mb-2.5">
-            <p className="text-[9px] font-black tracking-[0.15em] text-white/25 uppercase">Live Activity & Operator Requests</p>
+        <div className="px-4 py-2 flex-1">
+          <div className="flex items-center justify-between mb-1.5">
+            <p className="text-[8px] font-black tracking-[0.15em] text-white/25 uppercase">Live Activity</p>
             <div className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-[8px] text-emerald-400/70 font-bold">LIVE</span>
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {/* Alert 1 — High priority operator request */}
-            <div className="p-2.5" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
-              <div className="flex items-start gap-2 mb-1.5">
-                <span className="text-[11px] flex-shrink-0">📡</span>
-                <div className="min-w-0">
-                  <p className="text-[10px] font-black text-white leading-tight">Singapore Airlines viewed your profile</p>
-                  <p className="text-[9px] text-white/35 mt-0.5 leading-snug">Requesting token access for deep credential check.</p>
-                </div>
+            <div className="p-2" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-[10px] flex-shrink-0">📡</span>
+                <p className="text-[9px] font-black text-white leading-tight flex-1">Singapore Airlines · <span className="text-white/40 font-normal">token access requested</span></p>
               </div>
               <button
                 onClick={() => setTab('wallet')}
-                className="w-full py-1 text-[9px] font-black tracking-wider text-sky-300 transition-all hover:brightness-110"
+                className="w-full py-0.5 text-[8px] font-black tracking-wider text-sky-300 transition-all hover:brightness-110"
                 style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)' }}
               >
                 GRANT TOKENIZED ACCESS →
@@ -331,55 +312,39 @@ const HomeTab: React.FC<{
             </div>
 
             {/* Alert 2 — Veremark pass */}
-            <div className="flex items-start gap-2 p-2.5" style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)' }}>
-              <span className="text-[11px] flex-shrink-0 mt-0.5">🔍</span>
-              <div className="min-w-0">
-                <p className="text-[10px] font-black text-white leading-tight">Veremark automated check passed</p>
-                <p className="text-[9px] text-emerald-400/70 mt-0.5 leading-snug">CAA licence token updated successfully.</p>
-              </div>
-              <CheckCircle size={10} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+            <div className="flex items-center gap-1.5 p-2" style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)' }}>
+              <span className="text-[10px] flex-shrink-0">🔍</span>
+              <p className="text-[9px] text-white flex-1 leading-tight"><span className="font-black">Veremark check passed</span> · <span className="text-emerald-400/70">CAA token updated</span></p>
+              <CheckCircle size={9} className="text-emerald-400 flex-shrink-0" />
             </div>
 
             {/* Alert 3 — Flagged log row */}
-            <div className="flex items-start gap-2 p-2.5" style={{ background: 'rgba(234,179,8,0.07)', border: '1px solid rgba(234,179,8,0.2)' }}>
-              <span className="text-[11px] flex-shrink-0 mt-0.5">⚠️</span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-black text-white leading-tight">Alpha Flight Academy modified log row #32</p>
-                <p className="text-[9px] text-yellow-400/70 mt-0.5 leading-snug">Hour flagged for review.</p>
-              </div>
-              <button
-                onClick={() => setTab('logbook')}
-                className="text-[8px] font-black text-yellow-400/80 hover:text-yellow-300 transition-colors flex-shrink-0 underline underline-offset-1 mt-0.5"
-              >
-                VIEW
-              </button>
+            <div className="flex items-center gap-1.5 p-2" style={{ background: 'rgba(234,179,8,0.07)', border: '1px solid rgba(234,179,8,0.2)' }}>
+              <span className="text-[10px] flex-shrink-0">⚠️</span>
+              <p className="text-[9px] text-white flex-1 leading-tight"><span className="font-black">Alpha Flight Academy</span> · <span className="text-yellow-400/70">log row #32 flagged</span></p>
+              <button onClick={() => setTab('logbook')} className="text-[8px] font-black text-yellow-400/80 hover:text-yellow-300 transition-colors flex-shrink-0 underline underline-offset-1">VIEW</button>
             </div>
-
-            {/* Empty state hint */}
-            <p className="text-[8px] text-white/15 text-center pt-1">More activity appears as operators interact with your profile</p>
           </div>
         </div>
 
         {/* ── TIER 4: Recognition+ — pinned bottom ── */}
         <button
           onClick={() => setTab('settings' as TabId)}
-          className="w-full flex flex-col gap-1 px-5 py-4 transition-all hover:brightness-110 flex-shrink-0"
+          className="w-full flex items-center gap-3 px-4 py-2.5 transition-all hover:brightness-110 flex-shrink-0"
           style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
         >
-          <div className="flex items-center gap-2">
-            <Star size={12} className="text-yellow-400 flex-shrink-0" />
-            <span className="text-[11px] font-black text-yellow-300 tracking-wider">RECOGNITION+</span>
+          <Star size={12} className="text-yellow-400 flex-shrink-0" />
+          <div className="flex-1 text-left">
+            <p className="text-[10px] font-black text-yellow-300 tracking-wider">RECOGNITION+ — $99/YR</p>
+            <p className="text-[8px] text-yellow-500/70">Priority pipeline · unlimited pathways · AI coach</p>
           </div>
-          <p className="text-[9px] text-yellow-500/80 font-semibold leading-snug">Priority pipeline, unlimited pathways & AI coach</p>
-          <div className="mt-1.5 w-full py-1.5 text-center text-[10px] font-black tracking-widest text-slate-900" style={{ background: 'linear-gradient(90deg,#fbbf24,#f97316)' }}>
-            UPGRADE NOW — $99/YR
-          </div>
+          <ChevronRight size={11} className="text-yellow-400/50 flex-shrink-0" />
         </button>
 
       </motion.div>
 
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
-      <div className="flex-1 flex flex-col gap-4 relative">
+      <div className="flex-1 flex flex-col gap-3 relative">
 
         {/* ── WELCOME OVERLAY — floating auto-fade, zero layout impact ── */}
         {welcomeVisible && profile && (
@@ -450,13 +415,13 @@ const HomeTab: React.FC<{
         )}
 
         {/* Bento grid — unified overlay style on all 3 cards */}
-        <div className="grid grid-cols-2 gap-4 content-start">
+        <div className="grid grid-cols-2 gap-3 content-start">
           {/* MY PATHWAYS — with live match badge */}
           <motion.div
             custom={0} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[0].onClick}
             className="col-span-2 relative group cursor-pointer overflow-hidden"
-            style={{ height: '180px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '148px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[0].image})`, opacity: 0.75 }} />
@@ -485,7 +450,7 @@ const HomeTab: React.FC<{
             custom={1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[1].onClick}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[1].image})`, opacity: 0.7 }} />
@@ -503,7 +468,7 @@ const HomeTab: React.FC<{
           <motion.div
             custom={2} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             className="relative overflow-hidden flex flex-col gap-0"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             {/* Top half — Digital Logbook */}
             <button
@@ -581,7 +546,7 @@ const HomeTab: React.FC<{
           </div>
 
           {/* ── Column headers ── */}
-          <div className="grid px-5 py-1.5" style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          <div className="grid px-5 py-1" style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
             {['DATE / HASH', 'ATO PROVIDER', 'HOURS', 'TYPE', 'STATUS'].map(h => (
               <p key={h} className="text-[9px] font-black tracking-widest text-white/20 uppercase">{h}</p>
             ))}
@@ -589,7 +554,7 @@ const HomeTab: React.FC<{
 
           {/* ── Row 1: Fully crisp — Verified ── */}
           <div
-            className="grid items-center px-5 py-3"
+            className="grid items-center px-5 py-2"
             style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
           >
             <div>
@@ -607,7 +572,7 @@ const HomeTab: React.FC<{
 
           {/* ── Row 2: 70% opacity — Under Review ── */}
           <div
-            className="grid items-center px-5 py-3"
+            className="grid items-center px-5 py-2"
             style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.04)', opacity: 0.70 }}
           >
             <div>
@@ -636,7 +601,7 @@ const HomeTab: React.FC<{
             <div
               key={row.hash}
               className="grid items-center px-5 py-3"
-              style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', opacity: i === 0 ? 0.38 : 0.15 }}
+              style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', opacity: i === 0 ? 0.28 : 0.10 }}
             >
               <div>
                 <p className="text-[10px] font-bold text-white">{row.date}</p>
@@ -656,7 +621,7 @@ const HomeTab: React.FC<{
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(15,23,42,0.6) 68%, rgba(15,23,42,0.92) 85%, rgba(15,23,42,0.98) 100%)',
+              background: 'linear-gradient(to bottom, transparent 0%, transparent 30%, rgba(15,23,42,0.55) 55%, rgba(15,23,42,0.90) 72%, rgba(15,23,42,0.98) 86%, rgba(15,23,42,1) 100%)',
             }}
           />
           {/* Left/right edge vignette */}
