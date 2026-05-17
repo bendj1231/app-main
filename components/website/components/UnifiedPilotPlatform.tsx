@@ -395,9 +395,8 @@ const HomeTab: React.FC<{
             style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: `url(${bCards[1].image})`, opacity: 0.35 }} />
-            <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.72)' }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/60 to-slate-900/30" />
+              style={{ backgroundImage: `url(${bCards[1].image})`, opacity: 0.85 }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
               <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
                 <ChevronRight size={16} className="text-white" />
@@ -450,86 +449,58 @@ const HomeTab: React.FC<{
           <motion.div
             custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={() => window.location.href = '/type-rating-search'}
-            className="relative group cursor-pointer overflow-hidden flex flex-col"
-            style={{ height: '160px', background: 'rgba(12,18,35,1)', border: '1px solid rgba(255,255,255,0.1)' }}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
-            {/* Subtle top accent line */}
-            <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(56,189,248,0.4), transparent)' }} />
+            {/* Full-bleed cockpit image */}
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')", opacity: 0.85 }} />
+            {/* Bottom-only gradient for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
 
-            {/* Content */}
-            <div className="flex-1 px-4 pt-4 pb-2 flex flex-col justify-between">
-              <div>
-                <p className="text-[9px] font-black tracking-[0.18em] text-sky-500/70 uppercase mb-1">Recommended</p>
-                <p className="text-[11px] font-black text-white tracking-wide">Type Rating Search</p>
-              </div>
-              <div className="space-y-1.5">
-                {[
-                  { label: 'Airbus A320 Family', pct: 95, barColor: '#34d399', textColor: '#34d399' },
-                  { label: 'Boeing 737 Next Gen', pct: 60, barColor: '#fbbf24', textColor: '#fbbf24' },
-                ].map(p => (
-                  <div key={p.label} className="flex items-center gap-2">
-                    <span className="text-[9px] text-white/50 w-28 flex-shrink-0">{p.label}</span>
-                    <div className="flex-1 h-1" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="h-full" style={{ width: `${p.pct}%`, background: p.barColor }} />
-                    </div>
-                    <span className="text-[9px] font-black w-14 text-right flex-shrink-0" style={{ color: p.textColor }}>{p.pct}% Match</span>
-                  </div>
-                ))}
+            {/* Single consolidated bottom bar */}
+            <div className="absolute bottom-0 left-0 right-0 px-4 py-3" style={{ background: 'rgba(5,10,20,0.82)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                  <ChevronRight size={13} className="text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[9px] font-black tracking-[0.12em] text-white/40 uppercase leading-none mb-0.5">Recommended</p>
+                  <p className="text-[10px] font-black text-white tracking-wide leading-none">Type Rating Search</p>
+                </div>
+                <span className="text-[9px] font-black tracking-widest text-white/40 uppercase flex-shrink-0">View All →</span>
               </div>
             </div>
-
-            {/* Footer strip */}
-            <div className="flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(255,255,255,0.04)', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="w-6 h-6 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                <ChevronRight size={12} className="text-white/70" />
-              </div>
-              <span className="text-[9px] font-black tracking-widest text-white/50 uppercase">View All Type Ratings</span>
-              <ChevronRight size={9} className="text-white/20 ml-auto" />
-            </div>
-            <div className="absolute inset-0 border-2 border-sky-500/0 group-hover:border-sky-500/30 transition-colors duration-300 pointer-events-none" />
+            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
           </motion.div>
 
           {/* ── CARD 4: Operator Expectations ── */}
           <motion.div
             custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={() => setTab('pathways')}
-            className="relative group cursor-pointer overflow-hidden flex flex-col"
-            style={{ height: '160px', background: 'rgba(12,18,35,1)', border: '1px solid rgba(255,255,255,0.1)' }}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
-            {/* Subtle top accent line */}
-            <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(249,115,22,0.4), transparent)' }} />
+            {/* Full-bleed airline tarmac image */}
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.85 }} />
+            {/* Bottom-only gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
 
-            {/* Content */}
-            <div className="flex-1 px-4 pt-4 pb-2 flex flex-col justify-between">
-              <div>
-                <p className="text-[9px] font-black tracking-[0.18em] text-orange-500/70 uppercase mb-1">Explore</p>
-                <p className="text-[11px] font-black text-white tracking-wide">Operator Expectations & Requirements</p>
-              </div>
-              <div className="space-y-1.5">
-                {[
-                  { label: 'Singapore Airlines',   pct: 20 },
-                  { label: 'Alpha Operator Group', pct: 15 },
-                ].map(op => (
-                  <div key={op.label} className="flex items-center gap-2">
-                    <span className="text-[9px] text-white/50 w-28 flex-shrink-0">{op.label}</span>
-                    <div className="flex-1 h-1" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                      <div className="h-full" style={{ width: `${op.pct}%`, background: '#f87171' }} />
-                    </div>
-                    <span className="text-[9px] font-black w-14 text-right flex-shrink-0 text-red-400">{op.pct}% Ready</span>
-                  </div>
-                ))}
+            {/* Single consolidated bottom bar */}
+            <div className="absolute bottom-0 left-0 right-0 px-4 py-3" style={{ background: 'rgba(5,10,20,0.82)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                  <ChevronRight size={13} className="text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[9px] font-black tracking-[0.12em] text-white/40 uppercase leading-none mb-0.5">Explore</p>
+                  <p className="text-[10px] font-black text-white tracking-wide leading-none">Operator Expectations & Requirements</p>
+                </div>
+                <span className="text-[9px] font-black tracking-widest text-white/40 uppercase flex-shrink-0">Explore →</span>
               </div>
             </div>
-
-            {/* Footer strip */}
-            <div className="flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(255,255,255,0.04)', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="w-6 h-6 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                <ChevronRight size={12} className="text-white/70" />
-              </div>
-              <span className="text-[9px] font-black tracking-widest text-white/50 uppercase">Explore All Operators</span>
-              <ChevronRight size={9} className="text-white/20 ml-auto" />
-            </div>
-            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/30 transition-colors duration-300 pointer-events-none" />
+            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
           </motion.div>
         </div>
 
