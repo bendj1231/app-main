@@ -82,7 +82,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Header */}
                         <div className="text-center mb-10">
-                            <h1 className="text-2xl font-semibold text-white mb-2">Create your account</h1>
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] mb-4 text-white">
+                                Connecting Pilots<br />
+                                <span className="text-red-500">to the Industry.</span>
+                            </h1>
                             <p className="text-slate-400 text-sm">Free access to Programs, Pathways &amp; Pilot Recognition</p>
                         </div>
 

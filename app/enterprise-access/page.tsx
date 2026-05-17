@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { MeshGradient } from '@paper-design/shaders-react';
 
 const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY';
@@ -490,12 +489,12 @@ const HeroCarousel = () => {
                     <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border ${TAG_COLORS[item.tag]}`}>
                         {item.tag}
                     </span>
-                    <span className="text-[11px] text-slate-300 font-medium">{item.pillar}</span>
+                    <span className="text-[11px] text-slate-400 font-medium">{item.pillar}</span>
                 </div>
                 {/* Hook — the problem */}
-                <p className="text-base font-bold text-white mb-1 leading-snug">{item.hook}</p>
+                <p className="text-base font-bold text-slate-900 mb-1 leading-snug">{item.hook}</p>
                 {/* Detail — the solution */}
-                <p className="text-sm text-slate-300 leading-relaxed max-w-md">{item.detail}</p>
+                <p className="text-sm text-slate-500 leading-relaxed max-w-md">{item.detail}</p>
             </div>
 
             {/* Dot indicators */}
@@ -504,7 +503,7 @@ const HeroCarousel = () => {
                     <button
                         key={i}
                         onClick={() => { setVisible(false); setTimeout(() => { setIdx(i); setVisible(true); }, 150); }}
-                        className={`h-1 rounded-full transition-all duration-300 ${i === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/25 hover:bg-white/50'}`}
+                        className={`h-1 rounded-full transition-all duration-300 ${i === idx ? 'w-6 bg-slate-900' : 'w-1.5 bg-slate-200 hover:bg-slate-400'}`}
                     />
                 ))}
             </div>
@@ -800,55 +799,43 @@ const EnterpriseAccessPage = () => {
             </header>
 
             {/* ─── HERO ─── */}
-            <section id="home" className="relative overflow-hidden border-b border-white/10">
-                {/* Shader background */}
-                <div className="absolute inset-0 z-0">
-                    <MeshGradient
-                        className="w-full h-full"
-                        colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
-                        speed={0.22}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
-                    <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
-                    <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
-                </div>
-
+            <section id="home" className="relative bg-white overflow-hidden border-b border-slate-200">
                 {/* Split layout */}
-                <div className="relative z-10 flex min-h-[400px] sm:min-h-[540px]">
+                <div className="flex min-h-[400px] sm:min-h-[540px]">
 
                     {/* LEFT — text flush to screen edge */}
                     <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center px-4 sm:pl-8 md:pl-12 lg:pl-16 sm:pr-8 py-10 sm:py-16 lg:py-20">
-                        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-4 sm:mb-6 text-white">
+                        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-4 sm:mb-6 text-slate-900">
                             Connecting Pilots<br />
-                            <span className="text-red-500">to the Industry.</span>
+                            <span className="text-red-600">to the Industry.</span>
                         </h1>
                         {/* Carousel descriptor */}
                         <HeroCarousel />
                     </div>
 
-                    {/* RIGHT — image fades into background */}
+                    {/* RIGHT — image flush right, fades into white on left */}
                     <div className="hidden lg:flex relative w-1/2 flex-shrink-0 overflow-hidden">
                         <img
                             src="/recognition-unlock.png"
                             alt="Pilot Recognition Platform"
-                            className="w-full h-full object-cover object-left opacity-40"
+                            className="w-full h-full object-cover object-left"
                         />
-                        {/* Fade left edge to transparent */}
-                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(15,23,42,0.9) 0%, rgba(15,23,42,0.4) 30%, transparent 70%)' }} />
+                        {/* Fade left edge to white */}
+                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.6) 20%, transparent 55%)' }} />
                     </div>
                 </div>
 
                 {/* Feature strip */}
-                <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 border-t border-white/10">
+                <div className="grid grid-cols-2 md:grid-cols-4 border-t border-slate-200">
                     {[
                         { label: 'Background Verification', sub: 'Pilots are screened before listing' },
                         { label: 'Live Profile API', sub: 'Pull real-time pilot data' },
                         { label: 'Airline Pathway Cards', sub: 'Requirements, not job ads' },
                         { label: 'Recognition Score', sub: 'Ranked readiness currency' },
                     ].map((f, i) => (
-                        <div key={f.label} className={`px-3 sm:pl-6 md:pl-12 lg:pl-16 sm:pr-6 py-4 sm:py-5 border-white/10 ${i < 3 ? 'border-r' : ''}`}>
+                        <div key={f.label} className={`px-3 sm:pl-6 md:pl-12 lg:pl-16 sm:pr-6 py-4 sm:py-5 border-slate-200 ${i < 3 ? 'border-r' : ''}`}>
                             <div className="w-1.5 h-1.5 bg-red-500 rounded-full mb-3" />
-                            <p className="text-sm font-semibold text-white mb-1">{f.label}</p>
+                            <p className="text-sm font-semibold text-slate-800 mb-1">{f.label}</p>
                             <p className="text-xs text-slate-400">{f.sub}</p>
                         </div>
                     ))}
