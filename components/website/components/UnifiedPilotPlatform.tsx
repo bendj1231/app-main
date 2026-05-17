@@ -505,7 +505,7 @@ const HomeTab: React.FC<{
           </motion.div>
         </div>
 
-        {/* ── BOTTOM DIRECTORY ROW — two glassmorphism panels ── */}
+        {/* ── BOTTOM DIRECTORY ROW — cinematic image cards ── */}
         <motion.div
           className="grid grid-cols-2 gap-3"
           initial={{ opacity: 0, y: 16 }}
@@ -513,133 +513,137 @@ const HomeTab: React.FC<{
           transition={{ duration: 0.45, delay: 0.3 }}
         >
           {/* ── Column A: Type Rating Directory ── */}
-          <div
-            className="flex flex-col"
-            style={{ background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)', WebkitBackdropFilter: 'blur(20px)' }}
+          <motion.div
+            custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+            onClick={() => onNavigate('type-rating-search')}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '148px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(99,102,241,0.2)', border: '1px solid rgba(99,102,241,0.35)' }}>
-                  <Search size={10} className="text-indigo-400" />
-                </div>
-                <p className="text-[10px] font-black tracking-wider text-white/80 uppercase">Type Rating Directory</p>
-              </div>
-              <span className="text-[8px] font-black px-1.5 py-0.5 tracking-wider" style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', color: '#818cf8' }}>
+            {/* Background image — A320 cockpit */}
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('/images/cockpit-a320.jpg'),url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')", opacity: 0.65 }}
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.55) 100%)' }} />
+            {/* Hover border */}
+            <div className="absolute inset-0 border-2 border-indigo-500/0 group-hover:border-indigo-500/50 transition-colors duration-300 pointer-events-none" />
+
+            {/* Top-left header label */}
+            <div className="absolute top-3 left-3 flex items-center gap-1.5">
+              <span className="text-[9px] font-black tracking-widest text-white/50 uppercase">Recommended:</span>
+              <span className="text-[9px] font-black tracking-widest text-white uppercase">Type Rating Search</span>
+            </div>
+
+            {/* Top-right status pill */}
+            <div className="absolute top-3 right-3">
+              <span className="text-[8px] font-black px-2 py-0.5 tracking-wider" style={{ background: 'rgba(99,102,241,0.75)', backdropFilter: 'blur(4px)', color: '#fff', border: '1px solid rgba(99,102,241,0.6)' }}>
                 {matchPct >= 60 ? 'STRONG MATCH' : matchPct >= 30 ? 'PARTIAL MATCH' : 'BUILDING'}
               </span>
             </div>
 
-            {/* Row 1 — Top match */}
-            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <span className="text-base flex-shrink-0">✈️</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-black text-white leading-tight">Airbus A320 Family</p>
-                <p className="text-[9px] text-white/35 mt-0.5">Core credentials & hours satisfied</p>
+            {/* Floating overlay badges — mid section */}
+            <div className="absolute top-10 left-3 right-14 flex flex-col gap-1.5 mt-1">
+              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div className="flex items-center gap-1.5">
+                  <Plane size={9} className="text-white/60 flex-shrink-0" />
+                  <p className="text-[9px] font-black text-white leading-none">Airbus A320 Family</p>
+                </div>
+                <span className="text-[9px] font-black text-emerald-400">95% MATCH</span>
               </div>
-              <div className="flex-shrink-0 text-right">
-                <p className="text-[11px] font-black text-emerald-400">95%</p>
-                <p className="text-[8px] text-white/25 uppercase tracking-wide">Match</p>
-              </div>
-            </div>
-
-            {/* Row 2 — Partial match */}
-            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <span className="text-base flex-shrink-0">✈️</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-black text-white leading-tight">Boeing 737 Next Gen</p>
-                <p className="text-[9px] text-yellow-400/60 mt-0.5">Missing simulator / ATO verification</p>
-              </div>
-              <div className="flex-shrink-0 text-right">
-                <p className="text-[11px] font-black text-yellow-400">60%</p>
-                <p className="text-[8px] text-white/25 uppercase tracking-wide">Match</p>
+              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div className="flex items-center gap-1.5">
+                  <Plane size={9} className="text-white/60 flex-shrink-0" />
+                  <p className="text-[9px] font-black text-white leading-none">Boeing 737 Next Gen</p>
+                </div>
+                <span className="text-[9px] font-black text-yellow-400">60% MATCH</span>
               </div>
             </div>
 
-            {/* Footer CTA */}
-            <div className="flex-1 flex items-end px-4 pb-3 pt-2">
-              <button
-                onClick={() => onNavigate('type-rating-search')}
-                className="ml-auto flex items-center gap-1 text-[9px] font-black tracking-wider text-indigo-400/70 hover:text-indigo-300 transition-colors"
-              >
-                VIEW ALL TYPE RATINGS <ChevronRight size={9} />
-              </button>
+            {/* Bottom row — chevron + CTA */}
+            <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5" style={{ background: 'rgba(0,0,0,0.55)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="w-7 h-7 flex items-center justify-center bg-white/10 border border-white/20 flex-shrink-0">
+                <ChevronRight size={14} className="text-white" />
+              </div>
+              <p className="text-[10px] font-black text-white tracking-wider flex-1">VIEW ALL TYPE RATINGS</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* ── Column B: Operator Expectations Directory ── */}
-          <div
-            className="flex flex-col"
-            style={{ background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)', WebkitBackdropFilter: 'blur(20px)' }}
+          <motion.div
+            custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+            onClick={() => setTab('pathways')}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '148px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
-                  <TrendingUp size={10} className="text-emerald-400" />
+            {/* Background image — airline tails / terminal */}
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('/public/airline-logos/singapore-airlines.svg'),url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.65 }}
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.55) 100%)' }} />
+            {/* Hover border */}
+            <div className="absolute inset-0 border-2 border-emerald-500/0 group-hover:border-emerald-500/50 transition-colors duration-300 pointer-events-none" />
+
+            {/* Top-left header label */}
+            <div className="absolute top-3 left-3 flex items-center gap-1.5">
+              <span className="text-[9px] font-black tracking-widest text-white/50 uppercase">Explore:</span>
+              <span className="text-[9px] font-black tracking-widest text-white uppercase">Operator Expectations</span>
+            </div>
+
+            {/* Top-right market pulse */}
+            <div className="absolute top-3 right-3 flex items-center gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[8px] font-black tracking-wider" style={{ color: 'rgba(52,211,153,0.9)' }}>MARKET PULSE</span>
+            </div>
+
+            {/* Floating overlay badges — operators */}
+            <div className="absolute top-10 left-3 right-3 flex flex-col gap-1.5 mt-1">
+              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] flex-shrink-0">🇸🇬</span>
+                  <div>
+                    <p className="text-[9px] font-black text-white leading-none">Singapore Airlines</p>
+                    <p className="text-[8px] text-white/35">First Officer Pathway</p>
+                  </div>
                 </div>
-                <p className="text-[10px] font-black tracking-wider text-white/80 uppercase">Operator Expectations</p>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <span className="text-[9px] font-black text-red-400">{matchPct > 20 ? matchPct : 20}% READY</span>
+                  <button
+                    onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }}
+                    className="text-[7px] font-black px-1.5 py-0.5 tracking-wider whitespace-nowrap"
+                    style={{ background: 'rgba(59,130,246,0.5)', border: '1px solid rgba(59,130,246,0.6)', color: '#bfdbfe' }}
+                  >ALIGN</button>
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-                <span className="text-[8px] font-black text-emerald-400/70 tracking-wider">MARKET PULSE</span>
+              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] flex-shrink-0">✈️</span>
+                  <div>
+                    <p className="text-[9px] font-black text-white leading-none">Alpha Operator Group</p>
+                    <p className="text-[8px] text-white/35">Direct Entry Captain</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <span className="text-[9px] font-black text-red-400">15% READY</span>
+                  <button
+                    onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }}
+                    className="text-[7px] font-black px-1.5 py-0.5 tracking-wider whitespace-nowrap"
+                    style={{ background: 'rgba(59,130,246,0.5)', border: '1px solid rgba(59,130,246,0.6)', color: '#bfdbfe' }}
+                  >ALIGN</button>
+                </div>
               </div>
             </div>
 
-            {/* Row 1 — Singapore Airlines */}
-            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <span className="text-base flex-shrink-0">🇸🇬</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-black text-white leading-tight">Singapore Airlines</p>
-                <p className="text-[9px] text-white/35 mt-0.5">First Officer Pathway</p>
+            {/* Bottom row — chevron + CTA */}
+            <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5" style={{ background: 'rgba(0,0,0,0.55)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="w-7 h-7 flex items-center justify-center bg-white/10 border border-white/20 flex-shrink-0">
+                <ChevronRight size={14} className="text-white" />
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <div className="text-right">
-                  <p className="text-[11px] font-black text-red-400">{matchPct > 20 ? matchPct : 20}%</p>
-                  <p className="text-[8px] text-white/25 uppercase tracking-wide">Ready</p>
-                </div>
-                <button
-                  onClick={() => onNavigate('pilot-recognition-profile')}
-                  className="text-[8px] font-black px-2 py-1 tracking-wider transition-all hover:brightness-110 whitespace-nowrap"
-                  style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)', color: '#93c5fd' }}
-                >
-                  ALIGN
-                </button>
-              </div>
+              <p className="text-[10px] font-black text-white tracking-wider flex-1">EXPLORE ALL OPERATORS</p>
             </div>
-
-            {/* Row 2 — Alpha Operator Group */}
-            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <span className="text-base flex-shrink-0">✈️</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-black text-white leading-tight">Alpha Operator Group</p>
-                <p className="text-[9px] text-white/35 mt-0.5">Direct Entry Captain</p>
-              </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <div className="text-right">
-                  <p className="text-[11px] font-black text-red-400">15%</p>
-                  <p className="text-[8px] text-white/25 uppercase tracking-wide">Ready</p>
-                </div>
-                <button
-                  onClick={() => onNavigate('pilot-recognition-profile')}
-                  className="text-[8px] font-black px-2 py-1 tracking-wider transition-all hover:brightness-110 whitespace-nowrap"
-                  style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)', color: '#93c5fd' }}
-                >
-                  ALIGN
-                </button>
-              </div>
-            </div>
-
-            {/* Footer CTA */}
-            <div className="flex-1 flex items-end px-4 pb-3 pt-2">
-              <button
-                onClick={() => setTab('pathways')}
-                className="ml-auto flex items-center gap-1 text-[9px] font-black tracking-wider text-emerald-400/60 hover:text-emerald-300 transition-colors"
-              >
-                EXPLORE ALL OPERATORS <ChevronRight size={9} />
-              </button>
-            </div>
-          </div>
+          </motion.div>
         </motion.div>
 
       </div>{/* end right flex col */}
