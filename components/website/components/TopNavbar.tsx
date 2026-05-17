@@ -812,7 +812,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         ) : (
                             <>
                                 <button
-                                    onClick={currentUser ? (e) => handleLogout(e) : (onLoginModalOpen || (() => {}))}
+                                    onClick={currentUser ? (e) => handleLogout(e) : () => onNavigate('become-member')}
                                     className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-1.5 whitespace-nowrap`}
                                 >
                                     {currentUser ? 'Sign Out' : 'Get Recognition Free'}

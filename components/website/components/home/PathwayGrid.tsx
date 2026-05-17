@@ -500,7 +500,7 @@ const AccessPlatformCard: React.FC<{
                     ) : (
                         <>
                             <button
-                                onClick={onLogin}
+                                onClick={() => onNavigate('become-member')}
                                 className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
                             >
                                 Get Recognition Free
