@@ -461,6 +461,147 @@ const HomeTab: React.FC<{
           </motion.div>
         </div>
 
+        {/* ── CRYPTOGRAPHIC LOGBOOK LEDGER — glassmorphism ghost panel ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="relative overflow-hidden"
+          style={{
+            background: 'rgba(15,23,42,0.55)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            WebkitBackdropFilter: 'blur(20px)',
+          }}
+        >
+          {/* ── Header row — always crisp ── */}
+          <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="flex items-center gap-2.5">
+              <div className="relative flex-shrink-0">
+                <Shield size={14} className="text-emerald-400" />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping opacity-75" />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400" />
+              </div>
+              <p className="text-[11px] font-black tracking-wider text-white/80">VERIFIED CRYPTOGRAPHIC LOGBOOK LEDGER</p>
+              <span className="text-[9px] font-black px-2 py-0.5 tracking-wider" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#34d399' }}>
+                VEREMARK SYNCED
+              </span>
+            </div>
+            {/* Summary pills */}
+            <div className="flex items-center gap-1.5">
+              {[
+                { label: `${hours > 0 ? hours : 240} hrs Total`,    color: 'rgba(255,255,255,0.07)',  text: 'text-white/60'     },
+                { label: `${hours > 0 ? Math.max(hours - 8, 0) : 232} hrs Verified`, color: 'rgba(16,185,129,0.12)', text: 'text-emerald-400' },
+                { label: '8 hrs Flagged',  color: 'rgba(234,179,8,0.12)',  text: 'text-yellow-400'   },
+              ].map(p => (
+                <span key={p.label} className={`text-[9px] font-black px-2.5 py-1 tracking-wide ${p.text}`} style={{ background: p.color, border: '1px solid rgba(255,255,255,0.08)' }}>
+                  {p.label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Column headers ── */}
+          <div className="grid px-5 py-1.5" style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+            {['DATE / HASH', 'ATO PROVIDER', 'HOURS', 'TYPE', 'STATUS'].map(h => (
+              <p key={h} className="text-[9px] font-black tracking-widest text-white/20 uppercase">{h}</p>
+            ))}
+          </div>
+
+          {/* ── Row 1: Fully crisp — Verified ── */}
+          <div
+            className="grid items-center px-5 py-3"
+            style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+          >
+            <div>
+              <p className="text-[10px] font-bold text-white">05-14-2026</p>
+              <p className="text-[9px] font-mono text-white/30 mt-0.5">0x8fB...4c2A</p>
+            </div>
+            <p className="text-[10px] text-white/60">Alpha Flight Academy</p>
+            <p className="text-[10px] font-bold text-white">4.5 hrs</p>
+            <p className="text-[10px] text-sky-300">PIC</p>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.8)' }} />
+              <span className="text-[9px] font-black tracking-wide text-emerald-400">VERIFIED</span>
+            </div>
+          </div>
+
+          {/* ── Row 2: 70% opacity — Under Review ── */}
+          <div
+            className="grid items-center px-5 py-3"
+            style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.04)', opacity: 0.70 }}
+          >
+            <div>
+              <p className="text-[10px] font-bold text-white">05-10-2026</p>
+              <p className="text-[9px] font-mono text-white/30 mt-0.5">0x3aE...9b1</p>
+            </div>
+            <p className="text-[10px] text-white/60">Alpha Flight Academy</p>
+            <p className="text-[10px] font-bold text-white">8.0 hrs</p>
+            <p className="text-[10px] text-indigo-300">Dual</p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(234,179,8,0.8)' }} />
+                <span className="text-[9px] font-black tracking-wide text-yellow-400">UNDER REVIEW</span>
+              </div>
+              <button className="text-[9px] text-sky-400/70 hover:text-sky-300 font-bold tracking-wide transition-colors ml-2 underline underline-offset-2 whitespace-nowrap">
+                Contact ATO →
+              </button>
+            </div>
+          </div>
+
+          {/* ── Rows 3 & 4: Ghost fade rows ── */}
+          {[
+            { date: '05-06-2026', hash: '0x7cD...2e5F', ato: 'Skyline Flight Training', hrs: '3.2 hrs', type: 'Solo',  status: 'verified',  statusText: 'VERIFIED',    statusColor: '#34d399', glowColor: 'rgba(52,211,153,0.7)' },
+            { date: '04-29-2026', hash: '0x1bA...8d3C', ato: 'Pacific Aero Club',       hrs: '5.0 hrs', type: 'Night', status: 'pending',   statusText: 'PENDING',     statusColor: '#60a5fa', glowColor: 'rgba(96,165,250,0.7)' },
+          ].map((row, i) => (
+            <div
+              key={row.hash}
+              className="grid items-center px-5 py-3"
+              style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', opacity: i === 0 ? 0.38 : 0.15 }}
+            >
+              <div>
+                <p className="text-[10px] font-bold text-white">{row.date}</p>
+                <p className="text-[9px] font-mono text-white/30 mt-0.5">{row.hash}</p>
+              </div>
+              <p className="text-[10px] text-white/60">{row.ato}</p>
+              <p className="text-[10px] font-bold text-white">{row.hrs}</p>
+              <p className="text-[10px] text-purple-300">{row.type}</p>
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: row.statusColor, boxShadow: `0 0 6px ${row.glowColor}` }} />
+                <span className="text-[9px] font-black tracking-wide" style={{ color: row.statusColor }}>{row.statusText}</span>
+              </div>
+            </div>
+          ))}
+
+          {/* ── Gradient fade mask — vertical + horizontal ── */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(15,23,42,0.6) 68%, rgba(15,23,42,0.92) 85%, rgba(15,23,42,0.98) 100%)',
+            }}
+          />
+          {/* Left/right edge vignette */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to right, rgba(15,23,42,0.4) 0%, transparent 8%, transparent 92%, rgba(15,23,42,0.4) 100%)',
+            }}
+          />
+
+          {/* ── Fade footer CTA ── */}
+          <div className="relative flex items-center justify-between px-5 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+            <p className="text-[9px] text-white/20 font-mono">
+              {hours > 0 ? `${hours}` : '240'} entries · token chain active · last sync {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+            </p>
+            <button
+              onClick={() => setTab('logbook')}
+              className="text-[9px] font-black tracking-widest text-white/40 hover:text-white/80 transition-colors flex items-center gap-1.5"
+            >
+              VIEW FULL LEDGER <ChevronRight size={10} />
+            </button>
+          </div>
+        </motion.div>
+
       </div>{/* end right flex col */}
     </motion.div>
   );
