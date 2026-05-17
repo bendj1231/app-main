@@ -667,11 +667,11 @@ const HomeTab: React.FC<{
                               value={ato}
                               onChange={e => { const a = [...obATOs]; a[i] = e.target.value; setObATOs(a); }}
                               placeholder={i === 0 ? 'Enter ATO or flight school name...' : `Additional ATO ${i + 1}...`}
-                              className="flex-1 px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
-                              style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                              className="flex-1 px-2.5 py-1.5 text-[10px] text-gray-900 outline-none placeholder-gray-400"
+                              style={{ background: 'white', border: '1px solid #d1d5db', borderRadius: '6px' }}
                             />
                             {i > 0 && (
-                              <button onClick={() => setObATOs(obATOs.filter((_, j) => j !== i))} className="text-gray-300 hover:text-red-500 transition-colors text-[11px] font-bold px-1">✕</button>
+                              <button onClick={() => setObATOs(obATOs.filter((_, j) => j !== i))} className="flex-shrink-0 w-6 h-6 flex items-center justify-center font-bold transition-colors" style={{ background: '#fee2e2', color: '#dc2626', borderRadius: '4px', fontSize: '11px' }}>✕</button>
                             )}
                           </div>
                         ))}
