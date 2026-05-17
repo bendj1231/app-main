@@ -274,7 +274,7 @@ const HomeTab: React.FC<{
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pilot Portal</span>
             </div>
             <h1 className="text-2xl font-black text-slate-900 leading-tight">Unlock Your Pilot<br/>Dashboard</h1>
-            <p className="text-sm text-slate-500 mt-2 leading-relaxed">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
+            <p className="text-sm text-slate-800 mt-2 leading-relaxed">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
           </div>
 
           {/* Tier toggle */}
@@ -318,7 +318,7 @@ const HomeTab: React.FC<{
             <button
               onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
               className="w-full py-3.5 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl"
-              style={{ background: '#2563eb' }}
+              style={{ background: '#dc2626' }}
             >
               {obTier === 'free' ? 'Get Recognition Free' : 'Login'}
             </button>
@@ -350,21 +350,88 @@ const HomeTab: React.FC<{
           className="w-1/2 relative overflow-hidden flex items-center justify-center"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }}
         >
-          {/* Dashboard preview — rendered behind blur */}
-          <div className="absolute inset-0 pointer-events-none" style={{ filter: 'blur(3px)', opacity: 0.45 }}>
-            <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,1))' }}>
-              <div className="m-4 h-40 rounded-xl" style={{ background: 'url(/images/airline-operations.png) center/cover', opacity: 0.7 }} />
-              <div className="mx-4 grid grid-cols-2 gap-3">
-                <div className="h-24 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
-                <div className="h-24 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
-                <div className="h-20 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
-                <div className="h-20 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+          {/* Full dashboard preview — scaled-down replica behind blur */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ background: 'rgba(15,23,42,1)' }}>
+            <div className="w-full h-full flex flex-col gap-2 p-3" style={{ filter: 'blur(2px)', opacity: 0.6 }}>
+              {/* Account Activation strip */}
+              <div className="flex items-center gap-3 px-4 py-2.5 rounded flex-shrink-0" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div className="flex-1">
+                  <p className="text-[9px] font-black text-white">Account Activation Required</p>
+                  <p className="text-[7px] text-white/40">Verify your credentials and flight logs to unlock airline pathways.</p>
+                </div>
+                <div className="px-3 py-1 rounded text-[8px] font-black text-white" style={{ background: '#3b82f6' }}>GET STARTED ›</div>
+              </div>
+
+              {/* MY PATHWAYS banner */}
+              <div className="relative rounded overflow-hidden flex-shrink-0" style={{ height: '120px' }}>
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.75 }} />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(5,10,20,0.7) 0%, transparent 60%)' }} />
+                <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[7px] font-black" style={{ background: '#ef4444', color: 'white' }}>Profile Match: 0%</div>
+                <div className="absolute bottom-3 left-3">
+                  <p className="text-[8px] font-black text-white/50 uppercase tracking-wider">›</p>
+                  <p className="text-xs font-black text-white">MY PATHWAYS</p>
+                  <p className="text-[7px] text-white/50">Complete your profile to reach 100% eligibility</p>
+                </div>
+              </div>
+
+              {/* Middle row: Programs + Logbook+Credentials */}
+              <div className="flex gap-2 flex-shrink-0" style={{ height: '90px' }}>
+                {/* MY PROGRAMS */}
+                <div className="flex-1 relative rounded overflow-hidden">
+                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png')", opacity: 0.65 }} />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.85) 0%, transparent 60%)' }} />
+                  <div className="absolute bottom-2 left-2">
+                    <p className="text-[7px] font-black text-white/40">›</p>
+                    <p className="text-[9px] font-black text-white">MY PROGRAMS</p>
+                  </div>
+                </div>
+                {/* Logbook + Credentials stacked */}
+                <div className="flex-1 flex flex-col gap-1">
+                  <div className="flex-1 flex items-center gap-2 px-2 rounded" style={{ background: 'rgba(30,41,59,0.9)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)' }}>
+                      <div className="w-2 h-2 rounded-sm" style={{ background: '#3b82f6' }} />
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black text-white">DIGITAL LOGBOOK</p>
+                      <p className="text-[6px] text-white/30">Log your first flight</p>
+                    </div>
+                  </div>
+                  <div className="flex-1 flex items-center gap-2 px-2 rounded" style={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(234,179,8,0.18)' }}>
+                      <div className="w-2 h-2 rounded-sm" style={{ background: '#fbbf24' }} />
+                    </div>
+                    <div>
+                      <p className="text-[8px] font-black text-white">PILOT CREDENTIALS</p>
+                      <p className="text-[6px] text-white/30">No credentials yet</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom row: Type Rating + Operator Expectations */}
+              <div className="flex gap-2 flex-1">
+                <div className="flex-1 relative rounded overflow-hidden">
+                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')", opacity: 0.7 }} />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.9) 0%, transparent 50%)' }} />
+                  <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5" style={{ background: 'rgba(5,10,20,0.8)' }}>
+                    <p className="text-[6px] text-white/40 uppercase">Recommended</p>
+                    <p className="text-[8px] font-black text-white">Type Rating Search</p>
+                  </div>
+                </div>
+                <div className="flex-1 relative rounded overflow-hidden">
+                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.7 }} />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.9) 0%, transparent 50%)' }} />
+                  <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5" style={{ background: 'rgba(5,10,20,0.8)' }}>
+                    <p className="text-[6px] text-white/40 uppercase">Explore</p>
+                    <p className="text-[8px] font-black text-white">Operator Expectations</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Dark overlay */}
-          <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.55)', backdropFilter: 'blur(4px)' }} />
+          {/* Glass overlay — 40% dark navy */}
+          <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.42)', backdropFilter: 'blur(3px)' }} />
 
           {/* Minimalist gate */}
           <div className="relative z-10 flex flex-col items-center text-center px-8">
