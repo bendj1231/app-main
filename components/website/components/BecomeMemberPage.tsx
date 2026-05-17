@@ -55,7 +55,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 { name: 'Home', url: '/' },
                 { name: 'Create Account', url: '/become-member' }
             ]} />
-            <div className="relative min-h-screen flex flex-col">
+            <div className="relative h-screen overflow-hidden flex flex-col">
 
                 {/* Background — same shader as HomePage & platform */}
                 <div className="fixed inset-0 z-0">
@@ -77,23 +77,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
                 </div>
 
-                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-20 py-24">
-                    <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-12 md:gap-20">
+                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8">
+                    <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-16">
 
                         {/* Left: Hero text */}
                         <div className="flex-1 text-left">
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-4 text-white">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] mb-3 text-white">
                                 Connecting Pilots<br />
                                 <span className="text-red-500">to the Industry.</span>
                             </h1>
-                            <p className="text-slate-400 text-base">Free access to Programs, Pathways &amp; Pilot Recognition</p>
+                            <p className="text-slate-300 text-sm">Free access to Programs, Pathways &amp; Pilot Recognition</p>
                         </div>
 
                         {/* Right: Signup card */}
-                        <div className="w-full md:w-[420px] flex-shrink-0">
+                        <div className="w-full md:w-[400px] flex-shrink-0">
 
                         {/* Card */}
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
 
                             {/* Google signup */}
                             <button
@@ -137,7 +137,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     'Programs & training roadmaps',
                                     'ATLAS CV builder',
                                 ].map((item) => (
-                                    <li key={item} className="flex items-center gap-2.5 text-sm text-slate-300">
+                                    <li key={item} className="flex items-center gap-2.5 text-sm text-white">
                                         <span className="w-4 h-4 rounded-full bg-[#00b4d8]/20 flex items-center justify-center flex-shrink-0">
                                             <span className="w-1.5 h-1.5 rounded-full bg-[#00b4d8]" />
                                         </span>
@@ -147,7 +147,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             </ul>
 
                             {/* Already have account */}
-                            <p className="text-center text-sm text-slate-500">
+                            <p className="text-center text-sm text-slate-300">
                                 Already have an account?{' '}
                                 <button
                                     onClick={onLogin}
@@ -159,11 +159,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         {/* Neutral disclaimer */}
-                        <p className="text-center text-xs text-slate-600 mt-6 leading-relaxed">
+                        <p className="text-center text-xs text-slate-400 mt-4 leading-relaxed">
                             By creating an account you agree to our{' '}
-                            <button onClick={() => onNavigate('terms')} className="underline hover:text-slate-400 transition-colors">Terms of Service</button>
+                            <button onClick={() => onNavigate('terms')} className="underline hover:text-white transition-colors">Terms of Service</button>
                             {' '}and{' '}
-                            <button onClick={() => onNavigate('privacy')} className="underline hover:text-slate-400 transition-colors">Privacy Policy</button>.
+                            <button onClick={() => onNavigate('privacy')} className="underline hover:text-white transition-colors">Privacy Policy</button>.
                             No sensitive personal or aviation data is required to register.
                         </p>
                         </div>{/* end right column */}
