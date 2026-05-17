@@ -572,109 +572,326 @@ const ProfileTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate 
 );
 
 // ─── TAB: WALLET ───────────────────────────────────────────────────────────
+const ATO_LIST = [
+  'Philippine Airlines Training Centre', 'CAE Oxford Aviation Academy', 'Emirates Flight Training Academy',
+  'FlightPath International', 'Lufthansa Aviation Training', 'Philippine Academy of Aviation Technology',
+  'Asia Pacific Aviation Centre', 'CAA Approved Local ATO', 'Other / Not Listed',
+];
+
 const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
   const allVerified = walletChecks.length > 0 && walletChecks.every(c => c.status === 'verified');
-  const hasExpired = walletChecks.some(c => c.status === 'expired');
+  const hasExpired  = walletChecks.some(c => c.status === 'expired');
+  const hasFlagged  = walletChecks.some(c => c.status === 'flagged');
+
+  const [wizardOpen, setWizardOpen]   = React.useState(false);
+  const [wizardStep, setWizardStep]   = React.useState(1);
+  const [selectedATO, setSelectedATO] = React.useState('');
+  const [consentSigned, setConsentSigned] = React.useState(false);
 
   const checkLabels: Record<string, string> = {
     professional_qualification: 'Pilot License (CPL/ATPL)',
-    identity: 'Identity / Passport',
-    education: 'Medical Certificate',
-    fitness_proprietary: 'Background / NBI Check',
+    identity:                   'Identity / Passport',
+    education:                  'Medical Certificate',
+    fitness_proprietary:        'Background / NBI Check',
+    type_rating:                'Type Rating Certificate',
+    language_proficiency:       'ICAO Language Proficiency',
+  };
+
+  const maskToken = (id: string) =>
+    `0x${id.replace(/-/g, '').substring(0, 3).toUpperCase()}...${id.replace(/-/g, '').substring(id.length - 4).toUpperCase()}`;
+
+  const statusConfig = {
+    verified: { dot: 'bg-emerald-400', label: 'ACTIVE / VERIFIED', text: 'text-emerald-400', border: 'rgba(16,185,129,0.3)', bg: 'rgba(16,185,129,0.08)' },
+    flagged:  { dot: 'bg-yellow-400',  label: 'UNDER REVIEW',      text: 'text-yellow-400',  border: 'rgba(234,179,8,0.35)',   bg: 'rgba(234,179,8,0.08)'   },
+    expired:  { dot: 'bg-red-400',     label: 'EXPIRED',           text: 'text-red-400',     border: 'rgba(239,68,68,0.35)',   bg: 'rgba(239,68,68,0.08)'   },
+    pending:  { dot: 'bg-blue-400',    label: 'PENDING',           text: 'text-blue-400',    border: 'rgba(59,130,246,0.3)',   bg: 'rgba(59,130,246,0.08)'  },
   };
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <motion.div className="space-y-5 max-w-4xl" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
 
-      {/* Pre-Cleared status */}
-      <div className="rounded-xl p-5" style={{ background: allVerified ? 'rgba(16,185,129,0.15)' : hasExpired ? 'rgba(239,68,68,0.15)' : 'rgba(255,255,255,0.07)', border: `1px solid ${allVerified ? 'rgba(16,185,129,0.3)' : hasExpired ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.1)'}` }}>
-        <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${allVerified ? 'bg-emerald-500' : hasExpired ? 'bg-red-400' : 'bg-slate-300'}`}>
-            <Shield size={22} className="text-white" />
-          </div>
-          <div>
-            <p className="text-xs uppercase tracking-widest font-bold text-slate-500 mb-0.5">Wallet Status</p>
-            <p className={`text-xl font-black tracking-wider ${allVerified ? 'text-emerald-400' : hasExpired ? 'text-red-400' : 'text-white/60'}`}>
-              {allVerified ? 'PRE-CLEARED' : hasExpired ? 'ACTION REQUIRED' : 'PENDING VERIFICATION'}
-            </p>
-            <p className="text-xs text-white/50 mt-0.5">
-              {allVerified
-                ? 'Both vault and Veremark signals agree. Token issued.'
-                : hasExpired
-                  ? 'One or more credentials have expired. Renew to restore Pre-Cleared status.'
-                  : 'Verification in progress. Both vault and Veremark must confirm.'}
-            </p>
-          </div>
+      {/* ── Pre-Cleared status banner ── */}
+      <div className="p-5 flex items-center gap-5"
+        style={{ background: allVerified ? 'rgba(16,185,129,0.12)' : hasFlagged ? 'rgba(234,179,8,0.12)' : hasExpired ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.05)', border: `1px solid ${allVerified ? 'rgba(16,185,129,0.3)' : hasFlagged ? 'rgba(234,179,8,0.3)' : hasExpired ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.1)'}` }}
+      >
+        <div className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 ${allVerified ? 'bg-emerald-500/20' : hasFlagged ? 'bg-yellow-500/20' : hasExpired ? 'bg-red-500/20' : 'bg-slate-700'}`}>
+          <Shield size={24} className={allVerified ? 'text-emerald-400' : hasFlagged ? 'text-yellow-400' : hasExpired ? 'text-red-400' : 'text-white/30'} />
         </div>
+        <div className="flex-1">
+          <p className="text-[10px] uppercase tracking-widest font-bold text-white/30 mb-0.5">Vault Status</p>
+          <p className={`text-xl font-black tracking-wider ${allVerified ? 'text-emerald-400' : hasFlagged ? 'text-yellow-300' : hasExpired ? 'text-red-400' : 'text-white/50'}`}>
+            {allVerified ? 'PRE-CLEARED ✓' : hasFlagged ? 'REVIEW REQUIRED' : hasExpired ? 'ACTION REQUIRED' : 'PENDING VERIFICATION'}
+          </p>
+          <p className="text-xs text-white/40 mt-0.5">
+            {allVerified ? 'Veremark + Vault + Governing body all agree. Cryptographic token active.'
+              : hasFlagged ? 'An ATO has flagged a discrepancy. Resolve to restore Pre-Cleared status.'
+              : hasExpired ? 'One or more credentials have expired. Re-initiate verification.'
+              : 'Verification in progress. All three parties must confirm before token is issued.'}
+          </p>
+        </div>
+        {!allVerified && (
+          <button
+            onClick={() => { setWizardOpen(true); setWizardStep(1); }}
+            className="flex-shrink-0 px-5 py-2.5 text-xs font-black tracking-wider text-white transition-all hover:brightness-110"
+            style={{ background: 'rgba(59,130,246,0.8)', border: '1px solid rgba(59,130,246,0.5)' }}
+          >
+            INITIATE VERIFICATION
+          </button>
+        )}
       </div>
 
-      {/* Architecture explanation */}
-      <div className="rounded-xl p-4" style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.08)' }}>
-        <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-2">Triangulation Architecture</p>
-        <div className="grid grid-cols-3 gap-3 text-center text-xs">
+      {/* ── Zero-knowledge architecture strip ── */}
+      <div className="p-4" style={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.07)' }}>
+        <p className="text-[10px] font-black tracking-[0.2em] text-emerald-400 uppercase mb-3">Zero-Knowledge Triangulation — How It Works</p>
+        <div className="grid grid-cols-5 gap-0 items-center text-center text-[10px]">
           {[
-            { label: 'Third-Party Vault', colour: 'text-blue-400', desc: 'Holds your raw documents' },
-            { label: 'Veremark', colour: 'text-yellow-400', desc: 'Independently verifies' },
-            { label: 'PilotRecognition', colour: 'text-emerald-400', desc: 'Displays token only' },
-          ].map(c => (
-            <div key={c.label} className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.06)' }}>
-              <p className={`font-bold mb-1 ${c.colour}`}>{c.label}</p>
-              <p className="text-slate-400 text-[10px]">{c.desc}</p>
-            </div>
-          ))}
+            { label: 'YOUR VAULT', sub: 'Holds raw documents', colour: 'text-sky-400', border: 'rgba(56,189,248,0.3)' },
+            { arrow: true },
+            { label: 'VEREMARK', sub: 'Independently verifies', colour: 'text-yellow-400', border: 'rgba(234,179,8,0.3)' },
+            { arrow: true },
+            { label: 'PILOTRECOGNITION', sub: 'Token display only — zero raw data', colour: 'text-emerald-400', border: 'rgba(16,185,129,0.3)' },
+          ].map((c, i) =>
+            (c as any).arrow ? (
+              <div key={i} className="flex items-center justify-center text-white/20 text-lg">→</div>
+            ) : (
+              <div key={i} className="p-2.5" style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${(c as any).border}` }}>
+                <p className={`font-black mb-0.5 ${(c as any).colour}`}>{(c as any).label}</p>
+                <p className="text-white/30 leading-tight">{(c as any).sub}</p>
+              </div>
+            )
+          )}
         </div>
-        <p className="text-[10px] text-slate-500 mt-2 text-center italic">We never hold your credentials. We display the triangulated outcome only.</p>
+        <p className="text-[9px] text-white/20 mt-2 text-center">We never store, read, or transmit your raw PII. Only a cryptographic hash is surfaced here.</p>
       </div>
 
-      {/* Credential checks */}
-      <SectionCard title="Credential Checks">
+      {/* ── Credential cards ── */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs font-black tracking-widest text-white/60 uppercase">Credential Vault</p>
+          {walletChecks.length > 0 && (
+            <button
+              onClick={() => { setWizardOpen(true); setWizardStep(1); }}
+              className="text-[10px] font-bold px-3 py-1.5 tracking-wider text-white/70 hover:text-white transition-colors"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              + ADD CREDENTIAL
+            </button>
+          )}
+        </div>
+
         {walletChecks.length === 0 ? (
-          <div className="text-center py-10">
-            <Lock size={36} className="text-white/20 mx-auto mb-3" />
-            <p className="text-white/60 text-sm font-medium mb-2">Wallet not yet set up</p>
-            <p className="text-white/40 text-xs max-w-xs mx-auto">Initiate verification to connect your vault provider and Veremark. Your credentials stay with them — you get the token.</p>
-            <button className="mt-4 text-xs font-bold px-5 py-2.5 rounded-lg transition-colors" style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
-              Initiate Verification
+          <div className="text-center py-14" style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <Lock size={28} className="text-white/20" />
+            </div>
+            <p className="text-white/50 text-sm font-bold mb-1 tracking-wide">NO CREDENTIALS YET</p>
+            <p className="text-white/25 text-xs max-w-xs mx-auto mb-5">Initiate verification to connect your vault provider and Veremark. Your documents stay with them — you receive a cryptographic token.</p>
+            <button
+              onClick={() => { setWizardOpen(true); setWizardStep(1); }}
+              className="text-xs font-black px-6 py-3 tracking-widest text-white transition-all hover:brightness-110"
+              style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.8), rgba(99,102,241,0.8))', border: '1px solid rgba(99,102,241,0.4)' }}
+            >
+              INITIATE VERIFICATION
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {walletChecks.map((check: any) => {
-              const label = checkLabels[check.check_type] ?? check.check_type.replace(/_/g, ' ').toUpperCase();
+              const label  = checkLabels[check.check_type] ?? check.check_type.replace(/_/g, ' ').toUpperCase();
               const expiry = check.expiry_date ? new Date(check.expiry_date) : null;
               const isExpiringSoon = expiry && (expiry.getTime() - Date.now()) < 30 * 24 * 60 * 60 * 1000;
+              const st = statusConfig[(check.status as keyof typeof statusConfig)] ?? statusConfig.pending;
               return (
-                <div key={check.id} className="rounded-xl p-4" style={{ background: check.status === 'expired' ? 'rgba(239,68,68,0.12)' : isExpiringSoon ? 'rgba(234,179,8,0.12)' : 'rgba(255,255,255,0.06)', border: `1px solid ${check.status === 'expired' ? 'rgba(239,68,68,0.3)' : isExpiringSoon ? 'rgba(234,179,8,0.3)' : 'rgba(255,255,255,0.1)'}` }}>
-                  <div className="flex items-start justify-between mb-2">
-                    <p className="text-sm font-bold text-white tracking-wide">{label}</p>
-                    <StatusPill status={check.status} />
+                <div key={check.id} className="p-4" style={{ background: st.bg, border: `1px solid ${st.border}` }}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="text-xs font-black text-white tracking-wider">{label}</p>
+                      {/* Masked token */}
+                      <p className="text-[10px] font-mono mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                        {check.id ? maskToken(check.id) : '• • • • • • • • •'}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(0,0,0,0.3)', border: `1px solid ${st.border}` }}>
+                      <div className={`w-1.5 h-1.5 rounded-full ${st.dot}`} />
+                      <span className={`text-[9px] font-black tracking-wider ${st.text}`}>{st.label}</span>
+                    </div>
                   </div>
                   {expiry && (
-                    <p className={`text-xs ${check.status === 'expired' ? 'text-red-400 font-semibold' : isExpiringSoon ? 'text-yellow-400 font-semibold' : 'text-white/40'}`}>
-                      {check.status === 'expired' ? '⚠ Expired: ' : 'Expires: '}
+                    <p className={`text-[10px] mb-2 ${check.status === 'expired' ? 'text-red-400 font-semibold' : isExpiringSoon ? 'text-yellow-400 font-semibold' : 'text-white/35'}`}>
+                      {check.status === 'expired' ? '⚠ Expired: ' : isExpiringSoon ? '⚠ Expiring: ' : 'Valid until: '}
                       {expiry.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </p>
                   )}
-                  <div className="mt-3 flex gap-2 items-center">
-                    <div className="flex-1 h-px bg-slate-100" />
-                    <div className="flex gap-2 text-[10px] text-slate-400">
-                      <span className="flex items-center gap-0.5 text-white/30"><Eye size={9}/> Token only stored</span>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] text-white/20 flex items-center gap-1"><Eye size={9} /> Token only — no raw data stored</span>
+                    {check.status === 'flagged' && (
+                      <button className="text-[9px] font-black px-2.5 py-1 tracking-wider" style={{ background: 'rgba(234,179,8,0.2)', border: '1px solid rgba(234,179,8,0.4)', color: '#fbbf24' }}>
+                        RESOLVE FLAG WITH ATO →
+                      </button>
+                    )}
+                    {check.status === 'expired' && (
+                      <button onClick={() => { setWizardOpen(true); setWizardStep(1); }} className="text-[9px] font-black px-2.5 py-1 tracking-wider" style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid rgba(239,68,68,0.4)', color: '#f87171' }}>
+                        RE-VERIFY →
+                      </button>
+                    )}
                   </div>
                 </div>
               );
             })}
           </div>
         )}
-      </SectionCard>
+      </div>
 
-      {/* Consent note */}
-      <div className="flex items-start gap-3 rounded-xl p-4" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)' }}>
-        <Lock size={14} className="text-blue-400 flex-shrink-0 mt-0.5" />
-        <p className="text-xs text-blue-200">
-          <strong className="text-white">Your data. Your control.</strong> You manage three separate consent relationships: vault provider, Veremark, and PilotRecognition. Revoke any one and the token chain immediately invalidates.
+      {/* ── Consent note ── */}
+      <div className="flex items-start gap-3 p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+        <Lock size={13} className="text-blue-400 flex-shrink-0 mt-0.5" />
+        <p className="text-[11px] text-blue-200 leading-relaxed">
+          <strong className="text-white">Your data. Your control.</strong> You manage three separate consent chains: your vault provider, Veremark, and PilotRecognition.com. Revoking any one immediately invalidates the cryptographic token and removes operator access.
         </p>
       </div>
+
+      {/* ── VERIFICATION WIZARD MODAL ── */}
+      {wizardOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)' }}>
+          <motion.div
+            className="w-full max-w-lg"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2 }}
+            style={{ background: 'rgba(15,23,42,0.98)', border: '1px solid rgba(255,255,255,0.12)' }}
+          >
+            {/* Wizard header */}
+            <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+              <div>
+                <p className="text-xs font-black tracking-widest text-white/40 uppercase">Credential Verification</p>
+                <p className="text-sm font-black text-white tracking-wide mt-0.5">
+                  {wizardStep === 1 ? 'Step 1 — Select Your ATO' : wizardStep === 2 ? 'Step 2 — Surcharge Notice' : 'Step 3 — Consent Sign-Off'}
+                </p>
+              </div>
+              <button onClick={() => setWizardOpen(false)} className="text-white/30 hover:text-white transition-colors"><X size={18} /></button>
+            </div>
+
+            {/* Step indicators */}
+            <div className="flex px-6 pt-4 gap-2">
+              {[1, 2, 3].map(s => (
+                <div key={s} className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                  <div className={`h-full transition-all duration-500 ${wizardStep >= s ? 'bg-sky-500' : 'bg-transparent'}`} style={{ width: wizardStep >= s ? '100%' : '0%' }} />
+                </div>
+              ))}
+            </div>
+
+            <div className="px-6 py-5 space-y-4">
+              {/* Step 1 — ATO Selector */}
+              {wizardStep === 1 && (
+                <>
+                  <p className="text-xs text-white/50 leading-relaxed">Select the Approved Training Organisation (ATO) or flight school whose records will be contacted during verification. This allows Veremark to securely request confirmation of your logged hours.</p>
+                  <div>
+                    <label className="text-[10px] font-black tracking-widest text-white/40 uppercase block mb-2">Your Flight School / ATO</label>
+                    <select
+                      value={selectedATO}
+                      onChange={e => setSelectedATO(e.target.value)}
+                      className="w-full px-3 py-2.5 text-xs font-semibold text-white rounded-none outline-none"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}
+                    >
+                      <option value="" style={{ background: '#0f172a' }}>— Select an ATO —</option>
+                      {ATO_LIST.map(a => <option key={a} value={a} style={{ background: '#0f172a' }}>{a}</option>)}
+                    </select>
+                  </div>
+                  <button
+                    disabled={!selectedATO}
+                    onClick={() => setWizardStep(2)}
+                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-30"
+                    style={{ background: 'rgba(59,130,246,0.8)', border: '1px solid rgba(59,130,246,0.5)' }}
+                  >
+                    CONTINUE →
+                  </button>
+                </>
+              )}
+
+              {/* Step 2 — Surcharge notice */}
+              {wizardStep === 2 && (
+                <>
+                  <div className="p-4" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.3)' }}>
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle size={16} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-black text-yellow-300 tracking-wide mb-1">VERIFICATION SURCHARGE NOTICE</p>
+                        <p className="text-[11px] text-yellow-200/70 leading-relaxed">
+                          <strong className="text-white">Recognition+ includes 1 standard regional ATO verification per year.</strong> Adding multiple training organisations (ATOs) or requesting verifications outside your home region will incur an external regional processing surcharge from our verification provider, Veremark.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-3" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold mb-2">Selected ATO</p>
+                    <p className="text-xs text-white font-semibold">{selectedATO}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                      <p className="text-[10px] text-white/40">1 standard regional verification — included in your plan</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <button onClick={() => setWizardStep(1)} className="flex-1 py-2.5 text-xs font-bold text-white/50 tracking-wider" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>← BACK</button>
+                    <button onClick={() => setWizardStep(3)} className="flex-1 py-2.5 text-xs font-black tracking-widest text-white" style={{ background: 'rgba(59,130,246,0.8)', border: '1px solid rgba(59,130,246,0.5)' }}>PROCEED →</button>
+                  </div>
+                </>
+              )}
+
+              {/* Step 3 — Consent sign-off */}
+              {wizardStep === 3 && (
+                <>
+                  <div className="p-4 space-y-2" style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <p className="text-[10px] font-black tracking-widest text-white/30 uppercase mb-3">Cryptographic Consent Declaration</p>
+                    <p className="text-[11px] text-white/70 leading-relaxed">
+                      By continuing, you grant <strong className="text-white">tokenized cryptographic consent</strong> to <strong className="text-yellow-300">Veremark</strong> to:
+                    </p>
+                    <ul className="space-y-1.5 mt-2">
+                      {[
+                        'Contact the Civil Aviation Authority (CAA) on your behalf',
+                        `Request hour confirmation from: ${selectedATO}`,
+                        'Issue a cryptographic verification token to PilotRecognition.com',
+                        'Store a zero-knowledge proof receipt in your Verepass wallet',
+                      ].map(item => (
+                        <li key={item} className="flex items-start gap-2 text-[10px] text-white/50">
+                          <CheckCircle size={10} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-[9px] text-white/25 mt-3 leading-relaxed">
+                      No raw PII is transmitted to or stored by PilotRecognition.com. This consent can be revoked at any time from your vault settings, which immediately invalidates the token chain.
+                    </p>
+                  </div>
+
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={consentSigned}
+                      onChange={e => setConsentSigned(e.target.checked)}
+                      className="mt-0.5 flex-shrink-0 accent-sky-500 w-4 h-4"
+                    />
+                    <span className="text-[11px] text-white/60 leading-relaxed">
+                      I understand and grant cryptographic consent to Veremark to contact the CAA and my selected ATO on my behalf.
+                    </span>
+                  </label>
+
+                  <div className="flex gap-3">
+                    <button onClick={() => setWizardStep(2)} className="flex-1 py-2.5 text-xs font-bold text-white/50 tracking-wider" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>← BACK</button>
+                    <button
+                      disabled={!consentSigned}
+                      onClick={() => { setWizardOpen(false); setWizardStep(1); setConsentSigned(false); }}
+                      className="flex-1 py-2.5 text-xs font-black tracking-widest text-white transition-all disabled:opacity-30"
+                      style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.8), rgba(5,150,105,0.8))', border: '1px solid rgba(16,185,129,0.4)' }}
+                    >
+                      ✓ SUBMIT CONSENT & INITIATE
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   );
 };
@@ -1024,31 +1241,181 @@ const AtlasCVTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = 
 );
 
 // ─── TAB: LOGBOOK ──────────────────────────────────────────────────────────
-const LogbookTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => (
-  <div className="space-y-5">
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {[
-        { label: 'Total Hours',     value: `${(profile?.total_flight_hours ?? 0).toLocaleString()}` },
-        { label: 'PIC Hours',       value: `${(profile?.pic_hours ?? 0).toLocaleString()}` },
-        { label: 'Night Hours',     value: `${(profile?.night_hours ?? 0).toLocaleString()}` },
-        { label: 'Instrument Hours',value: `${(profile?.instrument_hours ?? 0).toLocaleString()}` },
-      ].map(stat => (
-        <div key={stat.label} className="rounded-xl p-4 text-center" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <p className="text-2xl font-black text-white">{stat.value}</p>
-          <p className="text-xs text-white/50 mt-1 uppercase tracking-wider">{stat.label}</p>
+const LOGBOOK_PROVIDERS = [
+  { name: 'ForeFlight',    logo: '✈', connected: false, colour: 'rgba(59,130,246,0.7)'  },
+  { name: 'Logten Pro',   logo: '📓', connected: false, colour: 'rgba(249,115,22,0.7)'  },
+  { name: 'MyFlightbook', logo: '📖', connected: true,  colour: 'rgba(16,185,129,0.7)'  },
+  { name: 'SafeLog',      logo: '🛡', connected: false, colour: 'rgba(139,92,246,0.7)'  },
+  { name: 'Pilot Pro',    logo: '🎯', connected: false, colour: 'rgba(234,179,8,0.7)'   },
+  { name: 'CrewLounge',   logo: '🛋', connected: false, colour: 'rgba(236,72,153,0.7)'  },
+];
+
+const SAMPLE_FLAGGED_HOURS = [
+  { date: '14 Mar 2025', aircraft: 'C172 — RP-C1842', hours: 1.4, type: 'Dual', ato: 'Philippine Airlines Training Centre', issue: 'Instructor signature missing from ATO records', id: 'FLG-001' },
+  { date: '02 Feb 2025', aircraft: 'PA-28 — RP-C2210', hours: 0.9, type: 'Solo', ato: 'Asia Pacific Aviation Centre', issue: 'Hours logged exceed ATO duty roster for that date', id: 'FLG-002' },
+];
+
+const LogbookTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
+  const hours = profile?.total_flight_hours ?? 0;
+  const [syncExpanded, setSyncExpanded] = React.useState(false);
+  const [flagExpanded, setFlagExpanded] = React.useState(true);
+
+  return (
+    <motion.div className="space-y-5 max-w-4xl" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+
+      {/* ── Hour stats strip ── */}
+      <div className="grid grid-cols-4 gap-3">
+        {[
+          { label: 'TOTAL',      value: (profile?.total_flight_hours      ?? 0).toLocaleString(), colour: 'text-white'       },
+          { label: 'PIC',        value: (profile?.pic_hours                ?? 0).toLocaleString(), colour: 'text-sky-300'     },
+          { label: 'NIGHT',      value: (profile?.night_hours              ?? 0).toLocaleString(), colour: 'text-indigo-300'  },
+          { label: 'INSTRUMENT', value: (profile?.instrument_hours         ?? 0).toLocaleString(), colour: 'text-purple-300'  },
+        ].map(s => (
+          <div key={s.label} className="p-4 text-center" style={{ background: 'rgba(30,41,59,0.75)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <p className={`text-2xl font-black ${s.colour}`}>{s.value}</p>
+            <p className="text-[10px] text-white/40 mt-0.5 uppercase tracking-widest">{s.label} HRS</p>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Flagged Hours Warning ── */}
+      {SAMPLE_FLAGGED_HOURS.length > 0 && (
+        <div style={{ border: '1px solid rgba(234,179,8,0.4)', background: 'rgba(234,179,8,0.06)' }}>
+          <button
+            onClick={() => setFlagExpanded(v => !v)}
+            className="w-full flex items-center gap-3 px-5 py-3 transition-all hover:brightness-110"
+          >
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(234,179,8,0.2)', border: '1px solid rgba(234,179,8,0.4)' }}>
+              <AlertTriangle size={15} className="text-yellow-400" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="text-xs font-black text-yellow-300 tracking-wide">FLAGGED FLIGHT HOURS — ACTION REQUIRED</p>
+              <p className="text-[10px] text-yellow-500/70 mt-0.5">{SAMPLE_FLAGGED_HOURS.length} entries flagged by ATO. Unresolved flags block your Pre-Cleared status.</p>
+            </div>
+            <ChevronRight size={14} className={`text-yellow-400/60 transition-transform ${flagExpanded ? 'rotate-90' : ''}`} />
+          </button>
+
+          {flagExpanded && (
+            <div className="px-5 pb-4 space-y-3">
+              {SAMPLE_FLAGGED_HOURS.map(flag => (
+                <div key={flag.id} className="p-4" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(234,179,8,0.2)' }}>
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <div>
+                      <p className="text-xs font-black text-white tracking-wide">{flag.aircraft}</p>
+                      <p className="text-[10px] text-white/40 mt-0.5">{flag.date} · {flag.hours} hrs · {flag.type}</p>
+                    </div>
+                    <span className="text-[9px] font-black px-2 py-1 flex-shrink-0" style={{ background: 'rgba(234,179,8,0.15)', border: '1px solid rgba(234,179,8,0.35)', color: '#fbbf24' }}>
+                      {flag.id}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2 p-2.5 mb-3" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.15)' }}>
+                    <AlertTriangle size={10} className="text-yellow-500 flex-shrink-0 mt-0.5" />
+                    <p className="text-[10px] text-yellow-300/80 leading-relaxed">
+                      <strong className="text-yellow-200">ATO ({flag.ato}):</strong> {flag.issue}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button className="flex-1 py-2 text-[10px] font-black tracking-wider text-white" style={{ background: 'rgba(234,179,8,0.25)', border: '1px solid rgba(234,179,8,0.4)' }}>
+                      RESOLVE FLAG WITH ATO →
+                    </button>
+                    <button className="px-4 py-2 text-[10px] font-bold text-white/40 tracking-wider" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      DISPUTE
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              <div className="flex items-start gap-2 p-3" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}>
+                <Lock size={10} className="text-blue-400 flex-shrink-0 mt-0.5" />
+                <p className="text-[9px] text-blue-300/70 leading-relaxed">
+                  Flagged hours are isolated from your verified total. Resolving a flag initiates a Veremark re-confirmation request to the ATO, which updates your cryptographic token within 2–5 business days.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      ))}
-    </div>
-    <div className="rounded-xl p-6 text-center" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-      <BookMarked size={36} className="text-white/20 mx-auto mb-3" />
-      <p className="text-white font-bold text-sm mb-2 tracking-wider">DIGITAL LOGBOOK</p>
-      <p className="text-white/40 text-xs mb-4">Log flights, track hours by category, and sync with your Recognition Score automatically.</p>
-      <button onClick={() => onNavigate('digital-logbook')} className="text-xs font-bold px-6 py-2.5 rounded-lg transition-colors tracking-wider" style={{ background: 'rgba(249,115,22,0.8)', color: 'white', border: '1px solid rgba(249,115,22,0.5)' }}>
-        OPEN FULL LOGBOOK
-      </button>
-    </div>
-  </div>
-);
+      )}
+
+      {/* ── Open Full Logbook CTA ── */}
+      <div className="flex items-center gap-4 p-4" style={{ background: 'rgba(30,41,59,0.7)', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.3)' }}>
+          <BookMarked size={18} className="text-sky-400" />
+        </div>
+        <div className="flex-1">
+          <p className="text-xs font-black text-white tracking-wide">DIGITAL LOGBOOK</p>
+          <p className="text-[10px] text-white/35 mt-0.5">{hours > 0 ? `${hours} hrs logged — log flights, track PIC, night, and instrument time` : 'Log your first flight to start building your verified record'}</p>
+        </div>
+        <button
+          onClick={() => onNavigate('digital-logbook')}
+          className="flex-shrink-0 px-5 py-2.5 text-xs font-black tracking-wider text-white transition-all hover:brightness-110"
+          style={{ background: 'rgba(249,115,22,0.8)', border: '1px solid rgba(249,115,22,0.5)' }}
+        >
+          OPEN LOGBOOK
+        </button>
+      </div>
+
+      {/* ── Third-Party Sync ── */}
+      <div style={{ border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(15,23,42,0.7)' }}>
+        <button
+          onClick={() => setSyncExpanded(v => !v)}
+          className="w-full flex items-center gap-3 px-5 py-4 transition-all hover:brightness-110"
+        >
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(99,102,241,0.2)', border: '1px solid rgba(99,102,241,0.35)' }}>
+            <TrendingUp size={15} className="text-indigo-400" />
+          </div>
+          <div className="flex-1 text-left">
+            <p className="text-xs font-black text-white tracking-wide">SYNC CONNECTED LOGBOOKS</p>
+            <p className="text-[10px] text-white/35 mt-0.5">Connect your existing digital logbook apps — tokenized receipts route automatically</p>
+          </div>
+          <div className="flex items-center gap-2 mr-2">
+            {LOGBOOK_PROVIDERS.filter(p => p.connected).length > 0 && (
+              <span className="text-[9px] font-black px-2 py-1" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#34d399' }}>
+                {LOGBOOK_PROVIDERS.filter(p => p.connected).length} CONNECTED
+              </span>
+            )}
+          </div>
+          <ChevronRight size={14} className={`text-white/30 transition-transform ${syncExpanded ? 'rotate-90' : ''}`} />
+        </button>
+
+        {syncExpanded && (
+          <div className="px-5 pb-5 space-y-4">
+            <div className="grid grid-cols-3 gap-3">
+              {LOGBOOK_PROVIDERS.map(provider => (
+                <div
+                  key={provider.name}
+                  className="p-3 flex flex-col items-center gap-2 transition-all hover:brightness-110 cursor-pointer"
+                  style={{ background: provider.connected ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.04)', border: `1px solid ${provider.connected ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.1)'}` }}
+                >
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl" style={{ background: provider.colour }}>
+                    {provider.logo}
+                  </div>
+                  <p className="text-[10px] font-black text-white tracking-wide text-center">{provider.name}</p>
+                  {provider.connected ? (
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[9px] font-bold text-emerald-400">LIVE SYNC</span>
+                    </div>
+                  ) : (
+                    <span className="text-[9px] font-bold text-white/25">CONNECT</span>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Token pipeline badge */}
+            <div className="flex items-center gap-3 p-3" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.25)' }}>
+              <div className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse flex-shrink-0" />
+              <div>
+                <p className="text-[10px] font-black text-indigo-300 tracking-wide">LIVE AUTH0 TOKEN PIPELINE</p>
+                <p className="text-[9px] text-white/30 mt-0.5">Data fetches automatically via secure token relay. Raw files are never stored on PilotRecognition.com servers.</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
 
 // ─── TAB: EVENTS ───────────────────────────────────────────────────────────
 const EventsTab: React.FC = () => {
@@ -1324,7 +1691,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     supabase
       .from('verification_checks')
       .select('*')
-      .then(({ data }) => { if (data) setWalletChecks(data); });
+      .then(({ data }: { data: any[] | null }) => { if (data) setWalletChecks(data); });
   }, [currentUser]);
 
   // Fetch airlines
@@ -1333,7 +1700,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       .from('airlines')
       .select('id, name, logo_url, country, minimum_hours, fleet_type')
       .limit(50)
-      .then(({ data }) => { if (data) setAirlines(data); });
+      .then(({ data }: { data: any[] | null }) => { if (data) setAirlines(data); });
   }, []);
 
   const handleLogout = useCallback(async () => {
