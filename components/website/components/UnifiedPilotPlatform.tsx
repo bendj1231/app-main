@@ -438,14 +438,14 @@ const HomeTab: React.FC<{
             {/* Auth0 shield */}
             <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.22),rgba(16,185,129,0.12))', border: '1.5px solid rgba(22,163,74,0.45)' }}>
               <Shield size={34} className="text-emerald-400" />
-              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-widest whitespace-nowrap px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Auth0 Protected Session Portal</span>
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-widest whitespace-nowrap px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Secure Pre-Flight Authorization Gateway</span>
             </div>
 
             {/* Status badges */}
             <div className="flex flex-col gap-1.5 mb-6">
-              {['Auth0 Token Pipeline: Pending Login', 'Supabase Vault Status: Locked'].map(badge => (
+              {['🔒 Identity Token Status: Standby (Awaiting Auth0 Clearance)', '🔒 Cryptographic Vault Status: Secure / Isolated'].map(badge => (
                 <span key={badge} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' }}>
-                  <Lock size={9} />{badge}
+                  {badge}
                 </span>
               ))}
             </div>
@@ -456,7 +456,7 @@ const HomeTab: React.FC<{
               className="px-8 py-3 text-xs font-black tracking-widest text-white/80 transition-all hover:text-white hover:border-white/40"
               style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px' }}
             >
-              Existing Captains: Sign In Here →
+              Existing Captains: Authenticate Credentials Here →
             </button>
           </div>
         </motion.div>
