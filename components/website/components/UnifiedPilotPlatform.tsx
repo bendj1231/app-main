@@ -120,13 +120,19 @@ const HomeTab: React.FC<{
   enrolledInFoundation: boolean; airlines: any[];
 }> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines }) => {
   const [visible, setVisible] = React.useState(false);
-  const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
-    try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
+  const [welcomeVisible, setWelcomeVisible] = React.useState(() => {
+    try { return localStorage.getItem('welcome_dismissed') !== '1'; } catch { return true; }
   });
-  const dismissWelcome = () => {
-    setWelcomeDismissed(true);
-    try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
-  };
+  const [welcomeFading, setWelcomeFading] = React.useState(false);
+  React.useEffect(() => {
+    if (!welcomeVisible) return;
+    const fadeTimer = setTimeout(() => setWelcomeFading(true), 2500);
+    const hideTimer = setTimeout(() => {
+      setWelcomeVisible(false);
+      try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
+    }, 3300);
+    return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer); };
+  }, [welcomeVisible]);
   const [onboardingOpen, setOnboardingOpen] = React.useState(false);
   const [onboardingStep, setOnboardingStep] = React.useState(1);
   const [obATO, setObATO] = React.useState('');
@@ -373,25 +379,23 @@ const HomeTab: React.FC<{
       </motion.div>
 
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
-      <div className="flex-1 flex flex-col gap-4">
+      <div className="flex-1 flex flex-col gap-4 relative">
 
-        {/* ── WELCOME BAR — dismissible, first-visit only ── */}
-        {!welcomeDismissed && profile && (
+        {/* ── WELCOME OVERLAY — floating auto-fade, zero layout impact ── */}
+        {welcomeVisible && profile && (
           <div
-            className="flex items-center gap-3 px-4 py-2.5"
-            style={{ background: 'linear-gradient(90deg, rgba(59,130,246,0.18), rgba(99,102,241,0.14))', border: '1px solid rgba(99,102,241,0.3)' }}
+            className="pointer-events-none absolute top-0 left-0 right-0 flex justify-center z-50 pt-3"
+            style={{ transition: 'opacity 0.8s ease', opacity: welcomeFading ? 0 : 1 }}
           >
-            <span className="text-sm">✈️</span>
-            <p className="flex-1 text-xs font-semibold text-white/90 leading-snug">
-              Welcome aboard, Captain <span className="text-sky-300 font-black">{name}</span>! Let's set up your profile to unlock industry pathways.
-            </p>
-            <button
-              onClick={dismissWelcome}
-              className="text-white/30 hover:text-white/80 transition-colors flex-shrink-0 ml-2"
-              aria-label="Dismiss"
+            <div
+              className="flex items-center gap-2.5 px-5 py-2.5"
+              style={{ background: 'rgba(10,18,36,0.85)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 4px 24px rgba(0,0,0,0.4)' }}
             >
-              <X size={14} />
-            </button>
+              <span className="text-sm">🛫</span>
+              <p className="text-xs font-bold text-white/90 tracking-wide whitespace-nowrap">
+                Welcome back, Captain <span className="text-sky-300 font-black">{name}</span>
+              </p>
+            </div>
           </div>
         )}
 
