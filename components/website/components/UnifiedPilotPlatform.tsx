@@ -261,7 +261,7 @@ const HomeTab: React.FC<{
       >
         {/* ── LEFT HALF: Premium value showcase — white enterprise style ── */}
         <motion.div
-          className="w-1/2 flex flex-col px-8 py-5 bg-white overflow-hidden"
+          className="w-1/2 flex flex-col px-8 py-4 bg-white overflow-hidden"
           style={{ borderRight: '1px solid #e2e8f0' }}
           initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
         >
@@ -273,12 +273,12 @@ const HomeTab: React.FC<{
               <span className="text-slate-300 mx-1.5">|</span>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pilot Portal</span>
             </div>
-            <h1 className="text-2xl font-black text-slate-900 leading-tight">Unlock Your Pilot<br/>Dashboard</h1>
-            <p className="text-sm text-slate-800 mt-2 leading-relaxed">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
+            <h1 className="text-xl font-black text-slate-900 leading-tight">Unlock Your Pilot<br/>Dashboard</h1>
+            <p className="text-xs text-slate-800 mt-1 leading-snug">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
           </div>
 
           {/* Tier toggle */}
-          <div className="flex mb-3 rounded-xl overflow-hidden border border-slate-200">
+          <div className="flex mb-2 rounded-xl overflow-hidden border border-slate-200">
             <button
               onClick={() => setObTier('free')}
               className="flex-1 py-2 text-center text-xs font-bold transition-all"
@@ -292,39 +292,39 @@ const HomeTab: React.FC<{
           </div>
 
           {/* Section label */}
-          <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: obTier === 'plus' ? '#d97706' : '#94a3b8' }}>
+          <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: obTier === 'plus' ? '#d97706' : '#94a3b8' }}>
             {obTier === 'free' ? 'Your Free Pilot Account Includes' : 'Unlocked with Recognition+'}
           </p>
 
           {/* Feature rows */}
-          <div className="flex flex-col gap-2 flex-1">
+          <div className="flex flex-col gap-1.5" style={{ flex: '0 0 auto' }}>
             {features.map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="flex items-start gap-3 p-2.5 rounded-xl border transition-all"
+              <div key={label} className="flex items-center gap-3 p-2 rounded-xl border transition-all"
                 style={{ background: obTier === 'plus' ? '#fffbeb' : '#f8fafc', borderColor: obTier === 'plus' ? '#fde68a' : '#e2e8f0' }}>
                 <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center border"
                   style={{ background: obTier === 'plus' ? '#fef3c7' : '#f1f5f9', borderColor: obTier === 'plus' ? '#fcd34d' : '#cbd5e1' }}>
                   <Icon size={13} style={{ color: obTier === 'plus' ? '#d97706' : '#64748b' }} />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-bold text-slate-900 mb-0.5">{label}</p>
-                  <p className="text-xs text-slate-500 leading-relaxed">{sub}</p>
+                  <p className="text-xs font-bold text-slate-900 leading-none mb-0.5">{label}</p>
+                  <p className="text-[10px] text-slate-500 leading-snug">{sub}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* CTA buttons */}
-          <div className="flex flex-col gap-2 mt-4">
+          <div className="flex flex-col gap-2 mt-3">
             <button
               onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-              className="w-full py-2.5 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl"
+              className="w-full py-2 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl"
               style={{ background: '#dc2626' }}
             >
               {obTier === 'free' ? 'Get Recognition Free' : 'Login'}
             </button>
             <button
               onClick={() => window.location.href = '/become-member'}
-              className="w-full py-2.5 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl"
+              className="w-full py-2 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl"
               style={{ background: 'linear-gradient(90deg,#f59e0b,#f97316)', color: '#fff' }}
             >
               {obTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}
@@ -332,7 +332,7 @@ const HomeTab: React.FC<{
           </div>
 
           {/* Trust strip */}
-          <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-100">
+          <div className="flex items-center gap-4 mt-2 pt-2 border-t border-slate-100">
             {[{ name: 'Auth0 Secured', dot: '#3b82f6' }, { name: 'Helio Payments', dot: '#a855f7' }, { name: 'Veremark Verified', dot: '#16a34a' }].map(({ name, dot }, i) => (
               <React.Fragment key={name}>
                 {i > 0 && <span className="text-slate-200">|</span>}
@@ -347,7 +347,7 @@ const HomeTab: React.FC<{
 
         {/* ── RIGHT HALF: Blurred dashboard preview + minimalist gate ── */}
         <motion.div
-          className="w-1/2 relative overflow-hidden flex items-center justify-center"
+          className="w-1/2 relative overflow-hidden flex flex-col items-center justify-center pt-8"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }}
         >
           {/* Full dashboard preview — scaled-down replica behind blur */}
@@ -434,7 +434,7 @@ const HomeTab: React.FC<{
           <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.42)', backdropFilter: 'blur(3px)' }} />
 
           {/* Minimalist gate */}
-          <div className="relative z-10 flex flex-col items-center text-center px-8">
+          <div className="relative z-10 flex flex-col items-center text-center px-8 mt-6">
             {/* Auth0 shield */}
             <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.22),rgba(16,185,129,0.12))', border: '1.5px solid rgba(22,163,74,0.45)' }}>
               <Shield size={34} className="text-emerald-400" />
