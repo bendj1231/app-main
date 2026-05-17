@@ -90,21 +90,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                             {/* Recognition+ upsell */}
                             <div className="border border-white/20 bg-white/5 rounded-xl p-5 max-w-sm">
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex items-center gap-2 mb-1">
                                     <span className="text-white text-xs font-black tracking-widest uppercase">Recognition+</span>
                                 </div>
-                                <p className="text-white/80 text-sm leading-relaxed mb-3">
-                                    Verify your account and validate your flight hours with a <span className="text-white font-semibold">Recognition+</span> subscription — unlock priority airline pathway matching and verified credential tokens.
+                                <p className="text-white font-bold text-sm mb-1">Elevate Your Career with Recognition+</p>
+                                <p className="text-white/75 text-xs leading-relaxed mb-3">
+                                    Verify your account and validate your flight hours. Unlock priority airline pathway matching and secure your verified credential tokens.
                                 </p>
-                                <ul className="space-y-2 mb-4">
+                                <ul className="space-y-2.5 mb-4">
                                     {[
-                                        'ATO or Operator contact & regional verification to international standards — Licensure & Qualification checks on CPL, PPL, IR, ME & ATPL; Medical Class 1, 2 & 3; flight logbook hours validation with flagged notation capture for review',
-                                        'Priority listing on Pathway Interest Pooling',
-                                        'Exclusive access for serious pilots to Private Charter & Business Aviation Pathways',
+                                        { bold: 'Global Standard Verification:', body: 'Direct ATO/Operator outreach matching international standards. Full licensure and qualification audits for CPL, PPL, IR, ME, and ATPL.' },
+                                        { bold: 'Medical & Logbook Auditing:', body: 'Comprehensive checks on Medical Class 1, 2, and 3, alongside flight logbook hour validation and flagged notation capture for review.' },
+                                        { bold: 'Fast-Track Placement:', body: 'Priority listing on Pathway Interest Pooling.' },
+                                        { bold: 'Exclusive Tier Access:', body: 'Premium connections to Private Charter and Business Aviation Pathways for serious pilots.' },
                                     ].map((point) => (
-                                        <li key={point} className="flex items-start gap-2 text-xs text-white/90">
-                                            <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
-                                            {point}
+                                        <li key={point.bold} className="flex items-start gap-2 text-xs text-white/90">
+                                            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
+                                            <span><span className="font-bold text-white">{point.bold}</span> {point.body}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -112,7 +114,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     onClick={() => onNavigate('recognition-plus')}
                                     className="w-full py-2.5 text-xs font-black tracking-widest text-white rounded-lg bg-red-600 hover:bg-red-700 transition-all"
                                 >
-                                    UPGRADE — $99/YR
+                                    UPGRADE NOW — $99/YEAR
                                 </button>
                             </div>
                         </div>
