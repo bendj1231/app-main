@@ -93,9 +93,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div className="flex items-center gap-2 mb-2">
                                     <span className="text-white text-xs font-black tracking-widest uppercase">Recognition+</span>
                                 </div>
-                                <p className="text-white text-sm leading-relaxed mb-4">
+                                <p className="text-white/80 text-sm leading-relaxed mb-3">
                                     Verify your account and validate your flight hours with a <span className="text-white font-semibold">Recognition+</span> subscription — unlock priority airline pathway matching and verified credential tokens.
                                 </p>
+                                <ul className="space-y-2 mb-4">
+                                    {[
+                                        'ATO-contact verifying your hours to international standard',
+                                        'Priority listing on Pathway Interest Pooling',
+                                        'Exclusive access for serious pilots to Private Charter & Business Aviation Pathways',
+                                    ].map((point) => (
+                                        <li key={point} className="flex items-start gap-2 text-xs text-white/90">
+                                            <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
+                                            {point}
+                                        </li>
+                                    ))}
+                                </ul>
                                 <button
                                     onClick={() => onNavigate('recognition-plus')}
                                     className="w-full py-2.5 text-xs font-black tracking-widest text-white rounded-lg bg-red-600 hover:bg-red-700 transition-all"
