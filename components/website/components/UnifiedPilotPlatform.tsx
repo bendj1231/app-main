@@ -606,10 +606,10 @@ const HomeTab: React.FC<{
                       </div>
                     </div>
                     {[
-                      { label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
-                      { label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? 'Alpha Flight Academy (Sourced via Session)' },
-                      { label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Philippines Civil Aviation Authority' },
-                      { label: 'Logbook Provider', value: profile?.logbook_provider ?? 'ForeFlight / MyFlightbook (Default)' },
+                      { label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '— Not resolved' },
+                      { label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? '— Not set on profile' },
+                      { label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? '— Not set on profile' },
+                      { label: 'Logbook Provider', value: profile?.logbook_provider ?? '— Not connected' },
                       { label: 'System Timestamp Epoch', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
                     ].map(row => (
                       <div key={row.label} className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
