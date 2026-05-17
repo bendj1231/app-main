@@ -636,8 +636,8 @@ const HomeTab: React.FC<{
                         {obConsent3 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Protocol Aggregation & Data Privacy Agreement</p>
-                        <p className="text-[9px] text-gray-600 leading-relaxed">I acknowledge and accept the platform's Terms of Service and Data Handling Policies. I verify my understanding that all personally identifiable information (PII) is tokenized at the session origin via Auth0 cryptographic hashes, ensuring that unencrypted administrative datasets are neither permanently retained nor accessible by this platform's host servers.</p>
+                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Protocol Aggregation & Helio Payment Dispatch</p>
+                        <p className="text-[9px] text-gray-600 leading-relaxed">I acknowledge and accept the platform's Terms of Service and Data Handling Policies. I verify my understanding that all personally identifiable information (PII) is tokenized at the session origin via Auth0 cryptographic hashes. Furthermore, I acknowledge that all financial processing is managed directly via the Helio protocol, executing instant, programmable escrow distributions.</p>
                       </div>
                     </label>
                   </div>
@@ -658,7 +658,7 @@ const HomeTab: React.FC<{
                       </div>
                     ))}
                     <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '6px', paddingTop: '6px' }}>
-                      <p className="text-[8px] text-gray-500 leading-relaxed italic">Automated Network Trigger: Upon digital signature submission, a standard <strong className="text-gray-700">$5.00 compliance escrow allocation</strong> is programmatically opened to the designated ATO ledger to facilitate priority queue processing.</p>
+                      <p className="text-[8px] text-gray-500 leading-relaxed italic">Automated Network Trigger: Upon digital signature and secure validation checkout via the <strong className="text-gray-700">Helio payment gateway</strong>, a standard <strong className="text-gray-700">$5.00 compliance escrow allocation</strong> is programmatically opened to the designated ATO ledger via smart contract to facilitate priority queue processing.</p>
                     </div>
                   </div>
 
