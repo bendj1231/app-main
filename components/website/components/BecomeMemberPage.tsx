@@ -77,17 +77,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
                 </div>
 
-                <div className="relative z-10 flex-1 flex items-center justify-center px-4 py-24">
-                    <div className="w-full max-w-md">
+                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-20 py-24">
+                    <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-12 md:gap-20">
 
-                        {/* Header */}
-                        <div className="text-center mb-10">
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] mb-4 text-white">
+                        {/* Left: Hero text */}
+                        <div className="flex-1 text-left">
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] mb-4 text-white">
                                 Connecting Pilots<br />
                                 <span className="text-red-500">to the Industry.</span>
                             </h1>
-                            <p className="text-slate-400 text-sm">Free access to Programs, Pathways &amp; Pilot Recognition</p>
+                            <p className="text-slate-400 text-base">Free access to Programs, Pathways &amp; Pilot Recognition</p>
                         </div>
+
+                        {/* Right: Signup card */}
+                        <div className="w-full md:w-[420px] flex-shrink-0">
 
                         {/* Card */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
@@ -163,7 +166,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <button onClick={() => onNavigate('privacy')} className="underline hover:text-slate-400 transition-colors">Privacy Policy</button>.
                             No sensitive personal or aviation data is required to register.
                         </p>
-                    </div>
+                        </div>{/* end right column */}
+                    </div>{/* end flex row */}
                 </div>
             </div>
         </>
