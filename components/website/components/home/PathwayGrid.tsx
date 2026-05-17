@@ -521,7 +521,8 @@ const AccessPlatformCard: React.FC<{
                 <img
                     src="https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png"
                     alt="Pilots"
-                    className="w-full h-full object-cover object-right"
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: '60% center' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a1628]/60 pointer-events-none" />
             </div>
