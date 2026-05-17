@@ -220,7 +220,7 @@ const HomeTab: React.FC<{
                 style={{ width: `${Math.max(progressPct, progressPct > 0 ? 4 : 0)}%`, background: progressPct > 0 ? 'linear-gradient(90deg, #f97316, #ef4444)' : 'transparent' }}
               />
             </div>
-            {progressPct === 0 && <p className="text-[9px] text-white/25 mt-1">Log hours to level up →</p>}
+            {progressPct === 0 && <p className="text-[9px] text-white/25 mt-2">Log hours to level up →</p>}
           </div>
         </div>
 
@@ -279,7 +279,7 @@ const HomeTab: React.FC<{
                 <button
                   key={item.step}
                   onClick={() => setTab(item.tab)}
-                  className="flex flex-col items-center gap-2 py-4 px-1.5 transition-all hover:brightness-125"
+                  className="flex flex-col items-center gap-2 py-4 px-1.5 min-h-[96px] transition-all hover:brightness-125"
                   style={{
                     background: item.done
                       ? 'rgba(16,185,129,0.06)'
@@ -341,7 +341,7 @@ const HomeTab: React.FC<{
             custom={0} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[0].onClick}
             className="col-span-2 relative group cursor-pointer overflow-hidden"
-            style={{ height: '180px', border: '1px solid rgba(255,255,255,0.15)' }}
+            style={{ height: '180px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[0].image})`, opacity: 0.75 }} />
@@ -362,7 +362,7 @@ const HomeTab: React.FC<{
               custom={idx + 1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
               onClick={card.onClick}
               className="relative group cursor-pointer overflow-hidden"
-              style={{ height: '160px', border: '1px solid rgba(255,255,255,0.15)' }}
+              style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
             >
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                 style={{ backgroundImage: `url(${card.image})`, opacity: 0.7 }} />
@@ -1460,17 +1460,16 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                         onClick={() => setTab(item.id)}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
                         style={{
-                          background: isActive ? 'rgba(255,255,255,0.12)' : 'transparent',
-                          color: isActive ? '#fff' : 'rgba(255,255,255,0.55)',
+                          background: isActive ? 'rgba(249,115,22,0.12)' : 'transparent',
                           borderLeft: isActive ? '2px solid #f97316' : '2px solid transparent',
                         }}
                       >
-                        <Icon size={15} className={isActive ? 'text-orange-400' : ''} />
-                        <span className={`flex-1 text-left text-xs font-bold tracking-wider ${isActive ? 'text-white' : ''}`}>
+                        <Icon size={15} className={isActive ? 'text-orange-400' : 'text-white/50'} />
+                        <span className={`flex-1 text-left text-xs font-bold tracking-wider ${isActive ? 'text-orange-300' : 'text-white/55'}`}>
                           {item.label.toUpperCase()}
                         </span>
                         {item.premium && (
-                          <Lock size={10} className="text-yellow-500/70 flex-shrink-0" />
+                          <Lock size={10} className="text-yellow-500/70 mr-1 flex-shrink-0" />
                         )}
                       </button>
                     );
