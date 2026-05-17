@@ -127,6 +127,22 @@ const HomeTab: React.FC<{
     setWelcomeDismissed(true);
     try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
   };
+  const [onboardingOpen, setOnboardingOpen] = React.useState(false);
+  const [onboardingStep, setOnboardingStep] = React.useState(1);
+  const [obATO, setObATO] = React.useState('');
+  const [obLicense, setObLicense] = React.useState('');
+  const [obMedical, setObMedical] = React.useState('');
+  const [obRadio, setObRadio] = React.useState('');
+  const [obConsent, setObConsent] = React.useState(false);
+  const [obTokenising, setObTokenising] = React.useState(false);
+  const [obDone, setObDone] = React.useState(false);
+
+  const startTokenise = () => {
+    setObTokenising(true);
+    setOnboardingStep(4);
+    setTimeout(() => { setObTokenising(false); setObDone(true); }, 3200);
+  };
+
   React.useEffect(() => { const t = setTimeout(() => setVisible(true), 80); return () => clearTimeout(t); }, []);
 
   const score   = profile?.recognition_score ?? 0;
@@ -290,64 +306,34 @@ const HomeTab: React.FC<{
           </div>
         )}
 
-        {/* ── GET STARTED — pinned to top for free users ── */}
+        {/* ── ACCOUNT ACTIVATION STRIP — compact single row ── */}
         <div
+          className="flex items-center gap-4 px-5 py-3"
           style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
         >
-          <div className="px-5 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-            <div>
-              <p className="text-sm font-black text-white tracking-wide">Get Started</p>
-              <p className="text-[11px] text-white/40">Complete these steps to activate your Recognition Profile</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-1.5 w-20 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.12)' }}>
-                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500" style={{ width: `${(completedCount / steps.length) * 100}%` }} />
-              </div>
-              <span className="text-[10px] font-bold text-white/40">{completedCount}/{steps.length}</span>
-            </div>
+          {/* Left: context */}
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-black text-white tracking-wide leading-none">Account Activation Required</p>
+            <p className="text-[10px] text-white/35 mt-0.5 leading-snug">Verify your credentials and flight logs to unlock airline pathways.</p>
           </div>
-
-          <div className="grid grid-cols-6 divide-x" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-            {steps.map((item, i) => {
-              const Icon = item.icon;
-              const isNext = i === completedCount;
-              return (
-                <button
-                  key={item.step}
-                  onClick={() => setTab(item.tab)}
-                  className="flex flex-col items-center gap-2 py-4 px-1.5 min-h-[96px] transition-all hover:brightness-125"
-                  style={{
-                    background: item.done
-                      ? 'rgba(16,185,129,0.06)'
-                      : item.highlight
-                        ? 'linear-gradient(180deg, rgba(234,179,8,0.12) 0%, rgba(251,146,60,0.08) 100%)'
-                        : 'transparent'
-                  }}
-                >
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                    item.done
-                      ? 'bg-emerald-500/25 ring-1 ring-emerald-500/40'
-                      : item.highlight
-                        ? 'bg-yellow-500/20 ring-1 ring-yellow-400/50'
-                        : isNext
-                          ? 'bg-sky-500/15 ring-1 ring-sky-400/30'
-                          : 'bg-white/5'
-                  }`}>
-                    {item.done
-                      ? <CheckCircle size={16} className="text-emerald-400" />
-                      : <Icon size={15} className={item.highlight ? 'text-yellow-300' : isNext ? 'text-sky-400' : 'text-white/30'} />
-                    }
-                  </div>
-                  <div className="text-center">
-                    <p className={`text-[10px] font-bold leading-tight ${
-                      item.done ? 'text-emerald-400' : item.highlight ? 'text-yellow-300' : isNext ? 'text-white/80' : 'text-white/40'
-                    }`}>{item.label}</p>
-                    <p className={`text-[9px] leading-tight mt-0.5 ${item.highlight ? 'text-yellow-500/70 font-semibold' : 'text-white/25'}`}>{item.sublabel}</p>
-                  </div>
-                </button>
-              );
-            })}
+          {/* Center: progress bar */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="h-1.5 w-24 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+              <div
+                className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-700"
+                style={{ width: `${(completedCount / steps.length) * 100}%` }}
+              />
+            </div>
+            <span className="text-[10px] font-bold text-white/40 tabular-nums">{completedCount}/{steps.length}</span>
           </div>
+          {/* Right: master CTA */}
+          <button
+            onClick={() => { setOnboardingOpen(true); setOnboardingStep(1); setObDone(false); }}
+            className="flex-shrink-0 flex items-center gap-2 px-5 py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
+            style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.85), rgba(99,102,241,0.85))', border: '1px solid rgba(99,102,241,0.5)' }}
+          >
+            GET STARTED <ChevronRight size={13} />
+          </button>
         </div>
 
         {/* Expired credential alert */}
@@ -603,6 +589,284 @@ const HomeTab: React.FC<{
         </motion.div>
 
       </div>{/* end right flex col */}
+
+      {/* ════════════════════════════════════════════════════════════
+          ONBOARDING MODAL — 4-step multi-party verification flow
+      ════════════════════════════════════════════════════════════ */}
+      {onboardingOpen && (
+        <div
+          className="fixed inset-0 z-[300] flex items-center justify-center p-4"
+          style={{ background: 'rgba(0,0,0,0.82)', backdropFilter: 'blur(10px)' }}
+        >
+          <motion.div
+            className="w-full max-w-xl flex flex-col"
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.22 }}
+            style={{ background: 'rgba(10,18,36,0.98)', border: '1px solid rgba(255,255,255,0.1)', maxHeight: '90vh', overflowY: 'auto' }}
+          >
+            {/* Modal header */}
+            <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+              <div>
+                <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase mb-0.5">Multi-Party Verification</p>
+                <p className="text-sm font-black text-white tracking-wide">
+                  {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Step 1 — Training Details' : onboardingStep === 2 ? 'Step 2 — Processing Notice' : onboardingStep === 3 ? 'Step 3 — Cryptographic Consent' : 'Step 4 — Token Generation'}
+                </p>
+              </div>
+              {!obTokenising && (
+                <button onClick={() => setOnboardingOpen(false)} className="text-white/25 hover:text-white/70 transition-colors">
+                  <X size={18} />
+                </button>
+              )}
+            </div>
+
+            {/* Step progress bar */}
+            <div className="flex gap-1.5 px-6 pt-4 flex-shrink-0">
+              {[1,2,3,4].map(s => (
+                <div key={s} className="flex-1 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <div
+                    className="h-full transition-all duration-600"
+                    style={{ width: onboardingStep >= s ? '100%' : '0%', background: obDone ? '#34d399' : 'linear-gradient(90deg,#3b82f6,#6366f1)' }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="px-6 py-5 space-y-4">
+
+              {/* ── STEP 1: ATO Selection + Pilot Details ── */}
+              {onboardingStep === 1 && (
+                <>
+                  <p className="text-[11px] text-white/45 leading-relaxed">
+                    Select your primary Approved Training Organisation and provide your pilot licence details. Veremark will contact these parties to issue your cryptographic verification token.
+                  </p>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Primary ATO / Flight School *</label>
+                      <select
+                        value={obATO}
+                        onChange={e => setObATO(e.target.value)}
+                        className="w-full px-3 py-2.5 text-xs font-semibold text-white outline-none"
+                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
+                      >
+                        <option value="" style={{ background: '#0a1224' }}>— Select ATO —</option>
+                        {ATO_LIST.map(a => <option key={a} value={a} style={{ background: '#0a1224' }}>{a}</option>)}
+                      </select>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Pilot Licence No. *</label>
+                        <input
+                          type="text"
+                          value={obLicense}
+                          onChange={e => setObLicense(e.target.value)}
+                          placeholder="e.g. 155660-CPL"
+                          className="w-full px-3 py-2.5 text-xs text-white placeholder-white/20 outline-none"
+                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Medical Class *</label>
+                        <select
+                          value={obMedical}
+                          onChange={e => setObMedical(e.target.value)}
+                          className="w-full px-3 py-2.5 text-xs font-semibold text-white outline-none"
+                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
+                        >
+                          <option value="" style={{ background: '#0a1224' }}>— Select Class —</option>
+                          {['Class 1 (Commercial)', 'Class 2 (Private)', 'Class 3 (ATCO)'].map(c => <option key={c} value={c} style={{ background: '#0a1224' }}>{c}</option>)}
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Radio Certificate / NTC Reg. No.</label>
+                      <input
+                        type="text"
+                        value={obRadio}
+                        onChange={e => setObRadio(e.target.value)}
+                        placeholder="e.g. 22 RANCR-22517 (optional)"
+                        className="w-full px-3 py-2.5 text-xs text-white placeholder-white/20 outline-none"
+                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2 p-3" style={{ background: 'rgba(59,130,246,0.07)', border: '1px solid rgba(59,130,246,0.18)' }}>
+                    <Lock size={10} className="text-blue-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-[9px] text-blue-300/60 leading-relaxed">These details are used only to initiate verification. PilotRecognition.com never stores your raw licence number — only the cryptographic token result is retained.</p>
+                  </div>
+                  <button
+                    disabled={!obATO || !obLicense || !obMedical}
+                    onClick={() => setOnboardingStep(2)}
+                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-25"
+                    style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.85),rgba(99,102,241,0.85))', border: '1px solid rgba(99,102,241,0.4)' }}
+                  >
+                    CONTINUE →
+                  </button>
+                </>
+              )}
+
+              {/* ── STEP 2: Surcharge Transparency ── */}
+              {onboardingStep === 2 && (
+                <>
+                  <div className="p-4 space-y-3" style={{ background: 'rgba(234,179,8,0.07)', border: '1px solid rgba(234,179,8,0.28)' }}>
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle size={16} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-black text-yellow-300 tracking-wide mb-1.5">EXTERNAL PROCESSING NOTICE</p>
+                        <p className="text-[11px] text-yellow-200/65 leading-relaxed">
+                          <strong className="text-white">Recognition+ includes 1 standard regional ATO verification per year.</strong> Selecting multiple ATOs or requesting verifications across different civil aviation regions will incur an external regional processing surcharge charged directly by our verification provider, Veremark.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mt-1">
+                      {[
+                        { tier: 'Standard (1 ATO)', note: 'Included in Recognition+', colour: 'text-emerald-400', bg: 'rgba(16,185,129,0.1)', border: 'rgba(16,185,129,0.25)' },
+                        { tier: 'Additional ATO',   note: 'Regional surcharge applies', colour: 'text-yellow-400', bg: 'rgba(234,179,8,0.1)',   border: 'rgba(234,179,8,0.25)'   },
+                      ].map(t => (
+                        <div key={t.tier} className="p-2.5" style={{ background: t.bg, border: `1px solid ${t.border}` }}>
+                          <p className={`text-[10px] font-black ${t.colour}`}>{t.tier}</p>
+                          <p className="text-[9px] text-white/35 mt-0.5">{t.note}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                    <p className="text-[10px] text-white/30 uppercase tracking-widest font-black mb-2">Selected ATO</p>
+                    <p className="text-xs text-white font-semibold">{obATO}</p>
+                    <div className="flex items-center gap-1.5 mt-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <p className="text-[9px] text-white/35">Standard regional verification — covered by your plan</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button onClick={() => setOnboardingStep(1)} className="flex-1 py-2.5 text-xs font-bold text-white/40 tracking-wider transition-all hover:text-white/70" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>← BACK</button>
+                    <button onClick={() => setOnboardingStep(3)} className="flex-1 py-2.5 text-xs font-black tracking-widest text-white" style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.85),rgba(99,102,241,0.85))', border: '1px solid rgba(99,102,241,0.4)' }}>UNDERSTOOD, PROCEED →</button>
+                  </div>
+                </>
+              )}
+
+              {/* ── STEP 3: Cryptographic Consent ── */}
+              {onboardingStep === 3 && (
+                <>
+                  <div className="p-4" style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.09)' }}>
+                    <p className="text-[9px] font-black tracking-[0.2em] text-white/25 uppercase mb-3">Cryptographic Consent Declaration</p>
+                    <p className="text-[11px] text-white/65 leading-relaxed mb-3">
+                      By proceeding, you grant <strong className="text-white">tokenized, secure consent</strong> for <strong className="text-yellow-300">Veremark</strong> to cross-reference your records with:
+                    </p>
+                    <ul className="space-y-2 mb-4">
+                      {[
+                        { icon: Shield,     text: 'The Civil Aviation Authority (CAA) governing your pilot licence' },
+                        { icon: BookOpen,   text: `Your designated ATO: ${obATO}` },
+                        { icon: Lock,       text: 'Issue a cryptographic verification token to PilotRecognition.com' },
+                        { icon: CheckCircle,text: 'Store a zero-knowledge proof receipt in your Verepass digital wallet' },
+                      ].map(({ icon: Icon, text }) => (
+                        <li key={text} className="flex items-start gap-2.5">
+                          <Icon size={11} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                          <span className="text-[10px] text-white/50 leading-relaxed">{text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="h-px w-full mb-3" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                    <p className="text-[9px] text-white/20 leading-relaxed italic">
+                      PilotRecognition.com never stores, reads, or transmits your raw PII. Only the triangulated token outcome is surfaced on your profile. This consent may be revoked at any time, immediately invalidating the token chain.
+                    </p>
+                  </div>
+
+                  <label className="flex items-start gap-3 cursor-pointer p-3" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)' }}>
+                    <input
+                      type="checkbox"
+                      checked={obConsent}
+                      onChange={e => setObConsent(e.target.checked)}
+                      className="mt-0.5 flex-shrink-0 accent-sky-500 w-4 h-4"
+                    />
+                    <span className="text-[11px] text-white/70 leading-relaxed font-semibold">
+                      I confirm and grant tokenized, secure consent for Veremark to cross-reference my records with the Civil Aviation Authority and my designated ATO.
+                    </span>
+                  </label>
+
+                  <div className="flex gap-3">
+                    <button onClick={() => setOnboardingStep(2)} className="flex-1 py-2.5 text-xs font-bold text-white/40 tracking-wider" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>← BACK</button>
+                    <button
+                      disabled={!obConsent}
+                      onClick={startTokenise}
+                      className="flex-1 py-2.5 text-xs font-black tracking-widest text-white transition-all disabled:opacity-25"
+                      style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.85),rgba(5,150,105,0.85))', border: '1px solid rgba(16,185,129,0.4)' }}
+                    >
+                      I AGREE & CONFIRM →
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* ── STEP 4: Auth0 Token Generation ── */}
+              {onboardingStep === 4 && (
+                <div className="py-6 text-center space-y-5">
+                  {obTokenising ? (
+                    <>
+                      <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)' }}>
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1.4, repeat: Infinity, ease: 'linear' }}
+                        >
+                          <Lock size={26} className="text-sky-400" />
+                        </motion.div>
+                      </div>
+                      <div>
+                        <p className="text-sm font-black text-white tracking-wide mb-1">Generating Cryptographic Token</p>
+                        <p className="text-[11px] text-white/40 max-w-xs mx-auto leading-relaxed">Your personal data is being fully encrypted and tokenized. PilotRecognition.com will never store or view your raw credentials.</p>
+                      </div>
+                      <div className="space-y-2 max-w-sm mx-auto text-left">
+                        {[
+                          { label: 'Encrypting pilot licence data', done: true  },
+                          { label: 'Routing consent to Veremark',   done: true  },
+                          { label: 'Contacting CAA registry',       done: false },
+                          { label: 'Issuing verification token',    done: false },
+                        ].map((step, i) => (
+                          <div key={step.label} className="flex items-center gap-2.5">
+                            {step.done
+                              ? <CheckCircle size={12} className="text-emerald-400 flex-shrink-0" />
+                              : <motion.div
+                                  className="w-3 h-3 rounded-full border-2 border-sky-400 border-t-transparent flex-shrink-0"
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 0.9, repeat: Infinity, ease: 'linear', delay: i * 0.2 }}
+                                />
+                            }
+                            <p className={`text-[10px] ${step.done ? 'text-emerald-400' : 'text-white/40'}`}>{step.label}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : obDone ? (
+                    <>
+                      <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)' }}>
+                        <CheckCircle size={28} className="text-emerald-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-black text-emerald-400 tracking-wide mb-1">Verification Request Submitted</p>
+                        <p className="text-[11px] text-white/40 max-w-xs mx-auto leading-relaxed">Veremark has received your consent and will contact your ATO and CAA. Your token will appear in the Pilot Credentials vault within 2–5 business days.</p>
+                      </div>
+                      <div className="p-3 max-w-sm mx-auto" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)' }}>
+                        <p className="text-[9px] font-mono text-emerald-300/60">Token pipeline: ACTIVE · Request ID: VRM-{Date.now().toString(16).toUpperCase().slice(-8)}</p>
+                      </div>
+                      <button
+                        onClick={() => { setOnboardingOpen(false); setTab('wallet'); }}
+                        className="px-8 py-2.5 text-xs font-black tracking-widest text-white"
+                        style={{ background: 'linear-gradient(135deg,rgba(16,185,129,0.85),rgba(5,150,105,0.85))', border: '1px solid rgba(16,185,129,0.4)' }}
+                      >
+                        VIEW CREDENTIAL VAULT →
+                      </button>
+                    </>
+                  ) : null}
+                </div>
+              )}
+
+            </div>
+          </motion.div>
+        </div>
+      )}
+
     </motion.div>
   );
 };
