@@ -544,27 +544,33 @@ const HomeTab: React.FC<{
             initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.22 }}
-            style={{ background: '#ffffff', border: '1px solid #d1d5db', maxHeight: '90vh', overflowY: 'auto' }}
+            style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e5e7eb', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 32px 80px rgba(0,0,0,0.45), 0 8px 24px rgba(0,0,0,0.25)' }}
           >
-            {/* Modal header — regulatory red bar */}
-            <div className="flex items-center justify-between px-6 py-5 flex-shrink-0" style={{ background: '#cc0000', borderBottom: '2px solid #a00000' }}>
-              <div>
-                <p className="text-[10px] font-normal text-white/70 mb-1">
-                  {onboardingStep === 1 ? 'Cryptographic Legal Release & Verification Consent' : 'Multi-Party Verification'}
-                </p>
-                <p className="text-[15px] font-bold text-white tracking-wide">
-                  {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Step 1 — Multi-Party Data Authorization' : onboardingStep === 2 ? 'Step 2 — Training Details' : onboardingStep === 3 ? 'Step 3 — Processing Notice' : 'Step 4 — Token Generation'}
-                </p>
-              </div>
+            {/* Modal header — logo + title */}
+            <div className="relative px-6 pt-7 pb-5 flex-shrink-0 text-center" style={{ borderBottom: '1px solid #f1f5f9' }}>
               {!obTokenising && (
-                <button onClick={() => setOnboardingOpen(false)} className="text-white/60 hover:text-white transition-colors ml-4">
-                  <X size={18} />
+                <button onClick={() => setOnboardingOpen(false)} className="absolute top-4 right-5 text-gray-300 hover:text-gray-600 transition-colors">
+                  <X size={16} strokeWidth={1.5} />
                 </button>
               )}
+              {/* Logo */}
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#cc0000' }}>
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L9 5L5 9M1 5H9" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <span className="text-[11px] font-black tracking-[0.18em] text-gray-900 uppercase">PilotRecognition</span>
+              </div>
+              {/* Title hierarchy */}
+              <p className="text-[19px] font-black text-gray-900 leading-tight mb-1">
+                {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Multi-Party Data Authorization' : onboardingStep === 2 ? 'Cryptographic Escrow Activation' : onboardingStep === 3 ? 'Consent Declaration' : 'Token Generation'}
+              </p>
+              <p className="text-[11px] text-gray-400 font-normal">
+                {onboardingStep === 1 ? 'Step 1 — Cryptographic Legal Release & Verification Consent' : onboardingStep === 2 ? 'Step 2 — Helio Payment Gateway' : onboardingStep === 3 ? 'Step 3 — Final Authorization' : 'Step 4 — Processing'}
+              </p>
             </div>
 
             {/* Step progress bar */}
-            <div className="flex gap-1.5 px-6 pt-4 flex-shrink-0">
+            <div className="flex gap-1 px-6 pt-4 flex-shrink-0">
               {[1,2,3,4].map(s => (
                 <div key={s} className="flex-1 h-[3px]" style={{ background: '#e5e7eb' }}>
                   <div
@@ -581,83 +587,39 @@ const HomeTab: React.FC<{
               {onboardingStep === 1 && (
                 <>
                   {/* Section A — Pipeline Overview */}
-                  <div className="p-3" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
-                    <p className="text-[10px] text-gray-700 leading-relaxed">
-                      By proceeding, you execute a decentralized, tokenized authorization directive enabling a multi-party credential verification process. This protocol operates strictly via zero-knowledge data routing mechanisms, facilitating an automated cryptographic exchange between your designated <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the relevant <strong className="text-gray-900">Civil Aviation Authority</strong>, your connected <strong className="text-gray-900">{profile?.logbook_provider ?? 'Logbook Provider'}</strong> flight records registry, and the regional verification infrastructure managed by <strong className="text-gray-900">{detectedRegion.provider}</strong> <span className="text-gray-500">({detectedRegion.flag} {detectedRegion.label} node)</span>.
-                    </p>
+                  <p className="text-[11px] text-gray-600 leading-relaxed">
+                    By proceeding, you execute a decentralized, tokenized authorization directive enabling a multi-party credential verification process. This protocol operates strictly via zero-knowledge data routing mechanisms, facilitating an automated cryptographic exchange between your designated <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the relevant <strong className="text-gray-900">Civil Aviation Authority (CAA)</strong>, your connected <strong className="text-gray-900">{profile?.logbook_provider ?? 'Logbook Provider'}</strong> flight records registry, and the regional verification infrastructure managed by <strong className="text-gray-900">{detectedRegion.provider}</strong>.
+                  </p>
+
+                  {/* Session Attributes — clean icon rows */}
+                  <div className="rounded-xl space-y-0 overflow-hidden" style={{ background: '#f8fafc', border: '1px solid #e5e7eb' }}>
+                    <div className="flex items-center gap-2 px-4 py-2" style={{ borderBottom: '1px solid #eef2f7' }}>
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
+                      <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-widest">Automated Encrypted Session Attributes</p>
+                      <div className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', border: `1px solid ${detectedRegion.colour}40` }}>
+                        <span className="text-[9px]">{detectedRegion.flag}</span>
+                        <span className="text-[8px] font-bold" style={{ color: detectedRegion.colour }}>{detectedRegion.label} · {detectedRegion.provider}</span>
+                      </div>
+                    </div>
+                    {[
+                      { icon: '🔒', label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
+                      { icon: '🏫', label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? 'Alpha Flight Academy (Sourced via Session)' },
+                      { icon: '✈️', label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Philippines Civil Aviation Authority' },
+                      { icon: '📋', label: 'Logbook Provider', value: profile?.logbook_provider ?? 'ForeFlight / MyFlightbook (Default)' },
+                      { icon: '📅', label: 'System Timestamp Epoch', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
+                    ].map(row => (
+                      <div key={row.label} className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <span className="text-sm flex-shrink-0">{row.icon}</span>
+                        <span className="text-[9px] text-gray-400 w-40 flex-shrink-0">{row.label}</span>
+                        <span className="text-[10px] font-semibold text-gray-900 select-none">{row.value}</span>
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Bill of Purchase — Service Order */}
-                  <div style={{ border: '1px solid #1a1a1a' }}>
-                    {/* Document header */}
-                    <div className="px-4 py-3 flex items-start justify-between" style={{ background: '#1a1a1a' }}>
-                      <div>
-                        <p className="text-[8px] font-light tracking-[0.2em] text-white/40 uppercase mb-0.5">PilotRecognition — Transmedium Service Order</p>
-                        <p className="text-[11px] font-bold text-white">Pilot Identity Credential Verification</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-[8px] text-white/40">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
-                        <p className="text-[8px] font-mono text-white/60">{profile?.id ? `REF-${profile.id.slice(-8).toUpperCase()}` : 'REF-PENDING'}</p>
-                      </div>
-                    </div>
-
-                    {/* Party roster */}
-                    <div className="px-4 pt-3 pb-2" style={{ borderBottom: '1px solid #e2e8f0' }}>
-                      <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Parties to this Service Order</p>
-                      <div className="space-y-1.5">
-                        {[
-                          { role: 'Pilot (Data Subject)', value: profile?.full_name ?? 'Session User', note: 'Consent grantor. Owns profile and documents.' },
-                          { role: 'Approved Training Organisation', value: profile?.ato_name ?? 'Alpha Flight Academy', note: 'Attesting party for training hours.' },
-                          { role: 'Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Philippines', note: 'Source of truth. Issues licences & medicals.' },
-                          { role: 'Regional Verification Provider', value: `${detectedRegion.flag} ${detectedRegion.provider}`, note: `Verifying party — ${detectedRegion.label} node.` },
-                          { role: 'Logbook Provider', value: profile?.logbook_provider ?? 'ForeFlight / MyFlightbook (Default)', note: 'Read-only flight hours display. Write access retained by provider.' },
-                          { role: 'Transmedium (Interface Only)', value: 'PilotRecognition.com', note: 'Routes consent only. Holds no data. Verifies nothing.' },
-                        ].map(p => (
-                          <div key={p.role} className="flex items-baseline gap-2">
-                            <span className="text-[8px] text-gray-400 w-40 flex-shrink-0">{p.role}</span>
-                            <div className="flex-1">
-                              <span className="text-[9px] font-bold text-gray-900">{p.value}</span>
-                              <span className="text-[8px] text-gray-400 ml-1.5">{p.note}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Service line items */}
-                    <div className="px-4 pt-2 pb-3" style={{ borderBottom: '1px solid #e2e8f0' }}>
-                      <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Service Line Items</p>
-                      <div className="space-y-1">
-                        {[
-                          { item: 'Professional Qualification Check (CAA registry query)', qty: '1', provider: detectedRegion.provider },
-                          { item: 'ATO Training Hours Attestation & Logbook Tokenization', qty: '1', provider: 'Designated ATO' },
-                          { item: 'Logbook Sync — Verified Token Receipt', qty: '1', provider: 'Third-Party Logbook Registry' },
-                          { item: 'Yearly Re-Check (included — Recognition+ active)', qty: '1 yr', provider: detectedRegion.provider },
-                        ].map(s => (
-                          <div key={s.item} className="flex items-baseline justify-between gap-2">
-                            <div className="flex-1">
-                              <p className="text-[9px] text-gray-800">{s.item}</p>
-                              <p className="text-[8px] text-gray-400">via {s.provider}</p>
-                            </div>
-                            <span className="text-[8px] text-gray-500 flex-shrink-0">×{s.qty}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Auth0 session token */}
-                    <div className="flex items-center justify-between px-4 py-2" style={{ borderBottom: '1px solid #e2e8f0', background: '#f8fafc' }}>
-                      <span className="text-[8px] text-gray-400">Auth0 Session Identifier</span>
-                      <span className="text-[9px] font-mono font-bold text-gray-700 select-none">
-                        {profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f'}
-                      </span>
-                    </div>
-
-                    {/* System constraint footer */}
-                    <div className="px-4 py-2.5" style={{ background: '#f0fdf4', borderTop: '1px solid #d1fae5' }}>
-                      <p className="text-[8px] font-semibold text-green-800 uppercase tracking-wide mb-0.5">System Constraint — Transmedium Only</p>
-                      <p className="text-[8px] text-gray-500 leading-relaxed italic">PilotRecognition holds no data and verifies nothing. This interface routes consent only. The underlying platform possesses no decryption keys, retention architecture, or administrative access to intercept or cache raw credentials. The payload is transmitted directly to the verification endpoint as an immutable token bundle.</p>
-                    </div>
+                  {/* System Constraint Notice */}
+                  <div className="rounded-xl px-4 py-3" style={{ background: '#f8fafc', border: '1px solid #e5e7eb' }}>
+                    <p className="text-[9px] font-black text-gray-700 uppercase tracking-wide mb-1">System Constraint Notice</p>
+                    <p className="text-[9px] text-gray-500 leading-relaxed">This interface functions exclusively as a secure pipeline relay. The underlying platform possesses no data decryption keys, database retention architecture, or administrative privileges required to intercept, modify, or cache your raw unencrypted credentials. The payload is directly transmitted to the verification endpoint as an immutable token bundle.</p>
                   </div>
 
                   {/* Section B — 3 Consent Checkboxes */}
@@ -666,7 +628,7 @@ const HomeTab: React.FC<{
                     <label className="flex items-start gap-3 cursor-pointer group">
                       <div
                         className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
-                        style={{ border: '2px solid #64748b', background: obConsent1 ? '#1e293b' : '#f1f5f9' }}
+                        style={{ borderRadius: '4px', border: '1.5px solid #cbd5e1', background: obConsent1 ? '#1e293b' : 'white', cursor: 'pointer' }}
                         onClick={() => setObConsent1(!obConsent1)}
                       >
                         {obConsent1 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
@@ -683,7 +645,7 @@ const HomeTab: React.FC<{
                     <label className="flex items-start gap-3 cursor-pointer group">
                       <div
                         className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
-                        style={{ border: '2px solid #64748b', background: obConsent2 ? '#1e293b' : '#f1f5f9' }}
+                        style={{ borderRadius: '4px', border: '1.5px solid #cbd5e1', background: obConsent2 ? '#1e293b' : 'white', cursor: 'pointer' }}
                         onClick={() => setObConsent2(!obConsent2)}
                       >
                         {obConsent2 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
@@ -700,7 +662,7 @@ const HomeTab: React.FC<{
                     <label className="flex items-start gap-3 cursor-pointer group">
                       <div
                         className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
-                        style={{ border: '2px solid #64748b', background: obConsent3 ? '#1e293b' : '#f1f5f9' }}
+                        style={{ borderRadius: '4px', border: '1.5px solid #cbd5e1', background: obConsent3 ? '#1e293b' : 'white', cursor: 'pointer' }}
                         onClick={() => setObConsent3(!obConsent3)}
                       >
                         {obConsent3 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
@@ -737,7 +699,7 @@ const HomeTab: React.FC<{
                     disabled={!obConsent1 || !obConsent2 || !obConsent3}
                     onClick={() => setOnboardingStep(2)}
                     className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-35 hover:bg-gray-800"
-                    style={{ background: '#1a1a1a', border: 'none' }}
+                    style={{ background: '#111827', border: 'none', borderRadius: '10px' }}
                   >
                     I AGREE, SIGN CONSENT &amp; CONTINUE →
                   </button>
