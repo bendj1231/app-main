@@ -189,7 +189,7 @@ const HomeTab: React.FC<{
 
   return (
     <motion.div
-      className="flex gap-4 w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
+      className="flex gap-4 w-full h-full"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -199,8 +199,8 @@ const HomeTab: React.FC<{
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-64 flex-shrink-0 flex flex-col"
-        style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', alignSelf: 'stretch' }}
+        className="w-64 flex-shrink-0 flex flex-col self-start"
+        style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
       >
 
         {/* ── TIER 1: Identity ── */}
@@ -343,7 +343,7 @@ const HomeTab: React.FC<{
       </motion.div>
 
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
-      <div className="flex-1 flex flex-col gap-3 relative">
+      <div className="flex-1 flex flex-col gap-2 relative">
 
         {/* ── WELCOME OVERLAY — floating auto-fade, zero layout impact ── */}
         {welcomeVisible && profile && (
@@ -365,7 +365,7 @@ const HomeTab: React.FC<{
 
         {/* ── ACCOUNT ACTIVATION STRIP — compact single row ── */}
         <div
-          className="flex items-center gap-4 px-5 py-3"
+          className="flex items-center gap-4 px-4 py-2"
           style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
         >
           {/* Left: context */}
@@ -397,30 +397,25 @@ const HomeTab: React.FC<{
         {expiredChecks.length > 0 && (
           <button
             onClick={() => setTab('wallet')}
-            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:brightness-110"
+            className="w-full flex items-center gap-2 px-4 py-1.5 text-left transition-all hover:brightness-110"
             style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.4)' }}
           >
-            <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center flex-shrink-0">
-              <AlertTriangle size={15} className="text-red-300" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-red-300 leading-none mb-0.5">
-                {expiredChecks.length} Credential{expiredChecks.length > 1 ? 's' : ''} Expired — Pre-Cleared Status Inactive
-              </p>
-              <p className="text-xs text-red-400/70">Renew in Credential Wallet to restore verified status for airline operators.</p>
-            </div>
-            <ChevronRight size={16} className="text-red-400 flex-shrink-0" />
+            <AlertTriangle size={11} className="text-red-300 flex-shrink-0" />
+            <p className="text-[10px] font-bold text-red-300 flex-1 leading-none">
+              {expiredChecks.length} Credential{expiredChecks.length > 1 ? 's' : ''} Expired — Pre-Cleared Status Inactive
+            </p>
+            <ChevronRight size={12} className="text-red-400 flex-shrink-0" />
           </button>
         )}
 
         {/* Bento grid — unified overlay style on all 3 cards */}
-        <div className="grid grid-cols-2 gap-3 content-start">
+        <div className="grid grid-cols-2 gap-2 content-start">
           {/* MY PATHWAYS — with live match badge */}
           <motion.div
             custom={0} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[0].onClick}
             className="col-span-2 relative group cursor-pointer overflow-hidden"
-            style={{ height: '148px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[0].image})`, opacity: 0.75 }} />
@@ -449,7 +444,7 @@ const HomeTab: React.FC<{
             custom={1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[1].onClick}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '100px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[1].image})`, opacity: 0.7 }} />
@@ -467,7 +462,7 @@ const HomeTab: React.FC<{
           <motion.div
             custom={2} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             className="relative overflow-hidden flex flex-col gap-0"
-            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '100px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             {/* Top half — Digital Logbook */}
             <button
@@ -506,7 +501,7 @@ const HomeTab: React.FC<{
 
         {/* ── BOTTOM DIRECTORY ROW — cinematic image cards ── */}
         <motion.div
-          className="grid grid-cols-2 gap-3"
+          className="grid grid-cols-2 gap-2"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
           transition={{ duration: 0.45, delay: 0.3 }}
@@ -516,7 +511,7 @@ const HomeTab: React.FC<{
             custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={() => onNavigate('type-rating-search')}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             {/* Background image — A320 cockpit */}
             <div
@@ -541,21 +536,17 @@ const HomeTab: React.FC<{
               </span>
             </div>
 
-            {/* Floating overlay badges — mid section */}
-            <div className="absolute top-9 left-3 right-3 flex flex-col gap-1 mt-1">
-              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div className="flex items-center gap-1.5">
-                  <Plane size={9} className="text-white/60 flex-shrink-0" />
-                  <p className="text-[9px] font-black text-white leading-none">Airbus A320 Family</p>
-                </div>
-                <span className="text-[9px] font-black text-emerald-400">95% MATCH</span>
+            {/* Floating overlay pills — horizontal row across center */}
+            <div className="absolute inset-x-3 flex items-center gap-2" style={{ top: '50%', transform: 'translateY(-60%)' }}>
+              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <Plane size={8} className="text-white/50 flex-shrink-0" />
+                <p className="text-[9px] font-black text-white whitespace-nowrap">A320 Family</p>
+                <span className="text-[9px] font-black text-emerald-400 ml-1">95%</span>
               </div>
-              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div className="flex items-center gap-1.5">
-                  <Plane size={9} className="text-white/60 flex-shrink-0" />
-                  <p className="text-[9px] font-black text-white leading-none">Boeing 737 Next Gen</p>
-                </div>
-                <span className="text-[9px] font-black text-yellow-400">60% MATCH</span>
+              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <Plane size={8} className="text-white/50 flex-shrink-0" />
+                <p className="text-[9px] font-black text-white whitespace-nowrap">737 Next Gen</p>
+                <span className="text-[9px] font-black text-yellow-400 ml-1">60%</span>
               </div>
             </div>
 
@@ -573,7 +564,7 @@ const HomeTab: React.FC<{
             custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={() => setTab('pathways')}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             {/* Background image — airline tails / terminal */}
             <div
@@ -597,41 +588,19 @@ const HomeTab: React.FC<{
               <span className="text-[8px] font-black tracking-wider" style={{ color: 'rgba(52,211,153,0.9)' }}>MARKET PULSE</span>
             </div>
 
-            {/* Floating overlay badges — operators */}
-            <div className="absolute top-9 left-3 right-3 flex flex-col gap-1 mt-1">
-              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] flex-shrink-0">🇸🇬</span>
-                  <div>
-                    <p className="text-[9px] font-black text-white leading-none">Singapore Airlines</p>
-                    <p className="text-[8px] text-white/35">First Officer Pathway</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 flex-shrink-0">
-                  <span className="text-[9px] font-black text-red-400">{matchPct > 20 ? matchPct : 20}% READY</span>
-                  <button
-                    onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }}
-                    className="text-[7px] font-black px-1.5 py-0.5 tracking-wider whitespace-nowrap"
-                    style={{ background: 'rgba(59,130,246,0.5)', border: '1px solid rgba(59,130,246,0.6)', color: '#bfdbfe' }}
-                  >ALIGN</button>
-                </div>
+            {/* Floating overlay pills — horizontal row across center */}
+            <div className="absolute inset-x-3 flex items-center gap-2" style={{ top: '50%', transform: 'translateY(-60%)' }}>
+              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <span className="text-[10px] flex-shrink-0">🇸🇬</span>
+                <p className="text-[9px] font-black text-white whitespace-nowrap">Singapore Airlines</p>
+                <span className="text-[9px] font-black text-red-400 ml-1">{matchPct > 20 ? matchPct : 20}%</span>
+                <button onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }} className="text-[7px] font-black px-1.5 py-0.5 ml-1 whitespace-nowrap" style={{ background: 'rgba(59,130,246,0.6)', border: '1px solid rgba(59,130,246,0.7)', color: '#bfdbfe' }}>ALIGN</button>
               </div>
-              <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] flex-shrink-0">✈️</span>
-                  <div>
-                    <p className="text-[9px] font-black text-white leading-none">Alpha Operator Group</p>
-                    <p className="text-[8px] text-white/35">Direct Entry Captain</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 flex-shrink-0">
-                  <span className="text-[9px] font-black text-red-400">15% READY</span>
-                  <button
-                    onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }}
-                    className="text-[7px] font-black px-1.5 py-0.5 tracking-wider whitespace-nowrap"
-                    style={{ background: 'rgba(59,130,246,0.5)', border: '1px solid rgba(59,130,246,0.6)', color: '#bfdbfe' }}
-                  >ALIGN</button>
-                </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <span className="text-[10px] flex-shrink-0">✈️</span>
+                <p className="text-[9px] font-black text-white whitespace-nowrap">Alpha Operator</p>
+                <span className="text-[9px] font-black text-red-400 ml-1">15%</span>
+                <button onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }} className="text-[7px] font-black px-1.5 py-0.5 ml-1 whitespace-nowrap" style={{ background: 'rgba(59,130,246,0.6)', border: '1px solid rgba(59,130,246,0.7)', color: '#bfdbfe' }}>ALIGN</button>
               </div>
             </div>
 
