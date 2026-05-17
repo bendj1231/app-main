@@ -505,144 +505,140 @@ const HomeTab: React.FC<{
           </motion.div>
         </div>
 
-        {/* ── CRYPTOGRAPHIC LOGBOOK LEDGER — glassmorphism ghost panel ── */}
+        {/* ── BOTTOM DIRECTORY ROW — two glassmorphism panels ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 20 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
-          className="relative overflow-hidden"
-          style={{
-            background: 'rgba(15,23,42,0.55)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            WebkitBackdropFilter: 'blur(20px)',
-          }}
+          className="grid grid-cols-2 gap-3"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
+          transition={{ duration: 0.45, delay: 0.3 }}
         >
-          {/* ── Header row — always crisp ── */}
-          <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-            <div className="flex items-center gap-2.5">
-              <div className="relative flex-shrink-0">
-                <Shield size={14} className="text-emerald-400" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping opacity-75" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400" />
+          {/* ── Column A: Type Rating Directory ── */}
+          <div
+            className="flex flex-col"
+            style={{ background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)', WebkitBackdropFilter: 'blur(20px)' }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(99,102,241,0.2)', border: '1px solid rgba(99,102,241,0.35)' }}>
+                  <Search size={10} className="text-indigo-400" />
+                </div>
+                <p className="text-[10px] font-black tracking-wider text-white/80 uppercase">Type Rating Directory</p>
               </div>
-              <p className="text-[11px] font-black tracking-wider text-white/80">VERIFIED CRYPTOGRAPHIC LOGBOOK LEDGER</p>
-              <span className="text-[9px] font-black px-2 py-0.5 tracking-wider" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#34d399' }}>
-                VEREMARK SYNCED
+              <span className="text-[8px] font-black px-1.5 py-0.5 tracking-wider" style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', color: '#818cf8' }}>
+                {matchPct >= 60 ? 'STRONG MATCH' : matchPct >= 30 ? 'PARTIAL MATCH' : 'BUILDING'}
               </span>
             </div>
-            {/* Summary pills */}
-            <div className="flex items-center gap-1.5">
-              {[
-                { label: `${hours > 0 ? hours : 240} hrs Total`,    color: 'rgba(255,255,255,0.07)',  text: 'text-white/60'     },
-                { label: `${hours > 0 ? Math.max(hours - 8, 0) : 232} hrs Verified`, color: 'rgba(16,185,129,0.12)', text: 'text-emerald-400' },
-                { label: '8 hrs Flagged',  color: 'rgba(234,179,8,0.12)',  text: 'text-yellow-400'   },
-              ].map(p => (
-                <span key={p.label} className={`text-[9px] font-black px-2.5 py-1 tracking-wide ${p.text}`} style={{ background: p.color, border: '1px solid rgba(255,255,255,0.08)' }}>
-                  {p.label}
-                </span>
-              ))}
-            </div>
-          </div>
 
-          {/* ── Column headers ── */}
-          <div className="grid px-5 py-1" style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-            {['DATE / HASH', 'ATO PROVIDER', 'HOURS', 'TYPE', 'STATUS'].map(h => (
-              <p key={h} className="text-[9px] font-black tracking-widest text-white/20 uppercase">{h}</p>
-            ))}
-          </div>
-
-          {/* ── Row 1: Fully crisp — Verified ── */}
-          <div
-            className="grid items-center px-5 py-2"
-            style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-          >
-            <div>
-              <p className="text-[10px] font-bold text-white">05-14-2026</p>
-              <p className="text-[9px] font-mono text-white/30 mt-0.5">0x8fB...4c2A</p>
-            </div>
-            <p className="text-[10px] text-white/60">Alpha Flight Academy</p>
-            <p className="text-[10px] font-bold text-white">4.5 hrs</p>
-            <p className="text-[10px] text-sky-300">PIC</p>
-            <div className="flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.8)' }} />
-              <span className="text-[9px] font-black tracking-wide text-emerald-400">VERIFIED</span>
-            </div>
-          </div>
-
-          {/* ── Row 2: 70% opacity — Under Review ── */}
-          <div
-            className="grid items-center px-5 py-2"
-            style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.04)', opacity: 0.70 }}
-          >
-            <div>
-              <p className="text-[10px] font-bold text-white">05-10-2026</p>
-              <p className="text-[9px] font-mono text-white/30 mt-0.5">0x3aE...9b1</p>
-            </div>
-            <p className="text-[10px] text-white/60">Alpha Flight Academy</p>
-            <p className="text-[10px] font-bold text-white">8.0 hrs</p>
-            <p className="text-[10px] text-indigo-300">Dual</p>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 flex-shrink-0" style={{ boxShadow: '0 0 6px rgba(234,179,8,0.8)' }} />
-                <span className="text-[9px] font-black tracking-wide text-yellow-400">UNDER REVIEW</span>
+            {/* Row 1 — Top match */}
+            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+              <span className="text-base flex-shrink-0">✈️</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black text-white leading-tight">Airbus A320 Family</p>
+                <p className="text-[9px] text-white/35 mt-0.5">Core credentials & hours satisfied</p>
               </div>
-              <button className="text-[9px] text-sky-400/70 hover:text-sky-300 font-bold tracking-wide transition-colors ml-2 underline underline-offset-2 whitespace-nowrap">
-                Contact ATO →
+              <div className="flex-shrink-0 text-right">
+                <p className="text-[11px] font-black text-emerald-400">95%</p>
+                <p className="text-[8px] text-white/25 uppercase tracking-wide">Match</p>
+              </div>
+            </div>
+
+            {/* Row 2 — Partial match */}
+            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+              <span className="text-base flex-shrink-0">✈️</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black text-white leading-tight">Boeing 737 Next Gen</p>
+                <p className="text-[9px] text-yellow-400/60 mt-0.5">Missing simulator / ATO verification</p>
+              </div>
+              <div className="flex-shrink-0 text-right">
+                <p className="text-[11px] font-black text-yellow-400">60%</p>
+                <p className="text-[8px] text-white/25 uppercase tracking-wide">Match</p>
+              </div>
+            </div>
+
+            {/* Footer CTA */}
+            <div className="flex-1 flex items-end px-4 pb-3 pt-2">
+              <button
+                onClick={() => onNavigate('type-rating-search')}
+                className="ml-auto flex items-center gap-1 text-[9px] font-black tracking-wider text-indigo-400/70 hover:text-indigo-300 transition-colors"
+              >
+                VIEW ALL TYPE RATINGS <ChevronRight size={9} />
               </button>
             </div>
           </div>
 
-          {/* ── Rows 3 & 4: Ghost fade rows ── */}
-          {[
-            { date: '05-06-2026', hash: '0x7cD...2e5F', ato: 'Skyline Flight Training', hrs: '3.2 hrs', type: 'Solo',  status: 'verified',  statusText: 'VERIFIED',    statusColor: '#34d399', glowColor: 'rgba(52,211,153,0.7)' },
-            { date: '04-29-2026', hash: '0x1bA...8d3C', ato: 'Pacific Aero Club',       hrs: '5.0 hrs', type: 'Night', status: 'pending',   statusText: 'PENDING',     statusColor: '#60a5fa', glowColor: 'rgba(96,165,250,0.7)' },
-          ].map((row, i) => (
-            <div
-              key={row.hash}
-              className="grid items-center px-5 py-3"
-              style={{ gridTemplateColumns: '1fr 1.4fr 1fr 0.7fr 1fr', opacity: i === 0 ? 0.28 : 0.10 }}
-            >
-              <div>
-                <p className="text-[10px] font-bold text-white">{row.date}</p>
-                <p className="text-[9px] font-mono text-white/30 mt-0.5">{row.hash}</p>
+          {/* ── Column B: Operator Expectations Directory ── */}
+          <div
+            className="flex flex-col"
+            style={{ background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)', WebkitBackdropFilter: 'blur(20px)' }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                  <TrendingUp size={10} className="text-emerald-400" />
+                </div>
+                <p className="text-[10px] font-black tracking-wider text-white/80 uppercase">Operator Expectations</p>
               </div>
-              <p className="text-[10px] text-white/60">{row.ato}</p>
-              <p className="text-[10px] font-bold text-white">{row.hrs}</p>
-              <p className="text-[10px] text-purple-300">{row.type}</p>
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: row.statusColor, boxShadow: `0 0 6px ${row.glowColor}` }} />
-                <span className="text-[9px] font-black tracking-wide" style={{ color: row.statusColor }}>{row.statusText}</span>
+              <div className="flex items-center gap-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+                <span className="text-[8px] font-black text-emerald-400/70 tracking-wider">MARKET PULSE</span>
               </div>
             </div>
-          ))}
 
-          {/* ── Gradient fade mask — vertical + horizontal ── */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to bottom, transparent 0%, transparent 30%, rgba(15,23,42,0.55) 55%, rgba(15,23,42,0.90) 72%, rgba(15,23,42,0.98) 86%, rgba(15,23,42,1) 100%)',
-            }}
-          />
-          {/* Left/right edge vignette */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to right, rgba(15,23,42,0.4) 0%, transparent 8%, transparent 92%, rgba(15,23,42,0.4) 100%)',
-            }}
-          />
+            {/* Row 1 — Singapore Airlines */}
+            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+              <span className="text-base flex-shrink-0">🇸🇬</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black text-white leading-tight">Singapore Airlines</p>
+                <p className="text-[9px] text-white/35 mt-0.5">First Officer Pathway</p>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="text-right">
+                  <p className="text-[11px] font-black text-red-400">{matchPct > 20 ? matchPct : 20}%</p>
+                  <p className="text-[8px] text-white/25 uppercase tracking-wide">Ready</p>
+                </div>
+                <button
+                  onClick={() => onNavigate('pilot-recognition-profile')}
+                  className="text-[8px] font-black px-2 py-1 tracking-wider transition-all hover:brightness-110 whitespace-nowrap"
+                  style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)', color: '#93c5fd' }}
+                >
+                  ALIGN
+                </button>
+              </div>
+            </div>
 
-          {/* ── Fade footer CTA ── */}
-          <div className="relative flex items-center justify-between px-5 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-            <p className="text-[9px] text-white/20 font-mono">
-              {hours > 0 ? `${hours}` : '240'} entries · token chain active · last sync {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-            </p>
-            <button
-              onClick={() => setTab('logbook')}
-              className="text-[9px] font-black tracking-widest text-white/40 hover:text-white/80 transition-colors flex items-center gap-1.5"
-            >
-              VIEW FULL LEDGER <ChevronRight size={10} />
-            </button>
+            {/* Row 2 — Alpha Operator Group */}
+            <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+              <span className="text-base flex-shrink-0">✈️</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black text-white leading-tight">Alpha Operator Group</p>
+                <p className="text-[9px] text-white/35 mt-0.5">Direct Entry Captain</p>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="text-right">
+                  <p className="text-[11px] font-black text-red-400">15%</p>
+                  <p className="text-[8px] text-white/25 uppercase tracking-wide">Ready</p>
+                </div>
+                <button
+                  onClick={() => onNavigate('pilot-recognition-profile')}
+                  className="text-[8px] font-black px-2 py-1 tracking-wider transition-all hover:brightness-110 whitespace-nowrap"
+                  style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)', color: '#93c5fd' }}
+                >
+                  ALIGN
+                </button>
+              </div>
+            </div>
+
+            {/* Footer CTA */}
+            <div className="flex-1 flex items-end px-4 pb-3 pt-2">
+              <button
+                onClick={() => setTab('pathways')}
+                className="ml-auto flex items-center gap-1 text-[9px] font-black tracking-wider text-emerald-400/60 hover:text-emerald-300 transition-colors"
+              >
+                EXPLORE ALL OPERATORS <ChevronRight size={9} />
+              </button>
+            </div>
           </div>
         </motion.div>
 
