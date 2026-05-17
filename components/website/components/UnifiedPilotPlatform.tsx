@@ -732,7 +732,7 @@ const HomeTab: React.FC<{
                     <div className="px-4 py-3 space-y-3">
                       {/* Provider selector */}
                       <div>
-                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Verified Logbook Registry Provider</p>
+                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Select Your Verified Logbook Registry Provider</p>
                         <select
                           value={obLogbookProvider || obLogbookKey.split('::')[0] || ''}
                           onChange={e => { setObLogbookProvider(e.target.value); setObLogbookKey(e.target.value + '::'); setObLogbookSynced(false); }}
@@ -740,13 +740,15 @@ const HomeTab: React.FC<{
                           style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
                         >
                           <option value="">Select provider...</option>
-                          {['ForeFlight', 'MyFlightbook', 'Safelog', 'LogTen Pro', 'Pilot Log', 'Other'].map(p => (
+                          <option value="PilotRecognition Secure Logbook">PilotRecognition Secure Logbook (Tokenized — Recommended)</option>
+                          <option disabled>─── Third-Party Live Integrations ───</option>
+                          {['ForeFlight', 'MyFlightbook', 'Safelog', 'LogTen Pro', 'Other Third-Party Provider'].map(p => (
                             <option key={p} value={p}>{p}</option>
                           ))}
                         </select>
                       </div>
-                      {/* Transient token input */}
-                      <div>
+                      {/* Transient token input — third-party only */}
+                      {obLogbookProvider && obLogbookProvider !== 'PilotRecognition Secure Logbook' && <div>
                         <p className="text-[8px] font-semibold text-gray-600 mb-1.5">
                           {(obLogbookProvider || obLogbookKey.split('::')[0] || 'Provider')} Secure Share Token / API Key
                         </p>
@@ -783,9 +785,17 @@ const HomeTab: React.FC<{
                           <p className="text-[8px] text-gray-500 leading-relaxed">To ensure total data privacy, your third-party logbook access token functions strictly as a single-use routing credential. This input acts exclusively as a secure transient conduit: your token is pushed directly to Veremark over an end-to-end encrypted stream and is instantly destroyed from system memory. Your access key is never written, cached, or permanently stored anywhere inside the PilotRecognition database ecosystem.</p>
                         </div>
                         {obLogbookSynced && (
-                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Token confirmed. Upon consent sign-off, your token will be transmitted directly to Veremark over an encrypted channel and immediately purged from session memory. Read-only access only — no write permissions granted.</p>
+                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Token confirmed. Upon consent sign-off, your token will be transmitted directly to Veremark over an encrypted TLS stream and immediately purged from system memory. Read-only access only — no write permissions granted.</p>
                         )}
-                      </div>
+                      </div>}
+
+                      {/* PilotRecognition Secure Logbook inline reminder */}
+                      {obLogbookProvider === 'PilotRecognition Secure Logbook' && (
+                        <div className="px-3 py-2.5 rounded-lg" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                          <p className="text-[8px] font-black text-green-800 mb-1">Zero-Knowledge Architecture Active</p>
+                          <p className="text-[8px] text-green-700 leading-relaxed">Your flight hours are processed exclusively as a one-way cryptographic hash. The raw hour integers are completely discarded at the session origin — only the immutable mathematical hash string is generated. Veremark utilises this hash solely to cross-reference against matching ATO attestation records. Neither PilotRecognition nor Veremark can reverse-engineer or read your raw logbook data. You own the source data. We store nothing.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
 
