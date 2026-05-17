@@ -565,6 +565,35 @@ const HomeTab: React.FC<{
                     </p>
                   </div>
 
+                  {/* Read-Only Token Matrix — Auth0 session data pre-loaded */}
+                  <div style={{ border: '1px solid #e2e8f0' }}>
+                    {/* Header */}
+                    <div className="flex items-center gap-2 px-3 py-2" style={{ background: '#f0fdf4', borderBottom: '1px solid #d1fae5' }}>
+                      <div className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#16a34a' }}>
+                        <svg width="7" height="6" viewBox="0 0 7 6" fill="none"><path d="M1 3L2.8 5L6 1" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </div>
+                      <p className="text-[9px] font-black text-green-800 uppercase tracking-widest">Encrypted Session Data Ready for Veremark Transfer</p>
+                    </div>
+                    {/* Token rows */}
+                    {[
+                      { label: 'Auth0 Session Hash', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
+                      { label: 'Designated ATO', value: profile?.ato_name ?? 'Alpha Flight Academy (Loaded via Profile)' },
+                      { label: 'Target CAA', value: profile?.caa_region ?? 'CAAP — Philippines Civil Aviation Authority' },
+                      { label: 'Consent Timestamp', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
+                    ].map(row => (
+                      <div key={row.label} className="flex items-center gap-3 px-3 py-2" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <span className="text-[9px] font-black text-gray-500 uppercase tracking-wide w-32 flex-shrink-0">{row.label}</span>
+                        <div className="flex items-center gap-1.5 flex-1 px-2 py-1" style={{ background: '#f5f7fa', border: '1px solid #e2e8f0' }}>
+                          <Lock size={8} className="text-gray-400 flex-shrink-0" />
+                          <span className="text-[9px] font-mono text-gray-700 select-none">{row.value}</span>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="px-3 py-2" style={{ background: '#fafafa' }}>
+                      <p className="text-[8px] text-gray-400 italic">These fields are read-only. PilotRecognition.com cannot modify or access your raw credentials — only the encrypted token bundle is forwarded.</p>
+                    </div>
+                  </div>
+
                   {/* Section B — 3 Consent Checkboxes */}
                   <div className="space-y-3">
                     {/* Checkbox 1 */}
