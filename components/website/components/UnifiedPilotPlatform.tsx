@@ -238,6 +238,158 @@ const HomeTab: React.FC<{
     { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
   ];
 
+  if (!profile) {
+    /* ══════════════════════════════════════════════════════
+       LOGGED-OUT: Full-width 50/50 split landing screen
+    ══════════════════════════════════════════════════════ */
+    const freeFeatures = [
+      { icon: BookOpen, label: 'Digital Flight Logbook',  sub: 'Build and self-manage your historical flight hours and records.' },
+      { icon: Globe,    label: 'Global Directory Access', sub: 'Browse international airline pathways and operator requirements worldwide.' },
+      { icon: User,     label: 'Basic Pilot Profile',     sub: 'Establish your initial digital identity on the PilotRecognition platform.' },
+    ];
+    const plusFeatures = [
+      { icon: Shield, label: 'Veremark International Verification',  sub: 'Tokenize physical licences, medicals, and flight records via a zero-knowledge pipeline directly to the Civil Aviation Authority.' },
+      { icon: Target, label: 'Direct Operator Alignment Engine',      sub: 'Instantly match profile metrics and hours against live requirements for Singapore Airlines and international pathways.' },
+      { icon: Zap,    label: 'Automated B2B Revenue-Share',           sub: 'Programmatically route $5.00 escrow check payouts to your ATOs using the Helio payment gateway smart contract network.' },
+    ];
+    const features = obTier === 'free' ? freeFeatures : plusFeatures;
+
+    return (
+      <motion.div
+        className="flex w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
+      >
+        {/* ── LEFT HALF: Premium value showcase ── */}
+        <motion.div
+          className="w-1/2 flex flex-col px-10 py-10"
+          style={{ background: 'rgba(15,23,42,0.95)', borderRight: '1px solid rgba(255,255,255,0.08)' }}
+          initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
+        >
+          {/* Brand mark */}
+          <div className="mb-8">
+            <p className="text-[10px] font-black tracking-[0.2em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.3)' }}>PilotRecognition.com</p>
+            <h1 className="text-2xl font-black text-white leading-tight">Unlock Your Pilot<br/>Dashboard</h1>
+            <p className="text-xs text-white/40 mt-2 leading-relaxed">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
+          </div>
+
+          {/* Tier toggle */}
+          <div className="flex mb-6 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+            <button
+              onClick={() => setObTier('free')}
+              className="flex-1 py-3 text-center text-xs font-bold transition-all"
+              style={{ background: obTier === 'free' ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)', color: obTier === 'free' ? 'white' : 'rgba(255,255,255,0.35)' }}
+            >Free Pilot Account</button>
+            <button
+              onClick={() => setObTier('plus')}
+              className="flex-1 py-3 text-center text-xs font-black transition-all"
+              style={{ background: obTier === 'plus' ? 'linear-gradient(90deg,rgba(234,179,8,0.3),rgba(251,146,60,0.2))' : 'rgba(255,255,255,0.04)', color: obTier === 'plus' ? '#fbbf24' : 'rgba(255,255,255,0.35)', borderLeft: '1px solid rgba(234,179,8,0.2)' }}
+            >⭐ Recognition+ Member</button>
+          </div>
+
+          {/* Section label */}
+          <p className="text-[9px] font-black uppercase tracking-widest mb-4" style={{ color: obTier === 'plus' ? 'rgba(234,179,8,0.6)' : 'rgba(255,255,255,0.25)' }}>
+            {obTier === 'free' ? 'Your Free Pilot Account Includes' : 'Unlocked with Recognition+'}
+          </p>
+
+          {/* Feature rows */}
+          <div className="flex flex-col gap-4 flex-1">
+            {features.map(({ icon: Icon, label, sub }) => (
+              <div key={label} className="flex items-start gap-4 p-4 rounded-xl" style={{ background: obTier === 'plus' ? 'rgba(234,179,8,0.06)' : 'rgba(255,255,255,0.04)', border: `1px solid ${obTier === 'plus' ? 'rgba(234,179,8,0.18)' : 'rgba(255,255,255,0.08)'}` }}>
+                <div className="w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center" style={{ background: obTier === 'plus' ? 'rgba(234,179,8,0.18)' : 'rgba(255,255,255,0.08)', border: `1px solid ${obTier === 'plus' ? 'rgba(234,179,8,0.4)' : 'rgba(255,255,255,0.15)'}` }}>
+                  <Icon size={16} style={{ color: obTier === 'plus' ? '#fbbf24' : 'rgba(255,255,255,0.55)' }} />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-black text-white mb-1">{label}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA buttons */}
+          <div className="flex flex-col gap-3 mt-8">
+            <button
+              onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
+              className="w-full py-3.5 text-sm font-black tracking-widest text-white transition-all hover:brightness-110"
+              style={{ background: '#3b82f6', borderRadius: '10px' }}
+            >
+              {obTier === 'free' ? 'Create Free Account' : 'Login'}
+            </button>
+            <button
+              onClick={() => window.location.href = '/become-member'}
+              className="w-full py-3.5 text-sm font-black tracking-wide transition-all hover:brightness-110"
+              style={{ background: 'linear-gradient(90deg,#fbbf24,#f97316)', color: '#1a0a00', borderRadius: '10px' }}
+            >
+              {obTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}
+            </button>
+          </div>
+
+          {/* Trust strip */}
+          <div className="flex items-center gap-4 mt-6 pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+            {[{ name: 'Auth0 Secured', dot: '#3b82f6' }, { name: 'Helio Payments', dot: '#a855f7' }, { name: 'Veremark Verified', dot: '#16a34a' }].map(({ name, dot }, i) => (
+              <React.Fragment key={name}>
+                {i > 0 && <span style={{ color: 'rgba(255,255,255,0.12)' }}>|</span>}
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />
+                  <span className="text-[9px] font-bold" style={{ color: 'rgba(255,255,255,0.3)' }}>{name}</span>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── RIGHT HALF: Blurred dashboard preview + minimalist gate ── */}
+        <motion.div
+          className="w-1/2 relative overflow-hidden flex items-center justify-center"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          {/* Dashboard preview — rendered behind blur */}
+          <div className="absolute inset-0 pointer-events-none" style={{ filter: 'blur(3px)', opacity: 0.45 }}>
+            <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,1))' }}>
+              <div className="m-4 h-40 rounded-xl" style={{ background: 'url(/images/airline-operations.png) center/cover', opacity: 0.7 }} />
+              <div className="mx-4 grid grid-cols-2 gap-3">
+                <div className="h-24 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+                <div className="h-24 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+                <div className="h-20 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+                <div className="h-20 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Dark overlay */}
+          <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.55)', backdropFilter: 'blur(4px)' }} />
+
+          {/* Minimalist gate */}
+          <div className="relative z-10 flex flex-col items-center text-center px-8">
+            {/* Auth0 shield */}
+            <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.22),rgba(16,185,129,0.12))', border: '1.5px solid rgba(22,163,74,0.45)' }}>
+              <Shield size={34} className="text-emerald-400" />
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-widest whitespace-nowrap px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Auth0 Protected Session Portal</span>
+            </div>
+
+            {/* Status badges */}
+            <div className="flex flex-col gap-1.5 mb-6">
+              {['Auth0 Token Pipeline: Pending Login', 'Supabase Vault Status: Locked'].map(badge => (
+                <span key={badge} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' }}>
+                  <Lock size={9} />{badge}
+                </span>
+              ))}
+            </div>
+
+            {/* Single sign-in button */}
+            <button
+              onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
+              className="px-8 py-3 text-xs font-black tracking-widest text-white/80 transition-all hover:text-white hover:border-white/40"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px' }}
+            >
+              Existing Captains: Sign In Here →
+            </button>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
       className="flex gap-5 w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
@@ -253,103 +405,6 @@ const HomeTab: React.FC<{
         className="w-64 flex-shrink-0 flex flex-col self-start"
         style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
       >
-        {!profile ? (
-          /* ── LOGGED OUT STATE ── */
-          <div className="flex flex-col" style={{ minHeight: '420px' }}>
-            {/* Tier toggle */}
-            <div className="flex m-4 mb-0 rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
-              <button
-                onClick={() => setObTier('free')}
-                className="flex-1 py-2 text-center text-[10px] font-bold transition-all"
-                style={{ background: obTier === 'free' ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)', color: obTier === 'free' ? 'white' : 'rgba(255,255,255,0.4)' }}
-              >Free Pilot Account</button>
-              <button
-                onClick={() => setObTier('plus')}
-                className="flex-1 py-2 text-center text-[10px] font-black transition-all"
-                style={{ background: obTier === 'plus' ? 'linear-gradient(90deg,rgba(234,179,8,0.35),rgba(251,146,60,0.25))' : 'rgba(255,255,255,0.04)', color: obTier === 'plus' ? '#fbbf24' : 'rgba(255,255,255,0.4)', borderLeft: '1px solid rgba(234,179,8,0.2)' }}
-              >⭐ Recognition+ Member</button>
-            </div>
-
-            {/* Feature list — switches by tier */}
-            <div className="px-4 pt-4 pb-3 space-y-2.5 flex-1">
-              {obTier === 'free' ? (
-                <>
-                  <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-3">Your Free Pilot Account Includes</p>
-                  {[
-                    { icon: BookOpen, label: 'Digital Flight Logbook',    sub: 'Build and self-manage your historical hours' },
-                    { icon: Globe,    label: 'Global Directory Access',    sub: 'Browse international airline pathways and operator requirements' },
-                    { icon: User,     label: 'Basic Pilot Profile',        sub: 'Establish your initial digital identity on the platform' },
-                  ].map(({ icon: Icon, label, sub }) => (
-                    <div key={label} className="flex items-start gap-2.5">
-                      <div className="w-4 h-4 rounded flex-shrink-0 mt-0.5 flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)' }}>
-                        <Icon size={9} className="text-white/60" />
-                      </div>
-                      <div>
-                        <p className="text-[9px] font-black text-white leading-snug">{label}</p>
-                        <p className="text-[8px] text-white/35 leading-snug">{sub}</p>
-                      </div>
-                    </div>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-3">Unlocked with Recognition+</p>
-                  {[
-                    { icon: Shield, label: 'Veremark International Verification', sub: 'Tokenize licences and flight logs securely' },
-                    { icon: Target, label: 'Direct Operator Alignment Engine',    sub: 'Auto-match profile metrics to global pathways' },
-                    { icon: Zap,    label: 'Automated B2B Revenue-Share',         sub: 'Programmatic escrow bonuses to training academies' },
-                  ].map(({ icon: Icon, label, sub }) => (
-                    <div key={label} className="flex items-start gap-2.5">
-                      <div className="w-4 h-4 rounded flex-shrink-0 mt-0.5 flex items-center justify-center" style={{ background: 'rgba(234,179,8,0.18)', border: '1px solid rgba(234,179,8,0.4)' }}>
-                        <Icon size={9} className="text-yellow-400" />
-                      </div>
-                      <div>
-                        <p className="text-[9px] font-black text-white leading-snug">{label}</p>
-                        <p className="text-[8px] text-white/35 leading-snug">{sub}</p>
-                      </div>
-                    </div>
-                  ))}
-                </>
-              )}
-            </div>
-
-            {/* Primary CTA */}
-            <div className="px-4 pb-2">
-              {obTier === 'free' ? (
-                <button
-                  onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-                  className="w-full py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
-                  style={{ background: '#3b82f6', borderRadius: '8px' }}
-                >
-                  Create Free Account
-                </button>
-              ) : (
-                <button
-                  onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-                  className="w-full py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
-                  style={{ background: '#3b82f6', borderRadius: '8px' }}
-                >
-                  LOGIN
-                </button>
-              )}
-            </div>
-
-            {/* Secondary CTA */}
-            <div className="px-4 pb-4">
-              <button
-                onClick={() => window.location.href = '/become-member'}
-                className="w-full py-2.5 text-[11px] font-black tracking-wide transition-all hover:brightness-110"
-                style={{ background: 'linear-gradient(90deg,#fbbf24,#f97316)', color: '#1a0a00', borderRadius: '8px' }}
-              >
-                {obTier === 'free'
-                  ? 'Want verification? Upgrade to Recognition+ ($99/yr) →'
-                  : 'Upgrade to Recognition+ ($99/yr) →'
-                }
-              </button>
-            </div>
-          </div>
-        ) : (
-          <>
         <div className="p-6 flex-1">
           {expiredChecks.length > 0 && (
             <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
@@ -435,8 +490,6 @@ const HomeTab: React.FC<{
             UPGRADE NOW — $99/YR
           </div>
         </button>
-          </>
-        )}
       </motion.div>
 
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
@@ -660,78 +713,6 @@ const HomeTab: React.FC<{
           </motion.div>
         </div>
 
-        {/* ── LOGGED OUT OVERLAY ── */}
-        {!profile && (
-          <div
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8"
-            style={{ background: 'rgba(10,15,30,0.52)', backdropFilter: 'blur(4px)' }}
-          >
-            {/* Deactivated status badges */}
-            <div className="flex gap-2 mb-6 flex-wrap justify-center">
-              {[
-                'Auth0 Token Pipeline: Pending Login',
-                'Supabase Vault Status: Locked',
-              ].map(badge => (
-                <span key={badge} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[8px] font-bold" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.35)' }}>
-                  <Lock size={8} />{badge}
-                </span>
-              ))}
-            </div>
-
-            {/* Shield + brand mark */}
-            <div className="relative w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.25),rgba(16,185,129,0.15))', border: '1.5px solid rgba(22,163,74,0.5)' }}>
-              <Shield size={28} className="text-emerald-400" />
-              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[6px] font-black tracking-widest whitespace-nowrap px-1.5 py-0.5 rounded" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Auth0 Protected</span>
-            </div>
-
-            <h3 className="text-lg font-black text-white mb-2 leading-snug tracking-wide">Unlock Your Pilot Dashboard</h3>
-            <p className="text-[11px] text-white/45 leading-relaxed max-w-sm mb-5">
-              Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.
-            </p>
-
-            {/* Three-button grid */}
-            <div className="flex flex-col gap-2 w-full max-w-xs mb-5">
-              <button
-                onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-                className="w-full py-2.5 text-xs font-black tracking-widest transition-all hover:brightness-110"
-                style={{ background: 'rgba(255,255,255,0.92)', color: '#0f172a', borderRadius: '8px' }}
-              >
-                Get Started Free
-              </button>
-              <button
-                onClick={() => window.location.href = '/become-member'}
-                className="w-full py-2.5 text-[11px] font-black tracking-wide transition-all hover:brightness-110"
-                style={{ background: 'linear-gradient(90deg,#fbbf24,#f97316)', color: '#1a0a00', borderRadius: '8px' }}
-              >
-                Join Recognition+ ($99/yr) →
-              </button>
-              <button
-                onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-                className="w-full py-2.5 text-xs font-black tracking-widest text-white/70 transition-all hover:text-white"
-                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px' }}
-              >
-                Sign In
-              </button>
-            </div>
-
-            {/* Trust logo strip */}
-            <div className="flex items-center gap-4 px-4 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              {[
-                { name: 'Auth0 Secured', dot: '#3b82f6' },
-                { name: 'Helio Payments', dot: '#a855f7' },
-                { name: 'Veremark Verified', dot: '#16a34a' },
-              ].map(({ name, dot }, i) => (
-                <React.Fragment key={name}>
-                  {i > 0 && <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: '10px' }}>|</span>}
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />
-                    <span className="text-[8px] font-bold" style={{ color: 'rgba(255,255,255,0.35)' }}>{name}</span>
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        )}
       </div>{/* end right flex col */}
 
       {/* ════════════════════════════════════════════════════════════
