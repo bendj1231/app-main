@@ -583,7 +583,7 @@ const HomeTab: React.FC<{
                   {/* Section A — Pipeline Overview */}
                   <div className="p-3" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
                     <p className="text-[10px] text-gray-700 leading-relaxed">
-                      By proceeding, you execute a decentralized, tokenized authorization directive enabling a multi-party credential verification process. This protocol operates strictly via zero-knowledge data routing mechanisms, facilitating an automated cryptographic exchange between your designated <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the relevant <strong className="text-gray-900">Civil Aviation Authority</strong>, and the regional verification infrastructure managed by <strong className="text-gray-900">{detectedRegion.provider}</strong> <span className="text-gray-500">({detectedRegion.flag} {detectedRegion.label} node)</span>.
+                      By proceeding, you execute a decentralized, tokenized authorization directive enabling a multi-party credential verification process. This protocol operates strictly via zero-knowledge data routing mechanisms, facilitating an automated cryptographic exchange between your designated <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the relevant <strong className="text-gray-900">Civil Aviation Authority</strong>, your connected <strong className="text-gray-900">{profile?.logbook_provider ?? 'Logbook Provider'}</strong> flight records registry, and the regional verification infrastructure managed by <strong className="text-gray-900">{detectedRegion.provider}</strong> <span className="text-gray-500">({detectedRegion.flag} {detectedRegion.label} node)</span>.
                     </p>
                   </div>
 
@@ -610,6 +610,7 @@ const HomeTab: React.FC<{
                           { role: 'Approved Training Organisation', value: profile?.ato_name ?? 'Alpha Flight Academy', note: 'Attesting party for training hours.' },
                           { role: 'Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Philippines', note: 'Source of truth. Issues licences & medicals.' },
                           { role: 'Regional Verification Provider', value: `${detectedRegion.flag} ${detectedRegion.provider}`, note: `Verifying party — ${detectedRegion.label} node.` },
+                          { role: 'Logbook Provider', value: profile?.logbook_provider ?? 'ForeFlight / MyFlightbook (Default)', note: 'Read-only flight hours display. Write access retained by provider.' },
                           { role: 'Transmedium (Interface Only)', value: 'PilotRecognition.com', note: 'Routes consent only. Holds no data. Verifies nothing.' },
                         ].map(p => (
                           <div key={p.role} className="flex items-baseline gap-2">
