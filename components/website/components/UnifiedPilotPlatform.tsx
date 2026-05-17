@@ -594,8 +594,8 @@ const HomeTab: React.FC<{
                   {/* Session Attributes — clean icon rows */}
                   <div className="rounded-xl space-y-0 overflow-hidden" style={{ background: '#f8fafc', border: '1px solid #e5e7eb' }}>
                     <div className="flex items-center gap-2 px-4 py-2" style={{ borderBottom: '1px solid #eef2f7' }}>
-                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
-                      <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-widest">Automated Encrypted Session Attributes</p>
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#f59e0b' }} />
+                      <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-widest">Claimed Session Profile — Pending Verification</p>
                       <div className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', border: `1px solid ${detectedRegion.colour}40` }}>
                         <span className="text-[8px] font-bold" style={{ color: detectedRegion.colour }}>{detectedRegion.label} · {detectedRegion.provider}</span>
                       </div>
