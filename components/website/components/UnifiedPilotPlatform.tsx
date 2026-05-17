@@ -248,9 +248,9 @@ const HomeTab: React.FC<{
       { icon: User,     label: 'Basic Pilot Profile',       sub: 'Establish your initial digital identity on the PilotRecognition platform.' },
     ];
     const plusFeatures = [
-      { icon: Shield, label: 'Veremark International Verification',  sub: 'Tokenize physical licences, medicals, and flight records via a zero-knowledge pipeline directly to the Civil Aviation Authority.' },
-      { icon: Target, label: 'Direct Operator Alignment Engine',      sub: 'Instantly match profile metrics and hours against live requirements for Singapore Airlines and international pathways.' },
-      { icon: Zap,    label: 'Automated B2B Revenue-Share',           sub: 'Programmatically route $5.00 escrow check payouts to your ATOs using the Helio payment gateway smart contract network.' },
+      { icon: Shield, label: 'Automated Credential Background Check', sub: 'Tokenize physical licences, medical certificates, and radio telemetry ratings via an encrypted, zero-knowledge pipeline routed directly to your issuing Civil Aviation Authority.' },
+      { icon: Target, label: 'Live Route & Fleet Requirements Audit',  sub: 'Instantly audit your flight hours, type ratings, and currency data against live hiring metrics for Singapore Airlines and global operator pathways.' },
+      { icon: Zap,    label: 'Expedited ATO Validation Protocol',      sub: 'Programmatically issue a $5.00 compliance validation incentive to your designated Approved Training Organisation via the Helio network to fast-track your logbook audit verification.' },
     ];
     const features = obTier === 'free' ? freeFeatures : plusFeatures;
 
@@ -273,8 +273,8 @@ const HomeTab: React.FC<{
               <span className="text-slate-300 mx-1.5">|</span>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pilot Portal</span>
             </div>
-            <h1 className="text-xl font-black text-slate-900 leading-tight">Unlock Your Pilot<br/>Dashboard</h1>
-            <p className="text-xs text-slate-800 mt-1 leading-snug">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
+            <h1 className="text-xl font-black text-slate-900 leading-tight">Unlock Your Digital<br/>Flight Deck</h1>
+            <p className="text-xs text-slate-800 mt-1 leading-snug">Authenticate or register to manage verified pilot credentials, cross-reference profile metrics against live operator criteria, and establish a direct connection to international carriers and manufacturing pipelines.</p>
           </div>
 
           {/* Tier toggle */}
