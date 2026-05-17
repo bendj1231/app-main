@@ -466,17 +466,7 @@ const AccessPlatformCard: React.FC<{
 }> = ({ onLogin, onNavigate, isLoggedIn }) => {
     return (
         <div className="relative w-full h-full flex overflow-hidden rounded-none border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]">
-            {/* Left: Photo */}
-            <div className="relative w-1/2 h-full flex-shrink-0">
-                <img
-                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png"
-                    alt="Pilots"
-                    className="w-full h-full object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a1628]/80 pointer-events-none" />
-            </div>
-
-            {/* Right: Blue access panel */}
+            {/* Left: Blue access panel */}
             <div className="relative flex-1 h-full bg-[#0a1628] flex flex-col justify-between px-4 py-4 md:px-5 md:py-5">
                 {/* Top accent line */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
@@ -524,6 +514,16 @@ const AccessPlatformCard: React.FC<{
                         </>
                     )}
                 </div>
+            </div>
+
+            {/* Right: Photo */}
+            <div className="relative w-1/2 h-full flex-shrink-0">
+                <img
+                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png"
+                    alt="Pilots"
+                    className="w-full h-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a1628]/60 pointer-events-none" />
             </div>
         </div>
     );
