@@ -204,40 +204,39 @@ const HomeTab: React.FC<{
       >
 
         {/* ── TIER 1: Identity ── */}
-        <div className="px-4 pt-4 pb-3">
+        <div className="px-4 pt-3 pb-2">
           {expiredChecks.length > 0 && (
-            <button onClick={() => setTab('wallet')} className="w-full mb-2 flex items-center gap-2 px-2 py-1 text-[9px] text-red-300 font-bold tracking-wide" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}>
+            <button onClick={() => setTab('wallet')} className="w-full mb-1.5 flex items-center gap-2 px-2 py-0.5 text-[9px] text-red-300 font-bold tracking-wide" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}>
               <AlertTriangle size={9} className="flex-shrink-0" />
               {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
             </button>
           )}
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3 mb-1.5">
             <div className="relative flex-shrink-0">
               {profile?.profile_image_url
-                ? <img src={profile.profile_image_url} alt={name} className="w-10 h-10 object-cover rounded-full border-2 border-white/20" />
-                : <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-sm" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>{initials}</div>
+                ? <img src={profile.profile_image_url} alt={name} className="w-9 h-9 object-cover rounded-full border-2 border-white/20" />
+                : <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-sm" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>{initials}</div>
               }
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full flex items-center justify-center" style={{ background: walletChecks.some(c => c.status === 'verified') ? '#10b981' : '#64748b', border: '2px solid rgba(30,41,59,0.9)' }}>
-                <Shield size={6} className="text-white" />
+              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full flex items-center justify-center" style={{ background: walletChecks.some(c => c.status === 'verified') ? '#10b981' : '#64748b', border: '2px solid rgba(30,41,59,0.9)' }}>
+                <Shield size={5} className="text-white" />
               </div>
             </div>
             <div className="min-w-0 flex-1">
               <h2 className="text-xs font-black text-white tracking-wide truncate">{name}</h2>
-              <p className="text-[9px] text-orange-400 font-bold uppercase tracking-wider">{level}</p>
+              <p className="text-[9px] text-orange-400 font-bold uppercase tracking-wider leading-none">{level}</p>
+              {/* Progress bar — inline under rank */}
+              <div className="flex items-center gap-1.5 mt-1">
+                <div className="flex-1 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                  <div className="h-full transition-all duration-700" style={{ width: `${Math.max(progressPct, progressPct > 0 ? 3 : 0)}%`, background: 'linear-gradient(90deg,#f97316,#ef4444)' }} />
+                </div>
+                <span className={`text-[8px] font-bold flex-shrink-0 ${progressPct > 0 ? 'text-orange-400' : 'text-white/20'}`}>{Math.round(progressPct)}%</span>
+              </div>
             </div>
-          </div>
-
-          {/* Progress bar */}
-          <div className="flex items-center gap-2">
-            <div className="flex-1 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
-              <div className="h-full transition-all duration-700" style={{ width: `${Math.max(progressPct, progressPct > 0 ? 3 : 0)}%`, background: 'linear-gradient(90deg,#f97316,#ef4444)' }} />
-            </div>
-            <span className={`text-[8px] font-bold flex-shrink-0 ${progressPct > 0 ? 'text-orange-400' : 'text-white/20'}`}>{Math.round(progressPct)}%</span>
           </div>
         </div>
 
         {/* ── TIER 2: Core Recognition Metrics — compact single row ── */}
-        <div className="px-4 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="px-4 py-1.5" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
           <div className="grid grid-cols-4 gap-1.5">
             {/* Score ring */}
             <div className="col-span-1 flex flex-col items-center justify-center p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -275,7 +274,7 @@ const HomeTab: React.FC<{
         {/* ── PILOT PROFILE CTA ── */}
         <button
           onClick={() => onNavigate('pilot-recognition-profile')}
-          className="w-full flex items-center gap-2.5 px-4 py-2 transition-colors hover:bg-white/5"
+          className="w-full flex items-center gap-2.5 px-4 py-1.5 transition-colors hover:bg-white/5"
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
         >
           <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.25)' }}>
@@ -286,8 +285,8 @@ const HomeTab: React.FC<{
         </button>
 
         {/* ── TIER 3: Live Activity & Operator Requests ── */}
-        <div className="px-4 py-2 flex-1">
-          <div className="flex items-center justify-between mb-1.5">
+        <div className="px-4 py-1.5 flex-1">
+          <div className="flex items-center justify-between mb-1">
             <p className="text-[8px] font-black tracking-[0.15em] text-white/25 uppercase">Live Activity</p>
             <div className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -295,11 +294,11 @@ const HomeTab: React.FC<{
             </div>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {/* Alert 1 — High priority operator request */}
-            <div className="p-2" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="text-[10px] flex-shrink-0">📡</span>
+            <div className="px-2 py-1" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <span className="text-[9px] flex-shrink-0">📡</span>
                 <p className="text-[9px] font-black text-white leading-tight flex-1">Singapore Airlines · <span className="text-white/40 font-normal">token access requested</span></p>
               </div>
               <button
@@ -312,15 +311,15 @@ const HomeTab: React.FC<{
             </div>
 
             {/* Alert 2 — Veremark pass */}
-            <div className="flex items-center gap-1.5 p-2" style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)' }}>
-              <span className="text-[10px] flex-shrink-0">🔍</span>
+            <div className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)' }}>
+              <span className="text-[9px] flex-shrink-0">🔍</span>
               <p className="text-[9px] text-white flex-1 leading-tight"><span className="font-black">Veremark check passed</span> · <span className="text-emerald-400/70">CAA token updated</span></p>
               <CheckCircle size={9} className="text-emerald-400 flex-shrink-0" />
             </div>
 
             {/* Alert 3 — Flagged log row */}
-            <div className="flex items-center gap-1.5 p-2" style={{ background: 'rgba(234,179,8,0.07)', border: '1px solid rgba(234,179,8,0.2)' }}>
-              <span className="text-[10px] flex-shrink-0">⚠️</span>
+            <div className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(234,179,8,0.07)', border: '1px solid rgba(234,179,8,0.2)' }}>
+              <span className="text-[9px] flex-shrink-0">⚠️</span>
               <p className="text-[9px] text-white flex-1 leading-tight"><span className="font-black">Alpha Flight Academy</span> · <span className="text-yellow-400/70">log row #32 flagged</span></p>
               <button onClick={() => setTab('logbook')} className="text-[8px] font-black text-yellow-400/80 hover:text-yellow-300 transition-colors flex-shrink-0 underline underline-offset-1">VIEW</button>
             </div>
@@ -330,7 +329,7 @@ const HomeTab: React.FC<{
         {/* ── TIER 4: Recognition+ — pinned bottom ── */}
         <button
           onClick={() => setTab('settings' as TabId)}
-          className="w-full flex items-center gap-3 px-4 py-2.5 transition-all hover:brightness-110 flex-shrink-0"
+          className="w-full flex items-center gap-3 px-4 py-2 transition-all hover:brightness-110 flex-shrink-0"
           style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
         >
           <Star size={12} className="text-yellow-400 flex-shrink-0" />
@@ -517,7 +516,7 @@ const HomeTab: React.FC<{
             custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={() => onNavigate('type-rating-search')}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '148px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             {/* Background image — A320 cockpit */}
             <div
@@ -543,7 +542,7 @@ const HomeTab: React.FC<{
             </div>
 
             {/* Floating overlay badges — mid section */}
-            <div className="absolute top-10 left-3 right-14 flex flex-col gap-1.5 mt-1">
+            <div className="absolute top-9 left-3 right-3 flex flex-col gap-1 mt-1">
               <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <div className="flex items-center gap-1.5">
                   <Plane size={9} className="text-white/60 flex-shrink-0" />
@@ -574,7 +573,7 @@ const HomeTab: React.FC<{
             custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={() => setTab('pathways')}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '148px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             {/* Background image — airline tails / terminal */}
             <div
@@ -599,7 +598,7 @@ const HomeTab: React.FC<{
             </div>
 
             {/* Floating overlay badges — operators */}
-            <div className="absolute top-10 left-3 right-3 flex flex-col gap-1.5 mt-1">
+            <div className="absolute top-9 left-3 right-3 flex flex-col gap-1 mt-1">
               <div className="flex items-center justify-between px-2.5 py-1.5" style={{ background: 'rgba(15,23,42,0.78)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <div className="flex items-center gap-1.5">
                   <span className="text-[10px] flex-shrink-0">🇸🇬</span>
