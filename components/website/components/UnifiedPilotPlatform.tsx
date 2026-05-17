@@ -495,7 +495,7 @@ const HomeTab: React.FC<{
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[9px] font-black tracking-[0.12em] text-white/40 uppercase leading-none mb-0.5">Explore</p>
-                  <p className="text-[10px] font-black text-white tracking-wide leading-none">Operator Expectations & Requirements</p>
+                  <p className="text-[10px] font-black text-white tracking-wide leading-none">Operator Expectations</p>
                 </div>
                 <span className="text-[9px] font-black tracking-widest text-white/40 uppercase flex-shrink-0">Explore →</span>
               </div>
