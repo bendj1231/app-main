@@ -256,18 +256,18 @@ const HomeTab: React.FC<{
 
     return (
       <motion.div
-        className="flex w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
+        className="flex w-full" style={{ height: 'calc(100vh - 108px)', maxHeight: 'calc(100vh - 108px)', overflow: 'hidden' }}
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
       >
         {/* ── LEFT HALF: Premium value showcase — white enterprise style ── */}
         <motion.div
-          className="w-1/2 flex flex-col px-10 py-10 bg-white"
+          className="w-1/2 flex flex-col px-8 py-5 bg-white overflow-hidden"
           style={{ borderRight: '1px solid #e2e8f0' }}
           initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
         >
           {/* Brand mark */}
-          <div className="mb-8">
-            <div className="flex items-center gap-1 mb-3">
+          <div className="mb-4">
+            <div className="flex items-center gap-1 mb-2">
               <span className="text-sm font-black text-slate-900" style={{ fontFamily: 'Arial Black, sans-serif' }}>pilot</span>
               <span className="text-sm font-black text-red-600" style={{ fontFamily: 'Arial Black, sans-serif' }}>recognition</span>
               <span className="text-slate-300 mx-1.5">|</span>
@@ -278,32 +278,32 @@ const HomeTab: React.FC<{
           </div>
 
           {/* Tier toggle */}
-          <div className="flex mb-6 rounded-xl overflow-hidden border border-slate-200">
+          <div className="flex mb-3 rounded-xl overflow-hidden border border-slate-200">
             <button
               onClick={() => setObTier('free')}
-              className="flex-1 py-3 text-center text-xs font-bold transition-all"
+              className="flex-1 py-2 text-center text-xs font-bold transition-all"
               style={{ background: obTier === 'free' ? '#f1f5f9' : 'white', color: obTier === 'free' ? '#0f172a' : '#94a3b8' }}
             >Free Pilot Account</button>
             <button
               onClick={() => setObTier('plus')}
-              className="flex-1 py-3 text-center text-xs font-black transition-all"
+              className="flex-1 py-2 text-center text-xs font-black transition-all"
               style={{ background: obTier === 'plus' ? 'linear-gradient(90deg,rgba(234,179,8,0.12),rgba(251,146,60,0.08))' : 'white', color: obTier === 'plus' ? '#b45309' : '#94a3b8', borderLeft: '1px solid #e2e8f0' }}
             >⭐ Recognition+ Member</button>
           </div>
 
           {/* Section label */}
-          <p className="text-[9px] font-black uppercase tracking-widest mb-4" style={{ color: obTier === 'plus' ? '#d97706' : '#94a3b8' }}>
+          <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: obTier === 'plus' ? '#d97706' : '#94a3b8' }}>
             {obTier === 'free' ? 'Your Free Pilot Account Includes' : 'Unlocked with Recognition+'}
           </p>
 
           {/* Feature rows */}
-          <div className="flex flex-col gap-3 flex-1">
+          <div className="flex flex-col gap-2 flex-1">
             {features.map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="flex items-start gap-4 p-4 rounded-xl border transition-all"
+              <div key={label} className="flex items-start gap-3 p-2.5 rounded-xl border transition-all"
                 style={{ background: obTier === 'plus' ? '#fffbeb' : '#f8fafc', borderColor: obTier === 'plus' ? '#fde68a' : '#e2e8f0' }}>
-                <div className="w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center border"
+                <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center border"
                   style={{ background: obTier === 'plus' ? '#fef3c7' : '#f1f5f9', borderColor: obTier === 'plus' ? '#fcd34d' : '#cbd5e1' }}>
-                  <Icon size={16} style={{ color: obTier === 'plus' ? '#d97706' : '#64748b' }} />
+                  <Icon size={13} style={{ color: obTier === 'plus' ? '#d97706' : '#64748b' }} />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-bold text-slate-900 mb-0.5">{label}</p>
@@ -314,17 +314,17 @@ const HomeTab: React.FC<{
           </div>
 
           {/* CTA buttons */}
-          <div className="flex flex-col gap-3 mt-8">
+          <div className="flex flex-col gap-2 mt-4">
             <button
               onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-              className="w-full py-3.5 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl"
+              className="w-full py-2.5 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl"
               style={{ background: '#dc2626' }}
             >
               {obTier === 'free' ? 'Get Recognition Free' : 'Login'}
             </button>
             <button
               onClick={() => window.location.href = '/become-member'}
-              className="w-full py-3.5 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl"
+              className="w-full py-2.5 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl"
               style={{ background: 'linear-gradient(90deg,#f59e0b,#f97316)', color: '#fff' }}
             >
               {obTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}
@@ -332,7 +332,7 @@ const HomeTab: React.FC<{
           </div>
 
           {/* Trust strip */}
-          <div className="flex items-center gap-4 mt-6 pt-5 border-t border-slate-100">
+          <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-100">
             {[{ name: 'Auth0 Secured', dot: '#3b82f6' }, { name: 'Helio Payments', dot: '#a855f7' }, { name: 'Veremark Verified', dot: '#16a34a' }].map(({ name, dot }, i) => (
               <React.Fragment key={name}>
                 {i > 0 && <span className="text-slate-200">|</span>}
@@ -352,7 +352,7 @@ const HomeTab: React.FC<{
         >
           {/* Full dashboard preview — scaled-down replica behind blur */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ background: 'rgba(15,23,42,1)' }}>
-            <div className="w-full h-full flex flex-col gap-2 p-3" style={{ filter: 'blur(2px)', opacity: 0.6 }}>
+            <div className="w-full h-full flex flex-col gap-2 p-3" style={{ filter: 'blur(2px)', opacity: 0.6, transform: 'scale(0.82)', transformOrigin: 'top left', width: '122%', height: '122%' }}>
               {/* Account Activation strip */}
               <div className="flex items-center gap-3 px-4 py-2.5 rounded flex-shrink-0" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <div className="flex-1">
