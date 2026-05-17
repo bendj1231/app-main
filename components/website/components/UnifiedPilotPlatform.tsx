@@ -151,15 +151,15 @@ const HomeTab: React.FC<{
         tz.startsWith('Asia/Hong_Kong') || tz.startsWith('Asia/Tokyo') ||
         tz.startsWith('Asia/Seoul') || tz.startsWith('Asia/Kolkata') ||
         tz.startsWith('Australia/') || tz.startsWith('Pacific/')
-      ) return { label: 'Asia-Pacific', provider: 'Veremark', flag: '🌏', colour: '#16a34a' };
+      ) return { label: 'Asia-Pacific', provider: 'Veremark', colour: '#16a34a' };
       if (
         tz.startsWith('Europe/') || tz.startsWith('Atlantic/')
-      ) return { label: 'Europe', provider: 'Veremark', flag: '🌍', colour: '#2563eb' };
+      ) return { label: 'Europe', provider: 'Veremark', colour: '#2563eb' };
       if (
         tz.startsWith('America/') || tz.startsWith('US/')
-      ) return { label: 'North America', provider: 'HireRight / First Advantage', flag: '🌎', colour: '#d97706' };
-      return { label: 'Global', provider: 'Veremark', flag: '🌐', colour: '#6366f1' };
-    } catch { return { label: 'Global', provider: 'Veremark', flag: '🌐', colour: '#6366f1' }; }
+      ) return { label: 'North America', provider: 'HireRight / First Advantage', colour: '#d97706' };
+      return { label: 'Global', provider: 'Veremark', colour: '#6366f1' };
+    } catch { return { label: 'Global', provider: 'Veremark', colour: '#6366f1' }; }
   }, []);
 
   const startTokenise = () => {
@@ -597,19 +597,17 @@ const HomeTab: React.FC<{
                       <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
                       <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-widest">Automated Encrypted Session Attributes</p>
                       <div className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', border: `1px solid ${detectedRegion.colour}40` }}>
-                        <span className="text-[9px]">{detectedRegion.flag}</span>
                         <span className="text-[8px] font-bold" style={{ color: detectedRegion.colour }}>{detectedRegion.label} · {detectedRegion.provider}</span>
                       </div>
                     </div>
                     {[
-                      { icon: '🔒', label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
-                      { icon: '🏫', label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? 'Alpha Flight Academy (Sourced via Session)' },
-                      { icon: '✈️', label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Philippines Civil Aviation Authority' },
-                      { icon: '📋', label: 'Logbook Provider', value: profile?.logbook_provider ?? 'ForeFlight / MyFlightbook (Default)' },
-                      { icon: '📅', label: 'System Timestamp Epoch', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
+                      { label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
+                      { label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? 'Alpha Flight Academy (Sourced via Session)' },
+                      { label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Philippines Civil Aviation Authority' },
+                      { label: 'Logbook Provider', value: profile?.logbook_provider ?? 'ForeFlight / MyFlightbook (Default)' },
+                      { label: 'System Timestamp Epoch', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
                     ].map(row => (
                       <div key={row.label} className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
-                        <span className="text-sm flex-shrink-0">{row.icon}</span>
                         <span className="text-[9px] text-gray-400 w-40 flex-shrink-0">{row.label}</span>
                         <span className="text-[10px] font-semibold text-gray-900 select-none">{row.value}</span>
                       </div>
