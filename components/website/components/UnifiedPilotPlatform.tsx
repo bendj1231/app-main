@@ -127,7 +127,6 @@ const HomeTab: React.FC<{
     setWelcomeDismissed(true);
     try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
   };
-  const [obTier, setObTier] = React.useState<'free'|'plus'>('plus');
   const [onboardingOpen, setOnboardingOpen] = React.useState(false);
   const [onboardingStep, setOnboardingStep] = React.useState(1);
   const [obATO, setObATO] = React.useState('');
@@ -237,232 +236,6 @@ const HomeTab: React.FC<{
     { id: 'pathways', title: 'MY PATHWAYS',   image: '/images/airline-operations.png',                                                                    onClick: () => setTab('pathways') },
     { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
   ];
-
-  if (!profile) {
-    /* ══════════════════════════════════════════════════════
-       LOGGED-OUT: Full-width 50/50 split landing screen
-    ══════════════════════════════════════════════════════ */
-    const freeFeatures = [
-      { icon: BookOpen, label: 'Digital Logbook Record',    sub: 'Log your flight history securely on a verified network.' },
-      { icon: Globe,    label: 'Global Pathway Discovery',  sub: 'Instantly browse international operator requirements worldwide.' },
-      { icon: User,     label: 'Basic Pilot Profile',       sub: 'Establish your initial digital identity on the PilotRecognition platform.' },
-    ];
-    const plusFeatures = [
-      { icon: Shield, label: 'Automated Credential Background Check', sub: 'Tokenize physical licences, medical certificates, and radio telemetry ratings via an encrypted, zero-knowledge pipeline routed directly to your issuing Civil Aviation Authority.' },
-      { icon: Target, label: 'Live Route & Fleet Requirements Audit',  sub: 'Instantly audit your flight hours, type ratings, and currency data against live hiring metrics for Singapore Airlines and global operator pathways.' },
-      { icon: Zap,    label: 'Expedited ATO Validation Protocol',      sub: 'Programmatically issue a $5.00 compliance validation incentive to your designated Approved Training Organisation via the Helio network to fast-track your logbook audit verification.' },
-    ];
-    const features = obTier === 'free' ? freeFeatures : plusFeatures;
-
-    return (
-      <motion.div
-        className="flex w-full" style={{ height: 'calc(100vh - 108px)', maxHeight: 'calc(100vh - 108px)', overflow: 'hidden' }}
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
-      >
-        {/* ── LEFT HALF: Premium value showcase — white enterprise style ── */}
-        <motion.div
-          className="w-1/2 flex flex-col px-8 py-4 bg-white overflow-hidden"
-          style={{ borderRight: '1px solid #e2e8f0' }}
-          initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
-        >
-          {/* Brand mark */}
-          <div className="mb-4">
-            <div className="flex items-center gap-1 mb-2">
-              <span className="text-sm font-black text-slate-900" style={{ fontFamily: 'Arial Black, sans-serif' }}>pilot</span>
-              <span className="text-sm font-black text-red-600" style={{ fontFamily: 'Arial Black, sans-serif' }}>recognition</span>
-              <span className="text-slate-300 mx-1.5">|</span>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pilot Portal</span>
-            </div>
-            <h1 className="text-xl font-black text-slate-900 leading-tight">Unlock Your Digital<br/>Flight Deck</h1>
-            <p className="text-xs text-slate-800 mt-1 leading-snug">Authenticate or register to manage verified pilot credentials, cross-reference profile metrics against live operator criteria, and establish a direct connection to international carriers and manufacturing pipelines.</p>
-          </div>
-
-          {/* Tier toggle */}
-          <div className="flex mb-2 rounded-xl overflow-hidden border border-slate-200">
-            <button
-              onClick={() => setObTier('free')}
-              className="flex-1 py-2 text-center text-xs font-bold transition-all"
-              style={{ background: obTier === 'free' ? '#f1f5f9' : 'white', color: obTier === 'free' ? '#0f172a' : '#94a3b8' }}
-            >Free Pilot Account</button>
-            <button
-              onClick={() => setObTier('plus')}
-              className="flex-1 py-2 text-center text-xs font-black transition-all"
-              style={{ background: obTier === 'plus' ? 'linear-gradient(90deg,rgba(234,179,8,0.12),rgba(251,146,60,0.08))' : 'white', color: obTier === 'plus' ? '#b45309' : '#94a3b8', borderLeft: '1px solid #e2e8f0' }}
-            >⭐ Recognition+ Member</button>
-          </div>
-
-          {/* Section label */}
-          <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: obTier === 'plus' ? '#d97706' : '#94a3b8' }}>
-            {obTier === 'free' ? 'Your Free Pilot Account Includes' : 'Unlocked with Recognition+'}
-          </p>
-
-          {/* Feature rows */}
-          <div className="flex flex-col gap-1.5" style={{ flex: '0 0 auto' }}>
-            {features.map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="flex items-center gap-3 p-2 rounded-xl border transition-all"
-                style={{ background: obTier === 'plus' ? '#fffbeb' : '#f8fafc', borderColor: obTier === 'plus' ? '#fde68a' : '#e2e8f0' }}>
-                <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center border"
-                  style={{ background: obTier === 'plus' ? '#fef3c7' : '#f1f5f9', borderColor: obTier === 'plus' ? '#fcd34d' : '#cbd5e1' }}>
-                  <Icon size={13} style={{ color: obTier === 'plus' ? '#d97706' : '#64748b' }} />
-                </div>
-                <div className="flex-1">
-                  <p className="text-xs font-bold text-slate-900 leading-none mb-0.5">{label}</p>
-                  <p className="text-[10px] text-slate-500 leading-snug">{sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA buttons */}
-          <div className="flex flex-col gap-2 mt-3">
-            <button
-              onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-              className="w-full py-2 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl"
-              style={{ background: '#dc2626' }}
-            >
-              {obTier === 'free' ? 'Get Recognition Free' : 'Login'}
-            </button>
-            <button
-              onClick={() => window.location.href = '/become-member'}
-              className="w-full py-2 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl"
-              style={{ background: 'linear-gradient(90deg,#f59e0b,#f97316)', color: '#fff' }}
-            >
-              {obTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}
-            </button>
-          </div>
-
-          {/* Trust strip */}
-          <div className="flex items-center gap-4 mt-2 pt-2 border-t border-slate-100">
-            {[{ name: 'Auth0 Secured', dot: '#3b82f6' }, { name: 'Helio Payments', dot: '#a855f7' }, { name: 'Veremark Verified', dot: '#16a34a' }].map(({ name, dot }, i) => (
-              <React.Fragment key={name}>
-                {i > 0 && <span className="text-slate-200">|</span>}
-                <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />
-                  <span className="text-[9px] font-bold text-slate-400">{name}</span>
-                </div>
-              </React.Fragment>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* ── RIGHT HALF: Blurred dashboard preview + minimalist gate ── */}
-        <motion.div
-          className="w-1/2 relative overflow-hidden flex flex-col items-center justify-center pt-8"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          {/* Full dashboard preview — scaled-down replica behind blur */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ background: 'rgba(15,23,42,1)' }}>
-            <div className="w-full h-full flex flex-col gap-2 p-3" style={{ filter: 'blur(2px)', opacity: 0.6, transform: 'scale(0.82)', transformOrigin: 'top left', width: '122%', height: '122%' }}>
-              {/* Account Activation strip */}
-              <div className="flex items-center gap-3 px-4 py-2.5 rounded flex-shrink-0" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div className="flex-1">
-                  <p className="text-[9px] font-black text-white">Account Activation Required</p>
-                  <p className="text-[7px] text-white/40">Verify your credentials and flight logs to unlock airline pathways.</p>
-                </div>
-                <div className="px-3 py-1 rounded text-[8px] font-black text-white" style={{ background: '#3b82f6' }}>GET STARTED ›</div>
-              </div>
-
-              {/* MY PATHWAYS banner */}
-              <div className="relative rounded overflow-hidden flex-shrink-0" style={{ height: '120px' }}>
-                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.75 }} />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(5,10,20,0.7) 0%, transparent 60%)' }} />
-                <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[7px] font-black" style={{ background: '#ef4444', color: 'white' }}>Profile Match: 0%</div>
-                <div className="absolute bottom-3 left-3">
-                  <p className="text-[8px] font-black text-white/50 uppercase tracking-wider">›</p>
-                  <p className="text-xs font-black text-white">MY PATHWAYS</p>
-                  <p className="text-[7px] text-white/50">Complete your profile to reach 100% eligibility</p>
-                </div>
-              </div>
-
-              {/* Middle row: Programs + Logbook+Credentials */}
-              <div className="flex gap-2 flex-shrink-0" style={{ height: '90px' }}>
-                {/* MY PROGRAMS */}
-                <div className="flex-1 relative rounded overflow-hidden">
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png')", opacity: 0.65 }} />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.85) 0%, transparent 60%)' }} />
-                  <div className="absolute bottom-2 left-2">
-                    <p className="text-[7px] font-black text-white/40">›</p>
-                    <p className="text-[9px] font-black text-white">MY PROGRAMS</p>
-                  </div>
-                </div>
-                {/* Logbook + Credentials stacked */}
-                <div className="flex-1 flex flex-col gap-1">
-                  <div className="flex-1 flex items-center gap-2 px-2 rounded" style={{ background: 'rgba(30,41,59,0.9)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)' }}>
-                      <div className="w-2 h-2 rounded-sm" style={{ background: '#3b82f6' }} />
-                    </div>
-                    <div>
-                      <p className="text-[8px] font-black text-white">DIGITAL LOGBOOK</p>
-                      <p className="text-[6px] text-white/30">Log your first flight</p>
-                    </div>
-                  </div>
-                  <div className="flex-1 flex items-center gap-2 px-2 rounded" style={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(234,179,8,0.18)' }}>
-                      <div className="w-2 h-2 rounded-sm" style={{ background: '#fbbf24' }} />
-                    </div>
-                    <div>
-                      <p className="text-[8px] font-black text-white">PILOT CREDENTIALS</p>
-                      <p className="text-[6px] text-white/30">No credentials yet</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom row: Type Rating + Operator Expectations */}
-              <div className="flex gap-2 flex-1">
-                <div className="flex-1 relative rounded overflow-hidden">
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')", opacity: 0.7 }} />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.9) 0%, transparent 50%)' }} />
-                  <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5" style={{ background: 'rgba(5,10,20,0.8)' }}>
-                    <p className="text-[6px] text-white/40 uppercase">Recommended</p>
-                    <p className="text-[8px] font-black text-white">Type Rating Search</p>
-                  </div>
-                </div>
-                <div className="flex-1 relative rounded overflow-hidden">
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.7 }} />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.9) 0%, transparent 50%)' }} />
-                  <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5" style={{ background: 'rgba(5,10,20,0.8)' }}>
-                    <p className="text-[6px] text-white/40 uppercase">Explore</p>
-                    <p className="text-[8px] font-black text-white">Operator Expectations</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Glass overlay — 40% dark navy */}
-          <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.42)', backdropFilter: 'blur(3px)' }} />
-
-          {/* Minimalist gate */}
-          <div className="relative z-10 flex flex-col items-center text-center px-8 mt-6">
-            {/* Auth0 shield */}
-            <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.22),rgba(16,185,129,0.12))', border: '1.5px solid rgba(22,163,74,0.45)' }}>
-              <Shield size={34} className="text-emerald-400" />
-              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-widest whitespace-nowrap px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Secure Pre-Flight Authorization Gateway</span>
-            </div>
-
-            {/* Status badges */}
-            <div className="flex flex-col gap-1.5 mb-6">
-              {['🔒 Identity Token Status: Standby (Awaiting Auth0 Clearance)', '🔒 Cryptographic Vault Status: Secure / Isolated'].map(badge => (
-                <span key={badge} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' }}>
-                  {badge}
-                </span>
-              ))}
-            </div>
-
-            {/* Single sign-in button */}
-            <button
-              onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-              className="px-8 py-3 text-xs font-black tracking-widest text-white/80 transition-all hover:text-white hover:border-white/40"
-              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px' }}
-            >
-              Existing Captains: Authenticate Credentials Here →
-            </button>
-          </div>
-        </motion.div>
-      </motion.div>
-    );
-  }
 
   return (
     <motion.div
@@ -1956,27 +1729,103 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
     return () => clearInterval(id);
   }, []);
 
+  const [dashTier, setDashTier] = React.useState<'free'|'plus'>('plus');
+  const dashFreeFeatures = [
+    { icon: BookOpen, label: 'Digital Logbook Record',    sub: 'Log your flight history securely on a verified network.' },
+    { icon: Globe,    label: 'Global Pathway Discovery',  sub: 'Instantly browse international operator requirements worldwide.' },
+    { icon: User,     label: 'Basic Pilot Profile',       sub: 'Establish your initial digital identity on the PilotRecognition platform.' },
+  ];
+  const dashPlusFeatures = [
+    { icon: Shield, label: 'Automated Credential Background Check', sub: 'Tokenize physical licences, medical certificates, and radio telemetry ratings via an encrypted, zero-knowledge pipeline routed directly to your issuing Civil Aviation Authority.' },
+    { icon: Target, label: 'Live Route & Fleet Requirements Audit',  sub: 'Instantly audit your flight hours, type ratings, and currency data against live hiring metrics for Singapore Airlines and global operator pathways.' },
+    { icon: Zap,    label: 'Expedited ATO Validation Protocol',      sub: 'Programmatically issue a $5.00 compliance validation incentive to your designated Approved Training Organisation via the Helio network to fast-track your logbook audit verification.' },
+  ];
+  const dashFeatures = dashTier === 'free' ? dashFreeFeatures : dashPlusFeatures;
+
   if (!currentUser) return (
-    <div className="text-center py-20">
-      <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-slate-700 flex items-center justify-center">
-        <BarChart3 size={40} className="text-slate-400" />
-      </div>
-      <h2 className="text-2xl font-bold text-white mb-3 tracking-wider">Login to View Your Dashboard</h2>
-      <p className="text-slate-300 mb-8 max-w-md mx-auto">Sign in to view real-time data from your Recognition Profile</p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all">LOGIN</button>
-        <button onClick={() => { window.location.href = '/become-member'; }} className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all">BECOME A MEMBER</button>
-      </div>
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-        {[{icon: BarChart3, color: 'text-teal-400', title: 'Flight Analytics', desc: 'Track your flight hours and progress'}, {icon: GraduationCap, color: 'text-purple-400', title: 'Program Progress', desc: 'Monitor your training completion'}, {icon: Plane, color: 'text-blue-400', title: 'Pathway Insights', desc: 'Discover career opportunities'}].map(({icon: Icon, color, title, desc}) => (
-          <div key={title} className="text-center">
-            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-700 flex items-center justify-center"><Icon size={20} className={color} /></div>
-            <h3 className="text-white font-semibold mb-1">{title}</h3>
-            <p className="text-slate-400 text-sm">{desc}</p>
+    <motion.div className="flex w-full" style={{ height: 'calc(100vh - 108px)', maxHeight: 'calc(100vh - 108px)', overflow: 'hidden' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+      {/* LEFT: white enterprise form */}
+      <motion.div className="w-1/2 flex flex-col px-8 py-4 bg-white overflow-hidden" style={{ borderRight: '1px solid #e2e8f0' }} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+        <div className="mb-4">
+          <div className="flex items-center gap-1 mb-2">
+            <span className="text-sm font-black text-slate-900" style={{ fontFamily: 'Arial Black, sans-serif' }}>pilot</span>
+            <span className="text-sm font-black text-red-600" style={{ fontFamily: 'Arial Black, sans-serif' }}>recognition</span>
+            <span className="text-slate-300 mx-1.5">|</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pilot Portal</span>
           </div>
-        ))}
-      </div>
-    </div>
+          <h1 className="text-xl font-black text-slate-900 leading-tight">Unlock Your Digital<br/>Flight Deck</h1>
+          <p className="text-xs text-slate-800 mt-1 leading-snug">Authenticate or register to manage verified pilot credentials, cross-reference profile metrics against live operator criteria, and establish a direct connection to international carriers and manufacturing pipelines.</p>
+        </div>
+        <div className="flex mb-2 rounded-xl overflow-hidden border border-slate-200">
+          <button onClick={() => setDashTier('free')} className="flex-1 py-2 text-center text-xs font-bold transition-all" style={{ background: dashTier === 'free' ? '#f1f5f9' : 'white', color: dashTier === 'free' ? '#0f172a' : '#94a3b8' }}>Free Pilot Account</button>
+          <button onClick={() => setDashTier('plus')} className="flex-1 py-2 text-center text-xs font-black transition-all" style={{ background: dashTier === 'plus' ? 'linear-gradient(90deg,rgba(234,179,8,0.12),rgba(251,146,60,0.08))' : 'white', color: dashTier === 'plus' ? '#b45309' : '#94a3b8', borderLeft: '1px solid #e2e8f0' }}>⭐ Recognition+ Member</button>
+        </div>
+        <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: dashTier === 'plus' ? '#d97706' : '#94a3b8' }}>{dashTier === 'free' ? 'Your Free Pilot Account Includes' : 'Unlocked with Recognition+'}</p>
+        <div className="flex flex-col gap-1.5" style={{ flex: '0 0 auto' }}>
+          {dashFeatures.map(({ icon: Icon, label, sub }) => (
+            <div key={label} className="flex items-center gap-3 p-2 rounded-xl border transition-all" style={{ background: dashTier === 'plus' ? '#fffbeb' : '#f8fafc', borderColor: dashTier === 'plus' ? '#fde68a' : '#e2e8f0' }}>
+              <div className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center border" style={{ background: dashTier === 'plus' ? '#fef3c7' : '#f1f5f9', borderColor: dashTier === 'plus' ? '#fcd34d' : '#cbd5e1' }}>
+                <Icon size={13} style={{ color: dashTier === 'plus' ? '#d97706' : '#64748b' }} />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-bold text-slate-900 leading-none mb-0.5">{label}</p>
+                <p className="text-[10px] text-slate-500 leading-snug">{sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col gap-2 mt-3">
+          <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl" style={{ background: '#dc2626' }}>{dashTier === 'free' ? 'Get Recognition Free' : 'Login'}</button>
+          <button onClick={() => window.location.href = '/become-member'} className="w-full py-2 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl" style={{ background: 'linear-gradient(90deg,#f59e0b,#f97316)', color: '#fff' }}>{dashTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}</button>
+        </div>
+        <div className="flex items-center gap-4 mt-2 pt-2 border-t border-slate-100">
+          {[{ name: 'Auth0 Secured', dot: '#3b82f6' }, { name: 'Helio Payments', dot: '#a855f7' }, { name: 'Veremark Verified', dot: '#16a34a' }].map(({ name, dot }, i) => (
+            <React.Fragment key={name}>{i > 0 && <span className="text-slate-200">|</span>}<div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} /><span className="text-[9px] font-bold text-slate-400">{name}</span></div></React.Fragment>
+          ))}
+        </div>
+      </motion.div>
+      {/* RIGHT: blurred dashboard preview */}
+      <motion.div className="w-1/2 relative overflow-hidden flex flex-col items-center justify-center pt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }}>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ background: 'rgba(15,23,42,1)' }}>
+          <div className="w-full h-full flex flex-col gap-2 p-3" style={{ filter: 'blur(2px)', opacity: 0.6, transform: 'scale(0.82)', transformOrigin: 'top left', width: '122%', height: '122%' }}>
+            <div className="flex items-center gap-3 px-4 py-2.5 rounded flex-shrink-0" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <div className="flex-1"><p className="text-[9px] font-black text-white">Account Activation Required</p><p className="text-[7px] text-white/40">Verify your credentials and flight logs to unlock airline pathways.</p></div>
+              <div className="px-3 py-1 rounded text-[8px] font-black text-white" style={{ background: '#3b82f6' }}>GET STARTED ›</div>
+            </div>
+            <div className="relative rounded overflow-hidden flex-shrink-0" style={{ height: '120px' }}>
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.75 }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(5,10,20,0.7) 0%, transparent 60%)' }} />
+              <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[7px] font-black" style={{ background: '#ef4444', color: 'white' }}>Profile Match: 0%</div>
+              <div className="absolute bottom-3 left-3"><p className="text-xs font-black text-white">MY PATHWAYS</p><p className="text-[7px] text-white/50">Complete your profile to reach 100% eligibility</p></div>
+            </div>
+            <div className="flex gap-2 flex-shrink-0" style={{ height: '90px' }}>
+              <div className="flex-1 relative rounded overflow-hidden"><div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png')", opacity: 0.65 }} /><div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.85) 0%, transparent 60%)' }} /><div className="absolute bottom-2 left-2"><p className="text-[9px] font-black text-white">MY PROGRAMS</p></div></div>
+              <div className="flex-1 flex flex-col gap-1">
+                <div className="flex-1 flex items-center gap-2 px-2 rounded" style={{ background: 'rgba(30,41,59,0.9)', border: '1px solid rgba(255,255,255,0.1)' }}><div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)' }}><div className="w-2 h-2 rounded-sm" style={{ background: '#3b82f6' }} /></div><div><p className="text-[8px] font-black text-white">DIGITAL LOGBOOK</p><p className="text-[6px] text-white/30">Log your first flight</p></div></div>
+                <div className="flex-1 flex items-center gap-2 px-2 rounded" style={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)' }}><div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(234,179,8,0.18)' }}><div className="w-2 h-2 rounded-sm" style={{ background: '#fbbf24' }} /></div><div><p className="text-[8px] font-black text-white">PILOT CREDENTIALS</p><p className="text-[6px] text-white/30">No credentials yet</p></div></div>
+              </div>
+            </div>
+            <div className="flex gap-2 flex-1">
+              <div className="flex-1 relative rounded overflow-hidden"><div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')", opacity: 0.7 }} /><div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.9) 0%, transparent 50%)' }} /><div className="absolute bottom-0 left-0 right-0 px-2 py-1.5" style={{ background: 'rgba(5,10,20,0.8)' }}><p className="text-[6px] text-white/40 uppercase">Recommended</p><p className="text-[8px] font-black text-white">Type Rating Search</p></div></div>
+              <div className="flex-1 relative rounded overflow-hidden"><div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.7 }} /><div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.9) 0%, transparent 50%)' }} /><div className="absolute bottom-0 left-0 right-0 px-2 py-1.5" style={{ background: 'rgba(5,10,20,0.8)' }}><p className="text-[6px] text-white/40 uppercase">Explore</p><p className="text-[8px] font-black text-white">Operator Expectations</p></div></div>
+            </div>
+          </div>
+        </div>
+        <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.42)', backdropFilter: 'blur(3px)' }} />
+        <div className="relative z-10 flex flex-col items-center text-center px-8 mt-6">
+          <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.22),rgba(16,185,129,0.12))', border: '1.5px solid rgba(22,163,74,0.45)' }}>
+            <Shield size={34} className="text-emerald-400" />
+            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-widest whitespace-nowrap px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Secure Pre-Flight Authorization Gateway</span>
+          </div>
+          <div className="flex flex-col gap-1.5 mb-6">
+            {['🔒 Identity Token Status: Standby (Awaiting Auth0 Clearance)', '🔒 Cryptographic Vault Status: Secure / Isolated'].map(badge => (
+              <span key={badge} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' }}>{badge}</span>
+            ))}
+          </div>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="px-8 py-3 text-xs font-black tracking-widest text-white/80 transition-all hover:text-white" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px' }}>Existing Captains: Authenticate Credentials Here →</button>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 
   return (
