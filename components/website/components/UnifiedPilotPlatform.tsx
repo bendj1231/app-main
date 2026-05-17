@@ -541,8 +541,12 @@ const HomeTab: React.FC<{
               {[1,2,3,4].map(s => (
                 <div key={s} className="flex-1 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
                   <div
-                    className="h-full transition-all duration-600"
-                    style={{ width: onboardingStep >= s ? '100%' : '0%', background: obDone ? '#34d399' : 'linear-gradient(90deg,#3b82f6,#6366f1)' }}
+                    className="h-full transition-all duration-500"
+                    style={{
+                      width: onboardingStep >= s ? '100%' : '0%',
+                      background: obDone ? '#34d399' : '#38bdf8',
+                      boxShadow: onboardingStep >= s ? '0 0 6px rgba(56,189,248,0.7)' : 'none'
+                    }}
                   />
                 </div>
               ))}
@@ -559,15 +563,18 @@ const HomeTab: React.FC<{
                   <div className="space-y-3">
                     <div>
                       <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Primary ATO / Flight School *</label>
-                      <select
-                        value={obATO}
-                        onChange={e => setObATO(e.target.value)}
-                        className="w-full px-3 py-2.5 text-xs font-semibold text-white outline-none"
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
-                      >
-                        <option value="" style={{ background: '#0a1224' }}>— Select ATO —</option>
-                        {ATO_LIST.map(a => <option key={a} value={a} style={{ background: '#0a1224' }}>{a}</option>)}
-                      </select>
+                      <div className="relative">
+                        <select
+                          value={obATO}
+                          onChange={e => setObATO(e.target.value)}
+                          className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold text-white outline-none"
+                          style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)', color: obATO ? 'white' : 'rgba(255,255,255,0.4)' }}
+                        >
+                          <option value="" style={{ background: '#0a1224' }}>— Select ATO —</option>
+                          {ATO_LIST.map(a => <option key={a} value={a} style={{ background: '#0a1224' }}>{a}</option>)}
+                        </select>
+                        <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-white/30 pointer-events-none" />
+                      </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
@@ -577,21 +584,24 @@ const HomeTab: React.FC<{
                           value={obLicense}
                           onChange={e => setObLicense(e.target.value)}
                           placeholder="e.g. 155660-CPL"
-                          className="w-full px-3 py-2.5 text-xs text-white placeholder-white/20 outline-none"
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
+                          className="w-full px-3 py-2.5 text-xs text-white placeholder-white/35 outline-none"
+                          style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)' }}
                         />
                       </div>
                       <div>
                         <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Medical Class *</label>
-                        <select
-                          value={obMedical}
-                          onChange={e => setObMedical(e.target.value)}
-                          className="w-full px-3 py-2.5 text-xs font-semibold text-white outline-none"
-                          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
-                        >
-                          <option value="" style={{ background: '#0a1224' }}>— Select Class —</option>
-                          {['Class 1 (Commercial)', 'Class 2 (Private)', 'Class 3 (ATCO)'].map(c => <option key={c} value={c} style={{ background: '#0a1224' }}>{c}</option>)}
-                        </select>
+                        <div className="relative">
+                          <select
+                            value={obMedical}
+                            onChange={e => setObMedical(e.target.value)}
+                            className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold text-white outline-none"
+                            style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)', color: obMedical ? 'white' : 'rgba(255,255,255,0.4)' }}
+                          >
+                            <option value="" style={{ background: '#0a1224' }}>— Select Class —</option>
+                            {['Class 1 (Commercial)', 'Class 2 (Private)', 'Class 3 (ATCO)'].map(c => <option key={c} value={c} style={{ background: '#0a1224' }}>{c}</option>)}
+                          </select>
+                          <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-white/30 pointer-events-none" />
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -600,21 +610,23 @@ const HomeTab: React.FC<{
                         type="text"
                         value={obRadio}
                         onChange={e => setObRadio(e.target.value)}
-                        placeholder="e.g. 22 RANCR-22517 (optional)"
-                        className="w-full px-3 py-2.5 text-xs text-white placeholder-white/20 outline-none"
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}
+                        placeholder="e.g., Radio Telephony Licence Number (Optional)"
+                        className="w-full px-3 py-2.5 text-xs text-white placeholder-white/35 outline-none"
+                        style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)' }}
                       />
                     </div>
                   </div>
-                  <div className="flex items-start gap-2 p-3" style={{ background: 'rgba(59,130,246,0.07)', border: '1px solid rgba(59,130,246,0.18)' }}>
-                    <Lock size={10} className="text-blue-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-[9px] text-blue-300/60 leading-relaxed">These details are used only to initiate verification. PilotRecognition.com never stores your raw licence number — only the cryptographic token result is retained.</p>
+                  <div className="flex items-start gap-2.5 p-3" style={{ background: 'rgba(5,15,25,0.85)', border: '1px solid rgba(16,185,129,0.35)', boxShadow: '0 0 12px rgba(16,185,129,0.08)' }}>
+                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)' }}>
+                      <Lock size={8} className="text-emerald-400" />
+                    </div>
+                    <p className="text-[9px] text-white/70 leading-relaxed"><strong className="text-emerald-400">PilotRecognition.com never stores your raw data.</strong> These details are used only to initiate verification — only the cryptographic token result is retained.</p>
                   </div>
                   <button
                     disabled={!obATO || !obLicense || !obMedical}
                     onClick={() => setOnboardingStep(2)}
-                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-25"
-                    style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.85),rgba(99,102,241,0.85))', border: '1px solid rgba(99,102,241,0.4)' }}
+                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-25 hover:brightness-110"
+                    style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)', border: '1px solid rgba(255,255,255,0.25)', boxShadow: '0 0 16px rgba(37,99,235,0.4)' }}
                   >
                     CONTINUE →
                   </button>
