@@ -587,37 +587,75 @@ const HomeTab: React.FC<{
                     </p>
                   </div>
 
-                  {/* Read-Only Token Matrix — flat profile card style */}
-                  <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
-                    <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid #e2e8f0' }}>
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
-                        <p className="text-[10px] font-semibold text-green-700">Automated Encrypted Session Attributes</p>
+                  {/* Bill of Purchase — Service Order */}
+                  <div style={{ border: '1px solid #1a1a1a' }}>
+                    {/* Document header */}
+                    <div className="px-4 py-3 flex items-start justify-between" style={{ background: '#1a1a1a' }}>
+                      <div>
+                        <p className="text-[8px] font-light tracking-[0.2em] text-white/40 uppercase mb-0.5">PilotRecognition — Transmedium Service Order</p>
+                        <p className="text-[11px] font-bold text-white">Pilot Identity Credential Verification</p>
                       </div>
-                      <div className="flex items-center gap-1.5 px-2 py-0.5" style={{ background: '#f0fdf4', border: `1px solid ${detectedRegion.colour}30` }}>
-                        <span className="text-[9px]">{detectedRegion.flag}</span>
-                        <span className="text-[8px] font-bold" style={{ color: detectedRegion.colour }}>{detectedRegion.label}</span>
-                        <span className="text-[8px] text-gray-400">·</span>
-                        <span className="text-[8px] font-semibold text-gray-700">{detectedRegion.provider}</span>
+                      <div className="text-right">
+                        <p className="text-[8px] text-white/40">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+                        <p className="text-[8px] font-mono text-white/60">{profile?.id ? `REF-${profile.id.slice(-8).toUpperCase()}` : 'REF-PENDING'}</p>
                       </div>
                     </div>
-                    <div className="px-4 py-3 space-y-2.5">
-                      {[
-                        { label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
-                        { label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? 'Alpha Flight Academy' },
-                        { label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Civil Aviation Authority of the Philippines' },
-                        { label: 'Detected Regional Provider', value: `${detectedRegion.flag} ${detectedRegion.provider} (${detectedRegion.label})` },
-                        { label: 'System Timestamp Epoch', value: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + ' — ' + new Date().toISOString().slice(11,19) + ' UTC' },
-                      ].map(row => (
-                        <div key={row.label} className="flex items-baseline gap-3">
-                          <span className="text-[9px] text-gray-400 w-44 flex-shrink-0">{row.label}</span>
-                          <span className="text-[10px] font-semibold text-gray-800 select-none">{row.value}</span>
-                        </div>
-                      ))}
+
+                    {/* Party roster */}
+                    <div className="px-4 pt-3 pb-2" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                      <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Parties to this Service Order</p>
+                      <div className="space-y-1.5">
+                        {[
+                          { role: 'Pilot (Data Subject)', value: profile?.full_name ?? 'Session User', note: 'Consent grantor. Owns profile and documents.' },
+                          { role: 'Approved Training Organisation', value: profile?.ato_name ?? 'Alpha Flight Academy', note: 'Attesting party for training hours.' },
+                          { role: 'Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Philippines', note: 'Source of truth. Issues licences & medicals.' },
+                          { role: 'Regional Verification Provider', value: `${detectedRegion.flag} ${detectedRegion.provider}`, note: `Verifying party — ${detectedRegion.label} node.` },
+                          { role: 'Transmedium (Interface Only)', value: 'PilotRecognition.com', note: 'Routes consent only. Holds no data. Verifies nothing.' },
+                        ].map(p => (
+                          <div key={p.role} className="flex items-baseline gap-2">
+                            <span className="text-[8px] text-gray-400 w-40 flex-shrink-0">{p.role}</span>
+                            <div className="flex-1">
+                              <span className="text-[9px] font-bold text-gray-900">{p.value}</span>
+                              <span className="text-[8px] text-gray-400 ml-1.5">{p.note}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="px-4 py-2.5 space-y-1" style={{ borderTop: '1px solid #e2e8f0', background: '#f0fdf4' }}>
-                      <p className="text-[8px] font-semibold text-green-800 uppercase tracking-wide">System Constraint Notice</p>
-                      <p className="text-[8px] text-gray-500 leading-relaxed italic">This interface functions exclusively as a secure pipeline relay. The underlying platform possesses no data decryption keys, database retention architecture, or administrative privileges required to intercept, modify, or cache your raw unencrypted credentials. The payload is directly transmitted to the verification endpoint as an immutable token bundle.</p>
+
+                    {/* Service line items */}
+                    <div className="px-4 pt-2 pb-3" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                      <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Service Line Items</p>
+                      <div className="space-y-1">
+                        {[
+                          { item: 'Professional Qualification Check (CAA registry query)', qty: '1', provider: detectedRegion.provider },
+                          { item: 'ATO Training Hours Attestation & Logbook Tokenization', qty: '1', provider: 'Designated ATO' },
+                          { item: 'Logbook Sync — Verified Token Receipt', qty: '1', provider: 'Third-Party Logbook Registry' },
+                          { item: 'Yearly Re-Check (included — Recognition+ active)', qty: '1 yr', provider: detectedRegion.provider },
+                        ].map(s => (
+                          <div key={s.item} className="flex items-baseline justify-between gap-2">
+                            <div className="flex-1">
+                              <p className="text-[9px] text-gray-800">{s.item}</p>
+                              <p className="text-[8px] text-gray-400">via {s.provider}</p>
+                            </div>
+                            <span className="text-[8px] text-gray-500 flex-shrink-0">×{s.qty}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Auth0 session token */}
+                    <div className="flex items-center justify-between px-4 py-2" style={{ borderBottom: '1px solid #e2e8f0', background: '#f8fafc' }}>
+                      <span className="text-[8px] text-gray-400">Auth0 Session Identifier</span>
+                      <span className="text-[9px] font-mono font-bold text-gray-700 select-none">
+                        {profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f'}
+                      </span>
+                    </div>
+
+                    {/* System constraint footer */}
+                    <div className="px-4 py-2.5" style={{ background: '#f0fdf4', borderTop: '1px solid #d1fae5' }}>
+                      <p className="text-[8px] font-semibold text-green-800 uppercase tracking-wide mb-0.5">System Constraint — Transmedium Only</p>
+                      <p className="text-[8px] text-gray-500 leading-relaxed italic">PilotRecognition holds no data and verifies nothing. This interface routes consent only. The underlying platform possesses no decryption keys, retention architecture, or administrative access to intercept or cache raw credentials. The payload is transmitted directly to the verification endpoint as an immutable token bundle.</p>
                     </div>
                   </div>
 
