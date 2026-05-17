@@ -106,7 +106,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     ].map((point) => (
                                         <li key={point.bold} className="flex items-start gap-2 text-xs text-white/90">
                                             <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
-                                            <span><span className="font-bold text-white">{point.bold}</span> {point.body}</span>
+                                            <span><span className="font-bold text-red-500">{point.bold}</span> {point.body}</span>
                                         </li>
                                     ))}
                                 </ul>
