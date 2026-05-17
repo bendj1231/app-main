@@ -80,13 +80,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 <div className="relative z-10 flex-1 flex items-center justify-center px-4 py-24">
                     <div className="w-full max-w-md">
 
-                        {/* Logo */}
+                        {/* Header */}
                         <div className="text-center mb-10">
-                            <img
-                                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                                alt="PilotRecognition"
-                                className="h-12 mx-auto mb-6 object-contain"
-                            />
                             <h1 className="text-2xl font-semibold text-white mb-2">Create your account</h1>
                             <p className="text-slate-400 text-sm">Free access to Programs, Pathways &amp; Pilot Recognition</p>
                         </div>
