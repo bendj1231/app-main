@@ -367,7 +367,7 @@ const HomeTab: React.FC<{
       </motion.div>
 
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
-      <div className="flex-1 flex flex-col gap-4">
+      <div className="flex-1 flex flex-col gap-4 relative">
 
         {/* ── WELCOME BAR — dismissible, first-visit only ── */}
         {!welcomeDismissed && profile && (
@@ -587,6 +587,37 @@ const HomeTab: React.FC<{
           </motion.div>
         </div>
 
+        {/* ── LOGGED OUT OVERLAY ── */}
+        {!profile && (
+          <div
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8"
+            style={{ background: 'rgba(10,15,30,0.72)', backdropFilter: 'blur(6px)' }}
+          >
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
+              <Lock size={28} className="text-white/50" />
+            </div>
+            <h3 className="text-lg font-black text-white mb-2 leading-snug tracking-wide">Sign In to Access Your Dashboard</h3>
+            <p className="text-[12px] text-white/50 leading-relaxed max-w-xs">
+              Sign in to access personalised pathways, profile matching careers and connect with Operators and Manufacturers Worldwide.
+            </p>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
+                className="px-6 py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
+                style={{ background: '#3b82f6', borderRadius: '8px' }}
+              >
+                LOGIN
+              </button>
+              <button
+                onClick={() => window.location.href = '/become-member'}
+                className="px-6 py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
+                style={{ background: '#ef4444', borderRadius: '8px' }}
+              >
+                BECOME A MEMBER
+              </button>
+            </div>
+          </div>
+        )}
       </div>{/* end right flex col */}
 
       {/* ════════════════════════════════════════════════════════════
