@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { MeshGradient } from '@paper-design/shaders-react';
 import { TopNavbar } from './TopNavbar';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
+import { shouldEnable3DEffects } from '@/src/lib/device-detection';
 
 interface BecomeMemberPageProps {
     onBack: () => void;
@@ -22,6 +24,11 @@ const GoogleIcon = () => (
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
     const { loginWithRedirect } = useAuth0();
+    const [enableShader, setEnableShader] = useState(false);
+
+    useEffect(() => {
+        setEnableShader(shouldEnable3DEffects());
+    }, []);
 
     const handleEmailSignup = () => {
         loginWithRedirect({
@@ -48,10 +55,29 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 { name: 'Home', url: '/' },
                 { name: 'Create Account', url: '/become-member' }
             ]} />
-            <div className="min-h-screen bg-[#0a1628] flex flex-col">
-                <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
+            <div className="relative min-h-screen flex flex-col">
 
-                <div className="flex-1 flex items-center justify-center px-4 py-24">
+                {/* Background — same shader as HomePage & platform */}
+                <div className="fixed inset-0 z-0">
+                    {enableShader ? (
+                        <MeshGradient
+                            className="w-full h-full"
+                            colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
+                            speed={0.22}
+                        />
+                    ) : (
+                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+                    <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+                    <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
+                </div>
+
+                <div className="relative z-10">
+                <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
+                </div>
+
+                <div className="relative z-10 flex-1 flex items-center justify-center px-4 py-24">
                     <div className="w-full max-w-md">
 
                         {/* Logo */}
