@@ -144,6 +144,9 @@ const HomeTab: React.FC<{
   const [obLogbookSyncing, setObLogbookSyncing] = React.useState(false);
   const [obVaultUrl, setObVaultUrl] = React.useState('');
   const [obVaultLinked, setObVaultLinked] = React.useState(false);
+  const [obCAA, setObCAA] = React.useState(profile?.caa_region ?? '');
+  const [obATOs, setObATOs] = React.useState<string[]>(profile?.ato_name ? [profile.ato_name] : ['']);
+  const [obLogbookProvider, setObLogbookProvider] = React.useState(profile?.logbook_provider ?? '');
 
   // ── Regional provider detection via timezone ──
   const detectedRegion = React.useMemo(() => {
@@ -605,18 +608,104 @@ const HomeTab: React.FC<{
                         <span className="text-[8px] font-bold" style={{ color: detectedRegion.colour }}>{detectedRegion.label} · {detectedRegion.provider}</span>
                       </div>
                     </div>
-                    {[
-                      { label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '— Not resolved' },
-                      { label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? '— Not set on profile' },
-                      { label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? '— Not set on profile' },
-                      { label: 'Logbook Provider', value: profile?.logbook_provider ?? '— Not connected' },
-                      { label: 'System Timestamp Epoch', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
-                    ].map(row => (
-                      <div key={row.label} className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
-                        <span className="text-[9px] font-medium w-44 flex-shrink-0" style={{ color: '#cc0000' }}>{row.label}</span>
-                        <span className="text-[10px] font-semibold text-gray-900 select-none">{row.value}</span>
+                    {/* Auth0 ID — read only */}
+                    <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <span className="text-[9px] font-medium w-44 flex-shrink-0" style={{ color: '#cc0000' }}>Auth0 Cryptographic Identifier</span>
+                      <span className="text-[10px] font-semibold text-gray-900 select-none font-mono">{profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '— Not resolved'}</span>
+                    </div>
+
+                    {/* Civil Aviation Authority — dropdown */}
+                    <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <span className="text-[9px] font-medium block mb-1.5" style={{ color: '#cc0000' }}>Jurisdictional Civil Aviation Authority</span>
+                      <select
+                        value={obCAA}
+                        onChange={e => setObCAA(e.target.value)}
+                        className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                        style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                      >
+                        <option value="">Select Civil Aviation Authority...</option>
+                        {[
+                          'CAAP — Civil Aviation Authority of the Philippines',
+                          'CASA — Civil Aviation Safety Authority (Australia)',
+                          'CAA — Civil Aviation Authority (UK)',
+                          'EASA — European Union Aviation Safety Agency',
+                          'FAA — Federal Aviation Administration (USA)',
+                          'DGCA — Directorate General of Civil Aviation (India)',
+                          'CAAS — Civil Aviation Authority of Singapore',
+                          'GCAA — General Civil Aviation Authority (UAE)',
+                          'TCCA — Transport Canada Civil Aviation',
+                          'CAA — Civil Aviation Authority (New Zealand)',
+                          'SACAA — South African Civil Aviation Authority',
+                          'ANAC — Agência Nacional de Aviação Civil (Brazil)',
+                          'DGAC — Direction Générale de l\'Aviation Civile (France)',
+                          'LBA — Luftfahrt-Bundesamt (Germany)',
+                          'ENAC — Ente Nazionale per l\'Aviazione Civile (Italy)',
+                          'AESA — Agencia Estatal de Seguridad Aérea (Spain)',
+                          'JCAB — Japan Civil Aviation Bureau',
+                          'CAAC — Civil Aviation Administration of China',
+                          'AAI — Airports Authority of India',
+                          'ICAO — International Civil Aviation Organization (Other)',
+                        ].map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+
+                    {/* Target ATO — text input, multi-ATO support */}
+                    <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[9px] font-medium" style={{ color: '#cc0000' }}>Target Training Provider (ATO)</span>
+                        {obATOs.length > 1 && (
+                          <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#fff7ed', color: '#c2410c', border: '1px solid #fed7aa' }}>
+                            +${(obATOs.length - 1) * 30}.00 surcharge — {obATOs.length - 1} additional ATO{obATOs.length > 2 ? 's' : ''}
+                          </span>
+                        )}
                       </div>
-                    ))}
+                      <div className="space-y-1.5">
+                        {obATOs.map((ato, i) => (
+                          <div key={i} className="flex gap-2 items-center">
+                            <input
+                              type="text"
+                              value={ato}
+                              onChange={e => { const a = [...obATOs]; a[i] = e.target.value; setObATOs(a); }}
+                              placeholder={i === 0 ? 'Enter ATO or flight school name...' : `Additional ATO ${i + 1}...`}
+                              className="flex-1 px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                              style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                            />
+                            {i > 0 && (
+                              <button onClick={() => setObATOs(obATOs.filter((_, j) => j !== i))} className="text-gray-300 hover:text-red-500 transition-colors text-[11px] font-bold px-1">✕</button>
+                            )}
+                          </div>
+                        ))}
+                        <button
+                          onClick={() => setObATOs([...obATOs, ''])}
+                          className="text-[8px] font-semibold transition-colors"
+                          style={{ color: '#cc0000' }}
+                        >
+                          + Add another ATO (+$30.00 per additional)
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Logbook Provider — select */}
+                    <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <span className="text-[9px] font-medium block mb-1.5" style={{ color: '#cc0000' }}>Logbook Provider</span>
+                      <select
+                        value={obLogbookProvider}
+                        onChange={e => setObLogbookProvider(e.target.value)}
+                        className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                        style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                      >
+                        <option value="">Select logbook provider...</option>
+                        {['ForeFlight', 'MyFlightbook', 'Safelog', 'LogTen Pro', 'Pilot Log', 'Other / Not connected'].map(p => (
+                          <option key={p} value={p}>{p}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Timestamp — read only */}
+                    <div className="flex items-center gap-3 px-4 py-2.5">
+                      <span className="text-[9px] font-medium w-44 flex-shrink-0" style={{ color: '#cc0000' }}>System Timestamp Epoch</span>
+                      <span className="text-[10px] font-semibold text-gray-900 select-none">{new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'}</span>
+                    </div>
                   </div>
 
                   {/* Logbook Provider — Veremark Access Token */}
@@ -642,8 +731,8 @@ const HomeTab: React.FC<{
                       <div>
                         <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Logbook Provider</p>
                         <select
-                          value={obLogbookKey.split('::')[0] ?? ''}
-                          onChange={e => { setObLogbookKey(e.target.value + '::'); setObLogbookSynced(false); }}
+                          value={obLogbookProvider || obLogbookKey.split('::')[0] || ''}
+                          onChange={e => { setObLogbookProvider(e.target.value); setObLogbookKey(e.target.value + '::'); setObLogbookSynced(false); }}
                           className="w-full px-3 py-2 text-[10px] text-gray-900 outline-none"
                           style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
                         >
