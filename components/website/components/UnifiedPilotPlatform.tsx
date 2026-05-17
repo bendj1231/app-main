@@ -131,28 +131,22 @@ const HomeTab: React.FC<{
   const certCount = Array.isArray(certifications) ? certifications.length : 0;
   const hoursForNext = 50;
   const progressPct = Math.min((hours / hoursForNext) * 100, 100);
-
   const expiredChecks = walletChecks.filter(c => c.status === 'expired');
 
-  const dashboardCards = [
-    {
-      id: 'pathways',
-      title: 'MY PATHWAYS',
-      image: '/images/airline-operations.png',
-      onClick: () => setTab('pathways'),
-    },
-    {
-      id: 'programs',
-      title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS',
-      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-      onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program'),
-    },
-    {
-      id: 'logbook',
-      title: 'ACCESS LOGBOOK',
-      image: '/images/pilotrecognitioncompoennt.png',
-      onClick: () => onNavigate('digital-logbook'),
-    },
+  const steps = [
+    { step: 1, label: 'Complete Profile',    sublabel: 'Name, hours & occupation',  done: !!profile,                                          tab: 'profile'   as TabId, icon: User,     highlight: false },
+    { step: 2, label: 'Log Flight Hours',    sublabel: 'Add your first flight hour', done: hours > 0,                                          tab: 'logbook'   as TabId, icon: Clock,    highlight: false },
+    { step: 3, label: 'Verify Credentials',  sublabel: 'Wallet + Veremark token',    done: walletChecks.some(c => c.status === 'verified'),     tab: 'wallet'    as TabId, icon: Shield,   highlight: false },
+    { step: 4, label: 'Browse Pathways',     sublabel: 'Submit your interest',       done: score > 0,                                           tab: 'pathways'  as TabId, icon: Map,      highlight: false },
+    { step: 5, label: 'Start a Program',     sublabel: 'Foundation or Transition',   done: enrolledInFoundation,                                tab: 'programs'  as TabId, icon: BookOpen, highlight: false },
+    { step: 6, label: 'Recognition+',        sublabel: 'Upgrade Now — $99/yr',       done: false,                                               tab: 'settings'  as TabId, icon: Star,     highlight: true  },
+  ];
+  const completedCount = steps.filter(s => s.done).length;
+
+  const bCards = [
+    { id: 'pathways', title: 'MY PATHWAYS',   image: '/images/airline-operations.png',                                                                    onClick: () => setTab('pathways') },
+    { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
+    { id: 'logbook',  title: 'ACCESS LOGBOOK', image: '/images/pilotrecognitioncompoennt.png',                                                            onClick: () => onNavigate('digital-logbook') },
   ];
 
   return (
@@ -171,9 +165,8 @@ const HomeTab: React.FC<{
         style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
       >
         <div className="p-6 flex-1">
-          {/* Expiry warning */}
           {expiredChecks.length > 0 && (
-            <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+            <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
               <AlertTriangle size={12} className="flex-shrink-0" />
               {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
             </button>
@@ -181,48 +174,53 @@ const HomeTab: React.FC<{
 
           {/* Avatar */}
           <div className="relative w-24 h-24 mx-auto mb-4">
-            {profile?.profile_image_url ? (
-              <img src={profile.profile_image_url} alt={name} className="w-full h-full object-cover rounded-full border-2 border-white/30" />
-            ) : (
-              <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: '#3b82f6' }}>
-                {initials}
-              </div>
-            )}
+            {profile?.profile_image_url
+              ? <img src={profile.profile_image_url} alt={name} className="w-full h-full object-cover rounded-full border-2 border-white/30" />
+              : <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: '#3b82f6' }}>{initials}</div>}
           </div>
 
-          {/* Name + level */}
           <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
           <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">{level}</p>
 
-          {/* 2×2 stats */}
+          {/* 2×2 stats — gamified empty states */}
           <div className="grid grid-cols-2 gap-2 mb-4">
-            {[
-              { value: hours, label: 'HOURS', clickable: false, colour: undefined },
-              { value: score, label: 'SCORE', clickable: true, colour: score > 0 ? 'text-sky-300' : undefined },
-              { value: certCount, label: 'CERTS', clickable: false, colour: '' },
-              { value: Math.max(hoursForNext - hours, 0), label: 'TO NEXT', clickable: false, colour: 'text-orange-400' },
-            ].map(stat => (
-              <div
-                key={stat.label}
-                onClick={stat.clickable ? () => setTab('score' as TabId) : undefined}
-                className={`text-center p-2 rounded ${stat.clickable ? 'cursor-pointer hover:ring-1 hover:ring-sky-400/50 transition-all' : ''}`}
-                style={{ background: 'rgba(255,255,255,0.05)' }}
-              >
-                <p className={`text-lg font-bold ${stat.colour ?? 'text-white'}`}>{stat.value}</p>
-                <p className="text-xs text-white/60 uppercase">{stat.label}</p>
-              </div>
-            ))}
+            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              {hours > 0
+                ? <p className="text-lg font-bold text-white">{hours}</p>
+                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Log your first<br/>flight hour</p>}
+              <p className="text-xs text-white/60 uppercase mt-0.5">HOURS</p>
+            </div>
+            <div className="text-center p-2 cursor-pointer hover:ring-1 hover:ring-sky-400/50 transition-all" style={{ background: 'rgba(255,255,255,0.05)' }} onClick={() => setTab('score' as TabId)}>
+              {score > 0
+                ? <p className="text-lg font-bold text-sky-300">{score}</p>
+                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Build your<br/>profile first</p>}
+              <p className="text-xs text-white/60 uppercase mt-0.5">SCORE</p>
+            </div>
+            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              {certCount > 0
+                ? <p className="text-lg font-bold text-white">{certCount}</p>
+                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Add your<br/>credentials</p>}
+              <p className="text-xs text-white/60 uppercase mt-0.5">CERTS</p>
+            </div>
+            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <p className="text-lg font-bold text-orange-400">{Math.max(hoursForNext - hours, 0)}</p>
+              <p className="text-xs text-white/60 uppercase mt-0.5">TO NEXT</p>
+            </div>
           </div>
 
-          {/* Progress bar */}
+          {/* Progress bar — visible track */}
           <div className="mb-2">
-            <div className="flex justify-between text-xs text-white/60 mb-1">
-              <span>LEVEL PROGRESS</span>
-              <span>{Math.round(progressPct)}%</span>
+            <div className="flex justify-between text-xs mb-1">
+              <span className="text-white/60 uppercase tracking-wider text-[10px]">LEVEL PROGRESS</span>
+              <span className={`font-bold text-[10px] ${progressPct > 0 ? 'text-orange-400' : 'text-white/30'}`}>{Math.round(progressPct)}%</span>
             </div>
-            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
-              <div className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500" style={{ width: `${progressPct}%` }} />
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${Math.max(progressPct, progressPct > 0 ? 4 : 0)}%`, background: progressPct > 0 ? 'linear-gradient(90deg, #f97316, #ef4444)' : 'transparent' }}
+              />
             </div>
+            {progressPct === 0 && <p className="text-[9px] text-white/25 mt-1">Log hours to level up →</p>}
           </div>
         </div>
 
@@ -235,16 +233,92 @@ const HomeTab: React.FC<{
           <ChevronRight size={18} className="text-white/70" />
           <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
         </button>
+
+        {/* Recognition+ upgrade tile — gold accent */}
+        <button
+          onClick={() => setTab('settings' as TabId)}
+          className="w-full flex flex-col gap-1 px-5 py-4 transition-all hover:brightness-110"
+          style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
+        >
+          <div className="flex items-center gap-2">
+            <Star size={13} className="text-yellow-400 flex-shrink-0" />
+            <span className="text-xs font-black text-yellow-300 tracking-wider">RECOGNITION+</span>
+          </div>
+          <p className="text-[10px] text-yellow-500/80 font-semibold leading-snug">Priority pipeline access, unlimited pathway views & AI coach</p>
+          <div className="mt-1 w-full py-1.5 text-center text-[11px] font-black tracking-widest text-slate-900 rounded" style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}>
+            UPGRADE NOW — $99/YR
+          </div>
+        </button>
       </motion.div>
 
-      {/* ── RIGHT: Alerts + cards + CTA ── */}
+      {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
       <div className="flex-1 flex flex-col gap-4">
+
+        {/* ── GET STARTED — pinned to top for free users ── */}
+        <div
+          style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
+        >
+          <div className="px-5 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <div>
+              <p className="text-sm font-black text-white tracking-wide">Get Started</p>
+              <p className="text-[11px] text-white/40">Complete these steps to activate your Recognition Profile</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-1.5 w-20 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.12)' }}>
+                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500" style={{ width: `${(completedCount / steps.length) * 100}%` }} />
+              </div>
+              <span className="text-[10px] font-bold text-white/40">{completedCount}/{steps.length}</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-6 divide-x" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+            {steps.map((item, i) => {
+              const Icon = item.icon;
+              const isNext = i === completedCount;
+              return (
+                <button
+                  key={item.step}
+                  onClick={() => setTab(item.tab)}
+                  className="flex flex-col items-center gap-2 py-4 px-1.5 transition-all hover:brightness-125"
+                  style={{
+                    background: item.done
+                      ? 'rgba(16,185,129,0.06)'
+                      : item.highlight
+                        ? 'linear-gradient(180deg, rgba(234,179,8,0.12) 0%, rgba(251,146,60,0.08) 100%)'
+                        : 'transparent'
+                  }}
+                >
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                    item.done
+                      ? 'bg-emerald-500/25 ring-1 ring-emerald-500/40'
+                      : item.highlight
+                        ? 'bg-yellow-500/20 ring-1 ring-yellow-400/50'
+                        : isNext
+                          ? 'bg-sky-500/15 ring-1 ring-sky-400/30'
+                          : 'bg-white/5'
+                  }`}>
+                    {item.done
+                      ? <CheckCircle size={16} className="text-emerald-400" />
+                      : <Icon size={15} className={item.highlight ? 'text-yellow-300' : isNext ? 'text-sky-400' : 'text-white/30'} />
+                    }
+                  </div>
+                  <div className="text-center">
+                    <p className={`text-[10px] font-bold leading-tight ${
+                      item.done ? 'text-emerald-400' : item.highlight ? 'text-yellow-300' : isNext ? 'text-white/80' : 'text-white/40'
+                    }`}>{item.label}</p>
+                    <p className={`text-[9px] leading-tight mt-0.5 ${item.highlight ? 'text-yellow-500/70 font-semibold' : 'text-white/25'}`}>{item.sublabel}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Expired credential alert */}
         {expiredChecks.length > 0 && (
           <button
             onClick={() => setTab('wallet')}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all hover:brightness-110"
+            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:brightness-110"
             style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.4)' }}
           >
             <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center flex-shrink-0">
@@ -260,120 +334,48 @@ const HomeTab: React.FC<{
           </button>
         )}
 
-        {/* Bento grid */}
+        {/* Bento grid — unified overlay style on all 3 cards */}
         <div className="grid grid-cols-2 gap-4 content-start">
-        {/* Top card — MY PATHWAYS — full width */}
-        <motion.div
-          custom={0}
-          variants={cardVariants}
-          initial="hidden"
-          animate={visible ? 'visible' : 'hidden'}
-          onClick={dashboardCards[0].onClick}
-          className="col-span-2 relative group cursor-pointer overflow-hidden"
-          style={{ height: '280px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
-        >
-          <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-            style={{ backgroundImage: `url(${dashboardCards[0].image})`, opacity: 0.7 }} />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center gap-3">
-            <div className="w-10 h-10 flex items-center justify-center bg-white/10 border border-white/20">
-              <ChevronRight size={22} className="text-white" />
-            </div>
-            <h3 className="text-lg font-bold text-white tracking-wider">{dashboardCards[0].title}</h3>
-          </div>
-          <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-        </motion.div>
-
-        {/* Bottom two cards */}
-        {dashboardCards.slice(1).map((card, index) => (
+          {/* MY PATHWAYS — 60% height (shrunk from full) */}
           <motion.div
-            key={card.id}
-            custom={index + 1}
-            variants={cardVariants}
-            initial="hidden"
-            animate={visible ? 'visible' : 'hidden'}
-            onClick={card.onClick}
-            className="relative group cursor-pointer overflow-hidden"
-            style={{ minHeight: '160px', background: 'rgba(30,41,59,0.6)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}
+            custom={0} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+            onClick={bCards[0].onClick}
+            className="col-span-2 relative group cursor-pointer overflow-hidden"
+            style={{ height: '180px', border: '1px solid rgba(255,255,255,0.15)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: `url(${card.image})`, opacity: 0.6 }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
-              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
-                <ChevronRight size={18} className="text-white" />
+              style={{ backgroundImage: `url(${bCards[0].image})`, opacity: 0.75 }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center gap-3">
+              <div className="w-9 h-9 flex items-center justify-center bg-white/10 border border-white/20">
+                <ChevronRight size={20} className="text-white" />
               </div>
-              <h3 className="text-sm font-bold text-white tracking-wider">{card.title}</h3>
+              <h3 className="text-base font-bold text-white tracking-wider">{bCards[0].title}</h3>
             </div>
             <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
           </motion.div>
-        ))}
-        </div>{/* end bento grid */}
 
-        {/* ── Get Started — How to set up your account ── */}
-        <div
-          className="rounded-2xl overflow-hidden"
-          style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
-        >
-          <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-            <div>
-              <p className="text-sm font-black text-white tracking-wide">Get Started</p>
-              <p className="text-[11px] text-white/40">How to set up your account</p>
-            </div>
-            <div className="text-[10px] font-bold px-2.5 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              {[!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation, false].filter(Boolean).length} / 6 COMPLETE
-            </div>
-          </div>
-
-          <div className="grid grid-cols-6 divide-x" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-            {[
-              { step: 1, label: 'Complete Profile', sublabel: 'Name, hours & occupation', done: !!profile, tab: 'profile' as TabId, icon: User, highlight: false },
-              { step: 2, label: 'Log Flight Hours', sublabel: 'Add your total time', done: hours > 0, tab: 'logbook' as TabId, icon: Clock, highlight: false },
-              { step: 3, label: 'Verify Credentials', sublabel: 'Wallet + Veremark token', done: walletChecks.some(c => c.status === 'verified'), tab: 'wallet' as TabId, icon: Shield, highlight: false },
-              { step: 4, label: 'Browse Pathways', sublabel: 'Submit your interest', done: score > 0, tab: 'pathways' as TabId, icon: Map, highlight: false },
-              { step: 5, label: 'Start a Program', sublabel: 'Foundation or Transition', done: enrolledInFoundation, tab: 'programs' as TabId, icon: BookOpen, highlight: false },
-              { step: 6, label: 'Recognition+', sublabel: 'Unlock full access — $99/yr', done: false, tab: 'settings' as TabId, icon: Star, highlight: true },
-            ].map((item, i) => {
-              const Icon = item.icon;
-              const completedCount = [!!profile, hours > 0, walletChecks.some(c => c.status === 'verified'), score > 0, enrolledInFoundation, false].filter(Boolean).length;
-              const isNext = i === completedCount;
-              return (
-                <button
-                  key={item.step}
-                  onClick={() => setTab(item.tab)}
-                  className="flex flex-col items-center gap-2 py-4 px-1.5 transition-all hover:brightness-125"
-                  style={{
-                    background: item.done
-                      ? 'rgba(16,185,129,0.06)'
-                      : item.highlight
-                        ? 'linear-gradient(180deg, rgba(14,165,233,0.08) 0%, rgba(99,102,241,0.08) 100%)'
-                        : 'transparent'
-                  }}
-                >
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                    item.done
-                      ? 'bg-emerald-500/25 ring-1 ring-emerald-500/40'
-                      : item.highlight
-                        ? 'bg-sky-500/20 ring-1 ring-sky-400/40'
-                        : isNext
-                          ? 'bg-sky-500/15 ring-1 ring-sky-400/30'
-                          : 'bg-white/5'
-                  }`}>
-                    {item.done
-                      ? <CheckCircle size={16} className="text-emerald-400" />
-                      : <Icon size={15} className={item.highlight ? 'text-sky-300' : isNext ? 'text-sky-400' : 'text-white/30'} />
-                    }
-                  </div>
-                  <div className="text-center">
-                    <p className={`text-[10px] font-bold leading-tight ${
-                      item.done ? 'text-emerald-400' : item.highlight ? 'text-sky-300' : 'text-white/60'
-                    }`}>{item.label}</p>
-                    <p className={`text-[9px] leading-tight mt-0.5 ${item.highlight ? 'text-sky-500/60' : 'text-white/25'}`}>{item.sublabel}</p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+          {/* MY PROGRAMS + ACCESS LOGBOOK — unified overlay style */}
+          {bCards.slice(1).map((card, idx) => (
+            <motion.div
+              key={card.id}
+              custom={idx + 1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+              onClick={card.onClick}
+              className="relative group cursor-pointer overflow-hidden"
+              style={{ height: '160px', border: '1px solid rgba(255,255,255,0.15)' }}
+            >
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: `url(${card.image})`, opacity: 0.7 }} />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/45 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
+                <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
+                  <ChevronRight size={16} className="text-white" />
+                </div>
+                <h3 className="text-sm font-bold text-white tracking-wider">{card.title}</h3>
+              </div>
+              <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
+            </motion.div>
+          ))}
         </div>
 
       </div>{/* end right flex col */}
@@ -1408,30 +1410,74 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
             </button>
           </div>
 
-          {/* Nav items */}
-          <nav className="flex-1 px-2 py-3 overflow-y-auto space-y-0.5">
-            {NAV_ITEMS.map(item => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setTab(item.id)}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
-                  style={{
-                    background: isActive ? 'rgba(255,255,255,0.12)' : 'transparent',
-                    color: isActive ? '#fff' : 'rgba(255,255,255,0.55)',
-                    borderLeft: isActive ? '2px solid #f97316' : '2px solid transparent',
-                  }}
-                >
-                  <Icon size={15} className={isActive ? 'text-orange-400' : ''} />
-                  <span className={`flex-1 text-left text-xs font-bold tracking-wider ${isActive ? 'text-white' : ''}`}>
-                    {item.label.toUpperCase()}
-                  </span>
-                  {item.badge ? <span className="bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{item.badge}</span> : null}
-                </button>
-              );
-            })}
+          {/* Nav items — grouped */}
+          <nav className="flex-1 px-2 py-2 overflow-y-auto">
+            {([
+              {
+                group: 'MY FLIGHT DECK',
+                items: [
+                  { id: 'dashboard', label: 'Dashboard',        icon: BarChart3,  premium: false },
+                  { id: 'home',      label: 'Home',             icon: Home,       premium: false },
+                  { id: 'profile',   label: 'My Profile',       icon: User,       premium: false },
+                  { id: 'wallet',    label: 'Credential Wallet', icon: Shield,     premium: false },
+                  { id: 'logbook',   label: 'Logbook',          icon: BookMarked, premium: false },
+                ],
+              },
+              {
+                group: 'AVIATION NETWORK',
+                items: [
+                  { id: 'pathways',      label: 'Pathways',      icon: Map,       premium: false },
+                  { id: 'airlines',      label: 'Airlines',      icon: Plane,     premium: false },
+                  { id: 'manufacturers', label: 'Manufacturers', icon: Wrench,    premium: false },
+                  { id: 'events',        label: 'Events',        icon: Calendar,  premium: false },
+                  { id: 'newsroom',      label: 'Newsroom',      icon: Newspaper, premium: false },
+                ],
+              },
+              {
+                group: 'PROGRAMS & TOOLS',
+                items: [
+                  { id: 'programs',  label: 'Programs',  icon: BookOpen,  premium: false },
+                  { id: 'atlas-cv',  label: 'Atlas CV',  icon: FileText,  premium: true  },
+                  { id: 'score',     label: 'My Score',  icon: TrendingUp, premium: false },
+                ],
+              },
+              {
+                group: 'ACCOUNT',
+                items: [
+                  { id: 'settings', label: 'Settings', icon: Settings, premium: false },
+                ],
+              },
+            ] as { group: string; items: { id: TabId; label: string; icon: React.ComponentType<{className?: string; size?: number}>; premium: boolean }[] }[]).map(section => (
+              <div key={section.group} className="mb-3">
+                <p className="px-3 pt-2 pb-1 text-[9px] font-black tracking-[0.18em] text-white/25 uppercase">{section.group}</p>
+                <div className="space-y-0.5">
+                  {section.items.map(item => {
+                    const Icon = item.icon;
+                    const isActive = activeTab === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => setTab(item.id)}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
+                        style={{
+                          background: isActive ? 'rgba(255,255,255,0.12)' : 'transparent',
+                          color: isActive ? '#fff' : 'rgba(255,255,255,0.55)',
+                          borderLeft: isActive ? '2px solid #f97316' : '2px solid transparent',
+                        }}
+                      >
+                        <Icon size={15} className={isActive ? 'text-orange-400' : ''} />
+                        <span className={`flex-1 text-left text-xs font-bold tracking-wider ${isActive ? 'text-white' : ''}`}>
+                          {item.label.toUpperCase()}
+                        </span>
+                        {item.premium && (
+                          <Lock size={10} className="text-yellow-500/70 flex-shrink-0" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
 
           {/* Bottom user strip */}
