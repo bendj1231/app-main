@@ -172,8 +172,17 @@ export const AppRoutes = () => {
     navigate(fallback);
   };
 
-  // Subdomain routing for enterprise.pilotrecognition.com
+  // Subdomain routing for platform.pilotrecognition.com
   // NOTE: must be AFTER all hooks to avoid React error #310
+  if (window.location.hostname === 'platform.pilotrecognition.com') {
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <UnifiedPilotPlatform onNavigate={handleNavigate} />
+      </Suspense>
+    );
+  }
+
+  // Subdomain routing for enterprise.pilotrecognition.com
   if (window.location.hostname === 'enterprise.pilotrecognition.com') {
     const path = window.location.pathname;
     console.log('[DEBUG AppRoutes] Enterprise subdomain detected, path:', path);
