@@ -147,6 +147,29 @@ const HomeTab: React.FC<{
   const [obCAA, setObCAA] = React.useState(profile?.caa_region ?? '');
   const [obATOs, setObATOs] = React.useState<string[]>(profile?.ato_name ? [profile.ato_name] : ['']);
   const [obLogbookProvider, setObLogbookProvider] = React.useState(profile?.logbook_provider ?? '');
+  const [obHoursRaw, setObHoursRaw] = React.useState('');
+  const [obHoursHash, setObHoursHash] = React.useState('');
+  const [obHoursBand, setObHoursBand] = React.useState('');
+  const [obHoursHashing, setObHoursHashing] = React.useState(false);
+  const [obHoursHashed, setObHoursHashed] = React.useState(false);
+
+  const hashHours = React.useCallback(async (rawHours: string) => {
+    const n = parseFloat(rawHours);
+    if (isNaN(n) || n < 0) return;
+    setObHoursHashing(true);
+    const band =
+      n < 200 ? '<200h' : n < 500 ? '200-500h' : n < 1000 ? '500-1000h' :
+      n < 1500 ? '1000-1500h' : n < 3000 ? '1500-3000h' : n < 5000 ? '3000-5000h' : '5000h+';
+    const encoder = new TextEncoder();
+    const data = encoder.encode(`PR_LOGBOOK_HOURS::${n.toFixed(1)}`);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    setObHoursHash(hashHex);
+    setObHoursBand(band);
+    setObHoursHashing(false);
+    setObHoursHashed(true);
+  }, []);
 
   // ── Regional provider detection via timezone ──
   const detectedRegion = React.useMemo(() => {
@@ -811,6 +834,47 @@ const HomeTab: React.FC<{
                               </div>
                             ))}
                           </div>
+                          {/* Hours input — raw value never leaves this field */}
+                          <div className="px-3 pb-2">
+                            <div className="px-2.5 py-2.5 rounded space-y-2" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
+                              <p className="text-[7px] font-black text-gray-700 uppercase tracking-wide">Enter Total Flight Hours</p>
+                              <p className="text-[8px] text-gray-400">Your raw hours are hashed instantly in-browser via SHA-256 and immediately discarded. Only the resulting hash string is stored.</p>
+                              <div className="flex gap-2 items-center">
+                                <input
+                                  type="number"
+                                  min="0"
+                                  step="0.1"
+                                  value={obHoursRaw}
+                                  onChange={e => { setObHoursRaw(e.target.value); setObHoursHashed(false); setObHoursHash(''); }}
+                                  onBlur={() => { if (obHoursRaw) hashHours(obHoursRaw); }}
+                                  placeholder="e.g. 1247.5"
+                                  className="flex-1 px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                                  style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                                />
+                                <button
+                                  onClick={() => { if (obHoursRaw) hashHours(obHoursRaw); }}
+                                  disabled={!obHoursRaw || obHoursHashing}
+                                  className="px-3 py-1.5 text-[9px] font-bold text-white disabled:opacity-40 transition-all"
+                                  style={{ background: '#1a1a1a', borderRadius: '6px', whiteSpace: 'nowrap' }}
+                                >
+                                  {obHoursHashing ? 'Hashing...' : 'Hash'}
+                                </button>
+                              </div>
+                              {obHoursHashed && (
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[8px] font-black text-gray-700 w-20 flex-shrink-0">Hash Output</span>
+                                    <span className="text-[8px] font-mono text-gray-500 truncate">{obHoursHash.slice(0,16)}...{obHoursHash.slice(-8)}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[8px] font-black text-gray-700 w-20 flex-shrink-0">Hour Band</span>
+                                    <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>{obHoursBand}</span>
+                                  </div>
+                                  <p className="text-[7px] text-green-700 font-medium">Raw hours discarded. Hash + band ready for Supabase ledger commit on consent sign-off.</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                           {/* Directive paragraph */}
                           <div className="px-3 pb-3">
                             <div className="px-2.5 py-2 rounded" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
@@ -977,7 +1041,17 @@ const HomeTab: React.FC<{
                   {/* Sign-off button */}
                   <button
                     disabled={!obConsent1 || !obConsent2 || !obConsent3}
-                    onClick={() => setOnboardingStep(2)}
+                    onClick={async () => {
+                      if (obLogbookProvider === 'PilotRecognition Secure Logbook' && obHoursHashed && profile?.id) {
+                        await supabase.from('profiles').update({
+                          logbook_hash: obHoursHash,
+                          logbook_hash_updated_at: new Date().toISOString(),
+                          logbook_total_hours_band: obHoursBand,
+                          logbook_provider: obLogbookProvider,
+                        }).eq('id', profile.id);
+                      }
+                      setOnboardingStep(2);
+                    }}
                     className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-35 hover:bg-gray-800"
                     style={{ background: '#111827', border: 'none', borderRadius: '10px' }}
                   >
