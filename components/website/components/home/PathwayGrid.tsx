@@ -1822,12 +1822,6 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 )}
 
-                {/* Card ID Label - Top Left */}
-                {(card.id === 'foundation-program-enroll' || card.id === 'card-2') && (
-                    <div className="hidden md:block absolute top-4 left-4 px-2 py-1 bg-black/60 backdrop-blur-sm text-white text-[10px] font-mono uppercase tracking-wider">
-                        ID: {card.id}
-                    </div>
-                )}
 
 
                 {/* MSFS Style Content Area - Bottom section with blue accents (for large cards) */}
@@ -1881,7 +1875,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                 e.stopPropagation();
                                 handleManualNavigation('prev');
                             }}
-                            className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 z-20 p-1.5 md:p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+                            className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 z-20 p-1.5 md:p-2 rounded-full bg-white/15 backdrop-blur-md border border-white/40 text-white hover:bg-white/30 transition-all"
                         >
                             <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                         </button>
@@ -1891,7 +1885,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                 e.stopPropagation();
                                 handleManualNavigation('next');
                             }}
-                            className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 z-20 p-1.5 md:p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+                            className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 z-20 p-1.5 md:p-2 rounded-full bg-white/15 backdrop-blur-md border border-white/40 text-white hover:bg-white/30 transition-all"
                         >
                             <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
                         </button>
@@ -1916,7 +1910,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                             {displayTitle}
                                         </h3>
                                     </div>
-                                    <p className={`text-[10px] md:text-xs line-clamp-2 leading-tight ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                                    <p className={`text-[9px] md:text-[10px] line-clamp-3 leading-tight ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
                                         {finalDisplaySubtitle}
                                     </p>
                                 </div>

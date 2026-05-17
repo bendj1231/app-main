@@ -30,6 +30,7 @@ interface NavItem {
     target: string;
     subItems?: NavSubItem[];
     isBlue?: boolean;
+    isOrange?: boolean;
 }
 
 import { useAuth } from '@/src/contexts/AuthContext';
@@ -534,7 +535,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         { name: 'Contact', target: 'contact-support' },
-        { name: 'Enterprise', target: '__enterprise_modal__', isBlue: true },
+        { name: 'Enterprise', target: '__enterprise_modal__', isOrange: true },
     ];
 
     // Filter out Home nav item when on home page
@@ -740,7 +741,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
                                             ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
                                             : 'text-blue-400 border-b-2 border-blue-400 pb-1 font-black'
-                                        : item.isBlue
+                                        : item.isOrange
+                                            ? 'text-orange-400 font-black'
+                                            : item.isBlue
                                             ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
                                                 ? 'text-blue-600 font-black'
                                                 : 'text-blue-400 font-black'
