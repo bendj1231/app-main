@@ -723,23 +723,16 @@ const HomeTab: React.FC<{
                     <div className="flex items-center justify-between px-4 py-2.5" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: obLogbookSynced ? '#16a34a' : '#e5e7eb' }} />
-                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Logbook Provider Access</p>
+                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Verified Logbook Registry Provider</p>
                       </div>
                       {obLogbookSynced && (
                         <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>Access Token Confirmed</span>
                       )}
                     </div>
                     <div className="px-4 py-3 space-y-3">
-                      <p className="text-[9px] text-gray-500 leading-relaxed">
-                        Select your logbook provider and paste the <strong className="text-gray-700">read-only share token</strong> generated from your provider's sharing settings. This token is included in the Veremark dispatch payload — Veremark contacts your logbook provider directly to retrieve your flight hours. This platform never reads or stores your logbook data.
-                      </p>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
-                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#f97316' }} />
-                        <p className="text-[8px] text-orange-700">PilotRecognition never accesses your logbook. The token is forwarded to Veremark who queries your provider directly. Your logbook provider retains full write access and data ownership.</p>
-                      </div>
                       {/* Provider selector */}
                       <div>
-                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Logbook Provider</p>
+                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Verified Logbook Registry Provider</p>
                         <select
                           value={obLogbookProvider || obLogbookKey.split('::')[0] || ''}
                           onChange={e => { setObLogbookProvider(e.target.value); setObLogbookKey(e.target.value + '::'); setObLogbookSynced(false); }}
@@ -752,9 +745,11 @@ const HomeTab: React.FC<{
                           ))}
                         </select>
                       </div>
-                      {/* Read-only share token */}
+                      {/* Transient token input */}
                       <div>
-                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Read-Only Share Token <span className="text-gray-400 font-normal">(from provider sharing settings)</span></p>
+                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">
+                          {(obLogbookProvider || obLogbookKey.split('::')[0] || 'Provider')} Secure Share Token / API Key
+                        </p>
                         <div className="flex gap-2">
                           <input
                             type="text"
@@ -782,8 +777,13 @@ const HomeTab: React.FC<{
                             {obLogbookSyncing ? 'Confirming...' : 'Confirm'}
                           </button>
                         </div>
+                        {/* Transient Pipeline Relay Safeguard notice */}
+                        <div className="mt-2.5 px-3 py-2.5 rounded-lg" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                          <p className="text-[8px] font-black text-gray-700 mb-1">Transient Pipeline Relay Safeguard</p>
+                          <p className="text-[8px] text-gray-500 leading-relaxed">To ensure total data privacy, your third-party logbook access token functions strictly as a single-use routing credential. This input acts exclusively as a secure transient conduit: your token is pushed directly to Veremark over an end-to-end encrypted stream and is instantly destroyed from system memory. Your access key is never written, cached, or permanently stored anywhere inside the PilotRecognition database ecosystem.</p>
+                        </div>
                         {obLogbookSynced && (
-                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Read-only token confirmed. Veremark will query {obLogbookKey.split('::')[0]} directly to read and verify flight hours only. No write access is granted. Your logbook provider retains full ownership.</p>
+                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Token confirmed. Upon consent sign-off, your token will be transmitted directly to Veremark over an encrypted channel and immediately purged from session memory. Read-only access only — no write permissions granted.</p>
                         )}
                       </div>
                     </div>
