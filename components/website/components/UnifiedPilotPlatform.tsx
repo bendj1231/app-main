@@ -695,6 +695,8 @@ const HomeTab: React.FC<{
                         style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
                       >
                         <option value="">Select logbook provider...</option>
+                        <option value="PilotRecognition Secure Logbook">PilotRecognition Secure Logbook (Tokenized — Recommended)</option>
+                        <option disabled>──────────────</option>
                         {['ForeFlight', 'MyFlightbook', 'Safelog', 'LogTen Pro', 'Pilot Log', 'Other / Not connected'].map(p => (
                           <option key={p} value={p}>{p}</option>
                         ))}
@@ -707,6 +709,14 @@ const HomeTab: React.FC<{
                       <span className="text-[10px] font-semibold text-gray-900 select-none">{new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC'}</span>
                     </div>
                   </div>
+
+                  {/* PilotRecognition Secure Logbook note */}
+                  {obLogbookProvider === 'PilotRecognition Secure Logbook' && (
+                    <div className="rounded-xl px-4 py-3 space-y-1.5" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                      <p className="text-[9px] font-black text-green-800 uppercase tracking-wide">PilotRecognition Secure Logbook — Zero-Knowledge Architecture</p>
+                      <p className="text-[9px] text-green-700 leading-relaxed">Your flight hours are entered and stored exclusively within the PilotRecognition platform as a <strong>cryptographic hash</strong>. The raw hour values are never retained — only a tokenized, one-way hash is generated. Veremark receives this hash to verify your hours against ATO attestation records. Neither PilotRecognition nor Veremark can reverse-read your raw logbook data. You own the source. We hold nothing.</p>
+                    </div>
+                  )}
 
                   {/* Logbook Provider — Veremark Access Token */}
                   <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #e5e7eb' }}>
