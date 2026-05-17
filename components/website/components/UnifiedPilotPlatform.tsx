@@ -254,26 +254,61 @@ const HomeTab: React.FC<{
       >
         {!profile ? (
           /* ── LOGGED OUT STATE ── */
-          <div className="p-6 flex flex-col items-center justify-center text-center" style={{ minHeight: '320px' }}>
-            <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: 'rgba(255,255,255,0.08)' }}>
-              <BarChart3 size={32} className="text-white/50" />
+          <div className="flex flex-col" style={{ minHeight: '420px' }}>
+            {/* Tier toggle */}
+            <div className="flex m-4 mb-0 rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+              <div className="flex-1 py-2 text-center text-[10px] font-bold text-white/50" style={{ background: 'rgba(255,255,255,0.06)' }}>Free Pilot Account</div>
+              <div className="flex-1 py-2 text-center text-[10px] font-black" style={{ background: 'linear-gradient(90deg,rgba(234,179,8,0.35),rgba(251,146,60,0.25))', color: '#fbbf24', borderLeft: '1px solid rgba(234,179,8,0.3)' }}>⭐ Recognition+ Member</div>
             </div>
-            <h2 className="text-base font-bold text-white mb-2 leading-snug">Login to View Your Dashboard</h2>
-            <p className="text-[11px] text-white/40 mb-6 leading-relaxed">Sign in to view real-time data from your Recognition Profile</p>
-            <button
-              onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-              className="w-full py-2.5 mb-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
-              style={{ background: '#3b82f6', borderRadius: '8px' }}
-            >
-              LOGIN
-            </button>
-            <button
-              onClick={() => window.location.href = '/become-member'}
-              className="w-full py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
-              style={{ background: '#ef4444', borderRadius: '8px' }}
-            >
-              BECOME A MEMBER
-            </button>
+
+            {/* Perks list */}
+            <div className="px-4 pt-4 pb-3 space-y-2.5 flex-1">
+              <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-3">Unlocked with Recognition+</p>
+              {[
+                { icon: Shield, label: 'Veremark International Verification', sub: 'Tokenize licences and flight logs securely' },
+                { icon: Target, label: 'Direct Operator Alignment Engine', sub: 'Auto-match profile metrics to global pathways' },
+                { icon: Zap,    label: 'Automated B2B Revenue-Share', sub: 'Programmatic escrow bonuses to training academies' },
+              ].map(({ icon: Icon, label, sub }) => (
+                <div key={label} className="flex items-start gap-2.5">
+                  <div className="w-4 h-4 rounded flex-shrink-0 mt-0.5 flex items-center justify-center" style={{ background: 'rgba(234,179,8,0.18)', border: '1px solid rgba(234,179,8,0.4)' }}>
+                    <Icon size={9} className="text-yellow-400" />
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-black text-white leading-snug">{label}</p>
+                    <p className="text-[8px] text-white/35 leading-snug">{sub}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Login button */}
+            <div className="px-4 pb-2">
+              <button
+                onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
+                className="w-full py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
+                style={{ background: '#3b82f6', borderRadius: '8px' }}
+              >
+                LOGIN
+              </button>
+            </div>
+
+            {/* Recognition+ gold CTA */}
+            <div className="px-4 pb-4">
+              <button
+                onClick={() => window.location.href = '/become-member'}
+                className="w-full py-2.5 text-[11px] font-black tracking-wide transition-all hover:brightness-110"
+                style={{ background: 'linear-gradient(90deg,#fbbf24,#f97316)', color: '#1a0a00', borderRadius: '8px' }}
+              >
+                Upgrade to Recognition+ ($99/yr) →
+              </button>
+            </div>
+
+            {/* Trust strip */}
+            <div className="px-4 pb-4 flex items-center justify-between" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '12px' }}>
+              {['Auth0', 'Helio', 'Veremark'].map(p => (
+                <span key={p} className="text-[8px] font-black tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.22)' }}>{p}</span>
+              ))}
+            </div>
           </div>
         ) : (
           <>
@@ -591,16 +626,32 @@ const HomeTab: React.FC<{
         {!profile && (
           <div
             className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8"
-            style={{ background: 'rgba(10,15,30,0.72)', backdropFilter: 'blur(6px)' }}
+            style={{ background: 'rgba(10,15,30,0.52)', backdropFilter: 'blur(4px)' }}
           >
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}>
-              <Lock size={28} className="text-white/50" />
+            {/* Deactivated status badges */}
+            <div className="flex gap-2 mb-6 flex-wrap justify-center">
+              {[
+                'Auth0 Token Pipeline: Pending Login',
+                'Supabase Vault Status: Locked',
+              ].map(badge => (
+                <span key={badge} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[8px] font-bold" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.35)' }}>
+                  <Lock size={8} />{badge}
+                </span>
+              ))}
             </div>
+
+            {/* Shield + brand mark */}
+            <div className="relative w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.25),rgba(16,185,129,0.15))', border: '1.5px solid rgba(22,163,74,0.5)' }}>
+              <Shield size={28} className="text-emerald-400" />
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[6px] font-black tracking-widest whitespace-nowrap px-1.5 py-0.5 rounded" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Auth0 Protected</span>
+            </div>
+
             <h3 className="text-lg font-black text-white mb-2 leading-snug tracking-wide">Sign In to Access Your Dashboard</h3>
-            <p className="text-[12px] text-white/50 leading-relaxed max-w-xs">
+            <p className="text-[11px] text-white/45 leading-relaxed max-w-sm mb-5">
               Sign in to access personalised pathways, profile matching careers and connect with Operators and Manufacturers Worldwide.
             </p>
-            <div className="flex gap-3 mt-6">
+
+            <div className="flex gap-3 mb-5">
               <button
                 onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
                 className="px-6 py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
@@ -610,11 +661,28 @@ const HomeTab: React.FC<{
               </button>
               <button
                 onClick={() => window.location.href = '/become-member'}
-                className="px-6 py-2.5 text-xs font-black tracking-widest text-white transition-all hover:brightness-110"
-                style={{ background: '#ef4444', borderRadius: '8px' }}
+                className="px-6 py-2.5 text-[11px] font-black tracking-wide transition-all hover:brightness-110"
+                style={{ background: 'linear-gradient(90deg,#fbbf24,#f97316)', color: '#1a0a00', borderRadius: '8px' }}
               >
-                BECOME A MEMBER
+                Recognition+ ($99/yr) →
               </button>
+            </div>
+
+            {/* Trust logo strip */}
+            <div className="flex items-center gap-4 px-4 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              {[
+                { name: 'Auth0 Secured', dot: '#3b82f6' },
+                { name: 'Helio Payments', dot: '#a855f7' },
+                { name: 'Veremark Verified', dot: '#16a34a' },
+              ].map(({ name, dot }, i) => (
+                <React.Fragment key={name}>
+                  {i > 0 && <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: '10px' }}>|</span>}
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />
+                    <span className="text-[8px] font-bold" style={{ color: 'rgba(255,255,255,0.35)' }}>{name}</span>
+                  </div>
+                </React.Fragment>
+              ))}
             </div>
           </div>
         )}
