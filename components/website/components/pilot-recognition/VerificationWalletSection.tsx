@@ -193,10 +193,40 @@ export function VerificationWalletSection({ profileData, isPremium, onNavigate }
           🎓 ATO Attestation
         </button>
         <button
+          onClick={() => onNavigate('logbook-upload')}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(14,165,233,0.25)', background: 'transparent', color: '#38bdf8', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+        >
+          📋 Import Logbook
+        </button>
+        <button
+          onClick={() => onNavigate('efb-upload')}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(16,185,129,0.25)', background: 'transparent', color: '#34d399', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+        >
+          🗺 Log EFB Data
+        </button>
+        <button
+          onClick={() => onNavigate('sim-session')}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(167,139,250,0.25)', background: 'transparent', color: '#c4b5fd', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+        >
+          🖥 Log Sim Session
+        </button>
+        <button
           onClick={() => onNavigate('verification-conflicts')}
           style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(239,68,68,0.25)', background: 'transparent', color: '#f87171', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
           ⚠ Conflict Resolution
+        </button>
+        <button
+          onClick={() => onNavigate('military-transition')}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(251,191,36,0.25)', background: 'transparent', color: '#fbbf24', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+        >
+          ✈ Military Record
+        </button>
+        <button
+          onClick={() => onNavigate('medical-certificate')}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(244,114,182,0.25)', background: 'transparent', color: '#f472b6', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+        >
+          ♥ Medical Certificate
         </button>
       </div>
 

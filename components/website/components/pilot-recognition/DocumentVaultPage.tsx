@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { supabase } from '../../../../src/lib/supabase';
 import { 
   Upload, FileText, Check, AlertCircle, X, Camera, FileCheck, Shield, 
   Lock, Clock, History, ChevronRight, FileDigit, Stethoscope, Plane, 
@@ -105,11 +106,46 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
   const [lastSync, setLastSync] = useState<Date>(new Date());
   const [showOCRConfirm, setShowOCRConfirm] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  // Verification history
-  const [history, setHistory] = useState<VerificationHistory[]>([
-    { id: '1', date: new Date(Date.now() - 86400000 * 2), action: 'Medical Class 1 Verified', documentType: 'Medical Certificate', status: 'Verified' }
-  ]);
+  const [history, setHistory] = useState<VerificationHistory[]>([]);
+
+  const loadDocuments = useCallback(async () => {
+    if (!userProfile?.id) return;
+    const { data } = await supabase
+      .from('pilot_documents')
+      .select('*')
+      .eq('pilot_id', userProfile.id)
+      .order('uploaded_at', { ascending: false });
+    if (data) {
+      const mapped: UploadedDocument[] = data.map((d: Record<string, unknown>) => ({
+        id: d.id as string,
+        type: d.doc_type as UploadedDocument['type'],
+        fileName: d.file_name as string,
+        fileSize: (d.file_size_bytes as number) ?? 0,
+        uploadDate: new Date(d.uploaded_at as string),
+        status: (d.status as UploadedDocument['status']) === 'pending_review' ? 'pending_review'
+          : (d.status as UploadedDocument['status']),
+        extractedData: (d.extracted_license_number || d.extracted_expiry_date) ? {
+          licenseNumber: d.extracted_license_number as string | undefined,
+          expiryDate: d.extracted_expiry_date as string | undefined,
+          issueDate: d.extracted_issue_date as string | undefined,
+          issuingAuthority: d.extracted_issuing_authority as string | undefined,
+        } : undefined,
+        verificationNotes: d.admin_notes as string | undefined,
+      }));
+      setDocuments(mapped);
+      setLastSync(new Date());
+      const verified = mapped.filter(d => d.status === 'verified');
+      setHistory(verified.map(d => ({
+        id: d.id,
+        date: d.uploadDate,
+        action: `${DOCUMENT_TYPES.find(t => t.value === d.type)?.label ?? d.type} Verified`,
+        documentType: DOCUMENT_TYPES.find(t => t.value === d.type)?.label ?? d.type,
+        status: 'Verified',
+      })));
+    }
+  }, [userProfile?.id]);
+
+  useEffect(() => { loadDocuments(); }, [loadDocuments]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -138,48 +174,55 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
     }
   };
 
-  const processFile = (file: File, docType: string) => {
+  const processFile = async (file: File, docType: string) => {
+    if (!userProfile?.id) return;
+    const tempId = Date.now().toString();
     const newDoc: UploadedDocument = {
-      id: Date.now().toString(),
-      type: docType as any,
+      id: tempId,
+      type: docType as UploadedDocument['type'],
       fileName: file.name,
       fileSize: file.size,
       uploadDate: new Date(),
-      status: 'uploading'
+      status: 'uploading',
     };
-
     setDocuments(prev => [...prev, newDoc]);
 
-    // Simulate upload progress
-    setTimeout(() => {
-      setDocuments(prev => 
-        prev.map(doc => 
-          doc.id === newDoc.id 
-            ? { ...doc, status: 'processing' }
-            : doc
-        )
-      );
-    }, 1500);
+    try {
+      const ext = file.name.split('.').pop() ?? 'bin';
+      const storagePath = `${userProfile.id}/${docType}/${Date.now()}.${ext}`;
 
-    // Simulate OCR extraction
-    setTimeout(() => {
-      setDocuments(prev => 
-        prev.map(doc => 
-          doc.id === newDoc.id 
-            ? { 
-                ...doc, 
-                status: 'pending_review',
-                extractedData: {
-                  licenseNumber: 'ID' + Math.floor(Math.random() * 1000000),
-                  expiryDate: '2026-08-15',
-                  issueDate: '2021-03-20',
-                  issuingAuthority: 'Civil Aviation Authority'
-                }
-              }
-            : doc
-        )
-      );
-    }, 3500);
+      const { error: uploadError } = await supabase.storage
+        .from('pilot-documents')
+        .upload(storagePath, file, { upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      setDocuments(prev => prev.map(d => d.id === tempId ? { ...d, status: 'processing' } : d));
+
+      const { data: row, error: dbError } = await supabase
+        .from('pilot_documents')
+        .insert({
+          pilot_id: userProfile.id,
+          doc_type: docType,
+          file_name: file.name,
+          file_size_bytes: file.size,
+          storage_path: storagePath,
+          storage_bucket: 'pilot-documents',
+          status: 'pending_review',
+        })
+        .select('id')
+        .single();
+
+      if (dbError) throw dbError;
+
+      setDocuments(prev => prev.map(d =>
+        d.id === tempId ? { ...d, id: row.id, status: 'pending_review' } : d
+      ));
+      setLastSync(new Date());
+    } catch (err) {
+      console.error('Upload failed:', err);
+      setDocuments(prev => prev.filter(d => d.id !== tempId));
+    }
   };
 
   const removeDocument = (id: string) => {

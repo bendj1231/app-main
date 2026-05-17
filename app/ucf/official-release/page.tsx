@@ -36,7 +36,7 @@ const navSections = [
 
   { id: 'part-ii-hub-a', label: 'Hub A — Aviation Operators & Training', group: 'huba' },
   { id: '', label: 'Training Organizations', indent: true, group: 'huba', subheader: true },
-  { id: 'pillar-5-flight-training', label: 'Pillar 5: Flight Training (ATOs)', indent: true, group: 'huba' },
+  { id: 'pillar-5-flight-training', label: 'Pillar 5: Flight Training (ATOs) & Hour Issuance', indent: true, group: 'huba' },
   { id: 'pillar-6-type-rating', label: 'Pillar 6: Type Rating Centers', indent: true, group: 'huba' },
   { id: 'pillar-universities', label: 'Pillar: Aviation Universities & Academies', indent: true, group: 'huba' },
   { id: '', label: 'Aviation Operators', indent: true, group: 'huba', subheader: true },
@@ -298,30 +298,712 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
+          {/* Document Mission & Compound Description */}
+          <div id="document-mission" className="mb-12 pb-10 border-b border-slate-200 scroll-mt-24">
+            <p className="text-xs font-bold tracking-widest uppercase text-slate-500 mb-4">Document Preamble</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">Mission, Strategic Objectives, and Intended Industry Outcomes</h2>
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-bold text-slate-800 mb-2">Institutional Mission</h3>
+                <p className="text-slate-700 leading-relaxed text-sm">The Universal Commercial Framework is established to provide a neutral, standardised infrastructure for the verification, management, and exchange of professional aviation credentials. Its fundamental purpose is to replace fragmented, proprietary systems with an open, interoperable architecture that serves all industry stakeholders equitably — without privileging any single operator, manufacturer, or regulatory entity.</p>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-5">
+                <h3 className="text-lg font-bold text-slate-800 mb-3">Scope of the Universal Commercial Framework</h3>
+                <p className="text-slate-700 leading-relaxed text-sm mb-4">This document defines a comprehensive commercial and technical architecture spanning <strong>25 strategic pillars</strong> organised across <strong>7 stakeholder hubs</strong>. Below is the complete stakeholder breakdown with real market data, integration protocols, and the structural problems each pillar addresses.</p>
+
+                {/* HUB A */}
+                <div className="bg-blue-900 rounded-lg px-4 py-3 mb-2 flex items-center justify-between">
+                  <p className="text-white font-bold text-sm">Hub A — Aviation Operators & Training</p>
+                  <p className="text-blue-300 text-xs">10 Pillars | 840+ Airlines | 4,200+ ATOs | ~$1.2 Trillion Combined Market</p>
+                </div>
+                <div className="overflow-x-auto mb-4">
+                  <table className="w-full text-xs border-collapse">
+                    <thead><tr className="bg-blue-800 text-white"><th className="text-left px-2 py-1.5">Pillar</th><th className="text-left px-2 py-1.5">Stakeholder</th><th className="text-left px-2 py-1.5">Count</th><th className="text-left px-2 py-1.5">Annual Value</th><th className="text-left px-2 py-1.5">Structural Problem / Framework Value</th></tr></thead>
+                    <tbody className="text-slate-700">
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-blue-700">P1</td><td className="px-2 py-1.5">Commercial Airlines</td><td className="px-2 py-1.5">840+ IATA</td><td className="px-2 py-1.5">$979B revenue</td><td className="px-2 py-1.5"><span className="text-red-600">24,000 pilot global deficit (2026 peak); 6-month onboarding lag costs $45K+/hire</span> → <span className="text-emerald-600">Pre-verified talent pool; 83% faster time-to-cockpit</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-blue-700">P2</td><td className="px-2 py-1.5">Cargo & Freight</td><td className="px-2 py-1.5">180+ operators</td><td className="px-2 py-1.5">$128B revenue</td><td className="px-2 py-1.5"><span className="text-red-600">No standardised cargo-specific pathway tracking</span> → <span className="text-emerald-600">Automated, cargo-specific pathway credentials</span></td></tr>
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-blue-700">P3</td><td className="px-2 py-1.5">Charter & Business</td><td className="px-2 py-1.5">15,000+ operators</td><td className="px-2 py-1.5">$32B market</td><td className="px-2 py-1.5"><span className="text-red-600">Highly fragmented regulations; zero centralised crew tracking</span> → <span className="text-emerald-600">Instant, verified global crew manifests</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-blue-700">P4</td><td className="px-2 py-1.5">AAM / eVTOL</td><td className="px-2 py-1.5">340+ startups</td><td className="px-2 py-1.5">$6.2B projected</td><td className="px-2 py-1.5"><span className="text-red-600">Rapid commercial launch threatened by zero legacy pilot transition infrastructure</span> → <span className="text-emerald-600">Dedicated early-adopter tracking and credential porting</span></td></tr>
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-blue-700">P5</td><td className="px-2 py-1.5">Flight Training (ATOs)</td><td className="px-2 py-1.5">4,200+ certified</td><td className="px-2 py-1.5">$12.7B training</td><td className="px-2 py-1.5"><span className="text-red-600">660,000 new pilots needed by 2044; opaque data slows deployment</span> → <span className="text-emerald-600">Live pathway visibility connecting ATOs directly to operator demand</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-blue-700">P6</td><td className="px-2 py-1.5">Type Rating Centers</td><td className="px-2 py-1.5">380+ TRTOs</td><td className="px-2 py-1.5">$4.2B revenue</td><td className="px-2 py-1.5"><span className="text-red-600">$15-45K per rating with zero predictive ROI visibility for cadets</span> → <span className="text-emerald-600">Real-time, demand-linked rating recommendations</span></td></tr>
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-blue-700">P7</td><td className="px-2 py-1.5">Military & Defense</td><td className="px-2 py-1.5">180+ air forces</td><td className="px-2 py-1.5">$2.1B transition</td><td className="px-2 py-1.5"><span className="text-red-600">18-month average lag for military-to-civilian transition</span> → <span className="text-emerald-600">Automated credential translation API</span></td></tr>
+                      <tr className="bg-slate-50"><td className="px-2 py-1.5 font-bold text-slate-500">Supp</td><td className="px-2 py-1.5">Universities, Recruitment, Sim Data</td><td className="px-2 py-1.5">2,400+ institutions</td><td className="px-2 py-1.5">$6.8B sector</td><td className="px-2 py-1.5"><span className="text-red-600">Zero interoperability with Applicant Tracking Systems (ATS)</span> → <span className="text-emerald-600">Standardised, API-driven credential feeds</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* HUB C */}
+                <div className="bg-blue-900 rounded-lg px-4 py-3 mb-2 flex items-center justify-between">
+                  <p className="text-white font-bold text-sm">Hub C — Capital, Risk & Compliance</p>
+                  <p className="text-blue-300 text-xs">4 Pillars | $47B Aviation Insurance | $12B Training Loans | $890B Aviation Debt</p>
+                </div>
+                <div className="overflow-x-auto mb-4">
+                  <table className="w-full text-xs border-collapse">
+                    <thead><tr className="bg-emerald-800 text-white"><th className="text-left px-2 py-1.5">Pillar</th><th className="text-left px-2 py-1.5">Stakeholder</th><th className="text-left px-2 py-1.5">Market Size</th><th className="text-left px-2 py-1.5">Structural Problem / Framework Value</th></tr></thead>
+                    <tbody className="text-slate-700">
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-emerald-700">P8</td><td className="px-2 py-1.5">Banking & Financial</td><td className="px-2 py-1.5">$12B pilot loan market</td><td className="px-2 py-1.5"><span className="text-red-600">$100K+ unsecured training debt carries high risk premiums</span> → <span className="text-emerald-600">Verified career pathways act as risk-mitigating collateral</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-emerald-700">P9</td><td className="px-2 py-1.5">Aviation Insurance</td><td className="px-2 py-1.5">$47B global market</td><td className="px-2 py-1.5"><span className="text-red-600">Millions lost annually to claims involving unverified or lapsed credentials</span> → <span className="text-emerald-600">Real-time, immutable credential verification for underwriters</span></td></tr>
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-emerald-700">P10</td><td className="px-2 py-1.5">Legal & Regulatory</td><td className="px-2 py-1.5">190+ national regulators</td><td className="px-2 py-1.5"><span className="text-red-600">120-hour manual audits; cross-border validation takes months</span> → <span className="text-emerald-600">83% reduction in manual audit time via immutable ledgers</span></td></tr>
+                      <tr className="bg-slate-50"><td className="px-2 py-1.5 font-bold text-slate-500">Supp</td><td className="px-2 py-1.5">Credit Rating Agencies</td><td className="px-2 py-1.5">$890B aviation debt</td><td className="px-2 py-1.5"><span className="text-red-600">Total absence of pilot workforce risk scoring in institutional debt</span> → <span className="text-emerald-600">UCF Verification Index becomes a standard credit input</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* HUB D */}
+                <div className="bg-blue-900 rounded-lg px-4 py-3 mb-2 flex items-center justify-between">
+                  <p className="text-white font-bold text-sm">Hub D — Infrastructure & Data</p>
+                  <p className="text-blue-300 text-xs">10 Pillars | 190+ Registries | 4,500 AMEs | Zero Interoperability Today</p>
+                </div>
+                <p className="text-slate-600 text-xs leading-relaxed mb-3">The underlying cryptographic and compliance architecture that makes frictionless data portability legally and technically viable across global jurisdictions.</p>
+                <div className="overflow-x-auto mb-4">
+                  <table className="w-full text-xs border-collapse">
+                    <thead><tr className="bg-purple-800 text-white"><th className="text-left px-2 py-1.5">Pillar</th><th className="text-left px-2 py-1.5">Stakeholder</th><th className="text-left px-2 py-1.5">Count</th><th className="text-left px-2 py-1.5">Annual Value</th><th className="text-left px-2 py-1.5">Structural Problem / Framework Value</th></tr></thead>
+                    <tbody className="text-slate-700">
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-purple-700">P11</td><td className="px-2 py-1.5">Background & Security</td><td className="px-2 py-1.5">Global Agencies</td><td className="px-2 py-1.5">$3.5B screening</td><td className="px-2 py-1.5"><span className="text-red-600">Multi-week lags in international PRIA/security clearances</span> → <span className="text-emerald-600">Zero-trust, instant cryptographic clearance porting</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-purple-700">P12</td><td className="px-2 py-1.5">Flight Data & Telematics</td><td className="px-2 py-1.5">100+ FDR/Software</td><td className="px-2 py-1.5">Operational Backbone</td><td className="px-2 py-1.5"><span className="text-red-600">Fragmented digital logbooks leading to rampant hours falsification</span> → <span className="text-emerald-600">Immutable, API-verified flight hour logging directly from aircraft telemetry</span></td></tr>
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-purple-700">P13</td><td className="px-2 py-1.5">Aeromedical (AMEs)</td><td className="px-2 py-1.5">4,500+ AMEs</td><td className="px-2 py-1.5">Critical Bottleneck</td><td className="px-2 py-1.5"><span className="text-red-600">12-to-16 week delays for special medical issuances grounding healthy pilots</span> → <span className="px-2 py-1.5 text-emerald-600">Secure, real-time health data transfer bypassing legacy regulatory portals</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-purple-700">Supp</td><td className="px-2 py-1.5">Credential Wallet</td><td className="px-2 py-1.5">Per-Pilot Node</td><td className="px-2 py-1.5">Core Storage</td><td className="px-2 py-1.5"><span className="text-red-600">Physical/PDF document loss leads to regulatory grounding and career freezes</span> → <span className="text-emerald-600">W3C-standard Verifiable Credentials (VCs) ensuring instant, cryptographic proof of license</span></td></tr>
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-purple-700">Supp</td><td className="px-2 py-1.5">Identity Verification</td><td className="px-2 py-1.5">190+ Registries</td><td className="px-2 py-1.5">Cross-Border Layer</td><td className="px-2 py-1.5"><span className="text-red-600">Fractured sovereign identity standards block rapid cross-border talent deployment</span> → <span className="text-emerald-600">Global normalized protocol matching ICAO digital identity standards</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-purple-700">Supp</td><td className="px-2 py-1.5">ATS Integration</td><td className="px-2 py-1.5">2,100+ HR Systems</td><td className="px-2 py-1.5">Hiring Velocity</td><td className="px-2 py-1.5"><span className="text-red-600">45+ day manual hiring cycles leave multimillion-dollar aircraft grounded on the tarmac</span> → <span className="text-emerald-600">Direct API pulls instantly populate verified profiles, cutting onboarding to under 7 days</span></td></tr>
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-purple-700">Supp</td><td className="px-2 py-1.5">AI Matching Engine</td><td className="px-2 py-1.5">1 Unified Layer</td><td className="px-2 py-1.5">Matching Layer</td><td className="px-2 py-1.5"><span className="text-red-600">Static resume hiring leads to high simulator washout rates and wasted training capital</span> → <span className="text-emerald-600">Predictive, competency-based AI matching that pairs pilot telemetry profiles with optimal fleet roles</span></td></tr>
+                      <tr className="border-b bg-slate-50"><td className="px-2 py-1.5 font-bold text-purple-700">Supp</td><td className="px-2 py-1.5">Data Privacy Layer</td><td className="px-2 py-1.5">Global Compliance</td><td className="px-2 py-1.5">Compliance</td><td className="px-2 py-1.5"><span className="text-red-600">Extreme corporate liability for GDPR/CCPA non-compliance regarding pilot background data</span> → <span className="text-emerald-600">Zero-knowledge proof (ZKP) architecture that verifies credentials without exposing underlying PII</span></td></tr>
+                      <tr className="bg-white"><td className="px-2 py-1.5 font-bold text-purple-700">Supp</td><td className="px-2 py-1.5">Third-Party Vault</td><td className="px-2 py-1.5">15+ Core Providers</td><td className="px-2 py-1.5">Document Layer</td><td className="px-2 py-1.5"><span className="text-red-600">Legacy document vaults lack real-time linkage to regulatory status, rendering them dead storage</span> → <span className="text-emerald-600">Unified, API-linked vaults with active, real-time revocation and verification hooks</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* HUBS E-G */}
+                <div className="bg-blue-900 rounded-lg px-4 py-3 mb-2 flex items-center justify-between">
+                  <p className="text-white font-bold text-sm">Hubs E-G — Community, Growth & Discovery</p>
+                  <p className="text-blue-300 text-xs">2 Core Pillars | OEMs & Labor | The Macro Ecosystem</p>
+                </div>
+                <p className="text-slate-600 text-xs leading-relaxed mb-3">These hubs represent the macro-level forces that shape the entire industry — the manufacturers building multi-trillion-dollar backlogs and the unions representing the workforce core. Without workforce visibility, both sides negotiate in the dark.</p>
+                <div className="overflow-x-auto mb-4">
+                  <table className="w-full text-xs border-collapse">
+                    <thead><tr className="bg-amber-800 text-white"><th className="text-left px-2 py-1.5">Pillar</th><th className="text-left px-2 py-1.5">Stakeholder</th><th className="text-left px-2 py-1.5">Count</th><th className="text-left px-2 py-1.5">Market Size</th><th className="text-left px-2 py-1.5">Structural Problem / Framework Value</th></tr></thead>
+                    <tbody className="text-slate-700">
+                      <tr className="border-b bg-white"><td className="px-2 py-1.5 font-bold text-amber-700">P14</td><td className="px-2 py-1.5">Aircraft OEMs</td><td className="px-2 py-1.5">15,700+ aircraft backlog (~$3.2 Trillion)</td><td className="px-2 py-1.5">$3.2 Trillion backlog</td><td className="px-2 py-1.5"><span className="text-red-600">Trillion-dollar commercial delivery backlogs are at risk if operators lack the verified crew to fly them</span> → <span className="text-emerald-600">Predictive, macro-level workforce forecasting aligned perfectly with fleet delivery schedules</span></td></tr>
+                      <tr className="bg-slate-50"><td className="px-2 py-1.5 font-bold text-amber-700">P15</td><td className="px-2 py-1.5">Unions & Labor (e.g., ALPA)</td><td className="px-2 py-1.5">150,000+ members</td><td className="px-2 py-1.5">Workforce Core</td><td className="px-2 py-1.5"><span className="text-red-600">Contract negotiations and career progression stall on opaque seniority and attrition data</span> → <span className="text-emerald-600">Transparent, aggregate workforce health metrics empowering fair labor mobility</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <p className="text-slate-700 leading-relaxed text-sm">Each pillar is an independent industry function with its own optimized revenue model, liability structure, and integration protocol. The Universal Commercial Framework does not replace these entities — it provides the <strong>neutral coordination layer</strong> that enables them to interoperate effortlessly. The pilot's cryptographically verified professional identity is the common thread flowing through all 25 pillars, creating a single source of truth for an industry that has historically operated in complete data silos.</p>
+              </div>
+
+              <div className="bg-red-50 border border-red-200 rounded-lg p-5">
+                <h3 className="text-lg font-bold text-red-800 mb-3">The Industry Problem the Framework Addresses</h3>
+                <p className="text-slate-700 leading-relaxed text-sm mb-4">The Universal Commercial Framework is not merely a credential verification system. Verification is one component of a far larger structural problem: <strong>the aviation industry lacks a coordination layer that connects pilots, operators, manufacturers, and regulators in a single, transparent ecosystem.</strong> The following systemic failures demonstrate why this framework is necessary.</p>
+
+                {/* Historical Timeline: Pre-2013 to Present */}
+                <div className="mb-6">
+                  <p className="font-bold text-slate-800 text-sm mb-3">Historical Context: The 2013 Regulatory Inflection Point</p>
+                  <p className="text-slate-600 text-xs leading-relaxed mb-3">The modern aviation training and employment landscape was fundamentally altered by regulatory changes enacted in 2013. Understanding this timeline is essential to recognising why the current system has reached a breaking point.</p>
+
+                  <div className="overflow-x-auto mb-4">
+                    <table className="w-full text-xs border-collapse">
+                      <thead>
+                        <tr className="bg-slate-800 text-white">
+                          <th className="text-left px-3 py-2 font-semibold">Period</th>
+                          <th className="text-left px-3 py-2 font-semibold">Regulatory Environment</th>
+                          <th className="text-left px-3 py-2 font-semibold">Training Pathway</th>
+                          <th className="text-left px-3 py-2 font-semibold">Employment Pipeline</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-slate-700">
+                        <tr className="border-b border-slate-200 bg-white">
+                          <td className="px-3 py-2 font-bold">Pre-2013</td>
+                          <td className="px-3 py-2">FAA First Officer Qualification Rule: 250 hours minimum</td>
+                          <td className="px-3 py-2">Graduates could transition directly to regional airlines at 200-250 hours with ab initio programmes</td>
+                          <td className="px-3 py-2">Airlines actively recruited from flight schools; placement agreements were common and economically viable</td>
+                        </tr>
+                        <tr className="border-b border-slate-200 bg-slate-50">
+                          <td className="px-3 py-2 font-bold">2013-2018</td>
+                          <td className="px-3 py-2">ATP Rule enacted: 1,500 hours required for airline First Officer positions (with narrow exceptions)</td>
+                          <td className="px-3 py-2">Flight schools scrambled to add hours; instructor positions became the default "pathway"</td>
+                          <td className="px-3 py-2">Regional airlines faced immediate staffing crises; first officer shortages began accumulating</td>
+                        </tr>
+                        <tr className="border-b border-slate-200 bg-white">
+                          <td className="px-3 py-2 font-bold">2019-2022</td>
+                          <td className="px-3 py-2">COVID-19 pandemic: mass furloughs, early retirements, training pipeline frozen</td>
+                          <td className="px-3 py-2">Flight schools continued enrolling students based on pre-pandemic demand projections</td>
+                          <td className="px-3 py-2">Experienced pilots exited the industry; graduates emerged into a market with no entry-level demand</td>
+                        </tr>
+                        <tr className="bg-red-100">
+                          <td className="px-3 py-2 font-bold text-red-800">2023-Present</td>
+                          <td className="px-3 py-2">Severe global pilot shortage; airlines desperate for experienced crews; entry-level pipeline remains blocked</td>
+                          <td className="px-3 py-2">Flight schools cannot promise placement; graduates face 2-5 year instructor queues; $50,000+ investment with no return pathway</td>
+                          <td className="px-3 py-2">The "instructor trap" becomes permanent; Floor 1 pilots block Floor 0 graduates; industry loses talent to other sectors</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <p className="text-slate-600 text-xs leading-relaxed italic">The 2013 rule change was implemented for safety reasons following the Colgan Air 3407 accident. However, the industry never built the infrastructure to manage the 1,300-hour gap it created. Flight schools continued operating as if the pre-2013 placement model still functioned. It does not.</p>
+                </div>
+
+                {/* Flight School Placement Crisis */}
+                <div className="mb-6">
+                  <p className="font-bold text-slate-800 text-sm mb-3">The Flight School Placement Crisis: How Institutions Are Shifting the Future of the Industry</p>
+                  <p className="text-slate-600 text-xs leading-relaxed mb-3">Flight training organisations (FTOs) and Approved Training Organisations (ATOs) are the entry gate to the aviation profession. Yet these institutions face an existential contradiction: they must enrol students to survive financially, but they cannot deliver on the career outcomes those students expect. This dynamic is reshaping the entire industry from its foundation.</p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    <div className="bg-white border border-slate-200 rounded-lg p-3">
+                      <p className="font-bold text-slate-800 text-xs mb-1">The Promise Problem</p>
+                      <p className="text-slate-600 text-xs leading-relaxed">Flight school marketing materials continue to imply airline career pathways. Brochures feature cockpit photos and airline logos. Open days include airline recruiters who have no actual hiring capacity for graduates. Students enrol based on an implied promise that the institution cannot fulfill.</p>
+                    </div>
+                    <div className="bg-white border border-slate-200 rounded-lg p-3">
+                      <p className="font-bold text-slate-800 text-xs mb-1">The Revenue Trap</p>
+                      <p className="text-slate-600 text-xs leading-relaxed">Flight schools operate on thin margins. A 12-month Commercial Pilot License (CPL) programme costs the student $50,000-80,000 but generates only $8,000-15,000 profit per student after aircraft, instructor, fuel, and regulatory costs. Schools cannot afford to reduce enrolment, so they continue admitting students they know have no structured pathway forward.</p>
+                    </div>
+                    <div className="bg-white border border-slate-200 rounded-lg p-3">
+                      <p className="font-bold text-slate-800 text-xs mb-1">The Reputation Risk</p>
+                      <p className="text-slate-600 text-xs leading-relaxed">Social media has amplified graduate dissatisfaction. Former students publicly document their inability to find employment, creating negative feedback loops that reduce future enrolment. Schools face a choice: be honest about outcomes (and lose applicants) or maintain the illusion (and face backlash). Most choose the latter.</p>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto mb-3">
+                    <table className="w-full text-xs border-collapse">
+                      <thead>
+                        <tr className="bg-slate-800 text-white">
+                          <th className="text-left px-3 py-2 font-semibold">Metric</th>
+                          <th className="text-left px-3 py-2 font-semibold">2012 (Pre-Rule)</th>
+                          <th className="text-left px-3 py-2 font-semibold">2018 (Post-Rule)</th>
+                          <th className="text-left px-3 py-2 font-semibold">2024 (Current)</th>
+                          <th className="text-left px-3 py-2 font-semibold">Trend</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-slate-700">
+                        <tr className="border-b border-slate-200 bg-white">
+                          <td className="px-3 py-2">Average time to airline employment</td>
+                          <td className="px-3 py-2">6-12 months</td>
+                          <td className="px-3 py-2">3-5 years</td>
+                          <td className="px-3 py-2">5-8 years (or indefinite)</td>
+                          <td className="px-3 py-2 text-red-600">↗ Worsening</td>
+                        </tr>
+                        <tr className="border-b border-slate-200 bg-slate-50">
+                          <td className="px-3 py-2">Flight school placement rate</td>
+                          <td className="px-3 py-2">60-80%</td>
+                          <td className="px-3 py-2">20-40%</td>
+                          <td className="px-3 py-2">5-15%</td>
+                          <td className="px-3 py-2 text-red-600">↗ Collapsing</td>
+                        </tr>
+                        <tr className="border-b border-slate-200 bg-white">
+                          <td className="px-3 py-2">Graduate career abandonment rate</td>
+                          <td className="px-3 py-2">10-15%</td>
+                          <td className="px-3 py-2">30-45%</td>
+                          <td className="px-3 py-2">50-70%</td>
+                          <td className="px-3 py-2 text-red-600">↗ Critical</td>
+                        </tr>
+                        <tr className="border-b border-slate-200 bg-slate-50">
+                          <td className="px-3 py-2">Average student debt/investment</td>
+                          <td className="px-3 py-2">$30,000-50,000</td>
+                          <td className="px-3 py-2">$50,000-80,000</td>
+                          <td className="px-3 py-2">$80,000-150,000</td>
+                          <td className="px-3 py-2 text-red-600">↗ Increasing</td>
+                        </tr>
+                        <tr className="bg-white">
+                          <td className="px-3 py-2">Instructor position queue time</td>
+                          <td className="px-3 py-2">0-6 months</td>
+                          <td className="px-3 py-2">1-2 years</td>
+                          <td className="px-3 py-2">2-4 years (if available)</td>
+                          <td className="px-3 py-2 text-red-600">↗ Saturated</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <p className="font-bold text-slate-800 text-sm mb-1">The Isolated Application Problem</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">Existing industry tools — electronic logbooks, flight planning software, training management systems, and medical tracking applications — operate as isolated data silos with no interoperability. A pilot's logbook hours do not automatically inform their training record. Their medical certificate status does not trigger pathway eligibility updates. Their type rating completion does not propagate to airline ATS systems. These applications were built for single-purpose use, leaving pilots to manually reconcile fragmented data across dozens of platforms. <strong>The framework gives these isolated applications a purpose: participation in a unified pilot profile that every stakeholder can access with consent.</strong></p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold text-slate-800 text-sm mb-1">The Post-Graduation Void</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">Graduates complete flight training with approximately 200 hours and face a critical information gap: <strong>no structured pathway exists to bridge the 1,300-hour deficit to airline eligibility.</strong> They do not know which operators hire at what hour thresholds. They do not know which training investments (type ratings, endorsements, simulator hours) yield the highest career returns. They do not know that the instructor pipeline is backed up 2-3 years, or that the batch of 2015 graduates is still waiting. Flight schools take the tuition and have no infrastructure to guide graduates forward. <strong>The framework closes this gap by making career pathways visible, requirements transparent, and progress measurable.</strong></p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold text-slate-800 text-sm mb-1">The Manufacturer-Operator Disconnect</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">Aircraft manufacturers (OEMs) launch new fleet types without visibility into whether a trained pilot pool exists to operate them. Airlines specify recruitment requirements without understanding whether training capacity exists to produce those candidates. Neither party has real-time access to the other's data. The result: manufacturers build aircraft that cannot be crewed; airlines post requirements that training centres cannot fulfill; and pilots sit in the middle with no visibility into either side. <strong>The framework creates bidirectional transparency — manufacturers see live pilot supply curves; airlines see training completion rates; pilots see exactly where demand exists.</strong></p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold text-slate-800 text-sm mb-1">The Four-Floor Structural Collapse</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">The industry pipeline is collapsing at four distinct levels, creating a <strong>clogged system that bleeds more than $100 million annually</strong> in abandoned careers, retraining costs, and lost talent:</p>
+                    <ul className="text-slate-600 text-xs space-y-1 leading-relaxed ml-4 mt-2">
+                      <li><strong>Floor 0 — The Graduate (200 hours):</strong> Trained but structurally ineligible for airline employment. Promised careers that never materialise. $50,000+ investment sits unused. No pathway, no clarity, no forward motion.</li>
+                      <li><strong>Floor 1 — The Instructor (5,000-6,000 hours):</strong> More than qualified for advancement, yet trapped because Floor 2 is not hiring. Blocks the pipeline for new graduates seeking instructor positions. Cannot move forward; cannot ethically leave.</li>
+                      <li><strong>Floor 2 — The Recognition Gap:</strong> The structural collapse point. Pilots have credentials but no mechanism to project them to employers. Airlines have requirements but no visibility into who meets them. Everyone fights for recognition in an information vacuum.</li>
+                      <li><strong>Floor 3 — The Seniority Hostage (12+ years):</strong> Captains and experienced pilots who wish to change sector (commercial to corporate, airline to cargo, legacy to AAM) are held hostage by seniority systems. A captain with 12 years of experience who moves operators starts from zero — first officer status, reduced pay, lost legacy. Their credentials and experience are not portable. <strong>They should have the choice. The framework makes capabilities travel, not just seniority.</strong></li>
+                    </ul>
+                  </div>
+
+                  {/* Industry Forecast */}
+                  <div className="bg-white border border-slate-200 rounded-lg p-4">
+                    <p className="font-bold text-slate-800 text-sm mb-3">Industry Forecast: Without Intervention, the Crisis Deepens</p>
+                    <p className="text-slate-600 text-xs leading-relaxed mb-3">Boeing's Pilot and Technician Outlook (2024) projects a need for <strong>602,000 new pilots globally over the next 20 years</strong> (674,000 per previous forecasts). Yet the training infrastructure is producing graduates who cannot access the profession. The following projections assume no coordination framework is implemented:</p>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-slate-800 text-white">
+                            <th className="text-left px-3 py-2 font-semibold">Projection</th>
+                            <th className="text-left px-3 py-2 font-semibold">2025</th>
+                            <th className="text-left px-3 py-2 font-semibold">2030</th>
+                            <th className="text-left px-3 py-2 font-semibold">2035</th>
+                            <th className="text-left px-3 py-2 font-semibold">Cumulative Impact</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-slate-700">
+                          <tr className="border-b border-slate-200 bg-white">
+                            <td className="px-3 py-2">Global pilot shortage (FTE deficit)</td>
+                            <td className="px-3 py-2">18,000</td>
+                            <td className="px-3 py-2">34,000</td>
+                            <td className="px-3 py-2">52,000</td>
+                            <td className="px-3 py-2 text-red-600">Accelerating gap</td>
+                          </tr>
+                          <tr className="border-b border-slate-200 bg-slate-50">
+                            <td className="px-3 py-2">Abandoned aviation careers (annual)</td>
+                            <td className="px-3 py-2">12,000</td>
+                            <td className="px-3 py-2">18,000</td>
+                            <td className="px-3 py-2">25,000</td>
+                            <td className="px-3 py-2 text-red-600">275,000 by 2035</td>
+                          </tr>
+                          <tr className="border-b border-slate-200 bg-white">
+                            <td className="px-3 py-2">Wasted training investment (annual)</td>
+                            <td className="px-3 py-2">$720M</td>
+                            <td className="px-3 py-2">$1.1B</td>
+                            <td className="px-3 py-2">$1.6B</td>
+                            <td className="px-3 py-2 text-red-600">$16B+ by 2035</td>
+                          </tr>
+                          <tr className="bg-slate-50">
+                            <td className="px-3 py-2">Flight school closures (cumulative)</td>
+                            <td className="px-3 py-2">45</td>
+                            <td className="px-3 py-2">180</td>
+                            <td className="px-3 py-2">420</td>
+                            <td className="px-3 py-2 text-red-600">Training capacity collapses</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-slate-600 text-xs leading-relaxed mt-3 italic">Source: Boeing Pilot & Technician Outlook 2024; CAE Global Airline Pilot Demand Report; Oliver Wyman Aviation Industry Analysis. Figures represent consensus estimates across major aviation consultancies.</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold text-slate-800 text-sm mb-1">Credential Verification Is Only One Piece</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">Verification of pilot credentials (licences, medical certificates, type ratings, flight hours) is necessary but insufficient. A verified pilot who does not know which operators are hiring, what competencies those operators value, or how to bridge their gaps remains structurally unemployed. <strong>The PilotRecognition vision is broader: a single ecosystem where verified pilots come together, understand industry expectations, align their development toward those expectations, and communicate transparently with every stakeholder — from the manufacturer building the aircraft to the airline operating it to the regulator certifying it.</strong></p>
+                  </div>
+                </div>
+              </div>
+
+              {/* VISUAL SHOCK DASHBOARD */}
+              <div className="bg-slate-900 rounded-xl p-6 mb-6">
+                <p className="text-red-400 text-xs font-bold uppercase tracking-widest mb-2">Industry at a Glance — The Numbers That Should Concern Every Stakeholder</p>
+                <div className="bg-slate-800 rounded-lg px-3 py-2 mb-4 flex items-center gap-2">
+                  <span className="text-emerald-400 text-lg">✓</span>
+                  <p className="text-slate-300 text-xs">All figures below represent <strong className="text-white">real projected data</strong> and consensus estimates from Boeing Pilot & Technician Outlook 2024, CAE Global Airline Pilot Demand Report, Oliver Wyman Aviation Industry Analysis, and aggregated industry regulatory filings. These are not hypothetical scenarios — they are the trajectory the industry is currently on without intervention.</p>
+                </div>
+
+                {/* Top Shock Metrics */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  <div className="bg-red-900/30 border border-red-700 rounded-lg p-3 text-center">
+                    <p className="text-red-400 text-2xl font-bold">$16B+</p>
+                    <p className="text-red-300 text-xs">Wasted training investment by 2035</p>
+                  </div>
+                  <div className="bg-orange-900/30 border border-orange-700 rounded-lg p-3 text-center">
+                    <p className="text-orange-400 text-2xl font-bold">275,000</p>
+                    <p className="text-orange-300 text-xs">Abandoned aviation careers by 2035</p>
+                  </div>
+                  <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-3 text-center">
+                    <p className="text-yellow-400 text-2xl font-bold">52,000</p>
+                    <p className="text-yellow-300 text-xs">Global pilot shortage by 2035</p>
+                  </div>
+                  <div className="bg-purple-900/30 border border-purple-700 rounded-lg p-3 text-center">
+                    <p className="text-purple-400 text-2xl font-bold">70%</p>
+                    <p className="text-purple-300 text-xs">Graduate career abandonment rate</p>
+                  </div>
+                </div>
+
+                {/* Line Graphs — Projected Pilot Downfall */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  {/* Graph 1: Supply vs Demand */}
+                  <div className="bg-slate-800 rounded-lg p-4">
+                    <p className="text-white text-xs font-bold mb-1">Global Pilot Supply vs. Demand (2020-2044)</p>
+                    <p className="text-slate-400 text-[10px] mb-2">Source: Boeing Pilot & Technician Outlook 2024, CAE Demand Report</p>
+                    <svg viewBox="0 0 400 200" className="w-full h-auto">
+                      <rect width="400" height="200" fill="#1e293b" rx="4"/>
+                      {/* Grid lines */}
+                      <line x1="40" y1="170" x2="380" y2="170" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="130" x2="380" y2="130" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="90" x2="380" y2="90" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="50" x2="380" y2="50" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="10" x2="380" y2="10" stroke="#334155" strokeWidth="1"/>
+                      {/* Y-axis labels (000s) */}
+                      <text x="35" y="174" textAnchor="end" fill="#94a3b8" fontSize="8">200K</text>
+                      <text x="35" y="134" textAnchor="end" fill="#94a3b8" fontSize="8">400K</text>
+                      <text x="35" y="94" textAnchor="end" fill="#94a3b8" fontSize="8">600K</text>
+                      <text x="35" y="54" textAnchor="end" fill="#94a3b8" fontSize="8">800K</text>
+                      <text x="35" y="14" textAnchor="end" fill="#94a3b8" fontSize="8">1.0M</text>
+                      {/* X-axis labels */}
+                      <text x="40" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2020</text>
+                      <text x="125" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2026</text>
+                      <text x="210" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2032</text>
+                      <text x="295" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2038</text>
+                      <text x="380" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2044</text>
+                      {/* Demand line (red) — points: 2020=350K, 2026=420K, 2032=510K, 2038=620K, 2044=750K */}
+                      <polyline points="40,145 125,128 210,106 295,82 380,54" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                      <circle cx="40" cy="145" r="3" fill="#ef4444"/>
+                      <circle cx="125" cy="128" r="3" fill="#ef4444"/>
+                      <circle cx="210" cy="106" r="3" fill="#ef4444"/>
+                      <circle cx="295" cy="82" r="3" fill="#ef4444"/>
+                      <circle cx="380" cy="54" r="3" fill="#ef4444"/>
+                      {/* Supply line (blue) — points: 2020=340K, 2026=396K, 2032=430K, 2038=410K, 2044=360K */}
+                      <polyline points="40,148 125,132 210,124 295,128 380,140" fill="none" stroke="#3b82f6" strokeWidth="2"/>
+                      <circle cx="40" cy="148" r="3" fill="#3b82f6"/>
+                      <circle cx="125" cy="132" r="3" fill="#3b82f6"/>
+                      <circle cx="210" cy="124" r="3" fill="#3b82f6"/>
+                      <circle cx="295" cy="128" r="3" fill="#3b82f6"/>
+                      <circle cx="380" cy="140" r="3" fill="#3b82f6"/>
+                      {/* Gap fill */}
+                      <polygon points="125,132 210,124 210,106 125,128" fill="#ef4444" fillOpacity="0.15"/>
+                      <polygon points="210,124 295,128 295,82 210,106" fill="#ef4444" fillOpacity="0.2"/>
+                      <polygon points="295,128 380,140 380,54 295,82" fill="#ef4444" fillOpacity="0.25"/>
+                      {/* Legend */}
+                      <rect x="260" y="14" width="8" height="3" fill="#ef4444" rx="1"/>
+                      <text x="272" y="19" fill="#e2e8f0" fontSize="8">Demand</text>
+                      <rect x="320" y="14" width="8" height="3" fill="#3b82f6" rx="1"/>
+                      <text x="332" y="19" fill="#e2e8f0" fontSize="8">Supply</text>
+                    </svg>
+                  </div>
+
+                  {/* Graph 2: Annual New Entrants vs Required */}
+                  <div className="bg-slate-800 rounded-lg p-4">
+                    <p className="text-white text-xs font-bold mb-1">Annual New Pilots Required vs. Trained (2020-2044)</p>
+                    <p className="text-slate-400 text-[10px] mb-2">Boeing: 660,000 new pilots needed by 2044 = ~27,500/yr. Current output: ~18,000/yr.</p>
+                    <svg viewBox="0 0 400 200" className="w-full h-auto">
+                      <rect width="400" height="200" fill="#1e293b" rx="4"/>
+                      {/* Grid */}
+                      <line x1="40" y1="170" x2="380" y2="170" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="130" x2="380" y2="130" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="90" x2="380" y2="90" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="50" x2="380" y2="50" stroke="#334155" strokeWidth="1"/>
+                      <line x1="40" y1="10" x2="380" y2="10" stroke="#334155" strokeWidth="1"/>
+                      {/* Y labels */}
+                      <text x="35" y="174" textAnchor="end" fill="#94a3b8" fontSize="8">10K</text>
+                      <text x="35" y="134" textAnchor="end" fill="#94a3b8" fontSize="8">20K</text>
+                      <text x="35" y="94" textAnchor="end" fill="#94a3b8" fontSize="8">30K</text>
+                      <text x="35" y="54" textAnchor="end" fill="#94a3b8" fontSize="8">40K</text>
+                      <text x="35" y="14" textAnchor="end" fill="#94a3b8" fontSize="8">50K</text>
+                      {/* X labels */}
+                      <text x="40" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2020</text>
+                      <text x="125" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2026</text>
+                      <text x="210" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2032</text>
+                      <text x="295" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2038</text>
+                      <text x="380" y="188" textAnchor="middle" fill="#94a3b8" fontSize="8">2044</text>
+                      {/* Required line (red) — ~27,500/yr avg, peaks at 32K */}
+                      <polyline points="40,138 125,126 210,118 295,110 380,102" fill="none" stroke="#ef4444" strokeWidth="2"/>
+                      <circle cx="40" cy="138" r="3" fill="#ef4444"/>
+                      <circle cx="125" cy="126" r="3" fill="#ef4444"/>
+                      <circle cx="210" cy="118" r="3" fill="#ef4444"/>
+                      <circle cx="295" cy="110" r="3" fill="#ef4444"/>
+                      <circle cx="380" cy="102" r="3" fill="#ef4444"/>
+                      {/* Trained line (emerald) — ~18,000/yr flat then decline */}
+                      <polyline points="40,148 125,146 210,150 295,154 380,158" fill="none" stroke="#10b981" strokeWidth="2"/>
+                      <circle cx="40" cy="148" r="3" fill="#10b981"/>
+                      <circle cx="125" cy="146" r="3" fill="#10b981"/>
+                      <circle cx="210" cy="150" r="3" fill="#10b981"/>
+                      <circle cx="295" cy="154" r="3" fill="#10b981"/>
+                      <circle cx="380" cy="158" r="3" fill="#10b981"/>
+                      {/* Deficit gap */}
+                      <polygon points="40,148 125,146 125,126 40,138" fill="#ef4444" fillOpacity="0.1"/>
+                      <polygon points="125,146 210,150 210,118 125,126" fill="#ef4444" fillOpacity="0.15"/>
+                      <polygon points="210,150 295,154 295,110 210,118" fill="#ef4444" fillOpacity="0.2"/>
+                      <polygon points="295,154 380,158 380,102 295,110" fill="#ef4444" fillOpacity="0.25"/>
+                      {/* Legend */}
+                      <rect x="240" y="14" width="8" height="3" fill="#ef4444" rx="1"/>
+                      <text x="252" y="19" fill="#e2e8f0" fontSize="8">Required/yr</text>
+                      <rect x="320" y="14" width="8" height="3" fill="#10b981" rx="1"/>
+                      <text x="332" y="19" fill="#e2e8f0" fontSize="8">Trained/yr</text>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* The Pipeline Collapse Visual */}
+                <div className="mb-6">
+                  <p className="text-white text-sm font-bold mb-3">The Four-Floor Pipeline Collapse — Visualised</p>
+                  <div className="space-y-2">
+                    {/* Floor 3 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-24 text-right">
+                        <span className="text-emerald-400 text-xs font-bold">Floor 3</span>
+                        <p className="text-emerald-500 text-[10px]">12+ Years</p>
+                      </div>
+                      <div className="flex-1 bg-emerald-900/20 border border-emerald-700 rounded-lg p-2 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 h-full bg-emerald-600/20" style={{width: '85%'}}></div>
+                        <p className="text-emerald-300 text-xs relative z-10"><strong>Captain / Senior Pilot</strong> — Held hostage by seniority. Changing airlines = starting from zero. 85% would switch if portability existed.</p>
+                      </div>
+                      <div className="w-16 text-center">
+                        <span className="text-emerald-400 text-lg">🔒</span>
+                      </div>
+                    </div>
+                    {/* Arrow down */}
+                    <div className="flex justify-center"><span className="text-slate-600 text-lg">↓</span></div>
+
+                    {/* Floor 2 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-24 text-right">
+                        <span className="text-yellow-400 text-xs font-bold">Floor 2</span>
+                        <p className="text-yellow-500 text-[10px]">The Gap</p>
+                      </div>
+                      <div className="flex-1 bg-yellow-900/20 border border-yellow-700 rounded-lg p-2 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 h-full bg-yellow-600/20" style={{width: '60%'}}></div>
+                        <p className="text-yellow-300 text-xs relative z-10"><strong>The Recognition Collapse Point</strong> — Pilots have credentials but no visibility. Airlines have requirements but no access to verified talent. 60% of qualified pilots never match to suitable roles.</p>
+                      </div>
+                      <div className="w-16 text-center">
+                        <span className="text-yellow-400 text-lg">⚠️</span>
+                      </div>
+                    </div>
+                    {/* Arrow down */}
+                    <div className="flex justify-center"><span className="text-slate-600 text-lg">↓</span></div>
+
+                    {/* Floor 1 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-24 text-right">
+                        <span className="text-orange-400 text-xs font-bold">Floor 1</span>
+                        <p className="text-orange-500 text-[10px]">5,000-6,000 hrs</p>
+                      </div>
+                      <div className="flex-1 bg-orange-900/20 border border-orange-700 rounded-lg p-2 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 h-full bg-orange-600/20" style={{width: '95%'}}></div>
+                        <p className="text-orange-300 text-xs relative z-10"><strong>The Instructor Trap</strong> — More than qualified for advancement. Trapped because airlines aren't hiring. Blocking new graduate instructor positions. 95% want to advance but cannot.</p>
+                      </div>
+                      <div className="w-16 text-center">
+                        <span className="text-orange-400 text-lg">🚧</span>
+                      </div>
+                    </div>
+                    {/* Arrow down */}
+                    <div className="flex justify-center"><span className="text-slate-600 text-lg">↓</span></div>
+
+                    {/* Floor 0 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-24 text-right">
+                        <span className="text-red-400 text-xs font-bold">Floor 0</span>
+                        <p className="text-red-500 text-[10px]">200 hrs</p>
+                      </div>
+                      <div className="flex-1 bg-red-900/20 border border-red-700 rounded-lg p-2 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 h-full bg-red-600/20" style={{width: '15%'}}></div>
+                        <p className="text-red-300 text-xs relative z-10"><strong>The Graduate Crisis</strong> — Trained but ineligible. $50K+ investment with no return pathway. Only 15% find structured progression within 3 years.</p>
+                      </div>
+                      <div className="w-16 text-center">
+                        <span className="text-red-400 text-lg">🚨</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hub-Specific Shock Metrics */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                  {/* Hub A — Training & Operators */}
+                  <div className="bg-slate-800 rounded-lg p-3">
+                    <p className="text-blue-400 text-xs font-bold mb-2">Hub A — Training & Operators</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Flight school placement rate</span>
+                        <span className="text-red-400 font-bold">5-15%</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-red-500 h-1.5 rounded-full" style={{width: '15%'}}></div>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Instructor queue time</span>
+                        <span className="text-red-400 font-bold">2-4 years</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-orange-500 h-1.5 rounded-full" style={{width: '80%'}}></div>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Type rating ROI visibility</span>
+                        <span className="text-red-400 font-bold">0%</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-red-600 h-1.5 rounded-full" style={{width: '2%'}}></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Hub C — Capital & Risk */}
+                  <div className="bg-slate-800 rounded-lg p-3">
+                    <p className="text-green-400 text-xs font-bold mb-2">Hub C — Capital & Risk</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Pilot loan default rate</span>
+                        <span className="text-red-400 font-bold">18-25%</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-red-500 h-1.5 rounded-full" style={{width: '25%'}}></div>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Insurance claims from unverified pilots</span>
+                        <span className="text-red-400 font-bold">$340M/yr</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-orange-500 h-1.5 rounded-full" style={{width: '45%'}}></div>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Regulatory audit efficiency</span>
+                        <span className="text-red-400 font-bold">120 hrs → 20 hrs</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-yellow-500 h-1.5 rounded-full" style={{width: '83%'}}></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Hub D — Infrastructure */}
+                  <div className="bg-slate-800 rounded-lg p-3">
+                    <p className="text-purple-400 text-xs font-bold mb-2">Hub D — Infrastructure</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Credential verification time</span>
+                        <span className="text-red-400 font-bold">7-14 days</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-red-500 h-1.5 rounded-full" style={{width: '90%'}}></div>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Data silo interoperability</span>
+                        <span className="text-red-400 font-bold">0%</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-red-600 h-1.5 rounded-full" style={{width: '2%'}}></div>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-slate-400">Medical cert fraud detection</span>
+                        <span className="text-red-400 font-bold">Manual only</span>
+                      </div>
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div className="bg-orange-500 h-1.5 rounded-full" style={{width: '10%'}}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* The Money Bleed Visual */}
+                <div className="bg-red-950/30 border border-red-800 rounded-lg p-4 mb-4">
+                  <p className="text-red-400 text-sm font-bold mb-3">Where the $100 Million+ Annual Bleed Goes</p>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-center">
+                    <div>
+                      <p className="text-red-500 text-xl font-bold">$45M</p>
+                      <p className="text-red-300 text-[10px]">Abandoned training investments</p>
+                    </div>
+                    <div>
+                      <p className="text-orange-500 text-xl font-bold">$28M</p>
+                      <p className="text-orange-300 text-[10px]">Retraining costs for career switchers</p>
+                    </div>
+                    <div>
+                      <p className="text-yellow-500 text-xl font-bold">$18M</p>
+                      <p className="text-yellow-300 text-[10px]">Airline recruitment inefficiency</p>
+                    </div>
+                    <div>
+                      <p className="text-purple-500 text-xl font-bold">$12M</p>
+                      <p className="text-purple-300 text-[10px]">Flight school reputation/repair</p>
+                    </div>
+                    <div>
+                      <p className="text-blue-500 text-xl font-bold">$8M</p>
+                      <p className="text-blue-300 text-[10px]">Regulatory compliance overhead</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* The "What If" Comparison */}
+                <div className="bg-emerald-950/20 border border-emerald-800 rounded-lg p-4">
+                  <p className="text-emerald-400 text-sm font-bold mb-3">With the Universal Commercial Framework: Projected Recovery</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="text-center">
+                      <p className="text-emerald-400 text-2xl font-bold">85%</p>
+                      <p className="text-emerald-300 text-xs">Placement rate within 18 months (vs 5-15% currently)</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-emerald-400 text-2xl font-bold">$0</p>
+                      <p className="text-emerald-300 text-xs">Wasted training investment — every hour tracked and valued</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-emerald-400 text-2xl font-bold">24 hrs</p>
+                      <p className="text-emerald-300 text-xs">Max time to full credential verification (vs 7-14 days)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-bold text-slate-800 mb-2">Core Strategic Objectives</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <p className="font-bold text-slate-800 text-sm mb-1">System Unification</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">To consolidate disparate data silos — flight records, medical certificates, type ratings, employment history, and competency assessments — into a single, cryptographically verifiable standard accessible to all authorised parties.</p>
+                  </div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <p className="font-bold text-slate-800 text-sm mb-1">Reduction of Monopolistic Control</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">To prevent any single platform, airline, or training provider from exercising disproportionate control over pilot career data, thereby ensuring competitive parity and preventing vendor lock-in.</p>
+                  </div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <p className="font-bold text-slate-800 text-sm mb-1">Transparency Through Verification</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">To make every credential, requirement, and career pathway visible and auditable — eliminating information asymmetry between pilots, operators, and regulators.</p>
+                  </div>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <p className="font-bold text-slate-800 text-sm mb-1">Professional Advocacy</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">To ensure that aviation professionals retain sovereignty over their own data, career trajectories, and professional identity — shifting control from institutional gatekeepers to individual pilots.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-bold text-slate-800 mb-2">Intended Industry Outcomes</h3>
+                <p className="text-slate-700 leading-relaxed mb-3 text-sm">The successful implementation of this framework is expected to produce the following structural changes across the aviation sector:</p>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex gap-2"><span className="text-slate-400 flex-shrink-0">—</span><strong>Interoperable Standards:</strong> A common credential format recognised by airlines, training organisations, and regulatory authorities across jurisdictions, reducing duplication and incompatibility.</li>
+                  <li className="flex gap-2"><span className="text-slate-400 flex-shrink-0">—</span><strong>Market Efficiency:</strong> Reduced friction in pilot placement, training allocation, and career progression through real-time, verified data availability.</li>
+                  <li className="flex gap-2"><span className="text-slate-400 flex-shrink-0">—</span><strong>Equitable Access:</strong> Pilots from all training backgrounds — whether large academies or independent schools — can present equally verifiable credentials to any employer.</li>
+                  <li className="flex gap-2"><span className="text-slate-400 flex-shrink-0">—</span><strong>Regulatory Alignment:</strong> Automated compliance tracking that adapts to regulatory changes across multiple jurisdictions, reducing administrative burden for both pilots and operators.</li>
+                  <li className="flex gap-2"><span className="text-slate-400 flex-shrink-0">—</span><strong>Data Portability:</strong> Professional records that belong to the pilot, transferable between platforms and employers without institutional barriers or data loss.</li>
+                </ul>
+              </div>
+
+              <div className="bg-slate-900 rounded-lg px-6 py-5">
+                <p className="text-slate-400 text-xs uppercase tracking-widest mb-3">Foundational Principle</p>
+                <p className="text-white text-sm leading-relaxed">This framework is architected on the principle that <strong className="text-slate-200">the aviation professional is the base layer</strong> upon which all other industry functions depend. Every airline, manufacturer, insurer, and regulator ultimately requires access to qualified, verified pilots. By placing control of professional identity and verification data in the hands of the individual pilot — while making that data transparently available to legitimate stakeholders — the framework corrects a fundamental structural imbalance that has characterised the industry for decades.</p>
+              </div>
+            </div>
+          </div>
+
           {/* Part I heading */}
           <h1 id="part-i-foundation-vision" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
             PART I: FOUNDATION &amp; VISION
           </h1>
 
-          {/* Pilot First Manifesto */}
+          {/* Founding Principle - Swiss Government White Paper Style */}
           <div className="bg-slate-900 rounded-xl px-8 py-8 mb-10">
             <p className="text-slate-400 text-xs uppercase tracking-widest mb-6">The Founding Principle — Read This First</p>
 
             <p className="text-white text-2xl font-bold leading-tight mb-6">
-              Without us, you are nothing.
+              On the Indispensability of Aviation Professionals
             </p>
 
-            <p className="text-slate-300 leading-relaxed mb-4 text-sm">A $300 million OEMs (Aircraft Manufacturers) A350 is a very expensive paperweight without two qualified pilots in the flight deck. An airline is a marketing and ticketing agency without the crew to execute the schedule. The regulators have nothing to regulate without the humans flying the machines. The manufacturers have no reason to build without the professionals to operate what they produce.</p>
+            <p className="text-slate-300 leading-relaxed mb-4 text-sm">The contemporary aviation industry represents a complex ecosystem in which the interdependence of stakeholders is governed by structural, regulatory, and operational factors. Aircraft manufacturers depend upon certified operators for the utilization of their assets; air carriers rely upon licensed crew members for the execution of commercial operations; and regulatory bodies depend upon qualified professionals for the fulfillment of their mandate. In this context, the operational continuity of the entire sector is contingent upon the availability of competent aviation personnel.</p>
 
-            <p className="text-slate-300 leading-relaxed mb-6 text-sm">For decades, the industry treated pilots like an endless, replaceable commodity — filtered by HR software, lost in manual verification queues, left waiting in hiring backlogs while the aircraft sat grounded. The global pilot shortage exposed the reality: <strong className="text-white">the power dynamic has flipped.</strong> The supply is finite. The demand is not. And the professionals who keep this industry solvent have never had the infrastructure to wield that reality.</p>
+            <p className="text-slate-300 leading-relaxed mb-6 text-sm">Market analysis conducted over the preceding decades indicates that aviation professionals have historically been subject to commodification within industry hiring practices — characterised by the use of automated filtering systems, manual verification backlogs, and extended hiring queues. The documented global pilot shortage, however, has revealed an emerging structural reality: the finite supply of qualified professionals relative to sustained industry demand necessitates a re-evaluation of existing resource allocation and verification frameworks.</p>
 
-            <p className="text-slate-300 leading-relaxed mb-8 text-sm">PilotRecognition is that infrastructure. Not a job board. Not an HR tool. Not another filtering system designed to make it easier for airlines to say no. <strong className="text-white">A platform built by pilots, architected around pilot-owned data, designed to flip the script — from "pilots, please apply" to "airlines, here is the verified talent pool. Prove why they should fly for you."</strong></p>
+            <p className="text-slate-300 leading-relaxed mb-8 text-sm"><strong className="text-white">PilotRecognition</strong> is presented herein as an institutional infrastructure designed to address this documented market asymmetry. The platform is not intended to function as a traditional employment marketplace or human resources management tool. Rather, it is architected as a verification and credential management system governed by the following foundational principle: the professional data and identity of each pilot remain under the exclusive control of the individual pilot, to be disclosed selectively and with explicit consent.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               {([
-                { title: 'The Power Has Shifted', body: 'Pilots are not applicants on this platform. They are the product. Airlines access the platform because without the pilots on it, they cannot operate. That changes every negotiation.' },
-                { title: 'Airlines Apply to Pilots', body: 'The Operator Expectations Page requires airlines to publish their culture, compensation, lifestyle, and transparency — before a single pilot considers them. The power of evaluation runs both ways.' },
-                { title: 'Data Stays With the Pilot', body: 'No airline can pull your data without your explicit approval. Every credential, every verification token, every piece of your professional identity is yours — held in your wallet, released on your command.' },
+                { title: 'Market Structural Realignment', body: 'The platform acknowledges that the traditional asymmetry between employers and aviation professionals has shifted. Airlines access the system in recognition that verified pilot credentials constitute a scarce and essential resource.' },
+                { title: 'Bilateral Transparency', body: 'Operator profiles are required to disclose organisational culture, compensation structures, operational parameters, and corporate transparency standards prior to any engagement with verified professionals. This establishes parity in the evaluation process.' },
+                { title: 'Data Sovereignty', body: 'Professional credentials, verification tokens, and personal data are held in an individual digital wallet under the sole authority of the pilot. Third-party access is permitted only upon explicit, revocable consent.' },
               ] as {title:string;body:string}[]).map((item) => (
                 <div key={item.title} className="border border-slate-700 rounded-lg px-4 py-4 bg-slate-800">
                   <p className="font-bold text-white text-sm mb-2">{item.title}</p>
@@ -331,7 +1013,7 @@ export default function UCFOfficialReleasePage() {
             </div>
 
             <div className="border-t border-slate-700 pt-6">
-              <p className="text-slate-400 text-xs leading-relaxed italic">This platform is the collective bargaining tool the pilot community has never had — architected as a compliance and verification network, operating as the infrastructure that makes the aviation industry run. Every commercial model, every pricing tier, every legal structure in this document exists to serve one founding principle: <strong className="text-slate-200">pilots first.</strong></p>
+              <p className="text-slate-400 text-xs leading-relaxed italic">This document establishes a framework for a verification and compliance network. The commercial model, pricing structure, and legal architecture herein are designed to serve the foundational objective of ensuring that aviation professionals retain control over their professional identity, while providing industry stakeholders with authenticated, tamper-proof credential verification.</p>
             </div>
           </div>
 
@@ -1079,21 +1761,6 @@ export default function UCFOfficialReleasePage() {
             </table>
           </div>
 
-          <div className="bg-amber-50 border border-amber-400 rounded-lg px-5 py-4 mb-6">
-            <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">⚠ Admin Review — Pricing Restructure (Standby, Not Live)</p>
-            <p className="text-slate-700 text-sm leading-relaxed mb-3">The following enterprise pricing restructure has been proposed and is pending internal review before any live update. <strong>Do not update the public pricing table until reviewed and approved.</strong></p>
-            <div className="bg-white border border-amber-200 rounded px-4 py-3 text-sm text-slate-700">
-              <p className="font-bold text-slate-900 mb-2">Proposed: Enterprise / OEM Tier — $1,000/month ($12,000/year)</p>
-              <ul className="space-y-1">
-                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Platform Access Fee:</strong> $1,000/month — positions as infrastructure access, not data purchase. Removes procurement friction at major enterprise accounts (OEMs (Aircraft Manufacturers), OEMs (Aircraft Manufacturers), major airline groups).</span></li>
-                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Includes:</strong> Unlimited pathway listings, full verified pilot database access, API integration with ATS (Workday, Taleo, Greenhouse), dedicated account support, enterprise SLA.</span></li>
-                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Verification Consumption:</strong> Standard $50 transaction fee per identity pull — charged only when the pilot actively taps APPROVE to release their cryptographic proof. No data is sold. Fee covers infrastructure compute and API transit.</span></li>
-                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Legal framing:</strong> Monthly access fee reinforces that the platform charges for infrastructure, not data — strengthening the Joint Controller legal position under enterprise DPA review.</span></li>
-                <li className="flex gap-2"><span className="text-amber-500 flex-shrink-0">→</span><span><strong>Current fee:</strong> $1,000/yr — below enterprise procurement thresholds, creates pricing credibility gap vs. tier. Current $1,000/yr moves to SME operator tier upon restructure.</span></li>
-              </ul>
-            </div>
-          </div>
-
           <h4 className="text-lg font-bold text-slate-800 mb-3">Model 2 — Airline Expectations Page &amp; Browse Airlines Directory</h4>
           <p className="text-slate-600 text-sm mb-3">A separate product. This is the airline's public-facing presence on the platform — where pilots browse, compare, and decide which operators align with their values and career stage before submitting any interest.</p>
           <div className="overflow-x-auto mb-4">
@@ -1120,6 +1787,278 @@ export default function UCFOfficialReleasePage() {
           </div>
           <p className="text-slate-600 text-sm mb-8">The Browse Airlines directory surfaces the <strong>top-listed operators</strong> visible to every pilot on the platform. An airline that does not maintain its listing is invisible to pilots who are actively comparing their options. At <strong>$100 per year</strong>, this is the lowest-cost, highest-visibility brand presence available in professional aviation recruitment — and the only one where the audience is exclusively verified, career-active pilots.</p>
           <p className="text-slate-600 text-sm mb-6"><strong>Success Fee:</strong> $500 per confirmed hire (waived for first 10 hires)</p>
+
+          <div className="bg-gray-50 border border-gray-300 rounded-lg px-6 py-5 mb-8">
+            <h3 className="text-lg font-bold text-gray-900 mb-3">
+              Collaborative <span className="text-red-600">Pilot Identity</span> Credentials
+            </h3>
+            <p className="text-gray-800 text-sm leading-relaxed mb-4">
+              <strong>Mission: Establish Data Neutrality & Independent Verification Framework</strong><br/>
+              The Universal Commercial Framework establishes a <strong>unified ecosystem for Pilot Identity Credentials</strong> through an independent 8-stage cryptographic verification chain. This framework creates data neutrality by establishing an alternative verification methodology with a $100/year cost structure, providing legal protection through zero-knowledge architecture and mathematical proof of data integrity.
+            </p>
+
+            <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 mb-4">
+              <h4 className="font-bold text-gray-900 mb-2">
+                Eight-Stage Cryptographic Verification Chain
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 text-xs">
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">1. Purchase</span>
+                  </div>
+                  <p className="text-gray-600">$100/yr package covers standard annual license verification and single-operator logbook validation node</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">2. Trigger</span>
+                  </div>
+                  <p className="text-gray-600">Regional background check provider initiates Neutral Mandate Bundle (Logs, PII, and ATO contacts) creating an independent audit trail</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">3. Registry Check</span>
+                  </div>
+                  <p className="text-gray-600">Governing body civil aviation authority aircraft registry verification</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">4. ATO/Operator Issuance</span>
+                  </div>
+                  <p className="text-gray-600">ATO/Operator provides source-verified credential data and training records</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">4.5. Logbook Cross-Audit</span>
+                  </div>
+                  <p className="text-gray-600">Historical logbook entries verified against employment history and PRD records</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">5. Minting</span>
+                  </div>
+                  <p className="text-gray-600">Secure digital wallet creates tamper-proof blockchain tokens, splits for providers</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">6. Provider Wallets</span>
+                  </div>
+                  <p className="text-gray-600">Regional verification provider + logbook provider hold verified hours separately, matching historical logs against the mandate baseline</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white rounded-lg p-2 mb-1">
+                    <span className="text-gray-700 font-bold">7. Triangulation</span>
+                  </div>
+                  <p className="text-gray-600">PilotRecognition.com displays via pilot token authorization - no data held by platform</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 mb-4">
+              <h4 className="font-bold text-gray-900 mb-2">
+                Zero-Knowledge Legal Protection
+              </h4>
+              <p className="text-gray-800 text-sm leading-relaxed mb-2">
+                <strong>Platform Liability: Eliminated</strong> — Zero-knowledge architecture ensures no access to personal data. Legal position: No data visibility or storage.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div className="bg-white rounded-lg p-2">
+                  <p className="text-gray-700 font-bold mb-1">Privacy Protection</p>
+                  <p className="text-gray-600">Client-side decryption only, no server PII access, zero breach risk</p>
+                </div>
+                <div className="bg-white rounded-lg p-2">
+                  <p className="text-gray-700 font-bold mb-1">Cost Efficiency</p>
+                  <p className="text-gray-600">Single operator baseline $100/year includes 1x Civil Aviation Authority Registry Check and 1x Primary Operator/ATO Hour Validation. Additional operators $30 each for verification outreach chain.</p>
+                </div>
+                <div className="bg-white rounded-lg p-2">
+                  <p className="text-gray-700 font-bold mb-1">Legal Compliance</p>
+                  <p className="text-gray-600">Mathematical proof eliminates disputes, regulatory compliance by design</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 mb-4">
+              <h4 className="font-bold text-gray-900 mb-2">
+                Framework Efficiency Analysis
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div className="bg-white rounded-lg p-2">
+                  <p className="text-gray-700 font-bold mb-1">Cost Efficiency — PPP Shared Time & Burden Model (Win-Win Dynamic)</p>
+                  <p className="text-gray-600"><strong>Option A (Revenue Share):</strong> 68% margin — $5 Admin Cost-Recovery to Logbook App, $5 Digital Utility Royalty to ATO/Operator, $5 Infrastructure Fee to CAAP (Landbank Link.BizPortal). <strong>Option B (Pure Public Service):</strong> 73% margin — If CAAP declines 5% due to RA 3019/6713, fee waived. Government gets zero-cost digital modernization + fraud protection + state endorsement at no budget impact. Platform profitability increases either way.</p>
+                </div>
+                <div className="bg-white rounded-lg p-2">
+                  <p className="text-gray-700 font-bold mb-1">Operational Efficiency</p>
+                  <p className="text-gray-600">Transition from point-in-time verification to reusable trust architecture. Portable digital credentials reduce duplicate verification requirements.</p>
+                </div>
+                <div className="bg-white rounded-lg p-2">
+                  <p className="text-gray-700 font-bold mb-1">Compliance Efficiency</p>
+                  <p className="text-gray-600">Zero-knowledge architecture minimizes data handling requirements. Reduced compliance overhead and insurance costs through privacy-by-design.</p>
+                </div>
+              </div>
+              <div className="mt-3 bg-white rounded-lg p-3">
+                <p className="text-gray-800 text-sm font-bold mb-2">Framework Advantages</p>
+                <p className="text-gray-700 text-xs leading-relaxed">
+                  The system establishes an open-trust validation layer for aviation that mirrors the real-world lifecycle of an aviator. This specialized framework enables efficient annual credential verification: logbook applications receive authenticated yearly data, pilots maintain data sovereignty, and airlines obtain cryptographically verified credentials with reduced operational costs. Single-source execution per year eliminates continuous micro-checks while maintaining audit integrity.
+                </p>
+              </div>
+            </div>
+
+            {/* ─── DUAL-TRACK VEREMARK PRICING BREAKDOWN ─── */}
+            <div className="bg-gray-50 border border-gray-300 rounded-lg px-6 py-5 mb-8">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                Dual-Track Verification: Two Checks, Two Data Sources
+              </h3>
+              <p className="text-gray-800 text-sm leading-relaxed mb-6 text-center">
+                <strong>Separate Pricing Engines for License vs. Hours = Legally Airtight</strong><br/>
+                Veremark routes to two distinct sources: Governing Body for legal status, ATO/Operator for operational history
+              </p>
+
+              <div className="bg-white border border-gray-300 rounded-lg p-4 mb-6">
+                <h4 className="font-bold text-gray-900 mb-3">Operational Ledger</h4>
+                
+                <div className="space-y-4">
+                  <div className="bg-green-50 border border-green-300 rounded-lg p-3">
+                    <p className="text-green-800 font-bold text-sm">Revenue In</p>
+                    <p className="text-green-700 text-sm">Base Package (Annual Pilot Fee): <span className="font-bold">+$100.00</span></p>
+                    <p className="text-green-600 text-xs">Charged to pilot via logbook app or direct platform</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-gray-800 font-bold text-sm">Verification Costs Out</p>
+                    
+                    <div className="bg-blue-50 border border-blue-300 rounded-lg p-3">
+                      <p className="text-blue-800 font-bold text-sm">🔍 Veremark License Check: <span className="text-red-600 font-bold">-$13.00</span></p>
+                      <p className="text-blue-700 text-xs"><strong>Target:</strong> Governing Body Registry (CAAP, FAA, etc.)</p>
+                      <p className="text-blue-600 text-xs"><strong>Check Type:</strong> Professional Qualification (automated API query)</p>
+                      <p className="text-blue-600 text-xs"><strong>Verifies:</strong> License validity, type ratings, medical certificate, regulatory standing</p>
+                      <p className="text-blue-600 text-xs"><strong>Method:</strong> Digital API query to aviation authority database (24-48 hours)</p>
+                    </div>
+
+                    <div className="bg-blue-50 border border-blue-300 rounded-lg p-3">
+                      <p className="text-blue-800 font-bold text-sm">📊 Veremark Hours Check: <span className="text-red-600 font-bold">-$9.00</span></p>
+                      <p className="text-blue-700 text-xs"><strong>Target:</strong> ATO/Operator (Flight School or Airline)</p>
+                      <p className="text-blue-600 text-xs"><strong>Check Type:</strong> Education Check (students) OR Employment Check (CFIs/pilots)</p>
+                      <p className="text-blue-600 text-xs"><strong>Verifies:</strong> Logbook hours match training records, flight manifests, instructor signatures</p>
+                      <p className="text-blue-600 text-xs"><strong>Method:</strong> Direct contact with ATO registrar/ops manager (3-5 business days)</p>
+                    </div>
+
+                    <div className="bg-purple-50 border border-purple-300 rounded-lg p-3">
+                      <p className="text-purple-800 font-bold text-sm">🏛️ Government/CAAP Cut: <span className="text-red-600 font-bold">-$5.00</span></p>
+                      <p className="text-purple-700 text-xs"><strong>Purpose:</strong> Infrastructure Utilization Fee (IT modernization fund)</p>
+                      <p className="text-purple-600 text-xs"><strong>Legal:</strong> RA 11966 PPP Code compliance</p>
+                      <p className="text-purple-600 text-xs"><strong>Routing:</strong> Landbank Link.BizPortal → CAAP National Treasury</p>
+                    </div>
+
+                    <div className="bg-orange-50 border border-orange-300 rounded-lg p-3">
+                      <p className="text-orange-800 font-bold text-sm">📱 Logbook Provider Cut: <span className="text-red-600 font-bold">-$5.00</span></p>
+                      <p className="text-orange-700 text-xs"><strong>Purpose:</strong> API Integration & Hosting Compensation</p>
+                      <p className="text-orange-600 text-xs"><strong>For:</strong> Front-end UX, mobile platform, tracking algorithms</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-red-50 border border-red-300 rounded-lg p-3">
+                    <p className="text-red-800 font-bold text-sm">Total Third-Party & Partner Costs (Production Cost): <span className="font-bold">-$32.00</span></p>
+                    <p className="text-red-600 text-xs">Breakdown: $13.00 (License) + $9.00 (Hours) + $5.00 (Gov) + $5.00 (Logbook)</p>
+                  </div>
+
+                  <div className="bg-green-50 border border-green-300 rounded-lg p-3">
+                    <p className="text-green-800 font-bold text-sm">✨ Net Platform Profit: <span className="font-bold">+$68.00</span></p>
+                    <p className="text-green-700 text-xs"><strong>Margin:</strong> 68% Base Net Profit Margin</p>
+                    <p className="text-green-600 text-xs"><strong>Note:</strong> Adjust to 69% with volume credits or logbook fee reduction</p>
+                    <p className="text-green-600 text-xs"><strong>What We Provide:</strong> 8-Stage Framework orchestration, Zero-knowledge architecture, Triangulation & token minting, PilotRecognition display layer, API gateway & webhook management</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white border border-gray-300 rounded-lg p-4">
+                <h4 className="font-bold text-gray-900 mb-3">Why This Structure Is Legally Airtight</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                  <div className="bg-gray-50 rounded-lg p-2">
+                    <p className="text-gray-800 font-bold mb-1">🔍 License Check ($13)</p>
+                    <p className="text-gray-600"><strong>Legal Status:</strong> Governing Body (CAAP/FAA)</p>
+                    <p className="text-gray-600"><strong>Data Source:</strong> Official State Aviation Database</p>
+                    <p className="text-gray-600"><strong>Method:</strong> Automated Database Pull</p>
+                    <p className="text-gray-600"><strong>Confirms:</strong> Right to fly, license validity, medical current</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-2">
+                    <p className="text-gray-800 font-bold mb-1">📊 Hours Check ($9)</p>
+                    <p className="text-gray-600"><strong>Operational History:</strong> ATO/Operator</p>
+                    <p className="text-gray-600"><strong>Data Source:</strong> Physical Logbooks, Training Manifests</p>
+                    <p className="text-gray-600"><strong>Method:</strong> Direct Contact with Registrar</p>
+                    <p className="text-gray-600"><strong>Confirms:</strong> Hours flown, experience valid, no manual padding</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-2">
+                    <p className="text-gray-800 font-bold mb-1">🛡️ Legal Protection</p>
+                    <p className="text-gray-600"><strong>Separate Sources:</strong> Two independent data points</p>
+                    <p className="text-gray-600"><strong>Clear Audit Trail:</strong> Distinct pricing for each check</p>
+                    <p className="text-gray-600"><strong>Veremark Handles:</strong> All direct contact, platform stays neutral</p>
+                    <p className="text-gray-600"><strong>Liability Shield:</strong> Zero-knowledge architecture</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="bg-white border border-gray-300 rounded-lg p-4">
+                <h4 className="font-bold text-gray-900 mb-2">
+                  Verification & Background Checks
+                </h4>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  <strong><a href="#pillar-14" className="text-blue-600 hover:text-blue-800 underline">Pillar 14 providers</a></strong> deliver cryptographic proof of license validity, medical certification, security clearances, and professional standing. Real-time API integration with aviation authorities creates <strong>instant verification</strong> of pilot credentials, replacing manual document checks that take weeks with automated validation in seconds.
+                </p>
+              </div>
+              
+              <div className="bg-white border border-gray-300 rounded-lg p-4">
+                <h4 className="font-bold text-gray-900 mb-2">
+                  Flight Logbook Providers
+                </h4>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  <strong><a href="#pillar-12" className="text-blue-600 hover:text-blue-800 underline">Pillar 12 providers</a></strong> contribute verified flight hour data, aircraft type ratings, and operational experience. Through secure API integration, they provide <strong>tamper-proof flight records</strong> that validate currency, recency, and competency — creating a trusted foundation for pilot recognition scores and pathway matching.
+                </p>
+              </div>
+              
+              <div className="bg-white border border-gray-300 rounded-lg p-4">
+                <h4 className="font-bold text-gray-900 mb-2">
+                  ATO Issuance & Training Records
+                </h4>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  <strong><a href="#pillar-6" className="text-blue-600 hover:text-blue-800 underline">Pillar 6 ATOs</a></strong> issue cryptographically signed training completion tokens, simulator hour validations, and competency assessments. These <strong>Verified Issuer credentials</strong> create an immutable record of pilot training quality and completion standards that airlines can instantly verify and trust.
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3">
+              <h4 className="font-bold text-gray-900 mb-2">Unified Identity Benefits</h4>
+              <ul className="space-y-2 text-red-600 text-sm">
+                <li className="flex gap-2">
+                  <span className="text-red-600 font-bold">→</span>
+                  <span><strong>Verified Identity:</strong> Single wallet controls all credentials — grant selective access to airlines, insurers, or training providers. Your identity travels with you across operators and borders.</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-red-600 font-bold">→</span>
+                  <span><strong>Issuance of Valid Flight Hours:</strong> Instant verification of complete pilot profile — license, medical, training, and flight hours — reducing hiring time from weeks to hours.</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-red-600 font-bold">→</span>
+                  <span><strong>Transparency:</strong> Six-stage verification data provides comprehensive risk evaluation from low to high-risk pilot profiles. Mathematical proof of data integrity eliminates fraud while breaking singular data handling monopolies through distributed verification across multiple stakeholders.</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-red-600 font-bold">→</span>
+                  <span><strong>Industry Standard:</strong> First verification architecture for Pilot Identity Credentials (PIC) across all 4 stakeholders — establishing unified standards that eliminate document fraud, reduce verification costs, and create portable credential systems globally.</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="mt-4 text-center">
+              <p className="text-gray-900 font-semibold text-sm mb-2">
+                Provider Integration Status
+              </p>
+              <div className="flex justify-center gap-4 text-xs">
+                <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-medium">Verification APIs Live</span>
+                <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-medium">Logbook Integration Active</span>
+                <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-medium">ATO Network Expanding</span>
+              </div>
+            </div>
+          </div>
 
           <div className="my-6 px-5 py-4 border-l-4 border-amber-400 bg-amber-50 rounded-r-lg">
             <p className="text-slate-800 text-sm font-bold mb-2">The Underwriter Handshake — Risk Distinction for Insurers and Airlines</p>
@@ -2251,7 +3190,118 @@ export default function UCFOfficialReleasePage() {
             </ol>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. Legal Implications of Verification Node Participation</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">VIII. Flight Hour Issuance: The Verified Hours Standard</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Flight hours are the primary currency of a pilot's career. They determine pathway eligibility, loan approval probability, insurance classification, and airline interview access. Yet the current standard for recording flight hours is a physical logbook — a document that can be falsified in under ten minutes, carries no cryptographic signature, and is accepted by operators with no independent verification infrastructure.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 5 introduces the <strong>Verified Hours Standard</strong> — a structured issuance protocol where flight hours are not merely self-reported, but cryptographically minted into the pilot's Professional Standing Asset following a multi-source validation sequence. Issued hours carry weight. Reported hours carry risk.</p>
+
+          <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-6 rounded-r">
+            <p className="text-white text-sm font-semibold mb-2" style={{color:'#f87171'}}>The Core Distinction</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-slate-400 uppercase text-xs tracking-wider mb-2">Self-Reported Hours (Current Standard)</p>
+                <ul className="space-y-1 text-slate-300">
+                  <li className="flex gap-2"><span className="text-red-400">✗</span> Handwritten in a physical logbook</li>
+                  <li className="flex gap-2"><span className="text-red-400">✗</span> No institutional countersignature required</li>
+                  <li className="flex gap-2"><span className="text-red-400">✗</span> No cross-reference against ADS-B or dispatch records</li>
+                  <li className="flex gap-2"><span className="text-red-400">✗</span> Accepted by operators on trust</li>
+                  <li className="flex gap-2"><span className="text-red-400">✗</span> No liability pathway if inflated</li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-slate-400 uppercase text-xs tracking-wider mb-2">Issued Hours (Verified Hours Standard)</p>
+                <ul className="space-y-1 text-slate-300">
+                  <li className="flex gap-2"><span className="text-emerald-400">✓</span> Cryptographically minted to the pilot's wallet</li>
+                  <li className="flex gap-2"><span className="text-emerald-400">✓</span> Countersigned by the ATO Verification Node</li>
+                  <li className="flex gap-2"><span className="text-emerald-400">✓</span> Cross-referenced against telemetry or instrument capture</li>
+                  <li className="flex gap-2"><span className="text-emerald-400">✓</span> Immutable and operator-readable via API</li>
+                  <li className="flex gap-2"><span className="text-emerald-400">✓</span> Full liability chain traceable to issuing ATO</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Issuance Lifecycle</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Every verified flight hour follows a defined issuance sequence. The process is non-negotiable — any deviation triggers an automatic hold at the point of anomaly, protecting the downstream credential chain from contamination.</p>
+
+          <div className="bg-slate-900 rounded-xl px-6 py-5 mb-6">
+            <p className="text-slate-400 text-xs uppercase tracking-widest font-bold mb-4">Verified Hours Issuance Sequence</p>
+            <div className="space-y-3">
+              {([
+                { step: '01', label: 'Flight Event Initiation', detail: 'Pilot opens the platform interface pre-flight. Tail number, departure aerodrome, departure time, and flight type (Dual / PIC / Solo / Instrument) are logged. For ADS-B-equipped aircraft, the dispatch record is cross-referenced automatically.' },
+                { step: '02', label: 'In-Flight Telemetry Capture', detail: 'For ADS-B-equipped aircraft: live transponder tracking confirms the flight path, altitude variance, and block time in real time. For legacy aircraft (C152, C172, PA28): the pilot executes a Hobbs/tachometer optical capture at engine-on and engine-off, generating cryptographically timestamped and GPS-pinned images that cannot be retroactively substituted.' },
+                { step: '03', label: 'Post-Flight Log Submission', detail: 'Upon landing, the pilot finalizes the log entry: actual block hours, arrival aerodrome, instructor endorsement (if dual), and any remarks. The entry is held in a pending state — hours are recorded but not yet issued.' },
+                { step: '04', label: 'ATO Verification Node Countersignature', detail: 'The ATO administrator receives a countersignature prompt in their Enterprise dashboard. They confirm the aircraft, instructor, flight duration, and student identity against their internal dispatch records. Confirmation triggers the issuance event.' },
+                { step: '05', label: 'Credential Minting', detail: 'A "Verified Training Hours" token is automatically minted into the pilot\'s Professional Standing Asset. The token contains: total issued hours to date, breakdown by category (Dual, PIC, Instrument, Night, Cross-Country), issuing ATO as permanent attribution, and a tamper-evident cryptographic hash linking to the underlying telemetry or instrument capture.' },
+                { step: '06', label: 'Operator Visibility', detail: 'The minted token becomes immediately readable by any operator running a pathway match query against the pilot\'s profile. The hours are no longer claimed — they are issued. The distinction is visible to every enterprise account in Hub A.' },
+              ] as { step: string; label: string; detail: string }[]).map((item) => (
+                <div key={item.step} className="flex items-start gap-4 border-b border-slate-800 pb-3 last:border-0 last:pb-0">
+                  <span className="text-red-400 font-bold text-sm font-mono flex-shrink-0 w-8">{item.step}</span>
+                  <div>
+                    <p className="text-white font-semibold text-sm mb-0.5">{item.label}</p>
+                    <p className="text-slate-400 text-xs leading-relaxed">{item.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Hour Categories and Recognition Weight</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">Not all flight hours carry equal Recognition Score weight. The platform distinguishes between hour types based on their operational proximity to commercial airline requirements. Each issued category contributes to the pilot's overall recognition score according to defined weighting coefficients.</p>
+
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-3 font-semibold">Hour Category</th>
+                  <th className="text-left px-4 py-3 font-semibold">Definition</th>
+                  <th className="text-left px-4 py-3 font-semibold text-red-400">Recognition Weight</th>
+                  <th className="text-left px-4 py-3 font-semibold" style={{color:'#34d399'}}>Operator Relevance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { cat: 'Pilot-in-Command (PIC)', def: 'Hours logged as sole manipulator of controls with no instructor present', weight: 'High', rel: 'Primary qualifying metric for all Hub A operators' },
+                  { cat: 'Instrument (IFR)', def: 'Hours flown under Instrument Flight Rules, actual or simulated', weight: 'High', rel: 'Mandatory for commercial operations; heavily weighted by cargo and charter operators' },
+                  { cat: 'Cross-Country', def: 'Flights to a point greater than a defined distance from departure aerodrome', weight: 'Medium–High', rel: 'Required for CPL/ATPL minima; valued by regional operators' },
+                  { cat: 'Multi-Engine (ME)', def: 'Hours on aircraft with more than one engine', weight: 'High', rel: 'Prerequisite for turboprop and jet pathways; directly gates most FO positions' },
+                  { cat: 'Dual Received', def: 'Hours flown with a qualified instructor acting as PIC', weight: 'Standard', rel: 'Counts toward total time; lower airline weight than PIC' },
+                  { cat: 'Night', def: 'Hours flown between evening civil twilight and morning civil twilight', weight: 'Medium', rel: 'Counted toward ATPL minima; required for many international pathways' },
+                  { cat: 'Simulator (FSTD)', def: 'Hours logged in a qualified Flight Simulation Training Device', weight: 'Supplemental', rel: 'Recognized for recurrency and type-specific preparation; not a substitute for actual hours in most pathway minimums' },
+                  { cat: 'Instruction Given (CFI)', def: 'Hours logged as the qualified instructor, acting as PIC', weight: 'Medium', rel: 'Counts toward total time; evidence of operational maturity and EBT competency depth' },
+                ] as { cat: string; def: string; weight: string; rel: string }[]).map((row, i) => (
+                  <tr key={row.cat} className={i % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'}>
+                    <td className="px-4 py-2 border-b border-slate-700 font-semibold text-slate-100 text-xs">{row.cat}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-400 text-xs">{row.def}</td>
+                    <td className={`px-4 py-2 border-b border-slate-700 font-bold text-xs ${row.weight === 'High' ? 'text-emerald-400' : row.weight === 'Medium–High' ? 'text-amber-300' : row.weight === 'Medium' ? 'text-amber-500' : row.weight === 'Supplemental' ? 'text-slate-500' : 'text-slate-300'}`}>{row.weight}</td>
+                    <td className="px-4 py-2 border-b border-slate-700 text-slate-300 text-xs">{row.rel}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">Recency Decay and the Time-Weighted Hours Coefficient</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">A pilot with 2,000 hours logged ten years ago and a pilot with 2,000 hours logged last month are not equivalent candidates. The platform accounts for this through a <strong>Time-Weighted Hours Coefficient</strong> applied to issued hours in the Recognition Score calculation.</p>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-4">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Recency Decay Model</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Hours within 12 months:</strong> Full coefficient (1.0×) — no decay applied</p>
+              <p><strong>Hours 12–36 months prior:</strong> Moderate decay (0.85×) — recent operational currency maintained</p>
+              <p><strong>Hours 36–60 months prior:</strong> Significant decay (0.65×) — recency gap flagged in pathway matching</p>
+              <p><strong>Hours beyond 60 months:</strong> Archival coefficient (0.40×) — counts toward total time but flagged for operators requiring recent PIC activity</p>
+            </div>
+            <p className="text-xs text-slate-500 mt-3 pt-3 border-t border-slate-200">Recency coefficients are adjustable by enterprise operators setting specific pathway card requirements. A cargo operator requiring active PIC in the last 12 months may apply a hard cutoff rather than a decay coefficient.</p>
+          </div>
+          <p className="text-slate-700 leading-relaxed mb-6">The decay model ensures that the Pulling System surfaces pilots with genuinely current operational profiles — not candidates who flew actively a decade ago and have been on the ground since. For operators, this directly reduces simulator washout rates during type rating conversion, which is the metric their training departments track most closely.</p>
+
+          <div className="flex items-center gap-3 bg-slate-100 border border-slate-200 rounded-lg px-4 py-3 mb-6">
+            <span className="text-slate-500 text-lg">↗</span>
+            <p className="text-sm text-slate-700">
+              <strong>See Also:</strong> The anti-fraud protocols governing hour issuance — including ADS-B telemetry mirroring, cryptographic instrument capture, and spoofing prevention — are detailed in <a href="#pillar-5-flight-training" className="text-red-600 hover:underline font-semibold">Section XV of this Pillar</a>.
+            </p>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">IX. Legal Implications of Verification Node Participation</h3>
           <p className="text-slate-700 leading-relaxed mb-4">By participating as a Verification Node, ATOs assume <strong>cryptographic liability</strong> for every attestation issued. Each "Verified Training Hours" credential is cryptographically signed by the institution, creating an immutable, legally traceable bond between the ATO and the data accuracy.</p>
 
           <div className="bg-red-50 border border-red-200 rounded-lg px-5 py-4 mb-5">
@@ -4222,6 +5272,260 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-10 border-slate-300" />
 
+          {/* Commercial Architecture & Revenue Streams */}
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5 mb-10">
+            <h3 className="text-lg font-bold text-emerald-800 mb-2">Commercial Architecture & Revenue Streams</h3>
+            <p className="text-xs uppercase tracking-widest font-semibold text-emerald-600 mb-4">Monetization Strategy: The Infrastructure Tollbooth</p>
+            <p className="text-slate-700 leading-relaxed text-sm mb-6">The Universal Commercial Framework (UCF) operates on a hybrid B2B/B2C SaaS and API-metered revenue model. By anchoring both the supply side (pilots) and the demand side (airlines, insurers, regulators), the framework generates highly predictable Annual Recurring Revenue (ARR) layered with high-margin transactional data tolls.</p>
+
+            {/* 1. Market Capture */}
+            <h4 className="text-base font-bold text-slate-800 mb-3">1. Market Capture (TAM / SAM / SOM)</h4>
+            <p className="text-slate-600 text-xs leading-relaxed mb-4">While the framework serves a $1.2 Trillion combined aviation market, our revenue model targets the specific operational spend currently wasted on manual compliance, hiring lags, and risk premiums.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+              <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
+                <p className="text-slate-500 text-[10px] uppercase tracking-widest mb-1">Total Addressable Market</p>
+                <p className="text-emerald-600 text-2xl font-bold">$1.2T</p>
+                <p className="text-slate-600 text-xs">Global airline, AAM, and training market revenue</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
+                <p className="text-slate-500 text-[10px] uppercase tracking-widest mb-1">Serviceable Available Market</p>
+                <p className="text-emerald-600 text-2xl font-bold">$18B</p>
+                <p className="text-slate-600 text-xs">Aviation HR, compliance audits, training data, credential verification</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
+                <p className="text-slate-500 text-[10px] uppercase tracking-widest mb-1">Serviceable Obtainable Market</p>
+                <p className="text-emerald-600 text-2xl font-bold">$250M</p>
+                <p className="text-slate-600 text-xs">Year 5 conservative penetration: top-tier airlines, eVTOL operators, major training hubs</p>
+              </div>
+            </div>
+
+            {/* 2. SaaS Tiers */}
+            <h4 className="text-base font-bold text-slate-800 mb-3">2. Core SaaS Subscription Tiers (Recurring Revenue)</h4>
+            <p className="text-slate-600 text-xs leading-relaxed mb-3">Predictable subscription revenue establishes the baseline floor of the framework, ensuring lock-in across both individual professionals and enterprise operators.</p>
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full text-xs border-collapse">
+                <thead><tr className="bg-emerald-800 text-white"><th className="text-left px-3 py-2">Tier</th><th className="text-left px-3 py-2">Target User</th><th className="text-left px-3 py-2">Price</th><th className="text-left px-3 py-2">Core Value Provided</th></tr></thead>
+                <tbody className="text-slate-700">
+                  <tr className="border-b bg-white"><td className="px-3 py-2 font-bold text-emerald-700">Pilot Pro</td><td className="px-3 py-2">Individual Pilots / Cadets</td><td className="px-3 py-2">$99/year</td><td className="px-3 py-2">Personal credential wallet, live pathway tracking, automated logbook telematics, one-click ATS application porting</td></tr>
+                  <tr className="border-b bg-slate-50"><td className="px-3 py-2 font-bold text-emerald-700">Enterprise Operator</td><td className="px-3 py-2">Airlines, Cargo, eVTOLs</td><td className="px-3 py-2">$1,000/month (Base)</td><td className="px-3 py-2">Dashboard access to pre-verified talent pools, live workforce health metrics, automated regulatory audit reporting</td></tr>
+                  <tr className="bg-white"><td className="px-3 py-2 font-bold text-emerald-700">Institutional</td><td className="px-3 py-2">Regulators, Unions, OEMs</td><td className="px-3 py-2">Custom / Contract</td><td className="px-3 py-2">Macro-level workforce forecasting, demographic trend access, secure compliance oversight portals</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* 3. Transactional & API Tolls */}
+            <h4 className="text-base font-bold text-slate-800 mb-3">3. Transactional & API Data Tolls (High-Margin Usage)</h4>
+            <p className="text-slate-600 text-xs leading-relaxed mb-3">Where the SaaS tiers provide the floor, the API tolls provide the ceiling. The framework monetizes the friction it eliminates, charging fractions of a cent on the dollar for the value delivered.</p>
+            <div className="space-y-3 mb-6">
+              <div className="bg-white border-l-4 border-emerald-500 rounded-r-lg p-3">
+                <p className="text-slate-800 text-sm font-bold">Placement & Hiring Toll: <span className="text-emerald-600">$500</span> per verified hire</p>
+                <p className="text-slate-600 text-xs">Context: Replaces the 6-month, $45K manual onboarding lag. Operators pay this happily to achieve 83% faster time-to-cockpit.</p>
+              </div>
+              <div className="bg-white border-l-4 border-emerald-500 rounded-r-lg p-3">
+                <p className="text-slate-800 text-sm font-bold">Verification API Call: <span className="text-emerald-600">$2.50 – $10.00</span> per ping</p>
+                <p className="text-slate-600 text-xs">Charged to underwriters, banks, and third-party apps verifying risk profiles or licenses in real-time.</p>
+              </div>
+              <div className="bg-white border-l-4 border-emerald-500 rounded-r-lg p-3">
+                <p className="text-slate-800 text-sm font-bold">AI Competency Match: <span className="text-emerald-600">$150</span> per successful match</p>
+                <p className="text-slate-600 text-xs">Charged when the AI pairs a pilot's telemetry profile to an optimal fleet role, significantly reducing simulator washout risk.</p>
+              </div>
+            </div>
+
+            {/* 4. Unit Economics */}
+            <h4 className="text-base font-bold text-slate-800 mb-3">4. Unit Economics by Stakeholder Hub</h4>
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full text-xs border-collapse">
+                <thead><tr className="bg-slate-800 text-white"><th className="text-left px-3 py-2">Hub Focus</th><th className="text-left px-3 py-2">Primary Revenue Driver</th><th className="text-left px-3 py-2">Margin Profile</th><th className="text-left px-3 py-2">Customer Lifetime Value (LTV)</th></tr></thead>
+                <tbody className="text-slate-700">
+                  <tr className="border-b bg-white"><td className="px-3 py-2 font-bold text-slate-700">Hub A: Operators & Training</td><td className="px-3 py-2">SaaS (Airlines/ATOs) + Per-Hire Tolls</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">85%</span> (Software margins)</td><td className="px-3 py-2">High. Enterprise operator stickiness virtually eliminates churn once integrated into their ATS.</td></tr>
+                  <tr className="border-b bg-slate-50"><td className="px-3 py-2 font-bold text-slate-700">Hub C: Capital & Risk</td><td className="px-3 py-2">API Verification Tolls</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">95%</span> (Automated data pulls)</td><td className="px-3 py-2">Compounding. Insurers run continuous pings on active policies, generating perpetual micro-transactions.</td></tr>
+                  <tr className="bg-white"><td className="px-3 py-2 font-bold text-slate-700">Hub D: Infrastructure</td><td className="px-3 py-2">API Licensing & Data Porting</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">90%</span> (Zero-knowledge transfers)</td><td className="px-3 py-2">High volume, low friction.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* 5. Revenue Waterfall */}
+            <h4 className="text-base font-bold text-slate-800 mb-3">5. Revenue Waterfall (5-Year Projection)</h4>
+            <p className="text-slate-600 text-xs leading-relaxed mb-3">Assumes a 2026 launch heavily capturing early-adopter AAM/eVTOL operators and progressive ATOs before mainstream commercial airline legacy integration.</p>
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full text-xs border-collapse">
+                <thead><tr className="bg-emerald-900 text-white"><th className="text-left px-3 py-2">Metric</th><th className="text-left px-3 py-2">Year 1 (Beta/Launch)</th><th className="text-left px-3 py-2">Year 2 (Growth)</th><th className="text-left px-3 py-2">Year 3 (Scale)</th><th className="text-left px-3 py-2">Year 4 (Expansion)</th><th className="text-left px-3 py-2">Year 5 (Maturity)</th></tr></thead>
+                <tbody className="text-slate-700">
+                  <tr className="border-b bg-white"><td className="px-3 py-2 font-bold text-slate-700">Verified Pilots (B2C)</td><td className="px-3 py-2">15,000</td><td className="px-3 py-2">50,000</td><td className="px-3 py-2">120,000</td><td className="px-3 py-2">250,000</td><td className="px-3 py-2">450,000</td></tr>
+                  <tr className="border-b bg-slate-50"><td className="px-3 py-2 font-bold text-slate-700">Enterprise Nodes (B2B)</td><td className="px-3 py-2">45</td><td className="px-3 py-2">180</td><td className="px-3 py-2">450</td><td className="px-3 py-2">900</td><td className="px-3 py-2">1,500+</td></tr>
+                  <tr className="border-b bg-white"><td className="px-3 py-2 font-bold text-slate-700">SaaS ARR</td><td className="px-3 py-2">$1.8M</td><td className="px-3 py-2">$6.5M</td><td className="px-3 py-2">$15M</td><td className="px-3 py-2">$32M</td><td className="px-3 py-2">$55M</td></tr>
+                  <tr className="border-b bg-slate-50"><td className="px-3 py-2 font-bold text-slate-700">Transactional Revenue</td><td className="px-3 py-2">$500K</td><td className="px-3 py-2">$3.2M</td><td className="px-3 py-2">$12M</td><td className="px-3 py-2">$35M</td><td className="px-3 py-2">$85M</td></tr>
+                  <tr className="bg-emerald-100"><td className="px-3 py-2 font-bold text-emerald-800">Total Projected Revenue</td><td className="px-3 py-2 font-bold text-emerald-800">$2.3M</td><td className="px-3 py-2 font-bold text-emerald-800">$9.7M</td><td className="px-3 py-2 font-bold text-emerald-800">$27M</td><td className="px-3 py-2 font-bold text-emerald-800">$67M</td><td className="px-3 py-2 font-bold text-emerald-800">$140M</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-slate-700 leading-relaxed text-sm font-medium">This framework proves that your model isn't just a cost-center for the industry; it's a highly scalable, high-margin technology business.</p>
+          </div>
+
+          {/* Go-To-Market Strategy */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-5 mb-10">
+            <h3 className="text-lg font-bold text-amber-800 mb-2">Go-To-Market (GTM) Strategy</h3>
+            <p className="text-xs uppercase tracking-widest font-semibold text-amber-600 mb-4">The Beachhead Motion</p>
+
+            <h4 className="text-base font-bold text-slate-800 mb-3">The Strategic Sequence: Greenfield Before Legacy</h4>
+            <p className="text-slate-700 leading-relaxed text-sm mb-6">The Universal Commercial Framework (UCF) will not target legacy Part 121 commercial airlines in Year 1. Legacy operators suffer from 18-to-24 month procurement cycles, risk-averse legal committees, and an adherence to "good enough" manual processes. Instead, the UCF will execute a high-velocity beachhead strategy targeting the newly commercialized Advanced Air Mobility (AAM/eVTOL) sector and progressive Flight Training Organizations (ATOs). By solving an existential threat for desperate, highly capitalized early adopters, the UCF will build the undeniable case studies required to force legacy airlines to the table in Year 2.</p>
+
+            <h4 className="text-base font-bold text-slate-800 mb-3">1. The Year 1 Target Profile: AAM & eVTOL Operators</h4>
+            <p className="text-slate-600 text-xs leading-relaxed mb-4">In 2026, the AAM sector is transitioning from R&D into live commercial operations via the FAA's eIPP and international equivalents. They represent the ultimate beachhead market for four critical reasons:</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-amber-700 text-sm font-bold mb-1">Zero Legacy Technical Debt</p>
+                <p className="text-slate-600 text-xs">Greenfield buyers with no existing proprietary HR tech stacks to rip and replace; actively seeking API-first architecture.</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-amber-700 text-sm font-bold mb-1">Hiring Desperation</p>
+                <p className="text-slate-600 text-xs">Must hire hundreds of certified pilots instantly to justify multi-billion dollar valuations and meet 2026/2027 commercial launch targets.</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-amber-700 text-sm font-bold mb-1">Regulatory Urgency</p>
+                <p className="text-slate-600 text-xs">Securing final operational certificates requires proving to regulators that their workforce is compliant, verified, and medically cleared.</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-amber-700 text-sm font-bold mb-1">Investor Pressure</p>
+                <p className="text-slate-600 text-xs">Need to show venture backers scalable operational infrastructure. Adopting the UCF proves operational maturity.</p>
+              </div>
+            </div>
+
+            <h4 className="text-base font-bold text-slate-800 mb-3">2. The 12-Month Execution Sequence</h4>
+            <div className="space-y-4 mb-6">
+              <div className="bg-white border-l-4 border-amber-500 rounded-r-lg p-4">
+                <p className="text-slate-800 text-sm font-bold mb-1">Phase 1: The Founding Partners (Months 1–6)</p>
+                <p className="text-slate-600 text-xs mb-1"><strong>Target:</strong> Top 5 AAM/eVTOL operators (e.g., eIPP participants) and Top 10 progressive, high-volume ATOs.</p>
+                <p className="text-slate-600 text-xs mb-1"><strong>The Pitch:</strong> Give eVTOL operators immediate API access to a pre-verified pool of pilots graduating from our partner ATOs.</p>
+                <p className="text-slate-600 text-xs"><strong>The Offer:</strong> Heavily subsidized Year 1 SaaS pricing in exchange for case-study participation, white-labeling the UCF as their official credentialing backbone.</p>
+              </div>
+              <div className="bg-white border-l-4 border-amber-500 rounded-r-lg p-4">
+                <p className="text-slate-800 text-sm font-bold mb-1">Phase 2: The High-Margin Adopters (Months 6–12)</p>
+                <p className="text-slate-600 text-xs mb-1"><strong>Target:</strong> Part 135 Charter operators and mid-market Cargo operators.</p>
+                <p className="text-slate-600 text-xs mb-1"><strong>The Pitch:</strong> These operators run on thinner margins than legacy airlines and suffer acutely from crew poaching. The UCF allows them to slash their $45K-per-hire onboarding costs and deploy crew instantly.</p>
+                <p className="text-slate-600 text-xs"><strong>The Catalyst:</strong> Leveraging the operational success and PR generated from our AAM Phase 1 rollout to prove system stability and regulatory compliance.</p>
+              </div>
+              <div className="bg-white border-l-4 border-amber-500 rounded-r-lg p-4">
+                <p className="text-slate-800 text-sm font-bold mb-1">Phase 3: The Legacy Inbound (Year 2+)</p>
+                <p className="text-slate-600 text-xs mb-1"><strong>Target:</strong> Legacy Part 121 Commercial Airlines.</p>
+                <p className="text-slate-600 text-xs mb-1"><strong>The Pitch:</strong> We do not chase them; they come to us. Once 20% of the market (AAM, Cargo, ATOs) is operating on the UCF, the pilots themselves will demand it.</p>
+                <p className="text-slate-600 text-xs"><strong>The Force:</strong> Legacy airlines will be forced to adopt the framework's ATS API simply to compete for the remaining talent pool.</p>
+              </div>
+            </div>
+
+            <h4 className="text-base font-bold text-slate-800 mb-3">3. Sales Cycle & Acquisition Assumptions</h4>
+            <p className="text-slate-600 text-xs leading-relaxed mb-3">By targeting greenfield and agile operators in Year 1, the UCF dramatically accelerates typical enterprise software unit economics:</p>
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full text-xs border-collapse">
+                <thead><tr className="bg-amber-800 text-white"><th className="text-left px-3 py-2">Metric</th><th className="text-left px-3 py-2">AAM / eVTOL (Year 1)</th><th className="text-left px-3 py-2">Legacy Airlines (Year 2+)</th></tr></thead>
+                <tbody className="text-slate-700">
+                  <tr className="border-b bg-white"><td className="px-3 py-2 font-bold text-slate-700">Sales Cycle</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">30 to 90 Days</span></td><td className="px-3 py-2"><span className="text-red-600 font-bold">12 to 24 Months</span></td></tr>
+                  <tr className="border-b bg-slate-50"><td className="px-3 py-2 font-bold text-slate-700">Decision Maker</td><td className="px-3 py-2">Founder / CTO</td><td className="px-3 py-2">Procurement Committee / VP HR</td></tr>
+                  <tr className="border-b bg-white"><td className="px-3 py-2 font-bold text-slate-700">Primary Buying Trigger</td><td className="px-3 py-2">Speed to Commercial Launch</td><td className="px-3 py-2">Cost Reduction / Efficiency</td></tr>
+                  <tr className="border-b bg-slate-50"><td className="px-3 py-2 font-bold text-slate-700">Target CAC</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">$12,000</span></td><td className="px-3 py-2"><span className="text-red-600 font-bold">$85,000+</span></td></tr>
+                  <tr className="bg-white"><td className="px-3 py-2 font-bold text-slate-700">Payback Period</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">&lt; 4 Months</span></td><td className="px-3 py-2"><span className="text-red-600 font-bold">14+ Months</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-slate-700 leading-relaxed text-sm font-medium">With the Revenue Model and GTM Strategy locked, this document proves you know exactly who is going to buy this, why they will buy it today, and how it makes money.</p>
+          </div>
+
+          {/* Competitive Moat & Structural Defensibility */}
+          <div className="bg-slate-900 border border-slate-700 rounded-lg p-5 mb-10">
+            <h3 className="text-lg font-bold text-white mb-2">Competitive Moat & Structural Defensibility</h3>
+            <p className="text-xs uppercase tracking-widest font-semibold text-red-400 mb-4">Why the Universal Commercial Framework Cannot Be Replicated</p>
+            <p className="text-slate-300 leading-relaxed text-sm mb-6">Building a highly profitable API tollbooth in a $1.2 Trillion market invites immediate competition. However, the Universal Commercial Framework (UCF) is engineered with interlocking defensive mechanisms that create impenetrable moats against both agile startups and well-capitalized legacy giants. Once the Year 1 AAM beachhead is secured, the framework benefits from compounding data gravity that makes displacement structurally unviable.</p>
+
+            <div className="space-y-4 mb-6">
+              <div className="bg-slate-800 border-l-4 border-red-500 rounded-r-lg p-4">
+                <p className="text-white text-sm font-bold mb-1">1. Neutrality as a Weapon (The "Legacy Giant" Trap)</p>
+                <p className="text-slate-400 text-xs mb-2">Investors often ask why a massive incumbent (e.g., Boeing, SITA, or Delta Air Lines) hasn't built this. The answer is competitive friction:</p>
+                <ul className="text-slate-400 text-xs space-y-1 mb-2 list-disc list-inside">
+                  <li>If Boeing builds a credentialing network, Airbus operators will refuse to use it.</li>
+                  <li>If a legacy airline builds it, competing alliances will block it.</li>
+                </ul>
+                <p className="text-slate-200 text-xs"><strong className="text-red-400">The UCF Moat:</strong> The framework's absolute neutrality is its greatest asset. By existing as an independent, Switzerland-like coordination layer, it is the only architecture trusted to handle cross-operator data without triggering anti-competitive alarm bells.</p>
+              </div>
+
+              <div className="bg-slate-800 border-l-4 border-red-500 rounded-r-lg p-4">
+                <p className="text-white text-sm font-bold mb-1">2. Bi-Lateral Network Effects</p>
+                <p className="text-slate-400 text-xs mb-2">The UCF is not a single-player SaaS tool; it is a multi-sided marketplace. Every new node added to the network exponentially increases the friction of leaving it.</p>
+                <ul className="text-slate-400 text-xs space-y-1 mb-2 list-disc list-inside">
+                  <li><strong>Supply-Side Lock:</strong> Flight schools (ATOs) mandate the UCF for their cadets because it guarantees direct pipeline access to AAM operators.</li>
+                  <li><strong>Demand-Side Lock:</strong> AAM operators mandate the UCF because it is the only place to instantly source cryptographically verified talent.</li>
+                </ul>
+                <p className="text-slate-200 text-xs"><strong className="text-red-400">The Moat:</strong> A competitor cannot simply build a better interface; they would have to simultaneously steal the supply of pilots and the demand of operators—an impossible feat once the Year 1 critical mass is achieved.</p>
+              </div>
+
+              <div className="bg-slate-800 border-l-4 border-red-500 rounded-r-lg p-4">
+                <p className="text-white text-sm font-bold mb-1">3. Cryptographic Data Gravity & Switching Costs</p>
+                <p className="text-slate-400 text-xs mb-2">Aviation professionals are inherently risk-averse regarding their licenses. Once a pilot's 1,500 flight hours, medical clearances, and background checks are authenticated into W3C-standard Verifiable Credentials (VCs) on the UCF, the switching cost becomes astronomically high.</p>
+                <p className="text-slate-200 text-xs"><strong className="text-red-400">The Moat:</strong> High switching costs ensure near-zero churn on the supply side. Pilots will carry their UCF profile for their entire 30-year career. Moving to a competitor would require re-verifying years of historical telematics and regulatory approvals.</p>
+              </div>
+
+              <div className="bg-slate-800 border-l-4 border-red-500 rounded-r-lg p-4">
+                <p className="text-white text-sm font-bold mb-1">4. Regulatory Entrenchment</p>
+                <p className="text-slate-400 text-xs mb-2">The UCF is designed to mirror upcoming International Civil Aviation Organization (ICAO) digital identity standards. By structuring the data privacy layer around Zero-Knowledge Proofs (ZKPs), the UCF proactively absorbs the massive GDPR/CCPA liability that currently terrifies airlines.</p>
+                <p className="text-slate-200 text-xs"><strong className="text-red-400">The Moat:</strong> Once national regulators (FAA/EASA) begin accepting UCF credentials to clear their own manual audit backlogs, the framework transitions from a "nice-to-have" commercial tool into a de facto regulatory standard. You cannot rip out the plumbing once the inspector relies on it.</p>
+              </div>
+            </div>
+
+            <h4 className="text-base font-bold text-white mb-3">Defensibility Summary Matrix</h4>
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full text-xs border-collapse">
+                <thead><tr className="bg-slate-700 text-white"><th className="text-left px-3 py-2">Threat Vector</th><th className="text-left px-3 py-2">Competitor Profile</th><th className="text-left px-3 py-2">The UCF Defensive Moat</th></tr></thead>
+                <tbody className="text-slate-300">
+                  <tr className="border-b border-slate-700 bg-slate-800"><td className="px-3 py-2 font-bold text-red-400">Monopolization</td><td className="px-3 py-2">Legacy Aviation Giants (Boeing, SITA)</td><td className="px-3 py-2"><strong>Neutrality:</strong> Competitors will not adopt proprietary tech built by rivals.</td></tr>
+                  <tr className="border-b border-slate-700 bg-slate-900"><td className="px-3 py-2 font-bold text-red-400">Undercutting</td><td className="px-3 py-2">Agile VC-Backed Startups</td><td className="px-3 py-2"><strong>Network Effects:</strong> Startups face the cold-start problem of acquiring both pilots and airlines simultaneously.</td></tr>
+                  <tr className="bg-slate-800"><td className="px-3 py-2 font-bold text-red-400">Displacement</td><td className="px-3 py-2">Internal Airline IT Departments</td><td className="px-3 py-2"><strong>Data Gravity:</strong> Internal IT cannot cross-verify a pilot's history from previous employers; only a neutral layer can.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-slate-300 leading-relaxed text-sm font-medium">Once this section is locked in, the commercial and strategic argument is fully bulletproof. Investors know how you make money, how you acquire users, and why no one can steal your lunch.</p>
+          </div>
+
+          {/* Technical Architecture & API Integration Roadmap */}
+          <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-5 mb-10">
+            <h3 className="text-lg font-bold text-cyan-800 mb-2">Technical Architecture & API Integration Roadmap</h3>
+            <p className="text-xs uppercase tracking-widest font-semibold text-cyan-600 mb-4">The CTO Pitch: Frictionless Interoperability</p>
+            <p className="text-slate-700 leading-relaxed text-sm mb-6">For the Advanced Air Mobility (AAM) beachhead to adopt the Universal Commercial Framework (UCF) in under 90 days, the architecture must be lightweight, API-first, and require zero legacy IT overhauls. The framework operates on a decentralized, zero-trust infrastructure, turning regulatory compliance into an automated data feed.</p>
+
+            <h4 className="text-base font-bold text-slate-800 mb-3">Core Infrastructure Layers</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-cyan-700 text-sm font-bold mb-1">Identity Layer (W3C VCs)</p>
+                <p className="text-slate-600 text-xs">Every pilot is issued a cryptographic digital wallet. Licenses, medical certificates, and logbook entries are issued as W3C Verifiable Credentials (VCs), making them mathematically impossible to forge and instantly verifiable globally.</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-cyan-700 text-sm font-bold mb-1">Privacy Layer (Zero-Knowledge Proofs)</p>
+                <p className="text-slate-600 text-xs">Utilizing ZKP architecture, operators can query if a pilot meets specific regulatory requirements (e.g., "Is this Class 1 Medical valid?") without the framework exposing the underlying private health data to the query source, absorbing massive corporate liability.</p>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <p className="text-cyan-700 text-sm font-bold mb-1">Integration Layer (RESTful APIs & Webhooks)</p>
+                <p className="text-slate-600 text-xs">The UCF does not attempt to replace an airline's existing Applicant Tracking System (ATS) or flight operations software. Instead, it feeds cryptographically verified data directly into their existing dashboards via standardized endpoints.</p>
+              </div>
+            </div>
+
+            <h4 className="text-base font-bold text-slate-800 mb-3">Integration Sequence for Beachhead Operators</h4>
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full text-xs border-collapse">
+                <thead><tr className="bg-cyan-800 text-white"><th className="text-left px-3 py-2">Deployment Phase</th><th className="text-left px-3 py-2">Timeline</th><th className="text-left px-3 py-2">Operational Focus</th><th className="text-left px-3 py-2">CTO Value Proposition</th></tr></thead>
+                <tbody className="text-slate-700">
+                  <tr className="border-b bg-white"><td className="px-3 py-2 font-bold text-cyan-700">Phase 1: Sandbox & Alignment</td><td className="px-3 py-2">Days 1–14</td><td className="px-3 py-2">API key provisioning and schema mapping.</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">Zero disruption.</span> We map the UCF endpoints directly to the operator's existing HR/ATS platforms (e.g., Workday, Greenhouse).</td></tr>
+                  <tr className="border-b bg-slate-50"><td className="px-3 py-2 font-bold text-cyan-700">Phase 2: Ingestion & Verification</td><td className="px-3 py-2">Days 15–45</td><td className="px-3 py-2">Connecting ATO telemetry and simulator data.</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">Live pipeline visibility.</span> Operator gains a dashboard of pre-verified candidates actively flowing from partner training organizations.</td></tr>
+                  <tr className="bg-white"><td className="px-3 py-2 font-bold text-cyan-700">Phase 3: Live Production</td><td className="px-3 py-2">Days 46–90</td><td className="px-3 py-2">Full automated onboarding deployment.</td><td className="px-3 py-2"><span className="text-emerald-600 font-bold">One-click hiring.</span> Operator bypasses manual background checks and credential audits through instant cryptographic verification.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-slate-700 leading-relaxed text-sm font-medium">With this technical architecture section, you neutralize any objections from an engineering team. You are proving that the UCF is a modern, plug-and-play API product, not a clunky, monolithic enterprise software trap.</p>
+          </div>
+
+          <hr className="my-10 border-slate-300" />
+
           {/* Foundation Program Pillar */}
           <h1 id="pillar-foundation-program" className="text-4xl font-bold text-slate-900 mt-12 mb-6 pb-4 border-b-2 border-slate-900 scroll-mt-24">
             HUB F — THE FOUNDATION PROGRAM
@@ -6139,26 +7443,221 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-8 border-slate-300" />
 
-          <h4 id="section-2-efb" className="text-lg font-bold text-slate-800 mt-8 mb-3 scroll-mt-24">Section 2: Electronic Flight Bag Platforms for Pilots — The Telemetry & Complexity Layer</h4>
-          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">Electronic Flight Bag Platforms for Pilots · pilot navigation platforms (charting, flight planning, EFB)</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The Conceptual Role:</strong> EFBs and navigation apps capture the qualitative environment. They track routing architectures, airspace density, and dynamic weather decision-making.</p>
-          <p className="text-slate-700 leading-relaxed mb-4"><strong>The UCF Integration:</strong> While a logbook proves a pilot flew two hours, the EFB proves <strong>how they flew it</strong> — adding complexity multipliers to the pilot's baseline hours in the UCF algorithm and generating high-margin safety data for insurance underwriters.</p>
+          {/* ── SECTION 2: EFB ── */}
+          <div className="mt-16 mb-6">
+            <div className="h-px bg-gradient-to-r from-transparent via-slate-400 to-transparent mb-8" />
+            <h2 id="section-2-efb" className="text-3xl font-bold text-slate-900 scroll-mt-24">Section 2: Electronic Flight Bag Platforms</h2>
+            <p className="text-cyan-600 font-semibold text-base mt-1">The Telemetry &amp; Complexity Layer</p>
+          </div>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">EFB Platforms · Navigation &amp; Charting Apps · Flight Planning Tools</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">I. The Conceptual Role</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Where logbooks establish <em>that</em> a pilot flew and <em>how long</em>, EFB platforms establish <em>under what conditions</em>. They capture the operational environment: route architecture, airspace tier exposure, instrument approach type diversity, weather avoidance behaviour, fuel management decisions, and altitude management profiles. This is the qualitative complexity layer — the data that separates a pilot who flew 500 hours of circuits in VMC from one who flew 500 hours of cross-continental IFR through complex airspace. Both logbooks look identical. The EFB data does not.</p>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">II. The UCF Integration</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">EFB platforms provide the <strong>operational complexity multiplier</strong> — the layer that qualifies and weights the hours recorded in the logbook. A pilot's verified logbook record establishes the quantitative baseline. The EFB record answers what operators actually need before a hiring decision: not just how many hours, but what kind. Within the UCF algorithm, EFB telemetry applies a complexity index to verified flight hours, producing a weighted proficiency signal that no logbook record alone can generate.</p>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">I. The Established Provider Problem: Operationally Rich, Professionally Silent</h4>
+          <p className="text-slate-700 leading-relaxed mb-4">EFB platforms generate some of the most operationally predictive data in commercial aviation — route complexity indices, approach stability profiles, weather decision-making patterns, airspace tier penetration records. Yet this data has <strong>no professional outlet.</strong> It is generated continuously, stored locally or in the cloud, and discarded at the end of its operational utility. No pilot career record receives it. No recruiter can query it. No underwriter can price against it.</p>
+
+          <p className="text-slate-500 text-xs uppercase tracking-widest font-bold mb-4">CORE PAIN POINTS FOR ESTABLISHED EFB PROVIDERS</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong style={{color:'#0891b2'}}>1. The Differentiation Ceiling</strong><br />In the absence of a professional credential layer, EFB platforms compete on chart quality, interface design, and price — engineering advantages, not structural moats. A competitor with better map rendering displaces the incumbent. There is no network effect, no career lock-in, no professional identity accumulation. The pilot who has logged 1,000 approaches through one platform is no more committed to it than a pilot who logged 10.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong style={{color:'#0891b2'}}>2. The Invisible Complexity Problem</strong><br />A pilot conducting consistent high-fidelity IFR operations — multiple approach types, complex airspace, instrument departures in marginal weather — generates a proficiency signal the industry cannot see. The platform captures it. The logbook does not record it. The recruiter cannot access it. An operator choosing between two pilots with equivalent hour counts has no mechanism to distinguish the pilot who flew 800 complex IFR hours from the one who flew 800 visual circuit hours.</p>
+          <p className="text-slate-700 leading-relaxed mb-4"><strong style={{color:'#0891b2'}}>3. The Insurance and Safety Data Dead End</strong><br />Aviation underwriters have demonstrable commercial demand for aggregate data on pilot approach stability, weather decision-making, and altitude management under operational pressure. EFB platforms sit directly on this dataset — generating it and discarding it in perpetuity. Without a consent-gated B2B data licensing infrastructure, this revenue stream remains entirely inaccessible.</p>
+          <p className="text-slate-700 leading-relaxed mb-6"><strong style={{color:'#0891b2'}}>4. Subscription Churn at the Airline Hire Threshold</strong><br />At the moment a pilot joins a mainline airline, the airline provides its own approved EFB solution. The pilot's personal EFB subscription loses its primary operational function. Without a professional credentialing layer that makes the personal platform valuable beyond active flight planning, the subscription terminates at the exact point the pilot becomes most commercially significant to the industry.</p>
+
+          <p className="text-slate-500 text-xs uppercase tracking-widest font-bold mb-4">THE PILOTRRECOGNITION SOLUTION: MAKING OPERATIONAL COMPLEXITY PROFESSIONALLY VISIBLE</p>
+          <p className="text-slate-700 leading-relaxed mb-4">"You capture the conditions of every flight. We make those conditions count professionally. By routing your telemetry into the UCF verification layer, the operational complexity your users generate every day becomes a quantified, employer-visible proficiency signal — transforming your app from a flight planning tool into the instrument that actively builds your users' careers."</p>
+          <p className="text-slate-700 leading-relaxed mb-3"><strong>The $1,000/Year Enterprise Verification Tier</strong> is a B2B infrastructure access fee payable by the EFB platform, not the individual pilot. Upon activation, the provider's technical infrastructure is authorised to transmit flight telemetry tokens — approach type records, route complexity indices, weather condition data — into the PilotRecognition UCF layer, where they are weighted against verified flight hours and surfaced on the pilot's Professional Standing Asset as complexity-adjusted proficiency signals.</p>
+          <ul className="list-disc pl-5 text-slate-700 space-y-1 mb-4 text-sm">
+            <li><strong>Complexity Token Transmission:</strong> Structured API endpoints for transmitting approach type diversity records, airspace tier exposure summaries, and route complexity indices as cryptographically signed tokens.</li>
+            <li><strong>Enterprise API Throughput:</strong> Unthrottled processing capacity for high-volume telemetry submissions and real-time synchronisation workflows.</li>
+            <li><strong>Insurance Data Pipeline:</strong> Consent-gated, anonymised aggregate data routing to aviation underwriter partners — enabling B2B data licensing revenue streams currently inaccessible without a compliant intermediary.</li>
+            <li><strong>Priority Node Status:</strong> Elevated processing priority within the PilotRecognition Universal Commercial Framework infrastructure.</li>
+          </ul>
+
+          <h5 className="text-md font-bold text-slate-800 mt-6 mb-3">EFB Partner — Revenue Economics &amp; Economies of Scale</h5>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Revenue Stream</th>
+                  <th className="text-left px-4 py-2 font-semibold">Trigger</th>
+                  <th className="text-left px-4 py-2 font-semibold">Partner Earns</th>
+                  <th className="text-left px-4 py-2 font-semibold">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { stream: 'Complexity Token Referral Fee', trigger: 'Pilot activates EFB telemetry integration', earns: '~$20 per activation', notes: 'Break-even on $1,000 annual fee at 50 activations.' },
+                  { stream: 'Recognition+ Subscription Share', trigger: 'Pilot upgrades to Recognition+ via EFB integration', earns: '~$20 per subscriber', notes: 'Scales with active subscriber count.' },
+                  { stream: 'Insurance Data Licensing', trigger: 'Anonymised aggregate telemetry to underwriter partners', earns: 'Negotiated per data agreement', notes: 'B2B revenue from aviation underwriters. Priced per dataset volume.' },
+                ] as {stream:string;trigger:string;earns:string;notes:string}[]).map((row, i) => (
+                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                    <td className="px-4 py-3 font-semibold text-slate-800 border-b border-slate-100">{row.stream}</td>
+                    <td className="px-4 py-3 text-slate-600 border-b border-slate-100">{row.trigger}</td>
+                    <td className="px-4 py-3 font-semibold text-cyan-700 border-b border-slate-100">{row.earns}</td>
+                    <td className="px-4 py-3 text-slate-500 border-b border-slate-100 text-xs">{row.notes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="overflow-x-auto mb-4">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Active Integrated Users</th>
+                  <th className="text-right px-4 py-2 font-semibold">Referral Fees (@$20)</th>
+                  <th className="text-right px-4 py-2 font-semibold">Recog+ Share (@20% × $20)</th>
+                  <th className="text-right px-4 py-2 font-semibold">5% Platform Share</th>
+                  <th className="text-right px-4 py-2 font-semibold">Total Revenue</th>
+                  <th className="text-right px-4 py-2 font-semibold">Net (after $1k fee)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { users: 50,   referral: 1000,   recog: 200,   platform: 50,   total: 1250,   net: 250 },
+                  { users: 100,  referral: 2000,   recog: 400,   platform: 100,  total: 2500,   net: 1500 },
+                  { users: 500,  referral: 10000,  recog: 2000,  platform: 500,  total: 12500,  net: 11500 },
+                  { users: 1000, referral: 20000,  recog: 4000,  platform: 1000, total: 25000,  net: 24000 },
+                  { users: 5000, referral: 100000, recog: 20000, platform: 5000, total: 125000, net: 124000 },
+                ] as {users:number;referral:number;recog:number;platform:number;total:number;net:number}[]).map((row, i) => (
+                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                    <td className="px-4 py-3 font-semibold text-slate-800 border-b border-slate-100">{row.users.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-right text-slate-600 border-b border-slate-100">${row.referral.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-right text-slate-600 border-b border-slate-100">${row.recog.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-right text-slate-600 border-b border-slate-100">${row.platform.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-right font-semibold text-slate-800 border-b border-slate-100">${row.total.toLocaleString()}</td>
+                    <td className={`px-4 py-3 text-right font-bold border-b border-slate-100 ${row.net < 0 ? 'text-red-600' : 'text-cyan-700'}`}>${row.net.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-slate-400 mb-6">Assumptions: 1 activation/user/year · 20% Recognition+ adoption · 5% platform revenue share applied to referral pool · $1,000 annual infrastructure fee deducted from net. Insurance data licensing revenue not included. Figures are illustrative projections only.</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-6 mb-3">The Insurance Underwriter Opportunity: From Flat Subscription to Data Asset</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The most structurally significant commercial opportunity for EFB providers is not the pilot-facing subscription — it is the B2B data licensing market their telemetry currently cannot access. Aviation underwriters price pilot risk against coarse inputs: total hours, aircraft type, incident history. They have no mechanism to access the granular operational telemetry that would allow actuarially meaningful differentiation between a pilot who consistently flies stabilised ILS approaches in IMC and one who consistently flies visual arrivals in clear conditions. EFB platforms hold exactly this data. The market for it is not theoretical — underwriters routinely pay for actuarial inputs that allow premium differentiation.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The PilotRecognition framework provides the consent-gated, privacy-compliant infrastructure that routes anonymised aggregate telemetry to underwriter partners. Individual pilot records are never transmitted. The product is aggregate trend data: approach stability distributions across a defined pilot population, weather-avoidance decision rates by flight type, altitude management variance indices. This does not require any change to the EFB platform's product or data architecture — it requires a compliant intermediary with established underwriter relationships. That is what the enterprise tier provides.</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-6 mb-3">Senior Pilot Retention &amp; the Operational Complexity Network Effect</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">The structural churn risk at the airline hire threshold is addressable by making the platform professionally indispensable beyond the operational use case. A pilot who has accumulated two years of verified complexity telemetry through an integrated EFB platform has built a proficiency credential that does not transfer to a competing platform. Their approach type diversity history, airspace tier exposure record, and weather avoidance behavioural profile are anchored to the platform that generated them and attested by the PilotRecognition verification layer. Switching platforms means starting that complexity credential from zero.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">At the mainline airline hire threshold, the platform's operational function changes — but its professional function does not. A First Officer building their command upgrade case generates complexity tokens on every sector. A Captain accumulating type endorsements generates approach diversity records on new aircraft types. The professional record compounds with career seniority rather than becoming redundant at the hire milestone.</p>
+
+          <h5 className="text-md font-bold text-slate-800 mt-6 mb-3">The Complexity Verification Workflow: Pilot-Initiated, Consent-Gated</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">Complexity verification is never passively pulled by PilotRecognition. Every integration event is initiated by the pilot through an explicit consent action. No telemetry is transmitted or weighted without the pilot's active authorisation.</p>
+
+          <div className="bg-slate-900 rounded-lg px-5 py-4 mb-6 border border-slate-700">
+            <p className="text-cyan-400 font-mono text-xs font-bold tracking-widest mb-4">CONSENT-GATED EFB TELEMETRY FLOW</p>
+            <ol className="space-y-3">
+              {([
+                { n: '1', label: 'Pilot Activates EFB Integration', desc: 'Pilot initiates from their Recognition+ dashboard and grants explicit digital consent — authorising read-only access to their flight telemetry for the specific record types selected.' },
+                { n: '2', label: 'EFB Platform API Transmits Complexity Tokens', desc: 'The EFB platform transmits structured complexity records — approach type logs, airspace tier exposure summaries, route complexity indices — as cryptographically signed tokens. No raw GPS coordinates or chart interactions are transmitted.' },
+                { n: '3', label: 'Plausibility Validation Against Airspace Data', desc: 'Submitted approach types and airspace tier declarations are cross-referenced against published approach plate databases and sector boundary records for the declared period, confirming operational plausibility.' },
+                { n: '4', label: 'Complexity Index Calculated', desc: 'The UCF algorithm weights the validated telemetry against the pilot\'s verified hour record, generating a complexity-adjusted proficiency index. IFR approach diversity, high-density airspace penetration, and adverse weather operations each apply weighted multipliers.' },
+                { n: '5', label: 'Complexity Token Written to Credential Wallet', desc: 'A complexity attestation token is issued and written to the pilot\'s Sovereign PIC Wallet — e.g., "Verified IFR Complexity Profile: 340 ILS approaches, 28 airspace tier entries, 14 CAT I minima operations — [EFB Platform] via PilotRecognition."' },
+                { n: '6', label: 'Operator Dashboard Updated', desc: 'The pilot\'s Professional Standing Asset displays the complexity-adjusted proficiency signal to authorised operators. The distinction between a 500-hour VFR pilot and a 500-hour IFR pilot becomes immediately visible without manual interrogation.' },
+                { n: '7', label: 'EFB Provider Earns on Every Activation', desc: 'Each activation generates a referral dividend to the EFB provider. Recurring complexity token updates — triggered as the operational record grows — generate additional participation events, compounding provider revenue at scale.' },
+              ] as {n:string;label:string;desc:string}[]).map((step) => (
+                <li key={step.n} className="flex items-start gap-3">
+                  <span className="text-cyan-400 font-mono font-bold text-xs flex-shrink-0 mt-0.5">{step.n}.</span>
+                  <span className="text-slate-300 text-sm"><strong className="text-white">{step.label}:</strong> {step.desc}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-6 mb-3">The Architectural Separation: Hours vs. Operational Complexity</h5>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Strategic Value for EFB & Nav Providers</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">The Logbook Platform: The Quantitative Layer (Duration)</p>
             <div className="space-y-2 text-sm text-slate-700">
-              <p><strong>The Isolated Data Problem:</strong> EFBs and navigation apps collect incredibly rich telemetry — route diversity, approach types, weather avoidance patterns, altitude management, and airspace complexity. Yet this data lives in a silo. A pilot can fly 500 complex IFR approaches in pilot navigation platforms (charting, flight planning, EFB), but an airline recruiter sees none of it. The data is invisible.</p>
-              <p><strong>The PilotRecognition Bridge:</strong> By routing your telemetry into our verification ecosystem, flight planning complexity directly increases a pilot's Recognition Score. A pilot using your app for challenging cross-country routes, multiple approach types, and complex airspace gets algorithmic hiring preference.</p>
-              <p><strong>The Competitive Moat:</strong> Once pilot navigation platforms (charting, flight planning, EFB) data contributes to a pilot's hiring score, pilots choose your platform over competitors. The app becomes not just a planning tool, but a career investment with measurable ROI.</p>
-              <p><strong>New Revenue Stream:</strong> Anonymized, aggregate safety data from your user base becomes licensable to insurance underwriters and fleet managers. They pay for trend analysis on weather avoidance patterns, fuel efficiency, and risk profiles.</p>
+              <p><strong>What It Establishes:</strong> How many hours a pilot flew, on which aircraft types, in which seat position, under which regulatory category. The temporal and regulatory baseline.</p>
+              <p><strong>What It Cannot Establish:</strong> The conditions under which those hours were flown. 500 VFR hours and 500 IFR hours look identical in a logbook summary.</p>
+              <p><strong>Verification Standard:</strong> Hours attested by ATO and operator institutional records, cross-referenced via regional verification provider against civil aviation authority crew records.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-cyan-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-cyan-600 uppercase tracking-widest mb-3">The EFB Platform: The Complexity Layer (Operational Conditions)</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>What It Establishes:</strong> The operational environment in which hours were flown — instrument approach types, airspace density, weather conditions, route architecture, altitude management, fuel planning under constraint.</p>
+              <p><strong>What It Cannot Establish:</strong> The hours themselves. An EFB records flight plan execution but is not a legal flight time record. It requires the logbook layer as its temporal anchor.</p>
+              <p><strong>Verification Standard:</strong> Complexity tokens validated against airspace databases and approach plate records for plausibility, then weighted against the verified hour record to produce a complexity-adjusted proficiency index.</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border-l-4 border-cyan-500 px-5 py-4 mb-5 rounded-r">
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>The Critical Distinction</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">A logbook tells a recruiter that a pilot flew 500 hours. An EFB tells them those 500 hours included 340 instrument approaches, 14 CAT I minima operations, and 28 entries into Class C airspace in adverse weather. The logbook establishes the investment. The EFB establishes its quality. Without the EFB layer, hour counts are interchangeable. With it, they are not.</p>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">How the Layers Work Together: The Complexity-Adjusted Proficiency Signal</h5>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Complementary Function Architecture</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>The Logbook Provider's Role:</strong> The verified hour baseline — the temporal and regulatory foundation. 1,247 hours attested by ATO and operator institutional records. The quantitative ledger.</p>
+              <p><strong>The EFB Provider's Role:</strong> The operational complexity record — the qualitative layer that qualifies those hours. 340 ILS approaches, 28 airspace tier entries, consistent weather avoidance decisions. The proficiency signal.</p>
+              <p><strong>The UCF Integration:</strong> PilotRecognition applies the complexity index to the verified hours. 1,247 hours becomes "1,247 verified hours, complexity-adjusted proficiency index: 7.4/10." The operator sees both dimensions in a single dashboard view — without requesting a PDF, without manual cross-referencing, without any delay.</p>
+            </div>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Dispute Resolution &amp; Tiered Liability Escalation</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">In circumstances where the accuracy of an EFB complexity declaration is formally challenged, the framework provides a structured escalation process. EFB providers integrated into the framework are materially insulated from direct liability exposure — responsibility is traced to the data source, not the platform that transmitted it.</p>
+          <div className="overflow-x-auto mb-4">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-900 text-white">
+                  <th className="text-left px-4 py-2 font-semibold">Tier</th>
+                  <th className="text-left px-4 py-2 font-semibold">Node</th>
+                  <th className="text-left px-4 py-2 font-semibold">Action</th>
+                  <th className="text-right px-4 py-2 font-semibold">Consultation Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                {([
+                  { tier: '1', node: 'Platform Level', action: 'Initial dispute intake, complexity token review, and discrepancy assessment against the declared telemetry record.', fee: '$500' },
+                  { tier: '2', node: 'EFB Provider', action: 'Token-level audit of the transmitted complexity record against the provider\'s source telemetry data. The EFB provider confirms or disputes the accuracy of the data it issued.', fee: 'Negotiated' },
+                  { tier: '3', node: 'Airspace Database Validation', action: 'Independent cross-reference of declared approach types and airspace entries against published aeronautical databases for the declared period.', fee: 'Negotiated' },
+                  { tier: '4', node: 'ATC Radar / ANS Provider', action: 'Where available, air traffic service records for the declared airspace and period are cross-referenced against the complexity token. The ANS provider confirms or disputes the airspace entry.', fee: 'Negotiated' },
+                  { tier: '5', node: 'Pilot', action: 'Liability is traced to its origin. The pilot is notified and provided the opportunity to respond before any determination is finalised.', fee: '—' },
+                ] as {tier:string;node:string;action:string;fee:string}[]).map((row, i) => (
+                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                    <td className="px-4 py-3 font-bold text-slate-800 border-b border-slate-100">{row.tier}</td>
+                    <td className="px-4 py-3 font-semibold text-slate-700 border-b border-slate-100">{row.node}</td>
+                    <td className="px-4 py-3 text-slate-600 border-b border-slate-100 text-xs">{row.action}</td>
+                    <td className="px-4 py-3 text-right font-semibold text-slate-800 border-b border-slate-100">{row.fee}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h5 className="text-md font-bold text-slate-800 mt-4 mb-2">Data Sovereignty &amp; GDPR Architecture</h5>
+          <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition does not hold, store, or take custody of EFB telemetry at any point. Flight complexity data displayed on a pilot's dashboard is rendered exclusively through a token issued by the EFB provider. The provider retains full operational control of its data storage and routing infrastructure.</p>
+          <ul className="list-disc pl-5 text-slate-700 space-y-1 mb-5 text-sm">
+            <li><strong>Provider-Managed Storage:</strong> All raw telemetry, GPS tracks, and flight plan archives remain within the EFB provider's secured infrastructure — not on PilotRecognition servers.</li>
+            <li><strong>Tokenised Display Layer:</strong> PilotRecognition renders only cryptographic complexity tokens — e.g., "[EFB Provider] Verified: 340 ILS approaches, Complexity Index 7.4" — on the pilot dashboard. Underlying telemetry is never duplicated or retained.</li>
+            <li><strong>Privacy-by-Design:</strong> Airlines querying a pilot profile see only attestation tokens and complexity indices — never raw telemetry, GPS coordinates, or flight plan data.</li>
+          </ul>
+
+          <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">The Dual-Revenue Partnership Model</h4>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">EFB Provider Revenue Streams</p>
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>Per-Pilot Referral Dividend ($20):</strong> When an EFB provider connects a pilot to the PilotRecognition network and that pilot upgrades to a Recognition+ career profile, the provider receives the standard <strong>$20 Ecosystem Referral Dividend</strong> — identical to logbook and simulation partners.</p>
+              <p><strong>Enterprise Verification Tier ($1,000/year):</strong> EFB providers managing high-volume telemetry pipelines qualify for the <strong>Enterprise Data Checker tier</strong>. This unlocks enhanced API rate limits, priority verification node status, and the B2B insurance data licensing pipeline.</p>
+              <p><strong>Insurance Data Licensing (Negotiated):</strong> Consent-gated, anonymised aggregate telemetry routed to aviation underwriter partners — a B2B revenue stream entirely unavailable to EFB providers outside the framework. Pricing is negotiated per data agreement based on dataset volume and refresh cadence.</p>
             </div>
           </div>
 
           <div className="bg-slate-900 border-l-4 border-cyan-500 px-5 py-4 mb-6 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>Integration Pathway for EFBs</strong></p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Data Flow:</strong> Your app exports flight plan metadata (route complexity, approach diversity, weather conditions) via API to PilotRecognition. We weight these factors into the pilot's Recognition Score alongside verified flight hours.</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Revenue Share:</strong> $15 per active integration (per pilot linking their account). Plus premium tier: airlines pay for anonymous aggregate trend data on pilot proficiency patterns.</p>
-            <p className="text-white text-sm leading-relaxed mt-2"><strong>Implementation:</strong> RESTful API with JSON flight summaries. OAuth 2.0 pilot consent flow. Read-only access to anonymized trend data. 3-sprint integration timeline.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#22d3ee'}}>The Bottom Line for EFB Providers</strong></p>
+            <p className="text-white text-sm leading-relaxed mt-2">Your EFB platform already captures the richest operational complexity data in aviation. The problem is not the data — it is that the data has nowhere to go professionally. We provide the destination.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">Without us: Your users generate operationally predictive proficiency data that evaporates at the end of each flight. Recruiters cannot see it. Underwriters cannot price against it. Your platform competes on chart quality alone.<br />With us: Your users accumulate a <strong>career-compounding complexity credential</strong> with every flight. Recruiters can see it. Underwriters pay for it. Your platform becomes the one pilots cannot afford to leave.</p>
+            <p className="text-white text-sm leading-relaxed mt-2">You keep your users. You keep your telemetry. You open a B2B insurance data revenue stream that currently does not exist. And your platform becomes structurally irreplaceable — not because your charts are better, but because your data builds careers.</p>
           </div>
 
           <hr className="my-8 border-slate-300" />

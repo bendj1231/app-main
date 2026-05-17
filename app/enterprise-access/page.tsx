@@ -24,6 +24,7 @@ const NAV_GROUPS = [
     {
         label: 'Services',
         items: [
+            { id: 'verification', label: 'PIC Identity Credential Verification', href: '/verification-service' },
             { id: 'insurance', label: 'Insurance Providers' },
             { id: 'finance', label: 'Banks & Pilot Finance' },
             { id: 'jobboards', label: 'Job Boards & Staffing' },
@@ -74,7 +75,8 @@ const SECTORS: Sector[] = [
         pain: 'Flight schools train pilots, hand them a certificate, and lose them. There\'s no way to track which graduates gain recognition in the industry, no recurring relationship, and no visibility into graduate pathway outcomes.',
         solution: 'Become a partner ATO. Your graduates get prioritised pathway visibility, you earn referral revenue when graduates join the platform, and you receive analytics on graduate recognition outcomes — proving your school\'s ROI to prospective students.',
         benefits: [
-            '$20 when a graduate joins and gets their Recognition Profile verified',
+            'Pilots are pre-verified by PilotRecognition — regulatory credentials, medical, background checks done internationally',
+            'You attest to training hours — platform handles the rest',
             'Pathway Cards listing — showcase your training to pilots exploring options',
             'Graduate outcome dashboard — track recognition progress and pathway engagement',
             'Co-branded recognition badge for graduates ("Trained at [School]")',
@@ -83,11 +85,13 @@ const SECTORS: Sector[] = [
             'Type rating provider listing for pilots seeking conversion training',
         ],
         pilots: [
+            'Your regulatory credentials and background checks are verified by PilotRecognition internationally',
+            'Your ATO attests to your training hours — both together build your Recognition Score',
             'Find ATOs aligned with their target airline\'s OEM (Airbus / Boeing)',
             'Compare type rating providers by cost, location, recognition outcomes',
             'Discover scholarships and funded pathways before paying out of pocket',
         ],
-        cta: 'Free to join. $20/referral. Optional analytics tier $200/month.',
+        cta: 'Free to join. $1,000/yr Operator Access for full analytics, credential issuance, and airline contact visibility. Success fees go to PilotRecognition.',
     },
     {
         id: 'insurance',
@@ -968,6 +972,7 @@ const EnterpriseAccessPage = () => {
                                     {group.pillars.map((pillar) => (
                                         <button
                                             key={pillar.n}
+                                            id={`pillar-${pillar.n}`}
                                             onClick={() => scrollTo('solutions')}
                                             className="text-left px-5 py-4 flex items-center gap-3 hover:bg-slate-800 transition-colors group"
                                         >
@@ -1002,6 +1007,351 @@ const EnterpriseAccessPage = () => {
                                 <p className="mt-4 text-red-600 text-xs font-semibold flex items-center gap-1">Learn more <span className="group-hover:translate-x-1 transition-transform">→</span></p>
                             </button>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── COLLABORATIVE PILOT IDENTITY CREDENTIALS ─── */}
+            <section className="py-10 sm:py-20 px-4 sm:px-6 bg-gray-50 border-b border-gray-300">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <div className="flex items-center justify-center gap-3 mb-4">
+                            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900">Collaborative <span className="text-red-600">Pilot Identity</span> Credentials</h2>
+                        </div>
+                        <p className="text-gray-800 text-lg max-w-3xl mx-auto leading-relaxed">
+                            <strong>Mission: Establish Data Neutrality & Independent Verification Framework</strong><br/>
+                            The Universal Commercial Framework establishes a <strong>unified ecosystem for Pilot Identity Credentials</strong> through an independent 8-stage cryptographic verification chain. This framework creates data neutrality by establishing an alternative verification methodology with a $100/year cost structure, providing legal protection through zero-knowledge architecture and mathematical proof of data integrity.
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 text-xs mb-8">
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">1. Purchase</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">$100/yr package covers standard annual license verification and single-operator logbook validation node</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">2. Trigger</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">Regional background check provider initiates Neutral Mandate Bundle (Logs, PII, and ATO contacts) creating an independent audit trail</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">3. Registry Check</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">Governing body civil aviation authority aircraft registry verification</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">4. ATO/Operator Issuance</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">ATO/Operator provides source-verified credential data and training records</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">4.5. Logbook Cross-Audit</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">Historical logbook entries verified against employment history and PRD records</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">5. Minting</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">Secure digital wallet creates tamper-proof blockchain tokens, splits for providers</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">6. Provider Wallets</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">Regional verification provider + logbook provider hold verified hours separately, matching historical logs against the mandate baseline</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-white rounded-lg p-3 mb-2">
+                                <span className="text-gray-700 font-bold">7. Triangulation</span>
+                            </div>
+                            <p className="text-gray-600 text-sm">PilotRecognition.com displays via pilot token authorization - no data held by platform</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 mb-6">
+                        <h4 className="font-bold text-gray-900 mb-3">
+                            Zero-Knowledge Legal Protection
+                        </h4>
+                        <p className="text-gray-800 text-base leading-relaxed mb-3">
+                            <strong>Platform Liability: Eliminated</strong> — Zero-knowledge architecture ensures no access to personal data. Legal position: No data visibility or storage.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="bg-white rounded-lg p-3">
+                                <p className="text-gray-700 font-bold mb-2">Privacy Protection</p>
+                                <p className="text-gray-600 text-sm">Client-side decryption only, no server PII access, zero breach risk</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-3">
+                                <p className="text-gray-700 font-bold mb-2">Cost Efficiency</p>
+                                <p className="text-gray-600 text-sm">Single operator baseline $100/year includes 1x Civil Aviation Authority Registry Check and 1x Primary Operator/ATO Hour Validation. Additional operators $30 each for verification outreach chain.</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-3">
+                                <p className="text-gray-700 font-bold mb-2">Legal Compliance</p>
+                                <p className="text-gray-600 text-sm">Mathematical proof eliminates disputes, regulatory compliance by design</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 mb-4">
+                        <h4 className="font-bold text-gray-900 mb-2">
+                            Framework Efficiency Analysis
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                            <div className="bg-white rounded-lg p-2">
+                                <p className="text-gray-700 font-bold mb-1">Cost Efficiency — PPP Shared Time & Burden Model (Win-Win Dynamic)</p>
+                                <p className="text-gray-600"><strong>Option A (Revenue Share):</strong> 68% margin — $5 Admin Cost-Recovery to Logbook App, $5 Digital Utility Royalty to ATO/Operator, $5 Infrastructure Fee to CAAP (Landbank Link.BizPortal). <strong>Option B (Pure Public Service):</strong> 73% margin — If CAAP declines 5% due to RA 3019/6713, fee waived. Government gets zero-cost digital modernization + fraud protection + state endorsement at no budget impact. Platform profitability increases either way.</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-2">
+                                <p className="text-gray-700 font-bold mb-1">Operational Efficiency</p>
+                                <p className="text-gray-600">Transition from point-in-time verification to reusable trust architecture. Portable digital credentials reduce duplicate verification requirements.</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-2">
+                                <p className="text-gray-700 font-bold mb-1">Compliance Efficiency</p>
+                                <p className="text-gray-600">Zero-knowledge architecture minimizes data handling requirements. Reduced compliance overhead and insurance costs through privacy-by-design.</p>
+                            </div>
+                        </div>
+                        <div className="mt-3 bg-white rounded-lg p-3">
+                            <p className="text-gray-800 text-sm font-bold mb-2">Framework Advantages</p>
+                            <p className="text-gray-700 text-xs leading-relaxed">
+                                The system establishes an open-trust validation layer for aviation that mirrors the real-world lifecycle of an aviator. This specialized framework enables efficient annual credential verification: logbook applications receive authenticated yearly data, pilots maintain data sovereignty, and airlines obtain cryptographically verified credentials with reduced operational costs. Single-source execution per year eliminates continuous micro-checks while maintaining audit integrity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── DUAL-TRACK VEREMARK PRICING BREAKDOWN ─── */}
+            <section className="py-10 sm:py-20 px-4 sm:px-6 bg-gray-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">Dual-Track Verification: Two Checks, Two Data Sources</h2>
+                        <p className="text-gray-800 text-lg max-w-3xl mx-auto leading-relaxed">
+                            <strong>Separate Pricing Engines for License vs. Hours = Legally Airtight</strong><br/>
+                            Veremark routes to two distinct sources: Governing Body for legal status, ATO/Operator for operational history
+                        </p>
+                    </div>
+
+                    <div className="bg-white border border-gray-300 rounded-xl p-8 shadow-sm mb-8">
+                        <h3 className="text-xl font-bold text-gray-900 mb-6">Operational Ledger</h3>
+                        
+                        <div className="space-y-6">
+                            <div className="bg-green-50 border border-green-300 rounded-lg p-4">
+                                <p className="text-green-800 font-bold text-base">Revenue In</p>
+                                <p className="text-green-700 text-base">Base Package (Annual Pilot Fee): <span className="font-bold">+$100.00</span></p>
+                                <p className="text-green-600 text-sm">Charged to pilot via logbook app or direct platform</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <p className="text-gray-800 font-bold text-base">Verification Costs Out</p>
+                                
+                                <div className="bg-blue-50 border border-blue-300 rounded-lg p-4">
+                                    <p className="text-blue-800 font-bold text-base">🔍 Veremark License Check: <span className="text-red-600 font-bold">-$13.00</span></p>
+                                    <p className="text-blue-700 text-sm"><strong>Target:</strong> Governing Body Registry (CAAP, FAA, etc.)</p>
+                                    <p className="text-blue-600 text-sm"><strong>Check Type:</strong> Professional Qualification (automated API query)</p>
+                                    <p className="text-blue-600 text-sm"><strong>Verifies:</strong> License validity, type ratings, medical certificate, regulatory standing</p>
+                                    <p className="text-blue-600 text-sm"><strong>Method:</strong> Digital API query to aviation authority database (24-48 hours)</p>
+                                </div>
+
+                                <div className="bg-blue-50 border border-blue-300 rounded-lg p-4">
+                                    <p className="text-blue-800 font-bold text-base">📊 Veremark Hours Check: <span className="text-red-600 font-bold">-$9.00</span></p>
+                                    <p className="text-blue-700 text-sm"><strong>Target:</strong> ATO/Operator (Flight School or Airline)</p>
+                                    <p className="text-blue-600 text-sm"><strong>Check Type:</strong> Education Check (students) OR Employment Check (CFIs/pilots)</p>
+                                    <p className="text-blue-600 text-sm"><strong>Verifies:</strong> Logbook hours match training records, flight manifests, instructor signatures</p>
+                                    <p className="text-blue-600 text-sm"><strong>Method:</strong> Direct contact with ATO registrar/ops manager (3-5 business days)</p>
+                                </div>
+
+                                <div className="bg-purple-50 border border-purple-300 rounded-lg p-4">
+                                    <p className="text-purple-800 font-bold text-base">🏛️ Government/CAAP Cut: <span className="text-red-600 font-bold">-$5.00</span></p>
+                                    <p className="text-purple-700 text-sm"><strong>Purpose:</strong> Infrastructure Utilization Fee (IT modernization fund)</p>
+                                    <p className="text-purple-600 text-sm"><strong>Legal:</strong> RA 11966 PPP Code compliance</p>
+                                    <p className="text-purple-600 text-sm"><strong>Routing:</strong> Landbank Link.BizPortal → CAAP National Treasury</p>
+                                </div>
+
+                                <div className="bg-orange-50 border border-orange-300 rounded-lg p-4">
+                                    <p className="text-orange-800 font-bold text-base">📱 Logbook Provider Cut: <span className="text-red-600 font-bold">-$5.00</span></p>
+                                    <p className="text-orange-700 text-sm"><strong>Purpose:</strong> API Integration & Hosting Compensation</p>
+                                    <p className="text-orange-600 text-sm"><strong>For:</strong> Front-end UX, mobile platform, tracking algorithms</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-red-50 border border-red-300 rounded-lg p-4">
+                                <p className="text-red-800 font-bold text-base">Total Third-Party & Partner Costs (Production Cost): <span className="font-bold">-$32.00</span></p>
+                                <p className="text-red-600 text-sm">Breakdown: $13.00 (License) + $9.00 (Hours) + $5.00 (Gov) + $5.00 (Logbook)</p>
+                            </div>
+
+                            <div className="bg-green-50 border border-green-300 rounded-lg p-4">
+                                <p className="text-green-800 font-bold text-base">✨ Net Platform Profit: <span className="font-bold">+$68.00</span></p>
+                                <p className="text-green-700 text-sm"><strong>Margin:</strong> 68% Base Net Profit Margin</p>
+                                <p className="text-green-600 text-sm"><strong>Note:</strong> Adjust to 69% with volume credits or logbook fee reduction</p>
+                                <p className="text-green-600 text-sm"><strong>What We Provide:</strong> 8-Stage Framework orchestration, Zero-knowledge architecture, Triangulation & token minting, PilotRecognition display layer, API gateway & webhook management</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white border border-gray-300 rounded-xl p-8 shadow-sm">
+                        <h3 className="text-xl font-bold text-gray-900 mb-6">Why This Structure Is Legally Airtight</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="bg-gray-50 rounded-lg p-4">
+                                <p className="text-gray-800 font-bold mb-2">🔍 License Check ($13)</p>
+                                <p className="text-gray-600 text-sm"><strong>Legal Status:</strong> Governing Body (CAAP/FAA)</p>
+                                <p className="text-gray-600 text-sm"><strong>Data Source:</strong> Official State Aviation Database</p>
+                                <p className="text-gray-600 text-sm"><strong>Method:</strong> Automated Database Pull</p>
+                                <p className="text-gray-600 text-sm"><strong>Confirms:</strong> Right to fly, license validity, medical current</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-4">
+                                <p className="text-gray-800 font-bold mb-2">📊 Hours Check ($9)</p>
+                                <p className="text-gray-600 text-sm"><strong>Operational History:</strong> ATO/Operator</p>
+                                <p className="text-gray-600 text-sm"><strong>Data Source:</strong> Physical Logbooks, Training Manifests</p>
+                                <p className="text-gray-600 text-sm"><strong>Method:</strong> Direct Contact with Registrar</p>
+                                <p className="text-gray-600 text-sm"><strong>Confirms:</strong> Hours flown, experience valid, no manual padding</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-4">
+                                <p className="text-gray-800 font-bold mb-2">🛡️ Legal Protection</p>
+                                <p className="text-gray-600 text-sm"><strong>Separate Sources:</strong> Two independent data points</p>
+                                <p className="text-gray-600 text-sm"><strong>Clear Audit Trail:</strong> Distinct pricing for each check</p>
+                                <p className="text-gray-600 text-sm"><strong>Veremark Handles:</strong> All direct contact, platform stays neutral</p>
+                                <p className="text-gray-600 text-sm"><strong>Liability Shield:</strong> Zero-knowledge architecture</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="py-10 sm:py-20 px-4 sm:px-6 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="mb-4">
+                                <h3 className="text-xl font-bold text-gray-900">Verification & Background Checks</h3>
+                            </div>
+                            <p className="text-gray-700 leading-relaxed mb-4">
+                                <strong><a href="#pillar-11" className="text-blue-600 hover:text-blue-800 underline">Pillar 11 providers</a></strong> deliver cryptographic proof of license validity, medical certification, security clearances, and professional standing. Real-time API integration with aviation authorities creates <strong>instant verification</strong> of pilot credentials, replacing manual document checks that take weeks with automated validation in seconds.
+                            </p>
+                            <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3">
+                                <div className="space-y-2">
+                                    <strong className="text-gray-800">Key Capabilities</strong>
+                                    <ul className="text-red-600 space-y-1 list-disc pl-5 list-inside">
+                                        <li>Real-time license validation</li>
+                                        <li>Medical certificate tracking</li>
+                                        <li>Security clearance verification</li>
+                                        <li>Professional standing confirmation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="mb-4">
+                                <h3 className="text-xl font-bold text-gray-900">Flight Logbook Providers</h3>
+                            </div>
+                            <p className="text-gray-700 leading-relaxed mb-4">
+                                <strong><a href="#pillar-12" className="text-blue-600 hover:text-blue-800 underline">Pillar 12 providers</a></strong> contribute verified flight hour data, aircraft type ratings, and operational experience. Through secure API integration, they provide <strong>tamper-proof flight records</strong> that validate currency, recency, and competency — creating a trusted foundation for pilot recognition scores and pathway matching.
+                            </p>
+                            <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3">
+                                <div className="space-y-2">
+                                    <strong className="text-gray-800">Key Capabilities</strong>
+                                    <ul className="text-red-600 space-y-1 list-disc pl-5 list-inside">
+                                        <li>Verified hour logging</li>
+                                        <li>Type rating confirmation</li>
+                                        <li>Currency validation</li>
+                                        <li>Operational experience tracking</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="mb-4">
+                                <h3 className="text-xl font-bold text-gray-900">ATO Issuance & Training Records</h3>
+                            </div>
+                            <p className="text-gray-700 leading-relaxed mb-4">
+                                <strong><a href="#pillar-6" className="text-blue-600 hover:text-blue-800 underline">Pillar 6 providers</a></strong> issue cryptographically signed training completion tokens, simulator hour validations, and competency assessments. These <strong>Verified Issuer credentials</strong> create an immutable record of pilot training quality and completion standards that airlines can instantly verify and trust.
+                            </p>
+                            <div className="bg-gray-50 border border-gray-300 rounded-lg px-4 py-3">
+                                <div className="space-y-2">
+                                    <strong className="text-gray-800">Key Capabilities</strong>
+                                    <ul className="text-red-600 space-y-1 list-disc pl-5 list-inside">
+                                        <li>Training completion tokens</li>
+                                        <li>Simulator hour validation</li>
+                                        <li>Competency assessments</li>
+                                        <li>Cryptographic signatures</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-50 border border-gray-300 rounded-xl p-8 mb-8">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Unified Identity Benefits</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="text-center">
+                                <div className="bg-white rounded-lg p-4 mb-3">
+                                    <span className="text-2xl mb-2 block text-gray-700">Pilots</span>
+                                    <h4 className="font-bold text-red-600">Verified Identity</h4>
+                                </div>
+                                <p className="text-gray-700 text-sm">Single wallet controls all credentials — grant selective access to airlines, insurers, or training providers. Your identity travels with you across operators and borders.</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="bg-white rounded-lg p-4 mb-3">
+                                    <span className="text-2xl mb-2 block text-gray-700">Airlines</span>
+                                    <h4 className="font-bold text-red-600">Issuance of Valid Flight Hours</h4>
+                                </div>
+                                <p className="text-gray-700 text-sm">Instant verification of complete pilot profile — license, medical, training, and flight hours — reducing hiring time from weeks to hours.</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="bg-white rounded-lg p-4 mb-3">
+                                    <span className="text-2xl mb-2 block text-gray-700">Insurers</span>
+                                    <h4 className="font-bold text-red-600">Transparency</h4>
+                                </div>
+                                <p className="text-gray-700 text-sm">Six-stage verification data provides comprehensive risk evaluation from low to high-risk pilot profiles. Mathematical proof of data integrity eliminates fraud while breaking singular data handling monopolies through distributed verification across multiple stakeholders.</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="bg-white rounded-lg p-4 mb-3">
+                                    <span className="text-2xl mb-2 block text-gray-700">Industry</span>
+                                    <h4 className="font-bold text-red-600">Industry Standard</h4>
+                                </div>
+                                <p className="text-gray-700 text-sm">First verification architecture for Pilot Identity Credentials (PIC) across all 4 stakeholders — establishing unified standards that eliminate document fraud, reduce verification costs, and create portable credential systems globally.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-50 border border-gray-300 rounded-xl p-8 mb-8">
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Founder Perspective</h3>
+                        <div className="bg-white border border-gray-300 rounded-lg p-6">
+                            <div className="mb-4">
+                                <p className="text-sm font-semibold text-gray-700 mb-2">Benjamin Bowler & Karl Brian Vogt — Founders</p>
+                                <p className="text-xs text-gray-500 uppercase tracking-widest">Operational Experience Assessment</p>
+                            </div>
+                            <div className="space-y-4 text-gray-700 text-sm leading-relaxed">
+                                <p>Our direct observation of aviation industry operations reveals systemic inefficiencies in pilot data management. Current practices demonstrate fragmented approaches to credential verification, with pilots typically abandoning logbook maintenance following initial airline placement. This creates discontinuities in professional record-keeping that persist throughout career progression.</p>
+                                
+                                <p>Background verification processes present significant operational friction points, particularly in radio license renewal cycles where expiration dates frequently go unmonitored by pilots. The manual verification of flight hours through individual ATOs or flight school aircraft logbooks represents a substantial administrative burden, requiring hundreds of hours for validation of individual flight records.</p>
+                                
+                                <p>The core operational challenge centers on the absence of unified data frameworks across the three primary provider categories: training institutions, regulatory authorities, and commercial operators. This fragmentation contributes to increased potential for record falsification, a condition that cannot be tolerated within aviation safety protocols where each flight hour represents dedicated commitment to operational safety.</p>
+                                
+                                <p>Our proposed framework addresses these structural deficiencies by establishing transparent verification protocols for flight hour documentation while reducing industry fragmentation. This systematic approach corresponds to established safety models, effectively reducing potential error vectors through integrated verification mechanisms.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-gray-900 font-semibold text-sm mb-4">Provider Integration Status</p>
+                        <div className="flex justify-center gap-4 mb-6">
+                            <span className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-medium text-sm">Verification APIs Live</span>
+                            <span className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-medium text-sm">Logbook Integration Active</span>
+                            <span className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full font-medium text-sm">ATO Network Expanding</span>
+                        </div>
+                        <button 
+                            onClick={() => scrollTo('contact')}
+                            className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm"
+                        >
+                            Join the Identity Provider Network
+                        </button>
                     </div>
                 </div>
             </section>
@@ -1157,7 +1507,7 @@ const EnterpriseAccessPage = () => {
                         </div>
                         <div className="bg-red-50 border border-red-200 ring-1 ring-red-500/20 rounded-2xl p-6">
                             <p className="text-red-600 text-xs uppercase tracking-widest font-semibold mb-2">Enterprise</p>
-                            <p className="text-4xl font-bold text-slate-900 mb-1">$1,000<span className="text-lg text-slate-500 font-normal">/mo</span></p>
+                            <p className="text-4xl font-bold text-slate-900 mb-1">$1,000<span className="text-lg text-slate-500 font-normal">/yr</span></p>
                             <p className="text-slate-600 text-sm mb-5">Pull API + full data access</p>
                             <ul className="space-y-2 text-sm text-slate-700">
                                 <li>• Pull API — query the pilot database</li>

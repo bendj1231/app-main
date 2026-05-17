@@ -538,8 +538,17 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             <button
                                 key={item.id}
                                 onClick={() => {
-                                    if (item.id === 'welcome') {
-                                        onNavigate('home');
+                                    const platformRedirects: Record<string, string> = {
+                                        welcome: 'home',
+                                        programs: 'platform?tab=programs',
+                                        dashboard: 'platform?tab=home',
+                                        profile: 'platform?tab=profile',
+                                        pathways: 'platform?tab=pathways',
+                                        marketplace: 'platform?tab=newsroom',
+                                        settings: 'platform?tab=settings',
+                                    };
+                                    if (platformRedirects[item.id]) {
+                                        onNavigate(platformRedirects[item.id]);
                                     } else {
                                         setActiveTab(item.id);
                                     }

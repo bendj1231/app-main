@@ -4369,6 +4369,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [canPostPathways, setCanPostPathways] = useState(false);
   const [enterprisePathwayCards, setEnterprisePathwayCards] = useState<PathwayData[]>([]);
   const [selectedStage1PathwayId, setSelectedStage1PathwayId] = useState<string | null>(null);
+  const [interestSubmitting, setInterestSubmitting] = useState(false);
+  const [interestSubmitted, setInterestSubmitted] = useState<string | null>(null); // card id
   const [stage1Index, setStage1Index] = useState(0);
 
   // Maps PATHWAYS[] UUID → DISCOVERY_PATHWAYS short-string key
@@ -4563,6 +4565,33 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       }
     }
   }, [selectedPathwayCard?.category, userCountryCode]);
+
+  // Submit Interest handler — writes to pathway_card_interests table
+  const handleSubmitInterest = async (pathway: PathwayData) => {
+    if (!currentUser?.id || interestSubmitting) return;
+    const rawCardId = pathway.id.replace('enterprise-', '');
+    setInterestSubmitting(true);
+    try {
+      const { data: cardRow } = await supabase
+        .from('enterprise_pathway_cards')
+        .select('id, enterprise_account_id')
+        .eq('id', rawCardId)
+        .maybeSingle();
+      if (!cardRow) throw new Error('Card not found');
+      const { error } = await supabase.from('pathway_card_interests').upsert({
+        pilot_id: currentUser.id,
+        card_id: rawCardId,
+        enterprise_account_id: cardRow.enterprise_account_id,
+        submitted_at: new Date().toISOString(),
+      }, { onConflict: 'pilot_id,card_id' });
+      if (error) throw error;
+      setInterestSubmitted(pathway.id);
+    } catch (e) {
+      console.error('Failed to submit interest:', e);
+    } finally {
+      setInterestSubmitting(false);
+    }
+  };
 
   // Fetch flight school card data from Supabase when a card is selected
   useEffect(() => {
@@ -7622,6 +7651,172 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">{trCard.postedAt}</span>
                       </div>
                     </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Enterprise Pathway Card Detail Panel — appears when an enterprise card is selected */}
+            {selectedCarouselPathway?.isEnterprise && selectedPathwayCard?.category !== 'flight-schools' && selectedPathwayCard?.category !== 'type-rating' && (() => {
+              const p = selectedCarouselPathway;
+              const alreadySubmitted = interestSubmitted === p.id;
+              const minHours = p.requirements?.totalHours || 0;
+              return (
+                <div className="mt-8 mx-4 rounded-2xl overflow-hidden border border-blue-500/20 bg-blue-950/20 backdrop-blur-sm">
+                  {/* Header */}
+                  <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-white/8">
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                      {p.enterpriseLogoUrl ? (
+                        <img src={p.enterpriseLogoUrl} alt={p.airline} className="w-12 h-12 rounded-xl object-contain bg-white/10 p-1.5 shrink-0" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-blue-600/30 flex items-center justify-center shrink-0">
+                          <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 004 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" /></svg>
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                          <h3 className="text-lg font-semibold text-white leading-tight">{p.name}</h3>
+                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-blue-300 bg-blue-600/30 border border-blue-500/30">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Airline Posted
+                          </span>
+                        </div>
+                        <p className="text-white/50 text-sm">{p.airline}</p>
+                        {p.description && <p className="text-white/35 text-xs mt-1 line-clamp-2">{p.description}</p>}
+                      </div>
+                    </div>
+                    {/* Interest level badge */}
+                    <div className="shrink-0 text-right">
+                      <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${
+                        p.interestLevel === 'high_interest' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : p.interestLevel === 'limited' ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                        : 'bg-slate-600/30 text-slate-400 border border-slate-600/30'
+                      }`}>
+                        {p.interestLevel === 'high_interest' ? '● Actively Hiring' : p.interestLevel === 'limited' ? '● Limited Slots' : '● Considering'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Body grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/8">
+
+                    {/* Requirements */}
+                    <div className="px-6 py-5">
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Requirements</p>
+                      <div className="space-y-2.5">
+                        {minHours > 0 && (
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-white/50">Min Flight Hours</span>
+                            <span className="text-white font-semibold">{minHours.toLocaleString()}h</span>
+                          </div>
+                        )}
+                        {(p.requirements?.typeRatings || []).length > 0 && (
+                          <div className="flex items-start justify-between text-xs gap-2">
+                            <span className="text-white/50 shrink-0">Type Ratings</span>
+                            <div className="flex flex-wrap gap-1 justify-end">
+                              {(p.requirements.typeRatings || []).map((tr: string) => (
+                                <span key={tr} className="bg-blue-600/20 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded-full text-[10px]">{tr}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {p.locations?.length > 0 && (
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-white/50">Base Location</span>
+                            <span className="text-white/80">{p.locations[0]}</span>
+                          </div>
+                        )}
+                        {p.positions && (
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-white/50">Positions Available</span>
+                            <span className="text-white font-semibold">{p.positions}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Compensation */}
+                    <div className="px-6 py-5">
+                      <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Compensation</p>
+                      <div className="space-y-2.5">
+                        {p.salary?.firstYear && (
+                          <div className="flex items-start justify-between text-xs gap-2">
+                            <span className="text-white/50 shrink-0">Package</span>
+                            <span className="text-emerald-400 font-semibold text-right">{p.salary.firstYear}</span>
+                          </div>
+                        )}
+                        {p.salary?.fifthYear && (
+                          <div className="flex items-start justify-between text-xs gap-2">
+                            <span className="text-white/50 shrink-0">Progression</span>
+                            <span className="text-white/70 text-right">{p.salary.fifthYear}</span>
+                          </div>
+                        )}
+                        {p.salary?.bonuses && (
+                          <div className="flex items-start justify-between text-xs gap-2">
+                            <span className="text-white/50 shrink-0">Benefits</span>
+                            <span className="text-white/70 text-right">{p.salary.bonuses}</span>
+                          </div>
+                        )}
+                        {(p.benefits || []).length > 0 && (
+                          <div className="pt-2 border-t border-white/8 space-y-1">
+                            {(p.benefits || []).slice(0, 3).map((b: string, i: number) => (
+                              <div key={i} className="flex items-center gap-1.5 text-xs text-white/50">
+                                <svg className="w-3 h-3 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
+                                {b}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Submit Interest CTA */}
+                    <div className="px-6 py-5 flex flex-col justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-white/30 mb-3">Pulling System</p>
+                        <p className="text-white/50 text-xs leading-relaxed mb-4">
+                          Submit your verified profile to this airline's interest pool. They pull from candidates — you don't push an application.
+                        </p>
+                        {alreadySubmitted ? (
+                          <div className="flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 rounded-xl px-4 py-3">
+                            <svg className="w-5 h-5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <div>
+                              <p className="text-emerald-400 text-sm font-semibold">Interest Submitted</p>
+                              <p className="text-emerald-600 text-xs">Your profile is now in their pool</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => handleSubmitInterest(p)}
+                            disabled={!currentUser || interestSubmitting}
+                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl transition-all text-sm shadow-lg shadow-emerald-500/20"
+                          >
+                            {interestSubmitting ? (
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/></svg>
+                            )}
+                            {currentUser ? 'Submit Interest' : 'Sign in to Submit Interest'}
+                          </button>
+                        )}
+                      </div>
+                      {!currentUser && (
+                        <p className="text-white/30 text-[10px] text-center">
+                          <a href="/login" className="text-blue-400 hover:text-blue-300 underline">Create a free account</a> to submit interest and be discoverable by this airline.
+                        </p>
+                      )}
+                      {p.url && (
+                        <a href={p.url} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition-colors border border-white/10 rounded-xl py-2">
+                          View Official Posting
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="px-6 py-3 border-t border-white/8">
+                    <p className="text-white/20 text-[10px]">This pathway card was posted directly by the airline via the PilotRecognition Enterprise Portal. Interest submissions are visible only to the posting operator.</p>
                   </div>
                 </div>
               );

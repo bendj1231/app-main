@@ -31,13 +31,8 @@ Deno.serve(async (req) => {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      payment_method_types: [
-        'card',        // Visa, Mastercard, Amex — global
-        'paypal',      // PayPal — global
-        'gcash',       // GCash — Philippines
-        'grabpay',     // GrabPay — Philippines / SEA
-        'paymaya',     // Maya (PayMaya) — Philippines
-      ],
+      payment_method_types: ['card'],
+      automatic_payment_methods: { enabled: true },
       line_items: [
         {
           price: priceId,

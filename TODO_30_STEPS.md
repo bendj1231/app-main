@@ -45,6 +45,30 @@
 29. ⬜ Update email templates with correct subdomain URLs — see EMAIL_TEMPLATES.md
 30. ⬜ Deploy to production and monitor for 48 hours — see DEPLOYMENT_CHECKLIST.md
 
+## Phase 6: Referral & Revenue Infrastructure (Steps 31-42)
+
+### Referral / Invite Code System
+31. ✅ Add `referral_code` column to `profiles` + auto-generate trigger on insert (backfilled all existing pilots)
+32. ✅ Add `referred_by_code`, `referred_by_profile_id`, `referral_earnings` to `profiles`
+33. ✅ Create `/ref/:code` landing page — validates code, stores `pr_ref` cookie (30-day), shows referrer name + $20 dividend explanation, redirects to signup
+34. ✅ Register `/ref/:code` route in `AppRoutes.tsx`
+35. ✅ Wire referral attribution into `AuthContext.tsx` signup flow — reads cookie on new profile insert, writes `referred_by_*`, upserts `referral_conversions`
+36. ✅ Fix `PilotReferralShare.tsx` — live stats from `referral_conversions` + `referral_partners` (was hardcoded 0)
+
+### Payment → Commission Pipeline
+37. ✅ Deploy `stripe-webhook` edge function — listens for `checkout.session.completed`, `invoice.paid`, `customer.subscription.deleted`
+38. ✅ `checkout.session.completed` → marks pilot `is_recognition_plus = true`, credits $20 dividend to referrer
+39. ✅ Create `referral_dividend_ledger` table — immutable audit trail of every $20 dividend (status: pending → eligible → paid)
+40. ✅ Add `is_recognition_plus`, `stripe_customer_id`, `recognition_plus_started_at/ended_at` to `profiles`
+41. ✅ Update `stripe-checkout` function — attaches `pilot_id` in session metadata so webhook resolves pilot reliably
+
+### ATO 5% Issuance Fee
+42. ✅ Create `issuance_fee_transactions` table — `platform_fee_amount` auto-computed as 5% of `issuance_fee_charged` via Postgres generated column
+43. ✅ Create `ato_platform_invoices` table — monthly rolled-up fee invoices per ATO enterprise account
+44. ✅ Deploy `ato-issuance-fee` edge function — POST records a countersign session fee, GET returns ATO fee summary
+45. ⬜ Register `STRIPE_WEBHOOK_SECRET` in Supabase project secrets (manual — requires Stripe Dashboard)
+46. ⬜ Register webhook URL in Stripe Dashboard: `https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/stripe-webhook` (events: `checkout.session.completed`, `invoice.paid`, `customer.subscription.deleted`)
+
 ---
 
 ## Critical Path for September Deadline

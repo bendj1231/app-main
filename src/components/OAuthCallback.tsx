@@ -1,26 +1,66 @@
-import React, { useEffect } from 'react';
-
-const safeRedirect = (path: string) => {
-  window.location.href = path;
-};
+import React, { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export const OAuthCallback = () => {
-  useEffect(() => {
-    const handleCallback = async () => {
-      const searchParams = window.location.search;
-      const hash = window.location.hash;
+  const { isLoading, isAuthenticated, user, error } = useAuth0();
+  const [profileCreated, setProfileCreated] = useState(false);
 
-      if (searchParams) {
-        safeRedirect(`/auth/callback${searchParams}${hash}`);
-      } else if (hash) {
-        safeRedirect(`/auth/callback${hash}`);
-      } else {
-        safeRedirect('/');
+  useEffect(() => {
+    if (!isAuthenticated || !user || profileCreated) return;
+
+    const createSupabaseProfile = async () => {
+      try {
+        const { supabase } = await import('@/src/lib/supabase');
+        const { data: existing } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('auth0_id', user.sub)
+          .maybeSingle();
+
+        if (!existing) {
+          const { data: newProfile } = await supabase.from('profiles').insert({
+            auth0_id: user.sub,
+            email: user.email,
+            display_name: user.name || user.email?.split('@')[0],
+            avatar_url: user.picture,
+            account_tier: 'free',
+            created_at: new Date().toISOString(),
+          }).select('id').single();
+
+          if (newProfile?.id) {
+            await supabase.functions.invoke('generate-profile-token', {
+              body: { userId: newProfile.id }
+            });
+          }
+
+          setProfileCreated(true);
+          window.location.href = '/become-member';
+        } else {
+          setProfileCreated(true);
+          window.location.href = '/';
+        }
+      } catch (err) {
+        console.error('Profile creation error:', err);
+        window.location.href = '/';
       }
     };
 
-    handleCallback();
-  }, []);
+    createSupabaseProfile();
+  }, [isAuthenticated, user, profileCreated]);
+
+  if (error) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div style={{ textAlign: 'center' }}>
+          <h2 style={{ color: '#dc2626' }}>Authentication Error</h2>
+          <p style={{ color: '#64748b' }}>{error.message}</p>
+          <button onClick={() => window.location.href = '/'} style={{ marginTop: '16px', padding: '8px 16px' }}>
+            Go Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -41,7 +81,7 @@ export const OAuthCallback = () => {
           margin: '0 auto 20px'
         }}></div>
         <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#1e293b', marginBottom: '8px' }}>
-          Processing Authentication
+          {isLoading ? 'Processing Authentication...' : 'Setting up your profile...'}
         </h2>
         <p style={{ color: '#64748b' }}>Please wait while we complete your sign-in...</p>
       </div>

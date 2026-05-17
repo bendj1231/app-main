@@ -6,6 +6,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
+import { Styles } from '@/src/components/ui/Styles';
+import { AuthProvider } from '@/src/contexts/AuthContext';
+import { ToastProvider } from '@/src/components/ui/toast';
+import { AppRoutes } from '@/src/routes/AppRoutes';
 import './index.css';
 
 // Suppress ResizeObserver loop warning (benign framer-motion issue)
@@ -18,12 +23,6 @@ const resizeObserverErrorHandler = (e: ErrorEvent) => {
 };
 
 window.addEventListener('error', resizeObserverErrorHandler);
-
-import { Styles } from '@/src/components/ui/Styles';
-import { AuthProvider } from '@/src/contexts/AuthContext';
-import { ToastProvider } from '@/src/components/ui/toast';
-import { AppRoutes } from '@/src/routes/AppRoutes';
-import { App } from '@/src/components/App';
 
 // Check if root already exists to prevent duplicate createRoot calls
 const rootElement = document.getElementById('root');
@@ -38,12 +37,24 @@ if (rootElement && !(rootElement as any)._reactRoot) {
 }
 
 root.render(
-  <BrowserRouter>
-    <AuthProvider>
-      <ToastProvider>
-        <Styles />
-        <AppRoutes />
-      </ToastProvider>
-    </AuthProvider>
-  </BrowserRouter>
+  <Auth0Provider
+    domain={import.meta.env.VITE_AUTH0_DOMAIN || 'dev-ir828tguibp1dh5f.eu.auth0.com'}
+    clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || 'eCTGyPTtsJbwrJrkioFADnUJocDrE8Wu'}
+    authorizationParams={{
+      redirect_uri: `${window.location.origin}/callback`,
+      scope: 'openid profile email'
+    }}
+    onRedirectCallback={() => {
+      window.history.replaceState({}, document.title, '/');
+    }}
+  >
+    <BrowserRouter>
+      <AuthProvider>
+        <ToastProvider>
+          <Styles />
+          <AppRoutes />
+        </ToastProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  </Auth0Provider>
 );

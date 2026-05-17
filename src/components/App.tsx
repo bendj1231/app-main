@@ -6,6 +6,11 @@ import { LoginModal } from '@/components/website/components/LoginModal';
 import { CookieConsent } from '@/components/CookieConsent';
 import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
 import ChatWidget from '@/portal/components/w1000/ChatWidget';
+// Admin components
+import { MoaExecutiveSummary } from '@/src/components/admin/MoaExecutiveSummary';
+import { InvestorPitch } from '@/src/components/admin/InvestorPitch';
+import { GovernmentPromotion } from '@/src/components/admin/GovernmentPromotion';
+import { VeremarkPricing } from '@/src/components/admin/VeremarkPricing';
 
 const LOGO_URL = "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png";
 const ACCREDITATION_URL = "/images/accreditation.png";
@@ -20,6 +25,14 @@ const safeRedirect = (path: string) => {
 
 const navigateTo = (page: string, data?: any) => {
   setCurrentPage(page);
+  
+  // Admin routes - render admin components directly
+  if (page === 'moa-executive-summary' || page === 'investor-pitch' || 
+      page === 'government-promotion' || page === 'veremark-pricing') {
+    // These will be handled in the render section below
+    return;
+  }
+
   if (page === 'recognition-plus') {
     safeRedirect('/recognition-plus');
     return;
@@ -148,8 +161,19 @@ export const App = () => {
         </div>
       </div>
 
+      {/* Admin Pages - Only show for admin users */}
+      {currentUser && (currentUser.email?.includes('admin') || currentUser.email?.includes('benjamin') || currentUser.email?.includes('karl')) && (
+        <>
+          {currentPage === 'moa-executive-summary' && <MoaExecutiveSummary />}
+          {currentPage === 'investor-pitch' && <InvestorPitch />}
+          {currentPage === 'government-promotion' && <GovernmentPromotion />}
+          {currentPage === 'veremark-pricing' && <VeremarkPricing />}
+        </>
+      )}
+
       {/* Home Page */}
-      <HomePage
+      {!['moa-executive-summary', 'investor-pitch', 'government-promotion', 'veremark-pricing'].includes(currentPage) && (
+        <HomePage
         onJoinUs={() => navigateTo('become-member')}
         onLogin={() => setIsLoginModalOpen(true)}
         onNavigate={navigateTo}
@@ -182,7 +206,8 @@ export const App = () => {
           if (route) navigateTo(route);
           else navigateTo('about-programs');
         }}
-      />
+      )}
+      )}
 
       {/* Login Modal */}
       {isLoginModalOpen && (

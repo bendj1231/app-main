@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '../lib/supabase';
 import { indexedDB } from '../lib/indexedDB';
 import { createManagementAPI } from '../lib/supabase-management';
@@ -53,6 +54,7 @@ export function useAuth() {
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const { isAuthenticated: auth0IsAuthenticated, user: auth0User, isLoading: auth0Loading } = useAuth0();
     const [currentUser, setCurrentUser] = useState<SupabaseUser | null>(null);
     const currentUserRef = React.useRef<SupabaseUser | null>(null);
     const oauthModalShownRef = React.useRef(false);
@@ -100,6 +102,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setOauthModalShown(true);
         localStorage.setItem('oauthModalShown', 'true');
     };
+
+    // Sync Auth0 user into currentUser when there is no Supabase session
+    useEffect(() => {
+        if (auth0Loading) return;
+        if (auth0IsAuthenticated && auth0User && !currentUser) {
+            const auth0AsSupabaseUser: SupabaseUser = {
+                id: auth0User.sub || '',
+                uid: auth0User.sub || '',
+                email: auth0User.email || '',
+                email_confirmed_at: new Date().toISOString(),
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                display_name: auth0User.name || auth0User.email?.split('@')[0],
+                displayName: auth0User.name || auth0User.email?.split('@')[0],
+            };
+            setCurrentUser(auth0AsSupabaseUser);
+            setLoading(false);
+        }
+    }, [auth0IsAuthenticated, auth0User, auth0Loading, currentUser]);
 
     // Activity logging
     const { logLogin, logLogout, logProfileUpdate } = useUserActivityLog();
@@ -234,7 +255,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             
             if (existingProfile) {
                 console.log('⚠️ Profile already exists for user, updating...');
-                // Profile exists, update it
+                // Profile exists, update
                 const { error: updateError } = await supabase
                     .from('profiles')
                     .update({
@@ -245,6 +266,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         date_of_birth: userData.dob || null,
                         nationality: userData.nationality,
                         updated_at: new Date().toISOString(),
+                        terms_accepted_at: userData.termsAcceptedAt || new Date().toISOString(),
                         pilot_id: userData.pilotId,
                         flight_school_address: userData.flightSchoolAddress,
                         license_id: userData.licenseId,
@@ -301,6 +323,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         enrolled_programs: [],
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString(),
+                        terms_accepted_at: userData.termsAcceptedAt || new Date().toISOString(),
                         // Additional detailed fields
                         pilot_id: userData.pilotId,
                         flight_school_address: userData.flightSchoolAddress,
@@ -330,6 +353,54 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
                 
                 console.log('✅ Portal profile created:', userId);
+
+                // Referral attribution — read code stored by /ref/[code] landing page
+                try {
+                    const refCode = typeof document !== 'undefined'
+                        ? document.cookie.split('; ').find(r => r.startsWith('pr_ref='))?.split('=')[1]
+                        : null;
+                    if (refCode) {
+                        const { data: referrer } = await supabase
+                            .from('profiles')
+                            .select('id')
+                            .eq('referral_code', refCode)
+                            .maybeSingle();
+                        if (referrer) {
+                            await supabase.from('profiles').update({
+                                referred_by_code: refCode,
+                                referred_by_profile_id: referrer.id,
+                            }).eq('id', userId);
+                            // Record in referral_conversions (partner = referrer via referral_partners if they exist)
+                            const { data: partner } = await supabase
+                                .from('referral_partners')
+                                .select('id, commission_rate, total_referrals')
+                                .eq('referral_code', refCode)
+                                .eq('is_active', true)
+                                .maybeSingle();
+                            if (partner) {
+                                await supabase.from('referral_conversions').upsert({
+                                    partner_id: partner.id,
+                                    referral_code: refCode,
+                                    pilot_id: userId,
+                                    pilot_email: email,
+                                    pilot_name: userData.fullName || null,
+                                    status: 'signed_up',
+                                    clicked_at: new Date().toISOString(),
+                                    signed_up_at: new Date().toISOString(),
+                                    commission_amount: partner.commission_rate ?? 20,
+                                }, { onConflict: 'partner_id,pilot_email' });
+                                await supabase.from('referral_partners').update({
+                                    total_referrals: partner.total_referrals + 1,
+                                }).eq('id', partner.id);
+                            }
+                            // Clear cookie after attribution
+                            document.cookie = 'pr_ref=; path=/; max-age=0';
+                        }
+                    }
+                } catch (refErr) {
+                    console.warn('⚠️ Referral attribution failed (non-critical):', refErr);
+                }
+
                 console.log('🔵 Profile created successfully. Proceeding to next step...');
             }
         } catch (profileError) {

@@ -10,6 +10,7 @@ import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
 import { VeremarkVerifiedBadge } from './VeremarkVerifiedBadge';
 import { VerificationWalletSection } from './VerificationWalletSection';
+import { ATOVerificationRequestSection } from './ATOVerificationRequestSection';
 import { PathwayPriority } from './CareerPathwayPriority';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
@@ -552,7 +553,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // Fetch profile image and basic user data from profiles table
             const { data: profileImage, error: imageError } = await supabase
                 .from('profiles')
-                .select('profile_image_url, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings')
+                .select('profile_image_url, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings, profile_token, profile_token_generated_at, auth0_id')
                 .eq('id', user.id)
                 .maybeSingle();
             
@@ -716,7 +717,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     return (
         <div 
-            style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}
+            style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : 'hidden' }}
             className={theme === 'light' ? 'light-theme' : 'dark-theme'}
             data-theme={theme}
         >
@@ -760,7 +761,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
             </div>}
-            <main style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '1200px', margin: '0 auto', minHeight: embedded ? 'auto' : '100vh' }}>
+            <main style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: embedded ? '100%' : '1200px', margin: embedded ? '0' : '0 auto', minHeight: embedded ? 'auto' : '100vh' }}>
                 {/* Portal 2 Navigation Bar */}
                 {!embedded && <div
                     className="relative z-50 flex items-center justify-between px-4 py-2"
@@ -1049,6 +1050,95 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 onNavigate={onNavigate}
                             />
                         ) : null}
+                </div>
+
+                {/* ── PROFILE TOKEN CARD ── */}
+                <div style={{ padding: '1.5rem clamp(1.5rem, 4vw, 3.5rem) 0' }}>
+                    <div style={{
+                        background: 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.95) 100%)',
+                        border: '1px solid rgba(14,165,233,0.3)',
+                        borderRadius: '20px',
+                        padding: '1.5rem',
+                        backdropFilter: 'blur(14px)',
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                            <div style={{ flex: 1, minWidth: '240px' }}>
+                                <p style={{ fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#0ea5e9', fontWeight: 700, marginBottom: '0.5rem' }}>
+                                    Your Profile Token — Private
+                                </p>
+                                {profileData?.profile_token ? (
+                                    <>
+                                        <p style={{
+                                            fontFamily: 'monospace',
+                                            fontSize: '1rem',
+                                            fontWeight: 700,
+                                            color: '#f8fafc',
+                                            letterSpacing: '0.05em',
+                                            wordBreak: 'break-all',
+                                            marginBottom: '0.5rem'
+                                        }}>
+                                            {profileData.profile_token}
+                                        </p>
+                                        <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+                                            Generated: {profileData.profile_token_generated_at
+                                                ? new Date(profileData.profile_token_generated_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                                                : 'Unknown'}
+                                            &nbsp;·&nbsp;SHA-256 · v1
+                                        </p>
+                                    </>
+                                ) : (
+                                    <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
+                                        Token not yet generated — complete your profile to generate
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Stats hashed into token */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', minWidth: '180px' }}>
+                                <p style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 700 }}>
+                                    Hashed Fields
+                                </p>
+                                {[
+                                    { label: 'Flight Hours', value: `${profileData?.current_flight_hours || profileData?.total_hours || 0} hrs` },
+                                    { label: 'License', value: profileData?.license_id || profileData?.license_type || 'Not set' },
+                                    { label: 'Country', value: profileData?.country_of_license || '—' },
+                                    { label: 'Verification', value: profileData?.verification_status || 'Unverified' },
+                                ].map(item => (
+                                    <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
+                                        <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)' }}>{item.label}</span>
+                                        <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>{item.value}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+                            <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.25)' }}>
+                                🔒 Only visible to you when logged in · Airlines see only the token fingerprint, not your raw data
+                            </p>
+                            {profileData?.profile_token && (
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(profileData.profile_token);
+                                    }}
+                                    style={{
+                                        fontSize: '0.65rem',
+                                        fontWeight: 700,
+                                        letterSpacing: '0.1em',
+                                        textTransform: 'uppercase',
+                                        color: '#0ea5e9',
+                                        background: 'rgba(14,165,233,0.1)',
+                                        border: '1px solid rgba(14,165,233,0.3)',
+                                        borderRadius: '8px',
+                                        padding: '0.35rem 0.75rem',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    Copy Token
+                                </button>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem' }}>
@@ -1687,6 +1777,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             />
                         </CategorySection>
 
+                        {/* PILLAR 5: ATO Hour Verification */}
+                        <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
+                            <ATOVerificationRequestSection />
+                        </CategorySection>
 
                         <CategorySection title="Additional Information" description="Personal details and aspirations">
                             <div style={{ ...baseCardStyle }}>

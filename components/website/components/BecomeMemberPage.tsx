@@ -1,8 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, User, Lock, Mail, MapPin, School, Phone, Clock, Award, ShieldCheck, CheckCircle2, ChevronRight, ChevronDown, ChevronUp, HelpCircle, Calendar, Globe, Flag, Plane, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { TopNavbar } from './TopNavbar';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { TermsAcceptance, ConsentRecord } from '@/src/components/TermsAcceptance';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 
 interface BecomeMemberPageProps {
@@ -14,6 +16,7 @@ interface BecomeMemberPageProps {
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
     const { signup, currentUser } = useAuth();
+    const { user: auth0User, isAuthenticated: isAuth0User } = useAuth0();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -64,17 +67,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [userAlreadyExisted, setUserAlreadyExisted] = useState(false);
     const [fullProfiling, setFullProfiling] = useState(false);
+    const [consentRecord, setConsentRecord] = useState<ConsentRecord | null>(null);
+    const [consentAccepted, setConsentAccepted] = useState(false);
 
     // Log signupSuccess state changes
     useEffect(() => {
     }, [signupSuccess]);
 
-    // Pre-fill email with current user's email if logged in via OAuth
+    // Pre-fill email and name from Auth0 if logged in via Google
     useEffect(() => {
         if (currentUser?.email && !email) {
             setEmail(currentUser.email);
         }
-    }, [currentUser, email]);
+        if (isAuth0User && auth0User) {
+            if (auth0User.email && !email) setEmail(auth0User.email);
+            if (auth0User.name && !fullName) setFullName(auth0User.name);
+        }
+    }, [currentUser, auth0User, isAuth0User, email, fullName]);
 
     const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
     const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
@@ -311,7 +320,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     // Construct the categorization string "Name , License, Hours"
                                     const pilotCategory = `${fullName} , ${highestRating}, ${currentFlightHours}hrs`;
 
-                                    await signup(email, password, {
+                                    await signup(email, isAuth0User ? `Auth0_${auth0User?.sub}` : password, {
+                                        consentRecord,
                                         pilotId,
                                         pilotCategory, // New field for easy identification
                                         fullName,
@@ -415,6 +425,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 )}
                                             </div>
                                         </div>
+                                        {!isAuth0User && (
                                         <div className="space-y-2.5 group">
                                             <label className="text-sm font-semibold text-gray-700 mb-2 block">Password</label>
                                             <div className="relative">
@@ -435,6 +446,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 </button>
                                             </div>
                                         </div>
+                                        )}
                                     </div>
                                 </section>
 
@@ -1229,6 +1241,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                 )}
 
+                                {/* Consent Section */}
+                                {!consentAccepted ? (
+                                    <div className="pt-8">
+                                        <TermsAcceptance
+                                            buttonText="I Consent — Continue to Submit"
+                                            onAccept={(record) => {
+                                                setConsentRecord(record);
+                                                setConsentAccepted(true);
+                                            }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="pt-4 p-4 bg-green-50 border border-green-200 rounded-2xl flex items-center gap-3">
+                                        <ShieldCheck className="w-5 h-5 text-green-600 flex-shrink-0" />
+                                        <div>
+                                            <p className="text-sm font-semibold text-green-800">Consent recorded</p>
+                                            <p className="text-xs text-green-600">Timestamp: {consentRecord?.consent_given_at} · Version: {consentRecord?.consent_version}</p>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Footer Actions */}
                                 <div className="pt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
                                     <button
@@ -1240,7 +1273,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </button>
                                     <button
                                         type="submit"
-                                        className="w-full sm:w-auto px-12 py-5 bg-blue-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-blue-700 transition-all shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:shadow-[0_25px_50px_-12px_rgba(37,99,235,0.5)] active:scale-95 flex items-center justify-center gap-3"
+                                        disabled={!consentAccepted || loading}
+                                        className={`w-full sm:w-auto px-12 py-5 font-black uppercase tracking-[0.2em] text-xs rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-3 ${
+                                            consentAccepted && !loading
+                                                ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)]'
+                                                : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                                        }`}
                                     >
                                         <span>{loading ? 'Submitting...' : 'Submit Application'}</span>
                                         <ChevronRight className="w-4 h-4" />

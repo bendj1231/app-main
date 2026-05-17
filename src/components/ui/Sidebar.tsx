@@ -14,7 +14,11 @@ import {
     LayoutGrid,
     FileText,
     Award,
-    LogOut
+    LogOut,
+    FileSignature,
+    TrendingUp,
+    Users,
+    Settings
 } from 'lucide-react';
 import { ChevronRight } from './Icons';
 import { useAuth } from '@/src/contexts/AuthContext';
@@ -22,7 +26,10 @@ import { useAuth } from '@/src/contexts/AuthContext';
 const LOGO_URL = "https://cdn.shopify.com/s/files/1/0807/5801/4243/files/logo_3.png?v=1738739665";
 
 export const Sidebar = ({ activePage, onNavigate, isOpen, onClose }: { activePage: string, onNavigate: (page: any) => void, isOpen: boolean, onClose: () => void }) => {
-    const { logout } = useAuth();
+    const { logout, currentUser } = useAuth();
+    
+    // Check if user is admin (you can adjust this logic based on your admin criteria)
+    const isAdmin = currentUser?.email?.includes('admin') || currentUser?.email?.includes('benjamin') || currentUser?.email?.includes('karl');
     const NavItem = ({ id, icon: Icon, label, active }: any) => (
         <div
             onClick={() => { onNavigate(id); if (window.innerWidth <= 768) onClose(); }}
@@ -75,6 +82,17 @@ export const Sidebar = ({ activePage, onNavigate, isOpen, onClose }: { activePag
                         <NavItem id="insights" icon={Globe} label="Airline Insights" active={activePage === 'insights'} />
                         <NavItem id="pilot-recognition" icon={Award} label="Recognition" active={activePage === 'pilot-recognition'} />
                     </div>
+
+                    {/* Admin-only strategic documents section */}
+                    {isAdmin && (
+                        <div style={{ paddingBottom: 12, marginBottom: 12, borderTop: '1px solid #f0f0f0', paddingTop: 12 }}>
+                            <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#aaa', paddingLeft: 16, marginBottom: 8, letterSpacing: '0.1em' }}>ADMIN STRATEGY</p>
+                            <NavItem id="moa-executive-summary" icon={FileSignature} label="CAAP MOA" active={activePage === 'moa-executive-summary'} />
+                            <NavItem id="investor-pitch" icon={TrendingUp} label="Investor Pitch" active={activePage === 'investor-pitch'} />
+                            <NavItem id="government-promotion" icon={Users} label="Gov Promotion" active={activePage === 'government-promotion'} />
+                            <NavItem id="veremark-pricing" icon={Settings} label="Veremark API" active={activePage === 'veremark-pricing'} />
+                        </div>
+                    )}
 
                 </div>
 

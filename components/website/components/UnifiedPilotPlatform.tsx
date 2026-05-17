@@ -8,11 +8,16 @@ import {
   ChevronRight, ChevronDown, ChevronUp, TrendingUp, Award, Clock,
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Star, Target,
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
-  Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye
+  Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye,
+  Brain, FolderOpen, PlayCircle, GraduationCap
 } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
+import TypeRatingSearchPage from '../../../pages/TypeRatingSearchPage';
+import { PortalAirlineExpectationsPage } from '../../../portal/pages/PortalAirlineExpectationsPage';
+import { PathwaysPageModern } from '../../../portal/pages/PathwaysPageModern';
+import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -21,7 +26,7 @@ interface UnifiedPilotPlatformProps {
 type TabId =
   | 'home' | 'profile' | 'wallet' | 'pathways' | 'programs'
   | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook'
-  | 'events' | 'newsroom' | 'settings' | 'score';
+  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard';
 
 interface NavItem {
   id: TabId;
@@ -31,6 +36,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
+  { id: 'dashboard',     label: 'Dashboard',       icon: BarChart3 },
   { id: 'home',          label: 'Home',           icon: Home },
   { id: 'profile',       label: 'My Profile',      icon: User },
   { id: 'wallet',        label: 'Credential Wallet', icon: Shield },
@@ -477,9 +483,7 @@ const ScoreTab: React.FC<{ profile: any; setTab: (t: TabId) => void }> = ({ prof
 
 // ─── TAB: PROFILE ──────────────────────────────────────────────────────────
 const ProfileTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => (
-  <div className="-m-5 lg:-m-7">
-    <PilotRecognitionProfilePage onNavigate={onNavigate} embedded={true} />
-  </div>
+  <PilotRecognitionProfilePage onNavigate={onNavigate} embedded={true} />
 );
 
 // ─── TAB: WALLET ───────────────────────────────────────────────────────────
@@ -590,281 +594,321 @@ const WalletTab: React.FC<{ walletChecks: any[] }> = ({ walletChecks }) => {
   );
 };
 
-// ─── TAB: PATHWAYS ─────────────────────────────────────────────────────────
-const PathwaysTab: React.FC<{ profile: any; airlines: any[]; onNavigate: (p: string) => void }> = ({ profile, airlines, onNavigate }) => {
-  const [filter, setFilter] = useState('all');
-  const [search, setSearch] = useState('');
+// ─── TAB: DASHBOARD ────────────────────────────────────────────────────────
+const PATHWAY_CARDS = [
+  { id: 'delta',     title: 'Delta Airlines',    subtitle: 'A320 First Officer - Atlanta Base',       image: '/images/airlines/delta-airlines.jpg',    match: 95, matchColor: 'green',  gaps: 3, benefits: ['Competitive salary', 'Fast-track upgrade'] },
+  { id: 'united',   title: 'United Airlines',   subtitle: 'B737 First Officer - Chicago Hub',        image: '/images/airlines/united-airlines.jpg',   match: 82, matchColor: 'yellow', gaps: 7, benefits: ['Global network', 'Training included'] },
+  { id: 'corporate',title: 'Corporate Aviation', subtitle: 'Falcon 7X Captain - Private Fleet',       image: '/images/aviation/corporate-aviation.jpg', match: 78, matchColor: 'blue',   gaps: 5, benefits: ['Premium compensation', 'Flexible schedule'] },
+  { id: 'fedex',    title: 'FedEx Cargo',        subtitle: 'B767 First Officer - Memphis Hub',        image: '/images/airlines/fedex-cargo.jpg',        match: 88, matchColor: 'green',  gaps: 4, benefits: ['Stable growth', 'International routes'] },
+  { id: 'skywest',  title: 'SkyWest Airlines',   subtitle: 'CRJ700 First Officer - Denver Base',      image: '/images/airlines/skywest-airlines.jpg',   match: 91, matchColor: 'teal',   gaps: 2, benefits: ['Quick upgrade', 'Partnership program'] },
+  { id: 'emirates', title: 'Emirates Airlines',  subtitle: 'A380 First Officer - Dubai Hub',          image: '/images/airlines/emirates-airlines.jpg',  match: 75, matchColor: 'red',    gaps: 6, benefits: ['Tax-free benefits', 'Global opportunities'] },
+];
 
-  const hours = profile?.total_flight_hours ?? 0;
+const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
+  const { currentUser } = useAuth();
+  const [carouselIdx, setCarouselIdx] = useState(0);
+  const paused = React.useRef(false);
+  const cards = [...PATHWAY_CARDS, ...PATHWAY_CARDS];
 
-  const mockPathways = airlines.slice(0, 12).map((a: any, i: number) => {
-    const required = 1500 + i * 200;
-    const matchPct = Math.min(100, Math.round((Math.min(hours, required) / required) * 100));
-    return {
-      id: a.id ?? i,
-      name: a.name ?? a.airline_name ?? `Airline ${i + 1}`,
-      logo: a.logo_url,
-      position: i % 2 === 0 ? 'First Officer' : 'Captain',
-      type: i % 3 === 0 ? 'Commercial' : i % 3 === 1 ? 'Cargo' : 'Charter',
-      hours_required: required,
-      match: matchPct,
-      gaps: [
-        hours < required && `${required - hours} more flight hours needed`,
-        i % 2 === 0 && 'Type rating required',
-        !profile?.recognition_score && 'Complete Recognition Profile',
-      ].filter(Boolean) as string[],
-    };
-  });
+  React.useEffect(() => {
+    const id = setInterval(() => {
+      if (!paused.current) setCarouselIdx(p => (p + 1) % PATHWAY_CARDS.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
 
-  const filtered = mockPathways
-    .filter(p => filter === 'all' || p.type.toLowerCase() === filter)
-    .filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()))
-    .sort((a, b) => b.match - a.match);
+  if (!currentUser) return (
+    <div className="text-center py-20">
+      <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-slate-700 flex items-center justify-center">
+        <BarChart3 size={40} className="text-slate-400" />
+      </div>
+      <h2 className="text-2xl font-bold text-white mb-3 tracking-wider">Login to View Your Dashboard</h2>
+      <p className="text-slate-300 mb-8 max-w-md mx-auto">Sign in to view real-time data from your Recognition Profile</p>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all">LOGIN</button>
+        <button onClick={() => { window.location.href = '/become-member'; }} className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all">BECOME A MEMBER</button>
+      </div>
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+        {[{icon: BarChart3, color: 'text-teal-400', title: 'Flight Analytics', desc: 'Track your flight hours and progress'}, {icon: GraduationCap, color: 'text-purple-400', title: 'Program Progress', desc: 'Monitor your training completion'}, {icon: Plane, color: 'text-blue-400', title: 'Pathway Insights', desc: 'Discover career opportunities'}].map(({icon: Icon, color, title, desc}) => (
+          <div key={title} className="text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-700 flex items-center justify-center"><Icon size={20} className={color} /></div>
+            <h3 className="text-white font-semibold mb-1">{title}</h3>
+            <p className="text-slate-400 text-sm">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
-    <div className="space-y-5">
-      {/* Filter bar */}
-      <div className="flex flex-wrap gap-3 items-center">
-        <div className="relative flex-1 min-w-[180px]">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-          <input
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search airlines…"
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-lg text-white outline-none"
-            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'white' }}
-          />
+    <div className="space-y-8">
+      <div className="relative">
+        <h2 className="text-3xl font-serif text-white tracking-wide mb-2">DASHBOARD</h2>
+        <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
+      </div>
+
+      {/* Flight Instrument Dashboard */}
+      <FlightInstrumentDashboard userId={currentUser.id} />
+
+      {/* Programs */}
+      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+        <div className="flex items-center gap-3 mb-6">
+          <BookOpen size={22} className="text-teal-400" />
+          <h3 className="text-xl font-bold text-white">» PROGRAMS</h3>
         </div>
-        <div className="flex gap-2">
-          {['all', 'commercial', 'cargo', 'charter'].map(f => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all tracking-wider ${filter === f ? 'text-white' : 'text-white/50 hover:text-white/80'}`}
-              style={filter === f ? { background: 'rgba(249,115,22,0.25)', border: '1px solid rgba(249,115,22,0.4)' } : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
-            </button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[{icon: GraduationCap, color: 'text-purple-400', bg: 'bg-purple-500/20 text-purple-300', badge: 'Completed', name: 'Foundation Program', desc: 'Core pilot development and mentorship', pct: 100, bar: 'bg-purple-500'},
+            {icon: Plane, color: 'text-blue-400', bg: 'bg-blue-500/20 text-blue-300', badge: 'In Progress', name: 'Transition Program', desc: 'Airline transition and industry alignment', pct: 65, bar: 'bg-blue-500'},
+            {icon: Award, color: 'text-green-400', bg: 'bg-green-500/20 text-green-300', badge: 'Available', name: 'EBT Video Scoring', desc: 'Behavioral assessment and interview prep', pct: 0, bar: 'bg-green-500'},
+          ].map(p => (
+            <div key={p.name} className="bg-slate-900/50 border border-slate-700 p-4">
+              <div className="flex items-center justify-between mb-3">
+                <p.icon size={18} className={p.color} />
+                <span className={`text-xs px-2 py-1 font-bold uppercase ${p.bg}`}>{p.badge}</span>
+              </div>
+              <h4 className="text-white font-bold mb-1">{p.name}</h4>
+              <p className="text-slate-300 text-sm mb-3">{p.desc}</p>
+              <div className="w-full bg-slate-700 h-2">
+                <div className={`${p.bar} h-2`} style={{ width: `${p.pct}%` }} />
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Pathway cards grid */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <Map size={40} className="text-slate-300 mx-auto mb-3" />
-          <p className="text-slate-500 text-sm">No pathways match your filter.</p>
+      {/* Examination Portal */}
+      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+        <div className="flex items-center gap-3 mb-6">
+          <Brain size={22} className="text-orange-400" />
+          <h3 className="text-xl font-bold text-white">» EXAMINATION PORTAL</h3>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filtered.map(p => (
-            <div key={p.id} className="rounded-xl p-5 transition-all hover:scale-[1.01]" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
-                    {p.logo
-                      ? <img src={p.logo} alt={p.name} className="w-8 h-8 object-contain" />
-                      : <Plane size={16} className="text-slate-400" />}
-                  </div>
-                  <div>
-                    <p className="font-bold text-white text-sm tracking-wide">{p.name}</p>
-                    <p className="text-xs text-white/50">{p.position} · {p.type}</p>
-                  </div>
-                </div>
-                <div className="text-right flex-shrink-0">
-                  <p className={`text-lg font-black ${scoreColour(p.match)}`}>{p.match}%</p>
-                  <p className="text-[10px] text-slate-400">match</p>
-                </div>
-              </div>
-
-              {/* Score bar */}
-              <div className="mb-3">
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                  <div className={`h-full rounded-full ${scoreBg(p.match)}`} style={{ width: `${p.match}%` }} />
-                </div>
-              </div>
-
-              {/* Gaps */}
-              {p.gaps.length > 0 && (
-                <div className="mb-4 space-y-1">
-                  {p.gaps.map((gap, gi) => (
-                    <p key={gi} className="text-xs text-white/50 flex items-center gap-1.5">
-                      <XCircle size={10} className="text-red-400 flex-shrink-0" /> {gap}
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex gap-2">
-                <button className="flex-1 text-xs font-bold py-2 rounded-lg transition-colors tracking-wider" style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.15)' }}>
-                  EXPRESS INTEREST
-                </button>
-                <button className="px-3 py-2 rounded-lg transition-colors" style={{ border: '1px solid rgba(255,255,255,0.15)', background: 'transparent' }}>
-                  <ChevronRight size={14} className="text-white/40" />
-                </button>
-              </div>
+        <div className="bg-slate-900/50 border border-slate-700 p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Brain size={22} className="text-orange-600" />
             </div>
-          ))}
+            <div className="flex-1">
+              <h4 className="text-white font-bold text-lg mb-2">Certification Examinations</h4>
+              <p className="text-slate-300 text-sm mb-4 leading-relaxed">Complete your certification examinations to track your progress through the Foundational Program. Each exam unlocks new mentorship resources and advancement opportunities.</p>
+              <div className="flex items-center gap-4 text-xs text-slate-400 mb-4">
+                <span className="flex items-center gap-1"><Clock size={12} /> Timed assessments</span>
+                <span className="flex items-center gap-1"><Award size={12} /> Industry certification</span>
+                <span className="flex items-center gap-1"><Target size={12} /> Progress tracking</span>
+              </div>
+              <button onClick={() => { window.location.href = '/examination-portal'; }} className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all">
+                <PlayCircle size={18} /> Access Examination Portal
+              </button>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
+
+      {/* Pathway Recommendations carousel */}
+      <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
+        <div className="flex items-center gap-3 mb-6">
+          <FolderOpen size={22} className="text-green-400" />
+          <h3 className="text-xl font-bold text-white">» PATHWAY RECOMMENDATIONS</h3>
+        </div>
+        <div className="relative overflow-hidden">
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${carouselIdx * 100}%)`, width: `${cards.length * 100}%` }}
+            onMouseEnter={() => { paused.current = true; }}
+            onMouseLeave={() => { paused.current = false; }}
+          >
+            {cards.map((pw, i) => (
+              <div key={`${pw.id}-${i}`} style={{ width: `${100 / cards.length}%` }} className="flex-shrink-0 px-2">
+                <div className="relative w-full h-[200px] overflow-hidden cursor-pointer bg-black/85 border border-white/20 hover:scale-[1.01] hover:brightness-110 transition-transform duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 h-[3px] z-30 bg-[#00b4d8]" />
+                  <img src={pw.image} alt={pw.title} className="absolute inset-0 w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col justify-between p-5">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-white font-serif text-lg font-bold mb-1">{pw.title}</h3>
+                        <p className="text-slate-300 text-sm">{pw.subtitle}</p>
+                      </div>
+                      <span className="text-xs font-bold uppercase px-3 py-1 bg-white/10 border border-white/20 text-white">{pw.match}% Match</span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-teal-400 rounded-full" />
+                        <span className="text-white text-sm">{pw.gaps} gaps remaining</span>
+                      </div>
+                      <div className="flex gap-2">
+                        {pw.benefits.map(b => <span key={b} className="text-slate-300 text-xs bg-white/10 px-2 py-1">{b}</span>)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button onClick={() => setCarouselIdx(p => (p === 0 ? PATHWAY_CARDS.length - 1 : p - 1))} className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center z-10 transition-all">
+            <ChevronRight size={18} className="text-white rotate-180" />
+          </button>
+          <button onClick={() => setCarouselIdx(p => (p + 1) % PATHWAY_CARDS.length)} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center z-10 transition-all">
+            <ChevronRight size={18} className="text-white" />
+          </button>
+          <div className="flex justify-center gap-2 mt-4">
+            {PATHWAY_CARDS.map((_, i) => (
+              <button key={i} onClick={() => setCarouselIdx(i)} className={`h-1.5 rounded-sm transition-all ${i === carouselIdx ? 'bg-white w-8' : 'bg-white/40 w-2 hover:bg-white/60'}`} />
+            ))}
+          </div>
+        </div>
+        <div className="mt-6 p-4 bg-slate-900/30 border border-slate-700">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 bg-teal-400 rounded-full" />
+            <span className="text-sm text-teal-400 font-bold">INSIGHTS</span>
+          </div>
+          <p className="text-slate-300 text-sm leading-relaxed">Your profile matches <span className="text-white font-bold">6 high-potential pathways</span> with 80%+ compatibility. Focus on completing the <span className="text-blue-400 font-bold">Transition Program</span> to increase your match score by an average of <span className="text-green-400 font-bold">12%</span>.</p>
+        </div>
+      </div>
     </div>
   );
 };
 
+// ─── TAB: PATHWAYS ─────────────────────────────────────────────────────────
+const PathwaysTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => (
+  <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7">
+    <PathwaysPageModern isDarkMode={true} onNavigate={onNavigate} onNavigateToPathway={(id) => onNavigate(`pathways-detail/${id}`)} />
+  </div>
+);
+
 // ─── TAB: PROGRAMS ─────────────────────────────────────────────────────────
 const ProgramsTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => {
-  const programs = [
-    {
-      id: 'foundation',
-      name: 'Foundation Program',
-      price: '$49',
-      desc: 'Pilot development, leadership, cognitive skills, and mentorship. Complete 50 hours of mentorship to earn your Recognition endorsement.',
-      badge: 'EFFORT-BASED',
-      badgeColour: 'bg-yellow-100 text-yellow-700',
-      features: ['Leadership & cognitive skills', '50-hour mentorship', 'Recognition Score boost', '50% discount on Transition'],
-      cta: 'Enroll — $49',
-      route: 'foundational-program',
-    },
-    {
-      id: 'transition',
-      name: 'Transition Program',
-      price: '$299',
-      discount: '$149 for Foundation graduates',
-      desc: 'Airline transition, 9 core competencies, Airbus HINFACT, Atlas CV formatting, and industry internship placement.',
-      badge: 'AIRLINE-READY',
-      badgeColour: 'bg-blue-100 text-blue-700',
-      features: ['9 core airline competencies', 'Airbus HINFACT alignment', 'EBT video scoring bundled', 'Atlas CV generation'],
-      cta: 'Enroll — $299',
-      route: 'transition-program',
-    },
-    {
-      id: 'ebt',
-      name: 'EBT Video Assessment',
-      price: 'Bundled',
-      desc: 'Recorded interview scored on cognitive behaviorism and constructivism. Airlines can view your EBT result as part of the pulling system.',
-      badge: 'PROPRIETARY IP',
-      badgeColour: 'bg-purple-100 text-purple-700',
-      features: ['Recorded interview', 'Behavioural scoring', 'Airline-viewable result', 'Bundled with Transition Program'],
-      cta: 'Bundled with Transition',
-      route: 'transition-program',
-    },
-  ];
+  const { currentUser, userProfile } = useAuth();
+  const isEnrolledInFoundational = userProfile?.is_enrolled_in_foundational ?? false;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {programs.map(prog => (
-        <div key={prog.id} className="rounded-xl overflow-hidden flex flex-col" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <div className="px-5 py-4" style={{ background: 'rgba(15,23,42,0.8)' }}>
-            <div className="flex items-center justify-between mb-1">
-              <p className="text-white font-bold tracking-wider">{prog.name}</p>
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${prog.badgeColour}`}>{prog.badge}</span>
-            </div>
-            <p className="text-2xl font-black text-white">{prog.price}</p>
-            {prog.discount && <p className="text-xs text-white/40 mt-0.5">{prog.discount}</p>}
+    <div className="flex flex-col items-center justify-start">
+      <div className="relative mb-8 text-center">
+        <h2 className="text-3xl font-serif text-white tracking-wide mb-2">PROGRAMS</h2>
+        <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32 mx-auto" />
+      </div>
+
+      <div className="w-full max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+
+          {/* Left hero card: W1000 (enrolled) or Foundation video (unenrolled) */}
+          <div className="md:col-span-2 h-80 md:h-96">
+            {currentUser && isEnrolledInFoundational ? (
+              <div
+                className="relative group cursor-pointer overflow-hidden h-full"
+                onClick={() => onNavigate('/w1000')}
+              >
+                <div className="h-full flex flex-col">
+                  <div className="relative h-[70%] overflow-hidden">
+                    <img src="w12.png" alt="W1000 Flight Deck" className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
+                    <div className="absolute top-4 right-4">
+                      <span className="px-4 py-2 bg-blue-500 text-white text-sm font-bold uppercase tracking-wider">Access Simulator</span>
+                    </div>
+                  </div>
+                  <div className="h-[30%] bg-slate-900 border border-slate-700 p-4 flex flex-col justify-center">
+                    <h3 className="text-white font-bold text-lg uppercase tracking-wider mb-1">» W1000 Flight Deck</h3>
+                    <p className="text-slate-300 text-xs leading-tight">Advanced aviation training simulator with PFD, VOR, and exam modules</p>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300 pointer-events-none" />
+              </div>
+            ) : (
+              <div
+                className="relative group cursor-pointer overflow-hidden h-full"
+                onClick={() => onNavigate('foundational-program')}
+              >
+                <div className="h-full flex flex-col">
+                  <div className="relative h-[70%] overflow-hidden bg-slate-900">
+                    <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-80">
+                      <source src="/images/My Movie 3 - 720WebShareName.mov" type="video/mp4" />
+                    </video>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                    <div className="absolute top-4 right-4">
+                      <span className="px-4 py-2 bg-teal-500 text-white text-sm font-bold uppercase tracking-wider">Start Here</span>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/50">
+                        <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[14px] border-l-white border-b-[8px] border-b-transparent ml-1" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-[30%] bg-slate-900 border border-slate-700 p-4 flex flex-col justify-center">
+                    <h3 className="text-white font-bold text-lg uppercase tracking-wider mb-1">» Foundation Program</h3>
+                    <p className="text-slate-300 text-xs leading-tight">Start your pilot journey with structured mentorship and guidance</p>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300 pointer-events-none" />
+              </div>
+            )}
           </div>
-          <div className="p-5 flex flex-col flex-1">
-            <p className="text-sm text-white/60 mb-4 leading-relaxed">{prog.desc}</p>
-            <ul className="space-y-2 mb-5 flex-1">
-              {prog.features.map(f => (
-                <li key={f} className="flex items-center gap-2 text-xs text-white/70">
-                  <CheckCircle size={12} className="text-emerald-500 flex-shrink-0" /> {f}
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => onNavigate(prog.route)}
-              className="w-full text-xs font-bold py-2.5 rounded-lg transition-colors tracking-wider" style={{ background: 'rgba(249,115,22,0.8)', color: 'white', border: '1px solid rgba(249,115,22,0.5)' }}
+
+          {/* Right column: three stacked directory cards */}
+          <div className="md:col-span-2 flex flex-col gap-3 md:gap-4 h-80 md:h-96">
+
+            {/* Foundational Platform */}
+            <div
+              className="relative group cursor-pointer overflow-hidden flex-1 min-h-0 border border-white/20 hover:scale-[1.02] transition-transform"
+              onClick={() => onNavigate('foundational-platform')}
             >
-              {prog.cta}
-            </button>
+              <img src="fp1.png" alt="Foundational Platform" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent" />
+              <div className="relative h-full flex items-center px-6">
+                <div>
+                  <h3 className="text-white font-serif text-base tracking-wide mb-1">» Foundational Platform</h3>
+                  <p className="text-slate-300 text-xs leading-tight">Access your enrolled courses, track progress, and engage with program materials</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Examination Portal */}
+            <div
+              className="relative group cursor-pointer overflow-hidden flex-1 min-h-0 border border-white/20 hover:scale-[1.02] transition-transform"
+              onClick={() => { window.location.href = '/examination-portal'; }}
+            >
+              <img src="/ep.png" alt="Examination Portal" className="absolute inset-0 w-full h-full object-cover"
+                onError={e => { e.currentTarget.style.display = 'none'; }} />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/60 to-transparent" />
+              <div className="relative h-full flex items-center px-6">
+                <div>
+                  <h3 className="text-white font-serif text-base tracking-wide mb-1">» Examination Portal</h3>
+                  <p className="text-slate-300 text-xs leading-tight">Certification examinations, assessments, and progress tracking</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Official Examination Board */}
+            <div
+              className="relative group cursor-pointer overflow-hidden flex-1 min-h-0 bg-white border border-white/20 hover:scale-[1.02] transition-transform"
+              onClick={() => onNavigate('official-examination-board')}
+            >
+              <div className="relative h-full flex items-center px-6">
+                <div>
+                  <h3 className="text-slate-900 font-serif text-base tracking-wide mb-1">» Official Examination Board & Certifications</h3>
+                  <p className="text-slate-600 text-xs leading-tight">Official certification bodies, examination boards, and industry-standard credentials</p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
 
 // ─── TAB: AIRLINES ─────────────────────────────────────────────────────────
-const AirlinesTab: React.FC<{ airlines: any[] }> = ({ airlines }) => {
-  const [search, setSearch] = useState('');
-  const filtered = airlines.filter(a => !search || (a.name ?? a.airline_name ?? '').toLowerCase().includes(search.toLowerCase()));
-
-  return (
-    <div className="space-y-5">
-      <div className="relative">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search airlines…"
-          className="w-full pl-9 pr-4 py-2 text-sm rounded-lg text-white outline-none"
-          style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'white' }} />
-      </div>
-      {filtered.length === 0 ? (
-        <div className="text-center py-16"><Plane size={40} className="text-slate-300 mx-auto mb-3" /><p className="text-slate-500 text-sm">No airlines found.</p></div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filtered.map((a: any, i: number) => (
-            <div key={a.id ?? i} className="rounded-xl p-4 transition-all hover:scale-[1.01]" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
-                  {a.logo_url
-                    ? <img src={a.logo_url} alt={a.name} className="w-8 h-8 object-contain" />
-                    : <Plane size={16} className="text-slate-400" />}
-                </div>
-                <div>
-                  <p className="font-bold text-white text-sm tracking-wide">{a.name ?? a.airline_name}</p>
-                  <p className="text-xs text-white/50">{a.country ?? a.headquarters ?? '—'}</p>
-                </div>
-              </div>
-              {a.minimum_hours && (
-                <p className="text-xs text-white/50"><span className="font-semibold text-white/70">Min hours:</span> {a.minimum_hours.toLocaleString()}</p>
-              )}
-              {a.fleet_type && (
-                <p className="text-xs text-white/50 mt-1"><span className="font-semibold text-white/70">Fleet:</span> {a.fleet_type}</p>
-              )}
-              <button className="mt-3 w-full text-xs font-bold rounded-lg py-1.5 transition-colors flex items-center justify-center gap-1 tracking-wider" style={{ color: '#fb923c', border: '1px solid rgba(249,115,22,0.3)', background: 'rgba(249,115,22,0.1)' }}>
-                View Pathway <ChevronRight size={12} />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+const AirlinesTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => (
+  <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7">
+    <PortalAirlineExpectationsPage onBack={() => {}} onNavigate={onNavigate} />
+  </div>
+);
 
 // ─── TAB: MANUFACTURERS ────────────────────────────────────────────────────
-const ManufacturersTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => {
-  const manufacturers = [
-    { name: 'Airbus', aircraft: ['A220', 'A320neo', 'A330', 'A350', 'A380'], desc: 'European manufacturer. HINFACT EBT framework. A320 family most common type rating.' },
-    { name: 'Boeing', aircraft: ['737 MAX', '747-8', '767', '777X', '787'], desc: 'US manufacturer. CAST safety standards. 737 NG/MAX most widely held type rating.' },
-    { name: 'ATR', aircraft: ['ATR 42', 'ATR 72'], desc: 'Turboprop regional. Common first turboprop type rating in Southeast Asia and Africa.' },
-    { name: 'Embraer', aircraft: ['E170', 'E175', 'E190', 'E195-E2'], desc: 'Brazilian manufacturer. E-Jet family dominant in regional operations.' },
-    { name: 'Bombardier', aircraft: ['CRJ200', 'CRJ700', 'CRJ900', 'Q400'], desc: 'Canadian manufacturer. CRJ series dominant North American regional platform.' },
-    { name: 'COMAC', aircraft: ['ARJ21', 'C919'], desc: 'Chinese state manufacturer. C919 entering service — growing demand for type ratings.' },
-  ];
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      {manufacturers.map(m => (
-        <div key={m.name} className="rounded-xl p-5 transition-all hover:scale-[1.01]" style={{ background: 'rgba(30,41,59,0.75)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center">
-              <span className="text-white text-xs font-black">{m.name.slice(0, 2).toUpperCase()}</span>
-            </div>
-            <p className="font-bold text-white tracking-wider">{m.name}</p>
-          </div>
-          <p className="text-xs text-white/55 mb-3 leading-relaxed">{m.desc}</p>
-          <div className="flex flex-wrap gap-1 mb-4">
-            {m.aircraft.map(ac => (
-              <span key={ac} className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.65)' }}>{ac}</span>
-            ))}
-          </div>
-          <button onClick={() => onNavigate('type-rating-search')} className="w-full text-xs font-bold rounded-lg py-1.5 transition-colors tracking-wider" style={{ color: '#fb923c', border: '1px solid rgba(249,115,22,0.3)', background: 'rgba(249,115,22,0.1)' }}>
-            Find Type Rating Centres
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-};
+const ManufacturersTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => (
+  <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7">
+    <TypeRatingSearchPage onNavigate={onNavigate} />
+  </div>
+);
 
 // ─── TAB: ATLAS CV ─────────────────────────────────────────────────────────
 const AtlasCVTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => (
@@ -1226,9 +1270,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'profile':       return <ProfileTab onNavigate={onNavigate} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
       case 'wallet':        return <WalletTab walletChecks={walletChecks} />;
-      case 'pathways':      return <PathwaysTab profile={profileData} airlines={airlines} onNavigate={onNavigate} />;
+      case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
-      case 'airlines':      return <AirlinesTab airlines={airlines} />;
+      case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
+      case 'airlines':      return <AirlinesTab onNavigate={onNavigate} />;
       case 'manufacturers': return <ManufacturersTab onNavigate={onNavigate} />;
       case 'atlas-cv':      return <AtlasCVTab profile={profileData} onNavigate={onNavigate} />;
       case 'logbook':       return <LogbookTab profile={profileData} onNavigate={onNavigate} />;
@@ -1256,62 +1301,84 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
       </div>
 
-      {/* ── TOP NAV BAR (Portal 2 style) ── */}
+      {/* ── TOP NAV BAR ── */}
       <div
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2"
-        style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', height: '48px' }}
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4"
+        style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', height: '52px' }}
       >
-        {/* Left — hamburger + nav items */}
-        <div className="flex items-center gap-0 min-w-0 flex-1 overflow-x-auto scrollbar-none">
-          <button className="lg:hidden mr-2 flex-shrink-0 text-white/70 hover:text-white" onClick={() => setSidebarOpen(!sidebarOpen)}>
-            <Menu size={20} />
-          </button>
-          {NAV_ITEMS.map(item => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setTab(item.id)}
-                className="relative flex-shrink-0 px-2 py-2 flex items-center gap-1 transition-all duration-200"
-                style={{
-                  background: isActive ? 'rgba(255,255,255,0.95)' : 'transparent',
-                  color: isActive ? '#0f172a' : 'rgba(255,255,255,0.65)',
-                  borderBottom: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
-                }}
-              >
-                <Icon size={12} />
-                <span className="text-[10px] font-bold tracking-wide whitespace-nowrap">{item.label.toUpperCase()}</span>
-              </button>
-            );
-          })}
+        {/* Left — wordmark */}
+        <div className="flex items-center min-w-0 flex-1">
+          <span
+            className="text-xl tracking-tight leading-none cursor-pointer"
+            style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
+            onClick={() => onNavigate('home')}
+          >
+            <span className="text-white">pilot</span>
+            <span className="text-red-500">recognition</span>
+            <span className="text-white">.com</span>
+          </span>
         </div>
 
-        {/* Right — search + bell + avatar */}
-        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-          {/* Search */}
-          <div className="hidden md:flex items-center gap-2 bg-white/10 rounded-lg px-3 py-1.5 w-40">
-            <Search size={12} className="text-white/50" />
-            <input placeholder="Search…" className="bg-transparent text-xs text-white outline-none placeholder:text-white/40 w-full" />
-          </div>
+        {/* Right — auth-conditional + hamburger */}
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          {currentUser ? (
+            <>
+              {/* Search */}
+              <div className="hidden md:flex items-center gap-2 bg-white/10 rounded-lg px-3 py-1.5 w-40">
+                <Search size={12} className="text-white/50" />
+                <input placeholder="Search…" className="bg-transparent text-xs text-white outline-none placeholder:text-white/40 w-full" />
+              </div>
 
-          {/* Notification bell */}
-          <button className="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all">
-            <Bell size={16} />
-            {notifCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{notifCount}</span>
-            )}
-          </button>
+              {/* Settings */}
+              <button
+                onClick={() => setTab('settings')}
+                className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all"
+              >
+                <Settings size={15} />
+              </button>
 
-          {/* Avatar */}
+              {/* Notification bell */}
+              <button className="relative w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all">
+                <Bell size={15} />
+                {notifCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{notifCount}</span>
+                )}
+              </button>
+
+              {/* Avatar */}
+              <button
+                onClick={() => setTab('profile')}
+                className="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-md overflow-hidden flex-shrink-0"
+              >
+                {profileData?.profile_image_url
+                  ? <img src={profileData.profile_image_url} alt={displayName} className="w-full h-full object-cover" />
+                  : <span className="text-sm font-bold text-slate-700">{initials}</span>}
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
+                className="px-4 py-1.5 text-xs font-bold tracking-wider text-white rounded-lg transition-all"
+                style={{ background: 'rgba(59,130,246,0.8)', border: '1px solid rgba(59,130,246,0.5)' }}
+              >
+                LOGIN
+              </button>
+              <button
+                onClick={() => { window.location.href = '/become-member'; }}
+                className="px-4 py-1.5 text-xs font-bold tracking-wider text-white rounded-lg transition-all"
+                style={{ background: 'rgba(239,68,68,0.8)', border: '1px solid rgba(239,68,68,0.5)' }}
+              >
+                BECOME A MEMBER
+              </button>
+            </>
+          )}
+          {/* Hamburger — always on the far right */}
           <button
-            onClick={() => setTab('profile')}
-            className="w-11 h-14 bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
-            style={{ borderRadius: '45% / 50%' }}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-all flex-shrink-0"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            {profileData?.profile_image_url
-              ? <img src={profileData.profile_image_url} alt={displayName} className="w-full h-full object-cover" />
-              : <span className="text-base font-bold text-slate-700">{initials}</span>}
+            <Menu size={18} />
           </button>
         </div>
       </div>
@@ -1326,19 +1393,19 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
         {/* ── SIDEBAR (glass, Portal 2 style) — always fixed ── */}
         <aside
-          className={`fixed top-0 left-0 bottom-0 z-40 flex flex-col w-60 flex-shrink-0 transition-transform duration-200 pt-[48px] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+          className={`fixed top-0 left-0 bottom-0 z-40 flex flex-col w-60 flex-shrink-0 transition-transform duration-200 pt-[52px] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
           style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(12px)', borderRight: '1px solid rgba(255,255,255,0.08)' }}
         >
-          {/* Logo */}
-          <div className="flex items-center gap-3 px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="w-7 h-7 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
-              <Plane size={14} className="text-white" />
-            </div>
-            <div>
-              <p className="text-[11px] font-black text-white leading-none tracking-widest">PILOT</p>
-              <p className="text-[11px] font-black text-orange-400 leading-none tracking-widest">RECOGNITION</p>
-            </div>
-            <button className="ml-auto lg:hidden text-white/50 hover:text-white" onClick={() => setSidebarOpen(false)}><X size={15} /></button>
+          {/* Back to Home */}
+          <div className="px-3 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <button
+              onClick={() => onNavigate('home')}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/08 transition-all text-xs font-bold tracking-wider"
+              style={{ background: 'rgba(255,255,255,0.05)' }}
+            >
+              <ArrowRight size={13} className="rotate-180 flex-shrink-0" />
+              BACK TO HOME
+            </button>
           </div>
 
           {/* Nav items */}
@@ -1389,7 +1456,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         </aside>
 
         {/* ── MAIN CONTENT ── */}
-        <main className="flex-1 h-screen overflow-y-auto pt-12 lg:ml-60">
+        <main className="flex-1 h-screen overflow-y-auto pt-[52px] lg:ml-60">
           <div className="max-w-[1200px] mx-auto p-5 lg:p-7">
             {renderContent()}
           </div>

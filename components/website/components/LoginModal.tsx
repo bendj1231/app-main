@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useToast } from '@/src/components/ui/toast';
 import { validateEmail, validateSimplePassword } from '@/src/lib/validation';
@@ -33,6 +34,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     const [loading, setLoading] = useState(false);
     const { addToast } = useToast();
     const { login, currentUser } = useAuth();
+    const { loginWithRedirect } = useAuth0();
     const modalRef = useRef<HTMLDivElement>(null);
     const emailInputRef = useRef<HTMLInputElement>(null);
 
@@ -320,10 +322,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     {/* Google Sign In */}
                     <button
                         type="button"
+                        onClick={() => loginWithRedirect({
+                            authorizationParams: { connection: 'google-oauth2' }
+                        })}
                         className="w-full py-3 px-4 bg-white border border-slate-300 rounded-lg font-medium text-slate-700 hover:bg-slate-50 transition-all duration-200 flex items-center justify-center gap-3"
                     >
                         <GoogleIcon />
-                        Google
+                        Continue with Google
                     </button>
 
                     {/* Footer */}

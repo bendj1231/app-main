@@ -11,6 +11,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.16.2",
     "@fontsource-variable/geist": "^5.2.8",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@google/genai": "latest",

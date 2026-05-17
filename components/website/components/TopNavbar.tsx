@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
@@ -69,6 +69,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const settingsDropdownRef = useRef<HTMLDivElement>(null);
     const [isAuthRestoring, setIsAuthRestoring] = useState(true);
     const [isGraphicsModalOpen, setIsGraphicsModalOpen] = useState(false);
+    const [isEnterpriseModalOpen, setIsEnterpriseModalOpen] = useState(false);
     const [showGraphicsTooltip, setShowGraphicsTooltip] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
     const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
@@ -533,7 +534,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         { name: 'Contact', target: 'contact-support' },
-        { name: 'Enterprise', target: 'https://enterprise.pilotrecognition.com', isBlue: true },
+        { name: 'Enterprise', target: '__enterprise_modal__', isBlue: true },
     ];
 
     // Filter out Home nav item when on home page
@@ -554,6 +555,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     };
 
     const handleNavClick = (target: string) => {
+        if (target === '__enterprise_modal__') {
+            setIsEnterpriseModalOpen(true);
+            return;
+        }
         // External URLs: use full browser redirect
         if (target.startsWith('http://') || target.startsWith('https://')) {
             window.location.href = target;
@@ -726,8 +731,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             <div
                                 key={item.name}
                                 className="relative group/dropdown"
-                                onMouseEnter={() => item.subItems && handleMouseEnterDebounced(item.name)}
-                                onMouseLeave={handleMouseLeaveDebounced}
+                                onMouseEnter={() => item.subItems && handleMouseEnter(item.name)}
+                                onMouseLeave={handleMouseLeave}
                             >
                                 <button
                                     onClick={() => handleNavClick(item.target)}
@@ -1332,6 +1337,122 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             />
 
             {/* Login Modal - moved to root level */}
+
+            {/* Enterprise Modal */}
+            {isEnterpriseModalOpen && (
+                <div
+                    className="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
+                    onClick={() => setIsEnterpriseModalOpen(false)}
+                >
+                    <div
+                        className="relative w-full max-w-3xl overflow-hidden rounded-2xl shadow-[0_40px_80px_rgba(0,0,0,0.5)]"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Header bar */}
+                        <div className="relative bg-white border-b border-slate-200 px-8 py-6">
+                            <button
+                                onClick={() => setIsEnterpriseModalOpen(false)}
+                                className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                            <p className="text-[10px] font-bold tracking-[0.35em] uppercase text-blue-500 mb-1.5">For Airlines, ATOs & Operators</p>
+                            <h2 className="text-2xl font-bold text-slate-900">
+                                <span className="text-slate-900">pilot</span><span className="text-red-600">recognition</span><span className="text-slate-900"> Enterprise</span>
+                            </h2>
+                            <p className="text-slate-500 text-sm mt-1.5 max-w-lg">
+                                Pull verified pilots. Publish pathway requirements. Access the live recognition database.
+                            </p>
+                        </div>
+
+                        {/* Two full panels side by side */}
+                        <div className="grid grid-cols-2 divide-x divide-slate-200 bg-white">
+                            {/* Panel 1 — Read More */}
+                            <button
+                                onClick={() => {
+                                    setIsEnterpriseModalOpen(false);
+                                    window.open('https://enterprise.pilotrecognition.com', '_blank');
+                                }}
+                                className="group flex flex-col justify-between p-8 text-left hover:bg-slate-50 transition-all"
+                            >
+                                <div>
+                                    <div className="w-14 h-14 rounded-2xl bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center mb-5 transition-colors">
+                                        <svg className="w-7 h-7 text-slate-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 mb-2 transition-colors">Learn About Enterprise</h3>
+                                    <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                                        Discover how airlines, ATOs, and aviation operators use PilotRecognition to find verified candidates, publish pathway requirements, and access the recognition database.
+                                    </p>
+                                    <ul className="space-y-2">
+                                        {['Pull-based verified pilot recruitment', 'Publish live pathway requirements', 'Access recognition scores & credentials', 'Enterprise API & dashboard access'].map((item) => (
+                                            <li key={item} className="flex items-start gap-2 text-xs text-slate-500">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="mt-6 flex items-center gap-2 text-sm font-bold text-blue-600 group-hover:gap-3 transition-all">
+                                    Read More
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </div>
+                            </button>
+
+                            {/* Panel 2 — Enterprise Login */}
+                            <button
+                                onClick={() => {
+                                    setIsEnterpriseModalOpen(false);
+                                    onNavigate('enterprise-login');
+                                }}
+                                className="group flex flex-col justify-between p-8 text-left bg-blue-50 hover:bg-blue-100 transition-all"
+                            >
+                                <div>
+                                    <div className="w-14 h-14 rounded-2xl bg-blue-100 group-hover:bg-blue-200 flex items-center justify-center mb-5 transition-colors">
+                                        <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-lg font-bold text-blue-900 group-hover:text-blue-700 mb-2 transition-colors">Enterprise Login</h3>
+                                    <p className="text-sm text-blue-700/70 leading-relaxed mb-4">
+                                        Already have an enterprise account? Sign in to your portal to manage pathways, view verified pilot profiles, and access your recruitment dashboard.
+                                    </p>
+                                    <ul className="space-y-2">
+                                        {['Manage your pathway listings', 'View matched pilot profiles', 'Access your recruitment pipeline', 'Download recognition reports'].map((item) => (
+                                            <li key={item} className="flex items-start gap-2 text-xs text-blue-600/70">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 flex-shrink-0" />
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="mt-6 flex items-center gap-2 text-sm font-bold text-blue-700 group-hover:gap-3 transition-all">
+                                    Sign In to Portal
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="bg-slate-50 border-t border-slate-200 px-8 py-3 flex items-center justify-between">
+                            <p className="text-[11px] text-slate-400">
+                                Enterprise accounts are separate from pilot accounts.
+                            </p>
+                            <button
+                                onClick={() => { setIsEnterpriseModalOpen(false); onNavigate('contact-support'); }}
+                                className="text-[11px] text-blue-500 hover:text-blue-700 font-medium transition-colors"
+                            >
+                                Contact us to get started →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

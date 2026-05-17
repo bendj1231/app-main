@@ -8,13 +8,14 @@ import {
   Users, TrendingUp, Star, Globe, Menu, Bell, ExternalLink,
   FileText, Clock, MapPin, DollarSign, Shield, RefreshCw,
   ShieldCheck, UserCheck, UserX, ChevronDown, Download, Video, History,
-  GraduationCap
+  GraduationCap, Activity, Cpu, Package, Lock
 } from 'lucide-react';
 import { useEnterpriseAuth, supabase, FIREBASE_BASE } from './hooks/useEnterpriseAuth';
 import { InterviewerDashboard } from './InterviewerDashboard';
 import { InterviewHistoryPage } from './InterviewHistoryPage';
 import { FlightSchoolPortal } from './FlightSchoolPortal';
 import ResumeViewer from './ResumeViewer';
+import { OperatorIntelDashboard } from './OperatorIntelDashboard';
 
 const LOGO = 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png';
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/upload`;
@@ -55,6 +56,80 @@ async function uploadToCloudinary(file: File): Promise<string> {
   return data.secure_url;
 }
 
+// ─── Account-type nav config ─────────────────────────────────────────────────
+type AccountType = 'airline' | 'cargo' | 'charter' | 'ato' | 'sim_center' | 'oem' | 'military' | 'emerging' | string;
+
+function getNavForAccountType(accountType: AccountType) {
+  switch (accountType) {
+    case 'sim_center':
+      return [
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+        { id: 'pathway-cards', label: 'Type Rating Listings', icon: Cpu },
+        { id: 'pilot-search', label: 'Pilot Pipeline', icon: Search },
+        { id: 'applications', label: 'Enquiries', icon: Users },
+        { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+        { id: 'settings', label: 'Account Settings', icon: Settings },
+        { id: 'support', label: 'Contact Support', icon: HelpCircle },
+      ];
+    case 'ato':
+      return [
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+        { id: 'pathway-cards', label: 'Training Pathways', icon: GraduationCap },
+        { id: 'pilot-search', label: 'Student Pipeline', icon: Search },
+        { id: 'applications', label: 'Applications', icon: Users },
+        { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+        { id: 'settings', label: 'Account Settings', icon: Settings },
+        { id: 'support', label: 'Contact Support', icon: HelpCircle },
+      ];
+    case 'oem':
+      return [
+        { id: 'dashboard', label: 'Intel Overview', icon: LayoutDashboard },
+        { id: 'pathway-cards', label: 'OEM Verified Pathways', icon: Package },
+        { id: 'pilot-search', label: 'Fleet Demand Intel', icon: Activity },
+        { id: 'analytics', label: 'Supply / Demand Data', icon: TrendingUp },
+        { id: 'settings', label: 'Account Settings', icon: Settings },
+        { id: 'support', label: 'Contact Support', icon: HelpCircle },
+      ];
+    case 'charter':
+      return [
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+        { id: 'pathway-cards', label: 'Private Pathway Cards', icon: Plane },
+        { id: 'pilot-search', label: 'Discreet Pilot Search', icon: Search },
+        { id: 'applications', label: 'Applications', icon: Users },
+        { id: 'interviews', label: 'Interviews', icon: Video },
+        { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+        { id: 'settings', label: 'Account Settings', icon: Settings },
+        { id: 'support', label: 'Contact Support', icon: HelpCircle },
+      ];
+    case 'cargo':
+      return [
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+        { id: 'pathway-cards', label: 'Pathway Cards', icon: Plane },
+        { id: 'job-listings', label: 'Job Listings', icon: Briefcase },
+        { id: 'pilot-search', label: 'Pilot Search', icon: Search },
+        { id: 'applications', label: 'Applications', icon: Users },
+        { id: 'interviews', label: 'Interviews', icon: Video },
+        { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+        { id: 'settings', label: 'Account Settings', icon: Settings },
+        { id: 'support', label: 'Contact Support', icon: HelpCircle },
+      ];
+    default: // airline, military, emerging, unknown
+      return [
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+        { id: 'pathway-cards', label: 'Pathway Cards', icon: Plane },
+        { id: 'job-listings', label: 'Job Listings', icon: Briefcase },
+        { id: 'airline-expectations', label: 'Airline Expectations', icon: Building2 },
+        { id: 'pilot-search', label: 'Pilot Search', icon: Search },
+        { id: 'applications', label: 'Applications', icon: Users },
+        { id: 'interviews', label: 'Interviews', icon: Video },
+        { id: 'interview-history', label: 'Interview History', icon: History },
+        { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+        { id: 'settings', label: 'Account Settings', icon: Settings },
+        { id: 'support', label: 'Contact Support', icon: HelpCircle },
+      ];
+  }
+}
+
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 const NAV = [
   { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
@@ -79,6 +154,16 @@ function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, is
   isManager: boolean;
   isFlightSchool: boolean;
 }) {
+  const accountType: AccountType = account?.account_type || 'airline';
+  const portalLabel = accountType === 'sim_center' ? 'Sim Center Portal'
+    : accountType === 'ato' ? 'ATO Portal'
+    : accountType === 'oem' ? 'OEM Intel Portal'
+    : accountType === 'charter' ? 'Charter Portal'
+    : accountType === 'cargo' ? 'Cargo Portal'
+    : 'Enterprise Portal';
+  const accountLabel = account?.airline_name || account?.company_name || 'Your Organisation';
+  const dynamicNav = getNavForAccountType(accountType);
+
   return (
     <div className={`h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'} shrink-0`}>
       {/* Logo */}
@@ -86,8 +171,8 @@ function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, is
         <img src={LOGO} alt="Logo" className="w-8 h-8 object-contain shrink-0" />
         {!collapsed && (
           <div className="overflow-hidden">
-            <div className="text-white font-bold text-sm leading-tight truncate">Enterprise Portal</div>
-            <div className="text-blue-400 text-xs truncate">{account?.airline_name || 'Your Airline'}</div>
+            <div className="text-white font-bold text-sm leading-tight truncate">{portalLabel}</div>
+            <div className="text-blue-400 text-xs truncate">{accountLabel}</div>
           </div>
         )}
         <button onClick={() => setCollapsed(!collapsed)} className="ml-auto text-slate-500 hover:text-white transition-colors">
@@ -111,7 +196,7 @@ function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, is
             {!collapsed && <span>{FLIGHT_SCHOOL_NAV.label}</span>}
           </button>
         ) : (
-          NAV.map(({ id, label, icon: Icon }) => (
+          dynamicNav.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setPage(id as Page)}
@@ -180,6 +265,9 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
   const [selectedApp, setSelectedApp] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
   const [showResumeViewer, setShowResumeViewer] = useState(false);
+  const [activeTab, setActiveTab] = useState<'pipeline' | 'interests'>('pipeline');
+  const [interests, setInterests] = useState<any[]>([]);
+  const [interestsLoading, setInterestsLoading] = useState(false);
 
   const loadApplications = async () => {
     if (!account?.id) return;
@@ -209,6 +297,33 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
   useEffect(() => {
     loadApplications();
   }, [account?.id, selectedStatus]);
+
+  const loadInterests = async () => {
+    if (!account?.id) return;
+    setInterestsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('pathway_card_interests')
+        .select('*, profiles(full_name, email, total_flight_hours, overall_recognition_score, nationality, license_id, profile_image_url, medical_expiry, license_expiry)')
+        .eq('enterprise_account_id', account.id)
+        .order('submitted_at', { ascending: false });
+      if (error) throw error;
+      setInterests(data || []);
+    } catch (e) {
+      console.error('Error loading interests:', e);
+    } finally {
+      setInterestsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'interests') loadInterests();
+  }, [account?.id, activeTab]);
+
+  const updateInterestStatus = async (interestId: string, newStatus: string) => {
+    await supabase.from('pathway_card_interests').update({ status: newStatus }).eq('id', interestId);
+    loadInterests();
+  };
 
   const updateStatus = async (appId: string, newStatus: string, notes?: string) => {
     setUpdating(true);
@@ -257,12 +372,132 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Users className="w-6 h-6 text-blue-400" /> Applications Pipeline
-        </h1>
-        <p className="text-slate-400 text-sm mt-1">Manage pilot applications through your hiring pipeline</p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <Users className="w-6 h-6 text-blue-400" /> Applications Pipeline
+          </h1>
+          <p className="text-slate-400 text-sm mt-1">Manage pilot applications and interest submissions</p>
+        </div>
+        <div className="flex gap-1 bg-slate-800/60 border border-slate-700/50 rounded-xl p-1">
+          <button
+            onClick={() => setActiveTab('pipeline')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              activeTab === 'pipeline' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            Pipeline
+          </button>
+          <button
+            onClick={() => setActiveTab('interests')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+              activeTab === 'interests' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            Interest Pool
+            {interests.filter(i => i.status === 'pending').length > 0 && (
+              <span className="bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {interests.filter(i => i.status === 'pending').length}
+              </span>
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Interest Pool Tab */}
+      {activeTab === 'interests' && (
+        <div className="space-y-4">
+          <div className="bg-emerald-900/20 border border-emerald-500/20 rounded-xl px-5 py-3 flex items-start gap-3">
+            <Activity className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+            <p className="text-emerald-300 text-sm">These pilots submitted interest directly from your published pathway cards. They entered the Pulling System — your team reviews and pulls the right candidates.</p>
+          </div>
+          {interestsLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : interests.length === 0 ? (
+            <div className="text-center py-16 text-slate-500">
+              <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
+              <p className="font-medium">No interest submissions yet</p>
+              <p className="text-sm mt-1">Pilots who click &ldquo;Submit Interest&rdquo; on your pathway cards will appear here.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {interests.map((item: any) => {
+                const profile = item.profiles || {};
+                const isExpired = (d: string | null) => d ? new Date(d) < new Date() : false;
+                return (
+                  <div key={item.id} className="bg-slate-800/50 border border-slate-700/40 rounded-2xl p-5 flex items-start gap-4">
+                    {profile.profile_image_url ? (
+                      <img src={profile.profile_image_url} alt="" className="w-12 h-12 rounded-full object-cover shrink-0" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center shrink-0 text-slate-400 font-bold">
+                        {(profile.full_name || '?')[0]}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="text-white font-semibold">{profile.full_name || 'Unknown Pilot'}</p>
+                        {profile.nationality && (
+                          <span className="text-xs text-slate-400 bg-slate-700/50 px-2 py-0.5 rounded-full">{profile.nationality}</span>
+                        )}
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium border ${
+                          item.status === 'pending' ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+                          : item.status === 'shortlisted' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                          : 'bg-slate-600/30 text-slate-400 border-slate-600/30'
+                        }`}>{item.status}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-400">
+                        {profile.total_flight_hours != null && (
+                          <span>{Number(profile.total_flight_hours).toLocaleString()} hrs</span>
+                        )}
+                        {profile.overall_recognition_score > 0 && (
+                          <span className="text-blue-400">PR Score: {profile.overall_recognition_score}</span>
+                        )}
+                        {profile.license_id && <span>License: {profile.license_id}</span>}
+                        {profile.medical_expiry && (
+                          <span className={isExpired(profile.medical_expiry) ? 'text-red-400' : 'text-emerald-400'}>
+                            Medical: {isExpired(profile.medical_expiry) ? '⚠ Expired' : 'Valid'}
+                          </span>
+                        )}
+                        {profile.license_expiry && (
+                          <span className={isExpired(profile.license_expiry) ? 'text-red-400' : 'text-emerald-400'}>
+                            License: {isExpired(profile.license_expiry) ? '⚠ Expired' : 'Valid'}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-slate-600 text-xs mt-1">
+                        Submitted {new Date(item.submitted_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-2 shrink-0">
+                      {item.status === 'pending' && (
+                        <button
+                          onClick={() => updateInterestStatus(item.id, 'shortlisted')}
+                          className="px-3 py-1.5 bg-emerald-600/80 hover:bg-emerald-600 text-white text-xs rounded-lg font-medium transition-all"
+                        >
+                          Shortlist
+                        </button>
+                      )}
+                      {item.status !== 'dismissed' && (
+                        <button
+                          onClick={() => updateInterestStatus(item.id, 'dismissed')}
+                          className="px-3 py-1.5 bg-slate-700/80 hover:bg-slate-700 text-slate-400 text-xs rounded-lg font-medium transition-all"
+                        >
+                          Dismiss
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Pipeline Tab */}
+      {activeTab === 'pipeline' && <>
 
       {/* Stats */}
       <div className="grid grid-cols-5 gap-4">
@@ -442,6 +677,7 @@ function ApplicationsPage({ user, account }: { user: any; account: any }) {
           enterpriseAccountId={account?.id}
         />
       )}
+      </> }
     </div>
   );
 }
@@ -756,6 +992,14 @@ function AnalyticsPage({ user, account, isFlightSchool, flightSchoolId }: { user
 function Dashboard({ user, account }: { user: any; account: any }) {
   const [stats, setStats] = useState({ cards: 0, jobs: 0, published: 0, drafts: 0 });
   const [recentCards, setRecentCards] = useState<any[]>([]);
+  const accountType: AccountType = account?.account_type || 'airline';
+  const orgName = account?.airline_name || account?.company_name || '';
+  const dashSubtitle = accountType === 'sim_center' ? 'Manage your type rating listings and simulator pipeline.'
+    : accountType === 'ato' ? 'Manage your training pathways and student pipeline.'
+    : accountType === 'oem' ? 'Monitor fleet demand signals and verified graduate pathways.'
+    : accountType === 'charter' ? 'Manage your private pathway cards and discreet pilot matching.'
+    : accountType === 'cargo' ? 'Manage your cargo pathway cards and freight crew pipeline.'
+    : "Manage your airline's presence on PilotRecognition.com";
 
   useEffect(() => {
     if (!account?.id) return;
@@ -777,8 +1021,8 @@ function Dashboard({ user, account }: { user: any; account: any }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Welcome back{account?.airline_name ? `, ${account.airline_name}` : ''}</h1>
-        <p className="text-slate-400 text-sm mt-1">Manage your airline's presence on PilotRecognition.com</p>
+        <h1 className="text-2xl font-bold text-white">Welcome back{orgName ? `, ${orgName}` : ''}</h1>
+        <p className="text-slate-400 text-sm mt-1">{dashSubtitle}</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1402,58 +1646,100 @@ function AirlineExpectationsPage({ user, account }: { user: any; account: any })
   );
 }
 
+// ─── Verification Chips ───────────────────────────────────────────────────────
+function VerificationChips({ pilotId }: { pilotId: string }) {
+  const [chips, setChips] = useState<{ label: string; color: string; bg: string }[]>([]);
+  useEffect(() => {
+    Promise.all([
+      supabase.from('medical_certificate_records')
+        .select('certificate_class, expiry_date, status')
+        .eq('user_id', pilotId)
+        .order('expiry_date', { ascending: false })
+        .limit(1).maybeSingle(),
+      supabase.from('verification_records')
+        .select('document_type, verification_status')
+        .eq('user_id', pilotId)
+        .eq('verification_status', 'verified')
+        .limit(5),
+      supabase.from('profiles')
+        .select('pre_cleared')
+        .eq('id', pilotId).maybeSingle(),
+    ]).then(([medRes, verRes, profileRes]) => {
+      const result: { label: string; color: string; bg: string }[] = [];
+      if (profileRes.data?.pre_cleared) {
+        result.push({ label: '★ Pre-Cleared', color: '#fbbf24', bg: 'rgba(251,191,36,0.12)' });
+      }
+      const verifiedDocs = (verRes.data || []).map((v: any) => v.document_type);
+      if (verifiedDocs.includes('pilot_license') || verifiedDocs.length > 0) {
+        result.push({ label: '✓ License Verified', color: '#34d399', bg: 'rgba(52,211,153,0.1)' });
+      }
+      const med = medRes.data;
+      if (med) {
+        const isExpired = med.expiry_date && new Date(med.expiry_date) < new Date();
+        result.push(isExpired
+          ? { label: '⚠ Medical Expired', color: '#f87171', bg: 'rgba(239,68,68,0.1)' }
+          : { label: `✓ Class ${med.certificate_class} Medical`, color: '#60a5fa', bg: 'rgba(96,165,250,0.1)' });
+      }
+      setChips(result);
+    });
+  }, [pilotId]);
+  if (chips.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1 mt-1.5">
+      {chips.map(c => (
+        <span key={c.label} style={{ color: c.color, background: c.bg, border: `1px solid ${c.color}30` }}
+          className="px-2 py-0.5 rounded-full text-[10px] font-semibold">{c.label}</span>
+      ))}
+    </div>
+  );
+}
+
 // ─── Pilot Search ─────────────────────────────────────────────────────────────
-function PilotSearchPage({ user }: { user: any }) {
-  const [filters, setFilters] = useState({ minHours: '', maxHours: '', icaoLevel: '', nationality: '', typeRating: '', availabilityStatus: '', licenseType: '' });
+function PilotSearchPage({ user, account }: { user: any; account?: any }) {
+  const [filters, setFilters] = useState({
+    minHours: '', maxHours: '', icaoLevel: '', nationality: '',
+    typeRating: '', availabilityStatus: '', licenseType: '',
+    minScore: '', maxScore: '',
+  });
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+
+  const accountTier: string = account?.subscription_tier || account?.tier || 'basic';
+  const isBasicTier = !accountTier || accountTier === 'basic' || accountTier === 'free';
+  const BASIC_LIMIT = 10;
 
   const search = async () => {
     if (!user?.id) return;
     setLoading(true);
     setSearched(true);
     try {
-      let query = supabase
-        .from('profiles')
-        .select('*');
-      
-      // Apply filters
-      if (filters.nationality) query = query.eq('nationality', filters.nationality);
-      if (filters.licenseType) query = query.ilike('ratings', `%${filters.licenseType}%`);
+      let query = supabase.from('profiles').select('*');
+      if (filters.nationality) query = query.ilike('nationality', `%${filters.nationality}%`);
+      if (filters.licenseType) query = query.ilike('license_type', `%${filters.licenseType}%`);
       if (filters.minHours) query = query.gte('total_flight_hours', parseFloat(filters.minHours));
+      if (filters.maxHours) query = query.lte('total_flight_hours', parseFloat(filters.maxHours));
       if (filters.icaoLevel) query = query.eq('language_icao_level', filters.icaoLevel);
-      if (filters.availabilityStatus) query = query.eq('status', filters.availabilityStatus);
-      
-      const { data, error } = await query;
-      
+      if (filters.availabilityStatus) query = query.eq('availability_status', filters.availabilityStatus);
+      if (filters.minScore) query = query.gte('overall_recognition_score', parseFloat(filters.minScore));
+      if (filters.maxScore) query = query.lte('overall_recognition_score', parseFloat(filters.maxScore));
+      const { data, error } = await query.limit(200);
       if (error) throw error;
       setResults(data || []);
-    } catch (e) {
-      console.error('Error searching profiles:', e);
-    } finally {
-      setLoading(false);
-    }
+    } catch (e) { console.error('Error searching profiles:', e); }
+    finally { setLoading(false); }
   };
 
   const exportCSV = () => {
     if (results.length === 0) return;
-    
     const headers = ['Name', 'Email', 'Nationality', 'License Country', 'License Type', 'Total Hours', 'ICAO Level', 'Type Ratings', 'Availability', 'PR Score', 'Phone'];
     const rows = results.map(p => [
-      p.display_name || p.full_name || '',
-      p.email || '',
-      p.nationality || '',
-      p.country_of_license || '',
-      p.license_type || '',
-      p.total_flight_hours || 0,
-      p.language_icao_level || '',
+      p.display_name || p.full_name || '', p.email || '',
+      p.nationality || '', p.country_of_license || '', p.license_type || '',
+      p.total_flight_hours || 0, p.language_icao_level || '',
       Array.isArray(p.type_ratings) ? p.type_ratings.join('; ') : '',
-      p.availability_status || '',
-      p.overall_recognition_score || 0,
-      p.phone_number || ''
+      p.availability_status || '', p.overall_recognition_score || 0, p.phone_number || ''
     ]);
-    
     const csvContent = [headers.join(','), ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -1462,44 +1748,60 @@ function PilotSearchPage({ user }: { user: any }) {
     link.click();
   };
 
+  const visibleResults = results.slice(0, isBasicTier ? BASIC_LIMIT : results.length);
+  const blurredCount = isBasicTier ? Math.max(0, results.length - BASIC_LIMIT) : 0;
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">Pilot Search</h1>
-          <p className="text-slate-400 text-sm mt-1">Search pilot profiles in the PilotRecognition database by qualifications.</p>
+          <p className="text-slate-400 text-sm mt-1">Search the verified PilotRecognition database by qualifications, score, and credential status.</p>
         </div>
-        {results.length > 0 && (
-          <button onClick={exportCSV} className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-4 py-2 text-sm transition-all">
-            <Download className="w-4 h-4" />
-            Export CSV
-          </button>
-        )}
+        <div className="flex items-center gap-3 flex-wrap">
+          {isBasicTier && (
+            <span className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold px-3 py-1.5 rounded-xl">
+              <Lock className="w-3 h-3" /> Basic — first 10 results visible
+            </span>
+          )}
+          {results.length > 0 && !isBasicTier && (
+            <button onClick={exportCSV} className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-4 py-2 text-sm transition-all">
+              <Download className="w-4 h-4" /> Export CSV
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5 space-y-4">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <Field label="Min Flight Hours"><input type="number" className={INPUT} value={filters.minHours} onChange={e => setFilters(f => ({ ...f, minHours: e.target.value }))} placeholder="e.g. 1500" /></Field>
           <Field label="Max Flight Hours"><input type="number" className={INPUT} value={filters.maxHours} onChange={e => setFilters(f => ({ ...f, maxHours: e.target.value }))} placeholder="e.g. 10000" /></Field>
-          <Field label="ICAO ELP Level"><select className={INPUT} value={filters.icaoLevel} onChange={e => setFilters(f => ({ ...f, icaoLevel: e.target.value }))}>
-            <option value="">Any</option>
-            {['4','5','6'].map(l => <option key={l} value={l}>Level {l}</option>)}
-          </select></Field>
-          <Field label="License Type"><select className={INPUT} value={filters.licenseType} onChange={e => setFilters(f => ({ ...f, licenseType: e.target.value }))}>
-            <option value="">Any</option>
-            <option value="ATPL">ATPL</option>
-            <option value="CPL">CPL</option>
-            <option value="MPL">MPL</option>
-            <option value="PPL">PPL</option>
-          </select></Field>
+          <Field label="Min Recognition Score"><input type="number" className={INPUT} value={filters.minScore} onChange={e => setFilters(f => ({ ...f, minScore: e.target.value }))} placeholder="e.g. 60" /></Field>
+          <Field label="Max Recognition Score"><input type="number" className={INPUT} value={filters.maxScore} onChange={e => setFilters(f => ({ ...f, maxScore: e.target.value }))} placeholder="e.g. 100" /></Field>
+          <Field label="ICAO ELP Level">
+            <select className={INPUT} value={filters.icaoLevel} onChange={e => setFilters(f => ({ ...f, icaoLevel: e.target.value }))}>
+              <option value="">Any</option>
+              {['4','5','6'].map(l => <option key={l} value={l}>Level {l}</option>)}
+            </select>
+          </Field>
+          <Field label="License Type">
+            <select className={INPUT} value={filters.licenseType} onChange={e => setFilters(f => ({ ...f, licenseType: e.target.value }))}>
+              <option value="">Any</option>
+              <option value="ATPL">ATPL</option>
+              <option value="CPL">CPL</option>
+              <option value="MPL">MPL</option>
+              <option value="PPL">PPL</option>
+            </select>
+          </Field>
           <Field label="Nationality (keyword)"><input className={INPUT} value={filters.nationality} onChange={e => setFilters(f => ({ ...f, nationality: e.target.value }))} placeholder="e.g. Malaysian" /></Field>
-          <Field label="Type Rating (keyword)"><input className={INPUT} value={filters.typeRating} onChange={e => setFilters(f => ({ ...f, typeRating: e.target.value }))} placeholder="e.g. B737" /></Field>
-          <Field label="Availability"><select className={INPUT} value={filters.availabilityStatus} onChange={e => setFilters(f => ({ ...f, availabilityStatus: e.target.value }))}>
-            <option value="">Any</option>
-            <option value="available">Available</option>
-            <option value="considering">Considering Offers</option>
-            <option value="not_looking">Not Looking</option>
-          </select></Field>
+          <Field label="Availability">
+            <select className={INPUT} value={filters.availabilityStatus} onChange={e => setFilters(f => ({ ...f, availabilityStatus: e.target.value }))}>
+              <option value="">Any</option>
+              <option value="available">Available</option>
+              <option value="considering">Considering Offers</option>
+              <option value="not_looking">Not Looking</option>
+            </select>
+          </Field>
         </div>
         <button onClick={search} disabled={loading} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all">
           {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Search className="w-4 h-4" />}
@@ -1509,7 +1811,10 @@ function PilotSearchPage({ user }: { user: any }) {
 
       {searched && !loading && (
         <div>
-          <p className="text-slate-400 text-sm mb-3">{results.length} pilot{results.length !== 1 ? 's' : ''} found</p>
+          <p className="text-slate-400 text-sm mb-3">
+            {results.length} pilot{results.length !== 1 ? 's' : ''} found
+            {blurredCount > 0 && <span className="text-amber-400 ml-2">· {blurredCount} more hidden — upgrade to unlock</span>}
+          </p>
           {results.length === 0 ? (
             <div className="text-center py-10 bg-slate-800/20 border border-slate-700/30 rounded-2xl">
               <Users className="w-10 h-10 text-slate-600 mx-auto mb-2" />
@@ -1517,31 +1822,65 @@ function PilotSearchPage({ user }: { user: any }) {
             </div>
           ) : (
             <div className="space-y-3">
-              {results.map(p => (
-                <div key={p.id} className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-4 flex items-center gap-4">
-                  <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-slate-400 shrink-0 overflow-hidden">
-                    {p.profile_image_url ? <img src={p.profile_image_url} alt="" className="w-full h-full object-cover" /> : <Users className="w-5 h-5" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-white font-semibold text-sm">{p.display_name || p.full_name || 'Pilot'}</div>
-                    <div className="text-slate-500 text-xs mt-0.5">{p.nationality} · {p.country_of_license} license · {p.license_type || 'Unknown License'}</div>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300">{Number(p.total_flight_hours || 0).toLocaleString()}h</span>
-                    <span className="bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300">ICAO {p.language_icao_level || '—'}</span>
-                    {p.availability_status && (
-                      <span className={`px-2.5 py-1 rounded-lg ${
-                        p.availability_status === 'available' ? 'bg-emerald-500/20 text-emerald-400' :
-                        p.availability_status === 'considering' ? 'bg-amber-500/20 text-amber-400' :
-                        'bg-slate-600 text-slate-400'
-                      }`}>
-                        {p.availability_status === 'available' ? 'Available' : p.availability_status === 'considering' ? 'Considering' : 'Not Looking'}
+              {visibleResults.map(p => (
+                <div key={p.id} className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-slate-400 shrink-0 overflow-hidden mt-0.5">
+                      {p.profile_image_url ? <img src={p.profile_image_url} alt="" className="w-full h-full object-cover" /> : <Users className="w-5 h-5" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-white font-semibold text-sm">{p.display_name || p.full_name || 'Pilot'}</span>
+                        <span className="text-slate-500 text-xs">{p.nationality}{p.country_of_license ? ` · ${p.country_of_license} license` : ''}</span>
+                      </div>
+                      <VerificationChips pilotId={p.id} />
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5 shrink-0">
+                      <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                        <span className="bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300 text-xs">{Number(p.total_flight_hours || 0).toLocaleString()}h</span>
+                        <span className="bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300 text-xs">ICAO {p.language_icao_level || '—'}</span>
+                        {p.license_type && <span className="bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300 text-xs">{p.license_type}</span>}
+                        {p.availability_status && (
+                          <span className={`px-2.5 py-1 rounded-lg text-xs ${
+                            p.availability_status === 'available' ? 'bg-emerald-500/20 text-emerald-400' :
+                            p.availability_status === 'considering' ? 'bg-amber-500/20 text-amber-400' :
+                            'bg-slate-600 text-slate-400'
+                          }`}>
+                            {p.availability_status === 'available' ? 'Available' : p.availability_status === 'considering' ? 'Considering' : 'Not Looking'}
+                          </span>
+                        )}
+                      </div>
+                      <span className="bg-blue-600/20 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                        Score {p.overall_recognition_score || 0}
                       </span>
-                    )}
-                    <span className="bg-blue-600/20 text-blue-400 px-2.5 py-1 rounded-lg">Score {p.overall_recognition_score || 0}</span>
+                    </div>
                   </div>
                 </div>
               ))}
+              {blurredCount > 0 && (
+                <div className="relative rounded-2xl overflow-hidden">
+                  <div className="space-y-3 blur-sm pointer-events-none select-none opacity-40">
+                    {[...Array(Math.min(blurredCount, 4))].map((_, i) => (
+                      <div key={i} className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-4 flex items-center gap-4">
+                        <div className="w-10 h-10 bg-slate-700 rounded-full shrink-0" />
+                        <div className="flex-1 space-y-2">
+                          <div className="h-3 bg-slate-700 rounded w-32" />
+                          <div className="h-2.5 bg-slate-700 rounded w-20" />
+                        </div>
+                        <div className="h-7 bg-slate-700 rounded w-16" />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/70 backdrop-blur-sm rounded-2xl">
+                    <Lock className="w-7 h-7 text-amber-400 mb-2" />
+                    <p className="text-white font-bold text-sm">{blurredCount} pilots hidden</p>
+                    <p className="text-slate-400 text-xs mt-1 mb-3 text-center max-w-xs px-4">Upgrade to Standard or Enterprise to access the full verified pilot pool.</p>
+                    <a href="/enterprise-access" className="bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs px-4 py-2 rounded-xl transition-all">
+                      Upgrade Access
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -1576,7 +1915,7 @@ function SettingsPage({ user, account, refreshAccount, upsertEnterpriseAccount }
 
   const save = async () => {
     setSaving(true);
-    await upsertEnterpriseAccount({ ...form, base_locations: form.base_locations.split(',').map(s => s.trim()).filter(Boolean) });
+    await upsertEnterpriseAccount({ ...form, base_locations: form.base_locations.split(',').map((s: string) => s.trim()).filter(Boolean) });
     setSaving(false);
     setSaved(true);
     refreshAccount();
@@ -2131,11 +2470,11 @@ export function EnterprisePortalApp() {
     <div className="min-h-screen bg-slate-950 flex">
       <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} />
       <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-        {page === 'dashboard' && <Dashboard user={user} account={account} />}
+        {page === 'dashboard' && <OperatorIntelDashboard user={user} account={account} onNavigate={(p) => setPage(p as Page)} />}
         {page === 'pathway-cards' && <PathwayCardsPage user={user} account={account} />}
         {page === 'job-listings' && <JobListingsPage user={user} account={account} />}
         {page === 'airline-expectations' && <AirlineExpectationsPage user={user} account={account} />}
-        {page === 'pilot-search' && <PilotSearchPage user={user} />}
+        {page === 'pilot-search' && <PilotSearchPage user={user} account={account} />}
         {page === 'applications' && <ApplicationsPage user={user} account={account} />}
         {page === 'interviews' && <InterviewerDashboard user={user} account={account} />}
         {page === 'interview-history' && <InterviewHistoryPage user={user} />}

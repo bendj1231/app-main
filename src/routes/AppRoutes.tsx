@@ -66,6 +66,17 @@ const PilotLicensureExperiencePage = lazy(() => import('@/components/website/com
 const VerificationInitiatePage = lazy(() => import('@/components/website/components/pilot-recognition/VerificationInitiatePage').then(m => ({ default: m.VerificationInitiatePage })));
 const ATOAttestationPage = lazy(() => import('@/components/website/components/pilot-recognition/ATOAttestationPage').then(m => ({ default: m.ATOAttestationPage })));
 const ConflictResolutionDashboard = lazy(() => import('@/components/website/components/pilot-recognition/ConflictResolutionDashboard').then(m => ({ default: m.ConflictResolutionDashboard })));
+const LogbookUploadPage = lazy(() => import('@/components/website/components/pilot-recognition/LogbookUploadPage').then(m => ({ default: m.LogbookUploadPage })));
+const EFBUploadPage = lazy(() => import('@/components/website/components/pilot-recognition/EFBUploadPage').then(m => ({ default: m.EFBUploadPage })));
+const SimSessionUploadPage = lazy(() => import('@/components/website/components/pilot-recognition/SimSessionUploadPage').then(m => ({ default: m.SimSessionUploadPage })));
+const ATORegisterPage = lazy(() => import('@/components/website/components/ato/ATORegisterPage').then(m => ({ default: m.ATORegisterPage })));
+const SimCenterRegisterPage = lazy(() => import('@/components/website/components/sim/SimCenterRegisterPage').then(m => ({ default: m.SimCenterRegisterPage })));
+const MilitaryTransitionPage = lazy(() => import('@/components/website/components/military/MilitaryTransitionPage').then(m => ({ default: m.MilitaryTransitionPage })));
+const AMERegisterPage = lazy(() => import('@/components/website/components/ame/AMERegisterPage').then(m => ({ default: m.AMERegisterPage })));
+const MedicalCertUploadPage = lazy(() => import('@/components/website/components/ame/MedicalCertUploadPage').then(m => ({ default: m.MedicalCertUploadPage })));
+const MentorProfilePage = lazy(() => import('@/components/website/components/mentor/MentorProfilePage').then(m => ({ default: m.MentorProfilePage })));
+const OEMPartnerRegisterPage = lazy(() => import('@/components/website/components/oem/OEMPartnerRegisterPage').then(m => ({ default: m.OEMPartnerRegisterPage })));
+const ATODashboardPage = lazy(() => import('@/components/website/components/ato/ATODashboardPage').then(m => ({ default: m.ATODashboardPage })));
 const WhatIsPilotRecognitionPage = lazy(() => import('../../components/website/components/WhatIsPilotRecognitionPage'));
 const ScoreOptimizationPage = lazy(() => import('@/components/website/components/pilot-recognition/ScoreOptimizationPage').then(m => ({ default: m.ScoreOptimizationPage })));
 const RecognitionScoreInfoPage = lazy(() => import('@/components/website/components/pilot-recognition/RecognitionScoreInfoPage').then(m => ({ default: m.RecognitionScoreInfoPage })));
@@ -107,7 +118,9 @@ const UnifiedPilotPlatform = lazy(() => import('@/components/website/components/
 const ExaminationPortal = lazy(() => import('@/components/website/components/examinations/ExaminationPortal'));
 const EnterpriseAccessPage = lazy(() => import('@/app/enterprise-access/page'));
 const EnterpriseAccessLearnMorePage = lazy(() => import('@/app/enterprise-access/learn-more/page'));
+const EnterprisePricingPage = lazy(() => import('@/app/enterprise-access/pricing/page'));
 const AirlinesOperatorsPage = lazy(() => import('@/app/enterprise-access/airlines/page'));
+const EnterpriseLoginPage = lazy(() => import('@/components/enterprise/EnterpriseLoginPage').then(m => ({ default: m.EnterpriseLoginPage })));
 const FlightSchoolsPage = lazy(() => import('@/app/partners/flight-schools/page'));
 const DiscoverPathwaysPage = lazy(() => import('@/app/discover-pathways/page'));
 const PilotShortagePage = lazy(() => import('@/components/website/components/PilotShortagePage').then(m => ({ default: m.PilotShortagePage })));
@@ -119,6 +132,9 @@ const FrameworkPage = lazy(() => import('@/app/framework/page'));
 const FrameworkFullPage = lazy(() => import('@/app/framework/full/page'));
 const UCFPage = lazy(() => import('@/app/ucf/page'));
 const UCFOfficialReleasePage = lazy(() => import('@/app/ucf/official-release/page'));
+const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
+const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
+const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -167,8 +183,12 @@ export const AppRoutes = () => {
       return <AirlinesOperatorsPage />;
     }
     if (path === '/enterprise-access/learn-more') {
-      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessLearnMorePage');
-      return <EnterpriseAccessLearnMorePage />;
+        console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessLearnMorePage');
+        return <EnterpriseAccessLearnMorePage />;
+    }
+    if (path === '/enterprise-access/pricing') {
+        console.log('[DEBUG AppRoutes] Rendering EnterprisePricingPage');
+        return <EnterprisePricingPage />;
     }
     if (path === '/' || path === '/enterprise-access') {
       console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessPage');
@@ -279,6 +299,17 @@ export const AppRoutes = () => {
       <Route path="/verification" element={<VerificationInitiatePage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/ato-attestation" element={<ATOAttestationPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/verification-conflicts" element={<ConflictResolutionDashboard onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/logbook-upload" element={<LogbookUploadPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/efb-upload" element={<EFBUploadPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/sim-session" element={<SimSessionUploadPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/ato-register" element={<ATORegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/sim-center-register" element={<SimCenterRegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/military-transition" element={<MilitaryTransitionPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/ame-register" element={<AMERegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/medical-certificate" element={<MedicalCertUploadPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/mentor-profile" element={<MentorProfilePage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
+      <Route path="/oem-register" element={<OEMPartnerRegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/ato-dashboard" element={<ATODashboardPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/score-optimization" element={<ScoreOptimizationPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-score-info" element={<RecognitionScoreInfoPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-career-matches" element={<RecognitionCareerMatchesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
@@ -330,9 +361,13 @@ export const AppRoutes = () => {
           <ExaminationPortal />
         </ProtectedRoute>
       } />
+      <Route path="/verification-service" element={<VerificationServicePage />} />
       <Route path="/enterprise-access" element={<EnterpriseAccessPage />} />
       <Route path="/enterprise-access/learn-more" element={<EnterpriseAccessLearnMorePage />} />
+      <Route path="/enterprise-access/pricing" element={<EnterprisePricingPage />} />
       <Route path="/enterprise-access/airlines" element={<AirlinesOperatorsPage />} />
+      <Route path="/enterprise-login" element={<EnterpriseLoginPage />} />
+      <Route path="/enterprise/login" element={<EnterpriseLoginPage />} />
 
       {/* Partner pages */}
       <Route path="/partners/flight-schools" element={<FlightSchoolsPage />} />
@@ -359,6 +394,12 @@ export const AppRoutes = () => {
       <Route path="/framework/full-local" element={<FrameworkFullPage />} />
       <Route path="/ucf" element={<UCFPage />} />
       <Route path="/ucf/official-release" element={<UCFOfficialReleasePage />} />
+
+      {/* Referral invite code route */}
+      <Route path="/ref/:code" element={<ReferralLandingPage />} />
+
+      {/* Admin routes */}
+      <Route path="/admin/verification" element={<AdminVerificationQueue />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />

@@ -6,11 +6,18 @@ interface PilotReferralShareProps {
   userId?: string;
 }
 
+interface ReferralStats {
+  clicks: number;
+  signups: number;
+  earned: number;
+}
+
 export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }) => {
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [referralLink, setReferralLink] = useState<string>('');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<ReferralStats>({ clicks: 0, signups: 0, earned: 0 });
 
   useEffect(() => {
     loadReferralCode();
@@ -23,18 +30,51 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
       setLoading(true);
       const { data } = await supabase
         .from('profiles')
-        .select('referral_code')
+        .select('referral_code, referral_earnings')
         .eq('id', userId)
         .single();
 
       if (data?.referral_code) {
         setReferralCode(data.referral_code);
         setReferralLink(`${window.location.origin}/ref/${data.referral_code}`);
+        await loadStats(data.referral_code, data.referral_earnings ?? 0);
       }
     } catch (error) {
       console.error('Error loading referral code:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadStats = async (code: string, earnings: number) => {
+    try {
+      // Get partner record for this code (if exists) to query conversions
+      const { data: partner } = await supabase
+        .from('referral_partners')
+        .select('id, total_referrals, pending_payouts, total_payouts')
+        .eq('referral_code', code)
+        .maybeSingle();
+
+      if (partner) {
+        const { data: conversions } = await supabase
+          .from('referral_conversions')
+          .select('status, commission_status, commission_amount')
+          .eq('partner_id', partner.id);
+
+        const clicks = partner.total_referrals ?? 0;
+        const signups = conversions?.filter(c => c.status === 'signed_up' || c.status === 'subscribed').length ?? 0;
+        const earned = (partner.total_payouts ?? 0) + (partner.pending_payouts ?? 0);
+        setStats({ clicks, signups, earned });
+      } else {
+        // Pilot has a referral_code but no partner record yet — use referred_by counts
+        const { count } = await supabase
+          .from('profiles')
+          .select('id', { count: 'exact', head: true })
+          .eq('referred_by_code', code);
+        setStats({ clicks: count ?? 0, signups: count ?? 0, earned: earnings });
+      }
+    } catch (e) {
+      console.error('Error loading referral stats:', e);
     }
   };
 
@@ -180,15 +220,15 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-700">
         <div className="text-center">
-          <p className="text-2xl font-bold text-white">0</p>
-          <p className="text-slate-400 text-xs">Clicks</p>
+          <p className="text-2xl font-bold text-white">{stats.clicks}</p>
+          <p className="text-slate-400 text-xs">Referrals</p>
         </div>
         <div className="text-center">
-          <p className="text-2xl font-bold text-white">0</p>
+          <p className="text-2xl font-bold text-white">{stats.signups}</p>
           <p className="text-slate-400 text-xs">Sign-ups</p>
         </div>
         <div className="text-center">
-          <p className="text-2xl font-bold text-emerald-400">$0</p>
+          <p className="text-2xl font-bold text-emerald-400">${stats.earned.toFixed(0)}</p>
           <p className="text-slate-400 text-xs">Earned</p>
         </div>
       </div>
