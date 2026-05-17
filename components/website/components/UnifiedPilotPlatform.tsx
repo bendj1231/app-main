@@ -525,17 +525,17 @@ const HomeTab: React.FC<{
             style={{ background: '#ffffff', border: '1px solid #d1d5db', maxHeight: '90vh', overflowY: 'auto' }}
           >
             {/* Modal header — regulatory red bar */}
-            <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ background: '#cc0000', borderBottom: '2px solid #a00000' }}>
+            <div className="flex items-center justify-between px-6 py-5 flex-shrink-0" style={{ background: '#cc0000', borderBottom: '2px solid #a00000' }}>
               <div>
-                <p className="text-[9px] font-light tracking-[0.18em] text-black/55 uppercase mb-0.5">
+                <p className="text-[10px] font-normal text-white/70 mb-1">
                   {onboardingStep === 1 ? 'Cryptographic Legal Release & Verification Consent' : 'Multi-Party Verification'}
                 </p>
-                <p className="text-sm font-black text-black tracking-wide">
-                  {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Step 1 — Multi-Party Data Authorization' : onboardingStep === 2 ? 'Step 2 — Training Details' : onboardingStep === 3 ? 'Step 3 — Processing Notice' : onboardingStep === 4 ? 'Step 4 — Token Generation' : 'Step 4 — Token Generation'}
+                <p className="text-[15px] font-bold text-white tracking-wide">
+                  {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Step 1 — Multi-Party Data Authorization' : onboardingStep === 2 ? 'Step 2 — Training Details' : onboardingStep === 3 ? 'Step 3 — Processing Notice' : 'Step 4 — Token Generation'}
                 </p>
               </div>
               {!obTokenising && (
-                <button onClick={() => setOnboardingOpen(false)} className="text-black/60 hover:text-black transition-colors">
+                <button onClick={() => setOnboardingOpen(false)} className="text-white/60 hover:text-white transition-colors ml-4">
                   <X size={18} />
                 </button>
               )}
@@ -565,32 +565,27 @@ const HomeTab: React.FC<{
                     </p>
                   </div>
 
-                  {/* Read-Only Token Matrix — Auth0 session data pre-loaded */}
-                  <div style={{ border: '1px solid #e2e8f0' }}>
-                    {/* Header */}
-                    <div className="flex items-center gap-2 px-3 py-2" style={{ background: '#f0fdf4', borderBottom: '1px solid #d1fae5' }}>
-                      <div className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#16a34a' }}>
-                        <svg width="7" height="6" viewBox="0 0 7 6" fill="none"><path d="M1 3L2.8 5L6 1" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </div>
-                      <p className="text-[9px] font-black text-green-800 uppercase tracking-widest">Encrypted Session Data Ready for Veremark Transfer</p>
+                  {/* Read-Only Token Matrix — flat profile card style */}
+                  <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                    <div className="flex items-center gap-2 px-4 py-2.5" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                      <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
+                      <p className="text-[10px] font-semibold text-green-700">Encrypted Session Data Ready for Veremark Transfer</p>
                     </div>
-                    {/* Token rows */}
-                    {[
-                      { label: 'Auth0 Session Hash', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
-                      { label: 'Designated ATO', value: profile?.ato_name ?? 'Alpha Flight Academy (Loaded via Profile)' },
-                      { label: 'Target CAA', value: profile?.caa_region ?? 'CAAP — Philippines Civil Aviation Authority' },
-                      { label: 'Consent Timestamp', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
-                    ].map(row => (
-                      <div key={row.label} className="flex items-center gap-3 px-3 py-2" style={{ borderBottom: '1px solid #f1f5f9' }}>
-                        <span className="text-[9px] font-black text-gray-500 uppercase tracking-wide w-32 flex-shrink-0">{row.label}</span>
-                        <div className="flex items-center gap-1.5 flex-1 px-2 py-1" style={{ background: '#f5f7fa', border: '1px solid #e2e8f0' }}>
-                          <Lock size={8} className="text-gray-400 flex-shrink-0" />
-                          <span className="text-[9px] font-mono text-gray-700 select-none">{row.value}</span>
+                    <div className="px-4 py-3 space-y-2.5">
+                      {[
+                        { label: 'Auth0 Key', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
+                        { label: 'Designated Training Academy', value: profile?.ato_name ?? 'Alpha Flight Academy' },
+                        { label: 'Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Civil Aviation Authority of the Philippines' },
+                        { label: 'Secure Consent Timestamp', value: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + ' — ' + new Date().toISOString().slice(11,19) + ' UTC' },
+                      ].map(row => (
+                        <div key={row.label} className="flex items-baseline gap-3">
+                          <span className="text-[9px] text-gray-400 w-36 flex-shrink-0">{row.label}</span>
+                          <span className="text-[10px] font-semibold text-gray-800 select-none">{row.value}</span>
                         </div>
-                      </div>
-                    ))}
-                    <div className="px-3 py-2" style={{ background: '#fafafa' }}>
-                      <p className="text-[8px] text-gray-400 italic">These fields are read-only. PilotRecognition.com cannot modify or access your raw credentials — only the encrypted token bundle is forwarded.</p>
+                      ))}
+                    </div>
+                    <div className="px-4 py-2" style={{ borderTop: '1px solid #e2e8f0' }}>
+                      <p className="text-[8px] text-gray-400 italic">Read-only — PilotRecognition.com cannot modify or access your raw credentials. Only the encrypted token bundle is forwarded.</p>
                     </div>
                   </div>
 
@@ -600,13 +595,13 @@ const HomeTab: React.FC<{
                     <label className="flex items-start gap-3 cursor-pointer group">
                       <div
                         className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
-                        style={{ border: '2px solid #1a1a1a', background: obConsent1 ? '#1a1a1a' : 'white' }}
+                        style={{ border: '2px solid #64748b', background: obConsent1 ? '#1e293b' : '#f1f5f9' }}
                         onClick={() => setObConsent1(!obConsent1)}
                       >
                         {obConsent1 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-wide mb-0.5">1. Authorization for Regional Provider (Veremark Check)</p>
+                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Authorization for Regional Provider (Veremark Check)</p>
                         <p className="text-[9px] text-gray-600 leading-relaxed">I hereby grant my full legal consent to Veremark and its verified field agents to contact my designated Civil Aviation Authority to cross-reference my pilot credentials, licence validity, radio certificates, and medical class status.</p>
                       </div>
                     </label>
@@ -617,13 +612,13 @@ const HomeTab: React.FC<{
                     <label className="flex items-start gap-3 cursor-pointer group">
                       <div
                         className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
-                        style={{ border: '2px solid #1a1a1a', background: obConsent2 ? '#1a1a1a' : 'white' }}
+                        style={{ border: '2px solid #64748b', background: obConsent2 ? '#1e293b' : '#f1f5f9' }}
                         onClick={() => setObConsent2(!obConsent2)}
                       >
                         {obConsent2 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-wide mb-0.5">2. Authorization for Flight Log Audit (ATO / Operator Check)</p>
+                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Authorization for Flight Log Audit (ATO / Operator Check)</p>
                         <p className="text-[9px] text-gray-600 leading-relaxed">I authorize my selected Approved Training Organisation (ATO) or current aviation operator to review my digital logbook hours, sign off on my flight validation history, and securely return a tokenized verification receipt to the platform.</p>
                       </div>
                     </label>
@@ -634,13 +629,13 @@ const HomeTab: React.FC<{
                     <label className="flex items-start gap-3 cursor-pointer group">
                       <div
                         className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
-                        style={{ border: '2px solid #1a1a1a', background: obConsent3 ? '#1a1a1a' : 'white' }}
+                        style={{ border: '2px solid #64748b', background: obConsent3 ? '#1e293b' : '#f1f5f9' }}
                         onClick={() => setObConsent3(!obConsent3)}
                       >
                         {obConsent3 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-wide mb-0.5">3. Platform Data Processing & Terms Agreement</p>
+                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Platform Data Processing & Terms Agreement</p>
                         <p className="text-[9px] text-gray-600 leading-relaxed">I completely agree to the PilotRecognition.com Terms of Service and Aviation Data Privacy Policy. I understand that my unencrypted raw PII data is fully tokenized via Auth0 hashes and will never be permanently stored or exposed by this website.</p>
                       </div>
                     </label>
