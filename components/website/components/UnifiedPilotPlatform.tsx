@@ -608,7 +608,7 @@ const HomeTab: React.FC<{
                       { label: 'System Timestamp Epoch', value: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC' },
                     ].map(row => (
                       <div key={row.label} className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
-                        <span className="text-[9px] text-gray-400 w-40 flex-shrink-0">{row.label}</span>
+                        <span className="text-[9px] font-medium text-gray-700 w-44 flex-shrink-0">{row.label}</span>
                         <span className="text-[10px] font-semibold text-gray-900 select-none">{row.value}</span>
                       </div>
                     ))}
