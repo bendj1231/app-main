@@ -89,17 +89,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <p className="text-slate-300 text-sm mb-8">Free access to Programs, Pathways &amp; Pilot Recognition</p>
 
                             {/* Recognition+ upsell */}
-                            <div className="border border-yellow-500/30 bg-yellow-500/5 rounded-xl p-5 max-w-sm">
+                            <div className="border border-white/20 bg-white/5 rounded-xl p-5 max-w-sm">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span className="text-yellow-400 text-xs font-black tracking-widest uppercase">Recognition+</span>
+                                    <span className="text-white text-xs font-black tracking-widest uppercase">Recognition+</span>
                                 </div>
-                                <p className="text-white/80 text-sm leading-relaxed mb-4">
-                                    Verify your account and validate your flight hours with a <span className="text-yellow-300 font-semibold">Recognition+</span> subscription — unlock priority airline pathway matching and verified credential tokens.
+                                <p className="text-white text-sm leading-relaxed mb-4">
+                                    Verify your account and validate your flight hours with a <span className="text-white font-semibold">Recognition+</span> subscription — unlock priority airline pathway matching and verified credential tokens.
                                 </p>
                                 <button
                                     onClick={() => onNavigate('recognition-plus')}
-                                    className="w-full py-2.5 text-xs font-black tracking-widest text-slate-900 rounded-lg transition-all hover:brightness-110"
-                                    style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}
+                                    className="w-full py-2.5 text-xs font-black tracking-widest text-white rounded-lg bg-red-600 hover:bg-red-700 transition-all"
                                 >
                                     UPGRADE — $99/YR
                                 </button>
@@ -134,7 +133,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {/* Email/password signup via Auth0 Universal Login */}
                             <button
                                 onClick={handleEmailSignup}
-                                className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all duration-200 text-sm tracking-wide shadow-lg shadow-red-600/20"
+                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-200 text-sm tracking-wide shadow-lg shadow-blue-600/20"
                             >
                                 Sign up with Email
                             </button>
