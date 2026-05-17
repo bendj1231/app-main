@@ -139,6 +139,11 @@ const HomeTab: React.FC<{
   const [obConsent3, setObConsent3] = React.useState(false);
   const [obTokenising, setObTokenising] = React.useState(false);
   const [obDone, setObDone] = React.useState(false);
+  const [obLogbookKey, setObLogbookKey] = React.useState('');
+  const [obLogbookSynced, setObLogbookSynced] = React.useState(false);
+  const [obLogbookSyncing, setObLogbookSyncing] = React.useState(false);
+  const [obVaultUrl, setObVaultUrl] = React.useState('');
+  const [obVaultLinked, setObVaultLinked] = React.useState(false);
 
   // ── Regional provider detection via timezone ──
   const detectedRegion = React.useMemo(() => {
@@ -612,6 +617,81 @@ const HomeTab: React.FC<{
                         <span className="text-[10px] font-semibold text-gray-900 select-none">{row.value}</span>
                       </div>
                     ))}
+                  </div>
+
+                  {/* Logbook Tokenization Sync */}
+                  <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #e5e7eb' }}>
+                    <div className="flex items-center justify-between px-4 py-2.5" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: obLogbookSynced ? '#16a34a' : '#e5e7eb' }} />
+                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Logbook Provider Sync</p>
+                      </div>
+                      {obLogbookSynced && (
+                        <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>Tokenization Key Accepted</span>
+                      )}
+                    </div>
+                    <div className="px-4 py-3">
+                      <p className="text-[9px] text-gray-500 mb-2.5">Enter the tokenization key issued by your logbook provider (e.g. ForeFlight, MyFlightbook, Safelog) to authorize a read-only data feed to this platform. Your provider retains full write access and data ownership.</p>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={obLogbookKey}
+                          onChange={e => { setObLogbookKey(e.target.value); setObLogbookSynced(false); }}
+                          placeholder="Paste tokenization key..."
+                          className="flex-1 px-3 py-2 text-[10px] font-mono text-gray-900 outline-none"
+                          style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                        />
+                        <button
+                          onClick={() => {
+                            if (!obLogbookKey.trim()) return;
+                            setObLogbookSyncing(true);
+                            setTimeout(() => { setObLogbookSyncing(false); setObLogbookSynced(true); }, 1200);
+                          }}
+                          disabled={!obLogbookKey.trim() || obLogbookSyncing}
+                          className="px-3 py-2 text-[9px] font-bold text-white transition-all disabled:opacity-40"
+                          style={{ background: '#1a1a1a', borderRadius: '6px', whiteSpace: 'nowrap' }}
+                        >
+                          {obLogbookSyncing ? 'Syncing...' : 'Sync'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Veremark Document Vault */}
+                  <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #e5e7eb' }}>
+                    <div className="flex items-center justify-between px-4 py-2.5" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: obVaultLinked ? '#16a34a' : '#e5e7eb' }} />
+                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Veremark Document Vault</p>
+                      </div>
+                      {obVaultLinked && (
+                        <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>Vault Linked</span>
+                      )}
+                    </div>
+                    <div className="px-4 py-3">
+                      <p className="text-[9px] text-gray-500 mb-2.5">Link your Veremark secure document vault — the folder or collection containing scanned copies of your pilot licence, medical certificate, radio licence, and training records. Veremark stores and controls access to these documents. This platform never receives or holds the files.</p>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={obVaultUrl}
+                          onChange={e => { setObVaultUrl(e.target.value); setObVaultLinked(false); }}
+                          placeholder="Paste Veremark vault link or folder ID..."
+                          className="flex-1 px-3 py-2 text-[10px] text-gray-900 outline-none"
+                          style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                        />
+                        <button
+                          onClick={() => { if (obVaultUrl.trim()) setObVaultLinked(true); }}
+                          disabled={!obVaultUrl.trim()}
+                          className="px-3 py-2 text-[9px] font-bold text-white transition-all disabled:opacity-40"
+                          style={{ background: '#cc0000', borderRadius: '6px', whiteSpace: 'nowrap' }}
+                        >
+                          Link
+                        </button>
+                      </div>
+                      {obVaultLinked && (
+                        <p className="text-[8px] text-green-700 mt-2 font-medium">Vault reference stored. Veremark will route document access requests directly to this link upon verification dispatch.</p>
+                      )}
+                    </div>
                   </div>
 
                   {/* System Constraint Notice */}
