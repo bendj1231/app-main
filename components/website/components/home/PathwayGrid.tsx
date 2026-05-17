@@ -118,17 +118,13 @@ const viewSets: ViewSet[] = [
 const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = false) => ({
     home: [
         {
-            id: 'FOUNDATION-PROGRAM-ENROLL',
+            id: 'access-platform',
             image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-            enrolledImage: '/pr2.png',
-            title: 'Foundation Program Enroll',
-            enrolledTitle: 'Foundation Program Access',
-            subtitle: '50+ hours mentorship. Start your journey today!',
-            enrolledSubtitle: 'Access your Foundation Program dashboard and resources',
+            title: 'Access the Platform',
+            subtitle: 'Authenticate credentials to launch your digital flight deck, manage verified credential tokens, and audit live operator pathways.',
             icon: Map,
-            badge: 'Now Open',
-            enrolledBadge: 'Enrolled',
-            accentColor: 'from-emerald-500/80 to-teal-400/80',
+            badge: null,
+            accentColor: 'from-blue-600/80 to-blue-800/80',
         },
         {
             id: 'card-2',
@@ -463,9 +459,80 @@ const dummyCards = [
     },
 ];
 
+const AccessPlatformCard: React.FC<{
+    onLogin: () => void;
+    onNavigate: (page: string) => void;
+    isLoggedIn: boolean;
+}> = ({ onLogin, onNavigate, isLoggedIn }) => {
+    return (
+        <div className="relative w-full h-full flex overflow-hidden rounded-none border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]">
+            {/* Left: Photo */}
+            <div className="relative w-1/2 h-full flex-shrink-0">
+                <img
+                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png"
+                    alt="Pilots"
+                    className="w-full h-full object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a1628]/80 pointer-events-none" />
+            </div>
+
+            {/* Right: Blue access panel */}
+            <div className="relative flex-1 h-full bg-[#0a1628] flex flex-col justify-between px-4 py-4 md:px-5 md:py-5">
+                {/* Top accent line */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
+
+                {/* Header */}
+                <div className="flex-1 flex flex-col justify-center gap-2 md:gap-3">
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-[#00b4d8] text-xs font-bold">&#8811;</span>
+                        <p className="text-[10px] md:text-xs text-[#00b4d8] font-bold uppercase tracking-[0.15em]">
+                            Pilot Platform
+                        </p>
+                    </div>
+                    <h3 className="text-white text-sm md:text-base lg:text-lg font-light uppercase tracking-widest leading-tight">
+                        Access the Platform
+                    </h3>
+                    <div className="w-8 h-[2px] bg-[#00b4d8]" />
+                    <p className="text-slate-400 text-[9px] md:text-[10px] leading-relaxed line-clamp-3 md:line-clamp-4">
+                        Authenticate credentials to launch your digital flight deck, manage verified credential tokens, and audit live operator pathways.
+                    </p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col gap-2 mt-3">
+                    {isLoggedIn ? (
+                        <button
+                            onClick={() => onNavigate('platform')}
+                            className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
+                        >
+                            Enter Flight Deck →
+                        </button>
+                    ) : (
+                        <>
+                            <button
+                                onClick={onLogin}
+                                className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
+                            >
+                                Get Recognition Free
+                            </button>
+                            <button
+                                onClick={onLogin}
+                                className="w-full py-2.5 bg-transparent border border-white/50 hover:border-white/80 hover:bg-white/5 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200"
+                            >
+                                Sign In to Flight Deck →
+                            </button>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export const PathwayGrid: React.FC<PathwayGridProps> = ({
     onNavigate,
     onGoToProgramDetail,
+    onLogin,
 }) => {
     const { currentUser, userProfile, refreshUserProfile } = useAuth();
     const isLoggedIn = !!currentUser;
@@ -1048,9 +1115,12 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {/* Mobile: single column stack */}
                                     {isMobileView && (
                                         <div className="grid grid-cols-1 gap-2 mb-4">
-                                            {currentCards.slice(0, 5).map((card, idx) => (
-                                                <motion.div key={card.id} variants={cardVariants} className={idx < 2 ? 'h-[200px] xs:h-[220px]' : 'h-[120px] xs:h-[130px]'}>
-                                                    <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 2} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
+                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="h-[200px] xs:h-[220px]">
+                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                            </motion.div>
+                                            {currentCards.slice(1, 5).map((card, idx) => (
+                                                <motion.div key={card.id} variants={cardVariants} className={idx < 1 ? 'h-[200px] xs:h-[220px]' : 'h-[120px] xs:h-[130px]'}>
+                                                    <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={idx < 1} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
                                                 </motion.div>
                                             ))}
                                         </div>
@@ -1059,11 +1129,12 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {isTabletView && (
                                         <>
                                             <div className="grid grid-cols-2 gap-2 mb-2.5">
-                                                {currentCards.slice(0, 2).map((card) => (
-                                                    <motion.div key={card.id} variants={cardVariants} className="h-[260px]">
-                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
-                                                    </motion.div>
-                                                ))}
+                                                <motion.div key={currentCards[0].id} variants={cardVariants} className="h-[260px]">
+                                                    <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                                </motion.div>
+                                                <motion.div key={currentCards[1].id} variants={cardVariants} className="h-[260px]">
+                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1].id} onHover={() => setHoveredCard(currentCards[1].id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
+                                                </motion.div>
                                             </div>
                                             <div className="grid grid-cols-3 gap-2 mb-2.5">
                                                 {currentCards.slice(2, 5).map((card) => (
@@ -1078,11 +1149,14 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {!isMobileView && !isTabletView && (
                                         <>
                                             <div className="grid grid-cols-2 gap-2 md:gap-2.5 mb-2.5">
-                                                {currentCards.slice(0, 2).map((card) => (
-                                                    <motion.div key={card.id} variants={cardVariants} className="h-[300px] lg:h-[340px] xl:h-[360px] 2xl:h-[400px]">
-                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
-                                                    </motion.div>
-                                                ))}
+                                                {/* Top-left: Access Platform custom card */}
+                                                <motion.div key={currentCards[0].id} variants={cardVariants} className="h-[300px] lg:h-[340px] xl:h-[360px] 2xl:h-[400px]">
+                                                    <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                                </motion.div>
+                                                {/* Top-right: card-2 */}
+                                                <motion.div key={currentCards[1].id} variants={cardVariants} className="h-[300px] lg:h-[340px] xl:h-[360px] 2xl:h-[400px]">
+                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1].id} onHover={() => setHoveredCard(currentCards[1].id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
+                                                </motion.div>
                                             </div>
                                             <div className="grid grid-cols-3 gap-2 md:gap-2.5 mb-2.5">
                                                 {currentCards.slice(2, 5).map((card) => (
