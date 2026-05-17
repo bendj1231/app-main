@@ -445,103 +445,87 @@ const HomeTab: React.FC<{
               <ChevronRight size={14} className="ml-auto text-white/30 group-hover/creds:text-white/70 transition-colors" />
             </button>
           </motion.div>
-        </div>
+          {/* ── CARD 3: Type Rating Search ── */}
+          <motion.div
+            custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+            onClick={() => window.location.href = '/type-rating-search'}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+          >
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('/images/airline-expectations/cockpit-bg.png')", opacity: 0.55 }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,80,0.65) 50%, rgba(15,23,42,0.95) 100%)' }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/30 to-transparent" />
 
-        {/* ── CARD 3: Type Rating Search ── */}
-        <motion.div
-          custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-          onClick={() => window.location.href = '/type-rating-search'}
-          className="relative group cursor-pointer overflow-hidden"
-          style={{ height: '128px', border: '1px solid rgba(255,255,255,0.2)' }}
-        >
-          {/* BG image — cockpit */}
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-            style={{ backgroundImage: "url('/images/airline-expectations/cockpit-bg.png')", opacity: 0.55 }}
-          />
-          {/* Fallback gradient when image absent */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,80,0.7) 50%, rgba(15,23,42,0.95) 100%)' }} />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/30 to-transparent" />
-
-          {/* Top-left label */}
-          <div className="absolute top-3 left-4">
-            <p className="text-[9px] font-black tracking-[0.15em] text-white/40 uppercase mb-0.5">Recommended</p>
-            <p className="text-xs font-black text-white tracking-wide">Type Rating Search</p>
-          </div>
-
-          {/* Centre match pills */}
-          <div className="absolute top-3 right-4 flex flex-col gap-1.5 items-end">
-            {[
-              { label: 'Airbus A320 Family', pct: 95, color: 'rgba(16,185,129,0.85)' },
-              { label: 'Boeing 737 Next Gen', pct: 60, color: 'rgba(234,179,8,0.85)'  },
-            ].map(p => (
-              <div key={p.label} className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)' }}>
-                <span className="text-[9px] text-white/70 font-semibold">{p.label}</span>
-                <span className="text-[9px] font-black" style={{ color: p.color === 'rgba(16,185,129,0.85)' ? '#34d399' : '#fbbf24' }}>{p.pct}% Match</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom nav strip */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(0,0,0,0.65)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              <ChevronRight size={14} className="text-white" />
+            <div className="absolute top-3 left-4">
+              <p className="text-[9px] font-black tracking-[0.15em] text-white/40 uppercase mb-0.5">Recommended</p>
+              <p className="text-xs font-black text-white tracking-wide">Type Rating Search</p>
             </div>
-            <span className="text-[10px] font-black tracking-widest text-white/70 uppercase">View All Type Ratings</span>
-            <ChevronRight size={10} className="text-white/30 ml-auto" />
-          </div>
 
-          <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-        </motion.div>
-
-        {/* ── CARD 4: Operator Expectations ── */}
-        <motion.div
-          custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-          onClick={() => setTab('pathways')}
-          className="relative group cursor-pointer overflow-hidden"
-          style={{ height: '128px', border: '1px solid rgba(255,255,255,0.2)' }}
-        >
-          {/* BG image — tarmac / airline */}
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-            style={{ backgroundImage: "url('/images/airline-expectations/airline-tarmac.png')", opacity: 0.5 }}
-          />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,15,30,0.92) 0%, rgba(20,30,60,0.6) 50%, rgba(10,15,30,0.96) 100%)' }} />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/25 to-transparent" />
-
-          {/* Top-left label */}
-          <div className="absolute top-3 left-4">
-            <p className="text-[9px] font-black tracking-[0.15em] text-white/40 uppercase mb-0.5">Explore</p>
-            <p className="text-xs font-black text-white tracking-wide">Operator Expectations & Requirements</p>
-          </div>
-
-          {/* Centre readiness rows */}
-          <div className="absolute top-3 right-4 flex flex-col gap-1.5 items-end">
-            {[
-              { label: 'Singapore Airlines',   pct: 20, barColor: '#f87171' },
-              { label: 'Alpha Operator Group', pct: 15, barColor: '#f87171' },
-            ].map(op => (
-              <div key={op.label} className="flex items-center gap-2 px-2 py-1" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)' }}>
-                <span className="text-[9px] text-white/70 font-semibold">{op.label}</span>
-                <div className="w-16 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                  <div className="h-full transition-all" style={{ width: `${op.pct}%`, background: op.barColor }} />
+            <div className="absolute top-3 right-3 flex flex-col gap-1.5 items-end">
+              {[
+                { label: 'Airbus A320 Family', pct: 95, textColor: '#34d399' },
+                { label: 'Boeing 737 Next Gen', pct: 60, textColor: '#fbbf24' },
+              ].map(p => (
+                <div key={p.label} className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)' }}>
+                  <span className="text-[9px] text-white/65 font-semibold">{p.label}</span>
+                  <span className="text-[9px] font-black" style={{ color: p.textColor }}>{p.pct}% Match</span>
                 </div>
-                <span className="text-[9px] font-black text-red-400">{op.pct}% Ready</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom nav strip */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(0,0,0,0.65)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              <ChevronRight size={14} className="text-white" />
+              ))}
             </div>
-            <span className="text-[10px] font-black tracking-widest text-white/70 uppercase">Explore All Operators</span>
-            <ChevronRight size={10} className="text-white/30 ml-auto" />
-          </div>
 
-          <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-        </motion.div>
+            <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(0,0,0,0.65)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <ChevronRight size={14} className="text-white" />
+              </div>
+              <span className="text-[10px] font-black tracking-widest text-white/70 uppercase">View All Type Ratings</span>
+              <ChevronRight size={10} className="text-white/30 ml-auto" />
+            </div>
+            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
+          </motion.div>
+
+          {/* ── CARD 4: Operator Expectations ── */}
+          <motion.div
+            custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+            onClick={() => setTab('pathways')}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+          >
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('/images/airline-expectations/airline-tarmac.png')", opacity: 0.5 }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,15,30,0.92) 0%, rgba(20,30,60,0.6) 50%, rgba(10,15,30,0.96) 100%)' }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/25 to-transparent" />
+
+            <div className="absolute top-3 left-4">
+              <p className="text-[9px] font-black tracking-[0.15em] text-white/40 uppercase mb-0.5">Explore</p>
+              <p className="text-xs font-black text-white tracking-wide">Operator Expectations & Requirements</p>
+            </div>
+
+            <div className="absolute top-3 right-3 flex flex-col gap-1.5 items-end">
+              {[
+                { label: 'Singapore Airlines',   pct: 20 },
+                { label: 'Alpha Operator Group', pct: 15 },
+              ].map(op => (
+                <div key={op.label} className="flex items-center gap-2 px-2 py-1" style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)' }}>
+                  <span className="text-[9px] text-white/65 font-semibold">{op.label}</span>
+                  <div className="w-14 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <div className="h-full" style={{ width: `${op.pct}%`, background: '#f87171' }} />
+                  </div>
+                  <span className="text-[9px] font-black text-red-400">{op.pct}% Ready</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(0,0,0,0.65)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <ChevronRight size={14} className="text-white" />
+              </div>
+              <span className="text-[10px] font-black tracking-widest text-white/70 uppercase">Explore All Operators</span>
+              <ChevronRight size={10} className="text-white/30 ml-auto" />
+            </div>
+            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
+          </motion.div>
+        </div>
 
       </div>{/* end right flex col */}
 
