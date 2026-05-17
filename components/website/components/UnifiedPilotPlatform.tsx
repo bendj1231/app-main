@@ -789,11 +789,35 @@ const HomeTab: React.FC<{
                         )}
                       </div>}
 
-                      {/* PilotRecognition Secure Logbook inline reminder */}
+                      {/* PilotRecognition Secure Logbook — DB Protocol Card */}
                       {obLogbookProvider === 'PilotRecognition Secure Logbook' && (
-                        <div className="px-3 py-2.5 rounded-lg" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-                          <p className="text-[8px] font-black text-green-800 mb-1">Zero-Knowledge Architecture Active</p>
-                          <p className="text-[8px] text-green-700 leading-relaxed">Your flight hours are processed exclusively as a one-way cryptographic hash. The raw hour integers are completely discarded at the session origin — only the immutable mathematical hash string is generated. Veremark utilises this hash solely to cross-reference against matching ATO attestation records. Neither PilotRecognition nor Veremark can reverse-engineer or read your raw logbook data. You own the source data. We store nothing.</p>
+                        <div className="rounded-lg overflow-hidden" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                          {/* Card header */}
+                          <div className="flex items-center justify-between px-3 py-2" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                            <p className="text-[8px] font-black text-gray-800 uppercase tracking-widest">Database Protocol &amp; Ledger Architecture</p>
+                            <span className="text-[7px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#e2e8f0', color: '#64748b' }}>Supabase Vault Status: Neutral Node</span>
+                          </div>
+                          {/* Architecture rows */}
+                          <div className="px-3 py-2.5 space-y-2">
+                            {[
+                              { label: 'Host Domain Storage', value: 'Supabase Neutral Node Ledger' },
+                              { label: 'Ingestion Vector', value: 'Secure Auth0 Identity Protocol Layer' },
+                              { label: 'Storage Target', value: 'Encrypted Supabase Database Network (profiles schema)' },
+                              { label: 'Retention State', value: 'Permanent Cryptographic Hash Tokenization Only' },
+                            ].map(row => (
+                              <div key={row.label} className="flex items-baseline gap-2">
+                                <span className="text-[8px] font-black text-gray-900 w-28 flex-shrink-0">{row.label}</span>
+                                <span className="text-[8px] text-gray-500">{row.value}</span>
+                              </div>
+                            ))}
+                          </div>
+                          {/* Directive paragraph */}
+                          <div className="px-3 pb-3">
+                            <div className="px-2.5 py-2 rounded" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
+                              <p className="text-[7px] font-black text-gray-700 uppercase tracking-wide mb-1">System Architecture Directive</p>
+                              <p className="text-[8px] text-gray-500 leading-relaxed">Flight hour records are ingested exclusively via the secure Auth0 session layer, where they are immediately converted into one-way cryptographic hashes. This interface passes the resulting hash token directly to a neutral, read-only storage partition on Supabase. Because the platform possesses no structural decryption keys, the raw integer values are completely unrecoverable by the database host. The local database remains entirely neutral, retaining zero visible or readable logbook assets.</p>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
