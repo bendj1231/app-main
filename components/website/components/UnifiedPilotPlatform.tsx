@@ -120,19 +120,13 @@ const HomeTab: React.FC<{
   enrolledInFoundation: boolean; airlines: any[];
 }> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines }) => {
   const [visible, setVisible] = React.useState(false);
-  const [welcomeVisible, setWelcomeVisible] = React.useState(() => {
-    try { return localStorage.getItem('welcome_dismissed') !== '1'; } catch { return true; }
+  const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
+    try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
   });
-  const [welcomeFading, setWelcomeFading] = React.useState(false);
-  React.useEffect(() => {
-    if (!welcomeVisible) return;
-    const fadeTimer = setTimeout(() => setWelcomeFading(true), 2500);
-    const hideTimer = setTimeout(() => {
-      setWelcomeVisible(false);
-      try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
-    }, 3300);
-    return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer); };
-  }, [welcomeVisible]);
+  const dismissWelcome = () => {
+    setWelcomeDismissed(true);
+    try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
+  };
   const [onboardingOpen, setOnboardingOpen] = React.useState(false);
   const [onboardingStep, setOnboardingStep] = React.useState(1);
   const [obATO, setObATO] = React.useState('');
@@ -189,12 +183,12 @@ const HomeTab: React.FC<{
 
   return (
     <motion.div
-      className="flex gap-4 w-full h-full"
+      className="flex gap-5 w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      {/* ── LEFT: Pilot Command Center Card ── */}
+      {/* ── LEFT: Profile Card ── */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -202,170 +196,119 @@ const HomeTab: React.FC<{
         className="w-64 flex-shrink-0 flex flex-col self-start"
         style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
       >
-
-        {/* ── TIER 1: Identity ── */}
-        <div className="px-4 pt-3 pb-2">
+        <div className="p-6 flex-1">
           {expiredChecks.length > 0 && (
-            <button onClick={() => setTab('wallet')} className="w-full mb-1.5 flex items-center gap-2 px-2 py-0.5 text-[9px] text-red-300 font-bold tracking-wide" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}>
-              <AlertTriangle size={9} className="flex-shrink-0" />
+            <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+              <AlertTriangle size={12} className="flex-shrink-0" />
               {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
             </button>
           )}
-          <div className="flex items-center gap-3 mb-1.5">
-            <div className="relative flex-shrink-0">
-              {profile?.profile_image_url
-                ? <img src={profile.profile_image_url} alt={name} className="w-9 h-9 object-cover rounded-full border-2 border-white/20" />
-                : <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-sm" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>{initials}</div>
-              }
-              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full flex items-center justify-center" style={{ background: walletChecks.some(c => c.status === 'verified') ? '#10b981' : '#64748b', border: '2px solid rgba(30,41,59,0.9)' }}>
-                <Shield size={5} className="text-white" />
-              </div>
+
+          {/* Avatar */}
+          <div className="relative w-24 h-24 mx-auto mb-4">
+            {profile?.profile_image_url
+              ? <img src={profile.profile_image_url} alt={name} className="w-full h-full object-cover rounded-full border-2 border-white/30" />
+              : <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: '#3b82f6' }}>{initials}</div>}
+          </div>
+
+          <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
+          <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">{level}</p>
+
+          {/* 2×2 stats — gamified empty states */}
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              {hours > 0
+                ? <p className="text-lg font-bold text-white">{hours}</p>
+                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Log your first<br/>flight hour</p>}
+              <p className="text-xs text-white/60 uppercase mt-0.5">HOURS</p>
             </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="text-xs font-black text-white tracking-wide truncate">{name}</h2>
-              <p className="text-[9px] text-orange-400 font-bold uppercase tracking-wider leading-none">{level}</p>
-              {/* Progress bar — inline under rank */}
-              <div className="flex items-center gap-1.5 mt-1">
-                <div className="flex-1 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                  <div className="h-full transition-all duration-700" style={{ width: `${Math.max(progressPct, progressPct > 0 ? 3 : 0)}%`, background: 'linear-gradient(90deg,#f97316,#ef4444)' }} />
-                </div>
-                <span className={`text-[8px] font-bold flex-shrink-0 ${progressPct > 0 ? 'text-orange-400' : 'text-white/20'}`}>{Math.round(progressPct)}%</span>
-              </div>
+            <div className="text-center p-2 cursor-pointer hover:ring-1 hover:ring-sky-400/50 transition-all" style={{ background: 'rgba(255,255,255,0.05)' }} onClick={() => setTab('score' as TabId)}>
+              {score > 0
+                ? <p className="text-lg font-bold text-sky-300">{score}</p>
+                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Build your<br/>profile first</p>}
+              <p className="text-xs text-white/60 uppercase mt-0.5">SCORE</p>
             </div>
+            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              {certCount > 0
+                ? <p className="text-lg font-bold text-white">{certCount}</p>
+                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Add your<br/>credentials</p>}
+              <p className="text-xs text-white/60 uppercase mt-0.5">CERTS</p>
+            </div>
+            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <p className="text-lg font-bold text-orange-400">{Math.max(hoursForNext - hours, 0)}</p>
+              <p className="text-xs text-white/60 uppercase mt-0.5">TO NEXT</p>
+            </div>
+          </div>
+
+          {/* Progress bar — visible track */}
+          <div className="mb-2">
+            <div className="flex justify-between text-xs mb-1">
+              <span className="text-white/60 uppercase tracking-wider text-[10px]">LEVEL PROGRESS</span>
+              <span className={`font-bold text-[10px] ${progressPct > 0 ? 'text-orange-400' : 'text-white/30'}`}>{Math.round(progressPct)}%</span>
+            </div>
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${Math.max(progressPct, progressPct > 0 ? 4 : 0)}%`, background: progressPct > 0 ? 'linear-gradient(90deg, #f97316, #ef4444)' : 'transparent' }}
+              />
+            </div>
+            {progressPct === 0 && <p className="text-[9px] text-white/25 mt-2">Log hours to level up →</p>}
           </div>
         </div>
 
-        {/* ── TIER 2: Core Recognition Metrics — compact single row ── */}
-        <div className="px-4 py-1.5" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <div className="grid grid-cols-4 gap-1.5">
-            {/* Score ring */}
-            <div className="col-span-1 flex flex-col items-center justify-center p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <div className="relative w-9 h-9">
-                <svg viewBox="0 0 44 44" className="w-full h-full -rotate-90">
-                  <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="4" />
-                  <circle cx="22" cy="22" r="18" fill="none" stroke="#38bdf8" strokeWidth="4"
-                    strokeDasharray={`${(score / 100) * 113} 113`} strokeLinecap="round" />
-                </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-[9px] font-black text-sky-300">{score || '—'}</span>
-              </div>
-              <p className="text-[8px] text-white/30 uppercase tracking-wide mt-0.5">SCORE</p>
-            </div>
-            {/* Avg match */}
-            <div className="flex flex-col items-center justify-center p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className={`text-sm font-black ${matchPct >= 60 ? 'text-emerald-400' : matchPct >= 30 ? 'text-yellow-400' : 'text-white/40'}`}>{matchPct}%</p>
-              <p className="text-[8px] text-white/30 uppercase tracking-wide">MATCH</p>
-            </div>
-            {/* Hours */}
-            <div className="flex flex-col items-center justify-center p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className={`text-sm font-black ${hours > 0 ? 'text-white' : 'text-white/20'}`}>{hours > 0 ? hours : '—'}</p>
-              <p className="text-[8px] text-white/30 uppercase tracking-wide">HRS</p>
-            </div>
-            {/* Certs */}
-            <button onClick={() => setTab('wallet')} className="flex flex-col items-center justify-center p-1.5 transition-all hover:brightness-110" style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${walletChecks.some(c => c.status === 'verified') ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.06)'}` }}>
-              <div className="flex items-center gap-0.5">
-                <p className={`text-sm font-black ${certCount > 0 ? 'text-white' : 'text-white/20'}`}>{certCount > 0 ? certCount : '—'}</p>
-                {walletChecks.some(c => c.status === 'verified') && <Shield size={8} className="text-emerald-400" />}
-              </div>
-              <p className="text-[8px] text-white/30 uppercase tracking-wide">CERTS</p>
-            </button>
-          </div>
-        </div>
-
-        {/* ── PILOT PROFILE CTA ── */}
+        {/* PILOT PROFILE link */}
         <button
           onClick={() => onNavigate('pilot-recognition-profile')}
-          className="w-full flex items-center gap-2.5 px-4 py-1.5 transition-colors hover:bg-white/5"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+          className="w-full flex items-center gap-3 px-6 py-4 transition-colors hover:bg-white/5"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
         >
-          <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.25)' }}>
-            <User size={11} className="text-sky-400" />
-          </div>
-          <span className="text-[10px] font-black text-white tracking-wider flex-1 text-left">PILOT PROFILE</span>
-          <ChevronRight size={12} className="text-white/30" />
+          <ChevronRight size={18} className="text-white/70" />
+          <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
         </button>
 
-        {/* ── TIER 3: Live Activity & Operator Requests ── */}
-        <div className="px-4 py-1.5 flex-1">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-[8px] font-black tracking-[0.15em] text-white/25 uppercase">Live Activity</p>
-            <div className="flex items-center gap-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[8px] text-emerald-400/70 font-bold">LIVE</span>
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            {/* Alert 1 — High priority operator request */}
-            <div className="px-2 py-1" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
-              <div className="flex items-center gap-1.5 mb-0.5">
-                <span className="text-[9px] flex-shrink-0">📡</span>
-                <p className="text-[9px] font-black text-white leading-tight flex-1">Singapore Airlines · <span className="text-white/40 font-normal">token access requested</span></p>
-              </div>
-              <button
-                onClick={() => setTab('wallet')}
-                className="w-full py-0.5 text-[8px] font-black tracking-wider text-sky-300 transition-all hover:brightness-110"
-                style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)' }}
-              >
-                GRANT TOKENIZED ACCESS →
-              </button>
-            </div>
-
-            {/* Alert 2 — Veremark pass */}
-            <div className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)' }}>
-              <span className="text-[9px] flex-shrink-0">🔍</span>
-              <p className="text-[9px] text-white flex-1 leading-tight"><span className="font-black">Veremark check passed</span> · <span className="text-emerald-400/70">CAA token updated</span></p>
-              <CheckCircle size={9} className="text-emerald-400 flex-shrink-0" />
-            </div>
-
-            {/* Alert 3 — Flagged log row */}
-            <div className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(234,179,8,0.07)', border: '1px solid rgba(234,179,8,0.2)' }}>
-              <span className="text-[9px] flex-shrink-0">⚠️</span>
-              <p className="text-[9px] text-white flex-1 leading-tight"><span className="font-black">Alpha Flight Academy</span> · <span className="text-yellow-400/70">log row #32 flagged</span></p>
-              <button onClick={() => setTab('logbook')} className="text-[8px] font-black text-yellow-400/80 hover:text-yellow-300 transition-colors flex-shrink-0 underline underline-offset-1">VIEW</button>
-            </div>
-          </div>
-        </div>
-
-        {/* ── TIER 4: Recognition+ — pinned bottom ── */}
+        {/* Recognition+ upgrade tile — gold accent */}
         <button
           onClick={() => setTab('settings' as TabId)}
-          className="w-full flex items-center gap-3 px-4 py-2 transition-all hover:brightness-110 flex-shrink-0"
+          className="w-full flex flex-col gap-1 px-5 py-4 transition-all hover:brightness-110"
           style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
         >
-          <Star size={12} className="text-yellow-400 flex-shrink-0" />
-          <div className="flex-1 text-left">
-            <p className="text-[10px] font-black text-yellow-300 tracking-wider">RECOGNITION+ — $99/YR</p>
-            <p className="text-[8px] text-yellow-500/70">Priority pipeline · unlimited pathways · AI coach</p>
+          <div className="flex items-center gap-2">
+            <Star size={13} className="text-yellow-400 flex-shrink-0" />
+            <span className="text-xs font-black text-yellow-300 tracking-wider">RECOGNITION+</span>
           </div>
-          <ChevronRight size={11} className="text-yellow-400/50 flex-shrink-0" />
+          <p className="text-[10px] text-yellow-500/80 font-semibold leading-snug">Priority pipeline access, unlimited pathway views & AI coach</p>
+          <div className="mt-1 w-full py-1.5 text-center text-[11px] font-black tracking-widest text-slate-900 rounded" style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}>
+            UPGRADE NOW — $99/YR
+          </div>
         </button>
-
       </motion.div>
 
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
-      <div className="flex-1 flex flex-col gap-2 relative">
+      <div className="flex-1 flex flex-col gap-4">
 
-        {/* ── WELCOME OVERLAY — floating auto-fade, zero layout impact ── */}
-        {welcomeVisible && profile && (
+        {/* ── WELCOME BAR — dismissible, first-visit only ── */}
+        {!welcomeDismissed && profile && (
           <div
-            className="pointer-events-none absolute top-0 left-0 right-0 flex justify-center z-50 pt-3"
-            style={{ transition: 'opacity 0.8s ease', opacity: welcomeFading ? 0 : 1 }}
+            className="flex items-center gap-3 px-4 py-2.5"
+            style={{ background: 'linear-gradient(90deg, rgba(59,130,246,0.18), rgba(99,102,241,0.14))', border: '1px solid rgba(99,102,241,0.3)' }}
           >
-            <div
-              className="flex items-center gap-2.5 px-5 py-2.5"
-              style={{ background: 'rgba(10,18,36,0.85)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 4px 24px rgba(0,0,0,0.4)' }}
+            <span className="text-sm">✈️</span>
+            <p className="flex-1 text-xs font-semibold text-white/90 leading-snug">
+              Welcome aboard, Captain <span className="text-sky-300 font-black">{name}</span>! Let's set up your profile to unlock industry pathways.
+            </p>
+            <button
+              onClick={dismissWelcome}
+              className="text-white/30 hover:text-white/80 transition-colors flex-shrink-0 ml-2"
+              aria-label="Dismiss"
             >
-              <span className="text-sm">🛫</span>
-              <p className="text-xs font-bold text-white/90 tracking-wide whitespace-nowrap">
-                Welcome back, Captain <span className="text-sky-300 font-black">{name}</span>
-              </p>
-            </div>
+              <X size={14} />
+            </button>
           </div>
         )}
 
         {/* ── ACCOUNT ACTIVATION STRIP — compact single row ── */}
         <div
-          className="flex items-center gap-4 px-4 py-2"
+          className="flex items-center gap-4 px-5 py-3"
           style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
         >
           {/* Left: context */}
@@ -397,25 +340,30 @@ const HomeTab: React.FC<{
         {expiredChecks.length > 0 && (
           <button
             onClick={() => setTab('wallet')}
-            className="w-full flex items-center gap-2 px-4 py-1.5 text-left transition-all hover:brightness-110"
+            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:brightness-110"
             style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.4)' }}
           >
-            <AlertTriangle size={11} className="text-red-300 flex-shrink-0" />
-            <p className="text-[10px] font-bold text-red-300 flex-1 leading-none">
-              {expiredChecks.length} Credential{expiredChecks.length > 1 ? 's' : ''} Expired — Pre-Cleared Status Inactive
-            </p>
-            <ChevronRight size={12} className="text-red-400 flex-shrink-0" />
+            <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center flex-shrink-0">
+              <AlertTriangle size={15} className="text-red-300" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-red-300 leading-none mb-0.5">
+                {expiredChecks.length} Credential{expiredChecks.length > 1 ? 's' : ''} Expired — Pre-Cleared Status Inactive
+              </p>
+              <p className="text-xs text-red-400/70">Renew in Credential Wallet to restore verified status for airline operators.</p>
+            </div>
+            <ChevronRight size={16} className="text-red-400 flex-shrink-0" />
           </button>
         )}
 
         {/* Bento grid — unified overlay style on all 3 cards */}
-        <div className="grid grid-cols-2 gap-2 content-start">
+        <div className="grid grid-cols-2 gap-4 content-start">
           {/* MY PATHWAYS — with live match badge */}
           <motion.div
             custom={0} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[0].onClick}
             className="col-span-2 relative group cursor-pointer overflow-hidden"
-            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '180px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[0].image})`, opacity: 0.75 }} />
@@ -444,7 +392,7 @@ const HomeTab: React.FC<{
             custom={1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[1].onClick}
             className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '100px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[1].image})`, opacity: 0.7 }} />
@@ -462,7 +410,7 @@ const HomeTab: React.FC<{
           <motion.div
             custom={2} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             className="relative overflow-hidden flex flex-col gap-0"
-            style={{ height: '100px', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             {/* Top half — Digital Logbook */}
             <button
@@ -499,119 +447,100 @@ const HomeTab: React.FC<{
           </motion.div>
         </div>
 
-        {/* ── BOTTOM DIRECTORY ROW — cinematic image cards ── */}
+        {/* ── CARD 3: Type Rating Search ── */}
         <motion.div
-          className="grid grid-cols-2 gap-2"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 16 }}
-          transition={{ duration: 0.45, delay: 0.3 }}
+          custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+          onClick={() => window.location.href = '/type-rating-search'}
+          className="relative group cursor-pointer overflow-hidden"
+          style={{ height: '128px', border: '1px solid rgba(255,255,255,0.2)' }}
         >
-          {/* ── Column A: Type Rating Directory ── */}
-          <motion.div
-            custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-            onClick={() => onNavigate('type-rating-search')}
-            className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            {/* Background image — A320 cockpit */}
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: "url('/images/cockpit-a320.jpg'),url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')", opacity: 0.65 }}
-            />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.55) 100%)' }} />
-            {/* Hover border */}
-            <div className="absolute inset-0 border-2 border-indigo-500/0 group-hover:border-indigo-500/50 transition-colors duration-300 pointer-events-none" />
+          {/* BG image — cockpit */}
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+            style={{ backgroundImage: "url('/images/airline-expectations/cockpit-bg.png')", opacity: 0.55 }}
+          />
+          {/* Fallback gradient when image absent */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,80,0.7) 50%, rgba(15,23,42,0.95) 100%)' }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/30 to-transparent" />
 
-            {/* Top-left header label */}
-            <div className="absolute top-3 left-3 flex items-center gap-1.5">
-              <span className="text-[9px] font-black tracking-widest text-white/50 uppercase">Recommended:</span>
-              <span className="text-[9px] font-black tracking-widest text-white uppercase">Type Rating Search</span>
-            </div>
+          {/* Top-left label */}
+          <div className="absolute top-3 left-4">
+            <p className="text-[9px] font-black tracking-[0.15em] text-white/40 uppercase mb-0.5">Recommended</p>
+            <p className="text-xs font-black text-white tracking-wide">Type Rating Search</p>
+          </div>
 
-            {/* Top-right status pill */}
-            <div className="absolute top-3 right-3">
-              <span className="text-[8px] font-black px-2 py-0.5 tracking-wider" style={{ background: 'rgba(99,102,241,0.75)', backdropFilter: 'blur(4px)', color: '#fff', border: '1px solid rgba(99,102,241,0.6)' }}>
-                {matchPct >= 60 ? 'STRONG MATCH' : matchPct >= 30 ? 'PARTIAL MATCH' : 'BUILDING'}
-              </span>
-            </div>
-
-            {/* Floating overlay pills — horizontal row across center */}
-            <div className="absolute inset-x-3 flex items-center gap-2" style={{ top: '50%', transform: 'translateY(-60%)' }}>
-              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <Plane size={8} className="text-white/50 flex-shrink-0" />
-                <p className="text-[9px] font-black text-white whitespace-nowrap">A320 Family</p>
-                <span className="text-[9px] font-black text-emerald-400 ml-1">95%</span>
+          {/* Centre match pills */}
+          <div className="absolute top-3 right-4 flex flex-col gap-1.5 items-end">
+            {[
+              { label: 'Airbus A320 Family', pct: 95, color: 'rgba(16,185,129,0.85)' },
+              { label: 'Boeing 737 Next Gen', pct: 60, color: 'rgba(234,179,8,0.85)'  },
+            ].map(p => (
+              <div key={p.label} className="flex items-center gap-1.5 px-2 py-1" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)' }}>
+                <span className="text-[9px] text-white/70 font-semibold">{p.label}</span>
+                <span className="text-[9px] font-black" style={{ color: p.color === 'rgba(16,185,129,0.85)' ? '#34d399' : '#fbbf24' }}>{p.pct}% Match</span>
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <Plane size={8} className="text-white/50 flex-shrink-0" />
-                <p className="text-[9px] font-black text-white whitespace-nowrap">737 Next Gen</p>
-                <span className="text-[9px] font-black text-yellow-400 ml-1">60%</span>
+            ))}
+          </div>
+
+          {/* Bottom nav strip */}
+          <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(0,0,0,0.65)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              <ChevronRight size={14} className="text-white" />
+            </div>
+            <span className="text-[10px] font-black tracking-widest text-white/70 uppercase">View All Type Ratings</span>
+            <ChevronRight size={10} className="text-white/30 ml-auto" />
+          </div>
+
+          <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
+        </motion.div>
+
+        {/* ── CARD 4: Operator Expectations ── */}
+        <motion.div
+          custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+          onClick={() => setTab('pathways')}
+          className="relative group cursor-pointer overflow-hidden"
+          style={{ height: '128px', border: '1px solid rgba(255,255,255,0.2)' }}
+        >
+          {/* BG image — tarmac / airline */}
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+            style={{ backgroundImage: "url('/images/airline-expectations/airline-tarmac.png')", opacity: 0.5 }}
+          />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(10,15,30,0.92) 0%, rgba(20,30,60,0.6) 50%, rgba(10,15,30,0.96) 100%)' }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/25 to-transparent" />
+
+          {/* Top-left label */}
+          <div className="absolute top-3 left-4">
+            <p className="text-[9px] font-black tracking-[0.15em] text-white/40 uppercase mb-0.5">Explore</p>
+            <p className="text-xs font-black text-white tracking-wide">Operator Expectations & Requirements</p>
+          </div>
+
+          {/* Centre readiness rows */}
+          <div className="absolute top-3 right-4 flex flex-col gap-1.5 items-end">
+            {[
+              { label: 'Singapore Airlines',   pct: 20, barColor: '#f87171' },
+              { label: 'Alpha Operator Group', pct: 15, barColor: '#f87171' },
+            ].map(op => (
+              <div key={op.label} className="flex items-center gap-2 px-2 py-1" style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)' }}>
+                <span className="text-[9px] text-white/70 font-semibold">{op.label}</span>
+                <div className="w-16 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                  <div className="h-full transition-all" style={{ width: `${op.pct}%`, background: op.barColor }} />
+                </div>
+                <span className="text-[9px] font-black text-red-400">{op.pct}% Ready</span>
               </div>
-            </div>
+            ))}
+          </div>
 
-            {/* Bottom row — chevron + CTA */}
-            <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5" style={{ background: 'rgba(0,0,0,0.55)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-              <div className="w-7 h-7 flex items-center justify-center bg-white/10 border border-white/20 flex-shrink-0">
-                <ChevronRight size={14} className="text-white" />
-              </div>
-              <p className="text-[10px] font-black text-white tracking-wider flex-1">VIEW ALL TYPE RATINGS</p>
+          {/* Bottom nav strip */}
+          <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-4 py-2.5" style={{ background: 'rgba(0,0,0,0.65)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              <ChevronRight size={14} className="text-white" />
             </div>
-          </motion.div>
+            <span className="text-[10px] font-black tracking-widest text-white/70 uppercase">Explore All Operators</span>
+            <ChevronRight size={10} className="text-white/30 ml-auto" />
+          </div>
 
-          {/* ── Column B: Operator Expectations Directory ── */}
-          <motion.div
-            custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-            onClick={() => setTab('pathways')}
-            className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '120px', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            {/* Background image — airline tails / terminal */}
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: "url('/public/airline-logos/singapore-airlines.svg'),url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.65 }}
-            />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.55) 100%)' }} />
-            {/* Hover border */}
-            <div className="absolute inset-0 border-2 border-emerald-500/0 group-hover:border-emerald-500/50 transition-colors duration-300 pointer-events-none" />
-
-            {/* Top-left header label */}
-            <div className="absolute top-3 left-3 flex items-center gap-1.5">
-              <span className="text-[9px] font-black tracking-widest text-white/50 uppercase">Explore:</span>
-              <span className="text-[9px] font-black tracking-widest text-white uppercase">Operator Expectations</span>
-            </div>
-
-            {/* Top-right market pulse */}
-            <div className="absolute top-3 right-3 flex items-center gap-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[8px] font-black tracking-wider" style={{ color: 'rgba(52,211,153,0.9)' }}>MARKET PULSE</span>
-            </div>
-
-            {/* Floating overlay pills — horizontal row across center */}
-            <div className="absolute inset-x-3 flex items-center gap-2" style={{ top: '50%', transform: 'translateY(-60%)' }}>
-              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <span className="text-[10px] flex-shrink-0">🇸🇬</span>
-                <p className="text-[9px] font-black text-white whitespace-nowrap">Singapore Airlines</p>
-                <span className="text-[9px] font-black text-red-400 ml-1">{matchPct > 20 ? matchPct : 20}%</span>
-                <button onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }} className="text-[7px] font-black px-1.5 py-0.5 ml-1 whitespace-nowrap" style={{ background: 'rgba(59,130,246,0.6)', border: '1px solid rgba(59,130,246,0.7)', color: '#bfdbfe' }}>ALIGN</button>
-              </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1" style={{ background: 'rgba(15,23,42,0.82)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <span className="text-[10px] flex-shrink-0">✈️</span>
-                <p className="text-[9px] font-black text-white whitespace-nowrap">Alpha Operator</p>
-                <span className="text-[9px] font-black text-red-400 ml-1">15%</span>
-                <button onClick={e => { e.stopPropagation(); onNavigate('pilot-recognition-profile'); }} className="text-[7px] font-black px-1.5 py-0.5 ml-1 whitespace-nowrap" style={{ background: 'rgba(59,130,246,0.6)', border: '1px solid rgba(59,130,246,0.7)', color: '#bfdbfe' }}>ALIGN</button>
-              </div>
-            </div>
-
-            {/* Bottom row — chevron + CTA */}
-            <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5" style={{ background: 'rgba(0,0,0,0.55)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-              <div className="w-7 h-7 flex items-center justify-center bg-white/10 border border-white/20 flex-shrink-0">
-                <ChevronRight size={14} className="text-white" />
-              </div>
-              <p className="text-[10px] font-black text-white tracking-wider flex-1">EXPLORE ALL OPERATORS</p>
-            </div>
-          </motion.div>
+          <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
         </motion.div>
 
       </div>{/* end right flex col */}
