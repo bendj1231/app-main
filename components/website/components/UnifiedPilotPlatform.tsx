@@ -561,7 +561,7 @@ const HomeTab: React.FC<{
                   {/* Section A — Pipeline Overview */}
                   <div className="p-3" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
                     <p className="text-[10px] text-gray-700 leading-relaxed">
-                      By proceeding, you grant explicit, tokenized authorization for PilotRecognition.com to initiate a secure, zero-knowledge background verification check. This check requires the coordinated exchange of encrypted cryptographic data tokens between your selected <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the governing <strong className="text-gray-900">Civil Aviation Authority (CAA)</strong>, and our official regional background verification provider, <strong className="text-gray-900">Veremark</strong>.
+                      By proceeding, you execute a decentralized, tokenized authorization directive enabling a multi-party credential verification process. This protocol operates strictly via zero-knowledge data routing mechanisms, facilitating an automated cryptographic exchange between your designated <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the relevant <strong className="text-gray-900">Civil Aviation Authority (CAA)</strong>, and the regional verification infrastructure managed by <strong className="text-gray-900">Veremark</strong>.
                     </p>
                   </div>
 
@@ -569,23 +569,24 @@ const HomeTab: React.FC<{
                   <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
                     <div className="flex items-center gap-2 px-4 py-2.5" style={{ borderBottom: '1px solid #e2e8f0' }}>
                       <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
-                      <p className="text-[10px] font-semibold text-green-700">Encrypted Session Data Ready for Veremark Transfer</p>
+                      <p className="text-[10px] font-semibold text-green-700">Automated Encrypted Session Attributes</p>
                     </div>
                     <div className="px-4 py-3 space-y-2.5">
                       {[
-                        { label: 'Auth0 Key', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
-                        { label: 'Designated Training Academy', value: profile?.ato_name ?? 'Alpha Flight Academy' },
-                        { label: 'Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Civil Aviation Authority of the Philippines' },
-                        { label: 'Secure Consent Timestamp', value: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + ' — ' + new Date().toISOString().slice(11,19) + ' UTC' },
+                        { label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
+                        { label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? 'Alpha Flight Academy' },
+                        { label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Civil Aviation Authority of the Philippines' },
+                        { label: 'System Timestamp Epoch', value: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + ' — ' + new Date().toISOString().slice(11,19) + ' UTC' },
                       ].map(row => (
                         <div key={row.label} className="flex items-baseline gap-3">
-                          <span className="text-[9px] text-gray-400 w-36 flex-shrink-0">{row.label}</span>
+                          <span className="text-[9px] text-gray-400 w-44 flex-shrink-0">{row.label}</span>
                           <span className="text-[10px] font-semibold text-gray-800 select-none">{row.value}</span>
                         </div>
                       ))}
                     </div>
-                    <div className="px-4 py-2" style={{ borderTop: '1px solid #e2e8f0' }}>
-                      <p className="text-[8px] text-gray-400 italic">Read-only — PilotRecognition.com cannot modify or access your raw credentials. Only the encrypted token bundle is forwarded.</p>
+                    <div className="px-4 py-2.5 space-y-1" style={{ borderTop: '1px solid #e2e8f0', background: '#f0fdf4' }}>
+                      <p className="text-[8px] font-semibold text-green-800 uppercase tracking-wide">System Constraint Notice</p>
+                      <p className="text-[8px] text-gray-500 leading-relaxed italic">This interface functions exclusively as a secure pipeline relay. The underlying platform possesses no data decryption keys, database retention architecture, or administrative privileges required to intercept, modify, or cache your raw unencrypted credentials. The payload is directly transmitted to the verification endpoint as an immutable token bundle.</p>
                     </div>
                   </div>
 
@@ -601,8 +602,8 @@ const HomeTab: React.FC<{
                         {obConsent1 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Authorization for Regional Provider (Veremark Check)</p>
-                        <p className="text-[9px] text-gray-600 leading-relaxed">I hereby grant my full legal consent to Veremark and its verified field agents to contact my designated Civil Aviation Authority to cross-reference my pilot credentials, licence validity, radio certificates, and medical class status.</p>
+                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Regional Infrastructure Compliance (Veremark Processing)</p>
+                        <p className="text-[9px] text-gray-600 leading-relaxed">I hereby execute a digital authorization directive enabling Veremark and its authorized compliance nodes to submit a tokenized inquiry to the relevant Civil Aviation Authority, strictly limited to cross-referencing licensing parameters, currency statuses, radio telephony ratings, and medical certification records.</p>
                       </div>
                     </label>
 
@@ -618,8 +619,8 @@ const HomeTab: React.FC<{
                         {obConsent2 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Authorization for Flight Log Audit (ATO / Operator Check)</p>
-                        <p className="text-[9px] text-gray-600 leading-relaxed">I authorize my selected Approved Training Organisation (ATO) or current aviation operator to review my digital logbook hours, sign off on my flight validation history, and securely return a tokenized verification receipt to the platform.</p>
+                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Operational Record Audit (ATO Validation Dispatch)</p>
+                        <p className="text-[9px] text-gray-600 leading-relaxed">I authorize my designated Approved Training Organisation (ATO) or operating carrier to receive the secure ledger routing string, audit the matching digital logbook hours against institutional flight records, and return an encrypted verification receipt directly to the distributed platform network.</p>
                       </div>
                     </label>
 
@@ -635,26 +636,29 @@ const HomeTab: React.FC<{
                         {obConsent3 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Platform Data Processing & Terms Agreement</p>
-                        <p className="text-[9px] text-gray-600 leading-relaxed">I completely agree to the PilotRecognition.com Terms of Service and Aviation Data Privacy Policy. I understand that my unencrypted raw PII data is fully tokenized via Auth0 hashes and will never be permanently stored or exposed by this website.</p>
+                        <p className="text-[10px] font-bold text-gray-900 mb-0.5">Protocol Aggregation & Data Privacy Agreement</p>
+                        <p className="text-[9px] text-gray-600 leading-relaxed">I acknowledge and accept the platform's Terms of Service and Data Handling Policies. I verify my understanding that all personally identifiable information (PII) is tokenized at the session origin via Auth0 cryptographic hashes, ensuring that unencrypted administrative datasets are neither permanently retained nor accessible by this platform's host servers.</p>
                       </div>
                     </label>
                   </div>
 
-                  {/* Section C — Processing Timeline */}
+                  {/* Section C — SLA Timelines */}
                   <div className="p-3 space-y-2" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
-                    <p className="text-[9px] font-black text-gray-800 uppercase tracking-widest mb-1.5">Expected Processing Timeline</p>
+                    <p className="text-[9px] font-black text-gray-800 uppercase tracking-widest mb-1.5">Standardized SLA Timelines</p>
                     {[
-                      { party: 'Civil Aviation Authority (CAA) Verification', time: '24 – 48 Hours' },
-                      { party: 'Approved Training Organisation (ATO) Audit', time: '1 – 3 Business Days' },
+                      { party: 'CAA Verification Relay', time: '24 – 48 Hours', note: 'Subject to jurisdictional processing windows' },
+                      { party: 'ATO Evaluation Dispatch', time: '1 – 3 Business Days', note: null },
                     ].map(t => (
-                      <div key={t.party} className="flex items-center justify-between gap-3">
-                        <span className="text-[9px] text-gray-600">{t.party}</span>
-                        <span className="text-[9px] font-black text-gray-900 whitespace-nowrap">{t.time}</span>
+                      <div key={t.party}>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-[9px] text-gray-600">{t.party}</span>
+                          <span className="text-[9px] font-black text-gray-900 whitespace-nowrap">Est. {t.time}</span>
+                        </div>
+                        {t.note && <p className="text-[8px] text-gray-400 mt-0.5">{t.note}</p>}
                       </div>
                     ))}
                     <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '6px', paddingTop: '6px' }}>
-                      <p className="text-[8px] text-gray-500 leading-relaxed italic">Note: A <strong className="text-gray-700">$5.00 escrow incentive</strong> will be instantly triggered to your designated ATO upon submission to expedite their review signature.</p>
+                      <p className="text-[8px] text-gray-500 leading-relaxed italic">Automated Network Trigger: Upon digital signature submission, a standard <strong className="text-gray-700">$5.00 compliance escrow allocation</strong> is programmatically opened to the designated ATO ledger to facilitate priority queue processing.</p>
                     </div>
                   </div>
 
