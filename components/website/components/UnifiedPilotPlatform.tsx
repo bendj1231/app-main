@@ -243,9 +243,9 @@ const HomeTab: React.FC<{
        LOGGED-OUT: Full-width 50/50 split landing screen
     ══════════════════════════════════════════════════════ */
     const freeFeatures = [
-      { icon: BookOpen, label: 'Digital Flight Logbook',  sub: 'Build and self-manage your historical flight hours and records.' },
-      { icon: Globe,    label: 'Global Directory Access', sub: 'Browse international airline pathways and operator requirements worldwide.' },
-      { icon: User,     label: 'Basic Pilot Profile',     sub: 'Establish your initial digital identity on the PilotRecognition platform.' },
+      { icon: BookOpen, label: 'Digital Logbook Record',    sub: 'Log your flight history securely on a verified network.' },
+      { icon: Globe,    label: 'Global Pathway Discovery',  sub: 'Instantly browse international operator requirements worldwide.' },
+      { icon: User,     label: 'Basic Pilot Profile',       sub: 'Establish your initial digital identity on the PilotRecognition platform.' },
     ];
     const plusFeatures = [
       { icon: Shield, label: 'Veremark International Verification',  sub: 'Tokenize physical licences, medicals, and flight records via a zero-knowledge pipeline directly to the Civil Aviation Authority.' },
@@ -313,7 +313,7 @@ const HomeTab: React.FC<{
               className="w-full py-3.5 text-sm font-black tracking-widest text-white transition-all hover:brightness-110"
               style={{ background: '#3b82f6', borderRadius: '10px' }}
             >
-              {obTier === 'free' ? 'Create Free Account' : 'Login'}
+              {obTier === 'free' ? 'Get Recognition Free' : 'Login'}
             </button>
             <button
               onClick={() => window.location.href = '/become-member'}
