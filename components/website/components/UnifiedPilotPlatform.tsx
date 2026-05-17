@@ -256,46 +256,54 @@ const HomeTab: React.FC<{
 
     return (
       <motion.div
-        className="flex w-full bg-slate-50" style={{ minHeight: 'calc(100vh - 108px)' }}
+        className="flex w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
       >
-        {/* ── LEFT HALF: Enterprise-style white card panel ── */}
+        {/* ── LEFT HALF: Premium value showcase — white enterprise style ── */}
         <motion.div
-          className="w-1/2 flex flex-col px-10 py-10 bg-white border-r border-slate-200"
-          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}
+          className="w-1/2 flex flex-col px-10 py-10 bg-white"
+          style={{ borderRight: '1px solid #e2e8f0' }}
+          initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
         >
           {/* Brand mark */}
           <div className="mb-8">
-            <p className="text-[10px] font-black tracking-[0.2em] uppercase mb-2 text-slate-400">PilotRecognition.com</p>
-            <h1 className="text-3xl font-black text-slate-900 leading-tight">Unlock Your Pilot<br/>Dashboard</h1>
-            <p className="text-sm text-slate-500 mt-2 leading-relaxed max-w-sm">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
+            <div className="flex items-center gap-1 mb-3">
+              <span className="text-sm font-black text-slate-900" style={{ fontFamily: 'Arial Black, sans-serif' }}>pilot</span>
+              <span className="text-sm font-black text-red-600" style={{ fontFamily: 'Arial Black, sans-serif' }}>recognition</span>
+              <span className="text-slate-300 mx-1.5">|</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pilot Portal</span>
+            </div>
+            <h1 className="text-2xl font-black text-slate-900 leading-tight">Unlock Your Pilot<br/>Dashboard</h1>
+            <p className="text-sm text-slate-500 mt-2 leading-relaxed">Sign in or register to access personalised pathways, profile matching careers, and connect with Operators and Manufacturers Worldwide.</p>
           </div>
 
           {/* Tier toggle */}
-          <div className="flex mb-6 rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
+          <div className="flex mb-6 rounded-xl overflow-hidden border border-slate-200">
             <button
               onClick={() => setObTier('free')}
-              className="flex-1 py-3 text-center text-xs font-bold transition-all rounded-l-xl"
-              style={{ background: obTier === 'free' ? 'white' : 'transparent', color: obTier === 'free' ? '#0f172a' : '#94a3b8', boxShadow: obTier === 'free' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none' }}
+              className="flex-1 py-3 text-center text-xs font-bold transition-all"
+              style={{ background: obTier === 'free' ? '#f1f5f9' : 'white', color: obTier === 'free' ? '#0f172a' : '#94a3b8' }}
             >Free Pilot Account</button>
             <button
               onClick={() => setObTier('plus')}
-              className="flex-1 py-3 text-center text-xs font-black transition-all rounded-r-xl"
-              style={{ background: obTier === 'plus' ? '#b45309' : 'transparent', color: obTier === 'plus' ? 'white' : '#94a3b8' }}
+              className="flex-1 py-3 text-center text-xs font-black transition-all"
+              style={{ background: obTier === 'plus' ? 'linear-gradient(90deg,rgba(234,179,8,0.12),rgba(251,146,60,0.08))' : 'white', color: obTier === 'plus' ? '#b45309' : '#94a3b8', borderLeft: '1px solid #e2e8f0' }}
             >⭐ Recognition+ Member</button>
           </div>
 
           {/* Section label */}
-          <p className="text-[9px] font-black uppercase tracking-widest mb-4 text-slate-400">
+          <p className="text-[9px] font-black uppercase tracking-widest mb-4" style={{ color: obTier === 'plus' ? '#d97706' : '#94a3b8' }}>
             {obTier === 'free' ? 'Your Free Pilot Account Includes' : 'Unlocked with Recognition+'}
           </p>
 
           {/* Feature rows */}
           <div className="flex flex-col gap-3 flex-1">
             {features.map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                <div className={`w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center ${obTier === 'plus' ? 'bg-amber-50 border border-amber-200' : 'bg-slate-100 border border-slate-200'}`}>
-                  <Icon size={16} className={obTier === 'plus' ? 'text-amber-600' : 'text-slate-500'} />
+              <div key={label} className="flex items-start gap-4 p-4 rounded-xl border transition-all"
+                style={{ background: obTier === 'plus' ? '#fffbeb' : '#f8fafc', borderColor: obTier === 'plus' ? '#fde68a' : '#e2e8f0' }}>
+                <div className="w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center border"
+                  style={{ background: obTier === 'plus' ? '#fef3c7' : '#f1f5f9', borderColor: obTier === 'plus' ? '#fcd34d' : '#cbd5e1' }}>
+                  <Icon size={16} style={{ color: obTier === 'plus' ? '#d97706' : '#64748b' }} />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-bold text-slate-900 mb-0.5">{label}</p>
@@ -309,14 +317,15 @@ const HomeTab: React.FC<{
           <div className="flex flex-col gap-3 mt-8">
             <button
               onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-              className="w-full py-3.5 text-sm font-bold text-white transition-all rounded-xl hover:bg-red-700"
-              style={{ background: '#dc2626' }}
+              className="w-full py-3.5 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl"
+              style={{ background: '#2563eb' }}
             >
-              {obTier === 'free' ? 'Get Recognition Free' : 'Login to Your Account'}
+              {obTier === 'free' ? 'Get Recognition Free' : 'Login'}
             </button>
             <button
               onClick={() => window.location.href = '/become-member'}
-              className="w-full py-3.5 text-sm font-bold transition-all rounded-xl border-2 border-slate-200 hover:border-amber-400 hover:bg-amber-50 text-slate-700 hover:text-amber-800"
+              className="w-full py-3.5 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl"
+              style={{ background: 'linear-gradient(90deg,#f59e0b,#f97316)', color: '#fff' }}
             >
               {obTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}
             </button>
@@ -326,7 +335,7 @@ const HomeTab: React.FC<{
           <div className="flex items-center gap-4 mt-6 pt-5 border-t border-slate-100">
             {[{ name: 'Auth0 Secured', dot: '#3b82f6' }, { name: 'Helio Payments', dot: '#a855f7' }, { name: 'Veremark Verified', dot: '#16a34a' }].map(({ name, dot }, i) => (
               <React.Fragment key={name}>
-                {i > 0 && <span className="text-slate-300 text-xs">|</span>}
+                {i > 0 && <span className="text-slate-200">|</span>}
                 <div className="flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />
                   <span className="text-[9px] font-bold text-slate-400">{name}</span>
@@ -338,51 +347,50 @@ const HomeTab: React.FC<{
 
         {/* ── RIGHT HALF: Blurred dashboard preview + minimalist gate ── */}
         <motion.div
-          className="w-1/2 relative overflow-hidden flex items-center justify-center bg-slate-100"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.15 }}
+          className="w-1/2 relative overflow-hidden flex items-center justify-center"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }}
         >
-          {/* Dashboard preview skeleton cards — blurred behind */}
-          <div className="absolute inset-0 pointer-events-none p-6" style={{ filter: 'blur(2px)', opacity: 0.5 }}>
-            <div className="h-36 rounded-2xl bg-slate-300 mb-4" />
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              <div className="h-28 rounded-xl bg-white border border-slate-200 shadow-sm" />
-              <div className="h-28 rounded-xl bg-white border border-slate-200 shadow-sm" />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="h-24 rounded-xl bg-white border border-slate-200 shadow-sm" />
-              <div className="h-24 rounded-xl bg-white border border-slate-200 shadow-sm" />
+          {/* Dashboard preview — rendered behind blur */}
+          <div className="absolute inset-0 pointer-events-none" style={{ filter: 'blur(3px)', opacity: 0.45 }}>
+            <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,1))' }}>
+              <div className="m-4 h-40 rounded-xl" style={{ background: 'url(/images/airline-operations.png) center/cover', opacity: 0.7 }} />
+              <div className="mx-4 grid grid-cols-2 gap-3">
+                <div className="h-24 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+                <div className="h-24 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+                <div className="h-20 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+                <div className="h-20 rounded-xl" style={{ background: 'rgba(30,41,59,0.8)' }} />
+              </div>
             </div>
           </div>
 
-          {/* Light frosted overlay */}
-          <div className="absolute inset-0 bg-slate-50/70 backdrop-blur-[3px]" />
+          {/* Dark overlay */}
+          <div className="absolute inset-0" style={{ background: 'rgba(5,10,20,0.55)', backdropFilter: 'blur(4px)' }} />
 
-          {/* Minimalist enterprise gate card */}
+          {/* Minimalist gate */}
           <div className="relative z-10 flex flex-col items-center text-center px-8">
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm px-10 py-8 max-w-xs w-full">
-              {/* Auth0 shield */}
-              <div className="relative w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-emerald-50 border-2 border-emerald-200">
-                <Shield size={28} className="text-emerald-600" />
-                <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-widest whitespace-nowrap px-2 py-0.5 rounded-full bg-emerald-600 text-white">Auth0 Protected</span>
-              </div>
-
-              {/* Status badges */}
-              <div className="flex flex-col gap-1.5 mb-5 mt-2">
-                {['Auth0 Token Pipeline: Pending Login', 'Supabase Vault Status: Locked'].map(badge => (
-                  <span key={badge} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-semibold bg-slate-100 border border-slate-200 text-slate-400">
-                    <Lock size={9} className="text-slate-400" />{badge}
-                  </span>
-                ))}
-              </div>
-
-              {/* Sign in button */}
-              <button
-                onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
-                className="w-full py-3 text-sm font-bold text-slate-700 transition-all rounded-xl border-2 border-slate-200 hover:border-red-300 hover:bg-red-50 hover:text-red-700"
-              >
-                Existing Captains: Sign In Here →
-              </button>
+            {/* Auth0 shield */}
+            <div className="relative w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ background: 'linear-gradient(135deg,rgba(22,163,74,0.22),rgba(16,185,129,0.12))', border: '1.5px solid rgba(22,163,74,0.45)' }}>
+              <Shield size={34} className="text-emerald-400" />
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-widest whitespace-nowrap px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.85)', color: 'white' }}>Auth0 Protected Session Portal</span>
             </div>
+
+            {/* Status badges */}
+            <div className="flex flex-col gap-1.5 mb-6">
+              {['Auth0 Token Pipeline: Pending Login', 'Supabase Vault Status: Locked'].map(badge => (
+                <span key={badge} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.3)' }}>
+                  <Lock size={9} />{badge}
+                </span>
+              ))}
+            </div>
+
+            {/* Single sign-in button */}
+            <button
+              onClick={() => { const e = new CustomEvent('open-login-modal'); window.dispatchEvent(e); }}
+              className="px-8 py-3 text-xs font-black tracking-widest text-white/80 transition-all hover:text-white hover:border-white/40"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: '10px' }}
+            >
+              Existing Captains: Sign In Here →
+            </button>
           </div>
         </motion.div>
       </motion.div>
