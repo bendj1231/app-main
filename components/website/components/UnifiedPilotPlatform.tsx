@@ -619,40 +619,73 @@ const HomeTab: React.FC<{
                     ))}
                   </div>
 
-                  {/* Logbook Tokenization Sync */}
+                  {/* Logbook Provider — Veremark Access Token */}
                   <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #e5e7eb' }}>
                     <div className="flex items-center justify-between px-4 py-2.5" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: obLogbookSynced ? '#16a34a' : '#e5e7eb' }} />
-                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Logbook Provider Sync</p>
+                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Logbook Provider Access</p>
                       </div>
                       {obLogbookSynced && (
-                        <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>Tokenization Key Accepted</span>
+                        <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>Access Token Confirmed</span>
                       )}
                     </div>
-                    <div className="px-4 py-3">
-                      <p className="text-[9px] text-gray-500 mb-2.5">Enter the tokenization key issued by your logbook provider (e.g. ForeFlight, MyFlightbook, Safelog) to authorize a read-only data feed to this platform. Your provider retains full write access and data ownership.</p>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={obLogbookKey}
-                          onChange={e => { setObLogbookKey(e.target.value); setObLogbookSynced(false); }}
-                          placeholder="Paste tokenization key..."
-                          className="flex-1 px-3 py-2 text-[10px] font-mono text-gray-900 outline-none"
+                    <div className="px-4 py-3 space-y-3">
+                      <p className="text-[9px] text-gray-500 leading-relaxed">
+                        Select your logbook provider and paste the <strong className="text-gray-700">read-only share token</strong> generated from your provider's sharing settings. This token is included in the Veremark dispatch payload — Veremark contacts your logbook provider directly to retrieve your flight hours. This platform never reads or stores your logbook data.
+                      </p>
+                      <div className="flex items-center gap-2 p-2.5 rounded-lg" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
+                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#f97316' }} />
+                        <p className="text-[8px] text-orange-700">PilotRecognition never accesses your logbook. The token is forwarded to Veremark who queries your provider directly. Your logbook provider retains full write access and data ownership.</p>
+                      </div>
+                      {/* Provider selector */}
+                      <div>
+                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Logbook Provider</p>
+                        <select
+                          value={obLogbookKey.split('::')[0] ?? ''}
+                          onChange={e => { setObLogbookKey(e.target.value + '::'); setObLogbookSynced(false); }}
+                          className="w-full px-3 py-2 text-[10px] text-gray-900 outline-none"
                           style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
-                        />
-                        <button
-                          onClick={() => {
-                            if (!obLogbookKey.trim()) return;
-                            setObLogbookSyncing(true);
-                            setTimeout(() => { setObLogbookSyncing(false); setObLogbookSynced(true); }, 1200);
-                          }}
-                          disabled={!obLogbookKey.trim() || obLogbookSyncing}
-                          className="px-3 py-2 text-[9px] font-bold text-white transition-all disabled:opacity-40"
-                          style={{ background: '#1a1a1a', borderRadius: '6px', whiteSpace: 'nowrap' }}
                         >
-                          {obLogbookSyncing ? 'Syncing...' : 'Sync'}
-                        </button>
+                          <option value="">Select provider...</option>
+                          {['ForeFlight', 'MyFlightbook', 'Safelog', 'LogTen Pro', 'Pilot Log', 'Other'].map(p => (
+                            <option key={p} value={p}>{p}</option>
+                          ))}
+                        </select>
+                      </div>
+                      {/* Read-only share token */}
+                      <div>
+                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Read-Only Share Token <span className="text-gray-400 font-normal">(from provider sharing settings)</span></p>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={obLogbookKey.split('::')[1] ?? ''}
+                            onChange={e => {
+                              const provider = obLogbookKey.split('::')[0] ?? '';
+                              setObLogbookKey(provider + '::' + e.target.value);
+                              setObLogbookSynced(false);
+                            }}
+                            placeholder="Paste read-only share token..."
+                            className="flex-1 px-3 py-2 text-[10px] font-mono text-gray-900 outline-none"
+                            style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                          />
+                          <button
+                            onClick={() => {
+                              const [provider, token] = obLogbookKey.split('::');
+                              if (!provider || !token?.trim()) return;
+                              setObLogbookSyncing(true);
+                              setTimeout(() => { setObLogbookSyncing(false); setObLogbookSynced(true); }, 1000);
+                            }}
+                            disabled={!obLogbookKey.includes('::') || !obLogbookKey.split('::')[1]?.trim() || !obLogbookKey.split('::')[0] || obLogbookSyncing}
+                            className="px-3 py-2 text-[9px] font-bold text-white transition-all disabled:opacity-40"
+                            style={{ background: '#1a1a1a', borderRadius: '6px', whiteSpace: 'nowrap' }}
+                          >
+                            {obLogbookSyncing ? 'Confirming...' : 'Confirm'}
+                          </button>
+                        </div>
+                        {obLogbookSynced && (
+                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Token confirmed. Veremark will use this token to query {obLogbookKey.split('::')[0]} directly upon verification dispatch.</p>
+                        )}
                       </div>
                     </div>
                   </div>
