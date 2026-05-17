@@ -519,18 +519,18 @@ const HomeTab: React.FC<{
             initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.22 }}
-            style={{ background: 'rgba(10,18,36,0.98)', border: '1px solid rgba(255,255,255,0.1)', maxHeight: '90vh', overflowY: 'auto' }}
+            style={{ background: '#ffffff', border: '1px solid #d1d5db', maxHeight: '90vh', overflowY: 'auto' }}
           >
-            {/* Modal header */}
-            <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            {/* Modal header — regulatory red bar */}
+            <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ background: '#cc0000', borderBottom: '2px solid #a00000' }}>
               <div>
-                <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase mb-0.5">Multi-Party Verification</p>
-                <p className="text-sm font-black text-white tracking-wide">
+                <p className="text-[9px] font-light tracking-[0.22em] text-black/60 uppercase mb-0.5">Multi-Party Verification</p>
+                <p className="text-sm font-black text-black tracking-wide">
                   {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Step 1 — Training Details' : onboardingStep === 2 ? 'Step 2 — Processing Notice' : onboardingStep === 3 ? 'Step 3 — Cryptographic Consent' : 'Step 4 — Token Generation'}
                 </p>
               </div>
               {!obTokenising && (
-                <button onClick={() => setOnboardingOpen(false)} className="text-white/25 hover:text-white/70 transition-colors">
+                <button onClick={() => setOnboardingOpen(false)} className="text-black/60 hover:text-black transition-colors">
                   <X size={18} />
                 </button>
               )}
@@ -539,14 +539,10 @@ const HomeTab: React.FC<{
             {/* Step progress bar */}
             <div className="flex gap-1.5 px-6 pt-4 flex-shrink-0">
               {[1,2,3,4].map(s => (
-                <div key={s} className="flex-1 h-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                <div key={s} className="flex-1 h-[3px]" style={{ background: '#e5e7eb' }}>
                   <div
                     className="h-full transition-all duration-500"
-                    style={{
-                      width: onboardingStep >= s ? '100%' : '0%',
-                      background: obDone ? '#34d399' : '#38bdf8',
-                      boxShadow: onboardingStep >= s ? '0 0 6px rgba(56,189,248,0.7)' : 'none'
-                    }}
+                    style={{ width: onboardingStep >= s ? '100%' : '0%', background: obDone ? '#16a34a' : '#1a1a1a' }}
                   />
                 </div>
               ))}
@@ -557,76 +553,74 @@ const HomeTab: React.FC<{
               {/* ── STEP 1: ATO Selection + Pilot Details ── */}
               {onboardingStep === 1 && (
                 <>
-                  <p className="text-[11px] text-white/45 leading-relaxed">
+                  <p className="text-[11px] text-gray-600 leading-relaxed">
                     Select your primary Approved Training Organisation and provide your pilot licence details. Veremark will contact these parties to issue your cryptographic verification token.
                   </p>
                   <div className="space-y-3">
                     <div>
-                      <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Primary ATO / Flight School *</label>
+                      <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Primary ATO / Flight School *</label>
                       <div className="relative">
                         <select
                           value={obATO}
                           onChange={e => setObATO(e.target.value)}
-                          className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold text-white outline-none"
-                          style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)', color: obATO ? 'white' : 'rgba(255,255,255,0.4)' }}
+                          className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold outline-none"
+                          style={{ background: '#f5f7fa', border: '1px solid #cbd5e1', color: obATO ? '#111827' : '#9ca3af' }}
                         >
-                          <option value="" style={{ background: '#0a1224' }}>— Select ATO —</option>
-                          {ATO_LIST.map(a => <option key={a} value={a} style={{ background: '#0a1224' }}>{a}</option>)}
+                          <option value="">— Select ATO —</option>
+                          {ATO_LIST.map(a => <option key={a} value={a}>{a}</option>)}
                         </select>
-                        <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-white/30 pointer-events-none" />
+                        <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-gray-400 pointer-events-none" />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Pilot Licence No. *</label>
+                        <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Pilot Licence No. *</label>
                         <input
                           type="text"
                           value={obLicense}
                           onChange={e => setObLicense(e.target.value)}
                           placeholder="e.g. 155660-CPL"
-                          className="w-full px-3 py-2.5 text-xs text-white placeholder-white/35 outline-none"
-                          style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)' }}
+                          className="w-full px-3 py-2.5 text-xs text-gray-900 outline-none"
+                          style={{ background: '#f5f7fa', border: '1px solid #cbd5e1' }}
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Medical Class *</label>
+                        <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Medical Class *</label>
                         <div className="relative">
                           <select
                             value={obMedical}
                             onChange={e => setObMedical(e.target.value)}
-                            className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold text-white outline-none"
-                            style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)', color: obMedical ? 'white' : 'rgba(255,255,255,0.4)' }}
+                            className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold outline-none"
+                            style={{ background: '#f5f7fa', border: '1px solid #cbd5e1', color: obMedical ? '#111827' : '#9ca3af' }}
                           >
-                            <option value="" style={{ background: '#0a1224' }}>— Select Class —</option>
-                            {['Class 1 (Commercial)', 'Class 2 (Private)', 'Class 3 (ATCO)'].map(c => <option key={c} value={c} style={{ background: '#0a1224' }}>{c}</option>)}
+                            <option value="">— Select Class —</option>
+                            {['Class 1 (Commercial)', 'Class 2 (Private)', 'Class 3 (ATCO)'].map(c => <option key={c} value={c}>{c}</option>)}
                           </select>
-                          <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-white/30 pointer-events-none" />
+                          <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-gray-400 pointer-events-none" />
                         </div>
                       </div>
                     </div>
                     <div>
-                      <label className="text-[10px] font-black tracking-widest text-white/35 uppercase block mb-1.5">Radio Certificate / NTC Reg. No.</label>
+                      <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Radio Certificate / NTC Reg. No.</label>
                       <input
                         type="text"
                         value={obRadio}
                         onChange={e => setObRadio(e.target.value)}
                         placeholder="e.g., Radio Telephony Licence Number (Optional)"
-                        className="w-full px-3 py-2.5 text-xs text-white placeholder-white/35 outline-none"
-                        style={{ background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.14)' }}
+                        className="w-full px-3 py-2.5 text-xs text-gray-900 outline-none"
+                        style={{ background: '#f5f7fa', border: '1px solid #cbd5e1' }}
                       />
                     </div>
                   </div>
-                  <div className="flex items-start gap-2.5 p-3" style={{ background: 'rgba(5,15,25,0.85)', border: '1px solid rgba(16,185,129,0.35)', boxShadow: '0 0 12px rgba(16,185,129,0.08)' }}>
-                    <div className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)' }}>
-                      <Lock size={8} className="text-emerald-400" />
-                    </div>
-                    <p className="text-[9px] text-white/70 leading-relaxed"><strong className="text-emerald-400">PilotRecognition.com never stores your raw data.</strong> These details are used only to initiate verification — only the cryptographic token result is retained.</p>
+                  <div className="flex items-start gap-3 p-3" style={{ background: '#f8fafc', borderLeft: '3px solid #1a1a1a' }}>
+                    <Lock size={12} className="text-gray-700 flex-shrink-0 mt-0.5" />
+                    <p className="text-[9px] text-gray-700 leading-relaxed">These data are used only to initiate verification. <strong className="text-gray-900">PilotRecognition.com never stores your raw licence number</strong> — only the cryptographic token result is retained.</p>
                   </div>
                   <button
                     disabled={!obATO || !obLicense || !obMedical}
                     onClick={() => setOnboardingStep(2)}
-                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-25 hover:brightness-110"
-                    style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)', border: '1px solid rgba(255,255,255,0.25)', boxShadow: '0 0 16px rgba(37,99,235,0.4)' }}
+                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-40 hover:bg-gray-800"
+                    style={{ background: '#1a1a1a', border: 'none' }}
                   >
                     CONTINUE →
                   </button>
