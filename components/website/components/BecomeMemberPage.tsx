@@ -98,7 +98,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </p>
                                 <ul className="space-y-2 mb-4">
                                     {[
-                                        'ATO-contact verifying your hours to international standard',
+                                        'ATO or Operator contact & regional verification to international standards — Licensure & Qualification checks on CPL, PPL, IR, ME & ATPL; Medical Class 1, 2 & 3; flight logbook hours validation with flagged notation capture for review',
                                         'Priority listing on Pathway Interest Pooling',
                                         'Exclusive access for serious pilots to Private Charter & Business Aviation Pathways',
                                     ].map((point) => (
