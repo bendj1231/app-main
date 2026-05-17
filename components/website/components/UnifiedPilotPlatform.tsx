@@ -252,91 +252,158 @@ const HomeTab: React.FC<{
         className="w-64 flex-shrink-0 flex flex-col self-start"
         style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
       >
-        <div className="p-6 flex-1">
-          {expiredChecks.length > 0 && (
-            <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
-              <AlertTriangle size={12} className="flex-shrink-0" />
-              {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
+        {!profile ? (
+          /* ── GUEST ONBOARDING GATEWAY ── */
+          <>
+            <div className="p-6 flex flex-col gap-4">
+              {/* Globe guest icon + header */}
+              <div className="flex flex-col items-center gap-2 mb-1">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.15)' }}>
+                  <Globe size={28} className="text-white/50" />
+                </div>
+                <h2 className="text-base font-black text-white tracking-wide text-center">Welcome Aboard</h2>
+                <p className="text-[10px] text-white/40 text-center leading-snug">Authenticate your profile to activate your digital flight deck.</p>
+              </div>
+
+              {/* Primary: Get Recognition Free */}
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
+                className="w-full py-3 text-sm font-black tracking-wide text-white rounded-lg transition-all hover:brightness-110"
+                style={{ background: '#dc2626' }}
+              >
+                Get Recognition Free
+              </button>
+
+              {/* Secondary: Pilot Sign In */}
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
+                className="w-full py-3 text-sm font-black tracking-wide text-white rounded-lg transition-all hover:brightness-110"
+                style={{ background: '#1e3a5f' }}
+              >
+                Pilot Sign In
+              </button>
+            </div>
+
+            {/* Recognition+ compliance vault */}
+            <div
+              className="px-5 py-4 flex flex-col gap-2"
+              style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <Star size={13} className="text-yellow-400 flex-shrink-0" />
+                <span className="text-xs font-black text-yellow-300 tracking-wider">RECOGNITION+ COMPLIANCE</span>
+              </div>
+              <ul className="flex flex-col gap-1">
+                {[
+                  'Automated Veremark Background Checks',
+                  'Live Fleet & Operator Requirements Audit',
+                  'Expedited ATO Logbook Validation Pipeline',
+                ].map(perk => (
+                  <li key={perk} className="flex items-start gap-1.5">
+                    <span className="text-yellow-400 text-[10px] mt-0.5 flex-shrink-0">☑</span>
+                    <span className="text-[10px] text-yellow-500/70 leading-snug">{perk}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => window.location.href = '/become-member'}
+                className="mt-1 w-full py-2 text-center text-[11px] font-black tracking-widest text-slate-900 rounded transition-all hover:brightness-110"
+                style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}
+              >
+                UPGRADE NOW — $99/YR
+              </button>
+            </div>
+          </>
+        ) : (
+          /* ── AUTHENTICATED PROFILE CARD ── */
+          <>
+            <div className="p-6 flex-1">
+              {expiredChecks.length > 0 && (
+                <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+                  <AlertTriangle size={12} className="flex-shrink-0" />
+                  {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
+                </button>
+              )}
+
+              {/* Avatar */}
+              <div className="relative w-24 h-24 mx-auto mb-4">
+                {profile?.profile_image_url
+                  ? <img src={profile.profile_image_url} alt={name} className="w-full h-full object-cover rounded-full border-2 border-white/30" />
+                  : <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: '#3b82f6' }}>{initials}</div>}
+              </div>
+
+              <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
+              <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">{level}</p>
+
+              {/* 2×2 stats */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  {hours > 0
+                    ? <p className="text-lg font-bold text-white">{hours}</p>
+                    : <p className="text-[10px] font-semibold text-white/40 leading-tight">Log your first<br/>flight hour</p>}
+                  <p className="text-xs text-white/60 uppercase mt-0.5">HOURS</p>
+                </div>
+                <div className="text-center p-2 cursor-pointer hover:ring-1 hover:ring-sky-400/50 transition-all" style={{ background: 'rgba(255,255,255,0.05)' }} onClick={() => setTab('score' as TabId)}>
+                  {score > 0
+                    ? <p className="text-lg font-bold text-sky-300">{score}</p>
+                    : <p className="text-[10px] font-semibold text-white/40 leading-tight">Build your<br/>profile first</p>}
+                  <p className="text-xs text-white/60 uppercase mt-0.5">SCORE</p>
+                </div>
+                <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  {certCount > 0
+                    ? <p className="text-lg font-bold text-white">{certCount}</p>
+                    : <p className="text-[10px] font-semibold text-white/40 leading-tight">Add your<br/>credentials</p>}
+                  <p className="text-xs text-white/60 uppercase mt-0.5">CERTS</p>
+                </div>
+                <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <p className="text-lg font-bold text-orange-400">{Math.max(hoursForNext - hours, 0)}</p>
+                  <p className="text-xs text-white/60 uppercase mt-0.5">TO NEXT</p>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="mb-2">
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="text-white/60 uppercase tracking-wider text-[10px]">LEVEL PROGRESS</span>
+                  <span className={`font-bold text-[10px] ${progressPct > 0 ? 'text-orange-400' : 'text-white/30'}`}>{Math.round(progressPct)}%</span>
+                </div>
+                <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
+                  <div
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{ width: `${Math.max(progressPct, progressPct > 0 ? 4 : 0)}%`, background: progressPct > 0 ? 'linear-gradient(90deg, #f97316, #ef4444)' : 'transparent' }}
+                  />
+                </div>
+                {progressPct === 0 && <p className="text-[9px] text-white/25 mt-2">Log hours to level up →</p>}
+              </div>
+            </div>
+
+            {/* PILOT PROFILE link */}
+            <button
+              onClick={() => onNavigate('pilot-recognition-profile')}
+              className="w-full flex items-center gap-3 px-6 py-4 transition-colors hover:bg-white/5"
+              style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              <ChevronRight size={18} className="text-white/70" />
+              <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
             </button>
-          )}
 
-          {/* Avatar */}
-          <div className="relative w-24 h-24 mx-auto mb-4">
-            {profile?.profile_image_url
-              ? <img src={profile.profile_image_url} alt={name} className="w-full h-full object-cover rounded-full border-2 border-white/30" />
-              : <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: '#3b82f6' }}>{initials}</div>}
-          </div>
-
-          <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
-          <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">{level}</p>
-
-          {/* 2×2 stats — gamified empty states */}
-          <div className="grid grid-cols-2 gap-2 mb-4">
-            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              {hours > 0
-                ? <p className="text-lg font-bold text-white">{hours}</p>
-                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Log your first<br/>flight hour</p>}
-              <p className="text-xs text-white/60 uppercase mt-0.5">HOURS</p>
-            </div>
-            <div className="text-center p-2 cursor-pointer hover:ring-1 hover:ring-sky-400/50 transition-all" style={{ background: 'rgba(255,255,255,0.05)' }} onClick={() => setTab('score' as TabId)}>
-              {score > 0
-                ? <p className="text-lg font-bold text-sky-300">{score}</p>
-                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Build your<br/>profile first</p>}
-              <p className="text-xs text-white/60 uppercase mt-0.5">SCORE</p>
-            </div>
-            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              {certCount > 0
-                ? <p className="text-lg font-bold text-white">{certCount}</p>
-                : <p className="text-[10px] font-semibold text-white/40 leading-tight">Add your<br/>credentials</p>}
-              <p className="text-xs text-white/60 uppercase mt-0.5">CERTS</p>
-            </div>
-            <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <p className="text-lg font-bold text-orange-400">{Math.max(hoursForNext - hours, 0)}</p>
-              <p className="text-xs text-white/60 uppercase mt-0.5">TO NEXT</p>
-            </div>
-          </div>
-
-          {/* Progress bar — visible track */}
-          <div className="mb-2">
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-white/60 uppercase tracking-wider text-[10px]">LEVEL PROGRESS</span>
-              <span className={`font-bold text-[10px] ${progressPct > 0 ? 'text-orange-400' : 'text-white/30'}`}>{Math.round(progressPct)}%</span>
-            </div>
-            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
-              <div
-                className="h-full rounded-full transition-all duration-700"
-                style={{ width: `${Math.max(progressPct, progressPct > 0 ? 4 : 0)}%`, background: progressPct > 0 ? 'linear-gradient(90deg, #f97316, #ef4444)' : 'transparent' }}
-              />
-            </div>
-            {progressPct === 0 && <p className="text-[9px] text-white/25 mt-2">Log hours to level up →</p>}
-          </div>
-        </div>
-
-        {/* PILOT PROFILE link */}
-        <button
-          onClick={() => onNavigate('pilot-recognition-profile')}
-          className="w-full flex items-center gap-3 px-6 py-4 transition-colors hover:bg-white/5"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
-        >
-          <ChevronRight size={18} className="text-white/70" />
-          <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
-        </button>
-
-        {/* Recognition+ upgrade tile — gold accent */}
-        <button
-          onClick={() => setTab('settings' as TabId)}
-          className="w-full flex flex-col gap-1 px-5 py-4 transition-all hover:brightness-110"
-          style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
-        >
-          <div className="flex items-center gap-2">
-            <Star size={13} className="text-yellow-400 flex-shrink-0" />
-            <span className="text-xs font-black text-yellow-300 tracking-wider">RECOGNITION+</span>
-          </div>
-          <p className="text-[10px] text-yellow-500/80 font-semibold leading-snug">Priority pipeline access, unlimited pathway views & AI coach</p>
-          <div className="mt-1 w-full py-1.5 text-center text-[11px] font-black tracking-widest text-slate-900 rounded" style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}>
-            UPGRADE NOW — $99/YR
-          </div>
-        </button>
+            {/* Recognition+ upgrade tile */}
+            <button
+              onClick={() => setTab('settings' as TabId)}
+              className="w-full flex flex-col gap-1 px-5 py-4 transition-all hover:brightness-110"
+              style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
+            >
+              <div className="flex items-center gap-2">
+                <Star size={13} className="text-yellow-400 flex-shrink-0" />
+                <span className="text-xs font-black text-yellow-300 tracking-wider">RECOGNITION+</span>
+              </div>
+              <p className="text-[10px] text-yellow-500/80 font-semibold leading-snug">Priority pipeline access, unlimited pathway views & AI coach</p>
+              <div className="mt-1 w-full py-1.5 text-center text-[11px] font-black tracking-widest text-slate-900 rounded" style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}>
+                UPGRADE NOW — $99/YR
+              </div>
+            </button>
+          </>
+        )}
       </motion.div>
 
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
