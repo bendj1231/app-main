@@ -5,6 +5,13 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { TopNavbar } from './TopNavbar';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '@/src/lib/device-detection';
+import { createClient } from '@supabase/supabase-js';
+
+const _env = (import.meta as any).env || {};
+const supabase = createClient(
+    _env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co',
+    _env.VITE_SUPABASE_ANON_KEY || ''
+);
 
 interface BecomeMemberPageProps {
     onBack: () => void;
@@ -21,14 +28,57 @@ const GoogleIcon = () => (
     </svg>
 );
 
+const OCCUPATIONS = [
+    'Student Pilot',
+    'Private Pilot (PPL)',
+    'Commercial Pilot (CPL)',
+    'Airline Pilot (ATPL)',
+    'Flight Instructor (CFI)',
+    'First Officer',
+    'Captain',
+    'Cadet',
+    'Other',
+];
+
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
-    const { loginWithRedirect } = useAuth0();
+    const { loginWithRedirect, user, isAuthenticated } = useAuth0();
     const [enableShader, setEnableShader] = useState(false);
+    const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
+
+    // Setup form state
+    const [displayName, setDisplayName] = useState('');
+    const [occupation, setOccupation] = useState('');
+    const [saving, setSaving] = useState(false);
+    const [saveError, setSaveError] = useState('');
 
     useEffect(() => {
         setEnableShader(shouldEnable3DEffects());
     }, []);
+
+    useEffect(() => {
+        if (isSetup && user) {
+            setDisplayName(user.name || user.email?.split('@')[0] || '');
+        }
+    }, [isSetup, user]);
+
+    const handleSaveProfile = async () => {
+        if (!displayName.trim()) { setSaveError('Please enter a display name.'); return; }
+        if (!occupation) { setSaveError('Please select your current role.'); return; }
+        setSaving(true);
+        setSaveError('');
+        try {
+            await supabase
+                .from('profiles')
+                .update({ display_name: displayName.trim(), current_occupation: occupation })
+                .eq('auth0_id', user?.sub);
+            window.location.href = '/platform';
+        } catch {
+            setSaveError('Failed to save. Please try again.');
+        } finally {
+            setSaving(false);
+        }
+    };
 
     const handleEmailSignup = () => {
         loginWithRedirect({
@@ -48,6 +98,69 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             },
         });
     };
+
+    // ── Profile setup step (redirected here after Auth0 signup) ──────────────
+    if (isSetup && isAuthenticated) {
+        return (
+            <div className="relative h-screen overflow-hidden flex flex-col">
+                <div className="fixed inset-0 z-0">
+                    {enableShader ? (
+                        <MeshGradient className="w-full h-full" colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]} speed={0.22} />
+                    ) : (
+                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+                    <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+                </div>
+                <div className="relative z-10">
+                    <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
+                </div>
+                <div className="relative z-10 flex-1 flex items-center justify-center px-4">
+                    <div className="w-full max-w-md">
+                        <div className="text-center mb-8">
+                            <p className="text-red-500 text-xs font-black tracking-widest uppercase mb-2">Account Created</p>
+                            <h1 className="text-3xl font-black text-white mb-2">Welcome aboard</h1>
+                            <p className="text-slate-400 text-sm">Just two quick details to set up your pilot profile.</p>
+                        </div>
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm space-y-5">
+                            {/* Display name */}
+                            <div>
+                                <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Display Name</label>
+                                <input
+                                    type="text"
+                                    value={displayName}
+                                    onChange={(e) => setDisplayName(e.target.value)}
+                                    placeholder="e.g. Benjamin Bowler"
+                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
+                                />
+                            </div>
+                            {/* Occupation */}
+                            <div>
+                                <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Current Role</label>
+                                <select
+                                    value={occupation}
+                                    onChange={(e) => setOccupation(e.target.value)}
+                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#00b4d8] transition-colors appearance-none"
+                                    style={{ colorScheme: 'dark' }}
+                                >
+                                    <option value="" disabled>Select your current role...</option>
+                                    {OCCUPATIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+                                </select>
+                            </div>
+                            {saveError && <p className="text-red-400 text-xs">{saveError}</p>}
+                            <button
+                                onClick={handleSaveProfile}
+                                disabled={saving}
+                                className="w-full py-3 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-black rounded-xl transition-all text-sm tracking-wide"
+                            >
+                                {saving ? 'Saving...' : 'Complete Profile →'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>

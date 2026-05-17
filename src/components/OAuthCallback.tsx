@@ -11,13 +11,34 @@ export const OAuthCallback = () => {
     const createSupabaseProfile = async () => {
       try {
         const { supabase } = await import('@/src/lib/supabase');
-        const { data: existing } = await supabase
+
+        // 1. Check by auth0_id first
+        let { data: existing } = await supabase
           .from('profiles')
-          .select('id')
+          .select('id, auth0_id')
           .eq('auth0_id', user.sub)
           .maybeSingle();
 
+        // 2. Fallback: check by email (covers users registered before Auth0)
+        if (!existing && user.email) {
+          const { data: byEmail } = await supabase
+            .from('profiles')
+            .select('id, auth0_id')
+            .eq('email', user.email)
+            .maybeSingle();
+
+          if (byEmail) {
+            // Stamp auth0_id onto existing profile so future logins are instant
+            await supabase
+              .from('profiles')
+              .update({ auth0_id: user.sub })
+              .eq('id', byEmail.id);
+            existing = byEmail;
+          }
+        }
+
         if (!existing) {
+          // Brand new user — create profile
           const { data: newProfile } = await supabase.from('profiles').insert({
             auth0_id: user.sub,
             email: user.email,
@@ -30,14 +51,14 @@ export const OAuthCallback = () => {
           if (newProfile?.id) {
             await supabase.functions.invoke('generate-profile-token', {
               body: { userId: newProfile.id }
-            });
+            }).catch(() => {}); // non-critical
           }
 
           setProfileCreated(true);
-          window.location.href = '/become-member';
+          window.location.href = '/become-member?setup=1';
         } else {
           setProfileCreated(true);
-          window.location.href = '/';
+          window.location.href = '/platform';
         }
       } catch (err) {
         console.error('Profile creation error:', err);
