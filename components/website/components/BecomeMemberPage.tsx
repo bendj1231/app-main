@@ -122,6 +122,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         {/* Right: Signup card */}
                         <div className="w-full md:w-[400px] flex-shrink-0">
 
+                        <p className="text-white font-bold text-base mb-3 text-center">Create a Free Account</p>
+
                         {/* Card */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
 
