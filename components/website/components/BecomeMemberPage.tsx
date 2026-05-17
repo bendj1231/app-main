@@ -91,11 +91,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {/* Recognition+ upsell */}
                             <div className="border border-white/20 bg-white/5 rounded-xl p-5 max-w-sm">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-white text-xs font-black tracking-widest uppercase">Recognition+</span>
+                                    <span className="text-red-500 text-xs font-black tracking-widest uppercase">Recognition+</span>
                                 </div>
-                                <p className="text-white font-bold text-sm mb-1">Elevate Your Career with Recognition+</p>
+                                <p className="text-white font-bold text-sm mb-1">Get the Recognition Your Training, Logbook, and Pilot Career Deserves</p>
                                 <p className="text-white/75 text-xs leading-relaxed mb-3">
-                                    Verify your account and validate your flight hours. Unlock priority airline pathway matching and secure your verified credential tokens.
+                                    Secure and verify your Pilot Identity Credentials (PIC) for Priority Recognition.
                                 </p>
                                 <ul className="space-y-2.5 mb-4">
                                     {[
