@@ -120,6 +120,13 @@ const HomeTab: React.FC<{
   enrolledInFoundation: boolean; airlines: any[];
 }> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines }) => {
   const [visible, setVisible] = React.useState(false);
+  const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
+    try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
+  });
+  const dismissWelcome = () => {
+    setWelcomeDismissed(true);
+    try { localStorage.setItem('welcome_dismissed', '1'); } catch {}
+  };
   React.useEffect(() => { const t = setTimeout(() => setVisible(true), 80); return () => clearTimeout(t); }, []);
 
   const score   = profile?.recognition_score ?? 0;
@@ -143,10 +150,19 @@ const HomeTab: React.FC<{
   ];
   const completedCount = steps.filter(s => s.done).length;
 
+  const matchPct = Math.min(
+    Math.round(
+      (!!profile ? 20 : 0) +
+      (hours > 0 ? 20 : 0) +
+      (walletChecks.some(c => c.status === 'verified') ? 25 : 0) +
+      (score > 0 ? 20 : 0) +
+      (enrolledInFoundation ? 15 : 0)
+    ), 100
+  );
+
   const bCards = [
     { id: 'pathways', title: 'MY PATHWAYS',   image: '/images/airline-operations.png',                                                                    onClick: () => setTab('pathways') },
     { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
-    { id: 'logbook',  title: 'ACCESS LOGBOOK', image: '/images/pilotrecognitioncompoennt.png',                                                            onClick: () => onNavigate('digital-logbook') },
   ];
 
   return (
@@ -254,6 +270,26 @@ const HomeTab: React.FC<{
       {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
       <div className="flex-1 flex flex-col gap-4">
 
+        {/* ── WELCOME BAR — dismissible, first-visit only ── */}
+        {!welcomeDismissed && profile && (
+          <div
+            className="flex items-center gap-3 px-4 py-2.5"
+            style={{ background: 'linear-gradient(90deg, rgba(59,130,246,0.18), rgba(99,102,241,0.14))', border: '1px solid rgba(99,102,241,0.3)' }}
+          >
+            <span className="text-sm">✈️</span>
+            <p className="flex-1 text-xs font-semibold text-white/90 leading-snug">
+              Welcome aboard, Captain <span className="text-sky-300 font-black">{name}</span>! Let's set up your profile to unlock industry pathways.
+            </p>
+            <button
+              onClick={dismissWelcome}
+              className="text-white/30 hover:text-white/80 transition-colors flex-shrink-0 ml-2"
+              aria-label="Dismiss"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        )}
+
         {/* ── GET STARTED — pinned to top for free users ── */}
         <div
           style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
@@ -336,7 +372,7 @@ const HomeTab: React.FC<{
 
         {/* Bento grid — unified overlay style on all 3 cards */}
         <div className="grid grid-cols-2 gap-4 content-start">
-          {/* MY PATHWAYS — 60% height (shrunk from full) */}
+          {/* MY PATHWAYS — with live match badge */}
           <motion.div
             custom={0} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
             onClick={bCards[0].onClick}
@@ -346,36 +382,83 @@ const HomeTab: React.FC<{
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
               style={{ backgroundImage: `url(${bCards[0].image})`, opacity: 0.75 }} />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent" />
+            {/* Match badge */}
+            <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wide"
+              style={{ background: matchPct >= 80 ? 'rgba(16,185,129,0.85)' : matchPct >= 40 ? 'rgba(234,179,8,0.85)' : 'rgba(239,68,68,0.8)', color: '#fff', backdropFilter: 'blur(4px)' }}
+            >
+              <TrendingUp size={10} />
+              Profile Match: {matchPct}%
+            </div>
             <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center gap-3">
               <div className="w-9 h-9 flex items-center justify-center bg-white/10 border border-white/20">
                 <ChevronRight size={20} className="text-white" />
               </div>
-              <h3 className="text-base font-bold text-white tracking-wider">{bCards[0].title}</h3>
+              <div>
+                <h3 className="text-base font-bold text-white tracking-wider">{bCards[0].title}</h3>
+                {matchPct < 100 && <p className="text-[10px] text-white/50 mt-0.5">Complete your profile to reach 100% eligibility</p>}
+              </div>
             </div>
             <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
           </motion.div>
 
-          {/* MY PROGRAMS + ACCESS LOGBOOK — unified overlay style */}
-          {bCards.slice(1).map((card, idx) => (
-            <motion.div
-              key={card.id}
-              custom={idx + 1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-              onClick={card.onClick}
-              className="relative group cursor-pointer overflow-hidden"
-              style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
-            >
-              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url(${card.image})`, opacity: 0.7 }} />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/45 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
-                <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
-                  <ChevronRight size={16} className="text-white" />
-                </div>
-                <h3 className="text-sm font-bold text-white tracking-wider">{card.title}</h3>
+          {/* MY PROGRAMS */}
+          <motion.div
+            custom={1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+            onClick={bCards[1].onClick}
+            className="relative group cursor-pointer overflow-hidden"
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+          >
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: `url(${bCards[1].image})`, opacity: 0.7 }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/45 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
+              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
+                <ChevronRight size={16} className="text-white" />
               </div>
-              <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-            </motion.div>
-          ))}
+              <h3 className="text-sm font-bold text-white tracking-wider">{bCards[1].title}</h3>
+            </div>
+            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
+          </motion.div>
+
+          {/* SPLIT: Digital Logbook + Pilot Credentials */}
+          <motion.div
+            custom={2} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
+            className="relative overflow-hidden flex flex-col gap-0"
+            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
+          >
+            {/* Top half — Digital Logbook */}
+            <button
+              onClick={() => onNavigate('digital-logbook')}
+              className="relative flex-1 group/logbook flex items-center gap-3 px-4 overflow-hidden transition-all hover:brightness-110"
+              style={{ background: 'rgba(30,41,59,0.85)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.4)' }}>
+                <BookMarked size={15} className="text-sky-400" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-black text-white tracking-wider">DIGITAL LOGBOOK</p>
+                <p className="text-[10px] text-white/40 mt-0.5">{hours > 0 ? `${hours} hrs logged` : 'Log your first flight'}</p>
+              </div>
+              <ChevronRight size={14} className="ml-auto text-white/30 group-hover/logbook:text-white/70 transition-colors" />
+            </button>
+            {/* Bottom half — Pilot Credentials */}
+            <button
+              onClick={() => setTab('wallet')}
+              className="relative flex-1 group/creds flex items-center gap-3 px-4 overflow-hidden transition-all hover:brightness-110"
+              style={{ background: 'rgba(15,23,42,0.9)' }}
+            >
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(234,179,8,0.18)', border: '1px solid rgba(234,179,8,0.35)' }}>
+                <Shield size={15} className="text-yellow-400" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-black text-white tracking-wider">PILOT CREDENTIALS</p>
+                <p className="text-[10px] mt-0.5" style={{ color: walletChecks.some(c => c.status === 'verified') ? 'rgba(52,211,153,0.8)' : 'rgba(255,255,255,0.35)' }}>
+                  {walletChecks.some(c => c.status === 'verified') ? `${walletChecks.filter(c => c.status === 'verified').length} verified` : 'No credentials yet'}
+                </p>
+              </div>
+              <ChevronRight size={14} className="ml-auto text-white/30 group-hover/creds:text-white/70 transition-colors" />
+            </button>
+          </motion.div>
         </div>
 
       </div>{/* end right flex col */}
@@ -1419,8 +1502,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   { id: 'dashboard', label: 'Dashboard',        icon: BarChart3,  premium: false },
                   { id: 'home',      label: 'Home',             icon: Home,       premium: false },
                   { id: 'profile',   label: 'My Profile',       icon: User,       premium: false },
-                  { id: 'wallet',    label: 'Credential Wallet', icon: Shield,     premium: false },
-                  { id: 'logbook',   label: 'Logbook',          icon: BookMarked, premium: false },
+                  { id: 'wallet',    label: 'Pilot Credentials', icon: Shield,     premium: false },
+                  { id: 'logbook',   label: 'Digital Logbook',   icon: BookMarked, premium: false },
                 ],
               },
               {
