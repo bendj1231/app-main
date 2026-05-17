@@ -140,6 +140,28 @@ const HomeTab: React.FC<{
   const [obTokenising, setObTokenising] = React.useState(false);
   const [obDone, setObDone] = React.useState(false);
 
+  // ── Regional provider detection via timezone ──
+  const detectedRegion = React.useMemo(() => {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (
+        tz.startsWith('Asia/Manila') || tz.startsWith('Asia/Singapore') ||
+        tz.startsWith('Asia/Kuala') || tz.startsWith('Asia/Jakarta') ||
+        tz.startsWith('Asia/Bangkok') || tz.startsWith('Asia/Ho_Chi') ||
+        tz.startsWith('Asia/Hong_Kong') || tz.startsWith('Asia/Tokyo') ||
+        tz.startsWith('Asia/Seoul') || tz.startsWith('Asia/Kolkata') ||
+        tz.startsWith('Australia/') || tz.startsWith('Pacific/')
+      ) return { label: 'Asia-Pacific', provider: 'Veremark', flag: '🌏', colour: '#16a34a' };
+      if (
+        tz.startsWith('Europe/') || tz.startsWith('Atlantic/')
+      ) return { label: 'Europe', provider: 'Veremark', flag: '🌍', colour: '#2563eb' };
+      if (
+        tz.startsWith('America/') || tz.startsWith('US/')
+      ) return { label: 'North America', provider: 'HireRight / First Advantage', flag: '🌎', colour: '#d97706' };
+      return { label: 'Global', provider: 'Veremark', flag: '🌐', colour: '#6366f1' };
+    } catch { return { label: 'Global', provider: 'Veremark', flag: '🌐', colour: '#6366f1' }; }
+  }, []);
+
   const startTokenise = () => {
     setObTokenising(true);
     setOnboardingStep(4);
@@ -561,21 +583,30 @@ const HomeTab: React.FC<{
                   {/* Section A — Pipeline Overview */}
                   <div className="p-3" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
                     <p className="text-[10px] text-gray-700 leading-relaxed">
-                      By proceeding, you execute a decentralized, tokenized authorization directive enabling a multi-party credential verification process. This protocol operates strictly via zero-knowledge data routing mechanisms, facilitating an automated cryptographic exchange between your designated <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the relevant <strong className="text-gray-900">Civil Aviation Authority (CAA)</strong>, and the regional verification infrastructure managed by <strong className="text-gray-900">Veremark</strong>.
+                      By proceeding, you execute a decentralized, tokenized authorization directive enabling a multi-party credential verification process. This protocol operates strictly via zero-knowledge data routing mechanisms, facilitating an automated cryptographic exchange between your designated <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the relevant <strong className="text-gray-900">Civil Aviation Authority</strong>, and the regional verification infrastructure managed by <strong className="text-gray-900">{detectedRegion.provider}</strong> <span className="text-gray-500">({detectedRegion.flag} {detectedRegion.label} node)</span>.
                     </p>
                   </div>
 
                   {/* Read-Only Token Matrix — flat profile card style */}
                   <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
-                    <div className="flex items-center gap-2 px-4 py-2.5" style={{ borderBottom: '1px solid #e2e8f0' }}>
-                      <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
-                      <p className="text-[10px] font-semibold text-green-700">Automated Encrypted Session Attributes</p>
+                    <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
+                        <p className="text-[10px] font-semibold text-green-700">Automated Encrypted Session Attributes</p>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-2 py-0.5" style={{ background: '#f0fdf4', border: `1px solid ${detectedRegion.colour}30` }}>
+                        <span className="text-[9px]">{detectedRegion.flag}</span>
+                        <span className="text-[8px] font-bold" style={{ color: detectedRegion.colour }}>{detectedRegion.label}</span>
+                        <span className="text-[8px] text-gray-400">·</span>
+                        <span className="text-[8px] font-semibold text-gray-700">{detectedRegion.provider}</span>
+                      </div>
                     </div>
                     <div className="px-4 py-3 space-y-2.5">
                       {[
                         { label: 'Auth0 Cryptographic Identifier', value: profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '0x9bC...4A2f' },
                         { label: 'Target Training Provider (ATO)', value: profile?.ato_name ?? 'Alpha Flight Academy' },
                         { label: 'Jurisdictional Civil Aviation Authority', value: profile?.caa_region ?? 'CAAP — Civil Aviation Authority of the Philippines' },
+                        { label: 'Detected Regional Provider', value: `${detectedRegion.flag} ${detectedRegion.provider} (${detectedRegion.label})` },
                         { label: 'System Timestamp Epoch', value: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + ' — ' + new Date().toISOString().slice(11,19) + ' UTC' },
                       ].map(row => (
                         <div key={row.label} className="flex items-baseline gap-3">
@@ -713,7 +744,7 @@ const HomeTab: React.FC<{
                       <p className="text-[9px] font-semibold text-green-700">Automated Smart Contract Allocation Log</p>
                     </div>
                     {[
-                      { label: 'Compliance Node Activation', amount: '23.00 USDC', dest: 'Veremark Regional Processing Node' },
+                      { label: 'Compliance Node Activation', amount: '23.00 USDC', dest: `${detectedRegion.provider} Regional Processing Node (${detectedRegion.label})` },
                       { label: 'Logbook Sync Pipeline', amount: '5.00 USDC', dest: 'Authorized Third-Party Logbook Registry' },
                       { label: 'Training Provider Incentive', amount: '5.00 USDC', dest: 'ATO Settlement Ledger (24h escrow — held_commissions)' },
                       { label: 'Network Router Clearance', amount: '~67.00 USDC', dest: 'Platform Operational Reserve (after Helio fee)' },
