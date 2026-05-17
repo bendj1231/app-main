@@ -674,44 +674,94 @@ const HomeTab: React.FC<{
                 </>
               )}
 
-              {/* ── STEP 2: Surcharge Transparency ── */}
+              {/* ── STEP 2: Helio Secure Checkout ── */}
               {onboardingStep === 2 && (
                 <>
-                  <div className="p-4 space-y-3" style={{ background: 'rgba(234,179,8,0.07)', border: '1px solid rgba(234,179,8,0.28)' }}>
-                    <div className="flex items-start gap-3">
-                      <AlertTriangle size={16} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-xs font-black text-yellow-300 tracking-wide mb-1.5">EXTERNAL PROCESSING NOTICE</p>
-                        <p className="text-[11px] text-yellow-200/65 leading-relaxed">
-                          <strong className="text-white">Recognition+ includes 1 standard regional ATO verification per year.</strong> Selecting multiple ATOs or requesting verifications across different civil aviation regions will incur an external regional processing surcharge charged directly by our verification provider, Veremark.
-                        </p>
-                      </div>
+                  {/* Notice bar */}
+                  <div className="flex items-start gap-2 p-2.5" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                    <Lock size={10} className="text-gray-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-[8px] text-gray-500 leading-relaxed italic">This transaction is routed directly via the Helio network layer. No raw card or bank data is visible to or cached by this interface.</p>
+                  </div>
+
+                  {/* Transaction Summary Matrix */}
+                  <div style={{ border: '1px solid #e2e8f0' }}>
+                    <div className="px-4 py-2.5" style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+                      <p className="text-[9px] font-black text-gray-800 uppercase tracking-widest">Transaction Summary</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 mt-1">
-                      {[
-                        { tier: 'Standard (1 ATO)', note: 'Included in Recognition+', colour: 'text-emerald-400', bg: 'rgba(16,185,129,0.1)', border: 'rgba(16,185,129,0.25)' },
-                        { tier: 'Additional ATO',   note: 'Regional surcharge applies', colour: 'text-yellow-400', bg: 'rgba(234,179,8,0.1)',   border: 'rgba(234,179,8,0.25)'   },
-                      ].map(t => (
-                        <div key={t.tier} className="p-2.5" style={{ background: t.bg, border: `1px solid ${t.border}` }}>
-                          <p className={`text-[10px] font-black ${t.colour}`}>{t.tier}</p>
-                          <p className="text-[9px] text-white/35 mt-0.5">{t.note}</p>
-                        </div>
-                      ))}
+                    {[
+                      { label: 'Network Request ID', value: `HLO-${Date.now().toString(36).toUpperCase().slice(-8)}` },
+                      { label: 'Selected Validation Plan', value: 'Recognition+ Verification Ledger (Annual Sync)' },
+                      { label: 'Base Network Cost', value: '$100.00 USDC' },
+                      { label: 'Regional ATO Processing Surcharges', value: '$0.00 (Single regional scope)' },
+                      { label: 'Helio Protocol Network Fee', value: '1.0%' },
+                    ].map(row => (
+                      <div key={row.label} className="flex items-baseline gap-3 px-4 py-2" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <span className="text-[9px] text-gray-400 w-44 flex-shrink-0">{row.label}</span>
+                        <span className="text-[10px] font-semibold text-gray-800">{row.value}</span>
+                      </div>
+                    ))}
+                    <div className="flex items-baseline gap-3 px-4 py-2.5" style={{ background: '#1a1a1a' }}>
+                      <span className="text-[9px] text-white/50 w-44 flex-shrink-0">Total Settled Invoice Value</span>
+                      <span className="text-[12px] font-black text-white">$100.00 USDC</span>
                     </div>
                   </div>
 
-                  <div className="p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                    <p className="text-[10px] text-white/30 uppercase tracking-widest font-black mb-2">Selected ATO</p>
-                    <p className="text-xs text-white font-semibold">{obATO}</p>
-                    <div className="flex items-center gap-1.5 mt-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                      <p className="text-[9px] text-white/35">Standard regional verification — covered by your plan</p>
+                  {/* Smart Contract Allocation Log */}
+                  <div style={{ border: '1px solid #e2e8f0' }}>
+                    <div className="flex items-center gap-2 px-4 py-2.5" style={{ background: '#f0fdf4', borderBottom: '1px solid #d1fae5' }}>
+                      <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
+                      <p className="text-[9px] font-semibold text-green-700">Automated Smart Contract Allocation Log</p>
+                    </div>
+                    {[
+                      { label: 'Compliance Node Activation', amount: '23.00 USDC', dest: 'Veremark Regional Processing Node' },
+                      { label: 'Logbook Sync Pipeline', amount: '5.00 USDC', dest: 'Authorized Third-Party Logbook Registry' },
+                      { label: 'Training Provider Incentive', amount: '5.00 USDC', dest: 'ATO Settlement Ledger (24h escrow — held_commissions)' },
+                      { label: 'Network Router Clearance', amount: '~67.00 USDC', dest: 'Platform Operational Reserve (after Helio fee)' },
+                    ].map(row => (
+                      <div key={row.label} className="px-4 py-2" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <div className="flex items-baseline justify-between gap-2">
+                          <span className="text-[9px] text-gray-500">{row.label}</span>
+                          <span className="text-[9px] font-black text-gray-900 flex-shrink-0">{row.amount}</span>
+                        </div>
+                        <p className="text-[8px] text-gray-400 mt-0.5">→ {row.dest}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Helio Payment Widget */}
+                  <div style={{ border: '2px solid #e2e8f0' }}>
+                    <div className="px-4 py-3" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                      <p className="text-[9px] font-black text-gray-800 uppercase tracking-widest mb-2.5">Payment Method</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { label: 'USDC / Crypto Wallet', active: true },
+                          { label: 'Card / Apple Pay', active: false },
+                        ].map(tab => (
+                          <div key={tab.label} className="py-2 text-center text-[9px] font-bold cursor-pointer"
+                            style={{ background: tab.active ? '#1a1a1a' : '#f5f7fa', color: tab.active ? 'white' : '#6b7280', border: `1px solid ${tab.active ? '#1a1a1a' : '#e2e8f0'}` }}>
+                            {tab.label}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="px-4 py-4 text-center space-y-3">
+                      <p className="text-[10px] text-gray-500">Connect wallet or scan QR to pay</p>
+                      <div className="w-16 h-16 mx-auto flex items-center justify-center" style={{ background: '#f5f7fa', border: '1px solid #e2e8f0' }}>
+                        <Lock size={20} className="text-gray-300" />
+                      </div>
+                      <p className="text-[8px] text-gray-400">Helio checkout iframe loads on deploy</p>
+                    </div>
+                    <div className="flex items-center gap-2 px-4 py-2.5" style={{ background: '#f0fdf4', borderTop: '1px solid #d1fae5' }}>
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#16a34a' }} />
+                      <p className="text-[8px] text-green-700 font-medium">Helio Protocol Active. Connected via End-to-End Encrypted Gateway. A digital cryptographic transaction receipt will be anchored directly to your Auth0 session profile upon block confirmation.</p>
                     </div>
                   </div>
 
                   <div className="flex gap-3">
-                    <button onClick={() => setOnboardingStep(1)} className="flex-1 py-2.5 text-xs font-bold text-white/40 tracking-wider transition-all hover:text-white/70" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>← BACK</button>
-                    <button onClick={() => setOnboardingStep(3)} className="flex-1 py-2.5 text-xs font-black tracking-widest text-white" style={{ background: 'linear-gradient(135deg,rgba(59,130,246,0.85),rgba(99,102,241,0.85))', border: '1px solid rgba(99,102,241,0.4)' }}>UNDERSTOOD, PROCEED →</button>
+                    <button onClick={() => setOnboardingStep(1)} className="py-2.5 px-5 text-xs font-bold text-gray-500 tracking-wider transition-all hover:text-gray-800" style={{ background: '#f5f7fa', border: '1px solid #e2e8f0' }}>← Back</button>
+                    <button onClick={() => setOnboardingStep(3)} className="flex-1 py-2.5 text-xs font-black tracking-widest text-white hover:bg-gray-800 transition-all" style={{ background: '#1a1a1a' }}>
+                      PAYMENT CONFIRMED — INITIALIZE VEREMARK DISPATCH →
+                    </button>
                   </div>
                 </>
               )}
