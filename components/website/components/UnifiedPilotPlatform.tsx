@@ -134,6 +134,9 @@ const HomeTab: React.FC<{
   const [obMedical, setObMedical] = React.useState('');
   const [obRadio, setObRadio] = React.useState('');
   const [obConsent, setObConsent] = React.useState(false);
+  const [obConsent1, setObConsent1] = React.useState(false);
+  const [obConsent2, setObConsent2] = React.useState(false);
+  const [obConsent3, setObConsent3] = React.useState(false);
   const [obTokenising, setObTokenising] = React.useState(false);
   const [obDone, setObDone] = React.useState(false);
 
@@ -524,9 +527,11 @@ const HomeTab: React.FC<{
             {/* Modal header — regulatory red bar */}
             <div className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ background: '#cc0000', borderBottom: '2px solid #a00000' }}>
               <div>
-                <p className="text-[9px] font-light tracking-[0.22em] text-black/60 uppercase mb-0.5">Multi-Party Verification</p>
+                <p className="text-[9px] font-light tracking-[0.18em] text-black/55 uppercase mb-0.5">
+                  {onboardingStep === 1 ? 'Cryptographic Legal Release & Verification Consent' : 'Multi-Party Verification'}
+                </p>
                 <p className="text-sm font-black text-black tracking-wide">
-                  {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Step 1 — Training Details' : onboardingStep === 2 ? 'Step 2 — Processing Notice' : onboardingStep === 3 ? 'Step 3 — Cryptographic Consent' : 'Step 4 — Token Generation'}
+                  {obDone ? 'Verification Initiated' : onboardingStep === 1 ? 'Step 1 — Multi-Party Data Authorization' : onboardingStep === 2 ? 'Step 2 — Training Details' : onboardingStep === 3 ? 'Step 3 — Processing Notice' : onboardingStep === 4 ? 'Step 4 — Token Generation' : 'Step 4 — Token Generation'}
                 </p>
               </div>
               {!obTokenising && (
@@ -550,79 +555,93 @@ const HomeTab: React.FC<{
 
             <div className="px-6 py-5 space-y-4">
 
-              {/* ── STEP 1: ATO Selection + Pilot Details ── */}
+              {/* ── STEP 1: Cryptographic Legal Release & Multi-Party Consent ── */}
               {onboardingStep === 1 && (
                 <>
-                  <p className="text-[11px] text-gray-600 leading-relaxed">
-                    Select your primary Approved Training Organisation and provide your pilot licence details. Veremark will contact these parties to issue your cryptographic verification token.
-                  </p>
+                  {/* Section A — Pipeline Overview */}
+                  <div className="p-3" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                    <p className="text-[10px] text-gray-700 leading-relaxed">
+                      By proceeding, you grant explicit, tokenized authorization for PilotRecognition.com to initiate a secure, zero-knowledge background verification check. This check requires the coordinated exchange of encrypted cryptographic data tokens between your selected <strong className="text-gray-900">Approved Training Organisation (ATO)</strong>, the governing <strong className="text-gray-900">Civil Aviation Authority (CAA)</strong>, and our official regional background verification provider, <strong className="text-gray-900">Veremark</strong>.
+                    </p>
+                  </div>
+
+                  {/* Section B — 3 Consent Checkboxes */}
                   <div className="space-y-3">
-                    <div>
-                      <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Primary ATO / Flight School *</label>
-                      <div className="relative">
-                        <select
-                          value={obATO}
-                          onChange={e => setObATO(e.target.value)}
-                          className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold outline-none"
-                          style={{ background: '#f5f7fa', border: '1px solid #cbd5e1', color: obATO ? '#111827' : '#9ca3af' }}
-                        >
-                          <option value="">— Select ATO —</option>
-                          {ATO_LIST.map(a => <option key={a} value={a}>{a}</option>)}
-                        </select>
-                        <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-gray-400 pointer-events-none" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Pilot Licence No. *</label>
-                        <input
-                          type="text"
-                          value={obLicense}
-                          onChange={e => setObLicense(e.target.value)}
-                          placeholder="e.g. 155660-CPL"
-                          className="w-full px-3 py-2.5 text-xs text-gray-900 outline-none"
-                          style={{ background: '#f5f7fa', border: '1px solid #cbd5e1' }}
-                        />
+                    {/* Checkbox 1 */}
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <div
+                        className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
+                        style={{ border: '2px solid #1a1a1a', background: obConsent1 ? '#1a1a1a' : 'white' }}
+                        onClick={() => setObConsent1(!obConsent1)}
+                      >
+                        {obConsent1 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                       </div>
                       <div>
-                        <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Medical Class *</label>
-                        <div className="relative">
-                          <select
-                            value={obMedical}
-                            onChange={e => setObMedical(e.target.value)}
-                            className="w-full appearance-none px-3 py-2.5 pr-8 text-xs font-semibold outline-none"
-                            style={{ background: '#f5f7fa', border: '1px solid #cbd5e1', color: obMedical ? '#111827' : '#9ca3af' }}
-                          >
-                            <option value="">— Select Class —</option>
-                            {['Class 1 (Commercial)', 'Class 2 (Private)', 'Class 3 (ATCO)'].map(c => <option key={c} value={c}>{c}</option>)}
-                          </select>
-                          <ChevronRight size={11} className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-gray-400 pointer-events-none" />
-                        </div>
+                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-wide mb-0.5">1. Authorization for Regional Provider (Veremark Check)</p>
+                        <p className="text-[9px] text-gray-600 leading-relaxed">I hereby grant my full legal consent to Veremark and its verified field agents to contact my designated Civil Aviation Authority to cross-reference my pilot credentials, licence validity, radio certificates, and medical class status.</p>
                       </div>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-black tracking-widest text-gray-800 uppercase block mb-1.5">Radio Certificate / NTC Reg. No.</label>
-                      <input
-                        type="text"
-                        value={obRadio}
-                        onChange={e => setObRadio(e.target.value)}
-                        placeholder="e.g., Radio Telephony Licence Number (Optional)"
-                        className="w-full px-3 py-2.5 text-xs text-gray-900 outline-none"
-                        style={{ background: '#f5f7fa', border: '1px solid #cbd5e1' }}
-                      />
+                    </label>
+
+                    <div style={{ borderTop: '1px solid #e5e7eb' }} />
+
+                    {/* Checkbox 2 */}
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <div
+                        className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
+                        style={{ border: '2px solid #1a1a1a', background: obConsent2 ? '#1a1a1a' : 'white' }}
+                        onClick={() => setObConsent2(!obConsent2)}
+                      >
+                        {obConsent2 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-wide mb-0.5">2. Authorization for Flight Log Audit (ATO / Operator Check)</p>
+                        <p className="text-[9px] text-gray-600 leading-relaxed">I authorize my selected Approved Training Organisation (ATO) or current aviation operator to review my digital logbook hours, sign off on my flight validation history, and securely return a tokenized verification receipt to the platform.</p>
+                      </div>
+                    </label>
+
+                    <div style={{ borderTop: '1px solid #e5e7eb' }} />
+
+                    {/* Checkbox 3 */}
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <div
+                        className="flex-shrink-0 w-4 h-4 mt-0.5 flex items-center justify-center transition-colors"
+                        style={{ border: '2px solid #1a1a1a', background: obConsent3 ? '#1a1a1a' : 'white' }}
+                        onClick={() => setObConsent3(!obConsent3)}
+                      >
+                        {obConsent3 && <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-wide mb-0.5">3. Platform Data Processing & Terms Agreement</p>
+                        <p className="text-[9px] text-gray-600 leading-relaxed">I completely agree to the PilotRecognition.com Terms of Service and Aviation Data Privacy Policy. I understand that my unencrypted raw PII data is fully tokenized via Auth0 hashes and will never be permanently stored or exposed by this website.</p>
+                      </div>
+                    </label>
+                  </div>
+
+                  {/* Section C — Processing Timeline */}
+                  <div className="p-3 space-y-2" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                    <p className="text-[9px] font-black text-gray-800 uppercase tracking-widest mb-1.5">Expected Processing Timeline</p>
+                    {[
+                      { party: 'Civil Aviation Authority (CAA) Verification', time: '24 – 48 Hours' },
+                      { party: 'Approved Training Organisation (ATO) Audit', time: '1 – 3 Business Days' },
+                    ].map(t => (
+                      <div key={t.party} className="flex items-center justify-between gap-3">
+                        <span className="text-[9px] text-gray-600">{t.party}</span>
+                        <span className="text-[9px] font-black text-gray-900 whitespace-nowrap">{t.time}</span>
+                      </div>
+                    ))}
+                    <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '6px', paddingTop: '6px' }}>
+                      <p className="text-[8px] text-gray-500 leading-relaxed italic">Note: A <strong className="text-gray-700">$5.00 escrow incentive</strong> will be instantly triggered to your designated ATO upon submission to expedite their review signature.</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 p-3" style={{ background: '#f8fafc', borderLeft: '3px solid #1a1a1a' }}>
-                    <Lock size={12} className="text-gray-700 flex-shrink-0 mt-0.5" />
-                    <p className="text-[9px] text-gray-700 leading-relaxed">These data are used only to initiate verification. <strong className="text-gray-900">PilotRecognition.com never stores your raw licence number</strong> — only the cryptographic token result is retained.</p>
-                  </div>
+
+                  {/* Sign-off button */}
                   <button
-                    disabled={!obATO || !obLicense || !obMedical}
+                    disabled={!obConsent1 || !obConsent2 || !obConsent3}
                     onClick={() => setOnboardingStep(2)}
-                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-40 hover:bg-gray-800"
+                    className="w-full py-3 text-xs font-black tracking-widest text-white transition-all disabled:opacity-35 hover:bg-gray-800"
                     style={{ background: '#1a1a1a', border: 'none' }}
                   >
-                    CONTINUE →
+                    I AGREE, SIGN CONSENT &amp; CONTINUE →
                   </button>
                 </>
               )}
