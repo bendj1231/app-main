@@ -657,53 +657,76 @@ const HomeTab: React.FC<{
                     </div>
                   </div>
 
-                  {/* Credential Document Staging — dispatched to Veremark on submission */}
+                  {/* Veremark Direct Document Intake */}
                   <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #e5e7eb' }}>
                     <div className="flex items-center justify-between px-4 py-2.5" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: obVaultLinked ? '#16a34a' : '#e5e7eb' }} />
-                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Credential Document Staging</p>
+                        <p className="text-[9px] font-semibold text-gray-700 uppercase tracking-widest">Veremark Document Intake</p>
                       </div>
                       {obVaultLinked && (
-                        <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>{obVaultUrl} file{obVaultUrl !== '1' ? 's' : ''} staged</span>
+                        <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>Reference Token Received</span>
                       )}
                     </div>
-                    <div className="px-4 py-3 space-y-2.5">
-                      <p className="text-[9px] text-gray-500 leading-relaxed">Upload scanned copies of your credentials below. These documents are staged in a secure dispatch folder and sent directly to Veremark as your data provider upon submission. Veremark will process them and issue your Verepass digital credential wallet once verification is complete. This platform does not retain the files after dispatch.</p>
-                      {/* Document type slots */}
-                      {[
-                        { id: 'doc-licence',  label: 'Pilot Licence', hint: 'CAPL / CPL / ATPL scan' },
-                        { id: 'doc-medical',  label: 'Medical Certificate', hint: 'Class 1 / Class 2' },
-                        { id: 'doc-radio',    label: 'Radio Licence', hint: 'NTC / RTR certificate' },
-                        { id: 'doc-training', label: 'Training Records', hint: 'ATO completion certificate or logbook extract' },
-                      ].map(doc => (
-                        <div key={doc.id} className="flex items-center gap-3">
-                          <div className="flex-1">
-                            <p className="text-[9px] font-semibold text-gray-800">{doc.label}</p>
-                            <p className="text-[8px] text-gray-400">{doc.hint}</p>
+                    <div className="px-4 py-3 space-y-3">
+                      <p className="text-[9px] text-gray-500 leading-relaxed">
+                        Your credential documents — pilot licence, medical certificate, radio licence, and training records — are uploaded <strong className="text-gray-700">directly to Veremark's secure intake portal</strong>. No files pass through or are stored by this platform. Upon completing your upload on Veremark's side, paste the reference token they provide below to link your document submission to this verification request.
+                      </p>
+                      <div className="flex items-center gap-2 p-2.5 rounded-lg" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
+                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#f97316' }} />
+                        <p className="text-[8px] text-orange-700">PilotRecognition never receives, stores, or processes your credential documents. All document handling, storage, and access control is managed exclusively by Veremark under their own GDPR and data privacy obligations.</p>
+                      </div>
+                      {/* Required documents checklist */}
+                      <div className="space-y-1">
+                        <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Required for Veremark Intake</p>
+                        {[
+                          'Pilot Licence (CAPL / CPL / ATPL)',
+                          'Class 1 Medical Certificate',
+                          'Radio / NTC Licence',
+                          'ATO Training Records or Logbook Extract',
+                        ].map(doc => (
+                          <div key={doc} className="flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#cbd5e1' }} />
+                            <span className="text-[8px] text-gray-500">{doc}</span>
                           </div>
-                          <label
-                            htmlFor={doc.id}
-                            className="px-3 py-1.5 text-[9px] font-bold cursor-pointer transition-all"
-                            style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: '6px', color: '#475569', whiteSpace: 'nowrap' }}
+                        ))}
+                      </div>
+                      {/* Open Veremark portal button */}
+                      <a
+                        href="https://veremark.com/upload"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between w-full px-4 py-2.5 text-white transition-all"
+                        style={{ background: '#1a1a1a', borderRadius: '8px', textDecoration: 'none' }}
+                      >
+                        <span className="text-[10px] font-bold">Open Veremark Secure Upload Portal</span>
+                        <span className="text-[9px] text-white/50">veremark.com →</span>
+                      </a>
+                      {/* Reference token input */}
+                      <div>
+                        <p className="text-[8px] font-semibold text-gray-600 mb-1.5">Paste your Veremark submission reference token:</p>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={obVaultUrl}
+                            onChange={e => { setObVaultUrl(e.target.value); setObVaultLinked(false); }}
+                            placeholder="VRM-XXXXXXXX..."
+                            className="flex-1 px-3 py-2 text-[10px] font-mono text-gray-900 outline-none"
+                            style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                          />
+                          <button
+                            onClick={() => { if (obVaultUrl.trim()) setObVaultLinked(true); }}
+                            disabled={!obVaultUrl.trim()}
+                            className="px-3 py-2 text-[9px] font-bold text-white disabled:opacity-40 transition-all"
+                            style={{ background: '#cc0000', borderRadius: '6px', whiteSpace: 'nowrap' }}
                           >
-                            Upload
-                            <input
-                              id={doc.id}
-                              type="file"
-                              accept="image/*,.pdf"
-                              className="hidden"
-                              onChange={e => {
-                                if (e.target.files?.length) {
-                                  setObVaultUrl(prev => String(Math.max(1, (parseInt(prev) || 0) + 1)));
-                                  setObVaultLinked(true);
-                                }
-                              }}
-                            />
-                          </label>
+                            Confirm
+                          </button>
                         </div>
-                      ))}
-                      <p className="text-[8px] text-gray-400 italic pt-1">Upon consent confirmation, the staging folder is dispatched to the Veremark data node. Veremark issues the Verepass credential wallet after completing verification against the Civil Aviation Authority registry.</p>
+                        {obVaultLinked && (
+                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Token linked. Veremark will associate this submission with your verification request upon dispatch.</p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
