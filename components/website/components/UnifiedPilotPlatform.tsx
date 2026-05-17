@@ -684,7 +684,7 @@ const HomeTab: React.FC<{
                           </button>
                         </div>
                         {obLogbookSynced && (
-                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Token confirmed. Veremark will use this token to query {obLogbookKey.split('::')[0]} directly upon verification dispatch.</p>
+                          <p className="text-[8px] text-green-700 mt-1.5 font-medium">Read-only token confirmed. Veremark will query {obLogbookKey.split('::')[0]} directly to read and verify flight hours only. No write access is granted. Your logbook provider retains full ownership.</p>
                         )}
                       </div>
                     </div>
