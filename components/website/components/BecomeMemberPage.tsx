@@ -102,8 +102,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     // ── Profile setup step (redirected here after Auth0 signup) ──────────────
     if (isSetup && isAuthenticated) {
         return (
-            <div className="relative h-screen overflow-hidden flex flex-col">
-                <div className="fixed inset-0 z-0">
+            <div className="relative h-screen flex flex-col">
+                <div className="fixed inset-0 z-0 overflow-hidden">
                     {enableShader ? (
                         <MeshGradient className="w-full h-full" colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]} speed={0.22} />
                     ) : (
@@ -112,7 +112,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
                     <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
                 </div>
-                <div className="relative z-10">
+                <div className="relative z-[300]">
                     <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
                 </div>
                 <div className="relative z-10 flex-1 flex items-center justify-center px-4">
@@ -168,10 +168,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 { name: 'Home', url: '/' },
                 { name: 'Create Account', url: '/become-member' }
             ]} />
-            <div className="relative h-screen overflow-hidden flex flex-col">
+            <div className="relative h-screen flex flex-col">
 
                 {/* Background — same shader as HomePage & platform */}
-                <div className="fixed inset-0 z-0">
+                <div className="fixed inset-0 z-0 overflow-hidden">
                     {enableShader ? (
                         <MeshGradient
                             className="w-full h-full"
@@ -186,11 +186,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
                 </div>
 
-                <div className="relative z-10">
+                <div className="relative z-[300]">
                 <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
                 </div>
 
-                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8">
+                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden">
                     <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-16">
 
                         {/* Left: Hero text */}
