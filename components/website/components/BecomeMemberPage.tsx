@@ -72,7 +72,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 .from('profiles')
                 .update({ display_name: displayName.trim(), current_occupation: occupation })
                 .eq('auth0_id', user?.sub);
-            window.location.href = '/platform';
+            onNavigate('platform');
         } catch {
             setSaveError('Failed to save. Please try again.');
         } finally {

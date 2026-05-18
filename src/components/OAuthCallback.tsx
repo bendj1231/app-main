@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
 
 export const OAuthCallback = () => {
   const { isLoading, isAuthenticated, user, error } = useAuth0();
+  const navigate = useNavigate();
   const [profileCreated, setProfileCreated] = useState(false);
 
   useEffect(() => {
@@ -55,14 +57,14 @@ export const OAuthCallback = () => {
           }
 
           setProfileCreated(true);
-          window.location.href = '/become-member?setup=1';
+          navigate('/become-member?setup=1');
         } else {
           setProfileCreated(true);
-          window.location.href = '/platform';
+          navigate('/platform');
         }
       } catch (err) {
         console.error('Profile creation error:', err);
-        window.location.href = '/';
+        navigate('/');
       }
     };
 
