@@ -91,7 +91,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">Agreement Between Private Individuals</h2>
                         <p className="mb-4">
-                            This Agreement is entered into by and between <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> (collectively, "the Developers") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. We operate as individual developers, not through a registered corporation or business entity.
+                            This Agreement is entered into by and between <strong>Karl Brian Vogt</strong> and <strong>Benjamin Bowler</strong> (collectively, "the Developers") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. We operate as individual developers, not through a registered corporation or business entity.
                         </p>
                         <p className="mb-4">
                             <strong>Pre-Registration Operating Status:</strong> pilotrecognition.com is currently operating in an alpha/sandbox phase as an unincorporated development project between two private individuals. No formal business entity has been registered in connection with this platform at this stage of development. This is a standard and legally recognized operational posture for early-stage technology projects. By using this platform during this phase, you acknowledge and accept this status.
@@ -150,7 +150,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Consent to Data Processing</h2>
                         <p className="mb-4">
-                            By creating an account, you provide your explicit, informed consent to <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong>, operating as the developers of pilotrecognition.com. You authorize us to store your anonymous user identifier and your estimated flight hours (user-declared metadata) in our Supabase database strictly for the purpose of displaying your pilot profile.
+                            By creating an account, you provide your explicit, informed consent to <strong>Karl Brian Vogt</strong> and <strong>Benjamin Bowler</strong>, operating as the developers of pilotrecognition.com. You authorize us to store your anonymous user identifier and your estimated flight hours (user-declared metadata) in our Supabase database strictly for the purpose of displaying your pilot profile.
                         </p>
                         <p className="mb-4">
                             <strong>Authentication Proxy:</strong> Login and account security on this platform are independently managed by <strong>Auth0</strong> by Okta, a third-party authentication proxy service. When you enter your email and password, that data is sent directly to Auth0's secure servers — it never touches our own servers or database. Auth0 validates your credentials and returns a cryptographically secure token (JSON Web Token) to our application. Our Supabase database stores only an anonymous User ID token (e.g., auth0|12345...), not your email or password. We do not have the ability to view, access, or store your login credentials.
