@@ -304,13 +304,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         {/* Neutral disclaimer */}
-                        <p className="text-center text-xs text-slate-500 mt-4 leading-relaxed">
+                        <p className="text-center text-xs text-slate-300 mt-4 leading-relaxed">
                             Pilot Recognition functions strictly as a neutral data infrastructure provider under AJBowler Consult.
                             We do not control, store, or modify pilot credentials. Data ownership sits exclusively with the pilot
                             and our integration partners (Veremark, CAAP, and logbook providers). Infrastructure processing and
                             automated fee routing are managed securely via Helio. By continuing, you agree to these operational
                             boundaries under our{' '}
-                            <button onClick={() => onNavigate('terms')} className="text-slate-400 underline hover:text-white transition-colors">Terms of Service</button>.
+                            <button onClick={() => onNavigate('terms')} className="text-white underline hover:text-slate-200 transition-colors">Terms of Service</button>.
                         </p>
                         </div>{/* end right column */}
                     </div>{/* end flex row */}
