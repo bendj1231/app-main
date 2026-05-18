@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TopNavbar } from '../../components/website/components/TopNavbar';
 import { ArrowLeft } from 'lucide-react';
 
@@ -8,7 +8,60 @@ interface TermsOfServicePageProps {
     onLogin: () => void;
 }
 
+interface JurisdictionInfo {
+    country: string;
+    countryCode: string;
+    governingLaw: string;
+    dataAuthority: string;
+    electronicConsentLaw: string;
+    aviationAuthority: string;
+    privacyFramework: string;
+}
+
+const JURISDICTION_MAP: Record<string, JurisdictionInfo> = {
+    PH: { country: 'the Philippines', countryCode: 'PH', governingLaw: 'the Civil Code of the Philippines and the Data Privacy Act of 2012 (R.A. 10173)', dataAuthority: 'National Privacy Commission (NPC)', electronicConsentLaw: 'Electronic Commerce Act (R.A. 8792)', aviationAuthority: 'Civil Aviation Authority of the Philippines (CAAP)', privacyFramework: 'Data Privacy Act of 2012' },
+    US: { country: 'the United States', countryCode: 'US', governingLaw: 'applicable federal law and the laws of the state of California, including the California Consumer Privacy Act (CCPA)', dataAuthority: 'Federal Trade Commission (FTC) and applicable state regulators', electronicConsentLaw: 'Electronic Signatures in Global and National Commerce Act (E-SIGN Act)', aviationAuthority: 'Federal Aviation Administration (FAA)', privacyFramework: 'CCPA / Federal privacy regulations' },
+    GB: { country: 'the United Kingdom', countryCode: 'GB', governingLaw: 'the laws of England and Wales, including the UK GDPR and Data Protection Act 2018', dataAuthority: 'Information Commissioner\'s Office (ICO)', electronicConsentLaw: 'Electronic Communications Act 2000', aviationAuthority: 'Civil Aviation Authority (CAA UK)', privacyFramework: 'UK GDPR / Data Protection Act 2018' },
+    AU: { country: 'Australia', countryCode: 'AU', governingLaw: 'the laws of the Commonwealth of Australia, including the Privacy Act 1988 and Australian Privacy Principles (APPs)', dataAuthority: 'Office of the Australian Information Commissioner (OAIC)', electronicConsentLaw: 'Electronic Transactions Act 1999', aviationAuthority: 'Civil Aviation Safety Authority (CASA)', privacyFramework: 'Privacy Act 1988 / Australian Privacy Principles' },
+    AE: { country: 'the United Arab Emirates', countryCode: 'AE', governingLaw: 'the laws of the UAE, including Federal Decree-Law No. 45 of 2021 on Personal Data Protection', dataAuthority: 'UAE Data Office', electronicConsentLaw: 'Federal Decree-Law No. 46 of 2021 on Electronic Transactions', aviationAuthority: 'General Civil Aviation Authority (GCAA)', privacyFramework: 'UAE Personal Data Protection Law (PDPL)' },
+    SG: { country: 'Singapore', countryCode: 'SG', governingLaw: 'the laws of the Republic of Singapore, including the Personal Data Protection Act 2012 (PDPA)', dataAuthority: 'Personal Data Protection Commission (PDPC)', electronicConsentLaw: 'Electronic Transactions Act (Cap. 88)', aviationAuthority: 'Civil Aviation Authority of Singapore (CAAS)', privacyFramework: 'Personal Data Protection Act 2012 (PDPA)' },
+    DE: { country: 'Germany', countryCode: 'DE', governingLaw: 'the laws of Germany and the European Union, including the General Data Protection Regulation (GDPR) and the Bundesdatenschutzgesetz (BDSG)', dataAuthority: 'Federal Commissioner for Data Protection and Freedom of Information (BfDI)', electronicConsentLaw: 'eIDAS Regulation (EU) No 910/2014', aviationAuthority: 'Luftfahrt-Bundesamt (LBA) / EASA', privacyFramework: 'GDPR / BDSG' },
+    FR: { country: 'France', countryCode: 'FR', governingLaw: 'the laws of France and the European Union, including the General Data Protection Regulation (GDPR) and the French Data Protection Act (Loi Informatique et Libertés)', dataAuthority: 'Commission Nationale de l\'Informatique et des Libertés (CNIL)', electronicConsentLaw: 'eIDAS Regulation (EU) No 910/2014', aviationAuthority: 'Direction Générale de l\'Aviation Civile (DGAC) / EASA', privacyFramework: 'GDPR / French Data Protection Act' },
+    CA: { country: 'Canada', countryCode: 'CA', governingLaw: 'the laws of Canada, including the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy laws', dataAuthority: 'Office of the Privacy Commissioner of Canada (OPC)', electronicConsentLaw: 'Electronic Commerce Protection Act (FISA / CASL framework)', aviationAuthority: 'Transport Canada Civil Aviation (TCCA)', privacyFramework: 'PIPEDA / Bill C-27 (CPPA)' },
+    IN: { country: 'India', countryCode: 'IN', governingLaw: 'the laws of India, including the Information Technology Act 2000 and the Digital Personal Data Protection Act 2023 (DPDPA)', dataAuthority: 'Data Protection Board of India', electronicConsentLaw: 'Information Technology Act 2000 (Section 10A)', aviationAuthority: 'Directorate General of Civil Aviation (DGCA)', privacyFramework: 'Digital Personal Data Protection Act 2023' },
+    NZ: { country: 'New Zealand', countryCode: 'NZ', governingLaw: 'the laws of New Zealand, including the Privacy Act 2020', dataAuthority: 'Office of the Privacy Commissioner (OPC NZ)', electronicConsentLaw: 'Contract and Commercial Law Act 2017', aviationAuthority: 'Civil Aviation Authority of New Zealand (CAA NZ)', privacyFramework: 'Privacy Act 2020' },
+};
+
+const DEFAULT_JURISDICTION: JurisdictionInfo = {
+    country: 'your jurisdiction',
+    countryCode: 'INT',
+    governingLaw: 'applicable international law and the laws of the Republic of the Philippines as the platform\'s country of development',
+    dataAuthority: 'your regional data protection authority',
+    electronicConsentLaw: 'applicable electronic commerce and digital signature legislation in your jurisdiction',
+    aviationAuthority: 'your regional Civil Aviation Authority (CAA)',
+    privacyFramework: 'applicable regional data protection regulations',
+};
+
+function getJurisdiction(countryCode: string): JurisdictionInfo {
+    return JURISDICTION_MAP[countryCode.toUpperCase()] || DEFAULT_JURISDICTION;
+}
+
 export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: TermsOfServicePageProps) {
+    const [jurisdiction, setJurisdiction] = useState<JurisdictionInfo>(DEFAULT_JURISDICTION);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch('https://ipapi.co/json/')
+            .then((r) => r.json())
+            .then((data) => {
+                if (data?.country_code) {
+                    setJurisdiction(getJurisdiction(data.country_code));
+                }
+            })
+            .catch(() => {})
+            .finally(() => setLoading(false));
+    }, []);
+
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
@@ -22,16 +75,23 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     Back
                 </button>
 
-                <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-8">
+                <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
                     Terms of Service and Privacy Agreement
                 </h1>
-                <p className="text-sm text-slate-500 mb-8">Last updated: May 18, 2026</p>
+                <p className="text-sm text-slate-500 mb-2">Last updated: May 18, 2026</p>
+                {!loading && (
+                    <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 mb-8">
+                        <span className="text-blue-600 text-xs font-bold uppercase tracking-wider">Jurisdiction detected:</span>
+                        <span className="text-blue-800 text-sm font-semibold">{jurisdiction.country}</span>
+                        <span className="text-blue-400 text-xs">— {jurisdiction.privacyFramework}</span>
+                    </div>
+                )}
 
                 <div className="space-y-8 text-slate-700">
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">Agreement Between Private Individuals</h2>
                         <p className="mb-4">
-                            This Agreement is entered into by and between <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> (collectively, "the Developers") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. This is a person-to-person contract under the Civil Code of the Philippines. We operate as individual developers, not through a registered corporation or business entity.
+                            This Agreement is entered into by and between <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> (collectively, "the Developers") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. We operate as individual developers, not through a registered corporation or business entity.
                         </p>
                     </section>
 
@@ -47,10 +107,12 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <strong>Data Limitation and Non-Verification Disclaimer:</strong> pilotrecognition.com displays only user-declared aviation metadata, such as estimated flight hours and general license ratings, based entirely on explicit user input. This platform does not collect, store, or verify official government-issued license numbers, logs, or legal credentials. Legal authentication of certifications remains strictly between the user, the relevant aviation Data Issuer, and authorized verification providers.
                         </p>
                         <p className="mb-4 mt-4">
-                            <strong>Third-Party Verification Disclaimer:</strong> pilotrecognition.com does not collect or store official government license documents or sensitive identification numbers on its own servers. Professional credential verification is securely offloaded to Veremark, an independent, third-party screening provider. By initiating a verification check, you consent to sharing your basic contact information with Veremark to process your credentials. Your verified achievements will be managed via your independent Verepass wallet.
+                            <strong>Third-Party Verification Disclaimer:</strong> pilotrecognition.com does not collect or store official government license documents or sensitive identification numbers on its own servers. Professional credential verification is securely offloaded to an independent, third-party screening provider. By initiating a verification check, you consent to sharing your basic contact information with the verification provider to process your credentials. Verified achievements are managed via your independent credential wallet.
                         </p>
+                    </section>
 
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4 mt-8">2. Data Collection and Purpose</h2>
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Data Collection and Purpose</h2>
                         <p className="mb-4">The Developers collect the following data solely to create and display your pilot profile on this platform:</p>
                         <ul className="list-disc pl-6 space-y-2">
                             <li>Your anonymous User ID (provided via JWT token from Auth0)</li>
@@ -58,17 +120,17 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <li>Your general license ratings and type ratings (user-declared)</li>
                             <li>Your pathway interests and program preferences</li>
                         </ul>
-                        <p className="mt-4">We do <strong>not</strong> collect, store, or process your email address, password, or any login credentials. Authentication is handled entirely by Auth0, our third-party authentication proxy. We do <strong>not</strong> collect, store, or verify official government-issued license numbers, medical certificate numbers, logbook serial numbers, or any other sensitive personal identification data. Legal authentication of all certifications remains strictly between the user, the relevant aviation Data Issuer (e.g., CAAP, FAA, EASA), and authorized third-party verification providers. We do not collect passport data, financial account details, or any information not directly related to your pilot profile display.</p>
+                        <p className="mt-4">We do <strong>not</strong> collect, store, or process your email address, password, or any login credentials. We do <strong>not</strong> collect, store, or verify official government-issued license numbers, medical certificate numbers, logbook serial numbers, or any other sensitive personal identification data. Legal authentication of all certifications remains strictly between the user, the relevant aviation Data Issuer, and authorized third-party verification providers. We do not collect passport data, financial account details, or any information not directly related to your pilot profile display.</p>
                     </section>
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Data Storage and Security</h2>
-                        <p>Your profile data (anonymous User ID and estimated flight hours) is stored securely in our Supabase database. Your login credentials (email and password) are stored exclusively by Auth0, Inc. While the Developers implement standard digital security measures, you acknowledge that no online database is 100% secure against unauthorized breaches. We are personally responsible for the protection of your profile data as Joint Personal Information Controllers under the Data Privacy Act of 2012. Auth0 is solely responsible for the security of your authentication credentials.</p>
+                        <p>Your profile data (anonymous User ID and estimated flight hours) is stored securely in our Supabase database. Your login credentials (email and password) are stored exclusively by Auth0, Inc. While the Developers implement standard digital security measures, you acknowledge that no online database is 100% secure against unauthorized breaches. We are personally responsible for the protection of your profile data as Joint Personal Information Controllers under {jurisdiction.privacyFramework}. Auth0 is solely responsible for the security of your authentication credentials.</p>
                     </section>
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Account Deletion and Data Retention</h2>
-                        <p>You retain the right to delete your profile at any time. Upon your request or account deletion, the Developers will permanently erase your email, license information, flight hours, and all associated personal data from the active database within 30 days. Your consent timestamp (recorded at account creation) serves as legal proof of when you accepted these terms.</p>
+                        <p>You retain the right to delete your profile at any time. Upon your request or account deletion, the Developers will permanently erase your email, license information, flight hours, and all associated personal data from the active database within 30 days, in accordance with {jurisdiction.privacyFramework}. Your consent timestamp (recorded at account creation) serves as legal proof of when you accepted these terms.</p>
                     </section>
 
                     <section>
@@ -112,31 +174,42 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Electronic Consent</h2>
-                        <p>Under the Electronic Commerce Act (R.A. 8792), clicking the "I Agree" checkbox or button during signup is legally binding — equivalent to signing a paper contract with a pen. We record a timestamp in our database at the moment you create your account, which serves as legal proof that you accepted these terms on that specific date and time.</p>
+                        <p>Under the <strong>{jurisdiction.electronicConsentLaw}</strong>, clicking the "I Agree" checkbox or button during signup is legally binding — equivalent to signing a paper contract with a pen. We record a timestamp in our database at the moment you create your account, which serves as legal proof that you accepted these terms on that specific date and time. This consent mechanism complies with electronic signature legislation applicable in {jurisdiction.country}.</p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Intellectual Property</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Aviation Authority & Credential Standards</h2>
+                        <p>For users located in {jurisdiction.country}, the relevant aviation regulatory authority is the <strong>{jurisdiction.aviationAuthority}</strong>. All credential verification workflows on this platform are designed to align with the licensing standards and frameworks administered by this authority. Pilot Recognition does not represent, act on behalf of, or hold any formal relationship with this authority. Verification results are for informational purposes only and do not constitute official regulatory recognition.</p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Intellectual Property</h2>
                         <p>All content, features, and functionality of the PilotRecognition platform are owned by the Developers and are protected by international copyright, trademark, and other intellectual property laws.</p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Limitation of Liability</h2>
-                        <p>This website is a private project provided "as-is" without any warranties. The Developers are not liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform, including data leaks, server downtimes, or inaccuracies in user-declared flight hours.</p>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Limitation of Liability</h2>
+                        <p>This website is a private project provided "as-is" without any warranties. The Developers are not liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform, including data leaks, server downtimes, or inaccuracies in user-declared flight hours. Liability is limited to the maximum extent permitted under {jurisdiction.privacyFramework}.</p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Termination</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Termination</h2>
                         <p>We reserve the right to terminate or suspend your account at any time for violation of these Terms of Service or for any other reason at our sole discretion.</p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Governing Law</h2>
-                        <p>These Terms of Service shall be governed by and construed in accordance with the laws of the Republic of the Philippines, specifically the Civil Code of the Philippines and the Data Privacy Act of 2012.</p>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Governing Law</h2>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-4">
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Detected Jurisdiction</p>
+                            <p className="text-slate-900 font-semibold">{jurisdiction.country}</p>
+                        </div>
+                        <p className="mb-4">These Terms of Service shall be governed by and construed in accordance with <strong>{jurisdiction.governingLaw}</strong>.</p>
+                        <p className="mb-4">Data protection rights and complaints may be directed to the <strong>{jurisdiction.dataAuthority}</strong> in your jurisdiction.</p>
+                        <p className="text-sm text-slate-500">Note: Regardless of your detected location, these terms are drafted in alignment with the platform's country of development (Republic of the Philippines) and comply with internationally recognized data protection principles including GDPR-equivalent standards.</p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Payment Processing, Anti-Money Laundering &amp; Fee Distribution</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">14. Payment Processing, Anti-Money Laundering &amp; Fee Distribution</h2>
                         <p className="mb-4">
                             All subscription and verification fees processed through this platform are routed exclusively via a decentralized payment gateway operating as a neutral, automated conduit. Pilot Recognition does not hold, accumulate, or retain the full value of any transaction in its own accounts. At the moment a payment clears, the gateway automatically distributes the transaction on-chain to the respective integration partners responsible for the corresponding service layer:
                         </p>
@@ -158,7 +231,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">14. Contact Us</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">15. Contact Us</h2>
                         <p>If you have any questions about these Terms of Service, please contact us at:</p>
                         <p className="mt-2">legal@pilotrecognition.com</p>
                     </section>
