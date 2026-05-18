@@ -5,13 +5,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { TopNavbar } from './TopNavbar';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '@/src/lib/device-detection';
-import { createClient } from '@supabase/supabase-js';
-
-const _env = (import.meta as any).env || {};
-const supabase = createClient(
-    _env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co',
-    _env.VITE_SUPABASE_ANON_KEY || ''
-);
+import { supabase } from '@/src/lib/supabase';
 
 interface BecomeMemberPageProps {
     onBack: () => void;

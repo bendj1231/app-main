@@ -135,6 +135,7 @@ const UCFOfficialReleasePage = lazy(() => import('@/app/ucf/official-release/pag
 const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
 const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
+const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -247,6 +248,7 @@ export const AppRoutes = () => {
       <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/contact-support" element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/become-member" element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/terms-of-service" element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/account-confirmation" element={<AccountConfirmationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
 
       {/* Onboarding routes */}
