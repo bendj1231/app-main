@@ -96,6 +96,29 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     </section>
 
                     <section>
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-2">
+                            <p className="text-blue-700 text-xs font-bold uppercase tracking-wider mb-1">Platform Classification</p>
+                            <p className="text-blue-900 font-semibold text-sm">Neutral, Stateless Joint-Controller — Passive Pipeline (PIC)</p>
+                        </div>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">0. Neutral &amp; Stateless Platform Status</h2>
+                        <p className="mb-4">
+                            Pilot Recognition operates exclusively as a <strong>completely neutral, stateless joint-controller</strong>. This platform functions as a passive display interface — a read-only window — that renders data originating solely from the User, approved Aviation Training Organisations (ATOs), regional civil aviation authorities, and independent verification providers.
+                        </p>
+                        <p className="mb-4">
+                            <strong>We do not generate, write, edit, modify, or store pilot credentials, license data, logbook entries, or aviation records of any kind.</strong> All metrics, scores, and profile data displayed on this platform are rendered client-side, sourced read-only from the User's own declared inputs or from connected third-party provider data streams.
+                        </p>
+                        <p className="mb-4">
+                            Under this classification, Pilot Recognition is legally analogous to a <em>passive pipeline</em> or neutral conduit. As the platform does not originate or alter any underlying data, liability for data accuracy, credential validity, and verification outcomes rests exclusively with the data-originating parties: the User, the relevant aviation authority, and the independent verification provider.
+                        </p>
+                        <p className="mb-4">
+                            <strong>Dispute Resolution — Consultation Fee:</strong> Any formal dispute, complaint, or data challenge directed at Pilot Recognition is subject to a <strong>non-refundable $500 USD consultation fee</strong> payable prior to any third-party redirection, investigation initiation, or formal response. This fee reflects the cost of neutral infrastructure review and does not constitute an admission of liability. By using this platform, you explicitly acknowledge and agree to this dispute resolution condition.
+                        </p>
+                        <p>
+                            This neutral status is explicitly asserted on the platform interface and constitutes part of the binding agreement between the User and the Developers upon account creation or use of any platform feature.
+                        </p>
+                    </section>
+
+                    <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Consent to Data Processing</h2>
                         <p className="mb-4">
                             By creating an account, you provide your explicit, informed consent to <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong>, operating as the developers of pilotrecognition.com. You authorize us to store your anonymous user identifier and your estimated flight hours (user-declared metadata) in our Supabase database strictly for the purpose of displaying your pilot profile.
