@@ -156,7 +156,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {saving ? 'Saving...' : 'Complete Profile →'}
                             </button>
                             <p className="text-white/40 text-[10px] text-center mt-3 leading-snug">
-                                Pilot Recognition acts as a completely neutral, stateless joint-controller. We do not generate, modify, or store pilot credentials. All metrics are rendered client-side, read-only from your selected providers. Disputes are subject to a non-refundable $500 consultation fee prior to third-party redirection. By continuing, you agree to these terms under our{' '}
+                                Pilot Recognition acts as a stateless joint-controller. Displayed metrics are pulled read-only from third-party providers, ATOs, and regional verification partners. Any disputes or data reviews are subject to a non-refundable $500 USD technical consultation fee per inquiry prior to third-party redirection. By continuing, you authorize this display and agree to these terms under our{' '}
                                 <button onClick={() => onNavigate('terms')} className="underline hover:text-white/70 transition-colors">Terms of Service</button>.
                             </p>
                         </div>
@@ -312,7 +312,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Neutral disclaimer */}
                         <p className="text-center text-xs text-slate-300 mt-4 leading-relaxed">
-                            Pilot Recognition acts as a completely neutral, stateless joint-controller. We do not generate, modify, or store pilot credentials. All metrics are rendered client-side, read-only from your selected providers. Platform infrastructure fees are automatically split on-chain to integration partners in compliance with AML obligations. Disputes are subject to a non-refundable $500 consultation fee prior to third-party redirection. By continuing, you agree to these terms under our{' '}
+                            Pilot Recognition acts as a stateless joint-controller. Displayed metrics are pulled read-only from third-party providers, ATOs, and regional verification partners. Platform infrastructure fees are automatically split on-chain to integration partners in compliance with AML obligations. Any disputes or data reviews are subject to a non-refundable $500 USD technical consultation fee per inquiry prior to third-party redirection. By continuing, you authorize this display and agree to these terms under our{' '}
                             <button onClick={() => onNavigate('terms')} className="text-white underline hover:text-slate-200 transition-colors">Terms of Service</button>.
                         </p>
                         </div>{/* end right column */}
