@@ -150,7 +150,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {saving ? 'Saving...' : 'Complete Profile →'}
                             </button>
                             <p className="text-white/50 text-[10px] text-center leading-relaxed pt-1">
-                                Pilot Recognition acts as a completely neutral, stateless joint-controller. We do not generate, modify, or store pilot credentials. All metrics are rendered client-side, read-only from your selected providers. Disputes are subject to a non-refundable $500 consultation fee prior to third-party redirection. By continuing, you agree to these terms under our{' '}
+                                Pilot Recognition operates as a neutral, stateless joint-controller. All platform infrastructure fees are processed via Helio and automatically split on-chain to our integration partners (Veremark, CAAP/ATO frameworks, and logbook providers) to cover data verification costs. By continuing, you authorize this read-only display and automated distribution under our{' '}
                                 <button onClick={() => onNavigate('terms-of-service')} className="underline text-white/60 hover:text-white transition-colors">Terms of Service</button>.
                             </p>
                         </div>
