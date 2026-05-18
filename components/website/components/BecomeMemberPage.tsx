@@ -304,12 +304,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         {/* Neutral disclaimer */}
-                        <p className="text-center text-xs text-slate-400 mt-4 leading-relaxed">
-                            By creating an account you agree to our{' '}
-                            <button onClick={() => onNavigate('terms')} className="underline hover:text-white transition-colors">Terms of Service</button>
-                            {' '}and{' '}
-                            <button onClick={() => onNavigate('privacy')} className="underline hover:text-white transition-colors">Privacy Policy</button>.
-                            No sensitive personal or aviation data is required to register.
+                        <p className="text-center text-xs text-slate-500 mt-4 leading-relaxed">
+                            Pilot Recognition functions strictly as a neutral data infrastructure provider under AJBowler Consult.
+                            We do not control, store, or modify pilot credentials. Data ownership sits exclusively with the pilot
+                            and our integration partners (Veremark, CAAP, and logbook providers). Infrastructure processing and
+                            automated fee routing are managed securely via Helio. By continuing, you agree to these operational
+                            boundaries under our{' '}
+                            <button onClick={() => onNavigate('terms')} className="text-slate-400 underline hover:text-white transition-colors">Terms of Service</button>.
                         </p>
                         </div>{/* end right column */}
                     </div>{/* end flex row */}
