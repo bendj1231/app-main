@@ -110,6 +110,23 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <p className="mb-4">
                             Under this classification, Pilot Recognition is legally analogous to a <em>passive pipeline</em> or neutral conduit. As the platform does not originate or alter any underlying data, liability for data accuracy, credential validity, and verification outcomes rests exclusively with the data-originating parties: the User, the relevant aviation authority, and the independent verification provider.
                         </p>
+
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
+                            <p className="text-amber-800 text-xs font-bold uppercase tracking-wider mb-2">Important Legal Clarification</p>
+                            <p className="text-amber-900 text-sm leading-relaxed">
+                                Infrastructure classification does <strong>not</strong> exempt Pilot Recognition from applicable data privacy laws. No technology platform that handles personal identifiers is immune from legislation such as the Philippines Data Privacy Act of 2012 (RA 10173), the GDPR, or equivalent regional frameworks. The distinction is that operating as a neutral, stateless infrastructure provider <strong>changes our legal classification and reduces operational risk to near-zero</strong> — it does not mean the law stops applying to this website.
+                            </p>
+                        </div>
+
+                        <p className="mb-4">
+                            <strong>Processing Environment Responsibility:</strong> Under applicable data privacy legislation, the term "processing" includes any operation performed on personal data, including retrieval, consultation, and browser-side display. Because Pilot Recognition's frontend code reaches out to authentication and database providers, decodes tokens, and renders pilot profile data within the browser, the platform executes a <em>data processing event</em> as defined by law. As operators of the domain where this processing occurs, the Developers are responsible for maintaining a secure processing environment even though no raw data is stored on Pilot Recognition's own servers.
+                        </p>
+                        <p className="mb-4">
+                            <strong>Privacy by Design — Compliance by Architecture:</strong> By building a stateless application that refuses to store or retain raw pilot credentials, Pilot Recognition satisfies the highest tier of data security mandated by applicable privacy frameworks. The absence of a central data repository eliminates the risk of a server-side data breach, which constitutes the most common and most severe form of data privacy violation. This architectural choice is not merely a technical decision — it is an active, documented compliance measure under the Privacy by Design principle recognized across all major data protection frameworks.
+                        </p>
+                        <p className="mb-4">
+                            <strong>Transfer of Fault:</strong> By explicitly stating that data ownership and control sit with the pilot and the originating integration partners, any legal dispute regarding incorrect credentials, flight hours, or background check outcomes is automatically directed to the data-originating source network — not to Pilot Recognition as the neutral display interface. The platform's role is limited to rendering what those source networks provide.
+                        </p>
                         <p className="mb-4">
                             <strong>Dispute Resolution — Consultation Fee:</strong> Any formal dispute, complaint, or data challenge directed at Pilot Recognition is subject to a <strong>non-refundable $500 USD consultation fee</strong> payable prior to any third-party redirection, investigation initiation, or formal response. This fee reflects the cost of neutral infrastructure review and does not constitute an admission of liability. By using this platform, you explicitly acknowledge and agree to this dispute resolution condition.
                         </p>
