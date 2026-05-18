@@ -155,6 +155,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             >
                                 {saving ? 'Saving...' : 'Complete Profile →'}
                             </button>
+                            <p className="text-white/40 text-[10px] text-center mt-3 leading-snug">
+                                Pilot Recognition operates as a neutral, stateless joint-controller. All platform infrastructure fees are processed via our decentralized gateway and automatically split on-chain to our integration partners (regional verification providers, civil aviation authority frameworks, and logbook providers) to cover data verification costs. By continuing, you authorize this read-only display and automated distribution under our{' '}
+                                <button onClick={() => onNavigate('terms')} className="underline hover:text-white/70 transition-colors">Terms of Service</button>.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -308,12 +312,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Neutral disclaimer */}
                         <p className="text-center text-xs text-slate-300 mt-4 leading-relaxed">
-                            Pilot Recognition functions strictly as a neutral data infrastructure provider.
-                            We do not control, store, or modify pilot credentials. Data ownership and control sit exclusively with the pilot
-                            and our integration partners (regional verification and background check providers, data storage providers,
-                            regional flight logbook providers, and civil aviation authority handling). Infrastructure processing and
-                            automated fee routing are managed securely via our decentralized gateway. By continuing, you agree to these operational
-                            boundaries under our{' '}
+                            Pilot Recognition operates as a neutral, stateless joint-controller. All platform infrastructure fees are processed via our decentralized gateway and automatically split on-chain to our integration partners (regional verification providers, civil aviation authority frameworks, and logbook providers) to cover data verification costs — in compliance with Anti-Money Laundering (AML) obligations. We do not hold, store, or retain the full transaction. Data ownership sits exclusively with the pilot and our integration partners. By continuing, you authorize this read-only display and automated distribution under our{' '}
                             <button onClick={() => onNavigate('terms')} className="text-white underline hover:text-slate-200 transition-colors">Terms of Service</button>.
                         </p>
                         </div>{/* end right column */}
