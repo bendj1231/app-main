@@ -93,6 +93,18 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <p className="mb-4">
                             This Agreement is entered into by and between <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> (collectively, "the Developers") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. We operate as individual developers, not through a registered corporation or business entity.
                         </p>
+                        <p className="mb-4">
+                            <strong>Pre-Registration Operating Status:</strong> pilotrecognition.com is currently operating in an alpha/sandbox phase as an unincorporated development project between two private individuals. No formal business entity has been registered in connection with this platform at this stage of development. This is a standard and legally recognized operational posture for early-stage technology projects. By using this platform during this phase, you acknowledge and accept this status.
+                        </p>
+                        <p className="mb-4">
+                            <strong>Payment Processing:</strong> All payments processed through this platform are handled via Helio (MoonPay Commerce), a third-party decentralized payment gateway. Payments are received directly into the Developers' connected wallets and are automatically split on-chain at the moment of transaction clearance to the designated integration partners. Because payments are processed via a decentralized gateway and not through a traditional corporate bank account, no formal merchant registration is required at this operational stage.
+                        </p>
+                        <p className="mb-4">
+                            <strong>Formalization Triggers:</strong> The Developers commit to formalizing the platform's business structure — either through an existing entity (AJBowler Consult) or a newly registered business — upon reaching any of the following milestones: (a) the platform's payment gateway requires merchant KYC verification; (b) cumulative platform revenue exceeds $1,000 USD; or (c) a formal partnership or enterprise contract is executed with a third party. Until such a trigger is reached, this Agreement constitutes a valid, binding, person-to-person contract under applicable electronic commerce legislation.
+                        </p>
+                        <p>
+                            <strong>Technical Risk Profile:</strong> Because the platform is architected as a stateless, client-side rendering interface with no central credential database, the technical risk profile of this pre-registration phase is near-zero. No raw pilot credentials, license documents, or sensitive identifiers are stored on platform infrastructure. User authentication is managed entirely by Auth0 (Okta), and profile data is stored in Supabase under standard security tiers. The absence of a proprietary data store means there is no central repository for unauthorized access during this phase.
+                        </p>
                     </section>
 
                     <section>
