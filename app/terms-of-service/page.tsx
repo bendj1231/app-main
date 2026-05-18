@@ -225,8 +225,17 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Electronic Consent</h2>
-                        <p>Under the <strong>{jurisdiction.electronicConsentLaw}</strong>, clicking the "I Agree" checkbox or button during signup is legally binding — equivalent to signing a paper contract with a pen. We record a timestamp in our database at the moment you create your account, which serves as legal proof that you accepted these terms on that specific date and time. This consent mechanism complies with electronic signature legislation applicable in {jurisdiction.country}.</p>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Electronic Consent &amp; Consent Timestamp</h2>
+                        <p className="mb-4">Under the <strong>{jurisdiction.electronicConsentLaw}</strong>, clicking the "I Agree" checkbox or button during signup is legally binding — equivalent to signing a paper contract with a pen. We record a timestamp in our database at the moment you create your account, which serves as legal proof that you accepted these terms on that specific date and time. This consent mechanism complies with electronic signature legislation applicable in {jurisdiction.country}.</p>
+                        <p className="mb-4">
+                            <strong>Consent Timestamp — System Metadata, Not Personal Data:</strong> The timestamp recorded at account creation (e.g., <code className="text-xs bg-slate-100 px-1 py-0.5 rounded">2026-05-18T10:36:00Z</code>) is stored alongside an encrypted, alphanumeric anonymous user ID issued by Auth0. This constitutes an <em>operational audit trail</em> — system metadata — not a pilot profile registry or a store of Sensitive Personal Information (SPI) as defined under applicable data privacy frameworks.
+                        </p>
+                        <p className="mb-4">
+                            This log records a single immutable system event: that an anonymous user token activated the infrastructure pipeline at a specific moment. No raw pilot documents, license credentials, medical records, or logbook data are associated with or stored alongside this timestamp entry.
+                        </p>
+                        <p>
+                            <strong>Legal Basis for Timestamp Logging:</strong> Recording this consent event is not discretionary — it is mandated by electronic commerce legislation (including the {jurisdiction.electronicConsentLaw}) as the technical mechanism proving that the User directed the system to process their read-only data. This timestamp is Pilot Recognition's legal receipt of informed, affirmative user consent and establishes the exact moment the infrastructure pipeline was authorized to operate.
+                        </p>
                     </section>
 
                     <section>
