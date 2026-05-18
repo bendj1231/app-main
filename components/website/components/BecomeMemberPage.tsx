@@ -156,7 +156,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {saving ? 'Saving...' : 'Complete Profile →'}
                             </button>
                             <p className="text-white/40 text-[10px] text-center mt-3 leading-snug">
-                                Pilot Recognition operates as a neutral, stateless joint-controller. All platform infrastructure fees are processed via our decentralized gateway and automatically split on-chain to our integration partners (regional verification providers, civil aviation authority frameworks, and logbook providers) to cover data verification costs. By continuing, you authorize this read-only display and automated distribution under our{' '}
+                                Pilot Recognition acts as a completely neutral, stateless joint-controller. We do not generate, modify, or store pilot credentials. All metrics are rendered client-side, read-only from your selected providers. Disputes are subject to a non-refundable $500 consultation fee prior to third-party redirection. By continuing, you agree to these terms under our{' '}
                                 <button onClick={() => onNavigate('terms')} className="underline hover:text-white/70 transition-colors">Terms of Service</button>.
                             </p>
                         </div>
@@ -312,7 +312,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Neutral disclaimer */}
                         <p className="text-center text-xs text-slate-300 mt-4 leading-relaxed">
-                            Pilot Recognition operates as a neutral, stateless joint-controller. All platform infrastructure fees are processed via our decentralized gateway and automatically split on-chain to our integration partners (regional verification providers, civil aviation authority frameworks, and logbook providers) to cover data verification costs — in compliance with Anti-Money Laundering (AML) obligations. We do not hold, store, or retain the full transaction. Data ownership sits exclusively with the pilot and our integration partners. By continuing, you authorize this read-only display and automated distribution under our{' '}
+                            Pilot Recognition acts as a completely neutral, stateless joint-controller. We do not generate, modify, or store pilot credentials. All metrics are rendered client-side, read-only from your selected providers. Platform infrastructure fees are automatically split on-chain to integration partners in compliance with AML obligations. Disputes are subject to a non-refundable $500 consultation fee prior to third-party redirection. By continuing, you agree to these terms under our{' '}
                             <button onClick={() => onNavigate('terms')} className="text-white underline hover:text-slate-200 transition-colors">Terms of Service</button>.
                         </p>
                         </div>{/* end right column */}
