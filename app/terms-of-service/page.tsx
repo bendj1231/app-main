@@ -110,11 +110,11 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     <section>
                         <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-2">
                             <p className="text-blue-700 text-xs font-bold uppercase tracking-wider mb-1">Platform Classification</p>
-                            <p className="text-blue-900 font-semibold text-sm">Neutral, Stateless Joint-Controller — Passive Pipeline (PIC)</p>
+                            <p className="text-blue-900 font-semibold text-sm">Neutral Data Infrastructure Provider — Passive Pipeline / Mere Conduit (Not a Controller or Processor)</p>
                         </div>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">0. Neutral &amp; Stateless Platform Status</h2>
                         <p className="mb-4">
-                            Pilot Recognition operates exclusively as a <strong>completely neutral, stateless joint-controller</strong>. This platform functions as a passive display interface — a read-only window — that renders data originating solely from the User, approved Aviation Training Organisations (ATOs), regional civil aviation authorities, and independent verification providers.
+                            Pilot Recognition operates exclusively as a <strong>neutral data infrastructure provider</strong> — a passive pipeline and mere conduit. This platform is not a data controller and not a data processor under any applicable data privacy framework. It functions solely as a read-only display interface that renders data originating entirely from the User, approved Aviation Training Organisations (ATOs), regional civil aviation authorities, and independent verification providers. Data ownership and control sit exclusively with the pilot and the integration partners responsible for each respective data stream.
                         </p>
                         <p className="mb-4">
                             <strong>We do not generate, write, edit, modify, or store pilot credentials, license data, logbook entries, or aviation records of any kind.</strong> All metrics, scores, and profile data displayed on this platform are rendered client-side, sourced read-only from the User's own declared inputs or from connected third-party provider data streams.
@@ -126,7 +126,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
                             <p className="text-amber-800 text-xs font-bold uppercase tracking-wider mb-2">Important Legal Clarification</p>
                             <p className="text-amber-900 text-sm leading-relaxed">
-                                Infrastructure classification does <strong>not</strong> exempt Pilot Recognition from applicable data privacy laws. No technology platform that handles personal identifiers is immune from legislation such as the Philippines Data Privacy Act of 2012 (RA 10173), the GDPR, or equivalent regional frameworks. The distinction is that operating as a neutral, stateless infrastructure provider <strong>changes our legal classification and reduces operational risk to near-zero</strong> — it does not mean the law stops applying to this website.
+                                Infrastructure classification does <strong>not</strong> exempt Pilot Recognition from the applicability of data privacy laws. No technology platform that handles personal identifiers is completely immune from legislation such as the Philippines Data Privacy Act of 2012 (RA 10173), the GDPR, or equivalent regional frameworks. However, operating strictly as a neutral data infrastructure provider — without owning, storing, editing, or making decisions about data — <strong>removes Pilot Recognition from the legal definitions of both a data controller and a data processor</strong>, reducing direct legal liability to near-zero. The burden of data compliance sits on the two active bookends of the pipeline: the Pilot (who controls the input) and the integration Partners (who control the verification and storage).
                             </p>
                         </div>
 
