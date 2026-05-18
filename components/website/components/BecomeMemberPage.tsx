@@ -212,10 +212,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </p>
                                 <ul className="space-y-2.5 mb-4">
                                     {[
-                                        { bold: 'Global Standard Verification:', body: 'Direct ATO/Operator outreach matching international standards. Full licensure and qualification audits for CPL, PPL, IR, ME, and ATPL.' },
-                                        { bold: 'Medical & Logbook Auditing:', body: 'Comprehensive checks on Medical Class 1, 2, and 3, alongside flight logbook hour validation and flagged notation capture for review.' },
-                                        { bold: 'Fast-Track Placement:', body: 'Priority listing on Pathway Interest Pooling.' },
-                                        { bold: 'Exclusive Tier Access:', body: 'Premium connections to Private Charter and Business Aviation Pathways for serious pilots.' },
+                                        { bold: 'Global Standard Verification:', body: 'Direct outreach matching international standards. Full licensure and qualification audits for CPL, PPL, IR, ME, and ATPL handled seamlessly through regional verification providers.' },
+                                        { bold: 'Medical & Logbook Auditing:', body: 'Comprehensive checks on Medical Class 1, 2, and 3. Rigorous flight logbook hour validation and flagged notation capture executed natively via regional flight logbook providers and civil aviation authority handling.' },
+                                        { bold: 'Fast-Track Placement:', body: 'Gain an immediate competitive edge with priority listing on our automated Pathway Interest Pooling.' },
+                                        { bold: 'Exclusive Tier Access:', body: 'Unlock premium, direct connections to Private Charter and Business Aviation Pathways for serious pilots.' },
                                     ].map((point) => (
                                         <li key={point.bold} className="flex items-start gap-2 text-xs text-white/90">
                                             <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
@@ -229,6 +229,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 >
                                     UPGRADE NOW — $99/YEAR
                                 </button>
+                                <p className="text-white/40 text-[10px] text-center mt-2 leading-snug">
+                                    Processing infrastructure fees are distributed securely on-chain via a decentralized gateway to our respective integration nodes.
+                                </p>
                             </div>
                         </div>
 
