@@ -155,10 +155,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             >
                                 {saving ? 'Saving...' : 'Complete Profile →'}
                             </button>
-                            <p className="text-white/40 text-[10px] text-center mt-3 leading-snug">
-                                Pilot Recognition acts as a stateless joint-controller. Displayed metrics are pulled read-only from third-party providers, ATOs, and regional verification partners. Any disputes or data reviews are subject to a non-refundable $500 USD technical consultation fee per inquiry prior to third-party redirection. By continuing, you authorize this display and agree to these terms under our{' '}
-                                <button onClick={() => onNavigate('terms')} className="underline hover:text-white/70 transition-colors">Terms of Service</button>.
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -312,8 +308,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Neutral disclaimer */}
                         <p className="text-center text-xs text-slate-300 mt-4 leading-relaxed">
-                            Pilot Recognition acts as a stateless joint-controller. Displayed metrics are pulled read-only from third-party providers, ATOs, and regional verification partners. Platform infrastructure fees are automatically split on-chain to integration partners in compliance with AML obligations. Any disputes or data reviews are subject to a non-refundable $500 USD technical consultation fee per inquiry prior to third-party redirection. By continuing, you authorize this display and agree to these terms under our{' '}
-                            <button onClick={() => onNavigate('terms')} className="text-white underline hover:text-slate-200 transition-colors">Terms of Service</button>.
+                            Pilot Recognition functions strictly as a neutral data infrastructure provider.
+                            We do not control, store, or modify pilot credentials. Data ownership and control sit exclusively with the pilot
+                            and our integration partners (regional verification and background check providers, data storage providers,
+                            regional flight logbook providers, and civil aviation authority handling). Infrastructure processing and
+                            automated fee routing are managed securely via our decentralized gateway. By continuing, you agree to these operational
+                            boundaries under our{' '}
+                            <button onClick={() => onNavigate('terms-of-service')} className="text-white underline hover:text-slate-200 transition-colors">Terms of Service</button>.
                         </p>
                         </div>{/* end right column */}
                     </div>{/* end flex row */}

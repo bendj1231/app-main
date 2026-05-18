@@ -25,7 +25,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                 <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-8">
                     Terms of Service and Privacy Agreement
                 </h1>
-                <p className="text-sm text-slate-500 mb-8">Last updated: May 2026</p>
+                <p className="text-sm text-slate-500 mb-8">Last updated: May 18, 2026</p>
 
                 <div className="space-y-8 text-slate-700">
                     <section>
@@ -136,7 +136,29 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Contact Us</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Payment Processing, Anti-Money Laundering &amp; Fee Distribution</h2>
+                        <p className="mb-4">
+                            All subscription and verification fees processed through this platform are routed exclusively via a decentralized payment gateway operating as a neutral, automated conduit. Pilot Recognition does not hold, accumulate, or retain the full value of any transaction in its own accounts. At the moment a payment clears, the gateway automatically distributes the transaction on-chain to the respective integration partners responsible for the corresponding service layer:
+                        </p>
+                        <ul className="list-disc pl-6 space-y-2 mb-4">
+                            <li><strong>5% — Regional Civil Aviation Authority (CAA/ATO framework):</strong> Compensates the relevant regulatory body for licensing registry access and authority handling.</li>
+                            <li><strong>5% — Regional Flight Logbook Provider:</strong> Covers the cost of raw logbook data ingestion and flight-hour stream processing.</li>
+                            <li><strong>13% — Background Verification Provider:</strong> Compensates the independent third-party screening provider for executing credential vetting and background auditing.</li>
+                            <li><strong>77% — Platform Infrastructure:</strong> The remaining balance is designated exclusively for platform infrastructure operational costs, including but not limited to: authentication token management (Auth0), secure database tiers (Supabase), and hosting infrastructure (Vercel).</li>
+                        </ul>
+                        <p className="mb-4">
+                            <strong>Anti-Money Laundering (AML) Compliance:</strong> Because Pilot Recognition never holds 100% of any transaction in a single account, it cannot be classified as a centralized financial entity or data reseller. The on-chain split architecture provides a transparent, immutable ledger demonstrating that all funds flow directly and immediately to verified institutional recipients. This structure is designed to satisfy AML compliance requirements by ensuring full traceability of every transaction. The decentralized gateway's automated systems log each distribution event, creating an auditable trail that identifies the exact parties compensated, the amount, and the corresponding service rendered.
+                        </p>
+                        <p className="mb-4">
+                            <strong>Liability Attribution:</strong> The on-chain payment record constitutes an irrefutable, time-stamped receipt. It identifies which entity was paid to perform each verification function, thereby establishing that any data processing errors, credential disputes, or service failures are attributable to the respective integration partner responsible for that layer — not to Pilot Recognition as the neutral display interface.
+                        </p>
+                        <p>
+                            By purchasing a Recognition+ subscription or initiating any verification workflow, you explicitly authorize this automated, split-payment distribution model and acknowledge that the funds are being allocated to the parties responsible for providing the underlying data services.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">14. Contact Us</h2>
                         <p>If you have any questions about these Terms of Service, please contact us at:</p>
                         <p className="mt-2">legal@pilotrecognition.com</p>
                     </section>
