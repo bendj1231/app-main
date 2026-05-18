@@ -305,10 +305,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Neutral disclaimer */}
                         <p className="text-center text-xs text-slate-300 mt-4 leading-relaxed">
-                            Pilot Recognition functions strictly as a neutral data infrastructure provider under AJBowler Consult.
-                            We do not control, store, or modify pilot credentials. Data ownership sits exclusively with the pilot
-                            and our integration partners (Veremark, CAAP, and logbook providers). Infrastructure processing and
-                            automated fee routing are managed securely via Helio. By continuing, you agree to these operational
+                            Pilot Recognition functions strictly as a neutral data infrastructure provider.
+                            We do not control, store, or modify pilot credentials. Data ownership and control sit exclusively with the pilot
+                            and our integration partners (regional verification and background check providers, data storage providers,
+                            regional flight logbook providers, and civil aviation authority handling). Infrastructure processing and
+                            automated fee routing are managed securely via our decentralized gateway. By continuing, you agree to these operational
                             boundaries under our{' '}
                             <button onClick={() => onNavigate('terms')} className="text-white underline hover:text-slate-200 transition-colors">Terms of Service</button>.
                         </p>
