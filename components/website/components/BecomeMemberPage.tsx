@@ -47,6 +47,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [hoursWhole, setHoursWhole] = useState('');
     const [hoursMinutes, setHoursMinutes] = useState('');
     const [occupation, setOccupation] = useState('');
+    const [aircraftTypes, setAircraftTypes] = useState<string[]>([]);
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState('');
     const [showLogbookModal, setShowLogbookModal] = useState(false);
@@ -135,7 +136,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         try {
             const { error } = await supabase
                 .from('profiles')
-                .update({ display_name: cleanName, first_name: cleanFirst, last_name: cleanLast, current_occupation: occupation, total_hours: hours })
+                .update({ display_name: cleanName, first_name: cleanFirst, last_name: cleanLast, current_occupation: occupation, total_hours: hours, aircraft_types: aircraftTypes })
                 .eq('auth0_id', auth0Id);
             if (error) throw error;
             onNavigate('platform');
@@ -400,17 +401,60 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div>
                                     <div className="fic-title">Classification</div>
                                 </div>
-                                <select
-                                    className="fic-select"
-                                    value={occupation}
-                                    onChange={e => { setOccupation(e.target.value); if (e.target.value) setActiveInstrument(i => Math.max(i, 3)); }}
-                                    disabled={activeInstrument < 2}
-                                    style={{ colorScheme: 'light' }}
-                                >
-                                    <option value="" disabled>Select role...</option>
-                                    {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
-                                </select>
-                                <span className="fic-subtext">Current pilot classification</span>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {/* Pilot licence */}
+                                    <div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Current Pilot Licence</div>
+                                        <select
+                                            className="fic-select"
+                                            value={occupation}
+                                            onChange={e => { setOccupation(e.target.value); if (e.target.value && aircraftTypes.length > 0) setActiveInstrument(i => Math.max(i, 3)); }}
+                                            disabled={activeInstrument < 2}
+                                            style={{ colorScheme: 'light' }}
+                                        >
+                                            <option value="" disabled>Select licence holder...</option>
+                                            {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                                        </select>
+                                    </div>
+                                    {/* Aircraft type */}
+                                    <div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Aircraft Actively Flying <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(select one or both)</span></div>
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            {['Fixed Wing', 'Rotary'].map(type => {
+                                                const selected = aircraftTypes.includes(type);
+                                                return (
+                                                    <button
+                                                        key={type}
+                                                        type="button"
+                                                        disabled={activeInstrument < 2}
+                                                        onClick={() => {
+                                                            const next = selected
+                                                                ? aircraftTypes.filter(t => t !== type)
+                                                                : [...aircraftTypes, type];
+                                                            setAircraftTypes(next);
+                                                            if (occupation && next.length > 0) setActiveInstrument(i => Math.max(i, 3));
+                                                        }}
+                                                        style={{
+                                                            flex: 1, padding: '10px 8px',
+                                                            background: selected ? '#0f172a' : '#f8fafc',
+                                                            border: `1px solid ${selected ? '#0f172a' : '#cbd5e1'}`,
+                                                            borderRadius: '8px',
+                                                            color: selected ? '#fff' : '#475569',
+                                                            fontSize: '13px', fontWeight: 600,
+                                                            cursor: activeInstrument < 2 ? 'not-allowed' : 'pointer',
+                                                            transition: 'all 0.2s',
+                                                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
+                                                        }}
+                                                    >
+                                                        <span>{type === 'Fixed Wing' ? '✈️' : '🚁'}</span>
+                                                        {type}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="fic-subtext">Pilot classification · aircraft type</span>
                             </div>
 
                             {/* ── TOP-RIGHT: Flight Time ── */}
