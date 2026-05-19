@@ -89,18 +89,18 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
 
                 <div className="space-y-8 text-slate-700">
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">Agreement Between Private Individuals</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">Platform Operating Agreement</h2>
                         <p className="mb-4">
-                            This Agreement is entered into by and between <strong>Karl Brian Vogt</strong> and <strong>Benjamin Bowler</strong> (collectively, "the Developers") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. We operate as individual developers, not through a registered corporation or business entity.
+                            This Agreement is entered into by and between <strong>Pilot Recognition</strong> ("the Platform Operator") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. The Platform operates as a neutral digital infrastructure utility.
                         </p>
                         <p className="mb-4">
-                            <strong>Pre-Registration Operating Status:</strong> pilotrecognition.com is currently operating in an alpha/sandbox phase as an unincorporated development project between two private individuals. No formal business entity has been registered in connection with this platform at this stage of development. This is a standard and legally recognized operational posture for early-stage technology projects. By using this platform during this phase, you acknowledge and accept this status.
+                            <strong>Platform Operating Status:</strong> pilotrecognition.com operates as a neutral digital infrastructure utility connecting aviation stakeholders. The Platform functions strictly as a passive conduit and data intermediary, not as a data controller, processor, or verification authority.
                         </p>
                         <p className="mb-4">
-                            <strong>Payment Processing:</strong> All payments processed through this platform are handled via Helio (MoonPay Commerce), a third-party decentralized payment gateway. Payments are received directly into the Developers' connected wallets and are automatically split on-chain at the moment of transaction clearance to the designated integration partners. Because payments are processed via a decentralized gateway and not through a traditional corporate bank account, no formal merchant registration is required at this operational stage.
+                            <strong>Payment Processing:</strong> All payments processed through this platform are handled via Helio (MoonPay Commerce), a third-party decentralized payment gateway. The Platform operates on a commission basis from aggregate transaction fees. Payments are automatically distributed on-chain at the moment of transaction clearance to the respective integration partners responsible for providing underlying verification and data services.
                         </p>
                         <p className="mb-4">
-                            <strong>Formalization Triggers:</strong> The Developers commit to formalizing the platform's business structure — either through an existing entity (AJBowler Consult) or a newly registered business — upon reaching any of the following milestones: (a) the platform's payment gateway requires merchant KYC verification; (b) cumulative platform revenue exceeds $1,000 USD; or (c) a formal partnership or enterprise contract is executed with a third party. Until such a trigger is reached, this Agreement constitutes a valid, binding, person-to-person contract under applicable electronic commerce legislation.
+                            <strong>Service Continuity:</strong> The Platform maintains operational continuity through its decentralized infrastructure architecture. This Agreement constitutes a valid, binding contract under applicable electronic commerce legislation regardless of any future structural formalization.
                         </p>
                         <p>
                             <strong>Technical Risk Profile:</strong> Because the platform is architected as a stateless, client-side rendering interface with no central credential database, the technical risk profile of this pre-registration phase is near-zero. No raw pilot credentials, license documents, or sensitive identifiers are stored on platform infrastructure. User authentication is managed entirely by Auth0 (Okta), and profile data is stored in Supabase under standard security tiers. The absence of a proprietary data store means there is no central repository for unauthorized access during this phase.
@@ -140,7 +140,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <strong>Transfer of Fault:</strong> By explicitly stating that data ownership and control sit with the pilot and the originating integration partners, any legal dispute regarding incorrect credentials, flight hours, or background check outcomes is automatically directed to the data-originating source network — not to Pilot Recognition as the neutral display interface. The platform's role is limited to rendering what those source networks provide.
                         </p>
                         <p className="mb-4">
-                            <strong>Dispute Resolution — Consultation Fee:</strong> Any formal dispute, complaint, or data challenge directed at Pilot Recognition is subject to a <strong>non-refundable $500 USD consultation fee</strong> payable prior to any third-party redirection, investigation initiation, or formal response. This fee reflects the cost of neutral infrastructure review and does not constitute an admission of liability. By using this platform, you explicitly acknowledge and agree to this dispute resolution condition.
+                            <strong>Dispute Resolution:</strong> Any disputes regarding the accuracy of background checks, flight hours, license validity, or verification outcomes must be directed exclusively to the respective Data Issuer (e.g., your regional Civil Aviation Authority) or Third-Party Verification Provider. The Platform acts as a read-only display interface and does not have the ability to alter, override, or amend verified credentials. The Platform holds no liability for employment or certification outcomes resulting from third-party API data.
                         </p>
                         <p>
                             This neutral status is explicitly asserted on the platform interface and constitutes part of the binding agreement between the User and the Developers upon account creation or use of any platform feature.
@@ -150,7 +150,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Consent to Data Processing</h2>
                         <p className="mb-4">
-                            By creating an account, you provide your explicit, informed consent to <strong>Karl Brian Vogt</strong> and <strong>Benjamin Bowler</strong>, operating as the developers of pilotrecognition.com. You authorize us to store your anonymous user identifier and your estimated flight hours (user-declared metadata) in our Supabase database strictly for the purpose of displaying your pilot profile.
+                            By creating an account, you provide your explicit, informed consent to the Platform Operator. You authorize us to store your anonymous user identifier and your estimated flight hours (user-declared metadata) in our Supabase database strictly for the purpose of displaying your pilot profile.
                         </p>
                         <p className="mb-4">
                             <strong>Authentication Proxy:</strong> Login and account security on this platform are independently managed by <strong>Auth0</strong> by Okta, a third-party authentication proxy service. When you enter your email and password, that data is sent directly to Auth0's secure servers — it never touches our own servers or database. Auth0 validates your credentials and returns a cryptographically secure token (JSON Web Token) to our application. Our Supabase database stores only an anonymous User ID token (e.g., auth0|12345...), not your email or password. We do not have the ability to view, access, or store your login credentials.
@@ -177,12 +177,12 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Data Storage and Security</h2>
-                        <p>Your profile data (anonymous User ID and estimated flight hours) is stored securely in our Supabase database. Your login credentials (email and password) are stored exclusively by Auth0, Inc. While the Developers implement standard digital security measures, you acknowledge that no online database is 100% secure against unauthorized breaches. We are personally responsible for the protection of your profile data as Joint Personal Information Controllers under {jurisdiction.privacyFramework}. Auth0 is solely responsible for the security of your authentication credentials.</p>
+                        <p>Your profile data (anonymous User ID and estimated flight hours) is stored securely in our Supabase database. Your login credentials (email and password) are stored exclusively by Auth0, Inc. While the Platform implements standard digital security measures, you acknowledge that no online database is 100% secure against unauthorized breaches. The Platform maintains technical safeguards as a Data Intermediary under {jurisdiction.privacyFramework}. Auth0 is solely responsible for the security of your authentication credentials.</p>
                     </section>
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Account Deletion and Data Retention</h2>
-                        <p>You retain the right to delete your profile at any time. Upon your request or account deletion, the Developers will permanently erase your email, license information, flight hours, and all associated personal data from the active database within 30 days, in accordance with {jurisdiction.privacyFramework}. Your consent timestamp (recorded at account creation) serves as legal proof of when you accepted these terms.</p>
+                        <p>You retain the right to delete your profile at any time. Upon your request or account deletion, the Platform will permanently erase your profile data from the active database within 30 days, in accordance with {jurisdiction.privacyFramework}. Your consent timestamp (recorded at account creation) serves as legal proof of when you accepted these terms.</p>
                     </section>
 
                     <section>
@@ -250,7 +250,18 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
 
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Limitation of Liability</h2>
-                        <p>This website is a private project provided "as-is" without any warranties. The Developers are not liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform, including data leaks, server downtimes, or inaccuracies in user-declared flight hours. Liability is limited to the maximum extent permitted under {jurisdiction.privacyFramework}.</p>
+                        <p className="mb-4">
+                            <strong>AS-IS Disclaimer:</strong> This platform is provided strictly "as-is" and "as-available" without any warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.
+                        </p>
+                        <p className="mb-4">
+                            <strong>Severe Liability Cap:</strong> To the maximum extent permitted by applicable law, in no event shall the Platform Operator be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to: loss of profits, loss of employment opportunities, data loss, reputational harm, or operational damages. The Platform Operator's total maximum aggregate liability for any claim arising out of or relating to these terms shall not exceed the greater of: (a) the total amount you paid to the Platform in the preceding twelve (12) months, or (b) fifty United States Dollars (USD $50.00).
+                        </p>
+                        <p className="mb-4">
+                            <strong>Indemnification:</strong> You agree to defend, indemnify, and hold harmless the Platform Operator from and against any claims, liabilities, damages, judgments, awards, losses, costs, or fees (including reasonable attorneys' fees) arising out of or relating to: (i) your violation of these Terms, (ii) your use of the Platform, (iii) the submission of fraudulent, inaccurate, or unauthorized data, or (iv) any dispute between you and a third-party verification provider or data issuer.
+                        </p>
+                        <p>
+                            <strong>Third-Party Reliance:</strong> The Platform disclaims all liability for the accuracy, completeness, or reliability of any data provided by third-party verification providers, aviation authorities, or data issuers. You acknowledge that all credential verification, employment verification, and background checks are performed exclusively by independent third parties, and the Platform merely displays the output of those services.
+                        </p>
                     </section>
 
                     <section>
@@ -272,14 +283,11 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">14. Payment Processing, Anti-Money Laundering &amp; Fee Distribution</h2>
                         <p className="mb-4">
-                            All subscription and verification fees processed through this platform are routed exclusively via a decentralized payment gateway operating as a neutral, automated conduit. Pilot Recognition does not hold, accumulate, or retain the full value of any transaction in its own accounts. At the moment a payment clears, the gateway automatically distributes the transaction on-chain to the respective integration partners responsible for the corresponding service layer:
+                            All subscription and verification fees processed through this platform are routed exclusively via a decentralized payment gateway operating as a neutral, automated conduit. The Platform operates as a neutral digital storefront connecting Users to established verification providers. Payments are aggregate fees that cover third-party credential verification API costs, decentralized network processing, and a platform commission for infrastructure maintenance.
                         </p>
-                        <ul className="list-disc pl-6 space-y-2 mb-4">
-                            <li><strong>5% — Regional Civil Aviation Authority (CAA/ATO framework):</strong> Compensates the relevant regulatory body for licensing registry access and authority handling.</li>
-                            <li><strong>5% — Regional Flight Logbook Provider:</strong> Covers the cost of raw logbook data ingestion and flight-hour stream processing.</li>
-                            <li><strong>13% — Background Verification Provider:</strong> Compensates the independent third-party screening provider for executing credential vetting and background auditing.</li>
-                            <li><strong>77% — Platform Infrastructure:</strong> The remaining balance is designated exclusively for platform infrastructure operational costs, including but not limited to: authentication token management (Auth0), secure database tiers (Supabase), and hosting infrastructure (Vercel).</li>
-                        </ul>
+                        <p className="mb-4">
+                            The Platform does not independently verify credentials, issue licenses, or conduct background checks. Therefore, the Platform disclaims liability for the outcome of any third-party verification services purchased through this interface. Fee distributions are automatically allocated on-chain to the respective integration partners responsible for providing underlying data and verification services.
+                        </p>
                         <p className="mb-4">
                             <strong>Anti-Money Laundering (AML) Compliance:</strong> Because Pilot Recognition never holds 100% of any transaction in a single account, it cannot be classified as a centralized financial entity or data reseller. The on-chain split architecture provides a transparent, immutable ledger demonstrating that all funds flow directly and immediately to verified institutional recipients. This structure is designed to satisfy AML compliance requirements by ensuring full traceability of every transaction. The decentralized gateway's automated systems log each distribution event, creating an auditable trail that identifies the exact parties compensated, the amount, and the corresponding service rendered.
                         </p>
