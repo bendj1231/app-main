@@ -1,6 +1,6 @@
 -- ATO Activation Credits Table
 -- Tracks 5% Member Credits generated for flight schools
--- 5-day promotional window before lapse
+-- Credits accumulate indefinitely until ATO subscribes and claims all at once
 
 CREATE TABLE IF NOT EXISTS ato_activation_credits (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -12,18 +12,17 @@ CREATE TABLE IF NOT EXISTS ato_activation_credits (
   credit_amount decimal(10, 2) NOT NULL DEFAULT 4.95,
   
   -- Status tracking
-  status text NOT NULL DEFAULT 'pending' 
-    CHECK (status IN ('pending', 'claimed', 'lapsed', 'applied')),
+  status text NOT NULL DEFAULT 'unclaimed' 
+    CHECK (status IN ('unclaimed', 'claimed', 'released')),
   
-  -- Timeline
+  -- Timeline (no expiration — accumulates indefinitely)
   created_at timestamptz NOT NULL DEFAULT now(),
-  expires_at timestamptz NOT NULL, -- 5 business days from created_at
   claimed_at timestamptz,
-  lapsed_at timestamptz,
+  released_at timestamptz, -- When ATO subscribes and all credits are paid out
   
   -- Claim details (when ATO activates Enterprise Seat)
   claimed_by_enterprise_subscription_id text,
-  applied_discount_amount decimal(10, 2),
+  batch_claim_total decimal(10, 2), -- Total amount claimed in this batch
   
   -- Metadata
   metadata jsonb DEFAULT '{}',
@@ -35,14 +34,20 @@ CREATE TABLE IF NOT EXISTS ato_activation_credits (
 -- Indexes for common queries
 CREATE INDEX IF NOT EXISTS idx_activation_credits_ato_id 
   ON ato_activation_credits(ato_id) 
-  WHERE status = 'pending';
-
-CREATE INDEX IF NOT EXISTS idx_activation_credits_expires_at 
-  ON ato_activation_credits(expires_at) 
-  WHERE status = 'pending';
+  WHERE status = 'unclaimed';
 
 CREATE INDEX IF NOT EXISTS idx_activation_credits_status 
   ON ato_activation_credits(status);
+
+-- View for quick unclaimed balance lookup
+CREATE OR REPLACE VIEW ato_unclaimed_balance AS
+SELECT 
+  ato_id,
+  COUNT(*) as pending_credits_count,
+  COALESCE(SUM(credit_amount), 0) as total_unclaimed_amount
+FROM ato_activation_credits
+WHERE status = 'unclaimed'
+GROUP BY ato_id;
 
 -- Enable RLS
 ALTER TABLE ato_activation_credits ENABLE ROW LEVEL SECURITY;
@@ -98,5 +103,6 @@ CREATE INDEX IF NOT EXISTS idx_notification_queue_status
 -- Add comment for documentation
 COMMENT ON TABLE ato_activation_credits IS 
 '5% Member Activation Credits for ATOs. Generated on successful verification. 
-Pending credits expire after 5 business days if Enterprise Seat not activated. 
-Soft "lapse" language preserves neutrality brand.';
+Credits accumulate indefinitely in unclaimed vault until ATO subscribes to Enterprise tier. 
+Upon subscription, ALL accumulated credits are released retroactively. No expiration — creates 
+FOMO through growing "money left on table" rather than urgency through deadline.';

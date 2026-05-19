@@ -104,17 +104,8 @@ Deno.serve(async (req) => {
             const atoId = event.metadata.ato_id;
             const verificationFee = 99; // $99 base verification fee
             const creditAmount = verificationFee * 0.05; // 5% = $4.95
-            
-            // Calculate expiration (5 business days from now)
-            const expiresAt = new Date();
-            let businessDays = 0;
-            while (businessDays < 5) {
-              expiresAt.setDate(expiresAt.getDate() + 1);
-              const day = expiresAt.getDay();
-              if (day !== 0 && day !== 6) businessDays++; // Skip weekends
-            }
 
-            // Create activation credit record
+            // Create activation credit record (NO EXPIRATION — accumulates indefinitely)
             const { data: creditRecord } = await supabaseAdmin
               .from('ato_activation_credits')
               .insert({
@@ -122,9 +113,8 @@ Deno.serve(async (req) => {
                 pilot_id: pilotId,
                 verification_id: checkId,
                 credit_amount: creditAmount,
-                status: 'pending',
+                status: 'unclaimed',
                 created_at: new Date().toISOString(),
-                expires_at: expiresAt.toISOString(),
                 metadata: {
                   pilot_name: event.metadata?.pilot_name,
                   aircraft_type: event.metadata?.aircraft_type,
@@ -134,25 +124,37 @@ Deno.serve(async (req) => {
               .select()
               .single();
 
-            // Queue notification email (soft "Activation Credit" language)
+            // Get current accumulated balance for this ATO
+            const { data: balanceData } = await supabaseAdmin
+              .from('ato_unclaimed_balance')
+              .select('total_unclaimed_amount, pending_credits_count')
+              .eq('ato_id', atoId)
+              .single();
+
+            const totalUnclaimed = balanceData?.total_unclaimed_amount || creditAmount;
+            const pendingCount = balanceData?.pending_credits_count || 1;
+
+            // Queue notification email (accumulating vault FOMO messaging)
             await supabaseAdmin.from('notification_queue').insert({
               recipient_type: 'ato',
               recipient_id: atoId,
               notification_type: 'activation_credit_generated',
-              subject: 'New Member Activation Credit: $5.00 Available for Your Flight School',
+              subject: `Verification Payout Pending: $${totalUnclaimed.toFixed(2)} in Unclaimed Rewards`,
               template_data: {
-                credit_amount: creditAmount.toFixed(2),
+                new_credit_amount: creditAmount.toFixed(2),
+                total_unclaimed_amount: totalUnclaimed.toFixed(2),
+                pending_credits_count: pendingCount,
                 pilot_name: event.metadata?.pilot_name || 'A pilot',
-                expires_at: expiresAt.toISOString(),
-                days_remaining: 5,
                 enterprise_seat_price: 1000,
+                break_even_threshold: Math.ceil(1000 / creditAmount), // How many credits to break even
                 credit_id: creditRecord?.id,
+                message: `Your former students are verifying flight hours. You have $${totalUnclaimed.toFixed(2)} in accumulated network validation payouts waiting. Subscribe to Enterprise Access to claim all accumulated rewards and capture 5% of all future verifications.`,
               },
               status: 'pending',
               created_at: new Date().toISOString(),
             });
 
-            console.log(`Activation Credit generated: $${creditAmount.toFixed(2)} for ATO ${atoId}, expires ${expiresAt.toISOString()}`);
+            console.log(`Activation Credit added to vault: $${creditAmount.toFixed(2)} for ATO ${atoId}. Total unclaimed: $${totalUnclaimed.toFixed(2)}`);
           }
           break;
         }
