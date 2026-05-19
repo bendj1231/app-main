@@ -55,7 +55,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [showWalletSelector, setShowWalletSelector] = useState(false);
 
     const CREDENTIAL_WALLETS = [
-        { id: 'walt', name: 'walt.id Wallet', logo: '🔐', desc: 'Open-source W3C wallet', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `https://wallet.walt.id/?offer=${encodeURIComponent(url)}` },
+        { id: 'walt', name: 'walt.id Wallet', logo: '🔐', desc: 'Open-source W3C · OID4VCI', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `https://wallet.walt.id/?offer=${encodeURIComponent(url)}` },
+        { id: 'talao', name: 'Talao Wallet', logo: '🪪', desc: 'EU eIDAS 2.0 compatible', color: 'text-emerald-400', border: 'border-emerald-400/40', href: (url: string) => `https://talao.co/wallet?offer=${encodeURIComponent(url)}` },
+        { id: 'lissi', name: 'Lissi Wallet', logo: '🔵', desc: 'W3C VC · enterprise ready', color: 'text-blue-400', border: 'border-blue-400/40', href: (url: string) => `https://wallet.lissi.id/?credential_offer=${encodeURIComponent(url)}` },
         { id: 'iota', name: 'IOTA Identity Wallet', logo: '🌐', desc: 'Decentralized identity', color: 'text-purple-400', border: 'border-purple-400/40', href: (url: string) => url },
         { id: 'apple', name: 'Apple Wallet', logo: '🍎', desc: 'Coming soon', color: 'text-white/30', border: 'border-white/10', href: null },
         { id: 'google', name: 'Google Wallet', logo: '💳', desc: 'Coming soon', color: 'text-white/30', border: 'border-white/10', href: null },
