@@ -41,6 +41,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
 
     // Setup form state
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [hoursWhole, setHoursWhole] = useState('');
     const [hoursMinutes, setHoursMinutes] = useState('');
@@ -114,8 +116,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }, []);
 
     const handleSaveProfile = async () => {
+        const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
+        const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
         const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
-        if (!cleanName || cleanName.length < 2) { setSaveError('Display name is required.'); return; }
+        if (!cleanFirst || cleanFirst.length < 1) { setSaveError('First name is required.'); return; }
+        if (!cleanLast || cleanLast.length < 1) { setSaveError('Last name is required.'); return; }
+        if (!cleanName || cleanName.length < 2) { setSaveError('Callsign is required.'); return; }
         if (!OCCUPATIONS.includes(occupation)) { setSaveError('Please select a valid role.'); return; }
         const wholeHrs = parseInt(hoursWhole);
         const mins = parseInt(hoursMinutes || '0');
@@ -129,7 +135,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         try {
             const { error } = await supabase
                 .from('profiles')
-                .update({ display_name: cleanName, current_occupation: occupation, total_hours: hours })
+                .update({ display_name: cleanName, first_name: cleanFirst, last_name: cleanLast, current_occupation: occupation, total_hours: hours })
                 .eq('auth0_id', auth0Id);
             if (error) throw error;
             onNavigate('platform');
@@ -335,41 +341,58 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         {/* Freestanding 3×2 Floating Grid */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px' }}>
 
-                            {/* ── TOP-LEFT: Callsign ── */}
+                            {/* ── TOP-LEFT: Identity ── */}
                             <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-avionics-tag">Airspeed Indicator</div>
-                                    <div className="fic-title">Callsign</div>
-                                    <div style={{ fontSize: '11px', color: 'rgba(148,163,184,0.6)', marginTop: '4px', fontFamily: 'monospace', letterSpacing: '0.03em' }}>Your name displayed on the platform</div>
+                                    <div className="fic-title">Identity</div>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <input
+                                        className="fic-input"
+                                        type="text"
+                                        value={firstName}
+                                        onChange={e => setFirstName(e.target.value)}
+                                        placeholder="First name"
+                                        disabled={activeInstrument < 1}
+                                    />
+                                    <input
+                                        className="fic-input"
+                                        type="text"
+                                        value={lastName}
+                                        onChange={e => setLastName(e.target.value)}
+                                        placeholder="Last name"
+                                        disabled={activeInstrument < 1}
+                                    />
                                 </div>
                                 <input
                                     className="fic-input"
                                     type="text"
                                     value={displayName}
                                     onChange={e => setDisplayName(e.target.value)}
-                                    placeholder="e.g. Wing Mentor"
+                                    placeholder="Callsign / nickname"
                                     disabled={activeInstrument < 1}
                                 />
                                 <button
                                     type="button"
-                                    onClick={() => { if (displayName.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2)); }}
-                                    disabled={displayName.trim().length < 2}
+                                    onClick={() => { if (firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2)); }}
+                                    disabled={firstName.trim().length < 1 || lastName.trim().length < 1 || displayName.trim().length < 2}
                                     style={{
                                         width: '100%', padding: '12px 16px',
-                                        background: displayName.trim().length >= 2 ? '#0f172a' : '#f1f5f9',
+                                        background: firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 ? '#0f172a' : '#f1f5f9',
                                         border: 'none', borderRadius: '8px',
-                                        color: displayName.trim().length >= 2 ? '#ffffff' : '#94a3b8',
+                                        color: firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 ? '#ffffff' : '#94a3b8',
                                         fontSize: '14px', fontWeight: 600,
-                                        cursor: displayName.trim().length >= 2 ? 'pointer' : 'not-allowed',
+                                        cursor: firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 ? 'pointer' : 'not-allowed',
                                         transition: 'all 0.2s',
                                     }}
-                                    onMouseEnter={e => { if (displayName.trim().length >= 2) (e.currentTarget as HTMLButtonElement).style.background = '#1e293b'; }}
-                                    onMouseLeave={e => { if (displayName.trim().length >= 2) (e.currentTarget as HTMLButtonElement).style.background = '#0f172a'; }}
+                                    onMouseEnter={e => { const ok = firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2; if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#1e293b'; }}
+                                    onMouseLeave={e => { const ok = firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2; if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#0f172a'; }}
                                 >
-                                    {activeInstrument > 1 ? '✓ Callsign Confirmed' : 'Confirm Callsign →'}
+                                    {activeInstrument > 1 ? '✓ Identity Confirmed' : 'Confirm Identity →'}
                                 </button>
-                                <span className="fic-subtext">Min. 2 characters · visible to all pilots</span>
+                                <span className="fic-subtext">Callsign visible to all pilots</span>
                             </div>
 
                             {/* ── TOP-MIDDLE: Classification ── */}
