@@ -316,22 +316,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)' }}>did:web:pilotrecognition.com</span>
                         </div>
 
+                        {/* Step 1 hero message — always present, fades out after step 1 */}
+                        <div style={{
+                            opacity: activeInstrument === 1 ? 1 : 0,
+                            transform: activeInstrument === 1 ? 'translateY(0)' : 'translateY(-8px)',
+                            transition: 'opacity 0.5s ease, transform 0.5s ease',
+                            pointerEvents: 'none',
+                            height: activeInstrument === 1 ? 'auto' : 0,
+                            overflow: 'hidden',
+                            marginBottom: activeInstrument === 1 ? '32px' : '0',
+                        }}>
+                            <p style={{ fontSize: '28px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: 0 }}>
+                                Your first step to getting{' '}
+                                <span style={{ color: '#ef4444', fontWeight: 700 }}>recognition</span>
+                            </p>
+                        </div>
+
                         {/* Freestanding 3×2 Floating Grid */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px' }}>
 
-                            {/* ── Step 1 message — spans cols 2-3, row 1 ── */}
-                            {activeInstrument === 1 && (
-                                <div style={{ gridColumn: '2 / 4', gridRow: '1', display: 'flex', alignItems: 'center', paddingLeft: '16px' }}>
-                                    <p style={{ fontSize: '28px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: 0 }}>
-                                        Your first step to getting{' '}
-                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>recognition</span>
-                                    </p>
-                                </div>
-                            )}
-
                             {/* ── TOP-LEFT: Callsign ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}
-                                 style={{ gridColumn: '1', gridRow: '1' }}>
+                            <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-avionics-tag">Airspeed Indicator</div>
