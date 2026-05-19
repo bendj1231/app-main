@@ -31,9 +31,13 @@ export const LogbookCallback = () => {
 
     const exchange = async () => {
       try {
+        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
         const res = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/mfb-token-exchange', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+          },
           body: JSON.stringify({ code, redirect_uri: redirectUri }),
         });
 

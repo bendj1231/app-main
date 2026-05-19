@@ -24,6 +24,11 @@ const resizeObserverErrorHandler = (e: ErrorEvent) => {
 
 window.addEventListener('error', resizeObserverErrorHandler);
 
+// Clear explicit logout flag when returning from MFB logbook OAuth callback
+if (window.location.pathname === '/auth/logbook/callback') {
+  localStorage.removeItem('explicitLogout');
+}
+
 // Check if root already exists to prevent duplicate createRoot calls
 const rootElement = document.getElementById('root');
 let root;
