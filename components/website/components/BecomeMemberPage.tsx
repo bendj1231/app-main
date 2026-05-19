@@ -202,6 +202,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                 </div>
                             </div>
+                            {/* Synced logbook badge */}
+                            {providerConnected && (
+                                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-green-500/10 border border-green-500/20">
+                                    <span className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
+                                    <span className="text-green-400 text-xs font-semibold">{selectedProvider} Synced</span>
+                                    <span className="text-white/30 text-xs ml-auto">Hours verified</span>
+                                </div>
+                            )}
+
                             {/* Verify Hours / Connect Logbook */}
                             <button
                                 type="button"
