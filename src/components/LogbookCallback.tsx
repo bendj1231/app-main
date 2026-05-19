@@ -75,7 +75,7 @@ export const LogbookCallback = () => {
           sessionStorage.setItem('vc_credential_id', data.credential.id);
         }
 
-        setTimeout(() => navigate('/become-member?setup=1&logbook=synced'), 1500);
+        // Don't auto-redirect - let user click Continue when ready
       } catch (err: any) {
         setErrorMsg(err?.message ?? 'Token exchange failed');
         setStatus('error');
@@ -102,12 +102,30 @@ export const LogbookCallback = () => {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
       <div style={{ textAlign: 'center', color: 'white' }}>
-        <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }} />
+        {status === 'processing' && (
+          <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }} />
+        )}
         {status === 'processing' && <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Syncing with MyFlightBook...</h2>}
         {status === 'success' && (
           <>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#4ade80' }}>Logbook Synced!</h2>
             {totalHours !== null && <p style={{ color: '#94a3b8', marginTop: 8 }}>{Math.floor(totalHours)}h {Math.round((totalHours % 1) * 60)}m total flight time</p>}
+            <button 
+              onClick={() => navigate('/become-member?setup=1&logbook=synced')}
+              style={{ 
+                marginTop: 24, 
+                padding: '12px 32px', 
+                background: '#dc2626', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: 8, 
+                fontSize: '1rem',
+                fontWeight: 600,
+                cursor: 'pointer' 
+              }}
+            >
+              Continue →
+            </button>
           </>
         )}
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
