@@ -180,10 +180,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <input
                                     type="text"
                                     value={displayName}
-                                    readOnly
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/60 text-sm cursor-not-allowed"
+                                    onChange={e => setDisplayName(e.target.value)}
+                                    placeholder="Your display name"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#00b4d8]/60"
                                 />
-                                <p className="text-white/30 text-[10px] mt-1">Set by your Google account</p>
+                                <p className="text-white/30 text-[10px] mt-1">This is how other pilots will see you</p>
                             </div>
                             {/* Current Role */}
                             <div>
