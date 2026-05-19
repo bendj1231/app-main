@@ -17,7 +17,7 @@ export const OAuthCallback = () => {
         // 1. Check by auth0_id first
         let { data: existing } = await supabase
           .from('profiles')
-          .select('id, auth0_id')
+          .select('id, auth0_id, display_name, total_flight_hours')
           .eq('auth0_id', user.sub)
           .maybeSingle();
 
@@ -25,12 +25,11 @@ export const OAuthCallback = () => {
         if (!existing && user.email) {
           const { data: byEmail } = await supabase
             .from('profiles')
-            .select('id, auth0_id')
+            .select('id, auth0_id, display_name, total_flight_hours')
             .eq('email', user.email)
             .maybeSingle();
 
           if (byEmail) {
-            // Stamp auth0_id onto existing profile so future logins are instant
             await supabase
               .from('profiles')
               .update({ auth0_id: user.sub })
@@ -40,11 +39,10 @@ export const OAuthCallback = () => {
         }
 
         if (!existing) {
-          // Brand new user — create profile
+          // Brand new user — create minimal profile, send to setup
           const { data: newProfile } = await supabase.from('profiles').insert({
             auth0_id: user.sub,
             email: user.email,
-            display_name: user.name || user.email?.split('@')[0],
             avatar_url: user.picture,
             account_tier: 'free',
             created_at: new Date().toISOString(),
@@ -53,9 +51,13 @@ export const OAuthCallback = () => {
           if (newProfile?.id) {
             await supabase.functions.invoke('generate-profile-token', {
               body: { userId: newProfile.id }
-            }).catch(() => {}); // non-critical
+            }).catch(() => {});
           }
 
+          setProfileCreated(true);
+          navigate('/become-member?setup=1');
+        } else if (!existing.display_name) {
+          // Profile exists but setup not completed
           setProfileCreated(true);
           navigate('/become-member?setup=1');
         } else {
