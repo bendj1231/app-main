@@ -137,6 +137,7 @@ const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
 const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
+const IssuerPolicyPage = lazy(() => import('@/app/issuer-policy/page'));
 const EnterpriseVerificationDashboard = lazy(() => import('@/app/enterprise/verification-dashboard/page'));
 
 const LoadingFallback = () => (
@@ -247,6 +248,7 @@ export const AppRoutes = () => {
       <Route path="/contact-support" element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/become-member" element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/terms-of-service" element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/issuer-policy" element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/account-confirmation" element={<AccountConfirmationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
 
       {/* Onboarding routes */}
