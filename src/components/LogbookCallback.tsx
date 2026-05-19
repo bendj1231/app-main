@@ -62,10 +62,8 @@ export const LogbookCallback = () => {
         setStatus('success');
 
         // Store in sessionStorage so BecomeMemberPage can read it
-        if (hours !== null) {
-          sessionStorage.setItem('mfb_total_hours', String(hours));
-          sessionStorage.setItem('mfb_provider', 'MyFlightBook');
-        }
+        sessionStorage.setItem('mfb_total_hours', String(hours ?? 0));
+        sessionStorage.setItem('mfb_provider', 'MyFlightBook');
 
         setTimeout(() => navigate('/become-member?setup=1&logbook=synced'), 1500);
       } catch (err: any) {
