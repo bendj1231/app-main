@@ -15,6 +15,9 @@ export const LogbookCallback = () => {
     const code = params.get('code');
     const error = params.get('error');
 
+    // Immediately remove code from URL to prevent reuse on refresh
+    window.history.replaceState({}, document.title, window.location.pathname);
+
     if (error) {
       setErrorMsg(error);
       setStatus('error');
