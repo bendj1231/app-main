@@ -316,6 +316,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)' }}>did:web:pilotrecognition.com</span>
                         </div>
 
+                        {/* Callsign step message — visible only on step 1 */}
+                        {activeInstrument === 1 && (
+                            <div style={{ marginBottom: '28px', paddingLeft: '4px' }}>
+                                <p style={{ fontSize: '22px', fontWeight: 300, color: 'rgba(255,255,255,0.9)', lineHeight: 1.4, letterSpacing: '-0.01em' }}>
+                                    Your first step to getting{' '}
+                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>recognition</span>
+                                </p>
+                            </div>
+                        )}
+
                         {/* Freestanding 3×2 Floating Grid */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px' }}>
 
