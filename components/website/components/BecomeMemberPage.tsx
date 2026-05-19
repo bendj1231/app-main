@@ -98,10 +98,46 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
     }, [isSetup, user]);
 
+    // Issue verifiable credential via walt.id
+    const issueFlightHoursCredential = async (hours: number, auth0Id: string) => {
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            const response = await fetch(
+                `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pilot-terminal-issue`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${session?.access_token || ''}`,
+                    },
+                    body: JSON.stringify({
+                        auth0_id: auth0Id,
+                        credential_type: 'FlightHoursVC',
+                        credential_data: {
+                            totalFlightHours: hours,
+                            sourceLogbook: 'MyFlightBook',
+                            verifiedAt: new Date().toISOString(),
+                        },
+                        source_provider: 'MyFlightBook',
+                    }),
+                }
+            );
+            const result = await response.json();
+            if (result.success && result.credential_offer_url) {
+                setVcCredentialUrl(result.credential_offer_url);
+                sessionStorage.setItem('vc_credential_offer_url', result.credential_offer_url);
+                sessionStorage.setItem('vc_credential_id', result.credential_id);
+            }
+        } catch (err) {
+            console.error('Failed to issue credential:', err);
+        }
+    };
+
     useEffect(() => {
         const mfbHours = sessionStorage.getItem('mfb_total_hours');
         const mfbProvider = sessionStorage.getItem('mfb_provider');
         const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
+        const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
 
         if (mfbHours && mfbProvider) {
             const hrs = parseFloat(mfbHours);
@@ -113,13 +149,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             // If returning from logbook OAuth, unlock Logbook (4) and reveal next card (5)
             if (logbookSynced) {
                 setActiveInstrument(5);
+                // Issue verifiable credential for flight hours
+                if (auth0Id) {
+                    issueFlightHoursCredential(hrs, auth0Id);
+                }
             }
 
             const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
             if (vcUrl) {
                 setVcCredentialUrl(vcUrl);
-                sessionStorage.removeItem('vc_credential_offer_url');
-                sessionStorage.removeItem('vc_credential_id');
             }
             sessionStorage.removeItem('mfb_total_hours');
             sessionStorage.removeItem('mfb_provider');
