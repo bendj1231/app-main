@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
+import { LogbookCallback } from '@/src/components/LogbookCallback';
 
 // External redirect component for full URLs
 const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
@@ -413,6 +414,8 @@ export const AppRoutes = () => {
 
       {/* Auth0 callback route */}
       <Route path="/auth/callback" element={<OAuthCallback />} />
+      {/* MyFlightBook logbook OAuth callback */}
+      <Route path="/auth/logbook/callback" element={<LogbookCallback />} />
 
       {/* Admin routes */}
       <Route path="/admin/verification" element={<AdminVerificationQueue />} />

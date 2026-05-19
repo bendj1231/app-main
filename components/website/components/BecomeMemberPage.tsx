@@ -72,6 +72,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
     }, [isSetup, user]);
 
+    useEffect(() => {
+        const mfbHours = sessionStorage.getItem('mfb_total_hours');
+        const mfbProvider = sessionStorage.getItem('mfb_provider');
+        if (mfbHours && mfbProvider) {
+            const hrs = parseFloat(mfbHours);
+            setHoursWhole(String(Math.floor(hrs)));
+            setHoursMinutes(String(Math.round((hrs % 1) * 60)));
+            setSelectedProvider(mfbProvider);
+            setProviderConnected(true);
+            sessionStorage.removeItem('mfb_total_hours');
+            sessionStorage.removeItem('mfb_provider');
+        }
+    }, []);
+
     const handleSaveProfile = async () => {
         const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
         if (!cleanName || cleanName.length < 2) { setSaveError('Display name is required.'); return; }
@@ -295,7 +309,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
                         <button
                             onClick={() => {
-                                if (selectedProvider) {
+                                if (!selectedProvider) return;
+                                const provider = LOGBOOK_PROVIDERS.find(p => p.name === selectedProvider);
+                                if (provider?.id === 'myflightbook') {
+                                    const redirectUri = `${window.location.origin}/auth/logbook/callback`;
+                                    const clientId = import.meta.env.VITE_MFB_CLIENT_ID || 'PilotRecognition';
+                                    const url = `https://myflightbook.com/logbook/mvc/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=totals`;
+                                    window.location.href = url;
+                                } else {
                                     setProviderConnected(true);
                                     setShowLogbookModal(false);
                                 }
