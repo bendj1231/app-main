@@ -52,6 +52,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [providerConnected, setProviderConnected] = useState(false);
     const [authTimedOut, setAuthTimedOut] = useState(false);
     const [vcCredentialUrl, setVcCredentialUrl] = useState<string | null>(null);
+    const [showWalletSelector, setShowWalletSelector] = useState(false);
+
+    const CREDENTIAL_WALLETS = [
+        { id: 'walt', name: 'walt.id Wallet', logo: '🔐', desc: 'Open-source W3C wallet', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `https://wallet.walt.id/?offer=${encodeURIComponent(url)}` },
+        { id: 'iota', name: 'IOTA Identity Wallet', logo: '🌐', desc: 'Decentralized identity', color: 'text-purple-400', border: 'border-purple-400/40', href: (url: string) => url },
+        { id: 'apple', name: 'Apple Wallet', logo: '🍎', desc: 'Coming soon', color: 'text-white/30', border: 'border-white/10', href: null },
+        { id: 'google', name: 'Google Wallet', logo: '💳', desc: 'Coming soon', color: 'text-white/30', border: 'border-white/10', href: null },
+    ];
 
     const LOGBOOK_PROVIDERS = [
         { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', status: 'available', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
@@ -254,18 +262,53 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                             )}
 
-                            {/* Verifiable Credential badge */}
+                            {/* Verifiable Credential — wallet selector */}
                             {vcCredentialUrl && (
-                                <a
-                                    href={vcCredentialUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#00b4d8]/10 border border-[#00b4d8]/30 hover:border-[#00b4d8]/60 transition-all group"
-                                >
-                                    <span className="text-[#00b4d8] text-xs">🎓</span>
-                                    <span className="text-[#00b4d8] text-xs font-semibold">Verifiable Credential Issued</span>
-                                    <span className="text-white/30 text-xs ml-auto group-hover:text-white/50">Claim to wallet →</span>
-                                </a>
+                                <div className="rounded-xl bg-[#00b4d8]/10 border border-[#00b4d8]/30 overflow-hidden">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowWalletSelector(v => !v)}
+                                        className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#00b4d8]/10 transition-all"
+                                    >
+                                        <span className="text-[#00b4d8] text-xs">🎓</span>
+                                        <span className="text-[#00b4d8] text-xs font-semibold">Verifiable Credential Issued</span>
+                                        <span className="text-white/30 text-xs ml-auto">{showWalletSelector ? '▲' : '▼'} Select wallet</span>
+                                    </button>
+                                    {showWalletSelector && (
+                                        <div className="px-3 pb-3 pt-1 flex flex-col gap-1.5 border-t border-[#00b4d8]/20">
+                                            <p className="text-white/30 text-[10px] mb-1">Select your credential wallet provider</p>
+                                            {CREDENTIAL_WALLETS.map(wallet => (
+                                                wallet.href ? (
+                                                    <a
+                                                        key={wallet.id}
+                                                        href={wallet.href(vcCredentialUrl)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} hover:bg-white/5 transition-all`}
+                                                    >
+                                                        <span className="text-sm">{wallet.logo}</span>
+                                                        <div className="flex flex-col">
+                                                            <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
+                                                            <span className="text-white/30 text-[10px]">{wallet.desc}</span>
+                                                        </div>
+                                                        <span className="ml-auto text-white/20 text-xs">→</span>
+                                                    </a>
+                                                ) : (
+                                                    <div
+                                                        key={wallet.id}
+                                                        className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} opacity-40 cursor-not-allowed`}
+                                                    >
+                                                        <span className="text-sm">{wallet.logo}</span>
+                                                        <div className="flex flex-col">
+                                                            <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
+                                                            <span className="text-white/30 text-[10px]">{wallet.desc}</span>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             )}
 
                             {/* Verify Hours / Connect Logbook */}
