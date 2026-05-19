@@ -95,14 +95,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         if (!hoursWhole || isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999) { setSaveError('Please enter valid flight hours.'); return; }
         if (isNaN(mins) || mins < 0 || mins > 59) { setSaveError('Minutes must be between 0 and 59.'); return; }
         const hours = wholeHrs + mins / 60;
-        if (!user?.sub) { setSaveError('Authentication error. Please sign in again.'); return; }
+        const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+        if (!auth0Id) { setSaveError('Authentication error. Please sign in again.'); return; }
         setSaving(true);
         setSaveError('');
         try {
             const { error } = await supabase
                 .from('profiles')
                 .update({ display_name: cleanName, current_occupation: occupation, total_hours: hours })
-                .eq('auth0_id', user.sub);
+                .eq('auth0_id', auth0Id);
             if (error) throw error;
             onNavigate('platform');
         } catch {
@@ -133,8 +134,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
 
-    // ── While Auth0 rehydrates session (only wait if not coming from logbook sync) ─
-    if (isSetup && isLoading && !logbookSynced) {
+    // ── While Auth0 rehydrates session ───────────────────────────────────────────
+    if (isSetup && isLoading) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -144,7 +145,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }
 
     // ── Profile setup step (redirected here after Auth0 signup or logbook sync) ──
-    if (isSetup && (isAuthenticated || logbookSynced)) {
+    if (isSetup && (isAuthenticated || (!isLoading && logbookSynced))) {
         return (
             <>
             <div className="relative h-screen flex flex-col">
