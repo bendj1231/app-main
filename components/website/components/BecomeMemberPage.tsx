@@ -193,8 +193,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         ← Cancel Account Creation
                     </button>
                 </div>
-                <div className="relative z-10 flex-1 flex items-center justify-center px-4">
-                    <div className="w-full max-w-md">
+                <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6">
+                    <div className="w-full max-w-[1100px]">
                         {/* Cockpit Header */}
                         <div className="text-center mb-5">
                             <p className="text-red-500 text-[10px] font-black tracking-widest uppercase mb-1">Account Created</p>
@@ -203,244 +203,293 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         <style>{`
-                            @keyframes gaugeFadeIn {
-                                from { opacity: 0; transform: translateY(16px) scale(0.97); }
-                                to   { opacity: 1; transform: translateY(0) scale(1); }
+                            @keyframes cockpitPopUp {
+                                0%   { opacity: 0; transform: scale(0.7) translateY(30px); }
+                                100% { opacity: 1; transform: scale(1) translateY(0); }
                             }
-                            .gauge-card {
-                                animation: gaugeFadeIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
-                                background: rgba(255,255,255,0.04);
-                                backdrop-filter: blur(12px);
-                                -webkit-backdrop-filter: blur(12px);
-                                border: 1px solid rgba(255,255,255,0.08);
-                                border-radius: 14px;
-                                box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
-                                transition: border-color 0.3s, box-shadow 0.3s, opacity 0.4s, transform 0.4s;
+                            @keyframes dotPulse {
+                                0%, 100% { opacity: 1; }
+                                50%       { opacity: 0.3; }
                             }
-                            .gauge-card.locked {
-                                opacity: 0.12;
+                            .floating-instrument-card {
+                                background: rgba(10,12,18,0.75);
+                                backdrop-filter: blur(25px) saturate(140%);
+                                -webkit-backdrop-filter: blur(25px) saturate(140%);
+                                border: 1px solid rgba(255,255,255,0.06);
+                                border-top: 1px solid rgba(255,255,255,0.15);
+                                border-radius: 16px;
+                                padding: 28px;
+                                box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+                                display: flex;
+                                flex-direction: column;
+                                gap: 18px;
+                                justify-content: space-between;
+                                position: relative;
+                                opacity: 0;
+                                transform: scale(0.7) translateY(30px);
+                                animation: cockpitPopUp 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+                                transition: border-color 0.3s, box-shadow 0.3s;
+                            }
+                            .floating-instrument-card:nth-child(1) { animation-delay: 0.10s; }
+                            .floating-instrument-card:nth-child(2) { animation-delay: 0.30s; }
+                            .floating-instrument-card:nth-child(3) { animation-delay: 0.50s; }
+                            .floating-instrument-card:nth-child(4) { animation-delay: 0.70s; }
+                            .floating-instrument-card:nth-child(5) { animation-delay: 0.90s; }
+                            .floating-instrument-card:nth-child(6) { animation-delay: 1.10s; }
+                            .floating-instrument-card.fic-locked {
+                                opacity: 0.08 !important;
                                 pointer-events: none;
-                                filter: blur(1px);
+                                filter: blur(1.5px);
+                                animation: none;
+                                transform: scale(1) translateY(0);
                             }
-                            .gauge-card.active {
-                                border-color: rgba(0,180,216,0.5);
-                                box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), 0 0 0 1px rgba(0,180,216,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+                            .floating-instrument-card.fic-active {
+                                border-color: rgba(0,180,216,0.45);
+                                border-top-color: rgba(0,180,216,0.9);
+                                box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(0,180,216,0.12), 0 0 0 1px rgba(0,180,216,0.1);
                             }
-                            .gauge-card.done {
-                                border-color: rgba(52,211,153,0.4);
-                                box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+                            .floating-instrument-card.fic-done {
+                                border-color: rgba(52,211,153,0.25);
+                                border-top-color: rgba(52,211,153,0.55);
+                                box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 20px rgba(52,211,153,0.06);
                             }
+                            .floating-instrument-card.fic-commit.fic-active {
+                                border-color: rgba(220,38,38,0.45);
+                                border-top-color: rgba(220,38,38,0.9);
+                                box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(220,38,38,0.12), 0 0 0 1px rgba(220,38,38,0.1);
+                            }
+                            .fic-avionics-tag {
+                                font-family: 'Courier New', monospace;
+                                font-size: 9px;
+                                font-weight: 700;
+                                letter-spacing: 0.2em;
+                                text-transform: uppercase;
+                                color: rgba(100,116,139,0.55);
+                            }
+                            .fic-title {
+                                font-size: 26px;
+                                font-weight: 700;
+                                color: rgba(255,255,255,0.92);
+                                letter-spacing: -0.02em;
+                                line-height: 1;
+                                margin-top: 2px;
+                            }
+                            .fic-input, .fic-select {
+                                width: 100%;
+                                background: rgba(255,255,255,0.04);
+                                border: 1px solid rgba(255,255,255,0.09);
+                                border-radius: 8px;
+                                padding: 11px 14px;
+                                color: white;
+                                font-size: 15px;
+                                font-weight: 600;
+                                outline: none;
+                                transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+                                box-sizing: border-box;
+                            }
+                            .fic-input:focus, .fic-select:focus {
+                                border-color: rgba(0,180,216,0.6);
+                                background: rgba(0,180,216,0.04);
+                                box-shadow: 0 0 0 3px rgba(0,180,216,0.08);
+                            }
+                            .fic-input::placeholder { color: rgba(71,85,105,0.7); }
+                            .fic-subtext {
+                                font-family: 'Courier New', monospace;
+                                font-size: 9px;
+                                color: rgba(51,65,85,0.7);
+                                letter-spacing: 0.06em;
+                            }
+                            .fic-status-dot {
+                                position: absolute;
+                                top: 16px;
+                                right: 16px;
+                                width: 9px;
+                                height: 9px;
+                                border-radius: 50%;
+                                transition: background 0.4s, box-shadow 0.4s;
+                            }
+                            .fic-dot-idle   { background: rgba(71,85,105,0.5); }
+                            .fic-dot-active { background: #00b4d8; box-shadow: 0 0 8px #00b4d8, 0 0 20px rgba(0,180,216,0.5); animation: dotPulse 1.4s ease-in-out infinite; }
+                            .fic-dot-done   { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.6); }
+                            .fic-dot-warn   { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; animation: dotPulse 0.85s ease-in-out infinite; }
+                            .fic-dot-commit { background: #ef4444; box-shadow: 0 0 10px #ef4444, 0 0 24px rgba(239,68,68,0.5); animation: dotPulse 1s ease-in-out infinite; }
                         `}</style>
 
-                        {/* Instrument Panel Bezel */}
-                        <div style={{
-                            background: 'rgba(8,14,26,0.92)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            border: '2px solid rgba(255,255,255,0.07)',
-                            borderRadius: '20px',
-                            boxShadow: '0 0 0 1px #1e293b, 0 0 60px rgba(0,180,216,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
-                            padding: '12px',
-                        }}>
-                            {/* Panel header strip */}
-                            <div className="flex items-center justify-between px-1 mb-3">
-                                <span className="text-slate-600 text-[8px] font-mono uppercase tracking-widest">PilotRecognition · Profile Instruments</span>
-                                <span className="text-[#00b4d8]/30 text-[8px] font-mono">did:web:pilotrecognition.com</span>
+                        {/* Panel ID strip — floating above grid */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', padding: '0 2px' }}>
+                            <span style={{ fontFamily: 'monospace', fontSize: '9px', color: 'rgba(51,65,85,0.7)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>PilotRecognition · Profile Instruments</span>
+                            <span style={{ fontFamily: 'monospace', fontSize: '9px', color: 'rgba(0,180,216,0.2)' }}>did:web:pilotrecognition.com</span>
+                        </div>
+
+                        {/* Freestanding 3×2 Floating Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px' }}>
+
+                            {/* ── TOP-LEFT: Callsign ── */}
+                            <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
+                                <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
+                                <div>
+                                    <div className="fic-avionics-tag">Airspeed Indicator</div>
+                                    <div className="fic-title">Callsign</div>
+                                </div>
+                                <input
+                                    className="fic-input"
+                                    type="text"
+                                    value={displayName}
+                                    onChange={e => { setDisplayName(e.target.value); if (e.target.value.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2)); }}
+                                    placeholder="Identify yourself..."
+                                    disabled={activeInstrument < 1}
+                                />
+                                <span className="fic-subtext">How other pilots identify you</span>
                             </div>
 
-                            {/* Six-Pack 3×2 Grid */}
-                            <div className="grid grid-cols-2 gap-2">
-
-                                {/* ── Instrument 1: AIRSPEED — Callsign ── */}
-                                <div
-                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 1 ? 'active' : activeInstrument > 1 ? 'done' : 'locked'}`}
-                                    style={{ animationDelay: '0.1s' }}
+                            {/* ── TOP-MIDDLE: Classification ── */}
+                            <div className={`floating-instrument-card ${activeInstrument === 2 ? 'fic-active' : activeInstrument > 2 ? 'fic-done' : 'fic-locked'}`}>
+                                <span className={`fic-status-dot ${activeInstrument > 2 ? 'fic-dot-done' : activeInstrument === 2 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
+                                <div>
+                                    <div className="fic-avionics-tag">Attitude Indicator</div>
+                                    <div className="fic-title">Classification</div>
+                                </div>
+                                <select
+                                    className="fic-select"
+                                    value={occupation}
+                                    onChange={e => { setOccupation(e.target.value); if (e.target.value) setActiveInstrument(i => Math.max(i, 3)); }}
+                                    disabled={activeInstrument < 2}
+                                    style={{ colorScheme: 'dark' }}
                                 >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Airspeed</p>
-                                            <p className="text-[9px] font-bold text-white/60">Callsign</p>
-                                        </div>
-                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument > 1 ? 'bg-emerald-400' : activeInstrument === 1 ? 'bg-[#00b4d8] animate-pulse' : 'bg-slate-700'}`} />
-                                    </div>
+                                    <option value="" disabled>Select role...</option>
+                                    {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                                </select>
+                                <span className="fic-subtext">Current pilot classification</span>
+                            </div>
+
+                            {/* ── TOP-RIGHT: Flight Time ── */}
+                            <div className={`floating-instrument-card ${activeInstrument === 3 ? 'fic-active' : activeInstrument > 3 ? 'fic-done' : 'fic-locked'}`}>
+                                <span className={`fic-status-dot ${activeInstrument > 3 ? 'fic-dot-done' : activeInstrument === 3 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
+                                <div>
+                                    <div className="fic-avionics-tag">Altimeter</div>
+                                    <div className="fic-title">Flight Time</div>
+                                </div>
+                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                     <input
-                                        type="text"
-                                        value={displayName}
-                                        onChange={e => {
-                                            setDisplayName(e.target.value);
-                                            if (e.target.value.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2));
-                                        }}
-                                        placeholder="Your pilot name..."
-                                        disabled={activeInstrument < 1}
-                                        className="w-full bg-transparent border-b border-white/10 pb-1 text-white text-sm font-bold focus:outline-none focus:border-[#00b4d8] transition-colors placeholder-slate-700 disabled:opacity-30"
+                                        className="fic-input"
+                                        type="number" min="0" max="99999"
+                                        value={hoursWhole}
+                                        onChange={e => { setHoursWhole(e.target.value); if (e.target.value !== '') setActiveInstrument(i => Math.max(i, 4)); }}
+                                        placeholder="250"
+                                        disabled={activeInstrument < 3}
                                     />
-                                    <p className="text-[8px] font-mono text-slate-700">How pilots identify you</p>
+                                    <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>HRS</span>
+                                    <input
+                                        className="fic-input"
+                                        type="number" min="0" max="59"
+                                        value={hoursMinutes}
+                                        onChange={e => setHoursMinutes(e.target.value)}
+                                        placeholder="00"
+                                        disabled={activeInstrument < 3}
+                                        style={{ maxWidth: '70px', textAlign: 'center' }}
+                                    />
+                                    <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>MIN</span>
                                 </div>
-
-                                {/* ── Instrument 2: ATTITUDE — Classification ── */}
-                                <div
-                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 2 ? 'active' : activeInstrument > 2 ? 'done' : 'locked'}`}
-                                    style={{ animationDelay: '0.25s' }}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Attitude</p>
-                                            <p className="text-[9px] font-bold text-white/60">Classification</p>
-                                        </div>
-                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument > 2 ? 'bg-emerald-400' : activeInstrument === 2 ? 'bg-[#00b4d8] animate-pulse' : 'bg-slate-700'}`} />
-                                    </div>
-                                    <select
-                                        value={occupation}
-                                        onChange={e => {
-                                            setOccupation(e.target.value);
-                                            if (e.target.value) setActiveInstrument(i => Math.max(i, 3));
-                                        }}
-                                        disabled={activeInstrument < 2}
-                                        className="w-full bg-transparent border-b border-white/10 pb-1 text-white text-xs font-bold focus:outline-none focus:border-[#00b4d8] transition-colors appearance-none cursor-pointer disabled:opacity-30"
-                                        style={{ colorScheme: 'dark' }}
-                                    >
-                                        <option value="" disabled>Select role...</option>
-                                        {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
-                                    </select>
-                                    <p className="text-[8px] font-mono text-slate-700">Pilot classification level</p>
-                                </div>
-
-                                {/* ── Instrument 3: ALTIMETER — Flight Hours ── */}
-                                <div
-                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 3 ? 'active' : activeInstrument > 3 ? 'done' : 'locked'}`}
-                                    style={{ animationDelay: '0.4s' }}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Altimeter</p>
-                                            <p className="text-[9px] font-bold text-white/60">Flight Time</p>
-                                        </div>
-                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument > 3 ? 'bg-emerald-400' : activeInstrument === 3 ? 'bg-[#00b4d8] animate-pulse' : 'bg-slate-700'}`} />
-                                    </div>
-                                    <div className="flex items-end gap-1.5">
-                                        <input
-                                            type="number" min="0" max="99999"
-                                            value={hoursWhole}
-                                            onChange={e => {
-                                                setHoursWhole(e.target.value);
-                                                if (parseInt(e.target.value) >= 0 && e.target.value !== '') setActiveInstrument(i => Math.max(i, 4));
-                                            }}
-                                            placeholder="250"
-                                            disabled={activeInstrument < 3}
-                                            className="w-full bg-transparent border-b border-white/10 pb-1 text-white text-sm font-bold focus:outline-none focus:border-[#00b4d8] transition-colors placeholder-slate-700 disabled:opacity-30"
-                                        />
-                                        <span className="text-slate-600 text-[8px] pb-1 font-mono shrink-0">HRS</span>
-                                        <input
-                                            type="number" min="0" max="59"
-                                            value={hoursMinutes}
-                                            onChange={e => setHoursMinutes(e.target.value)}
-                                            placeholder="00"
-                                            disabled={activeInstrument < 3}
-                                            className="w-10 bg-transparent border-b border-white/10 pb-1 text-white text-sm font-bold focus:outline-none focus:border-[#00b4d8] transition-colors placeholder-slate-700 text-center disabled:opacity-30"
-                                        />
-                                        <span className="text-slate-600 text-[8px] pb-1 font-mono shrink-0">MIN</span>
-                                    </div>
-                                    <p className="text-[8px] font-mono text-slate-700">Total logged flight time</p>
-                                </div>
-
-                                {/* ── Instrument 4: TURN COORDINATOR — Logbook ── */}
-                                <div
-                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 4 ? 'active' : activeInstrument > 4 ? 'done' : 'locked'}`}
-                                    style={{ animationDelay: '0.55s' }}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Turn Coord.</p>
-                                            <p className="text-[9px] font-bold text-white/60">Logbook</p>
-                                        </div>
-                                        <span className={`w-2 h-2 rounded-full transition-colors ${providerConnected ? 'bg-emerald-400' : activeInstrument === 4 ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`} />
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => { setShowLogbookModal(true); setActiveInstrument(i => Math.max(i, 5)); }}
-                                        disabled={activeInstrument < 4}
-                                        className="w-full border-b border-white/10 pb-1 text-left hover:border-[#00b4d8] transition-colors disabled:opacity-30"
-                                    >
-                                        {providerConnected
-                                            ? <span className="text-emerald-400 text-xs font-bold font-mono">{selectedProvider} ✓ SYNCED</span>
-                                            : <span className="text-slate-500 text-xs font-mono">Connect provider →</span>
-                                        }
-                                    </button>
-                                    <p className="text-[8px] font-mono text-slate-700">Verified flight data source</p>
-                                </div>
-
-                                {/* ── Instrument 5: HEADING — VC Wallet ── */}
-                                <div
-                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 5 ? 'active' : activeInstrument > 5 ? 'done' : 'locked'}`}
-                                    style={{ animationDelay: '0.7s' }}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Heading</p>
-                                            <p className="text-[9px] font-bold text-white/60">VC Wallet</p>
-                                        </div>
-                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument === 5 ? 'bg-[#00b4d8] animate-pulse' : activeInstrument > 5 ? 'bg-emerald-400' : 'bg-slate-700'}`} />
-                                    </div>
-                                    <div className="grid grid-cols-3 gap-1">
-                                        {CREDENTIAL_WALLETS.slice(0, 6).map(w => (
-                                            w.href ? (
-                                                <a key={w.id}
-                                                   href={vcCredentialUrl ? w.href(vcCredentialUrl) : 'https://wallet.walt.id'}
-                                                   target="_blank" rel="noopener noreferrer"
-                                                   onClick={() => setActiveInstrument(i => Math.max(i, 6))}
-                                                   className={`flex flex-col items-center gap-0.5 py-1 rounded-lg border ${w.border} hover:bg-white/5 transition-all`}
-                                                   title={w.name}
-                                                >
-                                                    <span className="text-sm leading-none">{w.logo}</span>
-                                                    <span className={`text-[6px] font-bold ${w.color} leading-none text-center`}>{w.name.split(' ')[0]}</span>
-                                                </a>
-                                            ) : (
-                                                <div key={w.id} className={`flex flex-col items-center gap-0.5 py-1 rounded-lg border ${w.border} opacity-20 cursor-not-allowed`}>
-                                                    <span className="text-sm leading-none">{w.logo}</span>
-                                                    <span className="text-[6px] text-white/20 leading-none">{w.name.split(' ')[0]}</span>
-                                                </div>
-                                            )
-                                        ))}
-                                    </div>
-                                    <p className="text-[8px] font-mono text-slate-700">Decentralised identity wallet</p>
-                                </div>
-
-                                {/* ── Instrument 6: VSI — Commit ── */}
-                                <div
-                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 6 ? 'active' : 'locked'}`}
-                                    style={{ animationDelay: '0.85s', ...(activeInstrument === 6 ? { borderColor: 'rgba(220,38,38,0.5)', boxShadow: '0 8px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(220,38,38,0.2), inset 0 1px 0 rgba(255,255,255,0.06)' } : {}) }}
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">V/S Indicator</p>
-                                            <p className="text-[9px] font-bold text-white/60">Commit</p>
-                                        </div>
-                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument === 6 ? 'bg-red-500 animate-pulse' : 'bg-slate-700'}`} />
-                                    </div>
-                                    {saveError && <p className="text-red-400 text-[9px] font-mono">{saveError}</p>}
-                                    <button
-                                        onClick={handleSaveProfile}
-                                        disabled={saving || activeInstrument < 6}
-                                        className="w-full py-2.5 bg-red-600 hover:bg-red-700 disabled:opacity-30 disabled:cursor-not-allowed text-white font-black rounded-lg transition-all text-xs tracking-widest"
-                                    >
-                                        {saving ? 'ENGAGING...' : 'COMPLETE PROFILE →'}
-                                    </button>
-                                    <p className="text-[8px] font-mono text-slate-700">Engage pilot profile</p>
-                                </div>
-
-                            </div>{/* end six-pack grid */}
-
-                            {/* Progress strip */}
-                            <div className="flex items-center gap-1 mt-3 px-1">
-                                {[1,2,3,4,5,6].map(n => (
-                                    <div key={n} className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${activeInstrument > n ? 'bg-emerald-400' : activeInstrument === n ? 'bg-[#00b4d8]' : 'bg-slate-800'}`} />
-                                ))}
+                                <span className="fic-subtext">Total logged flight time</span>
                             </div>
-                            <p className="text-center text-slate-700 text-[8px] font-mono mt-1">
-                                Instrument {Math.min(activeInstrument, 6)} of 6 — {activeInstrument > 5 ? 'All Systems Go' : 'Complete each gauge to proceed'}
-                            </p>
 
-                        </div>{/* end bezel */}
+                            {/* ── BOTTOM-LEFT: Logbook ── */}
+                            <div className={`floating-instrument-card ${activeInstrument === 4 ? 'fic-active' : activeInstrument > 4 ? 'fic-done' : 'fic-locked'}`}>
+                                <span className={`fic-status-dot ${providerConnected ? 'fic-dot-done' : activeInstrument === 4 ? 'fic-dot-warn' : 'fic-dot-idle'}`} />
+                                <div>
+                                    <div className="fic-avionics-tag">Turn Coordinator</div>
+                                    <div className="fic-title">Logbook</div>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => { setShowLogbookModal(true); setActiveInstrument(i => Math.max(i, 5)); }}
+                                    disabled={activeInstrument < 4}
+                                    style={{
+                                        width: '100%', padding: '13px 14px',
+                                        background: providerConnected ? 'rgba(52,211,153,0.07)' : 'rgba(255,255,255,0.04)',
+                                        border: `1px dashed ${providerConnected ? 'rgba(52,211,153,0.35)' : 'rgba(255,255,255,0.2)'}`,
+                                        borderRadius: '8px', color: providerConnected ? '#34d399' : 'rgba(255,255,255,0.7)',
+                                        fontSize: '14px', fontWeight: 700, cursor: 'pointer',
+                                        textAlign: 'left', transition: 'all 0.2s', letterSpacing: '0.02em'
+                                    }}
+                                >
+                                    {providerConnected ? `${selectedProvider} ✓ SYNCED` : 'Connect provider +'}
+                                </button>
+                                <span className="fic-subtext">Verified flight data source</span>
+                            </div>
+
+                            {/* ── BOTTOM-MIDDLE: VC Wallet ── */}
+                            <div className={`floating-instrument-card ${activeInstrument === 5 ? 'fic-active' : activeInstrument > 5 ? 'fic-done' : 'fic-locked'}`}>
+                                <span className={`fic-status-dot ${activeInstrument > 5 ? 'fic-dot-done' : activeInstrument === 5 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
+                                <div>
+                                    <div className="fic-avionics-tag">Heading Indicator</div>
+                                    <div className="fic-title">VC Wallet</div>
+                                </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                                    {CREDENTIAL_WALLETS.slice(0, 6).map(w => (
+                                        w.href ? (
+                                            <a key={w.id}
+                                               href={vcCredentialUrl ? w.href(vcCredentialUrl) : 'https://wallet.walt.id'}
+                                               target="_blank" rel="noopener noreferrer"
+                                               onClick={() => setActiveInstrument(i => Math.max(i, 6))}
+                                               title={w.name}
+                                               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.02)', textDecoration: 'none', transition: 'all 0.2s' }}
+                                               onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'; }}
+                                               onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; }}
+                                            >
+                                                <span style={{ fontSize: '18px', lineHeight: 1 }}>{w.logo}</span>
+                                                <span style={{ fontSize: '7px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
+                                            </a>
+                                        ) : (
+                                            <div key={w.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.04)', opacity: 0.18, cursor: 'not-allowed' }}>
+                                                <span style={{ fontSize: '18px', lineHeight: 1 }}>{w.logo}</span>
+                                                <span style={{ fontSize: '7px', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
+                                            </div>
+                                        )
+                                    ))}
+                                </div>
+                                <span className="fic-subtext">Decentralised identity wallet</span>
+                            </div>
+
+                            {/* ── BOTTOM-RIGHT: Commit ── */}
+                            <div className={`floating-instrument-card fic-commit ${activeInstrument >= 6 ? 'fic-active' : 'fic-locked'}`}>
+                                <span className={`fic-status-dot ${activeInstrument >= 6 ? 'fic-dot-commit' : 'fic-dot-idle'}`} />
+                                <div>
+                                    <div className="fic-avionics-tag">V/S Indicator</div>
+                                    <div className="fic-title" style={{ color: activeInstrument >= 6 ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.5)' }}>Commit</div>
+                                </div>
+                                {saveError && <p style={{ color: '#f87171', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>{saveError}</p>}
+                                <button
+                                    onClick={handleSaveProfile}
+                                    disabled={saving || activeInstrument < 6}
+                                    style={{
+                                        width: '100%', padding: '15px',
+                                        background: activeInstrument >= 6 ? '#eb4444' : 'rgba(235,68,68,0.12)',
+                                        border: 'none', borderRadius: '8px', color: '#fff', fontWeight: 900,
+                                        fontSize: '15px', cursor: activeInstrument >= 6 ? 'pointer' : 'not-allowed',
+                                        transition: 'all 0.2s', opacity: activeInstrument >= 6 ? 1 : 0.3,
+                                        boxShadow: activeInstrument >= 6 ? '0 4px 20px rgba(235,68,68,0.45)' : 'none',
+                                        letterSpacing: '0.05em'
+                                    }}
+                                    onMouseEnter={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#c53030'; }}
+                                    onMouseLeave={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#eb4444'; }}
+                                >
+                                    {saving ? 'ENGAGING...' : 'COMPLETE PROFILE →'}
+                                </button>
+                                <span className="fic-subtext">Engage pilot profile</span>
+                            </div>
+
+                        </div>{/* end freestanding grid */}
+
+                        {/* Progress strip — floating below grid */}
+                        <div style={{ display: 'flex', gap: '8px', marginTop: '24px' }}>
+                            {[1,2,3,4,5,6].map(n => (
+                                <div key={n} style={{ flex: 1, height: '2px', borderRadius: '9999px', background: activeInstrument > n ? '#34d399' : activeInstrument === n ? '#00b4d8' : 'rgba(30,41,59,0.6)', transition: 'background 0.5s', boxShadow: activeInstrument === n ? '0 0 10px #00b4d8' : 'none' }} />
+                            ))}
+                        </div>
+                        <p style={{ textAlign: 'center', color: 'rgba(51,65,85,0.7)', fontSize: '9px', fontFamily: 'monospace', marginTop: '8px', letterSpacing: '0.12em' }}>
+                            {activeInstrument > 6 ? '◉ ALL SYSTEMS GO' : `◎ INSTRUMENT ${Math.min(activeInstrument, 6)} OF 6 — COMPLETE EACH GAUGE TO PROCEED`}
+                        </p>
 
                         <div className="flex items-center justify-center gap-2 pt-3">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-400 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
