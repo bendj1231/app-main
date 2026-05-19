@@ -1,0 +1,43 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:pilotterminal.com",
+  "verificationMethod": [
+    {
+      "id": "did:web:pilotterminal.com#key-1",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:pilotterminal.com",
+      "publicKeyJwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "REPLACE_WITH_PUBLIC_KEY_X",
+        "y": "REPLACE_WITH_PUBLIC_KEY_Y"
+      }
+    }
+  ],
+  "authentication": [
+    "did:web:pilotterminal.com#key-1"
+  ],
+  "assertionMethod": [
+    "did:web:pilotterminal.com#key-1"
+  ],
+  "service": [
+    {
+      "id": "did:web:pilotterminal.com#credential-issuer",
+      "type": "CredentialIssuer",
+      "serviceEndpoint": "https://pilotterminal.com/issue"
+    },
+    {
+      "id": "did:web:pilotterminal.com#credential-verifier",
+      "type": "CredentialVerifier",
+      "serviceEndpoint": "https://pilotterminal.com/verify"
+    },
+    {
+      "id": "did:web:pilotterminal.com#credential-status",
+      "type": "CredentialStatusList",
+      "serviceEndpoint": "https://pilotterminal.com/credentials/status"
+    }
+  ]
+}
