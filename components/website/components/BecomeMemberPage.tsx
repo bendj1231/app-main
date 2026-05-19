@@ -168,18 +168,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         const mfbHours = sessionStorage.getItem('mfb_total_hours');
         const mfbProvider = sessionStorage.getItem('mfb_provider');
         const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
-        const walletClaimed = new URLSearchParams(window.location.search).get('wallet') === 'claimed';
         const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
 
-        // If returning from walt.id wallet after claiming credential
-        if (walletClaimed && sessionStorage.getItem('wallet_claimed_provider')) {
+        // Restore wallet state if returning from walt.id (stored when clicked)
+        const savedWallet = sessionStorage.getItem('wallet_claimed_provider');
+        if (savedWallet) {
             setWalletConnected(true);
-            setSelectedWallet(sessionStorage.getItem('wallet_claimed_provider'));
-            setActiveInstrument(6); // Unlock Commit card
-            // Clean up URL
-            const url = new URL(window.location.href);
-            url.searchParams.delete('wallet');
-            window.history.replaceState({}, '', url.toString());
+            setSelectedWallet(savedWallet);
+            // Unlock Commit card if we have logbook + wallet
+            if (logbookSynced || sessionStorage.getItem('mfb_total_hours')) {
+                setActiveInstrument(6);
+            }
         }
 
         if (mfbHours && mfbProvider) {
