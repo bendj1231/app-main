@@ -175,14 +175,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     if (isSetup && (isAuthenticated || authTimedOut || (!isLoading && logbookSynced))) {
         return (
             <>
-            <div className="relative min-h-screen flex flex-col bg-white">
-                <div className="relative z-[300] flex items-center justify-between px-6 py-4 border-b border-slate-100">
+            <div className="relative min-h-screen flex flex-col">
+                <div className="fixed inset-0 z-0 overflow-hidden">
+                    {enableShader ? (
+                        <MeshGradient className="w-full h-full" colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]} speed={0.22} />
+                    ) : (
+                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
+                    <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
+                </div>
+                <div className="relative z-[300] flex items-center justify-between px-6 py-4 border-b border-white/10 backdrop-blur-sm bg-white/5">
                     <h1 className="text-base font-bold tracking-tight">
-                        <span className="text-slate-900">PILOT</span><span className="text-red-600">RECOGNITION</span>
+                        <span className="text-white">PILOT</span><span className="text-red-400">RECOGNITION</span>
                     </h1>
                     <button
                         onClick={() => onNavigate('home')}
-                        className="px-4 py-2 rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 hover:border-slate-300 text-xs font-semibold tracking-wide transition-all"
+                        className="px-4 py-2 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-xs font-semibold tracking-wide backdrop-blur-sm transition-all"
                     >
                         ← Cancel
                     </button>
@@ -191,9 +200,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="w-full max-w-[1100px]">
                         {/* Header */}
                         <div className="text-center mb-8">
-                            <p className="text-red-600 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Account Created</p>
-                            <h2 className="text-3xl font-bold text-slate-900 mb-1 tracking-tight">Welcome aboard</h2>
-                            <p className="text-slate-400 text-sm">Complete your pilot profile to get started</p>
+                            <p className="text-red-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Account Created</p>
+                            <h2 className="text-3xl font-bold text-white mb-1 tracking-tight">Welcome aboard</h2>
+                            <p className="text-white/50 text-sm">Complete your pilot profile to get started</p>
                         </div>
 
                         <style>{`
@@ -228,10 +237,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             .floating-instrument-card:nth-child(5) { animation-delay: 0.70s; }
                             .floating-instrument-card:nth-child(6) { animation-delay: 0.85s; }
                             .floating-instrument-card.fic-locked {
-                                opacity: 0.3 !important;
+                                opacity: 0 !important;
                                 pointer-events: none;
                                 animation: none;
                                 transform: scale(1) translateY(0);
+                                visibility: hidden;
                             }
                             .floating-instrument-card.fic-active {
                                 border-color: #1e293b;
@@ -302,8 +312,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Panel ID strip */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', padding: '0 2px' }}>
-                            <span style={{ fontSize: '11px', color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>Profile Setup · 6 Instruments</span>
-                            <span style={{ fontSize: '11px', color: '#cbd5e1' }}>did:web:pilotrecognition.com</span>
+                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>Profile Setup · 6 Instruments</span>
+                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)' }}>did:web:pilotrecognition.com</span>
                         </div>
 
                         {/* Freestanding 3×2 Floating Grid */}
@@ -488,23 +498,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         {/* Progress strip */}
                         <div style={{ display: 'flex', gap: '6px', marginTop: '24px' }}>
                             {[1,2,3,4,5,6].map(n => (
-                                <div key={n} style={{ flex: 1, height: '3px', borderRadius: '9999px', background: activeInstrument > n ? '#22c55e' : activeInstrument === n ? '#0f172a' : '#e2e8f0', transition: 'background 0.4s' }} />
+                                <div key={n} style={{ flex: 1, height: '3px', borderRadius: '9999px', background: activeInstrument > n ? '#22c55e' : activeInstrument === n ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.12)', transition: 'background 0.4s' }} />
                             ))}
                         </div>
-                        <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '11px', marginTop: '8px', letterSpacing: '0.05em' }}>
+                        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: '11px', marginTop: '8px', letterSpacing: '0.05em' }}>
                             {activeInstrument > 6 ? 'All instruments complete — ready to commit' : `Step ${Math.min(activeInstrument, 6)} of 6 — complete each instrument to proceed`}
                         </p>
 
                         <div className="flex items-center justify-center gap-2 pt-4">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-500 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            <span className="text-green-600 text-[11px] font-semibold">Secure Connection</span>
-                            <span className="text-slate-300 text-[11px]">·</span>
-                            <span className="text-slate-400 text-[11px]">Powered by</span>
-                            <span className="text-slate-600 text-[11px] font-bold">Auth0</span>
+                            <span className="text-green-400 text-[11px] font-semibold">Secure Connection</span>
+                            <span className="text-white/20 text-[11px]">·</span>
+                            <span className="text-white/40 text-[11px]">Powered by</span>
+                            <span className="text-white/60 text-[11px] font-bold">Auth0</span>
                         </div>
-                        <p className="text-slate-400 text-[11px] text-center leading-relaxed pt-1">
+                        <p className="text-white/30 text-[11px] text-center leading-relaxed pt-1">
                             Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
-                            <button onClick={() => onNavigate('terms-of-service')} className="underline text-slate-500 hover:text-slate-800 transition-colors">Terms of Service</button>.
+                            <button onClick={() => onNavigate('terms-of-service')} className="underline text-white/40 hover:text-white transition-colors">Terms of Service</button>.
                         </p>
                     </div>{/* end max-w-md */}
                 </div>{/* end flex-1 center */}
