@@ -8,6 +8,9 @@ export const LogbookCallback = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
+    // Clear explicit logout flag so Auth0 session restores correctly after MFB redirect
+    localStorage.removeItem('explicitLogout');
+
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     const error = params.get('error');
