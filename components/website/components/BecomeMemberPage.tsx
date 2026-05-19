@@ -202,7 +202,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         ← Cancel
                     </button>
                 </div>
-                <div className="flex-1 flex flex-col items-center justify-center px-6 py-10">
+                <div className="flex-1 flex flex-col items-center justify-start px-6 py-8">
                     <div className="w-full max-w-[1100px]">
                         {/* Header */}
                         <div className="text-center mb-8">
@@ -528,6 +528,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         </div>{/* end freestanding grid */}
 
+                        {/* Disclaimer — always visible below grid */}
+                        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <span style={{ color: '#4ade80', fontSize: '11px', fontWeight: 600 }}>Secure Connection</span>
+                                <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px' }}>·</span>
+                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>Powered by</span>
+                                <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px', fontWeight: 700 }}>Auth0</span>
+                            </div>
+                            <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px', textAlign: 'center', lineHeight: 1.6, margin: 0, maxWidth: '680px' }}>
+                                Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
+                                <button onClick={() => onNavigate('terms-of-service')} style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit' }}>Terms of Service</button>.
+                            </p>
+                        </div>
+
                         {/* Progress strip */}
                         <div style={{ display: 'flex', gap: '6px', marginTop: '24px' }}>
                             {[1,2,3,4,5,6].map(n => (
@@ -538,17 +553,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {activeInstrument > 6 ? 'All instruments complete — ready to commit' : `Step ${Math.min(activeInstrument, 6)} of 6 — complete each instrument to proceed`}
                         </p>
 
-                        <div className="flex items-center justify-center gap-2 pt-4">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-500 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            <span className="text-green-400 text-[11px] font-semibold">Secure Connection</span>
-                            <span className="text-white/20 text-[11px]">·</span>
-                            <span className="text-white/40 text-[11px]">Powered by</span>
-                            <span className="text-white/60 text-[11px] font-bold">Auth0</span>
-                        </div>
-                        <p className="text-white/30 text-[11px] text-center leading-relaxed pt-1">
-                            Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
-                            <button onClick={() => onNavigate('terms-of-service')} className="underline text-white/40 hover:text-white transition-colors">Terms of Service</button>.
-                        </p>
                     </div>{/* end max-w-md */}
                 </div>{/* end flex-1 center */}
             </div>{/* end h-screen */}
