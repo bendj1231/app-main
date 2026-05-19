@@ -344,6 +344,64 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 )}
                             </button>
 
+                            {/* Connect Pilot Credential Wallet — always visible */}
+                            <div className="rounded-xl border border-[#00b4d8]/30 bg-[#00b4d8]/5 overflow-hidden">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowWalletSelector(v => !v)}
+                                    className="w-full flex items-center gap-2 px-3 py-2.5 hover:bg-[#00b4d8]/10 transition-all"
+                                >
+                                    <span className="text-[#00b4d8] text-sm">🔐</span>
+                                    <span className="text-[#00b4d8] text-xs font-semibold">Connect Pilot Credential Wallet</span>
+                                    <span className="text-white/30 text-xs ml-auto">{showWalletSelector ? '▲' : '▼'}</span>
+                                </button>
+                                {showWalletSelector && (
+                                    <div className="px-3 pb-3 pt-1 flex flex-col gap-1.5 border-t border-[#00b4d8]/20">
+                                        <p className="text-white/30 text-[10px] mb-1">Choose your decentralised identity wallet — credentials issued by <span className="text-[#00b4d8]">did:web:pilotrecognition.com</span></p>
+                                        {CREDENTIAL_WALLETS.map(wallet => (
+                                            wallet.href ? (
+                                                <a
+                                                    key={wallet.id}
+                                                    href={vcCredentialUrl ? wallet.href(vcCredentialUrl) : 'https://wallet.walt.id'}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} hover:bg-white/5 transition-all`}
+                                                >
+                                                    <span className="text-sm">{wallet.logo}</span>
+                                                    <div className="flex flex-col">
+                                                        <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
+                                                        <span className="text-white/30 text-[10px]">{wallet.desc}</span>
+                                                    </div>
+                                                    <span className="ml-auto text-white/20 text-xs">→</span>
+                                                </a>
+                                            ) : (
+                                                <div
+                                                    key={wallet.id}
+                                                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} opacity-40 cursor-not-allowed`}
+                                                >
+                                                    <span className="text-sm">{wallet.logo}</span>
+                                                    <div className="flex flex-col">
+                                                        <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
+                                                        <span className="text-white/30 text-[10px]">{wallet.desc}</span>
+                                                    </div>
+                                                </div>
+                                            )
+                                        ))}
+                                        <div className="mt-1 pt-2 border-t border-white/5 flex items-center justify-between">
+                                            <span className="text-white/20 text-[10px]">Don't have a wallet yet?</span>
+                                            <a
+                                                href="https://wallet.walt.id"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-[#00b4d8] text-[10px] font-semibold hover:underline"
+                                            >
+                                                Create free walt.id wallet →
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
                             {saveError && <p className="text-red-400 text-xs">{saveError}</p>}
                             <button
                                 onClick={handleSaveProfile}
