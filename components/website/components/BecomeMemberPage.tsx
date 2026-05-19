@@ -345,7 +345,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-avionics-tag">Airspeed Indicator</div>
                                     <div className="fic-title">Identity</div>
                                 </div>
                                 <div style={{ display: 'flex', gap: '8px' }}>
@@ -399,7 +398,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div className={`floating-instrument-card ${activeInstrument === 2 ? 'fic-active' : activeInstrument > 2 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 2 ? 'fic-dot-done' : activeInstrument === 2 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-avionics-tag">Attitude Indicator</div>
                                     <div className="fic-title">Classification</div>
                                 </div>
                                 <select
@@ -419,7 +417,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div className={`floating-instrument-card ${activeInstrument === 3 ? 'fic-active' : activeInstrument > 3 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 3 ? 'fic-dot-done' : activeInstrument === 3 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-avionics-tag">Altimeter</div>
                                     <div className="fic-title">Flight Time</div>
                                 </div>
                                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -450,7 +447,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div className={`floating-instrument-card ${activeInstrument === 4 ? 'fic-active' : activeInstrument > 4 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${providerConnected ? 'fic-dot-done' : activeInstrument === 4 ? 'fic-dot-warn' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-avionics-tag">Turn Coordinator</div>
                                     <div className="fic-title">Logbook</div>
                                 </div>
                                 <button
@@ -475,7 +471,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div className={`floating-instrument-card ${activeInstrument === 5 ? 'fic-active' : activeInstrument > 5 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 5 ? 'fic-dot-done' : activeInstrument === 5 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-avionics-tag">Heading Indicator</div>
                                     <div className="fic-title">VC Wallet</div>
                                 </div>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
@@ -508,7 +503,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div className={`floating-instrument-card fic-commit ${activeInstrument >= 6 ? 'fic-active' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument >= 6 ? 'fic-dot-commit' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-avionics-tag">V/S Indicator</div>
                                     <div className="fic-title">Commit</div>
                                 </div>
                                 {saveError && <p style={{ color: '#f87171', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>{saveError}</p>}
