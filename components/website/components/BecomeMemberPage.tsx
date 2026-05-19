@@ -50,6 +50,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [showLogbookModal, setShowLogbookModal] = useState(false);
     const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
     const [providerConnected, setProviderConnected] = useState(false);
+    const [authTimedOut, setAuthTimedOut] = useState(false);
 
     const LOGBOOK_PROVIDERS = [
         { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', status: 'available', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
@@ -65,6 +66,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     useEffect(() => {
         setEnableShader(shouldEnable3DEffects());
     }, []);
+
+    useEffect(() => {
+        if (isSetup && isLoading) {
+            const t = setTimeout(() => setAuthTimedOut(true), 3000);
+            return () => clearTimeout(t);
+        }
+    }, [isSetup, isLoading]);
 
     useEffect(() => {
         if (isSetup && user) {
@@ -135,7 +143,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
 
     // ── While Auth0 rehydrates session ───────────────────────────────────────────
-    if (isSetup && isLoading) {
+    if (isSetup && isLoading && !authTimedOut) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -145,7 +153,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }
 
     // ── Profile setup step (redirected here after Auth0 signup or logbook sync) ──
-    if (isSetup && (isAuthenticated || (!isLoading && logbookSynced))) {
+    if (isSetup && (isAuthenticated || authTimedOut || (!isLoading && logbookSynced))) {
         return (
             <>
             <div className="relative h-screen flex flex-col">
