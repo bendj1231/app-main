@@ -314,7 +314,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 transition: background 0.4s, box-shadow 0.4s;
                             }
                             .fic-dot-idle   { background: #cbd5e1; }
-                            .fic-dot-active { background: #0f172a; box-shadow: 0 0 0 3px rgba(15,23,42,0.15); animation: dotPulse 1.4s ease-in-out infinite; }
+                            .fic-dot-active { background: #94a3b8; box-shadow: 0 0 0 3px rgba(148,163,184,0.2); animation: dotPulse 1.4s ease-in-out infinite; }
                             .fic-dot-done   { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
                             .fic-dot-warn   { background: #f59e0b; animation: dotPulse 0.85s ease-in-out infinite; }
                             .fic-dot-commit { background: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.2); animation: dotPulse 1s ease-in-out infinite; }
