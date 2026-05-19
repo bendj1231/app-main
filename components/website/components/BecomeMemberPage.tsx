@@ -342,6 +342,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             </p>
                         </div>
 
+                        {/* Step 2 ATC message — above grid, same pattern as step 1 message */}
+                        <div style={{
+                            opacity: activeInstrument === 2 ? 1 : 0,
+                            visibility: activeInstrument === 2 ? 'visible' : 'hidden',
+                            transform: activeInstrument === 2 ? 'translateY(0)' : 'translateY(-8px)',
+                            transition: 'opacity 0.4s ease, transform 0.4s ease',
+                            pointerEvents: 'none',
+                            height: activeInstrument === 2 ? 'auto' : 0,
+                            overflow: 'hidden',
+                            marginBottom: activeInstrument === 2 ? '28px' : '0',
+                        }}>
+                            <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px 0' }}>ATC Calling...</p>
+                            <p style={{ fontSize: '26px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: 0 }}>
+                                Identify{' '}<span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
+                            </p>
+                        </div>
+
                         {/* Freestanding 3×2 Floating Grid */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px' }}>
 
@@ -399,7 +416,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             </div>
 
                             {/* ── TOP-MIDDLE: Classification ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 2 ? 'fic-active' : activeInstrument > 2 ? 'fic-done' : 'fic-locked'}`} style={{ gridColumn: '2', gridRow: '1' }}>
+                            <div className={`floating-instrument-card ${activeInstrument === 2 ? 'fic-active' : activeInstrument > 2 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 2 ? 'fic-dot-done' : activeInstrument === 2 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-title">Classification</div>
@@ -459,22 +476,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <span className="fic-subtext">Pilot classification · aircraft type</span>
                             </div>
 
-                            {/* ── Step 2 ATC message — always in grid, fades in/out ── */}
-                            <div style={{
-                                display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingLeft: '20px',
-                                opacity: activeInstrument === 2 ? 1 : 0,
-                                visibility: activeInstrument === 2 ? 'visible' : 'hidden',
-                                transition: 'opacity 0.4s ease',
-                                gridColumn: '3', gridRow: '1',
-                            }}>
-                                <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px 0' }}>ATC Calling...</p>
-                                <p style={{ fontSize: '26px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: 0 }}>
-                                    Identify{' '}<span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
-                                </p>
-                            </div>
-
                             {/* ── TOP-RIGHT: Flight Time ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 3 ? 'fic-active' : activeInstrument > 3 ? 'fic-done' : 'fic-locked'}`} style={{ gridColumn: '3', gridRow: '1' }}>
+                            <div className={`floating-instrument-card ${activeInstrument === 3 ? 'fic-active' : activeInstrument > 3 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 3 ? 'fic-dot-done' : activeInstrument === 3 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-title">Flight Time</div>
