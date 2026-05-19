@@ -53,6 +53,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [authTimedOut, setAuthTimedOut] = useState(false);
     const [vcCredentialUrl, setVcCredentialUrl] = useState<string | null>(null);
     const [showWalletSelector, setShowWalletSelector] = useState(false);
+    const [activeInstrument, setActiveInstrument] = useState(1);
 
     const CREDENTIAL_WALLETS = [
         { id: 'walt', name: 'walt.id Wallet', logo: '🔐', desc: 'DID · W3C VC · OID4VCI · open-source', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `https://wallet.walt.id/?offer=${encodeURIComponent(url)}` },
@@ -194,237 +195,267 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 </div>
                 <div className="relative z-10 flex-1 flex items-center justify-center px-4">
                     <div className="w-full max-w-md">
-                        <div className="text-center mb-8">
-                            <p className="text-red-500 text-xs font-black tracking-widest uppercase mb-2">Account Created</p>
-                            <h1 className="text-3xl font-black text-white mb-2">Welcome aboard</h1>
-                            <p className="text-slate-400 text-sm">Just two quick details to set up your pilot profile.</p>
+                        {/* Cockpit Header */}
+                        <div className="text-center mb-5">
+                            <p className="text-red-500 text-[10px] font-black tracking-widest uppercase mb-1">Account Created</p>
+                            <h1 className="text-2xl font-black text-white mb-1 tracking-tight">Welcome aboard</h1>
+                            <p className="text-slate-500 text-[10px] font-mono uppercase tracking-widest">Pilot Profile Setup — Six Instruments</p>
                         </div>
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm space-y-5">
-                            {/* Display name — read only from Auth0 */}
-                            <div>
-                                <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Display Name</label>
-                                <input
-                                    type="text"
-                                    value={displayName}
-                                    onChange={e => setDisplayName(e.target.value)}
-                                    placeholder="Your display name"
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#00b4d8]/60"
-                                />
-                                <p className="text-white/30 text-[10px] mt-1">This is how other pilots will see you</p>
-                            </div>
-                            {/* Current Role */}
-                            <div>
-                                <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Current Role</label>
-                                <select
-                                    value={occupation}
-                                    onChange={(e) => setOccupation(e.target.value)}
-                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#00b4d8] transition-colors appearance-none"
-                                    style={{ colorScheme: 'dark' }}
-                                >
-                                    <option value="" disabled>Select your current role...</option>
-                                    {OCCUPATIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-                                </select>
-                            </div>
-                            {/* Total Flight Hours */}
-                            <div>
-                                <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Total Flight Hours</label>
-                                <div className="flex items-center gap-2">
-                                    <div className="flex-1">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            max="99999"
-                                            value={hoursWhole}
-                                            onChange={(e) => setHoursWhole(e.target.value)}
-                                            placeholder="250"
-                                            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
-                                        />
-                                        <p className="text-white/30 text-[10px] mt-1 text-center">Hours</p>
-                                    </div>
-                                    <span className="text-red-500 font-bold text-lg pb-4">+</span>
-                                    <div className="w-24">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            max="59"
-                                            value={hoursMinutes}
-                                            onChange={(e) => setHoursMinutes(e.target.value)}
-                                            placeholder="00"
-                                            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
-                                        />
-                                        <p className="text-white/30 text-[10px] mt-1 text-center">Minutes</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Synced logbook badge */}
-                            {providerConnected && (
-                                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-green-500/10 border border-green-500/20">
-                                    <span className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
-                                    <span className="text-green-400 text-xs font-semibold">{selectedProvider} Synced</span>
-                                    <span className="text-white/30 text-xs ml-auto">Ready for verification</span>
-                                </div>
-                            )}
 
-                            {/* Verifiable Credential — wallet selector */}
-                            {vcCredentialUrl && (
-                                <div className="rounded-xl bg-[#00b4d8]/10 border border-[#00b4d8]/30 overflow-hidden">
+                        <style>{`
+                            @keyframes gaugeFadeIn {
+                                from { opacity: 0; transform: translateY(16px) scale(0.97); }
+                                to   { opacity: 1; transform: translateY(0) scale(1); }
+                            }
+                            .gauge-card {
+                                animation: gaugeFadeIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+                                background: rgba(255,255,255,0.04);
+                                backdrop-filter: blur(12px);
+                                -webkit-backdrop-filter: blur(12px);
+                                border: 1px solid rgba(255,255,255,0.08);
+                                border-radius: 14px;
+                                box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+                                transition: border-color 0.3s, box-shadow 0.3s, opacity 0.4s, transform 0.4s;
+                            }
+                            .gauge-card.locked {
+                                opacity: 0.12;
+                                pointer-events: none;
+                                filter: blur(1px);
+                            }
+                            .gauge-card.active {
+                                border-color: rgba(0,180,216,0.5);
+                                box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), 0 0 0 1px rgba(0,180,216,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+                            }
+                            .gauge-card.done {
+                                border-color: rgba(52,211,153,0.4);
+                                box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+                            }
+                        `}</style>
+
+                        {/* Instrument Panel Bezel */}
+                        <div style={{
+                            background: 'rgba(8,14,26,0.92)',
+                            backdropFilter: 'blur(20px)',
+                            WebkitBackdropFilter: 'blur(20px)',
+                            border: '2px solid rgba(255,255,255,0.07)',
+                            borderRadius: '20px',
+                            boxShadow: '0 0 0 1px #1e293b, 0 0 60px rgba(0,180,216,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
+                            padding: '12px',
+                        }}>
+                            {/* Panel header strip */}
+                            <div className="flex items-center justify-between px-1 mb-3">
+                                <span className="text-slate-600 text-[8px] font-mono uppercase tracking-widest">PilotRecognition · Profile Instruments</span>
+                                <span className="text-[#00b4d8]/30 text-[8px] font-mono">did:web:pilotrecognition.com</span>
+                            </div>
+
+                            {/* Six-Pack 3×2 Grid */}
+                            <div className="grid grid-cols-2 gap-2">
+
+                                {/* ── Instrument 1: AIRSPEED — Callsign ── */}
+                                <div
+                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 1 ? 'active' : activeInstrument > 1 ? 'done' : 'locked'}`}
+                                    style={{ animationDelay: '0.1s' }}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Airspeed</p>
+                                            <p className="text-[9px] font-bold text-white/60">Callsign</p>
+                                        </div>
+                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument > 1 ? 'bg-emerald-400' : activeInstrument === 1 ? 'bg-[#00b4d8] animate-pulse' : 'bg-slate-700'}`} />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={displayName}
+                                        onChange={e => {
+                                            setDisplayName(e.target.value);
+                                            if (e.target.value.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2));
+                                        }}
+                                        placeholder="Your pilot name..."
+                                        disabled={activeInstrument < 1}
+                                        className="w-full bg-transparent border-b border-white/10 pb-1 text-white text-sm font-bold focus:outline-none focus:border-[#00b4d8] transition-colors placeholder-slate-700 disabled:opacity-30"
+                                    />
+                                    <p className="text-[8px] font-mono text-slate-700">How pilots identify you</p>
+                                </div>
+
+                                {/* ── Instrument 2: ATTITUDE — Classification ── */}
+                                <div
+                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 2 ? 'active' : activeInstrument > 2 ? 'done' : 'locked'}`}
+                                    style={{ animationDelay: '0.25s' }}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Attitude</p>
+                                            <p className="text-[9px] font-bold text-white/60">Classification</p>
+                                        </div>
+                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument > 2 ? 'bg-emerald-400' : activeInstrument === 2 ? 'bg-[#00b4d8] animate-pulse' : 'bg-slate-700'}`} />
+                                    </div>
+                                    <select
+                                        value={occupation}
+                                        onChange={e => {
+                                            setOccupation(e.target.value);
+                                            if (e.target.value) setActiveInstrument(i => Math.max(i, 3));
+                                        }}
+                                        disabled={activeInstrument < 2}
+                                        className="w-full bg-transparent border-b border-white/10 pb-1 text-white text-xs font-bold focus:outline-none focus:border-[#00b4d8] transition-colors appearance-none cursor-pointer disabled:opacity-30"
+                                        style={{ colorScheme: 'dark' }}
+                                    >
+                                        <option value="" disabled>Select role...</option>
+                                        {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                                    </select>
+                                    <p className="text-[8px] font-mono text-slate-700">Pilot classification level</p>
+                                </div>
+
+                                {/* ── Instrument 3: ALTIMETER — Flight Hours ── */}
+                                <div
+                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 3 ? 'active' : activeInstrument > 3 ? 'done' : 'locked'}`}
+                                    style={{ animationDelay: '0.4s' }}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Altimeter</p>
+                                            <p className="text-[9px] font-bold text-white/60">Flight Time</p>
+                                        </div>
+                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument > 3 ? 'bg-emerald-400' : activeInstrument === 3 ? 'bg-[#00b4d8] animate-pulse' : 'bg-slate-700'}`} />
+                                    </div>
+                                    <div className="flex items-end gap-1.5">
+                                        <input
+                                            type="number" min="0" max="99999"
+                                            value={hoursWhole}
+                                            onChange={e => {
+                                                setHoursWhole(e.target.value);
+                                                if (parseInt(e.target.value) >= 0 && e.target.value !== '') setActiveInstrument(i => Math.max(i, 4));
+                                            }}
+                                            placeholder="250"
+                                            disabled={activeInstrument < 3}
+                                            className="w-full bg-transparent border-b border-white/10 pb-1 text-white text-sm font-bold focus:outline-none focus:border-[#00b4d8] transition-colors placeholder-slate-700 disabled:opacity-30"
+                                        />
+                                        <span className="text-slate-600 text-[8px] pb-1 font-mono shrink-0">HRS</span>
+                                        <input
+                                            type="number" min="0" max="59"
+                                            value={hoursMinutes}
+                                            onChange={e => setHoursMinutes(e.target.value)}
+                                            placeholder="00"
+                                            disabled={activeInstrument < 3}
+                                            className="w-10 bg-transparent border-b border-white/10 pb-1 text-white text-sm font-bold focus:outline-none focus:border-[#00b4d8] transition-colors placeholder-slate-700 text-center disabled:opacity-30"
+                                        />
+                                        <span className="text-slate-600 text-[8px] pb-1 font-mono shrink-0">MIN</span>
+                                    </div>
+                                    <p className="text-[8px] font-mono text-slate-700">Total logged flight time</p>
+                                </div>
+
+                                {/* ── Instrument 4: TURN COORDINATOR — Logbook ── */}
+                                <div
+                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 4 ? 'active' : activeInstrument > 4 ? 'done' : 'locked'}`}
+                                    style={{ animationDelay: '0.55s' }}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Turn Coord.</p>
+                                            <p className="text-[9px] font-bold text-white/60">Logbook</p>
+                                        </div>
+                                        <span className={`w-2 h-2 rounded-full transition-colors ${providerConnected ? 'bg-emerald-400' : activeInstrument === 4 ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`} />
+                                    </div>
                                     <button
                                         type="button"
-                                        onClick={() => setShowWalletSelector(v => !v)}
-                                        className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#00b4d8]/10 transition-all"
+                                        onClick={() => { setShowLogbookModal(true); setActiveInstrument(i => Math.max(i, 5)); }}
+                                        disabled={activeInstrument < 4}
+                                        className="w-full border-b border-white/10 pb-1 text-left hover:border-[#00b4d8] transition-colors disabled:opacity-30"
                                     >
-                                        <span className="text-[#00b4d8] text-xs">🎓</span>
-                                        <span className="text-[#00b4d8] text-xs font-semibold">Verifiable Credential Issued</span>
-                                        <span className="text-white/30 text-xs ml-auto">{showWalletSelector ? '▲' : '▼'} Select wallet</span>
+                                        {providerConnected
+                                            ? <span className="text-emerald-400 text-xs font-bold font-mono">{selectedProvider} ✓ SYNCED</span>
+                                            : <span className="text-slate-500 text-xs font-mono">Connect provider →</span>
+                                        }
                                     </button>
-                                    {showWalletSelector && (
-                                        <div className="px-3 pb-3 pt-1 flex flex-col gap-1.5 border-t border-[#00b4d8]/20">
-                                            <p className="text-white/30 text-[10px] mb-1">Select your credential wallet provider</p>
-                                            {CREDENTIAL_WALLETS.map(wallet => (
-                                                wallet.href ? (
-                                                    <a
-                                                        key={wallet.id}
-                                                        href={wallet.href(vcCredentialUrl)}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} hover:bg-white/5 transition-all`}
-                                                    >
-                                                        <span className="text-sm">{wallet.logo}</span>
-                                                        <div className="flex flex-col">
-                                                            <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
-                                                            <span className="text-white/30 text-[10px]">{wallet.desc}</span>
-                                                        </div>
-                                                        <span className="ml-auto text-white/20 text-xs">→</span>
-                                                    </a>
-                                                ) : (
-                                                    <div
-                                                        key={wallet.id}
-                                                        className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} opacity-40 cursor-not-allowed`}
-                                                    >
-                                                        <span className="text-sm">{wallet.logo}</span>
-                                                        <div className="flex flex-col">
-                                                            <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
-                                                            <span className="text-white/30 text-[10px]">{wallet.desc}</span>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            ))}
-                                            <div className="mt-1 pt-2 border-t border-white/5 flex items-center justify-between">
-                                                <span className="text-white/20 text-[10px]">Don't have a wallet yet?</span>
-                                                <a
-                                                    href="https://wallet.walt.id"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-[#00b4d8] text-[10px] font-semibold hover:underline flex items-center gap-1"
-                                                >
-                                                    Create free walt.id wallet →
-                                                </a>
-                                            </div>
-                                        </div>
-                                    )}
+                                    <p className="text-[8px] font-mono text-slate-700">Verified flight data source</p>
                                 </div>
-                            )}
 
-                            {/* Verify Hours / Connect Logbook */}
-                            <button
-                                type="button"
-                                onClick={() => setShowLogbookModal(true)}
-                                className="w-full py-2.5 border border-white/20 hover:border-[#00b4d8]/60 text-white/70 hover:text-white rounded-xl transition-all text-xs font-semibold tracking-wide flex items-center justify-center gap-2"
-                            >
-                                {providerConnected ? (
-                                    <>
-                                        <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
-                                        Logbook Synced — Ready for verification
-                                    </>
-                                ) : (
-                                    <>
-                                        <span className="text-[#00b4d8]">+</span>
-                                        Verify Your Hours — Connect Logbook Provider
-                                    </>
-                                )}
-                            </button>
-
-                            {/* Connect Pilot Credential Wallet — always visible */}
-                            <div className="rounded-xl border border-[#00b4d8]/30 bg-[#00b4d8]/5 overflow-hidden">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowWalletSelector(v => !v)}
-                                    className="w-full flex items-center gap-2 px-3 py-2.5 hover:bg-[#00b4d8]/10 transition-all"
+                                {/* ── Instrument 5: HEADING — VC Wallet ── */}
+                                <div
+                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 5 ? 'active' : activeInstrument > 5 ? 'done' : 'locked'}`}
+                                    style={{ animationDelay: '0.7s' }}
                                 >
-                                    <span className="text-[#00b4d8] text-sm">🔐</span>
-                                    <span className="text-[#00b4d8] text-xs font-semibold">Connect Pilot Credential Wallet</span>
-                                    <span className="text-white/30 text-xs ml-auto">{showWalletSelector ? '▲' : '▼'}</span>
-                                </button>
-                                {showWalletSelector && (
-                                    <div className="px-3 pb-3 pt-1 flex flex-col gap-1.5 border-t border-[#00b4d8]/20">
-                                        <p className="text-white/30 text-[10px] mb-1">Choose your decentralised identity wallet — credentials issued by <span className="text-[#00b4d8]">did:web:pilotrecognition.com</span></p>
-                                        {CREDENTIAL_WALLETS.map(wallet => (
-                                            wallet.href ? (
-                                                <a
-                                                    key={wallet.id}
-                                                    href={vcCredentialUrl ? wallet.href(vcCredentialUrl) : 'https://wallet.walt.id'}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} hover:bg-white/5 transition-all`}
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Heading</p>
+                                            <p className="text-[9px] font-bold text-white/60">VC Wallet</p>
+                                        </div>
+                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument === 5 ? 'bg-[#00b4d8] animate-pulse' : activeInstrument > 5 ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-1">
+                                        {CREDENTIAL_WALLETS.slice(0, 6).map(w => (
+                                            w.href ? (
+                                                <a key={w.id}
+                                                   href={vcCredentialUrl ? w.href(vcCredentialUrl) : 'https://wallet.walt.id'}
+                                                   target="_blank" rel="noopener noreferrer"
+                                                   onClick={() => setActiveInstrument(i => Math.max(i, 6))}
+                                                   className={`flex flex-col items-center gap-0.5 py-1 rounded-lg border ${w.border} hover:bg-white/5 transition-all`}
+                                                   title={w.name}
                                                 >
-                                                    <span className="text-sm">{wallet.logo}</span>
-                                                    <div className="flex flex-col">
-                                                        <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
-                                                        <span className="text-white/30 text-[10px]">{wallet.desc}</span>
-                                                    </div>
-                                                    <span className="ml-auto text-white/20 text-xs">→</span>
+                                                    <span className="text-sm leading-none">{w.logo}</span>
+                                                    <span className={`text-[6px] font-bold ${w.color} leading-none text-center`}>{w.name.split(' ')[0]}</span>
                                                 </a>
                                             ) : (
-                                                <div
-                                                    key={wallet.id}
-                                                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border ${wallet.border} opacity-40 cursor-not-allowed`}
-                                                >
-                                                    <span className="text-sm">{wallet.logo}</span>
-                                                    <div className="flex flex-col">
-                                                        <span className={`text-xs font-semibold ${wallet.color}`}>{wallet.name}</span>
-                                                        <span className="text-white/30 text-[10px]">{wallet.desc}</span>
-                                                    </div>
+                                                <div key={w.id} className={`flex flex-col items-center gap-0.5 py-1 rounded-lg border ${w.border} opacity-20 cursor-not-allowed`}>
+                                                    <span className="text-sm leading-none">{w.logo}</span>
+                                                    <span className="text-[6px] text-white/20 leading-none">{w.name.split(' ')[0]}</span>
                                                 </div>
                                             )
                                         ))}
-                                        <div className="mt-1 pt-2 border-t border-white/5 flex items-center justify-between">
-                                            <span className="text-white/20 text-[10px]">Don't have a wallet yet?</span>
-                                            <a
-                                                href="https://wallet.walt.id"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-[#00b4d8] text-[10px] font-semibold hover:underline"
-                                            >
-                                                Create free walt.id wallet →
-                                            </a>
-                                        </div>
                                     </div>
-                                )}
-                            </div>
+                                    <p className="text-[8px] font-mono text-slate-700">Decentralised identity wallet</p>
+                                </div>
 
-                            {saveError && <p className="text-red-400 text-xs">{saveError}</p>}
-                            <button
-                                onClick={handleSaveProfile}
-                                disabled={saving}
-                                className="w-full py-3 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-black rounded-xl transition-all text-sm tracking-wide"
-                            >
-                                {saving ? 'Saving...' : 'Complete Profile →'}
-                            </button>
-                            <div className="flex items-center justify-center gap-2 pt-1">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-400 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                <span className="text-green-400 text-[10px] font-semibold tracking-wide">Secure Connection</span>
-                                <span className="text-white/20 text-[10px]">·</span>
-                                <span className="text-white/40 text-[10px]">Powered by</span>
-                                <span className="text-white/70 text-[10px] font-bold tracking-wide">Auth0</span>
+                                {/* ── Instrument 6: VSI — Commit ── */}
+                                <div
+                                    className={`gauge-card p-3 flex flex-col gap-2 ${activeInstrument === 6 ? 'active' : 'locked'}`}
+                                    style={{ animationDelay: '0.85s', ...(activeInstrument === 6 ? { borderColor: 'rgba(220,38,38,0.5)', boxShadow: '0 8px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(220,38,38,0.2), inset 0 1px 0 rgba(255,255,255,0.06)' } : {}) }}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">V/S Indicator</p>
+                                            <p className="text-[9px] font-bold text-white/60">Commit</p>
+                                        </div>
+                                        <span className={`w-2 h-2 rounded-full transition-colors ${activeInstrument === 6 ? 'bg-red-500 animate-pulse' : 'bg-slate-700'}`} />
+                                    </div>
+                                    {saveError && <p className="text-red-400 text-[9px] font-mono">{saveError}</p>}
+                                    <button
+                                        onClick={handleSaveProfile}
+                                        disabled={saving || activeInstrument < 6}
+                                        className="w-full py-2.5 bg-red-600 hover:bg-red-700 disabled:opacity-30 disabled:cursor-not-allowed text-white font-black rounded-lg transition-all text-xs tracking-widest"
+                                    >
+                                        {saving ? 'ENGAGING...' : 'COMPLETE PROFILE →'}
+                                    </button>
+                                    <p className="text-[8px] font-mono text-slate-700">Engage pilot profile</p>
+                                </div>
+
+                            </div>{/* end six-pack grid */}
+
+                            {/* Progress strip */}
+                            <div className="flex items-center gap-1 mt-3 px-1">
+                                {[1,2,3,4,5,6].map(n => (
+                                    <div key={n} className={`h-0.5 flex-1 rounded-full transition-all duration-500 ${activeInstrument > n ? 'bg-emerald-400' : activeInstrument === n ? 'bg-[#00b4d8]' : 'bg-slate-800'}`} />
+                                ))}
                             </div>
-                            <p className="text-white/50 text-[10px] text-center leading-relaxed pt-1">
-                                Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
-                                <button onClick={() => onNavigate('terms-of-service')} className="underline text-white/60 hover:text-white transition-colors">Terms of Service</button>.
+                            <p className="text-center text-slate-700 text-[8px] font-mono mt-1">
+                                Instrument {Math.min(activeInstrument, 6)} of 6 — {activeInstrument > 5 ? 'All Systems Go' : 'Complete each gauge to proceed'}
                             </p>
+
+                        </div>{/* end bezel */}
+
+                        <div className="flex items-center justify-center gap-2 pt-3">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-400 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            <span className="text-green-400 text-[10px] font-semibold tracking-wide">Secure Connection</span>
+                            <span className="text-white/20 text-[10px]">·</span>
+                            <span className="text-white/40 text-[10px]">Powered by</span>
+                            <span className="text-white/70 text-[10px] font-bold tracking-wide">Auth0</span>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <p className="text-white/50 text-[10px] text-center leading-relaxed pt-1">
+                            Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
+                            <button onClick={() => onNavigate('terms-of-service')} className="underline text-white/60 hover:text-white transition-colors">Terms of Service</button>.
+                        </p>
+                    </div>{/* end max-w-md */}
+                </div>{/* end flex-1 center */}
+            </div>{/* end h-screen */}
 
             {/* Logbook Provider Modal */}
             {showLogbookModal && (
