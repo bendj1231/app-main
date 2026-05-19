@@ -286,6 +286,15 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <p className="mb-4">
                             <strong>Liability Attribution:</strong> The on-chain payment record constitutes an irrefutable, time-stamped receipt. It identifies which entity was paid to perform each verification function, thereby establishing that any data processing errors, credential disputes, or service failures are attributable to the respective integration partner responsible for that layer — not to Pilot Recognition as the neutral display interface.
                         </p>
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-4">
+                            <p className="text-blue-800 text-xs font-bold uppercase tracking-wider mb-2">Enterprise Member Benefit</p>
+                            <p className="text-blue-900 text-sm leading-relaxed">
+                                <strong>5% New Member Activation Credit:</strong> When a verification event occurs involving an Approved Training Organization (ATO) or aviation enterprise, a <strong>5% Member Activation Credit</strong> is automatically calculated and reserved for that organization. This credit functions as a promotional cash-back benefit, not as escrowed funds. The organization has 5 business days to activate an Enterprise Seat ($1,000/year subscription) to claim this credit as an onboarding discount. If the activation window expires, the promotional credit lapses and returns to the platform infrastructure pool. This mechanism incentivizes Enterprise membership while maintaining complete operational neutrality — verification proceeds regardless of membership status.
+                            </p>
+                        </div>
+                        <p className="mb-4">
+                            <strong>Member Benefit vs. Penalty:</strong> The 5% dividend is positioned exclusively as an <em>elite corporate privilege</em> for Enterprise members, not as a penalty for non-members. Flight schools and operators are not required to subscribe to process verifications — the verification workflow completes normally under pilot consent regardless of organizational membership status. The Activation Credit is simply an optional financial optimization available to organizations that choose to join the Enterprise Tier. This framing ensures no extortion or adversarial pressure is exerted on non-subscribed entities.
+                        </p>
                         <p>
                             By purchasing a Recognition+ subscription or initiating any verification workflow, you explicitly authorize this automated, split-payment distribution model and acknowledge that the funds are being allocated to the parties responsible for providing the underlying data services.
                         </p>
