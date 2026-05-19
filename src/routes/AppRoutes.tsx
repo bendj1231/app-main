@@ -136,6 +136,7 @@ const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
 const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
+const EnterpriseVerificationDashboard = lazy(() => import('@/app/enterprise/verification-dashboard/page'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -377,6 +378,7 @@ export const AppRoutes = () => {
       <Route path="/enterprise-access/learn-more" element={<EnterpriseAccessLearnMorePage />} />
       <Route path="/enterprise-access/pricing" element={<EnterprisePricingPage />} />
       <Route path="/enterprise-access/airlines" element={<AirlinesOperatorsPage />} />
+      <Route path="/enterprise/verification-dashboard" element={<EnterpriseVerificationDashboard />} />
       <Route path="/enterprise-login" element={<EnterpriseLoginPage />} />
       <Route path="/enterprise/login" element={<EnterpriseLoginPage />} />
 
