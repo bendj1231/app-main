@@ -56,6 +56,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [authTimedOut, setAuthTimedOut] = useState(false);
     const [vcCredentialUrl, setVcCredentialUrl] = useState<string | null>(null);
     const [showWalletSelector, setShowWalletSelector] = useState(false);
+    const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
+    const [walletConnected, setWalletConnected] = useState(false);
     const [activeInstrument, setActiveInstrument] = useState(1);
 
     const CREDENTIAL_WALLETS = [
@@ -69,11 +71,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     ];
 
     const LOGBOOK_PROVIDERS = [
-        { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', status: 'available', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
+        { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', logoImg: 'https://myflightbook.com/logbook/Images/mfblogonew.png', badge: 'Free', status: 'available', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
         { id: 'flightcrewview', name: 'Flight Crew View', region: 'Global', logo: '✈️', status: 'available', method: 'API Passkey', methodColor: 'text-purple-400' },
-        { id: 'rbpilot', name: 'RB Pilot Logbook', region: 'Global', logo: '�', status: 'available', method: 'Direct API', methodColor: 'text-green-400' },
-        { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '�️', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
-        { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📋', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
+        { id: 'rbpilot', name: 'RB Pilot Logbook', region: 'Global', logo: '🗒️', badge: 'CAE', status: 'coming_soon', method: 'Direct API', methodColor: 'text-green-400', desc: 'Developer registration required — contact rb-support@cae.com' },
+        { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '📊', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
+        { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📋', badge: 'Free 50hrs', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400', desc: 'API v2.0 on GitHub · Free for first 50 flight hours' },
         { id: 'safelog', name: 'Safelog', region: 'Global', logo: '🛡️', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
         { id: 'easa_logbook', name: 'EASA Digital Logbook', region: 'Europe', logo: '🇪🇺', status: 'coming_soon', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
         { id: 'manual', name: 'Manual Entry', region: 'All Regions', logo: '✏️', status: 'available', method: 'Self-Reported', methodColor: 'text-white/40' },
@@ -99,12 +101,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     useEffect(() => {
         const mfbHours = sessionStorage.getItem('mfb_total_hours');
         const mfbProvider = sessionStorage.getItem('mfb_provider');
+        const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
+
         if (mfbHours && mfbProvider) {
             const hrs = parseFloat(mfbHours);
             setHoursWhole(String(Math.floor(hrs)));
             setHoursMinutes(String(Math.round((hrs % 1) * 60)));
             setSelectedProvider(mfbProvider);
             setProviderConnected(true);
+
+            // If returning from logbook OAuth, jump to Logbook step (4)
+            if (logbookSynced) {
+                setActiveInstrument(4);
+            }
+
             const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
             if (vcUrl) {
                 setVcCredentialUrl(vcUrl);
@@ -203,13 +213,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         ← Cancel
                     </button>
                 </div>
-                <div className="flex-1 flex flex-col items-center justify-start px-6 py-8">
+                <div className="flex-1 flex flex-col items-center justify-center px-6 py-4" style={{ overflowY: 'auto' }}>
                     <div className="w-full max-w-[1100px]">
                         {/* Header */}
-                        <div className="text-center mb-8">
-                            <p className="text-red-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Account Created</p>
-                            <h2 className="text-3xl font-bold text-white mb-1 tracking-tight">Welcome aboard</h2>
-                            <p className="text-white/50 text-sm">Complete your pilot profile to get started</p>
+                        <div className="text-center mb-5">
+                            <p className="text-red-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-1">Account Created</p>
+                            <h2 className="text-2xl font-bold text-white mb-0.5 tracking-tight">Welcome aboard</h2>
+                            <p className="text-white/50 text-xs">Complete your pilot profile to get started</p>
                         </div>
 
                         <style>{`
@@ -252,16 +262,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             }
                             .floating-instrument-card.fic-active {
                                 border-color: #e2e8f0;
-                                box-shadow: 0 4px 24px rgba(0,0,0,0.1);
-                            }
-                            .floating-instrument-card.fic-done {
-                                border-color: #bbf7d0;
-                                box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-                                background: #f0fdf4;
-                            }
-                            .floating-instrument-card.fic-commit.fic-active {
                                 border-color: #dc2626;
                                 box-shadow: 0 4px 24px rgba(0,0,0,0.1), 0 0 0 2px #dc2626;
+                            }
+                            .floating-instrument-card.fic-done {
+                                border-color: rgba(255,255,255,0.15);
+                                box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+                                background: #0a1628;
+                            }
+                            .floating-instrument-card.fic-done .fic-title {
+                                color: #ffffff !important;
+                            }
+                            .floating-instrument-card.fic-done .fic-input {
+                                background: #0f1f3d;
+                                border-color: #1e3a5f;
+                                color: #ffffff;
+                            }
+                            .floating-instrument-card.fic-done .fic-input::placeholder {
+                                color: #666666;
+                            }
+                            .floating-instrument-card.fic-done .fic-subtext {
+                                color: rgba(255,255,255,0.4);
                             }
                             .fic-avionics-tag {
                                 font-size: 10px;
@@ -361,7 +382,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         {/* Freestanding 3×2 Floating Grid */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px', maxWidth: '960px', margin: '0 auto' }}>
 
                             {/* ── TOP-LEFT: Identity ── */}
                             <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
@@ -531,35 +552,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <span className="fic-subtext">Verified flight data source</span>
                             </div>
 
-                            {/* ── BOTTOM-MIDDLE: VC Wallet ── */}
+                            {/* ── BOTTOM-MIDDLE: Pilot Credentials Wallet ── */}
                             <div className={`floating-instrument-card ${activeInstrument === 5 ? 'fic-active' : activeInstrument > 5 ? 'fic-done' : 'fic-locked'}`}>
-                                <span className={`fic-status-dot ${activeInstrument > 5 ? 'fic-dot-done' : activeInstrument === 5 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
+                                <span className={`fic-status-dot ${walletConnected ? 'fic-dot-done' : activeInstrument === 5 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-title">VC Wallet</div>
+                                    <div className="fic-title">Pilot Credentials Wallet</div>
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                                    {CREDENTIAL_WALLETS.slice(0, 6).map(w => (
-                                        w.href ? (
-                                            <a key={w.id}
-                                               href={vcCredentialUrl ? w.href(vcCredentialUrl) : 'https://wallet.walt.id'}
-                                               target="_blank" rel="noopener noreferrer"
-                                               onClick={() => setActiveInstrument(i => Math.max(i, 6))}
-                                               title={w.name}
-                                               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#f8fafc', textDecoration: 'none', transition: 'all 0.2s' }}
-                                               onMouseEnter={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
-                                               onMouseLeave={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
-                                            >
-                                                <span style={{ fontSize: '18px', lineHeight: 1 }}>{w.logo}</span>
-                                                <span style={{ fontSize: '7px', fontWeight: 700, color: '#64748b', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
-                                            </a>
-                                        ) : (
-                                            <div key={w.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid #f1f5f9', background: '#fafafa', opacity: 0.4, cursor: 'not-allowed' }}>
-                                                <span style={{ fontSize: '18px', lineHeight: 1 }}>{w.logo}</span>
-                                                <span style={{ fontSize: '7px', color: '#cbd5e1', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
-                                            </div>
-                                        )
-                                    ))}
-                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => { setShowWalletSelector(true); setActiveInstrument(i => Math.max(i, 6)); }}
+                                    disabled={activeInstrument < 5}
+                                    style={{
+                                        width: '100%', padding: '13px 14px',
+                                        background: walletConnected ? '#f0fdf4' : '#f8fafc',
+                                        border: `1px solid ${walletConnected ? '#86efac' : '#cbd5e1'}`,
+                                        borderRadius: '8px', color: walletConnected ? '#16a34a' : '#475569',
+                                        fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+                                        textAlign: 'left', transition: 'all 0.2s'
+                                    }}
+                                >
+                                    {walletConnected ? `${selectedWallet} ✓ Connected` : 'Connect to Wallet →'}
+                                </button>
                                 <span className="fic-subtext">Decentralised identity wallet</span>
                             </div>
 
@@ -623,9 +636,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
             {/* Logbook Provider Modal */}
             {showLogbookModal && (
-                <div className="fixed inset-0 z-[999] flex items-center justify-center px-4" onClick={() => setShowLogbookModal(false)}>
+                <div className="fixed inset-0 z-[999] flex items-center justify-center px-4 overflow-y-hidden" onClick={() => setShowLogbookModal(false)}>
                     <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-                    <div className="relative z-10 w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                    <div className="relative z-10 w-full max-w-4xl bg-slate-900 border border-white/10 rounded-2xl p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-5">
                             <div>
                                 <h3 className="text-white font-black text-base">Connect Logbook Provider</h3>
@@ -639,23 +652,45 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     key={p.id}
                                     disabled={p.status === 'coming_soon'}
                                     onClick={() => setSelectedProvider(p.name)}
-                                    className={`relative flex flex-col items-start p-3 rounded-xl border transition-all text-left ${
+                                    className={`group relative flex flex-row items-center gap-5 px-5 py-5 rounded-xl border transition-all text-left w-full cursor-pointer ${
                                         selectedProvider === p.name
-                                            ? 'border-[#00b4d8] bg-[#00b4d8]/10'
+                                            ? 'border-white/40 bg-white'
                                             : p.status === 'coming_soon'
-                                            ? 'border-white/5 bg-white/2 opacity-40 cursor-not-allowed'
-                                            : 'border-white/10 bg-white/5 hover:border-white/30'
+                                            ? 'border-white/10 bg-white/5 cursor-not-allowed'
+                                            : 'border-white/10 bg-white/8 backdrop-blur-sm hover:bg-white hover:border-white/40'
                                     }`}
                                 >
-                                    <span className="text-lg mb-1">{p.logo}</span>
-                                    <span className="text-white text-xs font-bold leading-tight">{p.name}</span>
-                                    <span className="text-white/30 text-[10px] mt-0.5">{p.region}</span>
-                                    <span className={`text-[9px] font-semibold mt-1 ${p.methodColor}`}>{p.method}</span>
+                                    <span className="flex-shrink-0 w-16 h-16 flex items-center justify-center">
+                                        {(p as any).logoImg
+                                            ? <img src={(p as any).logoImg} alt={p.name} className="w-16 h-16 object-contain rounded" />
+                                            : <span className="text-3xl">{p.logo}</span>
+                                        }
+                                    </span>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1.5">
+                                            <span className={`text-base font-bold leading-tight ${selectedProvider === p.name ? 'text-slate-800' : 'text-white group-hover:text-slate-800'}`}>{p.name}</span>
+                                            {(p as any).badge && (
+                                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/30">{(p as any).badge}</span>
+                                            )}
+                                        </div>
+                                        <span className={`text-[10px] ${selectedProvider === p.name ? 'text-slate-400' : 'text-white/40 group-hover:text-slate-400'}`}>
+                                            {p.region}{p.id === 'myflightbook' ? ' · Default logbook' : ''}
+                                        </span>
+                                        {(p as any).desc && (
+                                            <span className="text-[9px] text-white/30 group-hover:text-slate-400 leading-tight block mt-0.5 truncate">{(p as any).desc}</span>
+                                        )}
+                                    </div>
+                                    <span className={`text-[10px] font-semibold flex-shrink-0 ${p.methodColor}`}>{p.method}</span>
                                     {p.status === 'coming_soon' && (
-                                        <span className="absolute top-2 right-2 text-[9px] bg-white/10 text-white/40 px-1.5 py-0.5 rounded-full">Soon</span>
+                                        <>
+                                            <span className="text-[9px] bg-white/10 text-white/40 px-1.5 py-0.5 rounded-full flex-shrink-0">Soon</span>
+                                            <div className="absolute inset-0 rounded-xl bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
+                                                <span className="text-[10px] font-bold text-white/60 tracking-widest uppercase">Coming Soon</span>
+                                            </div>
+                                        </>
                                     )}
                                     {selectedProvider === p.name && (
-                                        <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#00b4d8]" />
+                                        <span className="w-2 h-2 rounded-full bg-[#00b4d8] flex-shrink-0" />
                                     )}
                                 </button>
                             ))}
@@ -675,7 +710,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 }
                             }}
                             disabled={!selectedProvider}
-                            className="w-full py-3 bg-[#00b4d8] hover:bg-[#0096b4] disabled:opacity-30 disabled:cursor-not-allowed text-white font-black rounded-xl transition-all text-sm tracking-wide"
+                            className="w-full py-3 bg-[#dc2626] hover:bg-[#b91c1c] disabled:opacity-30 disabled:cursor-not-allowed text-white font-black rounded-xl transition-all text-sm tracking-wide"
                         >
                             {selectedProvider ? `Sync with ${selectedProvider} →` : 'Select a provider'}
                         </button>
@@ -687,6 +722,68 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
                         <p className="text-white/25 text-[10px] text-center leading-relaxed">
                             Read-only access only. We never modify your logbook data.
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {/* Wallet Selector Modal */}
+            {showWalletSelector && (
+                <div className="fixed inset-0 z-[999] flex items-center justify-center px-4 overflow-y-hidden" onClick={() => setShowWalletSelector(false)}>
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+                    <div className="relative z-10 w-full max-w-2xl bg-slate-900 border border-white/10 rounded-2xl p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-5">
+                            <div>
+                                <h3 className="text-white font-black text-base">Connect Credentials Wallet</h3>
+                                <p className="text-white/40 text-xs mt-0.5">Select your decentralized identity wallet</p>
+                            </div>
+                            <button onClick={() => setShowWalletSelector(false)} className="text-white/40 hover:text-white text-xl leading-none transition-colors">×</button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 mb-4">
+                            {CREDENTIAL_WALLETS.slice(0, 6).map((w) => (
+                                <button
+                                    key={w.id}
+                                    disabled={!w.href}
+                                    onClick={() => {
+                                        if (w.href) {
+                                            setSelectedWallet(w.name);
+                                            setWalletConnected(true);
+                                            setShowWalletSelector(false);
+                                            window.open(vcCredentialUrl ? w.href(vcCredentialUrl) : 'https://wallet.walt.id', '_blank');
+                                        }
+                                    }}
+                                    className={`group relative flex flex-row items-center gap-4 px-4 py-4 rounded-xl border transition-all text-left w-full ${
+                                        selectedWallet === w.name
+                                            ? 'border-[#00b4d8] bg-[#00b4d8]/10'
+                                            : !w.href
+                                            ? 'border-white/10 bg-white/5 opacity-40 cursor-not-allowed'
+                                            : 'border-white/10 bg-white/8 backdrop-blur-sm hover:bg-white hover:border-white/40'
+                                    }`}
+                                >
+                                    <span className="text-2xl flex-shrink-0 w-10 text-center">{w.logo}</span>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1.5">
+                                            <span className={`text-sm font-bold leading-tight ${selectedWallet === w.name ? 'text-white' : 'text-white group-hover:text-slate-800'}`}>{w.name}</span>
+                                        </div>
+                                        <span className={`text-[10px] ${selectedWallet === w.name ? 'text-white/50' : 'text-white/40 group-hover:text-slate-400'}`}>{w.desc}</span>
+                                    </div>
+                                    {!w.href && (
+                                        <span className="text-[9px] bg-white/10 text-white/40 px-1.5 py-0.5 rounded-full flex-shrink-0">Soon</span>
+                                    )}
+                                    {selectedWallet === w.name && (
+                                        <span className="w-2 h-2 rounded-full bg-[#00b4d8] flex-shrink-0" />
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                        <button
+                            onClick={() => setShowWalletSelector(false)}
+                            className="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-black rounded-xl transition-all text-sm tracking-wide"
+                        >
+                            Cancel
+                        </button>
+                        <p className="text-white/25 text-[10px] text-center leading-relaxed mt-3">
+                            W3C Verifiable Credentials · DID · Decentralized Identity
                         </p>
                     </div>
                 </div>
