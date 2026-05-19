@@ -309,6 +309,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     </div>
                                                 )
                                             ))}
+                                            <div className="mt-1 pt-2 border-t border-white/5 flex items-center justify-between">
+                                                <span className="text-white/20 text-[10px]">Don't have a wallet yet?</span>
+                                                <a
+                                                    href="https://wallet.walt.id"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-[#00b4d8] text-[10px] font-semibold hover:underline flex items-center gap-1"
+                                                >
+                                                    Create free walt.id wallet →
+                                                </a>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
