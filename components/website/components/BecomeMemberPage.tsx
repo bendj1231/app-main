@@ -167,7 +167,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         />
                                         <p className="text-white/30 text-[10px] mt-1 text-center">Hours</p>
                                     </div>
-                                    <span className="text-white/40 font-bold text-lg pb-4">+</span>
+                                    <span className="text-red-500 font-bold text-lg pb-4">+</span>
                                     <div className="w-24">
                                         <input
                                             type="number"
