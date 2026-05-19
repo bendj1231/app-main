@@ -36,19 +36,24 @@ export const LogbookCallback = () => {
 
     const exchange = async () => {
       try {
-        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-        const res = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/mfb-token-exchange', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-          },
-          body: JSON.stringify({ code, redirect_uri: redirectUri }),
-        });
+        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY';
+        let res: Response;
+        try {
+          res = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/mfb-token-exchange', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+            },
+            body: JSON.stringify({ code, redirect_uri: redirectUri }),
+          });
+        } catch (fetchErr: any) {
+          throw new Error(`Network error: ${fetchErr?.message ?? 'fetch failed'}`);
+        }
 
         if (!res.ok) {
           const errText = await res.text();
-          throw new Error(errText || 'Edge function returned error');
+          throw new Error(errText || `Edge function error ${res.status}`);
         }
 
         const data = await res.json();

@@ -131,8 +131,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         });
     };
 
-    // ── While Auth0 rehydrates session ───────────────────────────────────────
-    if (isSetup && isLoading) {
+    const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
+
+    // ── While Auth0 rehydrates session (only wait if not coming from logbook sync) ─
+    if (isSetup && isLoading && !logbookSynced) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -141,8 +143,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         );
     }
 
-    // ── Profile setup step (redirected here after Auth0 signup) ──────────────
-    if (isSetup && isAuthenticated) {
+    // ── Profile setup step (redirected here after Auth0 signup or logbook sync) ──
+    if (isSetup && (isAuthenticated || logbookSynced)) {
         return (
             <>
             <div className="relative h-screen flex flex-col">
