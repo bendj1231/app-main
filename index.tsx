@@ -47,6 +47,7 @@ root.render(
     onRedirectCallback={(appState) => {
       window.history.replaceState({}, document.title, appState?.returnTo || '/');
     }}
+    skipRedirectCallback={window.location.pathname === '/auth/logbook/callback'}
   >
     <BrowserRouter>
       <AuthProvider>
