@@ -322,7 +322,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 if (!selectedProvider) return;
                                 const provider = LOGBOOK_PROVIDERS.find(p => p.name === selectedProvider);
                                 if (provider?.id === 'myflightbook') {
-                                    const redirectUri = `${window.location.origin}/auth/logbook/callback`;
+                                    const redirectUri = 'https://pilotrecognition.com/auth/logbook/callback';
                                     const clientId = import.meta.env.VITE_MFB_CLIENT_ID || 'PilotRecognition';
                                     const url = `https://myflightbook.com/logbook/mvc/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=totals`;
                                     window.location.href = url;

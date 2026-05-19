@@ -27,7 +27,9 @@ export const LogbookCallback = () => {
       return;
     }
 
-    const redirectUri = `${window.location.origin}/auth/logbook/callback`;
+    const redirectUri = window.location.hostname === 'localhost'
+      ? `${window.location.origin}/auth/logbook/callback`
+      : 'https://pilotrecognition.com/auth/logbook/callback';
 
     const exchange = async () => {
       try {
