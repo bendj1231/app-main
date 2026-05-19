@@ -398,8 +398,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <span className="fic-subtext">Callsign visible to all pilots</span>
                             </div>
 
+                            {/* ── Classification step message — col 3, row 1 ── */}
+                            <div style={{
+                                gridColumn: '3', gridRow: '1',
+                                display: activeInstrument === 2 ? 'flex' : 'none',
+                                alignItems: 'center', paddingLeft: '8px',
+                            }}>
+                                <p style={{ fontSize: '22px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.01em', margin: 0 }}>
+                                    ATC calling…{' '}
+                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>identify aircraft</span>
+                                </p>
+                            </div>
+
                             {/* ── TOP-MIDDLE: Classification ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 2 ? 'fic-active' : activeInstrument > 2 ? 'fic-done' : 'fic-locked'}`}>
+                            <div className={`floating-instrument-card ${activeInstrument === 2 ? 'fic-active' : activeInstrument > 2 ? 'fic-done' : 'fic-locked'}`}
+                                 style={{ gridColumn: '2', gridRow: '1' }}>
                                 <span className={`fic-status-dot ${activeInstrument > 2 ? 'fic-dot-done' : activeInstrument === 2 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-title">Classification</div>
@@ -449,7 +462,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
                                                         }}
                                                     >
-                                                        <span>{type === 'Fixed Wing' ? '✈️' : '🚁'}</span>
                                                         {type}
                                                     </button>
                                                 );
