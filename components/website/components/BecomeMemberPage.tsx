@@ -175,36 +175,30 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     if (isSetup && (isAuthenticated || authTimedOut || (!isLoading && logbookSynced))) {
         return (
             <>
-            <div className="relative h-screen flex flex-col">
-                <div className="fixed inset-0 z-0 overflow-hidden">
-                    {enableShader ? (
-                        <MeshGradient className="w-full h-full" colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]} speed={0.22} />
-                    ) : (
-                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
-                    <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
-                </div>
-                <div className="relative z-[300] flex justify-end p-4">
+            <div className="relative min-h-screen flex flex-col bg-white">
+                <div className="relative z-[300] flex items-center justify-between px-6 py-4 border-b border-slate-100">
+                    <h1 className="text-base font-bold tracking-tight">
+                        <span className="text-slate-900">PILOT</span><span className="text-red-600">RECOGNITION</span>
+                    </h1>
                     <button
                         onClick={() => onNavigate('home')}
-                        className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white/60 hover:text-white text-xs font-semibold tracking-wide backdrop-blur-sm transition-all"
+                        className="px-4 py-2 rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 hover:border-slate-300 text-xs font-semibold tracking-wide transition-all"
                     >
-                        ← Cancel Account Creation
+                        ← Cancel
                     </button>
                 </div>
-                <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6">
+                <div className="flex-1 flex flex-col items-center justify-center px-6 py-10">
                     <div className="w-full max-w-[1100px]">
-                        {/* Cockpit Header */}
-                        <div className="text-center mb-5">
-                            <p className="text-red-500 text-[10px] font-black tracking-widest uppercase mb-1">Account Created</p>
-                            <h1 className="text-2xl font-black text-white mb-1 tracking-tight">Welcome aboard</h1>
-                            <p className="text-slate-500 text-[10px] font-mono uppercase tracking-widest">Pilot Profile Setup — Six Instruments</p>
+                        {/* Header */}
+                        <div className="text-center mb-8">
+                            <p className="text-red-600 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Account Created</p>
+                            <h2 className="text-3xl font-bold text-slate-900 mb-1 tracking-tight">Welcome aboard</h2>
+                            <p className="text-slate-400 text-sm">Complete your pilot profile to get started</p>
                         </div>
 
                         <style>{`
                             @keyframes cockpitPopUp {
-                                0%   { opacity: 0; transform: scale(0.7) translateY(30px); }
+                                0%   { opacity: 0; transform: scale(0.92) translateY(20px); }
                                 100% { opacity: 1; transform: scale(1) translateY(0); }
                             }
                             @keyframes dotPulse {
@@ -212,113 +206,104 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 50%       { opacity: 0.3; }
                             }
                             .floating-instrument-card {
-                                background: rgba(10,12,18,0.75);
-                                backdrop-filter: blur(25px) saturate(140%);
-                                -webkit-backdrop-filter: blur(25px) saturate(140%);
-                                border: 1px solid rgba(255,255,255,0.06);
-                                border-top: 1px solid rgba(255,255,255,0.15);
+                                background: #ffffff;
+                                border: 1px solid #e2e8f0;
                                 border-radius: 16px;
                                 padding: 28px;
-                                box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+                                box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
                                 display: flex;
                                 flex-direction: column;
                                 gap: 18px;
                                 justify-content: space-between;
                                 position: relative;
                                 opacity: 0;
-                                transform: scale(0.7) translateY(30px);
-                                animation: cockpitPopUp 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+                                transform: scale(0.92) translateY(20px);
+                                animation: cockpitPopUp 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
                                 transition: border-color 0.3s, box-shadow 0.3s;
                             }
                             .floating-instrument-card:nth-child(1) { animation-delay: 0.10s; }
-                            .floating-instrument-card:nth-child(2) { animation-delay: 0.30s; }
-                            .floating-instrument-card:nth-child(3) { animation-delay: 0.50s; }
-                            .floating-instrument-card:nth-child(4) { animation-delay: 0.70s; }
-                            .floating-instrument-card:nth-child(5) { animation-delay: 0.90s; }
-                            .floating-instrument-card:nth-child(6) { animation-delay: 1.10s; }
+                            .floating-instrument-card:nth-child(2) { animation-delay: 0.25s; }
+                            .floating-instrument-card:nth-child(3) { animation-delay: 0.40s; }
+                            .floating-instrument-card:nth-child(4) { animation-delay: 0.55s; }
+                            .floating-instrument-card:nth-child(5) { animation-delay: 0.70s; }
+                            .floating-instrument-card:nth-child(6) { animation-delay: 0.85s; }
                             .floating-instrument-card.fic-locked {
-                                opacity: 0.08 !important;
+                                opacity: 0.3 !important;
                                 pointer-events: none;
-                                filter: blur(1.5px);
                                 animation: none;
                                 transform: scale(1) translateY(0);
                             }
                             .floating-instrument-card.fic-active {
-                                border-color: rgba(0,180,216,0.45);
-                                border-top-color: rgba(0,180,216,0.9);
-                                box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(0,180,216,0.12), 0 0 0 1px rgba(0,180,216,0.1);
+                                border-color: #1e293b;
+                                box-shadow: 0 4px 24px rgba(0,0,0,0.1), 0 0 0 2px #0f172a;
                             }
                             .floating-instrument-card.fic-done {
-                                border-color: rgba(52,211,153,0.25);
-                                border-top-color: rgba(52,211,153,0.55);
-                                box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 20px rgba(52,211,153,0.06);
+                                border-color: #bbf7d0;
+                                box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+                                background: #f0fdf4;
                             }
                             .floating-instrument-card.fic-commit.fic-active {
-                                border-color: rgba(220,38,38,0.45);
-                                border-top-color: rgba(220,38,38,0.9);
-                                box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(220,38,38,0.12), 0 0 0 1px rgba(220,38,38,0.1);
+                                border-color: #dc2626;
+                                box-shadow: 0 4px 24px rgba(0,0,0,0.1), 0 0 0 2px #dc2626;
                             }
                             .fic-avionics-tag {
-                                font-family: 'Courier New', monospace;
-                                font-size: 9px;
-                                font-weight: 700;
-                                letter-spacing: 0.2em;
+                                font-size: 10px;
+                                font-weight: 600;
+                                letter-spacing: 0.12em;
                                 text-transform: uppercase;
-                                color: rgba(100,116,139,0.55);
+                                color: #94a3b8;
                             }
                             .fic-title {
-                                font-size: 26px;
+                                font-size: 24px;
                                 font-weight: 700;
-                                color: rgba(255,255,255,0.92);
+                                color: #0f172a;
                                 letter-spacing: -0.02em;
-                                line-height: 1;
+                                line-height: 1.1;
                                 margin-top: 2px;
                             }
                             .fic-input, .fic-select {
                                 width: 100%;
-                                background: rgba(255,255,255,0.04);
-                                border: 1px solid rgba(255,255,255,0.09);
+                                background: #ffffff;
+                                border: 1px solid #cbd5e1;
                                 border-radius: 8px;
                                 padding: 11px 14px;
-                                color: white;
+                                color: #0f172a;
                                 font-size: 15px;
-                                font-weight: 600;
+                                font-weight: 500;
                                 outline: none;
-                                transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+                                transition: border-color 0.2s, box-shadow 0.2s;
                                 box-sizing: border-box;
                             }
                             .fic-input:focus, .fic-select:focus {
-                                border-color: rgba(0,180,216,0.6);
-                                background: rgba(0,180,216,0.04);
-                                box-shadow: 0 0 0 3px rgba(0,180,216,0.08);
+                                border-color: #0f172a;
+                                box-shadow: 0 0 0 3px rgba(15,23,42,0.08);
                             }
-                            .fic-input::placeholder { color: rgba(71,85,105,0.7); }
+                            .fic-input::placeholder { color: #94a3b8; }
                             .fic-subtext {
-                                font-family: 'Courier New', monospace;
-                                font-size: 9px;
-                                color: rgba(51,65,85,0.7);
-                                letter-spacing: 0.06em;
+                                font-size: 11px;
+                                color: #94a3b8;
+                                letter-spacing: 0.02em;
                             }
                             .fic-status-dot {
                                 position: absolute;
                                 top: 16px;
                                 right: 16px;
-                                width: 9px;
-                                height: 9px;
+                                width: 8px;
+                                height: 8px;
                                 border-radius: 50%;
                                 transition: background 0.4s, box-shadow 0.4s;
                             }
-                            .fic-dot-idle   { background: rgba(71,85,105,0.5); }
-                            .fic-dot-active { background: #00b4d8; box-shadow: 0 0 8px #00b4d8, 0 0 20px rgba(0,180,216,0.5); animation: dotPulse 1.4s ease-in-out infinite; }
-                            .fic-dot-done   { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.6); }
-                            .fic-dot-warn   { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; animation: dotPulse 0.85s ease-in-out infinite; }
-                            .fic-dot-commit { background: #ef4444; box-shadow: 0 0 10px #ef4444, 0 0 24px rgba(239,68,68,0.5); animation: dotPulse 1s ease-in-out infinite; }
+                            .fic-dot-idle   { background: #cbd5e1; }
+                            .fic-dot-active { background: #0f172a; box-shadow: 0 0 0 3px rgba(15,23,42,0.15); animation: dotPulse 1.4s ease-in-out infinite; }
+                            .fic-dot-done   { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+                            .fic-dot-warn   { background: #f59e0b; animation: dotPulse 0.85s ease-in-out infinite; }
+                            .fic-dot-commit { background: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.2); animation: dotPulse 1s ease-in-out infinite; }
                         `}</style>
 
-                        {/* Panel ID strip — floating above grid */}
+                        {/* Panel ID strip */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', padding: '0 2px' }}>
-                            <span style={{ fontFamily: 'monospace', fontSize: '9px', color: 'rgba(51,65,85,0.7)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>PilotRecognition · Profile Instruments</span>
-                            <span style={{ fontFamily: 'monospace', fontSize: '9px', color: 'rgba(0,180,216,0.2)' }}>did:web:pilotrecognition.com</span>
+                            <span style={{ fontSize: '11px', color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>Profile Setup · 6 Instruments</span>
+                            <span style={{ fontSize: '11px', color: '#cbd5e1' }}>did:web:pilotrecognition.com</span>
                         </div>
 
                         {/* Freestanding 3×2 Floating Grid */}
@@ -345,25 +330,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     onClick={() => { if (displayName.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2)); }}
                                     disabled={displayName.trim().length < 2}
                                     style={{
-                                        width: '100%',
-                                        padding: '12px',
-                                        background: displayName.trim().length >= 2
-                                            ? 'rgba(0,180,216,0.12)'
-                                            : 'rgba(255,255,255,0.03)',
-                                        backdropFilter: 'blur(12px)',
-                                        WebkitBackdropFilter: 'blur(12px)',
-                                        border: `1px solid ${displayName.trim().length >= 2 ? 'rgba(0,180,216,0.4)' : 'rgba(255,255,255,0.07)'}`,
-                                        borderRadius: '10px',
-                                        color: displayName.trim().length >= 2 ? '#00b4d8' : 'rgba(100,116,139,0.5)',
-                                        fontSize: '13px',
-                                        fontWeight: 700,
-                                        letterSpacing: '0.08em',
+                                        width: '100%', padding: '12px 16px',
+                                        background: displayName.trim().length >= 2 ? '#0f172a' : '#f1f5f9',
+                                        border: 'none', borderRadius: '8px',
+                                        color: displayName.trim().length >= 2 ? '#ffffff' : '#94a3b8',
+                                        fontSize: '14px', fontWeight: 600,
                                         cursor: displayName.trim().length >= 2 ? 'pointer' : 'not-allowed',
-                                        transition: 'all 0.25s',
-                                        boxShadow: displayName.trim().length >= 2 ? '0 0 20px rgba(0,180,216,0.1), inset 0 1px 0 rgba(0,180,216,0.1)' : 'none',
+                                        transition: 'all 0.2s',
                                     }}
-                                    onMouseEnter={e => { if (displayName.trim().length >= 2) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,180,216,0.2)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 30px rgba(0,180,216,0.2), inset 0 1px 0 rgba(0,180,216,0.15)'; }}}
-                                    onMouseLeave={e => { if (displayName.trim().length >= 2) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,180,216,0.12)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 20px rgba(0,180,216,0.1), inset 0 1px 0 rgba(0,180,216,0.1)'; }}}
+                                    onMouseEnter={e => { if (displayName.trim().length >= 2) (e.currentTarget as HTMLButtonElement).style.background = '#1e293b'; }}
+                                    onMouseLeave={e => { if (displayName.trim().length >= 2) (e.currentTarget as HTMLButtonElement).style.background = '#0f172a'; }}
                                 >
                                     {activeInstrument > 1 ? '✓ Callsign Confirmed' : 'Confirm Callsign →'}
                                 </button>
@@ -382,7 +358,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     value={occupation}
                                     onChange={e => { setOccupation(e.target.value); if (e.target.value) setActiveInstrument(i => Math.max(i, 3)); }}
                                     disabled={activeInstrument < 2}
-                                    style={{ colorScheme: 'dark' }}
+                                    style={{ colorScheme: 'light' }}
                                 >
                                     <option value="" disabled>Select role...</option>
                                     {OCCUPATIONS.map(o => <option key={o} value={o}>{o}</option>)}
@@ -434,14 +410,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     disabled={activeInstrument < 4}
                                     style={{
                                         width: '100%', padding: '13px 14px',
-                                        background: providerConnected ? 'rgba(52,211,153,0.07)' : 'rgba(255,255,255,0.04)',
-                                        border: `1px dashed ${providerConnected ? 'rgba(52,211,153,0.35)' : 'rgba(255,255,255,0.2)'}`,
-                                        borderRadius: '8px', color: providerConnected ? '#34d399' : 'rgba(255,255,255,0.7)',
-                                        fontSize: '14px', fontWeight: 700, cursor: 'pointer',
-                                        textAlign: 'left', transition: 'all 0.2s', letterSpacing: '0.02em'
+                                        background: providerConnected ? '#f0fdf4' : '#f8fafc',
+                                        border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`,
+                                        borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569',
+                                        fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+                                        textAlign: 'left', transition: 'all 0.2s'
                                     }}
                                 >
-                                    {providerConnected ? `${selectedProvider} ✓ SYNCED` : 'Connect provider +'}
+                                    {providerConnected ? `${selectedProvider} ✓ Synced` : 'Connect provider →'}
                                 </button>
                                 <span className="fic-subtext">Verified flight data source</span>
                             </div>
@@ -461,17 +437,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                target="_blank" rel="noopener noreferrer"
                                                onClick={() => setActiveInstrument(i => Math.max(i, 6))}
                                                title={w.name}
-                                               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.02)', textDecoration: 'none', transition: 'all 0.2s' }}
-                                               onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'; }}
-                                               onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; }}
+                                               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#f8fafc', textDecoration: 'none', transition: 'all 0.2s' }}
+                                               onMouseEnter={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                                               onMouseLeave={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
                                             >
                                                 <span style={{ fontSize: '18px', lineHeight: 1 }}>{w.logo}</span>
-                                                <span style={{ fontSize: '7px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
+                                                <span style={{ fontSize: '7px', fontWeight: 700, color: '#64748b', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
                                             </a>
                                         ) : (
-                                            <div key={w.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.04)', opacity: 0.18, cursor: 'not-allowed' }}>
+                                            <div key={w.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '10px 6px', borderRadius: '8px', border: '1px solid #f1f5f9', background: '#fafafa', opacity: 0.4, cursor: 'not-allowed' }}>
                                                 <span style={{ fontSize: '18px', lineHeight: 1 }}>{w.logo}</span>
-                                                <span style={{ fontSize: '7px', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
+                                                <span style={{ fontSize: '7px', color: '#cbd5e1', textAlign: 'center' }}>{w.name.split(' ')[0]}</span>
                                             </div>
                                         )
                                     ))}
@@ -484,7 +460,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <span className={`fic-status-dot ${activeInstrument >= 6 ? 'fic-dot-commit' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-avionics-tag">V/S Indicator</div>
-                                    <div className="fic-title" style={{ color: activeInstrument >= 6 ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.5)' }}>Commit</div>
+                                    <div className="fic-title">Commit</div>
                                 </div>
                                 {saveError && <p style={{ color: '#f87171', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>{saveError}</p>}
                                 <button
@@ -492,15 +468,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     disabled={saving || activeInstrument < 6}
                                     style={{
                                         width: '100%', padding: '15px',
-                                        background: activeInstrument >= 6 ? '#eb4444' : 'rgba(235,68,68,0.12)',
-                                        border: 'none', borderRadius: '8px', color: '#fff', fontWeight: 900,
-                                        fontSize: '15px', cursor: activeInstrument >= 6 ? 'pointer' : 'not-allowed',
-                                        transition: 'all 0.2s', opacity: activeInstrument >= 6 ? 1 : 0.3,
-                                        boxShadow: activeInstrument >= 6 ? '0 4px 20px rgba(235,68,68,0.45)' : 'none',
-                                        letterSpacing: '0.05em'
+                                        background: activeInstrument >= 6 ? '#dc2626' : '#fef2f2',
+                                        border: `1px solid ${activeInstrument >= 6 ? '#dc2626' : '#fecaca'}`,
+                                        borderRadius: '8px', color: activeInstrument >= 6 ? '#fff' : '#fca5a5', fontWeight: 700,
+                                        fontSize: '14px', cursor: activeInstrument >= 6 ? 'pointer' : 'not-allowed',
+                                        transition: 'all 0.2s', opacity: activeInstrument >= 6 ? 1 : 0.5,
+                                        letterSpacing: '0.04em'
                                     }}
-                                    onMouseEnter={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#c53030'; }}
-                                    onMouseLeave={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#eb4444'; }}
+                                    onMouseEnter={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
+                                    onMouseLeave={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
                                 >
                                     {saving ? 'ENGAGING...' : 'COMPLETE PROFILE →'}
                                 </button>
@@ -509,26 +485,26 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         </div>{/* end freestanding grid */}
 
-                        {/* Progress strip — floating below grid */}
-                        <div style={{ display: 'flex', gap: '8px', marginTop: '24px' }}>
+                        {/* Progress strip */}
+                        <div style={{ display: 'flex', gap: '6px', marginTop: '24px' }}>
                             {[1,2,3,4,5,6].map(n => (
-                                <div key={n} style={{ flex: 1, height: '2px', borderRadius: '9999px', background: activeInstrument > n ? '#34d399' : activeInstrument === n ? '#00b4d8' : 'rgba(30,41,59,0.6)', transition: 'background 0.5s', boxShadow: activeInstrument === n ? '0 0 10px #00b4d8' : 'none' }} />
+                                <div key={n} style={{ flex: 1, height: '3px', borderRadius: '9999px', background: activeInstrument > n ? '#22c55e' : activeInstrument === n ? '#0f172a' : '#e2e8f0', transition: 'background 0.4s' }} />
                             ))}
                         </div>
-                        <p style={{ textAlign: 'center', color: 'rgba(51,65,85,0.7)', fontSize: '9px', fontFamily: 'monospace', marginTop: '8px', letterSpacing: '0.12em' }}>
-                            {activeInstrument > 6 ? '◉ ALL SYSTEMS GO' : `◎ INSTRUMENT ${Math.min(activeInstrument, 6)} OF 6 — COMPLETE EACH GAUGE TO PROCEED`}
+                        <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '11px', marginTop: '8px', letterSpacing: '0.05em' }}>
+                            {activeInstrument > 6 ? 'All instruments complete — ready to commit' : `Step ${Math.min(activeInstrument, 6)} of 6 — complete each instrument to proceed`}
                         </p>
 
-                        <div className="flex items-center justify-center gap-2 pt-3">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-400 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            <span className="text-green-400 text-[10px] font-semibold tracking-wide">Secure Connection</span>
-                            <span className="text-white/20 text-[10px]">·</span>
-                            <span className="text-white/40 text-[10px]">Powered by</span>
-                            <span className="text-white/70 text-[10px] font-bold tracking-wide">Auth0</span>
+                        <div className="flex items-center justify-center gap-2 pt-4">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-500 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            <span className="text-green-600 text-[11px] font-semibold">Secure Connection</span>
+                            <span className="text-slate-300 text-[11px]">·</span>
+                            <span className="text-slate-400 text-[11px]">Powered by</span>
+                            <span className="text-slate-600 text-[11px] font-bold">Auth0</span>
                         </div>
-                        <p className="text-white/50 text-[10px] text-center leading-relaxed pt-1">
+                        <p className="text-slate-400 text-[11px] text-center leading-relaxed pt-1">
                             Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
-                            <button onClick={() => onNavigate('terms-of-service')} className="underline text-white/60 hover:text-white transition-colors">Terms of Service</button>.
+                            <button onClick={() => onNavigate('terms-of-service')} className="underline text-slate-500 hover:text-slate-800 transition-colors">Terms of Service</button>.
                         </p>
                     </div>{/* end max-w-md */}
                 </div>{/* end flex-1 center */}
