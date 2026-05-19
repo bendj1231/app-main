@@ -149,10 +149,6 @@ export const AppRoutes = () => {
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  // DEBUG: Log routing info
-  console.log('[DEBUG AppRoutes] hostname:', window.location.hostname);
-  console.log('[DEBUG AppRoutes] pathname:', window.location.pathname);
-
   // Listen for custom login modal events
   useEffect(() => {
     const handleOpenLoginModal = () => {

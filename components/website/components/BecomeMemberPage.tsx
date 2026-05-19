@@ -142,8 +142,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
 
-    // ── While Auth0 rehydrates session ───────────────────────────────────────────
-    if (isSetup && isLoading && !authTimedOut) {
+    // ── While Auth0 rehydrates session (skip wait if returning from logbook sync) ─
+    if (isSetup && isLoading && !authTimedOut && !logbookSynced) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
