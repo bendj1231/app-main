@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/src/lib/supabase';
 
 export const LogbookCallback = () => {
   const navigate = useNavigate();
@@ -29,12 +28,18 @@ export const LogbookCallback = () => {
 
     const exchange = async () => {
       try {
-        const { data, error: fnError } = await supabase.functions.invoke('mfb-token-exchange', {
-          body: { code, redirect_uri: redirectUri },
+        const res = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/mfb-token-exchange', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, redirect_uri: redirectUri }),
         });
 
-        if (fnError || !data) throw fnError ?? new Error('No data returned');
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(errText || 'Edge function returned error');
+        }
 
+        const data = await res.json();
         const hours = data.totalHours;
         setTotalHours(hours);
         setStatus('success');
