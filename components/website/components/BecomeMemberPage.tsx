@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { TopNavbar } from './TopNavbar';
@@ -47,6 +47,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [occupation, setOccupation] = useState('');
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState('');
+    const [showLogbookModal, setShowLogbookModal] = useState(false);
+    const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
+    const [providerConnected, setProviderConnected] = useState(false);
+
+    const LOGBOOK_PROVIDERS = [
+        { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '✈️', status: 'available' },
+        { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📋', status: 'available' },
+        { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', status: 'available' },
+        { id: 'safelog', name: 'Safelog', region: 'Global', logo: '🛡️', status: 'available' },
+        { id: 'crewtrac', name: 'CrewTrac', region: 'Asia-Pacific', logo: '🌏', status: 'available' },
+        { id: 'zululog', name: 'Zulu Log', region: 'Asia-Pacific', logo: '🌐', status: 'coming_soon' },
+        { id: 'easa_logbook', name: 'EASA Digital Logbook', region: 'Europe', logo: '🇪🇺', status: 'coming_soon' },
+        { id: 'manual', name: 'Manual Entry', region: 'All Regions', logo: '✏️', status: 'available' },
+    ];
 
     useEffect(() => {
         setEnableShader(shouldEnable3DEffects());
@@ -106,6 +120,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     // ── Profile setup step (redirected here after Auth0 signup) ──────────────
     if (isSetup && isAuthenticated) {
         return (
+            <>
             <div className="relative h-screen flex flex-col">
                 <div className="fixed inset-0 z-0 overflow-hidden">
                     {enableShader ? (
@@ -182,6 +197,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                 </div>
                             </div>
+                            {/* Verify Hours / Connect Logbook */}
+                            <button
+                                type="button"
+                                onClick={() => setShowLogbookModal(true)}
+                                className="w-full py-2.5 border border-white/20 hover:border-[#00b4d8]/60 text-white/70 hover:text-white rounded-xl transition-all text-xs font-semibold tracking-wide flex items-center justify-center gap-2"
+                            >
+                                {providerConnected ? (
+                                    <>
+                                        <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
+                                        Logbook Connected — {selectedProvider}
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="text-[#00b4d8]">+</span>
+                                        Verify Your Hours — Connect Logbook Provider
+                                    </>
+                                )}
+                            </button>
+
                             {saveError && <p className="text-red-400 text-xs">{saveError}</p>}
                             <button
                                 onClick={handleSaveProfile}
@@ -205,6 +239,64 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     </div>
                 </div>
             </div>
+
+            {/* Logbook Provider Modal */}
+            {showLogbookModal && (
+                <div className="fixed inset-0 z-[999] flex items-center justify-center px-4" onClick={() => setShowLogbookModal(false)}>
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+                    <div className="relative z-10 w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-5">
+                            <div>
+                                <h3 className="text-white font-black text-base">Connect Logbook Provider</h3>
+                                <p className="text-white/40 text-xs mt-0.5">Select your digital logbook to verify flight hours</p>
+                            </div>
+                            <button onClick={() => setShowLogbookModal(false)} className="text-white/40 hover:text-white text-xl leading-none transition-colors">×</button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                            {LOGBOOK_PROVIDERS.map((p) => (
+                                <button
+                                    key={p.id}
+                                    disabled={p.status === 'coming_soon'}
+                                    onClick={() => setSelectedProvider(p.name)}
+                                    className={`relative flex flex-col items-start p-3 rounded-xl border transition-all text-left ${
+                                        selectedProvider === p.name
+                                            ? 'border-[#00b4d8] bg-[#00b4d8]/10'
+                                            : p.status === 'coming_soon'
+                                            ? 'border-white/5 bg-white/2 opacity-40 cursor-not-allowed'
+                                            : 'border-white/10 bg-white/5 hover:border-white/30'
+                                    }`}
+                                >
+                                    <span className="text-lg mb-1">{p.logo}</span>
+                                    <span className="text-white text-xs font-bold leading-tight">{p.name}</span>
+                                    <span className="text-white/30 text-[10px] mt-0.5">{p.region}</span>
+                                    {p.status === 'coming_soon' && (
+                                        <span className="absolute top-2 right-2 text-[9px] bg-white/10 text-white/40 px-1.5 py-0.5 rounded-full">Soon</span>
+                                    )}
+                                    {selectedProvider === p.name && (
+                                        <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#00b4d8]" />
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                        <button
+                            onClick={() => {
+                                if (selectedProvider) {
+                                    setProviderConnected(true);
+                                    setShowLogbookModal(false);
+                                }
+                            }}
+                            disabled={!selectedProvider}
+                            className="w-full py-3 bg-[#00b4d8] hover:bg-[#0096b4] disabled:opacity-30 disabled:cursor-not-allowed text-white font-black rounded-xl transition-all text-sm tracking-wide"
+                        >
+                            {selectedProvider ? `Sync with ${selectedProvider} →` : 'Select a provider'}
+                        </button>
+                        <p className="text-white/25 text-[10px] text-center mt-3 leading-relaxed">
+                            Read-only access only. We never modify your logbook data.
+                        </p>
+                    </div>
+                </div>
+            )}
+            </>
         );
     }
 
