@@ -36,7 +36,7 @@ const OCCUPATIONS = [
 
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
-    const { loginWithRedirect, user, isAuthenticated } = useAuth0();
+    const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
 
@@ -130,6 +130,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             },
         });
     };
+
+    // ── While Auth0 rehydrates session ───────────────────────────────────────
+    if (isSetup && isLoading) {
+        return (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
+                <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
 
     // ── Profile setup step (redirected here after Auth0 signup) ──────────────
     if (isSetup && isAuthenticated) {
