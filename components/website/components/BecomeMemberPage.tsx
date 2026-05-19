@@ -250,8 +250,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 visibility: hidden;
                             }
                             .floating-instrument-card.fic-active {
-                                border-color: #1e293b;
-                                box-shadow: 0 4px 24px rgba(0,0,0,0.1), 0 0 0 2px #0f172a;
+                                border-color: #e2e8f0;
+                                box-shadow: 0 4px 24px rgba(0,0,0,0.1);
                             }
                             .floating-instrument-card.fic-done {
                                 border-color: #bbf7d0;
@@ -345,7 +345,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
                                 <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
-                                    <div className="fic-title">Identity</div>
+                                    <div className="fic-title" style={{ color: '#dc2626' }}>Identity</div>
                                 </div>
                                 <div style={{ display: 'flex', gap: '8px' }}>
                                     <input
