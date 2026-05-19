@@ -346,7 +346,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, auto)', gap: '20px' }}>
 
                             {/* ── TOP-LEFT: Identity ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
+                            <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}
+                                 style={{ gridColumn: '1', gridRow: '1', display: activeInstrument === 2 ? 'none' : undefined }}>
                                 <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-title fic-title-red">Identity</div>
@@ -398,15 +399,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <span className="fic-subtext">Callsign visible to all pilots</span>
                             </div>
 
-                            {/* ── Classification step message — col 3, row 1 ── */}
+                            {/* ── Classification step message — col 1, row 1 (left of Classification) ── */}
                             <div style={{
-                                gridColumn: '3', gridRow: '1',
+                                gridColumn: '1', gridRow: '1',
                                 display: activeInstrument === 2 ? 'flex' : 'none',
-                                alignItems: 'center', paddingLeft: '8px',
+                                alignItems: 'center', paddingRight: '8px',
                             }}>
                                 <p style={{ fontSize: '22px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.01em', margin: 0 }}>
                                     ATC calling…{' '}
-                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>identify aircraft</span>
+                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>identify<br/>aircraft</span>
                                 </p>
                             </div>
 
