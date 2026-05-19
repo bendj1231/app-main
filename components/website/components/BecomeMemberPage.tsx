@@ -110,9 +110,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setSelectedProvider(mfbProvider);
             setProviderConnected(true);
 
-            // If returning from logbook OAuth, jump to Logbook step (4)
+            // If returning from logbook OAuth, unlock Logbook (4) and reveal next card (5)
             if (logbookSynced) {
-                setActiveInstrument(4);
+                setActiveInstrument(5);
             }
 
             const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
