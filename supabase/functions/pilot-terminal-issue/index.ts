@@ -7,7 +7,7 @@ const CORS = {
 
 // PilotTerminal.com is the credential infrastructure domain
 // All VCs are issued under did:web:pilotterminal.com
-const ISSUER_DID = 'did:web:pilotterminal.com';
+const ISSUER_DID = 'did:web:pilotrecognition.com';
 const WALT_ISSUER_URL = 'https://issuer.demo.walt.id';
 
 Deno.serve(async (req) => {
@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
     const expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
 
     // Build credential subject based on type
-    const subjectDid = `did:web:pilotterminal.com:pilots:${auth0_id.replace('|', '-')}`;
+    const subjectDid = `did:web:pilotrecognition.com:pilots:${auth0_id.replace('|', '-')}`;
 
     const credentialSubject: Record<string, any> = {
       id: subjectDid,
@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
         'https://pilotterminal.com/contexts/aviation/v1',
       ],
       type: ['VerifiableCredential', credential_type],
-      issuer: { id: ISSUER_DID, name: 'PilotTerminal — Aviation Credential Infrastructure' },
+      issuer: { id: ISSUER_DID, name: 'PilotRecognition — Aviation Credential Infrastructure' },
       issuanceDate,
       expirationDate,
       credentialSubject,
@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
         source_provider: source_provider || 'PilotTerminal',
         total_hours: credential_data.totalFlightHours || null,
         status: 'issued',
-        metadata: { credentialData: credentialDataPayload, issuedVia: 'pilotterminal.com' },
+        metadata: { credentialData: credentialDataPayload, issuedVia: 'pilotrecognition.com' },
       })
       .select('id, credential_offer_url, issued_at')
       .single();

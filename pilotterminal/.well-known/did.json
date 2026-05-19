@@ -3,12 +3,12 @@
     "https://www.w3.org/ns/did/v1",
     "https://w3id.org/security/suites/jws-2020/v1"
   ],
-  "id": "did:web:pilotterminal.com",
+  "id": "did:web:pilotrecognition.com",
   "verificationMethod": [
     {
-      "id": "did:web:pilotterminal.com#key-1",
+      "id": "did:web:pilotrecognition.com#key-1",
       "type": "JsonWebKey2020",
-      "controller": "did:web:pilotterminal.com",
+      "controller": "did:web:pilotrecognition.com",
       "publicKeyJwk": {
         "kty": "EC",
         "crv": "P-256",
@@ -18,26 +18,26 @@
     }
   ],
   "authentication": [
-    "did:web:pilotterminal.com#key-1"
+    "did:web:pilotrecognition.com#key-1"
   ],
   "assertionMethod": [
-    "did:web:pilotterminal.com#key-1"
+    "did:web:pilotrecognition.com#key-1"
   ],
   "service": [
     {
-      "id": "did:web:pilotterminal.com#credential-issuer",
+      "id": "did:web:pilotrecognition.com#credential-issuer",
       "type": "CredentialIssuer",
-      "serviceEndpoint": "https://pilotterminal.com/issue"
+      "serviceEndpoint": "https://pilotrecognition.com/issue"
     },
     {
-      "id": "did:web:pilotterminal.com#credential-verifier",
+      "id": "did:web:pilotrecognition.com#credential-verifier",
       "type": "CredentialVerifier",
-      "serviceEndpoint": "https://pilotterminal.com/verify"
+      "serviceEndpoint": "https://pilotrecognition.com/verify"
     },
     {
-      "id": "did:web:pilotterminal.com#credential-status",
+      "id": "did:web:pilotrecognition.com#credential-status",
       "type": "CredentialStatusList",
-      "serviceEndpoint": "https://pilotterminal.com/credentials/status"
+      "serviceEndpoint": "https://pilotrecognition.com/credentials/status"
     }
   ]
 }
