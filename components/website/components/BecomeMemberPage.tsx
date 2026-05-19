@@ -42,6 +42,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     // Setup form state
     const [displayName, setDisplayName] = useState('');
+    const [totalHours, setTotalHours] = useState('');
     const [occupation, setOccupation] = useState('');
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState('');
@@ -57,15 +58,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }, [isSetup, user]);
 
     const handleSaveProfile = async () => {
-        if (!displayName.trim()) { setSaveError('Please enter a display name.'); return; }
-        if (!occupation) { setSaveError('Please select your current role.'); return; }
+        const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
+        if (!cleanName || cleanName.length < 2) { setSaveError('Display name is required.'); return; }
+        if (!OCCUPATIONS.includes(occupation)) { setSaveError('Please select a valid role.'); return; }
+        const hours = parseFloat(totalHours);
+        if (!totalHours || isNaN(hours) || hours < 0 || hours > 99999) { setSaveError('Please enter valid total flight hours.'); return; }
+        if (!user?.sub) { setSaveError('Authentication error. Please sign in again.'); return; }
         setSaving(true);
         setSaveError('');
         try {
-            await supabase
+            const { error } = await supabase
                 .from('profiles')
-                .update({ display_name: displayName.trim(), current_occupation: occupation })
-                .eq('auth0_id', user?.sub);
+                .update({ display_name: cleanName, current_occupation: occupation, total_hours: hours })
+                .eq('auth0_id', user.sub);
+            if (error) throw error;
             onNavigate('platform');
         } catch {
             setSaveError('Failed to save. Please try again.');
@@ -117,18 +123,18 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <p className="text-slate-400 text-sm">Just two quick details to set up your pilot profile.</p>
                         </div>
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm space-y-5">
-                            {/* Display name */}
+                            {/* Display name — read only from Auth0 */}
                             <div>
                                 <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Display Name</label>
                                 <input
                                     type="text"
                                     value={displayName}
-                                    onChange={(e) => setDisplayName(e.target.value)}
-                                    placeholder="e.g. Benjamin Bowler"
-                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
+                                    readOnly
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/60 text-sm cursor-not-allowed"
                                 />
+                                <p className="text-white/30 text-[10px] mt-1">Set by your Google account</p>
                             </div>
-                            {/* Occupation */}
+                            {/* Current Role */}
                             <div>
                                 <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Current Role</label>
                                 <select
@@ -140,6 +146,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <option value="" disabled>Select your current role...</option>
                                     {OCCUPATIONS.map((o) => <option key={o} value={o}>{o}</option>)}
                                 </select>
+                            </div>
+                            {/* Total Flight Hours */}
+                            <div>
+                                <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Total Flight Hours</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="99999"
+                                    step="0.1"
+                                    value={totalHours}
+                                    onChange={(e) => setTotalHours(e.target.value)}
+                                    placeholder="e.g. 250"
+                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
+                                />
                             </div>
                             {saveError && <p className="text-red-400 text-xs">{saveError}</p>}
                             <button
