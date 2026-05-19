@@ -168,7 +168,19 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         const mfbHours = sessionStorage.getItem('mfb_total_hours');
         const mfbProvider = sessionStorage.getItem('mfb_provider');
         const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
+        const walletClaimed = new URLSearchParams(window.location.search).get('wallet') === 'claimed';
         const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+
+        // If returning from walt.id wallet after claiming credential
+        if (walletClaimed && sessionStorage.getItem('wallet_claimed_provider')) {
+            setWalletConnected(true);
+            setSelectedWallet(sessionStorage.getItem('wallet_claimed_provider'));
+            setActiveInstrument(6); // Unlock Commit card
+            // Clean up URL
+            const url = new URL(window.location.href);
+            url.searchParams.delete('wallet');
+            window.history.replaceState({}, '', url.toString());
+        }
 
         if (mfbHours && mfbProvider) {
             const hrs = parseFloat(mfbHours);
@@ -818,6 +830,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setSelectedWallet(w.name);
                                             setWalletConnected(true);
                                             setShowWalletSelector(false);
+                                            sessionStorage.setItem('wallet_claimed_provider', w.name);
                                             window.open(vcCredentialUrl ? w.href(vcCredentialUrl) : 'https://wallet.walt.id', '_blank');
                                         }
                                     }}
