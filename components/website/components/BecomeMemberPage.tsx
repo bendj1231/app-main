@@ -182,7 +182,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     if (isSetup && (isAuthenticated || authTimedOut || (!isLoading && logbookSynced))) {
         return (
             <>
-            <div className="relative min-h-screen flex flex-col">
+            <div className="relative flex flex-col" style={{ height: '100vh', overflow: 'hidden' }}>
                 <div className="fixed inset-0 z-0 overflow-hidden">
                     {enableShader ? (
                         <MeshGradient className="w-full h-full" colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]} speed={0.22} />
