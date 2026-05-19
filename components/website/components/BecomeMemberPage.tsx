@@ -51,6 +51,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
     const [providerConnected, setProviderConnected] = useState(false);
     const [authTimedOut, setAuthTimedOut] = useState(false);
+    const [vcCredentialUrl, setVcCredentialUrl] = useState<string | null>(null);
 
     const LOGBOOK_PROVIDERS = [
         { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', status: 'available', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
@@ -89,6 +90,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setHoursMinutes(String(Math.round((hrs % 1) * 60)));
             setSelectedProvider(mfbProvider);
             setProviderConnected(true);
+            const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
+            if (vcUrl) {
+                setVcCredentialUrl(vcUrl);
+                sessionStorage.removeItem('vc_credential_offer_url');
+                sessionStorage.removeItem('vc_credential_id');
+            }
             sessionStorage.removeItem('mfb_total_hours');
             sessionStorage.removeItem('mfb_provider');
         }
@@ -245,6 +252,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <span className="text-green-400 text-xs font-semibold">{selectedProvider} Synced</span>
                                     <span className="text-white/30 text-xs ml-auto">Ready for verification</span>
                                 </div>
+                            )}
+
+                            {/* Verifiable Credential badge */}
+                            {vcCredentialUrl && (
+                                <a
+                                    href={vcCredentialUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#00b4d8]/10 border border-[#00b4d8]/30 hover:border-[#00b4d8]/60 transition-all group"
+                                >
+                                    <span className="text-[#00b4d8] text-xs">🎓</span>
+                                    <span className="text-[#00b4d8] text-xs font-semibold">Verifiable Credential Issued</span>
+                                    <span className="text-white/30 text-xs ml-auto group-hover:text-white/50">Claim to wallet →</span>
+                                </a>
                             )}
 
                             {/* Verify Hours / Connect Logbook */}

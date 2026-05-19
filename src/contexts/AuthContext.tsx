@@ -119,6 +119,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             };
             setCurrentUser(auth0AsSupabaseUser);
             setLoading(false);
+            // Persist auth0 user ID for logbook sync VC issuance
+            if (auth0User.sub) localStorage.setItem('auth0_user_id', auth0User.sub);
         }
     }, [auth0IsAuthenticated, auth0User, auth0Loading, currentUser]);
 

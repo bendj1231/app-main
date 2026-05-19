@@ -45,7 +45,11 @@ export const LogbookCallback = () => {
               'Content-Type': 'application/json',
               'apikey': SUPABASE_ANON_KEY,
             },
-            body: JSON.stringify({ code, redirect_uri: redirectUri }),
+            body: JSON.stringify({
+              code,
+              redirect_uri: redirectUri,
+              auth0_id: localStorage.getItem('auth0_user_id') || undefined,
+            }),
           });
         } catch (fetchErr: any) {
           throw new Error(`Network error: ${fetchErr?.message ?? 'fetch failed'}`);
@@ -64,6 +68,12 @@ export const LogbookCallback = () => {
         // Store in sessionStorage so BecomeMemberPage can read it
         sessionStorage.setItem('mfb_total_hours', String(hours ?? 0));
         sessionStorage.setItem('mfb_provider', 'MyFlightBook');
+
+        // Store VC credential offer URL if issued
+        if (data.credential?.offer_url) {
+          sessionStorage.setItem('vc_credential_offer_url', data.credential.offer_url);
+          sessionStorage.setItem('vc_credential_id', data.credential.id);
+        }
 
         setTimeout(() => navigate('/become-member?setup=1&logbook=synced'), 1500);
       } catch (err: any) {
