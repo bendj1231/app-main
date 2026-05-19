@@ -411,6 +411,9 @@ export const AppRoutes = () => {
       {/* Referral invite code route */}
       <Route path="/ref/:code" element={<ReferralLandingPage />} />
 
+      {/* Auth0 callback route */}
+      <Route path="/auth/callback" element={<OAuthCallback />} />
+
       {/* Admin routes */}
       <Route path="/admin/verification" element={<AdminVerificationQueue />} />
 

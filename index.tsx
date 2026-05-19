@@ -38,14 +38,14 @@ if (rootElement && !(rootElement as any)._reactRoot) {
 
 root.render(
   <Auth0Provider
-    domain={import.meta.env.VITE_AUTH0_DOMAIN || 'dev-ir828tguibp1dh5f.eu.auth0.com'}
-    clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || 'eCTGyPTtsJbwrJrkioFADnUJocDrE8Wu'}
+    domain={import.meta.env.VITE_AUTH0_DOMAIN || 'dev-ir828tguibp1dh5f.us.auth0.com'}
+    clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || 'FSW7zJxyBNJRvZGxN2xGH2bAQxwzHVmb'}
     authorizationParams={{
-      redirect_uri: `${window.location.origin}/callback`,
+      redirect_uri: `${window.location.origin}/auth/callback`,
       scope: 'openid profile email'
     }}
-    onRedirectCallback={() => {
-      window.history.replaceState({}, document.title, '/');
+    onRedirectCallback={(appState) => {
+      window.history.replaceState({}, document.title, appState?.returnTo || '/');
     }}
   >
     <BrowserRouter>
