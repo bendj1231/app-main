@@ -98,6 +98,62 @@ Deno.serve(async (req) => {
             },
             created_at: new Date().toISOString(),
           });
+
+          // ACTIVATION CREDIT: Generate 5% Member Credit for ATO (if verification succeeded)
+          if (finalStatus === 'verified' && event.metadata?.ato_id) {
+            const atoId = event.metadata.ato_id;
+            const verificationFee = 99; // $99 base verification fee
+            const creditAmount = verificationFee * 0.05; // 5% = $4.95
+            
+            // Calculate expiration (5 business days from now)
+            const expiresAt = new Date();
+            let businessDays = 0;
+            while (businessDays < 5) {
+              expiresAt.setDate(expiresAt.getDate() + 1);
+              const day = expiresAt.getDay();
+              if (day !== 0 && day !== 6) businessDays++; // Skip weekends
+            }
+
+            // Create activation credit record
+            const { data: creditRecord } = await supabaseAdmin
+              .from('ato_activation_credits')
+              .insert({
+                ato_id: atoId,
+                pilot_id: pilotId,
+                verification_id: checkId,
+                credit_amount: creditAmount,
+                status: 'pending',
+                created_at: new Date().toISOString(),
+                expires_at: expiresAt.toISOString(),
+                metadata: {
+                  pilot_name: event.metadata?.pilot_name,
+                  aircraft_type: event.metadata?.aircraft_type,
+                  verification_fee: verificationFee,
+                },
+              })
+              .select()
+              .single();
+
+            // Queue notification email (soft "Activation Credit" language)
+            await supabaseAdmin.from('notification_queue').insert({
+              recipient_type: 'ato',
+              recipient_id: atoId,
+              notification_type: 'activation_credit_generated',
+              subject: 'New Member Activation Credit: $5.00 Available for Your Flight School',
+              template_data: {
+                credit_amount: creditAmount.toFixed(2),
+                pilot_name: event.metadata?.pilot_name || 'A pilot',
+                expires_at: expiresAt.toISOString(),
+                days_remaining: 5,
+                enterprise_seat_price: 1000,
+                credit_id: creditRecord?.id,
+              },
+              status: 'pending',
+              created_at: new Date().toISOString(),
+            });
+
+            console.log(`Activation Credit generated: $${creditAmount.toFixed(2)} for ATO ${atoId}, expires ${expiresAt.toISOString()}`);
+          }
           break;
         }
 
