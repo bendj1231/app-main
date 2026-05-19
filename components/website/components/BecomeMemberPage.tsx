@@ -355,7 +355,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         }}>
                             <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px 0' }}>ATC Calling...</p>
                             <p style={{ fontSize: '26px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: 0 }}>
-                                Identify{' '}<span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
+                                Identify yourself,{' '}<span style={{ color: '#ef4444', fontWeight: 700 }}>pilot</span>
+                                {' '}— and your{' '}<span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
                             </p>
                         </div>
 
