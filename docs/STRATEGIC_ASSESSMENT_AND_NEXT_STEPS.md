@@ -90,7 +90,7 @@ This is the **core revenue driver and entry point**. Without it, everything else
 | Component | Description |
 |-----------|-------------|
 | **Verification Dashboard** | Show Track A (Qualifications) and Track B (Flight Hours) status |
-| **$99 Checkout** | Helio/Stripe integration with split logic (23% Veremark, 5% CAA, 5% Logbook, 67% Platform) |
+| **$99 Checkout** | Helio/Stripe integration with split logic (23% Veremark, 5% ATO, 5% Logbook, 67% Platform) |
 | **ATO Selection** | Pilot names their flight school for Track B verification |
 | **Consent Capture** | Explicit authorization for Veremark + CAAP-redirected directive |
 | **Progress Tracking** | Real-time status: "CAAP Redirected" → "ATO Responded" → "Verified" |
