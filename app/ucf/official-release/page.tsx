@@ -73,6 +73,7 @@ const navSections = [
 
   { id: 'future-prospects', label: 'Future Prospects', group: 'prospects', adminOnly: true },
   { id: 'prospect-flywire', label: 'Flywire — Cross-Border Payments', indent: true, group: 'prospects', adminOnly: true },
+  { id: 'pillar-pilot-identity-infrastructure', label: 'Pillar: Shaping Pilot Digital Identity', indent: true, group: 'prospects', adminOnly: true },
 
 ];
 
@@ -9593,6 +9594,168 @@ export default function UCFOfficialReleasePage() {
                     <p className="text-slate-300 text-sm">Do not replace Stripe pre-launch. Contact Flywire once volume data exists to negotiate from — target <strong className="text-white">500+ registered pilots</strong> and <strong className="text-white">10+ enterprise operators</strong> as the trigger point. Flag specifically for: (1) $299 Transition Program international installments, (2) airline enterprise invoicing at scale.</p>
                     <p className="text-slate-500 text-xs mt-2">Contact: <span className="text-blue-400">flywire.com/contact</span> · Recommended outreach timeline: <strong className="text-slate-300">Q1 2027</strong></p>
                   </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ── PILLAR: SHAPING PILOT DIGITAL IDENTITY ── */}
+          {isAdmin && (
+            <section id="pillar-pilot-identity-infrastructure" className="mb-16 scroll-mt-24">
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-slate-900 px-8 py-6">
+                  <p className="text-slate-400 text-xs uppercase tracking-widest mb-2">Hub D — Infrastructure & Data · Emerging Pillar</p>
+                  <h2 className="text-2xl font-black text-white tracking-tight">Shaping &amp; Moving Pilot Identity Forward</h2>
+                  <p className="text-slate-400 text-sm mt-2">Civil Aviation Authority Collaboration — Digital Credential Infrastructure</p>
+                </div>
+
+                <div className="px-8 py-8 space-y-8">
+
+                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                    <p className="text-blue-900 font-bold text-sm mb-2">The Gap PilotRecognition Fills</p>
+                    <p className="text-blue-800 text-sm leading-relaxed">Every civil aviation authority in the world — CAAP, FAA, EASA, GCAA — still issues pilot licences as paper documents and PDFs. No aviation authority has built a digital credential layer. PilotRecognition is building that infrastructure now, on open standards, at no cost to any authority. This pillar defines how we engage civil aviation authorities as collaboration partners — not competitors — in the modernisation of pilot identity.</p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-4">The Problem: Pilot Identity Is Stuck in 1975</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {([
+                        { label: 'Paper & PDF licenses', desc: 'Cannot be cryptographically verified. Can be forged, altered, or expired without real-time reflection.' },
+                        { label: 'No revocation layer', desc: 'When a medical lapses or a license is suspended, there is no instant digital signal to operators. They rely on the pilot self-reporting.' },
+                        { label: 'Siloed authority databases', desc: 'CAAP, FAA, EASA data does not communicate. Cross-border verification requires manual liaison that takes days or weeks.' },
+                        { label: 'No portable pilot identity', desc: 'A pilot\'s credentials are tied to documents — not a verifiable digital identity that travels across operators, sectors, and countries.' },
+                      ] as {label:string;desc:string}[]).map((item) => (
+                        <div key={item.label} className="bg-red-50 border border-red-200 rounded-lg p-4">
+                          <p className="text-red-800 font-bold text-sm mb-1">{item.label}</p>
+                          <p className="text-red-700 text-xs leading-relaxed">{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-4">The Solution: PilotRecognition as the Digital Identity Layer</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed mb-4">PilotRecognition operates as a trusted <strong>attestation issuer</strong> — issuing W3C Verifiable Credentials (VCs) that bundle verified pilot data into cryptographically signed, tamper-proof digital documents. These credentials are issued under <code className="bg-slate-100 px-1 rounded text-xs">did:web:pilotrecognition.com</code> — a Decentralised Identifier anchored to our domain, verifiable by any airline, operator, or authority worldwide without contacting us directly.</p>
+
+                    <div className="bg-slate-900 rounded-xl p-5 mb-4">
+                      <p className="text-emerald-400 text-xs uppercase tracking-widest font-bold mb-3">The Four Credential Types</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {([
+                          { type: 'FlightHoursVC', source: 'MyFlightBook / ForeFlight OAuth', status: 'Live' },
+                          { type: 'PilotLicenseVC', source: 'Veremark × CAAP / FAA / EASA', status: 'In Development' },
+                          { type: 'MedicalCertVC', source: 'Veremark × Designated Medical Examiner', status: 'In Development' },
+                          { type: 'TypeRatingVC', source: 'ATO Attestation on PilotRecognition Network', status: 'Planned' },
+                        ] as {type:string;source:string;status:string}[]).map((item) => (
+                          <div key={item.type} className="bg-slate-800 rounded-lg p-3">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-blue-400 font-mono text-xs font-bold">{item.type}</span>
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                                item.status === 'Live' ? 'bg-emerald-500/20 text-emerald-400' :
+                                item.status === 'In Development' ? 'bg-yellow-500/20 text-yellow-400' :
+                                'bg-slate-600 text-slate-400'
+                              }`}>{item.status}</span>
+                            </div>
+                            <p className="text-slate-400 text-xs">{item.source}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-4">The CAAP Collaboration Proposal</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed mb-4">PilotRecognition is approaching CAAP — and subsequently FAA, GCAA, EASA, CASA — with a zero-cost infrastructure partnership. We are not asking authorities to change their processes. We are asking for three things:</p>
+
+                    <div className="flex flex-col gap-3 mb-6">
+                      {([
+                        { n: '01', title: 'Data Access Agreement', desc: 'API or batch feed access to licence records, enabling Veremark to perform real-time verification queries against the authoritative CAAP database. This replaces manual email verification that currently takes 5–14 business days.' },
+                        { n: '02', title: 'Recognition as Verification Partner', desc: 'An endorsement letter acknowledging PilotRecognition as an authorised verification and digital credential partner. This endorsement does not transfer any regulatory authority — it positions PilotRecognition as the private-sector digital layer operating alongside CAAP.' },
+                        { n: '03', title: 'Pilot Program (500 Pilots)', desc: 'A joint pilot program with 500 CAAP-licensed pilots to test the full digital credential flow: licence number submitted → Veremark verifies against CAAP → PilotRecognition issues PilotLicenseVC → pilot claims to wallet → airline verifies instantly.' },
+                      ] as {n:string;title:string;desc:string}[]).map((item) => (
+                        <div key={item.n} className="flex gap-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+                          <span className="text-slate-300 font-black text-2xl leading-none flex-shrink-0">{item.n}</span>
+                          <div>
+                            <p className="text-slate-800 font-bold text-sm mb-1">{item.title}</p>
+                            <p className="text-slate-600 text-xs leading-relaxed">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                      <p className="text-amber-800 font-bold text-sm mb-2">What CAAP Gets — At Zero Cost</p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        {([
+                          { title: 'IT Modernisation Without Budget', desc: 'Digital credential infrastructure built, maintained, and operated by PilotRecognition — no CAAP development cost.' },
+                          { title: 'Real-Time Licence Status Broadcasting', desc: 'Any suspension, revocation, or expiry is reflected in the VC status layer instantly — airlines see it before they call.' },
+                          { title: 'International Recognition Leverage', desc: 'Philippine pilot licences become internationally verifiable via a globally recognised W3C standard — strengthening CAAP\'s credibility in ICAO forums.' },
+                        ] as {title:string;desc:string}[]).map((item) => (
+                          <div key={item.title} className="bg-white rounded-lg p-3 border border-amber-100">
+                            <p className="text-amber-900 font-bold mb-1">{item.title}</p>
+                            <p className="text-amber-700 leading-relaxed">{item.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-3">The Technical Stack</h3>
+                    <div className="bg-slate-900 rounded-xl p-5 font-mono text-xs">
+                      <div className="space-y-2 text-slate-300">
+                        <div className="flex items-center gap-3"><span className="text-blue-400">Layer 1</span><span className="text-slate-500">→</span><span>Pilot submits licence number + DOB via PilotRecognition profile</span></div>
+                        <div className="flex items-center gap-3"><span className="text-purple-400">Layer 2</span><span className="text-slate-500">→</span><span>Veremark API queries CAAP database — returns PASS / FAIL / REFER</span></div>
+                        <div className="flex items-center gap-3"><span className="text-emerald-400">Layer 3</span><span className="text-slate-500">→</span><span>Walt.id issues signed PilotLicenseVC under did:web:pilotrecognition.com</span></div>
+                        <div className="flex items-center gap-3"><span className="text-yellow-400">Layer 4</span><span className="text-slate-500">→</span><span>Pilot claims VC to wallet (walt.id, IOTA, Apple Wallet — future)</span></div>
+                        <div className="flex items-center gap-3"><span className="text-red-400">Layer 5</span><span className="text-slate-500">→</span><span>Airline scans QR → verifies cryptographic signature → instant CLEARED TO HIRE</span></div>
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-slate-700">
+                        <p className="text-slate-500">Open standards: W3C Verifiable Credentials · OID4VCI · did:web · SD-JWT</p>
+                        <p className="text-slate-500">Infrastructure: Supabase Edge Functions · Walt.id Community Issuer · SpruceKit (future mDL layer)</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-3">Expansion Roadmap — Authority by Authority</h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm border-collapse">
+                        <thead>
+                          <tr className="bg-slate-900 text-white">
+                            <th className="text-left px-4 py-2 font-semibold">Authority</th>
+                            <th className="text-left px-4 py-2 font-semibold">Country / Region</th>
+                            <th className="text-left px-4 py-2 font-semibold">Approach</th>
+                            <th className="text-left px-4 py-2 font-semibold">Timeline</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {([
+                            { auth: 'CAAP', region: 'Philippines', approach: 'Direct partnership — Veremark local infrastructure already in place. Pilot program with 500 CPL holders.', timeline: 'Q3 2026 (September target)' },
+                            { auth: 'GCAA', region: 'UAE', approach: 'UAE company registration advantage. WM Pilot Group domicile. Position as Gulf digital credential standard.', timeline: 'Q4 2026' },
+                            { auth: 'CAAS', region: 'Singapore', approach: 'Veremark Singapore hub. APAC expansion anchor. Singapore as regional VC issuer registry node.', timeline: 'Q1 2027' },
+                            { auth: 'FAA', region: 'United States', approach: 'Separate US verification partner (First Advantage / HireRight for PRD). Largest pilot database globally.', timeline: 'Q2 2027' },
+                            { auth: 'EASA', region: 'Europe (27 states)', approach: 'eIDAS 2.0 alignment. EU digital wallet (EUDIW) compatibility. Coordinate via European flight academy partners.', timeline: 'Q3 2027' },
+                            { auth: 'CASA', region: 'Australia', approach: 'APAC secondary market. OACC integration via Veremark.', timeline: 'Q3 2027' },
+                          ] as {auth:string;region:string;approach:string;timeline:string}[]).map((row, i) => (
+                            <tr key={row.auth} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                              <td className="px-4 py-2 border-b border-slate-200 font-bold text-slate-800">{row.auth}</td>
+                              <td className="px-4 py-2 border-b border-slate-200 text-slate-600">{row.region}</td>
+                              <td className="px-4 py-2 border-b border-slate-200 text-slate-600 text-xs leading-relaxed">{row.approach}</td>
+                              <td className="px-4 py-2 border-b border-slate-200 text-xs font-semibold text-blue-700">{row.timeline}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-900 rounded-xl p-5">
+                    <p className="text-emerald-400 font-bold uppercase tracking-widest text-xs mb-3">The Strategic Position</p>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-3">Civil aviation authorities have not built digital credential infrastructure because it is not their core mandate — they license pilots, not software. PilotRecognition is not competing with CAAP. We are building the layer CAAP would have built if they were a technology company.</p>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-3">When CAAP eventually issues native digital licences (est. 2029–2032), PilotRecognition transitions from issuer to verifier — reading the CAAP-issued credential directly via SpruceKit's mDL/ISO 18013-5 stack. The platform evolves without rebuilding. The pilot wallet remains the same. The airline verification flow remains the same.</p>
+                    <p className="text-emerald-300 text-sm font-bold">By the time governments go digital, PilotRecognition will have already credentialed 50,000+ pilots. The network effect is irreversible.</p>
+                  </div>
+
                 </div>
               </div>
             </section>
