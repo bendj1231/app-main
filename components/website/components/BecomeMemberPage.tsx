@@ -330,16 +330,44 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div>
                                     <div className="fic-avionics-tag">Airspeed Indicator</div>
                                     <div className="fic-title">Callsign</div>
+                                    <div style={{ fontSize: '11px', color: 'rgba(148,163,184,0.6)', marginTop: '4px', fontFamily: 'monospace', letterSpacing: '0.03em' }}>Your name displayed on the platform</div>
                                 </div>
                                 <input
                                     className="fic-input"
                                     type="text"
                                     value={displayName}
-                                    onChange={e => { setDisplayName(e.target.value); if (e.target.value.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2)); }}
-                                    placeholder="Identify yourself..."
+                                    onChange={e => setDisplayName(e.target.value)}
+                                    placeholder="e.g. Wing Mentor"
                                     disabled={activeInstrument < 1}
                                 />
-                                <span className="fic-subtext">How other pilots identify you</span>
+                                <button
+                                    type="button"
+                                    onClick={() => { if (displayName.trim().length >= 2) setActiveInstrument(i => Math.max(i, 2)); }}
+                                    disabled={displayName.trim().length < 2}
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px',
+                                        background: displayName.trim().length >= 2
+                                            ? 'rgba(0,180,216,0.12)'
+                                            : 'rgba(255,255,255,0.03)',
+                                        backdropFilter: 'blur(12px)',
+                                        WebkitBackdropFilter: 'blur(12px)',
+                                        border: `1px solid ${displayName.trim().length >= 2 ? 'rgba(0,180,216,0.4)' : 'rgba(255,255,255,0.07)'}`,
+                                        borderRadius: '10px',
+                                        color: displayName.trim().length >= 2 ? '#00b4d8' : 'rgba(100,116,139,0.5)',
+                                        fontSize: '13px',
+                                        fontWeight: 700,
+                                        letterSpacing: '0.08em',
+                                        cursor: displayName.trim().length >= 2 ? 'pointer' : 'not-allowed',
+                                        transition: 'all 0.25s',
+                                        boxShadow: displayName.trim().length >= 2 ? '0 0 20px rgba(0,180,216,0.1), inset 0 1px 0 rgba(0,180,216,0.1)' : 'none',
+                                    }}
+                                    onMouseEnter={e => { if (displayName.trim().length >= 2) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,180,216,0.2)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 30px rgba(0,180,216,0.2), inset 0 1px 0 rgba(0,180,216,0.15)'; }}}
+                                    onMouseLeave={e => { if (displayName.trim().length >= 2) { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,180,216,0.12)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 20px rgba(0,180,216,0.1), inset 0 1px 0 rgba(0,180,216,0.1)'; }}}
+                                >
+                                    {activeInstrument > 1 ? '✓ Callsign Confirmed' : 'Confirm Callsign →'}
+                                </button>
+                                <span className="fic-subtext">Min. 2 characters · visible to all pilots</span>
                             </div>
 
                             {/* ── TOP-MIDDLE: Classification ── */}
