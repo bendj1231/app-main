@@ -52,14 +52,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [providerConnected, setProviderConnected] = useState(false);
 
     const LOGBOOK_PROVIDERS = [
-        { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '✈️', status: 'available' },
-        { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📋', status: 'available' },
-        { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', status: 'available' },
-        { id: 'safelog', name: 'Safelog', region: 'Global', logo: '🛡️', status: 'available' },
-        { id: 'crewtrac', name: 'CrewTrac', region: 'Asia-Pacific', logo: '🌏', status: 'available' },
-        { id: 'zululog', name: 'Zulu Log', region: 'Asia-Pacific', logo: '🌐', status: 'coming_soon' },
-        { id: 'easa_logbook', name: 'EASA Digital Logbook', region: 'Europe', logo: '🇪🇺', status: 'coming_soon' },
-        { id: 'manual', name: 'Manual Entry', region: 'All Regions', logo: '✏️', status: 'available' },
+        { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', status: 'available', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
+        { id: 'flightcrewview', name: 'Flight Crew View', region: 'Global', logo: '✈️', status: 'available', method: 'API Passkey', methodColor: 'text-purple-400' },
+        { id: 'rbpilot', name: 'RB Pilot Logbook', region: 'Global', logo: '�', status: 'available', method: 'Direct API', methodColor: 'text-green-400' },
+        { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '�️', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
+        { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📋', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
+        { id: 'safelog', name: 'Safelog', region: 'Global', logo: '🛡️', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
+        { id: 'easa_logbook', name: 'EASA Digital Logbook', region: 'Europe', logo: '🇪🇺', status: 'coming_soon', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
+        { id: 'manual', name: 'Manual Entry', region: 'All Regions', logo: '✏️', status: 'available', method: 'Self-Reported', methodColor: 'text-white/40' },
     ];
 
     useEffect(() => {
@@ -283,6 +283,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <span className="text-lg mb-1">{p.logo}</span>
                                     <span className="text-white text-xs font-bold leading-tight">{p.name}</span>
                                     <span className="text-white/30 text-[10px] mt-0.5">{p.region}</span>
+                                    <span className={`text-[9px] font-semibold mt-1 ${p.methodColor}`}>{p.method}</span>
                                     {p.status === 'coming_soon' && (
                                         <span className="absolute top-2 right-2 text-[9px] bg-white/10 text-white/40 px-1.5 py-0.5 rounded-full">Soon</span>
                                     )}
@@ -304,7 +305,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         >
                             {selectedProvider ? `Sync with ${selectedProvider} →` : 'Select a provider'}
                         </button>
-                        <p className="text-white/25 text-[10px] text-center mt-3 leading-relaxed">
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 mt-3 mb-1 justify-center">
+                            <span className="text-[9px] text-[#00b4d8]">● OAuth 2.0</span>
+                            <span className="text-[9px] text-purple-400">● API Passkey</span>
+                            <span className="text-[9px] text-green-400">● Direct API</span>
+                            <span className="text-[9px] text-orange-400">● CSV Import</span>
+                        </div>
+                        <p className="text-white/25 text-[10px] text-center leading-relaxed">
                             Read-only access only. We never modify your logbook data.
                         </p>
                     </div>
