@@ -98,36 +98,67 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
     }, [isSetup, user]);
 
-    // Issue verifiable credential via walt.id
+    // Issue verifiable credential directly via walt.id issuer
     const issueFlightHoursCredential = async (hours: number, auth0Id: string) => {
         try {
-            const { data: { session } } = await supabase.auth.getSession();
-            const response = await fetch(
-                `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pilot-terminal-issue`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${session?.access_token || ''}`,
-                    },
-                    body: JSON.stringify({
-                        auth0_id: auth0Id,
-                        credential_type: 'FlightHoursVC',
-                        credential_data: {
+            const WALT_ISSUER_URL = 'https://issuer.demo.walt.id';
+            const ISSUER_DID = 'did:web:pilotrecognition.com';
+            const subjectDid = `did:web:pilotrecognition.com:pilots:${auth0Id.replace('|', '-')}`;
+
+            const issuanceDate = new Date().toISOString();
+            const expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+
+            // Onboard issuer key (dev mode)
+            const onboardRes = await fetch(`${WALT_ISSUER_URL}/onboard/issuer`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    key: { backend: 'jwk', keyType: 'secp256r1' },
+                    did: { method: 'jwk' }
+                })
+            });
+            if (!onboardRes.ok) throw new Error('walt.id onboard failed');
+            const onboardData = await onboardRes.json();
+
+            // Issue credential via OID4VCI
+            const issueRes = await fetch(`${WALT_ISSUER_URL}/openid4vc/jwt/issue`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'accept': 'text/plain' },
+                body: JSON.stringify({
+                    issuerKey: { type: 'jwk', jwk: onboardData.issuerKey.jwk },
+                    issuerDid: onboardData.issuerDid || ISSUER_DID,
+                    credentialConfigurationId: 'OpenBadgeCredential_jwt_vc_json',
+                    credentialData: {
+                        '@context': ['https://www.w3.org/2018/credentials/v1'],
+                        type: ['VerifiableCredential', 'FlightHoursVC'],
+                        issuer: { id: ISSUER_DID, name: 'PilotRecognition' },
+                        issuanceDate,
+                        expirationDate,
+                        credentialSubject: {
+                            id: subjectDid,
+                            platform: 'PilotRecognition',
                             totalFlightHours: hours,
                             sourceLogbook: 'MyFlightBook',
-                            verifiedAt: new Date().toISOString(),
+                            verifiedAt: issuanceDate,
                         },
-                        source_provider: 'MyFlightBook',
-                    }),
-                }
-            );
-            const result = await response.json();
-            if (result.success && result.credential_offer_url) {
-                setVcCredentialUrl(result.credential_offer_url);
-                sessionStorage.setItem('vc_credential_offer_url', result.credential_offer_url);
-                sessionStorage.setItem('vc_credential_id', result.credential_id);
-            }
+                    },
+                    mapping: {
+                        id: '<uuid>',
+                        issuer: { id: '<issuerDid>' },
+                        credentialSubject: { id: '<subjectDid>' },
+                        issuanceDate: '<timestamp>',
+                        expirationDate: '<timestamp-in:365d>',
+                    },
+                    authenticationMethod: 'PRE_AUTHORIZED',
+                    standardVersion: 'DRAFT13',
+                })
+            });
+
+            if (!issueRes.ok) throw new Error('walt.id issue failed');
+            const credentialOfferUrl = await issueRes.text();
+
+            setVcCredentialUrl(credentialOfferUrl);
+            sessionStorage.setItem('vc_credential_offer_url', credentialOfferUrl);
         } catch (err) {
             console.error('Failed to issue credential:', err);
         }
