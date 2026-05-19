@@ -42,7 +42,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     // Setup form state
     const [displayName, setDisplayName] = useState('');
-    const [totalHours, setTotalHours] = useState('');
+    const [hoursWhole, setHoursWhole] = useState('');
+    const [hoursMinutes, setHoursMinutes] = useState('');
     const [occupation, setOccupation] = useState('');
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState('');
@@ -61,8 +62,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
         if (!cleanName || cleanName.length < 2) { setSaveError('Display name is required.'); return; }
         if (!OCCUPATIONS.includes(occupation)) { setSaveError('Please select a valid role.'); return; }
-        const hours = parseFloat(totalHours);
-        if (!totalHours || isNaN(hours) || hours < 0 || hours > 99999) { setSaveError('Please enter valid total flight hours.'); return; }
+        const wholeHrs = parseInt(hoursWhole);
+        const mins = parseInt(hoursMinutes || '0');
+        if (!hoursWhole || isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999) { setSaveError('Please enter valid flight hours.'); return; }
+        if (isNaN(mins) || mins < 0 || mins > 59) { setSaveError('Minutes must be between 0 and 59.'); return; }
+        const hours = wholeHrs + mins / 60;
         if (!user?.sub) { setSaveError('Authentication error. Please sign in again.'); return; }
         setSaving(true);
         setSaveError('');
@@ -150,16 +154,33 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {/* Total Flight Hours */}
                             <div>
                                 <label className="block text-white text-xs font-bold mb-2 uppercase tracking-wider">Total Flight Hours</label>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    max="99999"
-                                    step="0.1"
-                                    value={totalHours}
-                                    onChange={(e) => setTotalHours(e.target.value)}
-                                    placeholder="e.g. 250"
-                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
-                                />
+                                <div className="flex items-center gap-2">
+                                    <div className="flex-1">
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            max="99999"
+                                            value={hoursWhole}
+                                            onChange={(e) => setHoursWhole(e.target.value)}
+                                            placeholder="250"
+                                            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
+                                        />
+                                        <p className="text-white/30 text-[10px] mt-1 text-center">Hours</p>
+                                    </div>
+                                    <span className="text-white/40 font-bold text-lg pb-4">:</span>
+                                    <div className="w-24">
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            max="59"
+                                            value={hoursMinutes}
+                                            onChange={(e) => setHoursMinutes(e.target.value)}
+                                            placeholder="00"
+                                            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#00b4d8] transition-colors"
+                                        />
+                                        <p className="text-white/30 text-[10px] mt-1 text-center">Minutes</p>
+                                    </div>
+                                </div>
                             </div>
                             {saveError && <p className="text-red-400 text-xs">{saveError}</p>}
                             <button
