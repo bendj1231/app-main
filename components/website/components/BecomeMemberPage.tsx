@@ -131,8 +131,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
                     <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
                 </div>
-                <div className="relative z-[300]">
-                    <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
+                <div className="relative z-[300] flex justify-end p-4">
+                    <button
+                        onClick={() => onNavigate('home')}
+                        className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white/60 hover:text-white text-xs font-semibold tracking-wide backdrop-blur-sm transition-all"
+                    >
+                        ← Cancel Account Creation
+                    </button>
                 </div>
                 <div className="relative z-10 flex-1 flex items-center justify-center px-4">
                     <div className="w-full max-w-md">
