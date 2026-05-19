@@ -1327,7 +1327,7 @@
 
 **Section 1ay Total: 19 operations = $1,881/year**
 
-| 923 | Instrument Student — Instrument Training | Training Aircraft | $99/year | $99 |
+atc| 923 | Instrument Student — Instrument Training | Training Aircraft | $99/year | $99 |
 | 924 | Multi-Engine Student — Multi Training | Multi-Engine Aircraft | $99/year | $99 |
 | 925 | Commercial Student — Commercial Training | Training Aircraft | $99/year | $99 |
 | 926 | CFI Student — Instructor Training | Training Aircraft | $99/year | $99 |
