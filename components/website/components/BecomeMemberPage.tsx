@@ -190,6 +190,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             >
                                 {saving ? 'Saving...' : 'Complete Profile →'}
                             </button>
+                            <div className="flex items-center justify-center gap-2 pt-1">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-green-400 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <span className="text-green-400 text-[10px] font-semibold tracking-wide">Secure Connection</span>
+                                <span className="text-white/20 text-[10px]">·</span>
+                                <span className="text-white/40 text-[10px]">Powered by</span>
+                                <span className="text-white/70 text-[10px] font-bold tracking-wide">Auth0</span>
+                            </div>
                             <p className="text-white/50 text-[10px] text-center leading-relaxed pt-1">
                                 Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
                                 <button onClick={() => onNavigate('terms-of-service')} className="underline text-white/60 hover:text-white transition-colors">Terms of Service</button>.
