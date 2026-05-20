@@ -5,9 +5,9 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { TopNavbar } from './TopNavbar';
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
+import { DataControllerAgreementModal } from './DataControllerAgreementModal';
 import { supabase } from '../../../src/lib/supabase';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
-import { DataControllerAgreementModal } from './DataControllerAgreementModal';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
@@ -176,6 +176,7 @@ const OCCUPATIONS = [
     'First Officer',
     'Captain',
     'Cadet',
+    'Fast Track Pilot Program',
     'Other',
 ];
 
@@ -196,6 +197,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [nationality, setNationality] = useState('');
     const [aircraftTypes, setAircraftTypes] = useState<string[]>([]);
     const [ratings, setRatings] = useState<string[]>([]);
+    const [issuingAuthority, setIssuingAuthority] = useState('');
+    const [aircraftCategory, setAircraftCategory] = useState('');
+    const [typeRatings, setTypeRatings] = useState<string[]>([]);
+    const [typeRatingInput, setTypeRatingInput] = useState('');
+    const [showMoreClasses, setShowMoreClasses] = useState(false);
+    const [showMoreCategories, setShowMoreCategories] = useState(false);
+    const [showAircraftSection, setShowAircraftSection] = useState(false);
+    const [showRatingsSection, setShowRatingsSection] = useState(false);
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState('');
     const [showLogbookModal, setShowLogbookModal] = useState(false);
@@ -208,6 +217,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [walletConnected, setWalletConnected] = useState(false);
     const [activeInstrument, setActiveInstrument] = useState(1);
     const [showWalletFirst, setShowWalletFirst] = useState(false);
+    const [walletStorageChoice, setWalletStorageChoice] = useState<string[]>([]);
+    const [showWalletStorage, setShowWalletStorage] = useState(false);
 
     const CREDENTIAL_WALLETS = [
         { id: 'walt', name: 'walt.id Wallet', logo: '🔐', desc: 'DID · W3C VC · OID4VCI · open-source', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `${import.meta.env.VITE_WALT_WALLET_URL}?offer=${encodeURIComponent(url)}` },
@@ -345,11 +356,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setSelectedProvider(mfbProvider);
             setProviderConnected(true);
 
-            // If returning from logbook OAuth, unlock Logbook (4) and reveal next card (5)
+            // If returning from logbook OAuth, land on Wallet step (4)
             if (logbookSynced) {
-                setActiveInstrument(5);
-                // Flight data ready - user can choose to create wallet credential
-                console.log('Flight data synced, ready for wallet credential creation');
+                setActiveInstrument(4);
             }
 
             const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
@@ -442,17 +451,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     if (isSetup && (isAuthenticated || authTimedOut || (!isLoading && logbookSynced))) {
         return (
             <>
-            <div className="relative flex flex-col" style={{ height: '100vh' }}>
-                <div className="fixed inset-0 z-0 overflow-hidden">
-                    {enableShader ? (
-                        <MeshGradient className="w-full h-full" colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]} speed={0.22} />
-                    ) : (
-                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
-                    <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
-                </div>
-                <div className="relative z-[300] flex items-center justify-between px-6 py-4 border-b border-white/10 backdrop-blur-sm bg-white/5">
+            <div style={{ minHeight: '100vh', background: '#0c1120', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: '#0c1120' }}>
                     <h1 className="text-base font-bold tracking-tight">
                         <span className="text-white">PILOT</span><span className="text-red-400">RECOGNITION</span>
                     </h1>
@@ -463,209 +463,107 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         ← Cancel
                     </button>
                 </div>
-                <div className="flex-1 flex flex-col items-center px-6 py-10" style={{ overflowY: 'auto', justifyContent: 'flex-start' }}>
-                    <div className="w-full" style={{ maxWidth: '1600px' }}>
+                <div style={{ flex: 1, overflowY: 'auto', padding: '48px 24px 64px' }}>
+                    <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
                         {/* Header */}
-                        <div className="text-center mb-5">
-                            <p className="text-red-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-1">Account Created</p>
-                            <h2 className="text-2xl font-bold text-white mb-0.5 tracking-tight">Welcome aboard</h2>
-                            <p className="text-white/50 text-xs">Complete your pilot profile to get started</p>
+                        <div style={{ marginBottom: '40px' }}>
+                            <p style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>Account Created</p>
+                            <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 8px 0' }}>Complete your pilot profile</h2>
+                            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>6 steps — takes about 2 minutes</p>
                         </div>
 
                         <style>{`
-                            @keyframes cockpitPopUp {
-                                0%   { opacity: 0; transform: scale(0.92) translateY(20px); }
-                                100% { opacity: 1; transform: scale(1) translateY(0); }
+                            @keyframes stepIn {
+                                0%   { opacity: 0; transform: translateY(16px); }
+                                100% { opacity: 1; transform: translateY(0); }
                             }
                             @keyframes dotPulse {
                                 0%, 100% { opacity: 1; }
                                 50%       { opacity: 0.3; }
                             }
-                            .floating-instrument-card {
+                            .step-card {
                                 background: #ffffff;
                                 border: 1px solid #e2e8f0;
                                 border-radius: 16px;
-                                padding: 28px;
-                                box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+                                padding: 28px 32px;
                                 display: flex;
                                 flex-direction: column;
-                                gap: 18px;
+                                gap: 16px;
                                 position: relative;
-                                opacity: 0;
-                                transform: scale(0.92) translateY(20px);
-                                animation: cockpitPopUp 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
-                                transition: border-color 0.3s, box-shadow 0.3s;
+                                animation: stepIn 0.35s cubic-bezier(0.16,1,0.3,1) forwards;
                             }
-                            .floating-instrument-card:nth-child(1) { animation-delay: 0.10s; }
-                            .floating-instrument-card:nth-child(2) { animation-delay: 0.25s; }
-                            .floating-instrument-card:nth-child(3) { animation-delay: 0.40s; }
-                            .floating-instrument-card:nth-child(4) { animation-delay: 0.55s; }
-                            .floating-instrument-card:nth-child(5) { animation-delay: 0.70s; }
-                            .floating-instrument-card:nth-child(6) { animation-delay: 0.85s; }
-                            .floating-instrument-card.fic-locked {
-                                visibility: hidden;
-                                pointer-events: none;
-                            }
-                            .floating-instrument-card.fic-active {
-                                border-color: #e2e8f0;
+                            .step-card-active {
                                 border-color: #dc2626;
-                                box-shadow: 0 4px 24px rgba(0,0,0,0.1), 0 0 0 2px #dc2626;
+                                box-shadow: 0 0 0 2px #dc2626, 0 8px 32px rgba(0,0,0,0.12);
                             }
-                            .floating-instrument-card.fic-done {
-                                border-color: rgba(255,255,255,0.15);
-                                box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-                                background: #0a1628;
-                            }
-                            .floating-instrument-card.fic-done .fic-title {
-                                color: #ffffff !important;
-                            }
-                            .floating-instrument-card.fic-done .fic-input {
-                                background: #0f1f3d;
-                                border-color: #1e3a5f;
-                                color: #ffffff;
-                            }
-                            .floating-instrument-card.fic-done .fic-input::placeholder {
-                                color: #666666;
-                            }
-                            .floating-instrument-card.fic-done .fic-subtext {
-                                color: rgba(255,255,255,0.4);
-                            }
-                            .fic-avionics-tag {
-                                font-size: 10px;
-                                font-weight: 600;
-                                letter-spacing: 0.12em;
-                                text-transform: uppercase;
-                                color: #94a3b8;
+                            .step-card-done {
+                                background: #111827;
+                                border-color: rgba(255,255,255,0.08);
                             }
                             .fic-title {
-                                font-size: 24px;
+                                font-size: 22px;
                                 font-weight: 700;
                                 color: #0f172a;
                                 letter-spacing: -0.02em;
                                 line-height: 1.1;
-                                margin-top: 2px;
+                                margin: 0;
                             }
-                            .fic-title-red {
-                                color: #dc2626 !important;
-                            }
+                            .fic-title-red { color: #dc2626 !important; }
+                            .step-card-done .fic-title { color: #ffffff !important; }
                             .fic-input, .fic-select {
                                 width: 100%;
-                                background: #ffffff;
-                                border: 1px solid #cbd5e1;
-                                border-radius: 8px;
+                                background: #f8fafc;
+                                border: 1px solid #e2e8f0;
+                                border-radius: 10px;
                                 padding: 11px 14px;
                                 color: #0f172a;
-                                font-size: 15px;
+                                font-size: 14px;
                                 font-weight: 500;
                                 outline: none;
                                 transition: border-color 0.2s, box-shadow 0.2s;
                                 box-sizing: border-box;
                             }
                             .fic-input:focus, .fic-select:focus {
-                                border-color: #0f172a;
-                                box-shadow: 0 0 0 3px rgba(15,23,42,0.08);
+                                border-color: #334155;
+                                box-shadow: 0 0 0 3px rgba(51,65,85,0.08);
+                                background: #ffffff;
                             }
                             .fic-input::placeholder { color: #94a3b8; }
                             .fic-subtext {
-                                font-size: 11px;
+                                font-size: 12px;
                                 color: #94a3b8;
-                                letter-spacing: 0.02em;
+                                letter-spacing: 0.01em;
                             }
                             .fic-status-dot {
                                 position: absolute;
-                                top: 16px;
-                                right: 16px;
+                                top: 18px;
+                                right: 18px;
                                 width: 8px;
                                 height: 8px;
                                 border-radius: 50%;
                                 transition: background 0.4s, box-shadow 0.4s;
                             }
                             .fic-dot-idle   { background: #cbd5e1; }
-                            .fic-dot-active { background: #94a3b8; box-shadow: 0 0 0 3px rgba(148,163,184,0.2); animation: dotPulse 1.4s ease-in-out infinite; }
+                            .fic-dot-active { background: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.2); animation: dotPulse 1.4s ease-in-out infinite; }
                             .fic-dot-done   { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
                             .fic-dot-warn   { background: #f59e0b; animation: dotPulse 0.85s ease-in-out infinite; }
                             .fic-dot-commit { background: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.2); animation: dotPulse 1s ease-in-out infinite; }
                         `}</style>
 
-                        {/* Panel ID strip */}
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', padding: '0 2px' }}>
-                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>Profile Setup · 6 Instruments</span>
-                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)' }}>did:web:pilotrecognition.com</span>
+                        {/* Progress strip */}
+                        <div style={{ display: 'flex', gap: '6px', marginBottom: '32px' }}>
+                            {[1,2,3,4,5,6].map(n => (
+                                <div key={n} style={{ flex: 1, height: '3px', borderRadius: '9999px', background: activeInstrument > n ? '#22c55e' : activeInstrument === n ? '#dc2626' : 'rgba(255,255,255,0.1)', transition: 'background 0.4s' }} />
+                            ))}
                         </div>
 
-                        {/* Step context text — above the grid, always visible */}
-                        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                            {activeInstrument === 1 && (
-                                <>
-                                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 8px 0' }}>Step 1 of 6</p>
-                                    <p style={{ fontSize: '22px', fontWeight: 300, color: 'rgba(255,255,255,0.92)', lineHeight: 1.35, letterSpacing: '-0.02em', margin: '0 0 6px 0' }}>
-                                        Your first step to getting{' '}
-                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>recognition</span>
-                                    </p>
-                                    <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, margin: 0 }}>
-                                        Enter your name and callsign. Your callsign will be visible to all pilots on the platform.
-                                    </p>
-                                </>
-                            )}
-                        </div>
+                        {/* Steps — vertical flow */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-                        {/* Grid */}
-                        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 320px)', gap: '20px', alignItems: 'start', width: '1000px' }}>
-
-                            {/* ── TOP-LEFT: Identity ── */}
-                            <div style={{ position: 'relative' }}>
-                            {activeInstrument === 1 && (
-                                <div style={{
-                                    position: 'absolute',
-                                    left: 'calc(100% + 32px)',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    width: '300px',
-                                    pointerEvents: 'none',
-                                }}>
-                                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 12px 0' }}>Step 1 of 6</p>
-                                    <p style={{ fontSize: '32px', fontWeight: 300, color: 'rgba(255,255,255,0.95)', lineHeight: 1.25, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
-                                        Your first step to getting{' '}
-                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>recognition</span>
-                                    </p>
-                                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65, margin: 0 }}>
-                                        Enter your name and callsign to begin.
-                                    </p>
-                                </div>
-                            )}
-                            {/* Circular done badge */}
-                            {activeInstrument > 1 && (
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px 0' }}>
-                                    <div style={{ position: 'relative', width: '180px', height: '180px' }}>
-                                        <svg width="180" height="180" viewBox="0 0 180 180" style={{ position: 'absolute', top: 0, left: 0 }}>
-                                            <circle cx="90" cy="90" r="82" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="3" />
-                                            <circle cx="90" cy="90" r="82" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="3"
-                                                strokeDasharray={`${2 * Math.PI * 82}`}
-                                                strokeDashoffset="0"
-                                                strokeLinecap="round"
-                                                transform="rotate(-90 90 90)"
-                                                style={{ transition: 'stroke-dashoffset 1s ease' }}
-                                            />
-                                            {/* Inner tick marks like an analog dial */}
-                                            {Array.from({ length: 12 }).map((_, i) => {
-                                                const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
-                                                const x1 = 90 + 72 * Math.cos(angle);
-                                                const y1 = 90 + 72 * Math.sin(angle);
-                                                const x2 = 90 + 78 * Math.cos(angle);
-                                                const y2 = 90 + 78 * Math.sin(angle);
-                                                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />;
-                                            })}
-                                        </svg>
-                                        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '3px' }}>
-                                            <span style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Instrument 1</span>
-                                            <span style={{ fontSize: '17px', fontWeight: 700, color: 'rgba(255,255,255,0.95)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Identity</span>
-                                            <span style={{ fontSize: '10px', fontWeight: 600, color: '#22c55e', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '2px' }}>● Completion</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            <div className={`floating-instrument-card ${activeInstrument === 1 ? 'fic-active' : activeInstrument > 1 ? 'fic-done' : 'fic-locked'}`}>
+                            {/* ── STEP 1: Identity ── */}
+                            {activeInstrument === 1 && (<>
+                            <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
+                            <div className="step-card step-card-active" style={{ flex: 1 }}>
                                 <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
                                 <div>
                                     <div className="fic-title fic-title-red">Identity</div>
@@ -766,44 +664,40 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                 </div>
                             </div>
-                            </div>{/* end position:relative wrapper */}
+                            {/* Step 1 right-side text */}
+                            <div style={{ width: '260px', flexShrink: 0, paddingTop: '8px' }}>
+                                <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>Step 1 of 6</p>
+                                <p style={{ fontSize: '34px', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: 1.2, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
+                                    Your first step to getting{' '}
+                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>recognition</span>
+                                </p>
+                                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: 0 }}>
+                                    Enter your name and callsign to begin.
+                                </p>
+                            </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
+                                <button type="button" disabled style={{ flex: 1, background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px', padding: '10px 0', cursor: 'not-allowed', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.02em' }}>← Back</button>
+                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 2))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
+                            </div>
+                            </>)}{/* end step-1 */}
 
-                            {/* ── TOP-MIDDLE: Classification ── */}
-                            <div style={{ position: 'relative' }}>
-                            {activeInstrument === 2 && (
-                                <div style={{
-                                    position: 'absolute',
-                                    left: 'calc(100% + 32px)',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    width: '260px',
-                                    pointerEvents: 'none',
-                                }}>
-                                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 12px 0' }}>ATC Calling...</p>
-                                    <p style={{ fontSize: '28px', fontWeight: 300, color: 'rgba(255,255,255,0.95)', lineHeight: 1.25, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
-                                        Identify yourself,{' '}
-                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>pilot</span>
-                                        {' '}— and your{' '}
-                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
-                                    </p>
-                                    <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: 0 }}>
-                                        Select your licence type and aircraft category to unlock your pathway access level.
-                                    </p>
-                                </div>
-                            )}
-                            <div className={`floating-instrument-card ${activeInstrument === 2 ? 'fic-active' : activeInstrument > 2 ? 'fic-done' : 'fic-locked'}`}>
+                            {/* ── STEP 2: Classification ── */}
+                            {activeInstrument === 2 && (<>
+                            <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
+                            <div className="step-card step-card-active" style={{ flex: 1, minWidth: '480px' }}>
                                 <span className={`fic-status-dot ${activeInstrument > 2 ? 'fic-dot-done' : activeInstrument === 2 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div>
-                                    <div className="fic-title">Classification</div>
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <div className="fic-title">Classification</div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    {/* ── LICENCE DETAILS ── */}
+                                    <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9' }}>Licence Details</div>
                                     {/* Pilot licence */}
                                     <div>
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Current Pilot Licence</div>
                                         <select
                                             className="fic-select"
                                             value={occupation}
-                                            onChange={e => { setOccupation(e.target.value); if (e.target.value && aircraftTypes.length > 0) setActiveInstrument(i => Math.max(i, 3)); }}
+                                            onChange={e => setOccupation(e.target.value)}
                                             disabled={activeInstrument < 2}
                                             style={{ colorScheme: 'light' }}
                                         >
@@ -821,331 +715,429 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             </div>
                                         )}
                                     </div>
-                                    {/* Aircraft type */}
+                                    {/* Issuing Authority */}
                                     <div>
-                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Aircraft Actively Flying <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(select one or both)</span></div>
-                                        <div style={{ display: 'flex', gap: '8px' }}>
-                                            {['Fixed Wing', 'Rotary'].map(type => {
-                                                const selected = aircraftTypes.includes(type);
-                                                return (
-                                                    <button
-                                                        key={type}
-                                                        type="button"
-                                                        disabled={activeInstrument < 2}
-                                                        onClick={() => {
-                                                            const next = selected ? aircraftTypes.filter(t => t !== type) : [...aircraftTypes, type];
-                                                            setAircraftTypes(next);
-                                                            if (occupation && next.length > 0) setActiveInstrument(i => Math.max(i, 3));
-                                                        }}
-                                                        style={{
-                                                            flex: 1, padding: '10px 8px',
-                                                            background: selected ? '#0f172a' : '#f8fafc',
-                                                            border: `1px solid ${selected ? '#0f172a' : '#cbd5e1'}`,
-                                                            borderRadius: '8px',
-                                                            color: selected ? '#fff' : '#475569',
-                                                            fontSize: '13px', fontWeight: 600,
-                                                            cursor: activeInstrument < 2 ? 'not-allowed' : 'pointer',
-                                                            transition: 'all 0.2s',
-                                                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
-                                                        }}
-                                                    >
-                                                        {type}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Issuing Authority / State of Issue</div>
+                                        <select
+                                            className="fic-select"
+                                            value={issuingAuthority}
+                                            onChange={e => setIssuingAuthority(e.target.value)}
+                                            disabled={activeInstrument < 2}
+                                            style={{ colorScheme: 'light' }}
+                                        >
+                                            <option value="" disabled>Select issuing authority...</option>
+                                            {['CAAP (Philippines)', 'FAA (USA)', 'EASA (Europe)', 'GCAA (UAE)', 'CASA (Australia)', 'CAA (UK)', 'DGCA (India)', 'TCCA (Canada)', 'SACAA (South Africa)', 'JCAB (Japan)', 'CAAS (Singapore)', 'CAAT (Thailand)', 'DGAC (France)', 'LBA (Germany)', 'ENAC (Italy)', 'Other'].map(a => <option key={a} value={a}>{a}</option>)}
+                                        </select>
                                     </div>
-                                    {/* Core Ratings */}
-                                    <div>
-                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Operational Ratings <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(select all that apply)</span></div>
-                                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                            {['Instrument Rating (IR)', 'Multi-Engine (ME)'].map(rating => {
-                                                const selected = ratings.includes(rating);
-                                                return (
-                                                    <button
-                                                        key={rating}
-                                                        type="button"
-                                                        disabled={activeInstrument < 2}
-                                                        onClick={() => setRatings(prev => selected ? prev.filter(r => r !== rating) : [...prev, rating])}
-                                                        style={{
-                                                            padding: '7px 12px',
-                                                            background: selected ? '#dc2626' : '#f8fafc',
-                                                            border: `1px solid ${selected ? '#dc2626' : '#cbd5e1'}`,
-                                                            borderRadius: '20px',
-                                                            color: selected ? '#fff' : '#475569',
-                                                            fontSize: '12px', fontWeight: 600,
-                                                            cursor: activeInstrument < 2 ? 'not-allowed' : 'pointer',
-                                                            transition: 'all 0.2s',
-                                                            whiteSpace: 'nowrap',
-                                                        }}
-                                                    >
-                                                        {rating}
-                                                    </button>
-                                                );
-                                            })}
+                                    {/* ── AIRCRAFT & PRIVILEGES — progressive disclosure ── */}
+                                    {occupation && issuingAuthority && (
+                                        <>
+                                        <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9', marginTop: '4px' }}>Aircraft &amp; Privileges</div>
+
+                                        {/* Aircraft Class / Type — collapsible */}
+                                        {(() => {
+                                            const PRIMARY = ['Single Engine Land (SEL)', 'Multi-Engine Land (MEL)', 'Rotorcraft — Helicopter', 'Multi-Engine Sea (MES)'];
+                                            const EXTENDED = ['Single Engine Sea (SES)', 'Rotorcraft — Gyroplane', 'Glider', 'Powered Lift', 'Light Sport (LSA)', 'eVTOL / Powered Lift', 'Lighter-Than-Air', 'Weight-Shift Control', 'Powered Parachute', 'Tilt-Rotor', 'Amphibian', 'Turboprop', 'Piston', 'Electric / Hybrid', 'UAS / Drone', 'Experimental / Homebuilt'];
+                                            const visible = showMoreClasses ? [...PRIMARY, ...EXTENDED] : PRIMARY;
+                                            const hasSelection = aircraftTypes.length > 0;
+                                            return (
+                                                <div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: showAircraftSection ? '8px' : '0' }}>
+                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Aircraft Class / Type <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(select all that apply)</span></div>
+                                                        <button type="button" onClick={() => setShowAircraftSection(p => !p)} style={{ fontSize: '11px', fontWeight: 600, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', padding: '0 0 0 8px', whiteSpace: 'nowrap' }}>
+                                                            {showAircraftSection ? '↑ Collapse' : hasSelection ? `${aircraftTypes[0] === '__none__' ? 'None' : aircraftTypes.length + ' selected'} ↓` : 'View ↓'}
+                                                        </button>
+                                                    </div>
+                                                    {showAircraftSection && <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                        {(occupation === 'Student Pilot' || occupation === 'Cadet') && (() => {
+                                                            const isNone = aircraftTypes.includes('__none__');
+                                                            return (
+                                                                <button key="none" type="button"
+                                                                    onClick={() => setAircraftTypes(isNone ? [] : ['__none__'])}
+                                                                    style={{ padding: '6px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                                                                    None required{isNone && <span style={{ opacity: 0.55 }}>×</span>}
+                                                                </button>
+                                                            );
+                                                        })()}
+                                                        {!aircraftTypes.includes('__none__') && visible.map(cls => {
+                                                            const isSel = aircraftTypes.includes(cls);
+                                                            return (
+                                                                <button key={cls} type="button"
+                                                                    onClick={() => setAircraftTypes(prev => isSel ? prev.filter(t => t !== cls) : [...prev, cls])}
+                                                                    style={{ padding: '6px 12px', background: isSel ? '#0f172a' : '#f8fafc', border: `1px solid ${isSel ? '#0f172a' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                                                                    {cls}{isSel && <span style={{ opacity: 0.55 }}>×</span>}
+                                                                </button>
+                                                            );
+                                                        })}
+                                                        {!aircraftTypes.includes('__none__') && (
+                                                        <button type="button" onClick={() => setShowMoreClasses(p => !p)}
+                                                            style={{ padding: '6px 12px', background: 'transparent', border: '1px dashed #cbd5e1', borderRadius: '20px', color: '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                                                            {showMoreClasses ? '↑ Show less' : `+ ${EXTENDED.length} more classes`}
+                                                        </button>
+                                                        )}
+                                                    </div>}
+                                                </div>
+                                            );
+                                        })()}
+
+                                        {/* Operational Ratings — collapsible */}
+                                        {(() => {
+                                            const OPS_RATINGS = ['Instrument Rating (IR)', 'Night Rating', 'Seaplane Rating', 'Aerobatic Rating', 'Flight Instructor (CFI)'];
+                                            const hasRatings = ratings.length > 0;
+                                            return (
+                                                <div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: showRatingsSection ? '8px' : '0' }}>
+                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Operational Ratings <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(select all that apply)</span></div>
+                                                        <button type="button" onClick={() => setShowRatingsSection(p => !p)} style={{ fontSize: '11px', fontWeight: 600, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', padding: '0 0 0 8px', whiteSpace: 'nowrap' }}>
+                                                            {showRatingsSection ? '↑ Collapse' : hasRatings ? `${ratings[0] === '__none__' ? 'None' : ratings.length + ' selected'} ↓` : 'View ↓'}
+                                                        </button>
+                                                    </div>
+                                                    {showRatingsSection && <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                        {(occupation === 'Student Pilot' || occupation === 'Cadet') && (() => {
+                                                            const isNone = ratings.includes('__none__');
+                                                            return (
+                                                                <button key="none" type="button"
+                                                                    onClick={() => setRatings(isNone ? [] : ['__none__'])}
+                                                                    style={{ padding: '6px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                                                                    None required{isNone && <span style={{ opacity: 0.55 }}>×</span>}
+                                                                </button>
+                                                            );
+                                                        })()}
+                                                        {!ratings.includes('__none__') && OPS_RATINGS.map(rating => {
+                                                            const isSel = ratings.includes(rating);
+                                                            return (
+                                                                <button key={rating} type="button"
+                                                                    onClick={() => setRatings(prev => isSel ? prev.filter(r => r !== rating) : [...prev, rating])}
+                                                                    style={{ padding: '6px 12px', background: isSel ? '#dc2626' : '#f8fafc', border: `1px solid ${isSel ? '#dc2626' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                                                                    {rating}{isSel && <span style={{ opacity: 0.55 }}>×</span>}
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>}
+                                                </div>
+                                            );
+                                        })()}
+                                        {/* Type Ratings — conditional for CPL/ATPL, inside progressive disclosure */}
+                                        {['Commercial Pilot (CPL)', 'Airline Pilot (ATPL)', 'First Officer', 'Captain', 'Flight Instructor (CFI)'].includes(occupation) && (
+                                        <div>
+                                            <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
+                                                Type Ratings Held <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(optional)</span>
+                                            </div>
+                                            {typeRatings.length > 0 && (
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '6px' }}>
+                                                    {typeRatings.map(tr => (
+                                                        <span key={tr} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#0f172a', color: '#fff', borderRadius: '20px', padding: '4px 10px', fontSize: '11px', fontWeight: 600 }}>
+                                                            {tr}
+                                                            <button type="button" onClick={() => setTypeRatings(prev => prev.filter(r => r !== tr))} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', padding: '0', fontSize: '12px', lineHeight: 1 }}>×</button>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                            <div style={{ display: 'flex', gap: '6px' }}>
+                                                <input
+                                                    className="fic-input"
+                                                    type="text"
+                                                    value={typeRatingInput}
+                                                    onChange={e => setTypeRatingInput(e.target.value)}
+                                                    onKeyDown={e => {
+                                                        if ((e.key === 'Enter' || e.key === ',') && typeRatingInput.trim()) {
+                                                            e.preventDefault();
+                                                            const val = typeRatingInput.trim().toUpperCase();
+                                                            if (!typeRatings.includes(val)) setTypeRatings(prev => [...prev, val]);
+                                                            setTypeRatingInput('');
+                                                        }
+                                                    }}
+                                                    placeholder="e.g. A320, B737, ATR72 — press Enter"
+                                                    disabled={activeInstrument < 2}
+                                                    style={{ flex: 1 }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const val = typeRatingInput.trim().toUpperCase();
+                                                        if (val && !typeRatings.includes(val)) { setTypeRatings(prev => [...prev, val]); setTypeRatingInput(''); }
+                                                    }}
+                                                    disabled={!typeRatingInput.trim()}
+                                                    style={{ padding: '8px 12px', background: '#0f172a', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: 600, cursor: typeRatingInput.trim() ? 'pointer' : 'not-allowed', opacity: typeRatingInput.trim() ? 1 : 0.4 }}
+                                                >+ Add</button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
+                                        </>
+                                    )}
                                 </div>
+                                {/* Confirm button */}
+                                {(() => {
+                                    const ok = !!occupation && !!issuingAuthority;
+                                    return (
+                                        <button
+                                            type="button"
+                                            onClick={() => { if (ok) setActiveInstrument(i => Math.max(i, 3)); }}
+                                            disabled={!ok}
+                                            style={{
+                                                width: '100%', padding: '11px 16px',
+                                                background: ok ? '#0f172a' : '#f1f5f9',
+                                                border: 'none', borderRadius: '8px',
+                                                color: ok ? '#ffffff' : '#94a3b8',
+                                                fontSize: '14px', fontWeight: 600,
+                                                cursor: ok ? 'pointer' : 'not-allowed',
+                                                transition: 'all 0.2s',
+                                            }}
+                                            onMouseEnter={e => { if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#1e293b'; }}
+                                            onMouseLeave={e => { if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#0f172a'; }}
+                                        >
+                                            {activeInstrument > 2 ? '✓ Classification Confirmed' : 'Confirm Classification →'}
+                                        </button>
+                                    );
+                                })()}
                                 {/* Security stamp */}
                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', padding: '8px 12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                                     <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
                                     <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Licence tier and operational capabilities are <strong>client-side encrypted</strong> before cloud routing under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
                                 </div>
+                                <button type="button" onClick={() => setActiveInstrument(1)} style={{ alignSelf: 'flex-start', background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.13)', borderRadius: '8px', padding: '6px 14px', cursor: 'pointer', fontSize: '12px', fontWeight: 500, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.02em', transition: 'background 0.2s, color 0.2s' }}>← Back</button>
                             </div>
-                            </div>{/* end position:relative wrapper */}
+                            {/* Step 2 right-side text */}
+                            {activeInstrument === 2 && (
+                                <div style={{ width: '260px', flexShrink: 0, paddingTop: '8px' }}>
+                                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>Step 2 of 6</p>
+                                    <p style={{ fontSize: '30px', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: 1.2, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
+                                        Identify yourself,{' '}
+                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>pilot</span>
+                                    </p>
+                                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 20px 0' }}>
+                                        Select your licence type and aircraft category to unlock your pathway access level.
+                                    </p>
+                                    {occupation && (() => {
+                                        const msg: Record<string, { headline: string; sub: string }> = {
+                                            'Student Pilot':              { headline: 'Able to submit interest to cadet & flight school pathways.', sub: 'Aimed towards active students and enrolled trainees building their first 50 hours.' },
+                                            'Cadet':                      { headline: 'Able to submit interest to ab-initio and cadet programme pathways.', sub: 'Aimed towards cadets currently within a structured ab-initio programme.' },
+                                            'Private Pilot (PPL)':        { headline: 'Able to submit interest to regional operator and PPL-aimed pathways.', sub: 'Aimed towards PPL holders building hours towards CPL conversion or recreational endorsements.' },
+                                            'Commercial Pilot (CPL)':     { headline: 'Able to submit interest to all airline, cargo, and operator gates.', sub: 'Aimed towards CPL holders actively seeking first-officer or type-rating opportunities.' },
+                                            'Airline Transport (ATPL)':   { headline: 'Able to submit interest to all airline captain and senior operator pathways.', sub: 'Aimed towards ATPL holders pursuing command upgrades or international transitions.' },
+                                            'Flight Instructor (CFI/FI)': { headline: 'Able to submit interest to ATO instructor and check-airman pathways.', sub: 'Aimed towards certified instructors seeking ATO, simulator, or senior examiner roles.' },
+                                        };
+                                        const m = msg[occupation];
+                                        if (!m) return null;
+                                        return (
+                                            <>
+                                                <p style={{ fontSize: '14px', fontWeight: 700, color: '#ef4444', lineHeight: 1.4, margin: '0 0 8px 0' }}>{m.headline}</p>
+                                                <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, margin: 0 }}>{m.sub}</p>
+                                            </>
+                                        );
+                                    })()}
+                                </div>
+                            )}
+                            </div>
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
+                                <button type="button" onClick={() => setActiveInstrument(1)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
+                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 3))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
+                            </div>
+                            </>)}{/* end step-2 row */}
 
-                            {/* ── TOP-RIGHT: Flight Time ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 3 ? 'fic-active' : activeInstrument > 3 ? 'fic-done' : 'fic-locked'}`}>
+                            {/* ── STEP 3: Flight Time ── */}
+                            {activeInstrument === 3 && (<>
+                            <div className="step-card step-card-active">
                                 <span className={`fic-status-dot ${activeInstrument > 3 ? 'fic-dot-done' : activeInstrument === 3 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div><div className="fic-title">Flight Time</div></div>
+                                <div className="fic-title">Flight Time</div>
                                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => { setHoursWhole(e.target.value); if (e.target.value !== '') setActiveInstrument(i => Math.max(i, 4)); }} placeholder="250" disabled={activeInstrument < 3} />
+                                    <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => setHoursWhole(e.target.value)} placeholder="250" disabled={activeInstrument < 3} />
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>HRS</span>
                                     <input className="fic-input" type="number" min="0" max="59" value={hoursMinutes} onChange={e => setHoursMinutes(e.target.value)} placeholder="00" disabled={activeInstrument < 3} style={{ maxWidth: '70px', textAlign: 'center' }} />
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>MIN</span>
                                 </div>
-                                <span className="fic-subtext">Total logged flight time</span>
+                                {/* Claim disclaimer */}
+                                <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '8px', padding: '8px 10px', display: 'flex', gap: '7px', alignItems: 'flex-start' }}>
+                                    <span style={{ fontSize: '13px', flexShrink: 0 }}>⚠️</span>
+                                    <span style={{ fontSize: '11px', color: '#92400e', lineHeight: 1.5 }}>
+                                        Total hours entered here are a <strong>self-declared claim</strong> and are not verified. Hours will remain unverified until audit under <strong>Recognition+</strong>.
+                                    </span>
+                                </div>
+                                {/* Logbook provider — inline */}
+                                <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Logbook Provider</div>
+                                    <p style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.55, margin: 0 }}>
+                                        Connect your digital logbook <em>or</em> use the default <strong>PilotRecognition Credential Wallet</strong> (walt.id) to record your hours — cryptographically secured and stored across your chosen infrastructure.
+                                    </p>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowLogbookModal(true)}
+                                            disabled={activeInstrument < 3}
+                                            style={{ flex: 1, padding: '9px 8px', background: providerConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: activeInstrument < 3 ? 'not-allowed' : 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
+                                            {providerConnected ? '✓ Connected' : 'Digital Logbook'}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setShowWalletFirst(true); setShowWalletStorage(p => !p); }}
+                                            disabled={activeInstrument < 3}
+                                            style={{ flex: 1, padding: '9px 8px', background: showWalletFirst ? '#f0fdf4' : '#f8fafc', border: `1px solid ${showWalletFirst ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: showWalletFirst ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: activeInstrument < 3 ? 'not-allowed' : 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
+                                            {showWalletFirst ? '✓ walt.id' : 'Direct to Wallet'}
+                                        </button>
+                                    </div>
+                                    {/* walt.id storage backend selector */}
+                                    {showWalletStorage && (
+                                        <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                <span style={{ fontSize: '15px' }}>🔐</span>
+                                                <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>walt.id</span>
+                                                <span style={{ fontSize: '10px', color: '#64748b' }}>— hosted on PilotRecognition infrastructure</span>
+                                            </div>
+                                            <p style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.55, margin: 0 }}>
+                                                Your credential will be cryptographically signed and stored across the infrastructure you choose below. <strong>pilotrecognition.com recommends selecting Both</strong> — multi-engine redundancy means your credential remains accessible even when one server is down, preventing outages from blocking wallet access.
+                                            </p>
+                                            <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Choose Storage Backend</div>
+                                            {[
+                                                { id: 'supabase', label: 'Supabase', desc: 'PostgreSQL · RLS encrypted', icon: '🟢' },
+                                                { id: 'firebase', label: 'Firebase', desc: 'Firestore · Google Cloud', icon: '🔶' },
+                                                { id: 'both', label: 'Both', desc: 'Multi-engine · Recommended ★', icon: '⚡', recommended: true },
+                                            ].map(opt => {
+                                                const isActive = opt.id === 'both' ? walletStorageChoice.length === 0 && showWalletFirst : walletStorageChoice.includes(opt.id);
+                                                return (
+                                                    <button key={opt.id} type="button"
+                                                        onClick={() => {
+                                                            if (opt.id === 'both') { setWalletStorageChoice([]); }
+                                                            else { setWalletStorageChoice([opt.id]); }
+                                                            setShowWalletStorage(false);
+                                                        }}
+                                                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 10px', background: isActive ? '#0f172a' : '#ffffff', border: `1px solid ${isActive ? '#0f172a' : '#e2e8f0'}`, borderRadius: '8px', cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}>
+                                                        <span style={{ fontSize: '14px' }}>{opt.icon}</span>
+                                                        <div style={{ flex: 1 }}>
+                                                            <div style={{ fontSize: '12px', fontWeight: 700, color: isActive ? '#fff' : '#0f172a' }}>{opt.label}</div>
+                                                            <div style={{ fontSize: '10px', color: isActive ? 'rgba(255,255,255,0.6)' : '#64748b' }}>{opt.desc}</div>
+                                                        </div>
+                                                        {isActive && <span style={{ fontSize: '12px', color: '#22c55e' }}>✓</span>}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                    {providerConnected && (
+                                        <button
+                                            type="button"
+                                            onClick={async () => {
+                                                const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+                                                const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
+                                                if (auth0Id && hrs > 0) await issueFlightHoursCredential(hrs, auth0Id);
+                                            }}
+                                            style={{ width: '100%', padding: '8px', background: '#00b4d8', border: '1px solid #00b4d8', borderRadius: '6px', color: 'white', fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
+                                            Create Flight Hours Credential →
+                                        </button>
+                                    )}
+                                    {/* Confirm — only enabled when hours entered AND provider/wallet chosen */}
+                                    {(() => {
+                                        const hoursOk = !!hoursWhole && parseFloat(hoursWhole) >= 0;
+                                        const providerOk = providerConnected || showWalletFirst;
+                                        const ok = hoursOk && providerOk;
+                                        return (
+                                            <button
+                                                type="button"
+                                                disabled={!ok}
+                                                onClick={() => { if (ok) setActiveInstrument(i => Math.max(i, 4)); }}
+                                                style={{ width: '100%', padding: '10px', background: ok ? '#0f172a' : '#f1f5f9', border: 'none', borderRadius: '8px', color: ok ? '#fff' : '#94a3b8', fontSize: '13px', fontWeight: 600, cursor: ok ? 'pointer' : 'not-allowed', transition: 'all 0.2s', marginTop: '4px' }}>
+                                                {ok ? 'Confirm Flight Time →' : 'Select a logbook provider to continue'}
+                                            </button>
+                                        );
+                                    })()}
+                                </div>
                             </div>
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
+                                <button type="button" onClick={() => setActiveInstrument(2)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
+                                {(() => {
+                                    const ok = (selectedProvider !== null || providerConnected);
+                                    return (
+                                        <button type="button" onClick={() => { if (ok) setActiveInstrument(i => Math.max(i, 4)); }} style={{ flex: 1, background: ok ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: `1px solid ${ok ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.07)'}`, borderRadius: '10px', padding: '10px 0', cursor: ok ? 'pointer' : 'not-allowed', fontSize: '13px', fontWeight: 500, color: ok ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.25)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
+                                    );
+                                })()}
+                            </div>
+                            </>)}{/* end step-3 */}
 
-                            {/* ── BOTTOM-LEFT: Pilot Credentials Wallet ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 4 ? 'fic-active' : activeInstrument > 4 ? 'fic-done' : 'fic-locked'}`}>
+                            {/* ── STEP 4: Pilot Credentials Wallet ── */}
+                            {activeInstrument === 4 && (<>
+                            <div className="step-card step-card-active">
                                 <span className={`fic-status-dot ${walletConnected ? 'fic-dot-done' : activeInstrument === 4 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div>
-                                    <div className="fic-title">Pilot Credentials Wallet</div>
-                                </div>
+                                <div className="fic-title">Pilot Credentials Wallet</div>
                                 <button
                                     type="button"
-                                    onClick={() => { 
-    console.log('Wallet button clicked'); 
-    setShowWalletSelector(true); 
-    setActiveInstrument(i => Math.max(i, 5)); 
-}}
+                                    onClick={() => { setShowWalletSelector(true); setActiveInstrument(i => Math.max(i, 5)); }}
                                     disabled={activeInstrument < 4}
-                                    style={{
-                                        width: '100%', padding: '13px 14px',
-                                        background: walletConnected ? '#f0fdf4' : '#f8fafc',
-                                        border: `1px solid ${walletConnected ? '#86efac' : '#cbd5e1'}`,
-                                        borderRadius: '8px', color: walletConnected ? '#16a34a' : '#475569',
-                                        fontSize: '14px', fontWeight: 600, cursor: 'pointer',
-                                        textAlign: 'left', transition: 'all 0.2s'
-                                    }}
+                                    style={{ width: '100%', padding: '14px 16px', background: walletConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${walletConnected ? '#86efac' : '#e2e8f0'}`, borderRadius: '10px', color: walletConnected ? '#16a34a' : '#475569', fontSize: '14px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}
                                 >
-                                    {saving ? 'Saving...' : walletConnected ? 'Complete Profile ✓' : 'Complete Profile →'}
+                                    {walletConnected ? `${selectedWallet} ✓ Connected` : 'Connect Credentials Wallet →'}
                                 </button>
-                                <span className="fic-subtext">Save profile and continue</span>
+                                <span className="fic-subtext">Decentralised identity wallet — cryptographically secured</span>
                             </div>
-
-                            {/* ── BOTTOM-MIDDLE: Logbook ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 5 ? 'fic-active' : activeInstrument > 5 ? 'fic-done' : 'fic-locked'}`}>
-                                <span className={`fic-status-dot ${(providerConnected || showWalletFirst) ? 'fic-dot-done' : activeInstrument === 5 ? 'fic-dot-warn' : 'fic-dot-idle'}`} />
-                                <div>
-                                    <div className="fic-title">Logbook</div>
-                                </div>
-                                <div style={{ display: 'flex', gap: '8px' }}>
-                                    <button
-                                        type="button"
-                                        onClick={() => { setShowLogbookModal(true); setActiveInstrument(i => Math.max(i, 6)); }}
-                                        disabled={activeInstrument < 5}
-                                        style={{
-                                            flex: 1, padding: '10px 8px',
-                                            background: providerConnected ? '#f0fdf4' : '#f8fafc',
-                                            border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`,
-                                            borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569',
-                                            fontSize: '12px', fontWeight: 600, cursor: 'pointer',
-                                            textAlign: 'center', transition: 'all 0.2s'
-                                        }}
-                                    >
-                                        {providerConnected ? '✓ Connected' : 'Digital Logbook'}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => { setShowWalletFirst(true); setActiveInstrument(i => Math.max(i, 6)); }}
-                                        disabled={activeInstrument < 5}
-                                        style={{
-                                            flex: 1, padding: '10px 8px',
-                                            background: showWalletFirst ? '#f0fdf4' : '#f8fafc',
-                                            border: `1px solid ${showWalletFirst ? '#86efac' : '#cbd5e1'}`,
-                                            borderRadius: '8px', color: showWalletFirst ? '#16a34a' : '#475569',
-                                            fontSize: '12px', fontWeight: 600, cursor: 'pointer',
-                                            textAlign: 'center', transition: 'all 0.2s'
-                                        }}
-                                    >
-                                        {showWalletFirst ? '✓ Wallet' : 'Direct to Wallet'}
-                                    </button>
-                                </div>
-                                {providerConnected && (
-                                    <button
-                                        type="button"
-                                        onClick={async () => {
-                                            console.log('Create credential button clicked');
-                                            const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
-                                            const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
-                                            console.log('Auth0 ID:', auth0Id, 'Hours:', hrs);
-                                            if (auth0Id && hrs > 0) {
-                                                await issueFlightHoursCredential(hrs, auth0Id);
-                                            } else {
-                                                console.log('Missing auth0Id or hours');
-                                            }
-                                        }}
-                                        style={{
-                                            width: '100%', padding: '8px',
-                                            background: '#00b4d8', border: '1px solid #00b4d8',
-                                            borderRadius: '6px', color: 'white',
-                                            fontSize: '11px', fontWeight: 600, cursor: 'pointer',
-                                            textAlign: 'center', transition: 'all 0.2s', marginTop: '8px'
-                                        }}
-                                    >
-                                        Create Flight Hours Credential →
-                                    </button>
-                                )}
-                                <span className="fic-subtext">Choose verification method</span>
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
+                                <button type="button" onClick={() => setActiveInstrument(3)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
+                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 5))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
                             </div>
+                            </>)}
 
-                            {/* ── BOTTOM-RIGHT: Commit ── */}
-                            <div className={`floating-instrument-card ${activeInstrument === 6 ? 'fic-active' : activeInstrument > 6 ? 'fic-done' : 'fic-locked'}`}>
-                                <span className={`fic-status-dot ${walletConnected ? 'fic-dot-done' : activeInstrument === 6 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div>
-                                    <div className="fic-title">Commit</div>
-                                </div>
+                            {/* ── STEP 5: Save Profile ── */}
+                            {activeInstrument === 5 && (<>
+                            <div className="step-card step-card-active">
+                                <span className={`fic-status-dot ${activeInstrument > 5 ? 'fic-dot-done' : activeInstrument === 5 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
+                                <div className="fic-title">Save Profile</div>
                                 <button
                                     type="button"
-                                    onClick={handleSaveProfile}
-                                    disabled={activeInstrument < 6 || saving}
-                                    style={{
-                                        width: '100%', padding: '13px 14px',
-                                        background: walletConnected ? '#f0fdf4' : '#f8fafc',
-                                        border: `1px solid ${walletConnected ? '#86efac' : '#cbd5e1'}`,
-                                        borderRadius: '8px', color: walletConnected ? '#16a34a' : '#475569',
-                                        fontSize: '14px', fontWeight: 600, cursor: 'pointer',
-                                        textAlign: 'left', transition: 'all 0.2s'
-                                    }}
+                                    onClick={() => { setShowWalletFirst(true); setActiveInstrument(i => Math.max(i, 6)); }}
+                                    disabled={activeInstrument < 5}
+                                    style={{ width: '100%', padding: '14px 16px', background: activeInstrument > 5 ? '#f0fdf4' : '#f8fafc', border: `1px solid ${activeInstrument > 5 ? '#86efac' : '#e2e8f0'}`, borderRadius: '10px', color: activeInstrument > 5 ? '#16a34a' : '#475569', fontSize: '14px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}
                                 >
-                                    {walletConnected ? `${selectedWallet} ✓ Connected` : 'Connect to Wallet →'}
+                                    {activeInstrument > 5 ? '✓ Profile Saved' : 'Save & Continue →'}
                                 </button>
-                                <span className="fic-subtext">Decentralised identity wallet</span>
+                                <span className="fic-subtext">Save profile and proceed to final commit</span>
                             </div>
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
+                                <button type="button" onClick={() => setActiveInstrument(4)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
+                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 6))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
+                            </div>
+                            </>)}
 
-                            {/* ── BOTTOM-RIGHT: Commit ── */}
-                            <div className={`floating-instrument-card fic-commit ${activeInstrument >= 6 ? 'fic-active' : 'fic-locked'}`}>
-                                <span className={`fic-status-dot ${activeInstrument >= 6 ? 'fic-dot-commit' : 'fic-dot-idle'}`} />
-                                <div>
-                                    <div className="fic-title">Commit</div>
-                                </div>
-                                {saveError && <p style={{ color: '#f87171', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>{saveError}</p>}
+                            {/* ── STEP 6: Commit ── */}
+                            {activeInstrument >= 6 && (<>
+                            <div className="step-card" style={{ borderColor: '#dc2626', boxShadow: '0 0 0 2px #dc2626, 0 8px 32px rgba(220,38,38,0.15)' }}>
+                                <span className={`fic-status-dot fic-dot-commit`} />
+                                <div className="fic-title">Commit</div>
+                                {saveError && <p style={{ color: '#dc2626', fontSize: '12px', margin: 0 }}>{saveError}</p>}
                                 <button
                                     onClick={handleSaveProfile}
                                     disabled={saving || activeInstrument < 6}
-                                    style={{
-                                        width: '100%', padding: '15px',
-                                        background: activeInstrument >= 6 ? '#dc2626' : '#fef2f2',
-                                        border: `1px solid ${activeInstrument >= 6 ? '#dc2626' : '#fecaca'}`,
-                                        borderRadius: '8px', color: activeInstrument >= 6 ? '#fff' : '#fca5a5', fontWeight: 700,
-                                        fontSize: '14px', cursor: activeInstrument >= 6 ? 'pointer' : 'not-allowed',
-                                        transition: 'all 0.2s', opacity: activeInstrument >= 6 ? 1 : 0.5,
-                                        letterSpacing: '0.04em'
-                                    }}
-                                    onMouseEnter={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
-                                    onMouseLeave={e => { if (activeInstrument >= 6) (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
+                                    style={{ width: '100%', padding: '16px', background: '#dc2626', border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, fontSize: '15px', cursor: 'pointer', transition: 'all 0.2s', letterSpacing: '0.04em' }}
+                                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
+                                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
                                 >
                                     {saving ? 'ENGAGING...' : 'COMPLETE PROFILE →'}
                                 </button>
-                                <span className="fic-subtext">Engage pilot profile</span>
+                                <span className="fic-subtext">Engage your pilot profile on PilotRecognition</span>
                             </div>
-
-                        </div>{/* end inner grid */}
-
-
-                        {/* Access panel — flex sibling to the right of the grid, only during step 2 with licence selected */}
-                        {activeInstrument === 2 && (
-                            <div style={{ width: '260px', flexShrink: 0, alignSelf: 'flex-start' }}>
-                                {occupation && LICENSE_ACCESS_MATRIX[occupation] ? (() => {
-                                    const mx = LICENSE_ACCESS_MATRIX[occupation];
-                                    return (
-                                        <div style={{ background: '#ffffff', border: `1px solid ${mx.color}50`, borderRadius: '12px', overflow: 'hidden' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', background: `${mx.color}12`, borderBottom: `1px solid ${mx.color}30` }}>
-                                                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: mx.dotColor, flexShrink: 0, display: 'inline-block' }} />
-                                                <span style={{ fontSize: '10px', fontWeight: 700, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{mx.terminal}</span>
-                                                <span style={{ marginLeft: 'auto', fontSize: '9px', fontWeight: 600, color: mx.color }}>{mx.restricted.length === 0 ? 'Full Access' : 'Restricted'}</span>
-                                            </div>
-                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-                                                <div style={{ borderRight: '1px solid #f1f5f9' }}>
-                                                    <div style={{ padding: '6px 12px', background: '#f8faf8', borderBottom: '1px solid #e5e7eb' }}>
-                                                        <span style={{ fontSize: '9px', fontWeight: 700, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.07em' }}>✓ Access</span>
-                                                    </div>
-                                                    {mx.access.map(item => (
-                                                        <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', padding: '5px 12px', borderBottom: '1px solid #f9fafb' }}>
-                                                            <span style={{ color: '#16a34a', fontSize: '10px', marginTop: '1px', flexShrink: 0, fontWeight: 700 }}>✓</span>
-                                                            <span style={{ fontSize: '11px', color: '#111827', lineHeight: 1.4 }}>{item}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                                <div>
-                                                    <div style={{ padding: '6px 12px', background: '#fdf8f8', borderBottom: '1px solid #e5e7eb' }}>
-                                                        <span style={{ fontSize: '9px', fontWeight: 700, color: '#dc2626', textTransform: 'uppercase', letterSpacing: '0.07em' }}>✕ Restricted</span>
-                                                    </div>
-                                                    {mx.restricted.length === 0 ? (
-                                                        <div style={{ padding: '10px 12px' }}>
-                                                            <span style={{ fontSize: '11px', color: '#6b7280', fontStyle: 'italic' }}>No restrictions — full access</span>
-                                                        </div>
-                                                    ) : mx.restricted.map(item => (
-                                                        <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', padding: '5px 12px', borderBottom: '1px solid #f9fafb' }}>
-                                                            <span style={{ color: '#dc2626', fontSize: '10px', marginTop: '1px', flexShrink: 0, fontWeight: 700 }}>✕</span>
-                                                            <span style={{ fontSize: '11px', color: '#374151', lineHeight: 1.4 }}>{item}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })() : (
-                                    <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.15)', borderRadius: '12px', padding: '24px 16px', textAlign: 'center' }}>
-                                        <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)' }}>Select a licence to see your access level</span>
-                                    </div>
-                                )}
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
+                                <button type="button" onClick={() => setActiveInstrument(5)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
                             </div>
-                        )}
+                            </>)}
 
-                        </div>{/* end outer flex wrapper */}
+                        </div>{/* end steps column */}
 
-                        {/* Disclaimer — always visible below grid */}
-                        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {/* Footer */}
+                        <div style={{ marginTop: '48px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '12px' }}>
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                 <span style={{ color: '#4ade80', fontSize: '11px', fontWeight: 600 }}>Secure Connection</span>
-                                <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px' }}>·</span>
-                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>Powered by</span>
-                                <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px', fontWeight: 700 }}>Auth0</span>
+                                <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
+                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>Powered by Auth0</span>
                             </div>
-                            <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px', textAlign: 'center', lineHeight: 1.6, margin: 0, maxWidth: '680px' }}>
-                                Pilot Recognition functions strictly as a neutral data infrastructure provider. By continuing, you authorize this read-only display and electronic consent tracking in accordance with applicable electronic commerce legislation and our{' '}
-                                <button onClick={() => onNavigate('terms-of-service')} style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit' }}>Terms of Service</button>.
-                            </p>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '4px 16px' }}>
+                                <button onClick={() => onNavigate('privacy-policy')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Privacy Policy</button>
+                                <span style={{ color: 'rgba(255,255,255,0.1)', fontSize: '10px' }}>·</span>
+                                <button onClick={() => onNavigate('terms-of-service')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Terms of Service</button>
+                                <span style={{ color: 'rgba(255,255,255,0.1)', fontSize: '10px' }}>·</span>
+                                <button onClick={() => onNavigate('data-controller-agreement')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Data Controller Agreement — PR-DCA-001</button>
+                            </div>
                         </div>
 
-                        {/* Persistent legal footer — required by GDPR & DPA during all data collection steps */}
-                        <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '6px 16px' }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Legal</span>
-                            <span style={{ color: 'rgba(255,255,255,0.12)', fontSize: '10px' }}>·</span>
-                            <button onClick={() => onNavigate('privacy-policy')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Privacy Policy</button>
-                            <span style={{ color: 'rgba(255,255,255,0.12)', fontSize: '10px' }}>·</span>
-                            <button onClick={() => onNavigate('terms-of-service')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Terms of Service</button>
-                            <span style={{ color: 'rgba(255,255,255,0.12)', fontSize: '10px' }}>·</span>
-                            <button onClick={() => onNavigate('data-controller-agreement')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Data Controller Agreement — PR-DCA-001</button>
-                        </div>
-
-                        {/* Progress strip */}
-                        <div style={{ display: 'flex', gap: '6px', marginTop: '24px' }}>
-                            {[1,2,3,4,5,6].map(n => (
-                                <div key={n} style={{ flex: 1, height: '3px', borderRadius: '9999px', background: activeInstrument > n ? '#22c55e' : activeInstrument === n ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.12)', transition: 'background 0.4s' }} />
-                            ))}
-                        </div>
-                        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: '11px', marginTop: '8px', letterSpacing: '0.05em' }}>
-                            {activeInstrument > 6 ? 'All instruments complete — ready to commit' : `Step ${Math.min(activeInstrument, 6)} of 6 — complete each instrument to proceed`}
-                        </p>
-
-                    </div>{/* end max-w-md */}
-                </div>{/* end flex-1 center */}
-            </div>{/* end h-screen */}
+                    </div>
+                </div>{/* end scroll area */}
+            </div>{/* end page */}
 
             {/* Logbook Provider Modal */}
             {showLogbookModal && (
