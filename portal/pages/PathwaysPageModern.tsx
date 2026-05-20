@@ -8411,6 +8411,62 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           </div>
         )}
       </div>
+
+      {/* Article 4 — Skybridge T2 Legal Notice Modal */}
+      {skybridgePendingPathway && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setSkybridgePendingPathway(null)} />
+          <div className="relative z-10 w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+            {/* Header */}
+            <div className="px-5 py-4 border-b border-white/8 flex items-start gap-3">
+              <span className="text-xl leading-none mt-0.5">🛃</span>
+              <div>
+                <p className="text-white font-bold text-sm">Skybridge Clearance — Terminal 2</p>
+                <p className="text-white/40 text-xs mt-0.5">Article 4 — PR-DCA-001 v1.6</p>
+              </div>
+            </div>
+            {/* Pathway being submitted */}
+            <div className="px-5 py-3 bg-white/5 border-b border-white/8">
+              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Routing cargo to</p>
+              <p className="text-white font-semibold text-sm">{skybridgePendingPathway.airline || skybridgePendingPathway.name}</p>
+              {skybridgePendingPathway.locations?.[0] && (
+                <p className="text-white/40 text-xs">{skybridgePendingPathway.locations[0]}</p>
+              )}
+            </div>
+            {/* Legal notice body */}
+            <div className="px-5 py-4">
+              <p className="text-white/70 text-xs leading-relaxed">
+                By submitting your self-declared credentials to this gate, you instruct the platform to open a pass-through skybridge to the operator.
+                The receiving entity acts as an <span className="text-white font-semibold">Independent Data Controller</span> of this cargo.
+                WM Pilot Group does not verify Terminal 2 entries and assumes <span className="text-white font-semibold">zero liability</span> for downstream HR data retention or vetting.
+              </p>
+              <div className="mt-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-[10px] text-white/35 leading-relaxed">
+                Your profile data is encrypted on your device (AES-256-GCM) before transmission. The operator receives only a signed, self-declared credential payload — no raw personal data is transferred by WM Pilot Group.
+              </div>
+            </div>
+            {/* Actions */}
+            <div className="px-5 pb-5 flex gap-3">
+              <button
+                onClick={() => setSkybridgePendingPathway(null)}
+                className="flex-1 py-2.5 rounded-xl border border-white/10 text-white/60 font-semibold text-sm hover:bg-white/5 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  const pathway = skybridgePendingPathway;
+                  setSkybridgePendingPathway(null);
+                  handleSubmitInterest(pathway);
+                }}
+                disabled={interestSubmitting}
+                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {interestSubmitting ? 'Submitting...' : 'Open Skybridge — Confirm'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
@@ -8706,63 +8762,6 @@ const MatchResultModal: React.FC<MatchResultModalProps> = ({ pathway, userProfil
         </div>
       </div>
     </div>
-
-      {/* Article 4 — Skybridge T2 Legal Notice Modal */}
-      {skybridgePendingPathway && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setSkybridgePendingPathway(null)} />
-          <div className="relative z-10 w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-            {/* Header */}
-            <div className="px-5 py-4 border-b border-white/8 flex items-start gap-3">
-              <span className="text-xl leading-none mt-0.5">🛃</span>
-              <div>
-                <p className="text-white font-bold text-sm">Skybridge Clearance — Terminal 2</p>
-                <p className="text-white/40 text-xs mt-0.5">Article 4 — PR-DCA-001 v1.6</p>
-              </div>
-            </div>
-            {/* Pathway being submitted */}
-            <div className="px-5 py-3 bg-white/5 border-b border-white/8">
-              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Routing cargo to</p>
-              <p className="text-white font-semibold text-sm">{skybridgePendingPathway.airline || skybridgePendingPathway.name}</p>
-              {skybridgePendingPathway.locations?.[0] && (
-                <p className="text-white/40 text-xs">{skybridgePendingPathway.locations[0].city}, {skybridgePendingPathway.locations[0].country}</p>
-              )}
-            </div>
-            {/* Legal notice body */}
-            <div className="px-5 py-4">
-              <p className="text-white/70 text-xs leading-relaxed">
-                By submitting your self-declared credentials to this gate, you instruct the platform to open a pass-through skybridge to the operator.
-                The receiving entity acts as an <span className="text-white font-semibold">Independent Data Controller</span> of this cargo.
-                WM Pilot Group does not verify Terminal 2 entries and assumes <span className="text-white font-semibold">zero liability</span> for downstream HR data retention or vetting.
-              </p>
-              <div className="mt-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-[10px] text-white/35 leading-relaxed">
-                Your profile data is encrypted on your device (AES-256-GCM) before transmission. The operator receives only a signed, self-declared credential payload — no raw personal data is transferred by WM Pilot Group.
-              </div>
-            </div>
-            {/* Actions */}
-            <div className="px-5 pb-5 flex gap-3">
-              <button
-                onClick={() => setSkybridgePendingPathway(null)}
-                className="flex-1 py-2.5 rounded-xl border border-white/10 text-white/60 font-semibold text-sm hover:bg-white/5 transition-all"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  const pathway = skybridgePendingPathway;
-                  setSkybridgePendingPathway(null);
-                  handleSubmitInterest(pathway);
-                }}
-                disabled={interestSubmitting}
-                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {interestSubmitting ? 'Submitting...' : 'Open Skybridge — Confirm'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
   );
 };
 
