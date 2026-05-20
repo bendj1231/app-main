@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard } from 'lucide-react';
+import { StorageEngineCard } from './StorageEngineCard';
 
 interface SettingsDirectoryPageProps {
     onBack: () => void;
@@ -84,6 +85,13 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
                         </div>
                     </div>
                 ))}
+
+                {/* Data Infrastructure — Article 3 DCA v1.6 */}
+                <div>
+                    <h2 className="text-lg font-semibold text-slate-900 mb-1">Data Infrastructure</h2>
+                    <p className="text-sm text-slate-500 mb-4">Configure your encrypted storage engine routing per Article 3 of the Data Controller Agreement.</p>
+                    <StorageEngineCard />
+                </div>
             </div>
         </div>
     );

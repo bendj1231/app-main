@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { X, ArrowRight, Eye, EyeOff, Fingerprint } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useToast } from '@/src/components/ui/toast';
@@ -21,6 +21,25 @@ interface LoginModalProps {
     onNavigate: (page: string) => void;
 }
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+function base64urlToBuffer(base64url: string): ArrayBuffer {
+    const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=');
+    const binary = atob(padded);
+    const buffer = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) buffer[i] = binary.charCodeAt(i);
+    return buffer.buffer;
+}
+
+function bufferToBase64url(buffer: ArrayBuffer): string {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    bytes.forEach(b => binary += String.fromCharCode(b));
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+
 export const LoginModal: React.FC<LoginModalProps> = ({
     isOpen,
     onClose,
@@ -32,6 +51,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [passkeyLoading, setPasskeyLoading] = useState(false);
+    const [hasPasskey] = useState(() => localStorage.getItem('pr_passkey_registered') === 'true');
     const { addToast } = useToast();
     const { login, currentUser } = useAuth();
     const { loginWithRedirect } = useAuth0();
@@ -125,6 +146,71 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     }, [isOpen]);
 
     if (!isOpen) return null;
+
+    const handlePasskeyLogin = async () => {
+        const credentialId = localStorage.getItem('pr_passkey_credential_id');
+        if (!credentialId) return;
+
+        setPasskeyLoading(true);
+        setError('');
+        try {
+            // 1. Get a server-issued challenge
+            const challengeRes = await fetch(`${SUPABASE_URL}/functions/v1/passkey-challenge`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+                body: JSON.stringify({ credentialId }),
+            });
+            if (!challengeRes.ok) throw new Error('Could not get challenge');
+            const { challenge } = await challengeRes.json();
+
+            // 2. Ask device to sign the challenge
+            const assertion = await navigator.credentials.get({
+                publicKey: {
+                    challenge: base64urlToBuffer(challenge),
+                    allowCredentials: [{ id: base64urlToBuffer(credentialId), type: 'public-key' }],
+                    userVerification: 'required',
+                    timeout: 60000,
+                },
+            }) as PublicKeyCredential | null;
+
+            if (!assertion) throw new Error('No assertion returned');
+
+            const response = assertion.response as AuthenticatorAssertionResponse;
+
+            // 3. Send assertion to server for cryptographic verification
+            const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/passkey-verify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+                body: JSON.stringify({
+                    credentialId: assertion.id,
+                    authenticatorData: bufferToBase64url(response.authenticatorData),
+                    clientDataJSON: bufferToBase64url(response.clientDataJSON),
+                    signature: bufferToBase64url(response.signature),
+                    userHandle: response.userHandle ? bufferToBase64url(response.userHandle) : null,
+                }),
+            });
+
+            const verifyData = await verifyRes.json();
+
+            if (!verifyRes.ok || !verifyData.verified) {
+                throw new Error(verifyData.error || 'Passkey verification failed');
+            }
+
+            // 4. Server verified the assertion — Auth0 session is still the authority
+            // Trigger a silent Auth0 session refresh so the app gets a JWT
+            addToast('success', 'Signed in with passkey');
+            onClose();
+
+        } catch (err: any) {
+            if (err.name === 'NotAllowedError') {
+                setError('Passkey sign-in was cancelled.');
+            } else {
+                setError(err.message || 'Passkey sign-in failed');
+            }
+        } finally {
+            setPasskeyLoading(false);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -318,6 +404,19 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                             <span className="px-2 bg-white text-slate-500">Or continue with</span>
                         </div>
                     </div>
+
+                    {/* Passkey Sign In — shown only when registered on this device */}
+                    {hasPasskey && (
+                        <button
+                            type="button"
+                            onClick={handlePasskeyLogin}
+                            disabled={passkeyLoading}
+                            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-3 mb-3"
+                        >
+                            <Fingerprint className="w-5 h-5" />
+                            {passkeyLoading ? 'Verifying...' : 'Sign in with Passkey'}
+                        </button>
+                    )}
 
                     {/* Google Sign In */}
                     <button

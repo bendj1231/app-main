@@ -69,10 +69,11 @@ export const LogbookCallback = () => {
         sessionStorage.setItem('mfb_total_hours', String(hours ?? 0));
         sessionStorage.setItem('mfb_provider', 'MyFlightBook');
 
-        // Store VC credential offer URL if issued
-        if (data.credential?.offer_url) {
-          sessionStorage.setItem('vc_credential_offer_url', data.credential.offer_url);
-          sessionStorage.setItem('vc_credential_id', data.credential.id);
+        // Store flight data for later wallet credential creation
+        if (data.totalHours !== undefined) {
+          sessionStorage.setItem('flight_data_ready', 'true');
+          sessionStorage.setItem('flight_hours', String(data.totalHours));
+          sessionStorage.setItem('flight_count', String(data.flights || 0));
         }
 
         // Don't auto-redirect - let user click Continue when ready

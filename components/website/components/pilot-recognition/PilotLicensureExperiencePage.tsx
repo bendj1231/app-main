@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
 import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2 } from 'lucide-react';
 
 interface UploadedDoc {
@@ -184,6 +185,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 }) => {
   // Get auth context as fallback when accessed directly via URL
   const { currentUser, userProfile: authUserProfile } = useAuth();
+  const { writeLicensure, updateProfile } = useVaultProfile();
   
   // Use prop if provided (nested navigation), otherwise use auth context (direct URL access)
   const userProfile = userProfileProp || authUserProfile || (currentUser ? {
@@ -743,18 +745,17 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         updated_at: new Date().toISOString()
       };
 
-      console.log('Saving data to pilot_licensure_experience:', data);
-      
-      const { error } = await supabase
-        .from('pilot_licensure_experience')
-        .upsert(data, { onConflict: 'user_id' });
+      console.log('Saving data to pilot_licensure_experience (encrypted):', userId);
+
+      // writeLicensure encrypts sensitive fields via vault key before writing
+      const { error } = await writeLicensure(userId, data);
 
       if (error) {
         console.error('Supabase error:', error);
         throw error;
       }
 
-      // Also sync with profiles table for consistency
+      // Also sync with profiles table (encrypted via updateProfile)
       if (userId) {
         const profileUpdateData: any = {
           full_name: fullLegalName,
@@ -771,7 +772,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           program_interests: aviationPathwaysInterests,
           pathway_interests: aviationPathwaysInterests,
           insight_interests: pilotJobPositionsInterests,
-          // Medical information
           medical_expiry: medicalExpiry,
           medical_country: medicalCountry,
           medical_class: medicalClass,
@@ -780,18 +780,15 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           updated_at: new Date().toISOString()
         };
 
-        console.log('Syncing data to profiles table:', profileUpdateData);
-        
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update(profileUpdateData)
-          .eq('id', userId);
+        console.log('Syncing data to profiles table (encrypted):', userId);
+
+        // updateProfile encrypts sensitive fields via vault key before writing
+        const { error: profileError } = await updateProfile(userId, profileUpdateData);
 
         if (profileError) {
           console.error('Profile sync error (non-critical):', profileError);
-          // Non-critical: main data is saved to pilot_licensure_experience
         } else {
-          console.log('✅ Data synced to profiles table');
+          console.log('✅ Data synced to profiles table (encrypted)');
         }
       }
       

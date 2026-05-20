@@ -1,0 +1,16 @@
+{
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  "id": "did:web:pilotrecognition.com",
+  "verificationMethod": [{
+    "id": "did:web:pilotrecognition.com#key-1",
+    "type": "JsonWebKey2020",
+    "controller": "did:web:pilotrecognition.com",
+    "publicKeyJwk": {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "vyu0HBCTyqcmv58jQkVUPd1myCD1M226mWi5FISns38",
+      "y": "RgFaPBA4w7F2qfnLbAsFvkknBrx3Ywv__zDDzmtqi6Q"
+    }
+  }],
+  "assertionMethod": ["did:web:pilotrecognition.com#key-1"]
+}

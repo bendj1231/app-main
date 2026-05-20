@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '../lib/supabase';
 import { indexedDB } from '../lib/indexedDB';
 import { createManagementAPI } from '../lib/supabase-management';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
+import { getVaultKey, clearVaultKey, encryptFields, PROFILE_SENSITIVE_FIELDS, PILOT_LICENSURE_SENSITIVE_FIELDS } from '../../lib/vault';
 
 interface SupabaseUser {
     id: string;
@@ -41,6 +42,9 @@ interface AuthContextType {
     oauthAccountCheck: { checking: boolean; hasAccount: boolean | null };
     resetOauthAccountCheck: () => void;
     resetOauthAccountCheckOnly: () => void;
+    // Passkey prompt
+    showPasskeyPrompt: boolean;
+    dismissPasskeyPrompt: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -73,6 +77,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // OAuth account check state - NOT persisted to sessionStorage to prevent stuck modal on refresh
     const [oauthAccountCheck, setOauthAccountCheck] = useState<{ checking: boolean; hasAccount: boolean | null }>({ checking: false, hasAccount: null });
+    const [showPasskeyPrompt, setShowPasskeyPrompt] = useState(false);
+    // Track previous auth state to detect genuine login (false → true) vs session restore
+    const prevAuth0AuthenticatedRef = React.useRef<boolean | null>(null);
+
+    // Article 5 — Session Isolation: idle timer ref + logout ref for stable closure
+    const idleTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const logoutRef = React.useRef<(() => Promise<void>) | null>(null);
+    const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
 
     // Flag to track if we've already shown the modal for this session
     const [oauthModalShown, setOauthModalShown] = useState(() => {
@@ -103,6 +115,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('oauthModalShown', 'true');
     };
 
+    // Article 5 — Keep logoutRef current so idle timer always calls latest logout
+    useEffect(() => {
+        logoutRef.current = logout;
+    });
+
+    // Article 5 — Idle session timeout: auto-logout after 15 min inactivity (shared terminal protection)
+    useEffect(() => {
+        if (!currentUser) {
+            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+            return;
+        }
+
+        const resetTimer = () => {
+            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+            idleTimerRef.current = setTimeout(() => {
+                console.log('[session] Idle timeout — auto-logout triggered');
+                clearVaultKey();
+                logoutRef.current?.();
+            }, IDLE_TIMEOUT_MS);
+        };
+
+        const events = ['mousemove', 'keydown', 'mousedown', 'touchstart', 'scroll'];
+        events.forEach(e => window.addEventListener(e, resetTimer, { passive: true }));
+        resetTimer();
+
+        return () => {
+            events.forEach(e => window.removeEventListener(e, resetTimer));
+            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        };
+    }, [currentUser]);
+
+    // Article 5 — Flush vault key on tab close / navigate away (shared airport terminal protection)
+    useEffect(() => {
+        const handleUnload = () => clearVaultKey();
+        window.addEventListener('beforeunload', handleUnload);
+        return () => window.removeEventListener('beforeunload', handleUnload);
+    }, []);
+
     // Sync Auth0 user into currentUser when there is no Supabase session
     useEffect(() => {
         if (auth0Loading) return;
@@ -121,7 +171,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setLoading(false);
             // Persist auth0 user ID for logbook sync VC issuance
             if (auth0User.sub) localStorage.setItem('auth0_user_id', auth0User.sub);
+            // Initialise vault key then background re-encrypt any plaintext legacy records
+            if (auth0User.sub) {
+                supabase.auth.getSession().then(async ({ data: { session } }) => {
+                    if (!session?.access_token) return;
+                    try {
+                        const key = await getVaultKey(auth0User.sub!, session.access_token);
+                        console.log('[vault] Key ready — checking for plaintext records');
+
+                        const userId = auth0User.sub!;
+                        const VAULT_PREFIX = '{"iv":"';
+                        const isPlain = (v: unknown) =>
+                            v !== null && v !== undefined && v !== '' &&
+                            !(typeof v === 'string' && v.startsWith(VAULT_PREFIX));
+                        const needsReEncrypt = (rec: Record<string, any>, fields: readonly string[]) =>
+                            fields.some(f => isPlain(rec[f]));
+
+                        // Re-encrypt profiles table if any sensitive field is plaintext
+                        const { data: profile } = await supabase
+                            .from('profiles').select('*').eq('id', userId).single();
+                        if (profile && needsReEncrypt(profile, PROFILE_SENSITIVE_FIELDS)) {
+                            console.log('[vault] Re-encrypting profile for', userId);
+                            const enc = await encryptFields(profile, PROFILE_SENSITIVE_FIELDS as any, key);
+                            await supabase.from('profiles').update(enc).eq('id', userId);
+                            console.log('[vault] ✅ Profile re-encrypted');
+                        }
+
+                        // Re-encrypt pilot_licensure_experience if any sensitive field is plaintext
+                        const { data: lic } = await supabase
+                            .from('pilot_licensure_experience').select('*').eq('user_id', userId).single();
+                        if (lic && needsReEncrypt(lic, PILOT_LICENSURE_SENSITIVE_FIELDS)) {
+                            console.log('[vault] Re-encrypting licensure for', userId);
+                            const enc = await encryptFields(lic, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
+                            await supabase.from('pilot_licensure_experience').update(enc).eq('user_id', userId);
+                            console.log('[vault] ✅ Licensure re-encrypted');
+                        }
+                    } catch (err: any) {
+                        console.warn('[vault] Init/re-encrypt failed (non-critical):', err.message);
+                    }
+                });
+            }
+            // Set fresh login flag so passkey prompt knows this is a real sign-in
+            const wasAlreadyAuthenticated = prevAuth0AuthenticatedRef.current === true;
+            if (!wasAlreadyAuthenticated && auth0User.sub?.startsWith('google-oauth2|')) {
+                sessionStorage.setItem('pr_fresh_login', 'true');
+            }
+            // Show passkey prompt ONLY after a genuine Google sign-in success
+            // Guard 1: prevRef was NOT true (rules out mid-session re-renders)
+            // Guard 2: sessionStorage flag set above (rules out page refreshes)
+            const freshLogin = sessionStorage.getItem('pr_fresh_login') === 'true';
+            const passkeyRegistered = localStorage.getItem('pr_passkey_registered') === 'true';
+            const passkeyDeclined = localStorage.getItem('pr_passkey_declined');
+            const declinedRecently = passkeyDeclined && (Date.now() - parseInt(passkeyDeclined)) < 30 * 24 * 60 * 60 * 1000;
+            const isGoogleLogin = auth0User.sub?.startsWith('google-oauth2|');
+            if (isGoogleLogin && freshLogin && !passkeyRegistered && !declinedRecently && !wasAlreadyAuthenticated) {
+                sessionStorage.removeItem('pr_fresh_login'); // consume flag
+                setTimeout(() => setShowPasskeyPrompt(true), 1500);
+            }
         }
+        // Always update the previous state ref AFTER checks
+        prevAuth0AuthenticatedRef.current = auth0IsAuthenticated;
     }, [auth0IsAuthenticated, auth0User, auth0Loading, currentUser]);
 
     // Activity logging
@@ -238,6 +347,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         console.log('🔵 Step 2: Creating portal profile...');
 
+        // Acquire vault key for this session (non-blocking, falls back gracefully)
+        let vaultKey: CryptoKey | null = null;
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            const sub = auth0User?.sub || userId;
+            if (session?.access_token && sub) {
+                vaultKey = await getVaultKey(sub, session.access_token);
+                console.log('[vault] Key acquired for signup encryption');
+            }
+        } catch (vaultErr: any) {
+            console.warn('[vault] Key unavailable during signup, writing plaintext:', vaultErr.message);
+        }
+
         // Step 2: Create or update portal profile in profiles table
         try {
             console.log('🔵 Step 2: Creating portal profile...');
@@ -258,9 +380,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (existingProfile) {
                 console.log('⚠️ Profile already exists for user, updating...');
                 // Profile exists, update
-                const { error: updateError } = await supabase
-                    .from('profiles')
-                    .update({
+                const rawUpdatePayload = {
                         display_name: userData.fullName || email.split('@')[0],
                         full_name: userData.fullName,
                         phone: userData.contactNumber,
@@ -280,7 +400,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         program_interests: userData.programInterests,
                         pathway_interests: userData.pathwayInterests,
                         insight_interests: userData.insightInterests,
-                        // Additional ATLAS resume fields (only those that exist in profiles table)
                         english_proficiency_level: userData.englishProficiencyLevel || null,
                         license_expiry: userData.licenseExpiry || null,
                         medical_expiry: userData.medicalExpiry || null,
@@ -289,7 +408,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         radio_license_expiry: userData.radioLicenseExpiry || null,
                         last_flown: userData.lastFlown || null,
                         professional_experiences: userData.jobExperiences || []
-                    })
+                };
+                const updatePayload = vaultKey
+                    ? await encryptFields(rawUpdatePayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
+                    : rawUpdatePayload;
+                const { error: updateError } = await supabase
+                    .from('profiles')
+                    .update(updatePayload)
                     .eq('id', userId);
 
                 if (updateError) {
@@ -308,10 +433,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                 console.log('🔵 Experience level:', experienceLevel);
 
-                const { error: profileError } = await supabase
-                    .from('profiles')
-                    .insert({
-                        id: userId,
+                const rawInsertPayload = {
                         email: email,
                         display_name: userData.fullName || email.split('@')[0],
                         full_name: userData.fullName,
@@ -319,14 +441,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         country: userData.residingCountry,
                         date_of_birth: userData.dob || null,
                         nationality: userData.nationality,
-                        role: 'mentee', // Default role for new users
+                        role: 'mentee',
                         status: 'active',
-                        firebase_uid: null, // Will be set after Firebase creation
+                        firebase_uid: null,
                         enrolled_programs: [],
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString(),
                         terms_accepted_at: userData.termsAcceptedAt || new Date().toISOString(),
-                        // Additional detailed fields
                         pilot_id: userData.pilotId,
                         flight_school_address: userData.flightSchoolAddress,
                         license_id: userData.licenseId,
@@ -338,7 +459,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         program_interests: userData.programInterests,
                         pathway_interests: userData.pathwayInterests,
                         insight_interests: userData.insightInterests,
-                        // Additional ATLAS resume fields (only those that exist in profiles table)
                         english_proficiency_level: userData.englishProficiencyLevel || null,
                         license_expiry: userData.licenseExpiry || null,
                         medical_expiry: userData.medicalExpiry || null,
@@ -347,7 +467,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         radio_license_expiry: userData.radioLicenseExpiry || null,
                         last_flown: userData.lastFlown || null,
                         professional_experiences: userData.jobExperiences || []
-                    });
+                };
+                const insertPayload = vaultKey
+                    ? await encryptFields(rawInsertPayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
+                    : rawInsertPayload;
+                const { error: profileError } = await supabase
+                    .from('profiles')
+                    .insert({ id: userId, ...insertPayload });
 
                 if (profileError) {
                     console.error('❌ Profile insert error:', profileError);
@@ -504,10 +630,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Step 6: Sync to Supabase pilot_licensure_experience table with all gathered information
         try {
-            const { error: pilotTableError } = await supabase
-                .from('pilot_licensure_experience')
-                .upsert({
-                    user_id: userId,
+            const rawLicensurePayload = {
                     pilot_id: userData.pilotId,
                     full_legal_name: userData.fullName,
                     first_name: userData.fullName?.split(' ')[0] || '',
@@ -528,30 +651,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     experience_description: userData.experienceDescription,
                     ratings: Array.isArray(userData.ratings) ? userData.ratings : (userData.ratings ? [userData.ratings] : []),
                     current_license: Array.isArray(userData.ratings) ? userData.ratings : (userData.ratings ? [userData.ratings] : []),
-                    // Medical information
                     medical_expiry: userData.medicalExpiry || null,
                     medical_country: userData.medicalCountry || null,
                     medical_class: userData.medicalClass || null,
                     radio_license_expiry: userData.radioLicenseExpiry || null,
-                    // Current occupation
                     current_occupation: userData.currentOccupation || null,
                     current_employer: userData.currentEmployer || null,
                     current_position: userData.currentPosition || null,
-                    // Additional info
                     countries_visited: parseInt(userData.countriesVisited || '0', 10) || 0,
                     favorite_aircraft: userData.favoriteAircraft || null,
                     why_become_pilot: userData.whyBecomePilot || null,
                     other_skills: userData.otherSkills || null,
-                    // Professional experiences
                     professional_experiences: Array.isArray(userData.jobExperiences) ? userData.jobExperiences : (userData.jobExperiences ? [userData.jobExperiences] : []),
-                    // Interests
                     aviation_pathways_interests: Array.isArray(userData.pathwayInterests) ? userData.pathwayInterests : (userData.pathwayInterests ? [userData.pathwayInterests] : []),
                     pilot_job_positions_interests: Array.isArray(userData.insightInterests) ? userData.insightInterests : (userData.insightInterests ? [userData.insightInterests] : []),
                     program_interests: Array.isArray(userData.programInterests) ? userData.programInterests : (userData.programInterests ? [userData.programInterests] : []),
                     insight_interests: Array.isArray(userData.insightInterests) ? userData.insightInterests : (userData.insightInterests ? [userData.insightInterests] : []),
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
-                }, { onConflict: 'user_id' });
+            };
+            const licensurePayload = vaultKey
+                ? await encryptFields(rawLicensurePayload, PILOT_LICENSURE_SENSITIVE_FIELDS as any, vaultKey)
+                : rawLicensurePayload;
+            const { error: pilotTableError } = await supabase
+                .from('pilot_licensure_experience')
+                .upsert({ user_id: userId, ...licensurePayload }, { onConflict: 'user_id' });
 
             if (pilotTableError) {
                 console.error('Pilot table sync error:', pilotTableError);
@@ -718,6 +842,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setCsrfToken(null); // Clear CSRF token
         setCurrentUser(null); // Clear current user
         setUserProfile(null); // Clear user profile
+        clearVaultKey(); // Clear vault key from memory
 
         try {
             console.log('🔴 Calling Supabase signOut...');
@@ -1217,7 +1342,9 @@ const value = {
     // OAuth account check
     oauthAccountCheck,
     resetOauthAccountCheck,
-    resetOauthAccountCheckOnly
+    resetOauthAccountCheckOnly,
+    showPasskeyPrompt,
+    dismissPasskeyPrompt: () => setShowPasskeyPrompt(false),
 };
 
     return (

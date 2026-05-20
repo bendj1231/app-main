@@ -150,8 +150,25 @@ const HomeTab: React.FC<{
   const [obHoursRaw, setObHoursRaw] = React.useState('');
   const [obHoursHash, setObHoursHash] = React.useState('');
   const [obHoursBand, setObHoursBand] = React.useState('');
-  const [obHoursHashing, setObHoursHashing] = React.useState(false);
-  const [obHoursHashed, setObHoursHashed] = React.useState(false);
+  const [obHoursHashing, setObHoursHashing] = useState(false);
+  const [obHoursHashed, setObHoursHashed] = useState(false);
+
+  const [obDob, setObDob] = React.useState(profile?.date_of_birth ?? '');
+  const [obLicenseType, setObLicenseType] = React.useState(profile?.current_occupation ?? '');
+  const obCadetTrack = React.useMemo(() => {
+    const STUDENT_OCC = ['Student Pilot', 'Cadet'];
+    const isStudent = STUDENT_OCC.includes(obLicenseType);
+    const isMinor = obDob ? (() => {
+      const birth = new Date(obDob);
+      const now = new Date();
+      let age = now.getFullYear() - birth.getFullYear();
+      const m = now.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
+      return age < 18;
+    })() : false;
+    if (!isMinor && !isStudent) return null;
+    return isMinor ? 'minor' : 'student';
+  }, [obDob, obLicenseType]);
 
   const hashHours = React.useCallback(async (rawHours: string) => {
     const n = parseFloat(rawHours);
@@ -702,6 +719,55 @@ const HomeTab: React.FC<{
                     <div className="flex items-center gap-3 px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
                       <span className="text-[9px] font-medium w-44 flex-shrink-0" style={{ color: '#cc0000' }}>Auth0 Cryptographic Identifier</span>
                       <span className="text-[10px] font-semibold text-gray-900 select-none font-mono">{profile?.id ? `0x${profile.id.slice(0,3).toUpperCase()}...${profile.id.slice(-4).toUpperCase()}` : '— Not resolved'}</span>
+                    </div>
+
+                    {/* Date of Birth — Article 11 age gate */}
+                    <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[9px] font-medium" style={{ color: '#cc0000' }}>Date of Birth <span className="text-gray-400 font-normal">(Article 11 — Age Verification)</span></span>
+                        {obCadetTrack === 'minor' && (
+                          <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#fff7ed', color: '#c2410c', border: '1px solid #fed7aa' }}>⚠ Minor — Cadet Track</span>
+                        )}
+                      </div>
+                      <input
+                        type="date"
+                        value={obDob}
+                        onChange={e => setObDob(e.target.value)}
+                        max={new Date().toISOString().split('T')[0]}
+                        className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                        style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                      />
+                    </div>
+
+                    {/* License / Occupation Type — Article 11 track gate */}
+                    <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[9px] font-medium" style={{ color: '#cc0000' }}>License / Occupation Type</span>
+                        {obCadetTrack === 'student' && (
+                          <span className="text-[8px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#fff7ed', color: '#c2410c', border: '1px solid #fed7aa' }}>⚠ Student — Cadet Track</span>
+                        )}
+                      </div>
+                      <select
+                        value={obLicenseType}
+                        onChange={e => setObLicenseType(e.target.value)}
+                        className="w-full px-2.5 py-1.5 text-[10px] text-gray-900 outline-none"
+                        style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px' }}
+                      >
+                        <option value="">Select license / occupation type...</option>
+                        {['Student Pilot','Cadet','Private Pilot (PPL)','Commercial Pilot (CPL)','Airline Transport Pilot (ATPL)','Flight Instructor (CFI)','Senior/Check Captain','Retired Pilot','Other'].map(o => (
+                          <option key={o} value={o}>{o}</option>
+                        ))}
+                      </select>
+                      {obCadetTrack && (
+                        <div className="mt-2 px-3 py-2 rounded-lg" style={{ background: '#fff7ed', border: '1px solid #fed7aa' }}>
+                          <p className="text-[8px] font-black text-orange-800 uppercase tracking-wide mb-0.5">Cadet Track Mode Activated</p>
+                          <p className="text-[8px] text-orange-700 leading-relaxed">
+                            {obCadetTrack === 'minor'
+                              ? 'You are under 18 years of age. Terminal 3 international airline gates are restricted. You may access Terminal 1 and Terminal 2 (flight school & cadet pathways). Gates unlock automatically at age 18.'
+                              : 'Student and Cadet licenses are restricted from Terminal 3 enterprise airline pathways. You may access Terminal 1 and Terminal 2. Gates unlock when you upgrade to CPL or above.'}
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     {/* Civil Aviation Authority — dropdown */}

@@ -39,6 +39,7 @@ export default {
             animation: {
                 'fadeInUp': 'fadeInUp 0.3s ease-out',
                 'fadeIn': 'fadeIn 0.3s ease-out',
+                'slideUp': 'slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
             },
             keyframes: {
                 fadeInUp: {
@@ -48,6 +49,10 @@ export default {
                 fadeIn: {
                     '0%': { opacity: '0' },
                     '100%': { opacity: '1' },
+                },
+                slideUp: {
+                    '0%': { opacity: '0', transform: 'translateY(100%)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
             },
             // Fluid spacing scale using clamp()

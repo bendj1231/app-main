@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
-            <div className="pt-32 pb-12 px-6 max-w-4xl mx-auto">
+            <div className="pt-32 pb-16 px-6 max-w-4xl mx-auto">
                 <button
                     onClick={onBack}
                     className="group flex items-center gap-3 px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-xl mb-8"
@@ -22,100 +22,314 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                     Back
                 </button>
 
-                <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-8">
+                <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
                     Privacy Policy
                 </h1>
-                <p className="text-sm text-slate-500 mb-8">Last updated: May 2026</p>
+                <p className="text-sm text-slate-500 mb-2">Last updated: 20 May 2026</p>
+                <p className="text-sm text-slate-500 mb-10">Effective date: 20 May 2026</p>
 
-                <div className="space-y-8 text-slate-700">
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-10">
+                    <p className="text-sm text-slate-700 leading-relaxed">
+                        This Privacy Policy explains how <strong>PilotRecognition.com</strong>, operated by <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> (together, "we", "us", "our"), collects, uses, stores, and protects your personal information. It applies to all users of our platform, including pilots, aviation professionals, flight school administrators, and airline operators. By using PilotRecognition.com you agree to this Policy in full.
+                    </p>
+                </div>
+
+                <div className="space-y-10 text-slate-700">
+
+                    {/* ── SECTION 1 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">Consent to Data Processing</h2>
-                        <p className="mb-4">
-                            By creating an account, you provide your explicit, informed consent to <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong>, operating as the developers of pilotrecognition.com. You authorize us to store your anonymous user identifier and your estimated flight hours (user-declared metadata) in our Supabase database strictly for the purpose of displaying your pilot profile.
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">1. Who We Are — Data Controller vs. Data Owner</h2>
+                        <p className="mb-3">
+                            PilotRecognition.com is operated by <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> as joint personal information controllers under the Philippines Data Privacy Act of 2012 (RA 10173), the EU General Data Protection Regulation (GDPR), and the UAE Federal Decree-Law No. 45 of 2021 on Personal Data Protection.
                         </p>
-                        <p className="mb-4">
-                            <strong>Authentication Proxy:</strong> Login and account security on this platform are independently managed by <strong>Auth0</strong> by Okta, a third-party authentication proxy service. When you enter your email and password, that data is sent directly to Auth0's secure servers — it never touches our own servers or database. Auth0 validates your credentials and returns a cryptographically secure token (JSON Web Token) to our application. Our Supabase database stores only an anonymous User ID token (e.g., auth0|12345...), not your email or password. We do not have the ability to view, access, or store your login credentials.
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-xl px-5 py-4 mb-4 text-sm">
+                            <p className="font-semibold text-indigo-900 mb-2">Two distinct roles — both matter:</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div className="bg-white rounded-lg px-4 py-3 border border-indigo-100">
+                                    <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide mb-1">We are the Data Controller</p>
+                                    <p className="text-slate-600 text-xs">We decide what infrastructure to use, which processors to engage, and how the platform operates. This is a legal role defined by GDPR — it cannot be delegated away by architecture alone.</p>
+                                </div>
+                                <div className="bg-white rounded-lg px-4 py-3 border border-indigo-100">
+                                    <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide mb-1">You are the Data Owner</p>
+                                    <p className="text-slate-600 text-xs">You decide what to share, with whom, and when. Your Verifiable Credentials live in your own wallet. Your sensitive fields are encrypted with a key only you can derive. You can delete everything at any time.</p>
+                                </div>
+                            </div>
+                            <p className="text-xs text-indigo-700 mt-3">These roles are not in conflict. We control the infrastructure. You own the data. Both are true simultaneously.</p>
+                        </div>
+                        <p className="mb-3 text-sm">
+                            <strong>Contact for data matters:</strong> <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a>
                         </p>
-                        <p className="mb-4">
-                            <strong>Data Limitation and Non-Verification Disclaimer:</strong> pilotrecognition.com displays only user-declared aviation metadata, such as estimated flight hours and general license ratings, based entirely on explicit user input. This platform does not collect, store, or verify official government-issued license numbers, logs, or legal credentials. Legal authentication of certifications remains strictly between the user, the relevant aviation Data Issuer, and authorized verification providers.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Third-Party Verification Disclaimer:</strong> pilotrecognition.com does not collect or store official government license documents or sensitive identification numbers on its own servers. Professional credential verification is securely offloaded to Veremark, an independent, third-party screening provider. By initiating a verification check, you consent to sharing your basic contact information with Veremark to process your credentials. Your verified achievements will be managed via your independent Verepass wallet.
+                        <p className="text-sm text-slate-500">
+                            We do not currently operate through a registered corporate entity. All data processing decisions are made by us as individuals and we accept personal responsibility for compliance with applicable privacy laws.
                         </p>
                     </section>
 
+                    {/* ── SECTION 2 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">Data Controller</h2>
-                        <p className="mb-4">
-                            pilotrecognition.com is a private aviation project developed and operated by <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> as individual developers. We act as Joint Personal Information Controllers (PICs) under the Data Privacy Act of 2012. We do not operate through a registered business entity. All data processing decisions are made by us as individuals, and we are personally responsible for compliance with applicable data privacy laws.
-                        </p>
-                    </section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">2. What Data We Collect and Why</h2>
 
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Information We Collect</h2>
-                        <p className="mb-4">PilotRecognition collects information you provide directly to us, including:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Your anonymous User ID (provided via JWT token from Auth0)</li>
-                            <li>User-declared aviation metadata (estimated flight hours, general license ratings, type ratings)</li>
-                            <li>PilotRecognition Profile data (recognition scores, pathway interests)</li>
-                            <li>Communication data (messages, inquiries)</li>
-                            <li>Payment information (processed securely through third-party providers)</li>
-                            <li>Terms acceptance timestamp (legal proof of consent)</li>
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-4">2a. Account &amp; Identity Data</h3>
+                        <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
+                            <li>Full name, email address, date of birth, nationality, country of residence</li>
+                            <li>Profile photo (optional)</li>
+                            <li>Contact phone number</li>
                         </ul>
-                        <p className="mt-4">We do <strong>not</strong> collect, store, or process your email address, password, or any login credentials. Authentication is handled entirely by Auth0, our third-party authentication proxy. We do <strong>not</strong> collect, store, or verify official government-issued license numbers, medical certificate numbers, logbook serial numbers, or any other sensitive personal identification data. Legal authentication of all certifications remains strictly between the user, the relevant aviation Data Issuer (e.g., CAAP, FAA, EASA), and authorized third-party verification providers.</p>
+                        <p className="text-sm mb-4"><strong>Legal basis:</strong> Contract performance (account creation); Legitimate interest (platform security).</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-4">2b. Aviation Credential Data</h3>
+                        <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
+                            <li>Pilot licence number, issuing authority, licence type, expiry date</li>
+                            <li>Medical certificate class and expiry</li>
+                            <li>Radio licence details</li>
+                            <li>Total flight hours, aircraft ratings, type ratings</li>
+                            <li>Employment history and professional experience</li>
+                        </ul>
+                        <p className="text-sm mb-4"><strong>Legal basis:</strong> Explicit consent (you provide this voluntarily to build your verified profile).</p>
+                        <p className="text-sm mb-4 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
+                            <strong>Encryption Notice:</strong> Sensitive credential fields (licence number, medical class, date of birth, contact number, expiry dates) are encrypted at rest using AES-256-GCM before storage. The encryption key is derived from your Google account identity and a server-side secret. We cannot read these fields without your authenticated session.
+                        </p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-4">2c. Verifiable Credential Data</h3>
+                        <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
+                            <li>Cryptographic credential hashes stored in our revocation registry</li>
+                            <li>Credential offer URLs for your walt.id wallet</li>
+                            <li>Credential status (active, revoked, expired)</li>
+                        </ul>
+                        <p className="text-sm mb-4">The actual Verifiable Credential (VC) is stored in your personal walt.id wallet — not on our servers. We retain only a revocation status entry to allow airlines to verify your credential has not been revoked.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-4">2d. Usage &amp; Technical Data</h3>
+                        <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
+                            <li>IP address, browser type, device type</li>
+                            <li>Pages visited, features used, session duration</li>
+                            <li>Activity logs for security and fraud detection</li>
+                        </ul>
+                        <p className="text-sm mb-4"><strong>Legal basis:</strong> Legitimate interest (security, fraud prevention, service improvement).</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-4">2e. Payment Data</h3>
+                        <p className="text-sm mb-4">Payment processing is handled entirely by <strong>Stripe</strong>. We do not store card numbers or bank details. We retain only transaction IDs, amounts, and subscription status.</p>
                     </section>
 
+                    {/* ── SECTION 3 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">2. How We Use Your Information</h2>
-                        <p className="mb-4">We use the information we collect to:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Provide and maintain our Pilot Recognition platform</li>
-                            <li>Process applications and pathway recommendations</li>
-                            <li>Send you technical notices and support messages</li>
-                            <li>Respond to your comments and questions</li>
-                            <li>Monitor and analyze trends, usage, and activities</li>
-                            <li>Detect, prevent, and address technical issues and fraud</li>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">3. Authentication — How Login Works</h2>
+                        <p className="mb-3 text-sm">
+                            Login and account security are managed by <strong>Auth0 by Okta</strong>, a third-party authentication provider. When you sign in with Google or email, your credentials are sent directly to Auth0's servers — they never pass through our own servers. Auth0 returns a cryptographically signed JWT token to our application. We store only your stable Auth0 user identifier (e.g., <code className="bg-slate-100 px-1 rounded text-xs">google-oauth2|12345...</code>), not your password.
+                        </p>
+                        <p className="text-sm mb-4">
+                            Your Google account identity is also used to derive your vault encryption key (see Section 2b). This means your sensitive data is only accessible while you are actively authenticated with your Google account.
+                        </p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-4">3a. Passkey (Biometric) Sign-In</h3>
+                        <p className="text-sm mb-3">
+                            After your first Google login, you may optionally register a <strong>passkey</strong> — a device-bound biometric credential (Face ID, fingerprint, or PIN). This allows future sign-ins without typing a password.
+                        </p>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm mb-3">
+                            <p className="font-semibold text-slate-800 mb-2">What we store vs. what we never see:</p>
+                            <ul className="space-y-1 text-xs text-slate-600">
+                                <li><strong>Private key:</strong> Never leaves your device hardware (Secure Enclave / TPM). Synced encrypted by <strong>Google Password Manager</strong> or <strong>iCloud Keychain</strong> — not our servers.</li>
+                                <li><strong>Public key:</strong> Stored in our <code className="bg-slate-100 px-1 rounded">pilot_passkeys</code> table. Used only to verify your signature — mathematically useless without the private key.</li>
+                                <li><strong>Credential ID:</strong> A reference identifier stored on your device and in our database to look up the correct public key.</li>
+                                <li><strong>Sign count:</strong> A replay-attack prevention counter incremented on each authentication.</li>
+                            </ul>
+                        </div>
+                        <p className="text-xs text-slate-500">
+                            Passkey registration is optional and can be revoked at any time by contacting <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a>. Even if our database is fully compromised, the public key alone cannot be used to impersonate you — the private key remains in Google's or Apple's encrypted custody.
+                        </p>
+                    </section>
+
+                    {/* ── SECTION 4 ── */}
+                    <section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">4. Third-Party Data Processors</h2>
+                        <p className="mb-4 text-sm">We use the following sub-processors. Each processes data only as instructed by us and under their respective data processing obligations.</p>
+
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-100">
+                                        <th className="text-left px-4 py-3 font-semibold text-slate-700 border border-slate-200">Processor</th>
+                                        <th className="text-left px-4 py-3 font-semibold text-slate-700 border border-slate-200">Purpose</th>
+                                        <th className="text-left px-4 py-3 font-semibold text-slate-700 border border-slate-200">Data Transferred</th>
+                                        <th className="text-left px-4 py-3 font-semibold text-slate-700 border border-slate-200">Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Supabase</td>
+                                        <td className="px-4 py-3 border border-slate-200">Database &amp; auth storage</td>
+                                        <td className="px-4 py-3 border border-slate-200">Encrypted profile data, activity logs</td>
+                                        <td className="px-4 py-3 border border-slate-200">US (AWS)</td>
+                                    </tr>
+                                    <tr className="bg-slate-50">
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Auth0 (Okta)</td>
+                                        <td className="px-4 py-3 border border-slate-200">Authentication</td>
+                                        <td className="px-4 py-3 border border-slate-200">Email, login credentials</td>
+                                        <td className="px-4 py-3 border border-slate-200">US</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Veremark</td>
+                                        <td className="px-4 py-3 border border-slate-200">Credential verification</td>
+                                        <td className="px-4 py-3 border border-slate-200">Name, licence docs (verification only)</td>
+                                        <td className="px-4 py-3 border border-slate-200">UK / Singapore</td>
+                                    </tr>
+                                    <tr className="bg-slate-50">
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">walt.id</td>
+                                        <td className="px-4 py-3 border border-slate-200">Verifiable Credential issuance</td>
+                                        <td className="px-4 py-3 border border-slate-200">Credential subject data (for VC only)</td>
+                                        <td className="px-4 py-3 border border-slate-200">EU (Austria)</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Stripe</td>
+                                        <td className="px-4 py-3 border border-slate-200">Payment processing</td>
+                                        <td className="px-4 py-3 border border-slate-200">Payment card data (not stored by us)</td>
+                                        <td className="px-4 py-3 border border-slate-200">US</td>
+                                    </tr>
+                                    <tr className="bg-slate-50">
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Resend</td>
+                                        <td className="px-4 py-3 border border-slate-200">Transactional email</td>
+                                        <td className="px-4 py-3 border border-slate-200">Email address, name</td>
+                                        <td className="px-4 py-3 border border-slate-200">US</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Cloudinary</td>
+                                        <td className="px-4 py-3 border border-slate-200">Image storage (profile photos)</td>
+                                        <td className="px-4 py-3 border border-slate-200">Profile images only</td>
+                                        <td className="px-4 py-3 border border-slate-200">US</td>
+                                    </tr>
+                                    <tr className="bg-slate-50">
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Google Password Manager</td>
+                                        <td className="px-4 py-3 border border-slate-200">Passkey private key sync (if opted in)</td>
+                                        <td className="px-4 py-3 border border-slate-200">Passkey private key only — end-to-end encrypted, never visible to us</td>
+                                        <td className="px-4 py-3 border border-slate-200">Google infrastructure</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Apple iCloud Keychain</td>
+                                        <td className="px-4 py-3 border border-slate-200">Passkey private key sync on Apple devices (if opted in)</td>
+                                        <td className="px-4 py-3 border border-slate-200">Passkey private key only — end-to-end encrypted, never visible to us</td>
+                                        <td className="px-4 py-3 border border-slate-200">Apple infrastructure</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-3 text-sm">
+                            <strong className="text-yellow-800">Veremark Retention Notice:</strong> When you initiate a verification check, your documents are processed under Veremark's own privacy policy and applicable legal data retention obligations in their operating jurisdictions (UK, Singapore, Philippines). We instruct Veremark to delete documents post-verification; however, Veremark may be subject to their own jurisdictional retention laws which are outside our control. You consent to this limited third-party processing window when you initiate a verification check.
+                        </div>
+                    </section>
+
+                    {/* ── SECTION 5 ── */}
+                    <section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">5. How We Share Your Data</h2>
+                        <p className="mb-3 text-sm">We do <strong>not</strong> sell your personal data. We share data only in the following circumstances:</p>
+                        <ul className="list-disc pl-6 space-y-2 text-sm">
+                            <li><strong>With airlines and operators:</strong> Only when you explicitly present a Verifiable Credential or authorise a pathway application. You control every disclosure.</li>
+                            <li><strong>With flight schools / ATOs:</strong> Only anonymised aggregate data (e.g., number of pilots interested in a pathway) unless you explicitly grant access.</li>
+                            <li><strong>For legal compliance:</strong> If required by law, court order, or government authority. We will notify you where legally permitted to do so.</li>
+                            <li><strong>Business transfers:</strong> If PilotRecognition is acquired or merged, your data may transfer to the successor entity under the same privacy protections.</li>
                         </ul>
                     </section>
 
+                    {/* ── SECTION 6 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Information Sharing</h2>
-                        <p className="mb-4">We may share information we collect with:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Airlines, operators, and training providers (only with your explicit consent)</li>
-                            <li>Service providers who perform services on our behalf</li>
-                            <li>Business partners (only with your explicit consent)</li>
-                            <li>Law enforcement or government authorities (when required by law)</li>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">6. Data Security</h2>
+                        <ul className="list-disc pl-6 space-y-2 text-sm">
+                            <li><strong>Encryption at rest:</strong> Sensitive credential fields are encrypted using AES-256-GCM with per-pilot keys before reaching our database.</li>
+                            <li><strong>Encryption in transit:</strong> All data transmitted between your browser and our servers uses TLS 1.2+.</li>
+                            <li><strong>Row-Level Security:</strong> Database access controls ensure pilots can only query their own records.</li>
+                            <li><strong>Vault key architecture:</strong> Your encryption key is derived from your Google identity and a server-side secret stored in a hardware-backed secret manager. We cannot decrypt your data without your authenticated session.</li>
+                            <li><strong>Verifiable Credentials:</strong> Your actual VCs are stored in your personal walt.id wallet. We hold only a revocation status entry.</li>
+                            <li><strong>Passkey architecture:</strong> If you register a passkey, the private key is stored exclusively in your device hardware and synced end-to-end encrypted by Google or Apple. We store only your public key — a value that can verify your identity but cannot impersonate you. A full compromise of our database would not expose your private key.</li>
+                        </ul>
+                        <p className="mt-4 text-sm text-slate-500">No system is 100% secure. In the event of a breach affecting your personal data, we will notify you and the relevant supervisory authority within 72 hours of becoming aware, as required under GDPR Article 33.</p>
+                    </section>
+
+                    {/* ── SECTION 7 ── */}
+                    <section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">7. Data Retention</h2>
+                        <ul className="list-disc pl-6 space-y-2 text-sm">
+                            <li><strong>Active account data:</strong> Retained while your account is active.</li>
+                            <li><strong>Deleted accounts:</strong> All personal data permanently erased within 30 days of account deletion request, except where legal obligations require longer retention.</li>
+                            <li><strong>Activity logs:</strong> Retained for 12 months for security purposes, then automatically purged.</li>
+                            <li><strong>Credential revocation registry:</strong> Retained indefinitely as a cryptographic audit trail (contains only credential IDs and status — no personal data).</li>
+                            <li><strong>Payment records:</strong> Retained for 7 years as required by financial regulations.</li>
                         </ul>
                     </section>
 
+                    {/* ── SECTION 8 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Data Security</h2>
-                        <p>Your data is stored securely using Supabase infrastructure. While we implement standard digital security measures, you acknowledge that no online database is 100% secure against unauthorized breaches.</p>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">8. Your Rights</h2>
+                        <p className="mb-4 text-sm">Depending on your jurisdiction you have some or all of the following rights:</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                            {[
+                                { right: 'Right of Access', desc: 'Request a copy of all personal data we hold about you.' },
+                                { right: 'Right to Rectification', desc: 'Correct inaccurate or incomplete data.' },
+                                { right: 'Right to Erasure', desc: 'Request deletion of your personal data ("right to be forgotten").' },
+                                { right: 'Right to Restrict Processing', desc: 'Ask us to pause processing while a dispute is resolved.' },
+                                { right: 'Right to Data Portability', desc: 'Receive your data in a machine-readable format.' },
+                                { right: 'Right to Object', desc: 'Object to processing based on legitimate interests.' },
+                                { right: 'Right to Withdraw Consent', desc: 'Withdraw consent at any time without affecting prior processing.' },
+                                { right: 'Right Not to be Profiled', desc: 'Object to automated decision-making that significantly affects you.' },
+                            ].map(({ right, desc }) => (
+                                <div key={right} className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3">
+                                    <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide mb-1">{right}</p>
+                                    <p className="text-slate-600 text-xs">{desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="mt-4 text-sm">To exercise any of these rights, email <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a>. We will respond within 30 days. Identity verification may be required.</p>
                     </section>
 
+                    {/* ── SECTION 9 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Data Retention and Deletion</h2>
-                        <p className="mb-4">You retain the right to delete your profile at any time. Upon your request or account deletion, we will permanently erase your email, license information, flight hours, and all associated personal data from the active database within 30 days.</p>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">9. International Data Transfers</h2>
+                        <p className="text-sm mb-3">
+                            Our platform serves pilots globally. Your data may be transferred to and processed in countries outside your own, including the United States, United Kingdom, Singapore, and EU member states. Where we transfer data outside the EEA, we rely on Standard Contractual Clauses (SCCs) or adequacy decisions as the legal transfer mechanism.
+                        </p>
+                        <p className="text-sm">
+                            For Philippines-based users: processing by non-Philippines entities is governed by our contractual obligations with each processor and by RA 10173. We take reasonable steps to ensure equivalent protection.
+                        </p>
                     </section>
 
+                    {/* ── SECTION 10 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Your Rights</h2>
-                        <p className="mb-4">You have the right to:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Access your personal information</li>
-                            <li>Correct inaccurate information</li>
-                            <li>Request deletion of your personal information</li>
-                            <li>Opt-out of marketing communications</li>
-                            <li>Object to processing of your personal information</li>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">10. Cookies</h2>
+                        <p className="text-sm mb-3">We use strictly necessary cookies for authentication session management and CSRF protection. We do not use third-party advertising cookies. A full Cookie Policy is available at <button onClick={() => onNavigate('cookie-policy')} className="text-blue-600 hover:underline">Cookie Policy</button>.</p>
+                    </section>
+
+                    {/* ── SECTION 11 ── */}
+                    <section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">11. Children's Privacy</h2>
+                        <p className="text-sm">PilotRecognition.com is not directed at children under 16 years of age. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, contact us at <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a> and we will delete it promptly.</p>
+                    </section>
+
+                    {/* ── SECTION 12 ── */}
+                    <section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">12. Supervisory Authority Complaints</h2>
+                        <p className="text-sm mb-3">If you believe we have processed your data unlawfully, you have the right to lodge a complaint with the relevant supervisory authority:</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm">
+                            <li><strong>Philippines:</strong> National Privacy Commission (NPC) — <a href="https://www.privacy.gov.ph" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">privacy.gov.ph</a></li>
+                            <li><strong>EU/EEA:</strong> Your local Data Protection Authority (DPA)</li>
+                            <li><strong>UK:</strong> Information Commissioner's Office (ICO) — <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">ico.org.uk</a></li>
+                            <li><strong>UAE:</strong> UAE Data Office — <a href="https://uaedataoffice.gov.ae" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">uaedataoffice.gov.ae</a></li>
                         </ul>
+                        <p className="mt-3 text-sm">We would appreciate the opportunity to address your concern before you contact a regulator. Please email us first at <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a>.</p>
                     </section>
 
+                    {/* ── SECTION 13 ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Contact Us</h2>
-                        <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-                        <p className="mt-2">privacy@pilotrecognition.com</p>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">13. Changes to This Policy</h2>
+                        <p className="text-sm">We may update this Privacy Policy from time to time. We will notify you of material changes by email or by a prominent notice on the platform at least 14 days before the change takes effect. Continued use of the platform after the effective date constitutes acceptance of the updated Policy.</p>
                     </section>
+
+                    {/* ── SECTION 14 ── */}
+                    <section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">14. Contact Us</h2>
+                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-sm space-y-2">
+                            <p><strong>Data Privacy Contact:</strong> <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a></p>
+                            <p><strong>General Contact:</strong> <a href="mailto:contact@pilotrecognition.com" className="text-blue-600 hover:underline">contact@pilotrecognition.com</a></p>
+                            <p><strong>Response time:</strong> Within 30 days of receipt for data subject requests; within 72 hours for breach notifications.</p>
+                        </div>
+                    </section>
+
                 </div>
             </div>
         </div>

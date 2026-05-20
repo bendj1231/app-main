@@ -6,7 +6,7 @@ const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
@@ -15,7 +15,7 @@ Deno.serve(async (req: Request) => {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
 
-  if (req.method !== 'DELETE') {
+  if (req.method !== 'DELETE' && req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405, headers: { 'Access-Control-Allow-Origin': '*' } });
   }
 
@@ -68,8 +68,11 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    // Delete all related data rows
+    // Delete all related data rows — complete ciphertext purge for DCA Article 6 compliance
     await supabase.from('pilot_documents').delete().eq('pilot_id', userId);
+    await supabase.from('pilot_licensure_experience').delete().eq('user_id', userId);
+    await supabase.from('pilot_passkeys').delete().eq('user_id', userId);
+    await supabase.from('pilot_passkey_challenges').delete().eq('user_id', userId);
     await supabase.from('user_activity_log').delete().eq('user_id', userId);
     await supabase.from('pathway_card_interests').delete().eq('pilot_id', userId);
     await supabase.from('user_app_access').delete().eq('user_id', userId);

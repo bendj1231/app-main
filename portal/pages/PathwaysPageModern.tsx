@@ -2371,7 +2371,7 @@ const PathwayCard: React.FC<{
                     onClick={onSubmitInterest}
                     disabled={!currentUser}
                     className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-emerald-500/25"
-                    title={!currentUser ? "Sign in to submit interest" : "Submit interest in pathway"}
+                    title={!currentUser ? 'Sign in to submit interest' : 'Submit interest in pathway'}
                   >
                     <Briefcase className="w-5 h-5" />
                     {currentUser ? 'Submit Interest' : 'Sign in to Submit Interest'}
@@ -4371,6 +4371,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [selectedStage1PathwayId, setSelectedStage1PathwayId] = useState<string | null>(null);
   const [interestSubmitting, setInterestSubmitting] = useState(false);
   const [interestSubmitted, setInterestSubmitted] = useState<string | null>(null); // card id
+  // Article 4 — Skybridge T2 legal notice state
+  const [skybridgePendingPathway, setSkybridgePendingPathway] = useState<PathwayData | null>(null);
   const [stage1Index, setStage1Index] = useState(0);
 
   // Maps PATHWAYS[] UUID → DISCOVERY_PATHWAYS short-string key
@@ -4569,6 +4571,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   // Submit Interest handler — writes to pathway_card_interests table
   const handleSubmitInterest = async (pathway: PathwayData) => {
     if (!currentUser?.id || interestSubmitting) return;
+    if (cadетGateStatus.restricted) return;
     const rawCardId = pathway.id.replace('enterprise-', '');
     setInterestSubmitting(true);
     try {
@@ -4642,6 +4645,35 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   }, []);
 
   const { userProfile, currentUser } = useAuth();
+
+  // ── Terminal 1 Cadet Track Mode gate ────────────────────────────────────────
+  // Pilots who are minors (< 18) OR hold only a Student/SPL/PPL license are
+  // restricted from submitting interest to enterprise (Terminal 3) pathways.
+  // They may view all cards but the submit gate is locked with a redirect nudge.
+  const cadетGateStatus = (() => {
+    if (!currentUser || !userProfile) return { restricted: false, reason: null as string | null };
+    const dob: string | null = userProfile.date_of_birth || null;
+    const ratings: string[] = Array.isArray(userProfile.ratings) ? userProfile.ratings : [];
+    const isMinor = dob ? (() => {
+      const birth = new Date(dob);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age < 18;
+    })() : false;
+    const STUDENT_LICENSES = ['student', 'spl', 'student pilot', 'student pilot license', 'spa'];
+    const isStudentLicense = ratings.some(r => STUDENT_LICENSES.includes(r.toLowerCase()));
+    const hasCPLOrAbove = ratings.some(r => {
+      const rl = r.toLowerCase();
+      return rl.includes('cpl') || rl.includes('atpl') || rl.includes('commercial');
+    });
+    const restricted = isMinor || (isStudentLicense && !hasCPLOrAbove);
+    if (!restricted) return { restricted: false, reason: null };
+    if (isMinor && isStudentLicense) return { restricted: true, reason: 'minor+student' };
+    if (isMinor) return { restricted: true, reason: 'minor' };
+    return { restricted: true, reason: 'student' };
+  })();
 
   // Handle posting pathway cards
   const handlePostPathway = async (pathwayData: any) => {
@@ -7777,7 +7809,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <p className="text-white/50 text-xs leading-relaxed mb-4">
                           Submit your verified profile to this airline's interest pool. They pull from candidates — you don't push an application.
                         </p>
-                        {alreadySubmitted ? (
+                        {cadетGateStatus.restricted ? (
+                          <div className="bg-amber-500/10 border border-amber-500/25 rounded-xl px-4 py-3.5">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <svg className="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                              <p className="text-amber-400 text-xs font-bold uppercase tracking-widest">Gate Restricted — Cadet Track Mode</p>
+                            </div>
+                            <p className="text-white/50 text-xs leading-relaxed">
+                              {cadетGateStatus.reason === 'minor+student'
+                                ? 'Terminal 3 requires age 18+ and a validated CPL or ATPL. You are currently in Cadet Track Mode as a minor student pilot.'
+                                : cadетGateStatus.reason === 'minor'
+                                ? 'Terminal 3 requires a minimum age of 18. Your profile is saved — gates unlock automatically when you reach eligibility.'
+                                : 'Terminal 3 requires a validated Commercial Pilot License (CPL/ATPL). Student and PPL licenses are restricted to the open pathway lounge.'}
+                            </p>
+                            <p className="text-amber-500/70 text-[10px] mt-2">You can view all pathways and track your progress. Submissions unlock when eligibility requirements are met.</p>
+                          </div>
+                        ) : alreadySubmitted ? (
                           <div className="flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 rounded-xl px-4 py-3">
                             <svg className="w-5 h-5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <div>
@@ -7787,7 +7834,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                           </div>
                         ) : (
                           <button
-                            onClick={() => handleSubmitInterest(p)}
+                            onClick={() => currentUser && setSkybridgePendingPathway(p)}
                             disabled={!currentUser || interestSubmitting}
                             className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl transition-all text-sm shadow-lg shadow-emerald-500/20"
                           >
@@ -8659,6 +8706,63 @@ const MatchResultModal: React.FC<MatchResultModalProps> = ({ pathway, userProfil
         </div>
       </div>
     </div>
+
+      {/* Article 4 — Skybridge T2 Legal Notice Modal */}
+      {skybridgePendingPathway && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setSkybridgePendingPathway(null)} />
+          <div className="relative z-10 w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+            {/* Header */}
+            <div className="px-5 py-4 border-b border-white/8 flex items-start gap-3">
+              <span className="text-xl leading-none mt-0.5">🛃</span>
+              <div>
+                <p className="text-white font-bold text-sm">Skybridge Clearance — Terminal 2</p>
+                <p className="text-white/40 text-xs mt-0.5">Article 4 — PR-DCA-001 v1.6</p>
+              </div>
+            </div>
+            {/* Pathway being submitted */}
+            <div className="px-5 py-3 bg-white/5 border-b border-white/8">
+              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Routing cargo to</p>
+              <p className="text-white font-semibold text-sm">{skybridgePendingPathway.airline || skybridgePendingPathway.name}</p>
+              {skybridgePendingPathway.locations?.[0] && (
+                <p className="text-white/40 text-xs">{skybridgePendingPathway.locations[0].city}, {skybridgePendingPathway.locations[0].country}</p>
+              )}
+            </div>
+            {/* Legal notice body */}
+            <div className="px-5 py-4">
+              <p className="text-white/70 text-xs leading-relaxed">
+                By submitting your self-declared credentials to this gate, you instruct the platform to open a pass-through skybridge to the operator.
+                The receiving entity acts as an <span className="text-white font-semibold">Independent Data Controller</span> of this cargo.
+                WM Pilot Group does not verify Terminal 2 entries and assumes <span className="text-white font-semibold">zero liability</span> for downstream HR data retention or vetting.
+              </p>
+              <div className="mt-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-[10px] text-white/35 leading-relaxed">
+                Your profile data is encrypted on your device (AES-256-GCM) before transmission. The operator receives only a signed, self-declared credential payload — no raw personal data is transferred by WM Pilot Group.
+              </div>
+            </div>
+            {/* Actions */}
+            <div className="px-5 pb-5 flex gap-3">
+              <button
+                onClick={() => setSkybridgePendingPathway(null)}
+                className="flex-1 py-2.5 rounded-xl border border-white/10 text-white/60 font-semibold text-sm hover:bg-white/5 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  const pathway = skybridgePendingPathway;
+                  setSkybridgePendingPathway(null);
+                  handleSubmitInterest(pathway);
+                }}
+                disabled={interestSubmitting}
+                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {interestSubmitting ? 'Submitting...' : 'Open Skybridge — Confirm'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

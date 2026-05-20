@@ -99,6 +99,98 @@ Deno.serve(async (req) => {
             created_at: new Date().toISOString(),
           });
 
+          // AUTO-ISSUE VERIFIABLE CREDENTIALS if verified
+          if (finalStatus === 'verified') {
+            try {
+              const { data: profile } = await supabaseAdmin
+                .from('profiles')
+                .select('id, auth0_id, license_id, country_of_license, license_expiry, medical_class, medical_expiry, current_flight_hours')
+                .eq('id', pilotId)
+                .single();
+
+              if (profile?.auth0_id) {
+                const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+                const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+                const issueUrl = `${supabaseUrl}/functions/v1/pilot-terminal-issue`;
+
+                const credentialsToIssue = [];
+
+                // PilotLicenseVC
+                if (profile.license_id) {
+                  credentialsToIssue.push({
+                    credential_type: 'PilotLicenseVC',
+                    credential_data: {
+                      licenseNumber: profile.license_id,
+                      issuingAuthority: profile.country_of_license || 'CAAP',
+                      expiryDate: profile.license_expiry || null,
+                      totalHours: profile.current_flight_hours || null,
+                      verificationMethod: 'Veremark + PilotRecognition Multi-Layer Attestation',
+                      veremarkCheckId: checkId,
+                    },
+                  });
+                }
+
+                // MedicalCertVC
+                if (profile.medical_class) {
+                  credentialsToIssue.push({
+                    credential_type: 'MedicalCertVC',
+                    credential_data: {
+                      medicalClass: profile.medical_class,
+                      medicalExpiry: profile.medical_expiry || null,
+                      verificationMethod: 'Veremark + PilotRecognition Multi-Layer Attestation',
+                      veremarkCheckId: checkId,
+                    },
+                  });
+                }
+
+                for (const cred of credentialsToIssue) {
+                  try {
+                    const issueRes = await fetch(issueUrl, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${serviceKey}`,
+                      },
+                      body: JSON.stringify({
+                        auth0_id: profile.auth0_id,
+                        profile_id: pilotId,
+                        credential_type: cred.credential_type,
+                        credential_data: cred.credential_data,
+                        source_provider: 'Veremark',
+                      }),
+                    });
+
+                    if (issueRes.ok) {
+                      const issued = await issueRes.json();
+                      // Register in revocation registry
+                      if (issued.credential_id) {
+                        await supabaseAdmin.from('vc_revocation_registry').upsert({
+                          credential_id: issued.credential_id,
+                          issuer_did: issued.issuer_did || 'did:web:pilotrecognition.com',
+                          subject_did: `did:web:pilotrecognition.com:pilots:${profile.auth0_id.replace('|', '-')}`,
+                          credential_type: cred.credential_type,
+                          profile_id: pilotId,
+                          status: 'active',
+                          issued_at: new Date().toISOString(),
+                          expires_at: cred.credential_data.expiryDate || cred.credential_data.medicalExpiry || null,
+                          metadata: { source: 'veremark_webhook', check_id: checkId },
+                        }, { onConflict: 'credential_id' });
+                      }
+                      console.log(`[veremark-webhook] Auto-issued ${cred.credential_type} for pilot ${pilotId}`);
+                    } else {
+                      console.error(`[veremark-webhook] Failed to issue ${cred.credential_type}:`, await issueRes.text());
+                    }
+                  } catch (issueErr: any) {
+                    console.error(`[veremark-webhook] VC issuance error for ${cred.credential_type}:`, issueErr.message);
+                  }
+                }
+              }
+            } catch (vcErr: any) {
+              console.error('[veremark-webhook] Auto-VC issuance block failed:', vcErr.message);
+              // Non-critical — verification status already updated
+            }
+          }
+
           // ACTIVATION CREDIT: Generate 5% Member Credit for ATO (if verification succeeded)
           if (finalStatus === 'verified' && event.metadata?.ato_id) {
             const atoId = event.metadata.ato_id;

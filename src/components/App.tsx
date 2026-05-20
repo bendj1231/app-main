@@ -4,6 +4,7 @@ import { supabase } from '@/src/lib/supabase';
 import { HomePage } from '@/routes';
 import { LoginModal } from '@/components/website/components/LoginModal';
 import { CookieConsent } from '@/components/CookieConsent';
+import { PasskeyPrompt } from '@/components/website/components/PasskeyPrompt';
 import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
 import ChatWidget from '@/portal/components/w1000/ChatWidget';
 // Admin components
@@ -63,7 +64,7 @@ export const App = () => {
   const [foundationProgress, setFoundationProgress] = useState(0);
   const [examinationScore, setExaminationScore] = useState(0);
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, showPasskeyPrompt, dismissPasskeyPrompt } = useAuth();
 
   
   // Fetch user's enrollment status from Supabase
@@ -217,6 +218,15 @@ export const App = () => {
           onClose={() => setIsLoginModalOpen(false)}
           onLogin={navigateToPortal}
           onNavigate={navigateTo}
+        />
+      )}
+
+      {/* Passkey registration prompt — shown once after first Google login */}
+      {showPasskeyPrompt && currentUser && (
+        <PasskeyPrompt
+          userId={currentUser.id}
+          userEmail={currentUser.email}
+          onDismiss={dismissPasskeyPrompt}
         />
       )}
 
