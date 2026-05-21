@@ -311,12 +311,14 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       {/* Badge */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 999, marginBottom: 20 }}>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Pilot Credential Vault</span>
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.15em', textTransform: 'uppercase' }}>PIC Wallet</span>
+        <span style={{ width: 1, height: 10, background: '#fecaca', display: 'inline-block', margin: '0 2px' }} />
+        <span style={{ fontSize: 9, fontWeight: 500, color: '#ef4444', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Pilot Identity Credentials</span>
       </div>
 
       {/* Title — hidden, now handled by badge */}
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 8, display: 'none' }}>
-        PilotRecognition Wallet
+        PIC Wallet
       </p>
       <h1 style={{ fontSize: 26, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', marginBottom: 8, textAlign: 'center' }}>
         {authStage === 'gate' || authStage === 'verifying'
