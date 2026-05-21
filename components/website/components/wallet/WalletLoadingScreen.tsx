@@ -454,13 +454,21 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       )}
 
       {/* Bottom watermark */}
-      <div style={{ position: 'absolute', bottom: 24, display: 'flex', alignItems: 'center', gap: 6 }}>
-        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-        <span style={{ fontSize: 9, color: '#cbd5e1', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-          wallet.pilotrecognition.com
-        </span>
+      <div style={{ position: 'absolute', bottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span style={{ fontSize: 9, color: '#cbd5e1', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+            wallet.pilotrecognition.com
+          </span>
+        </div>
+        <span style={{ color: '#e2e8f0', fontSize: 9 }}>·</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 9, color: '#94a3b8', letterSpacing: '0.05em' }}>Powered by</span>
+          <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626', letterSpacing: '0.05em' }}>walt.id</span>
+          <span style={{ fontSize: 8, fontWeight: 600, color: '#94a3b8', background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 3, padding: '1px 4px', letterSpacing: '0.05em' }}>wallet</span>
+        </div>
       </div>
     </div>
   );
