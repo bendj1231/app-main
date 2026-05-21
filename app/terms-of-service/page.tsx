@@ -189,9 +189,9 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                     <tr className="bg-emerald-50">
                                         <td className="px-4 py-3 border border-emerald-200 align-top">
                                             <p className="font-black text-emerald-800 text-xs">Terminal 3</p>
-                                            <p className="text-emerald-600 text-[10px] font-semibold uppercase">Verified</p>
+                                            <p className="text-emerald-600 text-[10px] font-semibold uppercase">Temporal Verified</p>
                                         </td>
-                                        <td className="px-4 py-3 border border-emerald-200 text-xs text-slate-600">Strictly regulated verified domain. Authenticated via third-party secure APIs against sovereign civil aviation registries. Only active, validated, and compliant flight crew members possess routing clearance.</td>
+                                        <td className="px-4 py-3 border border-emerald-200 text-xs text-slate-600">Strictly regulated, point-in-time authenticated domain. Credentials validated via third-party secure APIs against sovereign civil aviation registries at the block timestamp of the last successful independent registry query. Verification status reflects a historical snapshot only — not a continuous warranty of airworthiness or ongoing regulatory compliance. Only active, validated, and compliant flight crew members whose credentials have cleared the most recent independent verification cycle possess routing clearance.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -203,6 +203,17 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <div className="border-l-4 border-slate-300 bg-slate-50 rounded-r-xl px-5 py-3 mb-2">
                             <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-1">Regulatory Neutrality — Terminal 3 Status</p>
                             <p className="text-slate-600 text-xs leading-relaxed">Terminal 3 status does not certify airworthiness, medical fitness, or regulatory compliance for any civil aviation purpose. It serves exclusively as a visual beacon of third-party credential verification, provided for informational purposes to facilitate institutional workflows. The sole authoritative source for any airworthiness or licensing determination remains the issuing Civil Aviation Authority (see Section 8).</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">2.1 Point-in-Time Temporal Constraint — Terminal 3 Verified Domain</h3>
+                        <p className="mb-3 text-sm">The designation of Terminal 3 as a <strong>"Verified Domain"</strong> constitutes a <strong>Point-in-Time Temporal Snapshot</strong> only. The cryptographic tokens and status indicators rendered within this domain reflect exclusively the historical verification state of the User's credentials at the exact block timestamp of the last successful independent registry query sequence executed by the Platform's designated verification partner.</p>
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-4 mb-3">
+                            <p className="text-emerald-800 text-xs font-black uppercase tracking-wide mb-2">Verification Snapshot — Not a Continuous Airworthiness Certificate</p>
+                            <p className="text-emerald-900 text-xs leading-relaxed">This status indicator <strong>does not constitute a continuous warranty, real-time guarantee, or ongoing certificate</strong> of airworthiness, medical fitness, operational currency, or regulatory compliance. The Platform Operator explicitly disclaims any duty of continuous credential tracking between formal verification cycles. Credentials may lapse, be revoked, or be suspended by the issuing Civil Aviation Authority at any time after the Platform's last successful registry query — such post-snapshot changes are outside the Platform's operational visibility and control.</p>
+                        </div>
+                        <div className="border-l-4 border-amber-400 bg-amber-50 rounded-r-xl px-5 py-3 mb-2">
+                            <p className="text-amber-800 text-xs font-bold uppercase tracking-wide mb-1">Enterprise Reliance Limitation — ICAO Annex 6 Obligation</p>
+                            <p className="text-amber-700 text-xs leading-relaxed">The sole authoritative venue for real-time licensing validity and crew currency confirmation remains the issuing Civil Aviation Authority. Any aviation enterprise relying on the Platform's Terminal 3 snapshot indices for operational dispatch decisions does so subject to its own mandatory, non-delegable independent crew verification obligations under ICAO Annex 6 and applicable national air operator certification requirements. The Platform's snapshot does not satisfy, substitute for, or supersede these independent statutory obligations.</p>
                         </div>
                     </section>
 
