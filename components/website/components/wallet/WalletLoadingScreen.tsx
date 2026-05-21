@@ -470,35 +470,6 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
               <p style={{ fontSize: 8, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 500 }}>Scan with your<br/>DID Wallet</p>
             </div>
 
-            {/* DID options */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <button
-                onClick={handlePasskey}
-                disabled={authStage === 'verifying'}
-                style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#0f172a', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, textAlign: 'left' }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Use Existing Passkey
-              </button>
-            </div>
-          </div>
-
-          {/* Secured by walt.id */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, padding: '6px 10px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <div style={{ width: 20, height: 20, borderRadius: 4, background: '#0ea5e9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-              </div>
-              <div>
-                <p style={{ fontSize: 9, fontWeight: 700, color: '#0f172a', margin: 0 }}>PIC Wallet Site</p>
-                <p style={{ fontSize: 8, color: '#94a3b8', margin: 0, fontFamily: 'monospace' }}>DID:wallet.pilotrecognition.com</p>
-              </div>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a' }} />
-              <span style={{ fontSize: 8, color: '#64748b', fontWeight: 500 }}>Secured by </span>
-              <span style={{ fontSize: 8, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
-            </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
