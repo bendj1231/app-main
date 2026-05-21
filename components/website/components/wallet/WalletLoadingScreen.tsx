@@ -420,34 +420,6 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <button
-              onClick={handlePasskey}
-              disabled={authStage === 'verifying'}
-              style={{
-                width: '100%', padding: '11px 0', borderRadius: 10, border: 'none',
-                background: authStage === 'verifying' ? '#fca5a5' : '#dc2626',
-                color: '#ffffff', fontSize: 12, fontWeight: 800,
-                letterSpacing: '0.08em', textTransform: 'uppercase',
-                cursor: authStage === 'verifying' ? 'not-allowed' : 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                transition: 'background 0.2s',
-              }}
-            >
-              {authStage === 'verifying' ? (
-                <>
-                  <div style={{ width: 13, height: 13, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#ffffff', borderRadius: '50%', animation: 'walletSpin 0.7s linear infinite' }} />
-                  Verifying…
-                </>
-              ) : (
-                <>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-                  </svg>
-                  Enter Passkey & Open Wallet
-                </>
-              )}
-            </button>
-
-            <button
               onClick={handleGoogle}
               disabled={authStage === 'verifying'}
               style={{
