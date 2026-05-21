@@ -14,6 +14,20 @@ import {
   invalidateStatusCache,
 } from '../../../../lib/wallet/statusList';
 import type { WalletState, BitstringStatusResult } from '../../../../lib/wallet/types/schemas';
+import {
+  generateEnclaveKey,
+  getHolderDid,
+  signCredentialPayload,
+  getEnclaveStatus,
+} from '../../../../lib/wallet/enclave';
+import {
+  initStorageKey,
+  storeCredential,
+  logPresentationEvent,
+  getStorageHealthReport,
+} from '../../../../lib/wallet/storage';
+import type { EnclaveStatus } from '../../../../lib/wallet/enclave';
+import type { StorageHealthReport } from '../../../../lib/wallet/storage';
 
 interface WalletViewPageProps {
   userId?: string;
@@ -78,6 +92,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   // W3C VC wallet state
   const [walletState, setWalletState] = useState<WalletState | null>(null);
   const [slotStatuses, setSlotStatuses] = useState<Record<number, BitstringStatusResult>>({});
+  const [enclaveStatus, setEnclaveStatus] = useState<EnclaveStatus | null>(null);
+  const [storageHealth, setStorageHealth] = useState<StorageHealthReport | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -94,6 +110,19 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       if (p) {
         const ws = buildInitialWalletState(p, resolvedChecks);
         setWalletState(ws);
+        // Tier 1 — init enclave key (idempotent)
+        await generateEnclaveKey();
+        const es = await getEnclaveStatus();
+        setEnclaveStatus(es);
+        // Tier 2 — init encrypted storage keyed to holder DID
+        const hDid = es.holderDid || `did:web:wallet.pilotrecognition.com:${p.id}`;
+        await initStorageKey(hDid);
+        // Persist built VCs into encrypted local storage
+        if (ws.slots.license.vc)  await storeCredential('license', ws.slots.license.vc as any);
+        if (ws.slots.medical.vc)  await storeCredential('medical', ws.slots.medical.vc as any);
+        if (ws.slots.elp.vc)      await storeCredential('elp',     ws.slots.elp.vc     as any);
+        const health = await getStorageHealthReport();
+        setStorageHealth(health);
       }
       setLoading(false);
     };
@@ -689,10 +718,29 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
               Request Sign-off
             </button>
             <button
-              onClick={() => {
+              onClick={async () => {
                 if (profile) {
                   const vp = buildAviationRecordSummaryVP(profile, checks, disclosureToggles);
+                  // Sign proof with enclave key
+                  try {
+                    const proofValue = await signCredentialPayload(JSON.stringify(vp.verifiableCredential.credentialSubject));
+                    vp.proof.proofValue = proofValue;
+                    vp.verifiableCredential.proof.proofValue = proofValue;
+                    vp.proof.verificationMethod = enclaveStatus?.holderDid
+                      ? `${enclaveStatus.holderDid}#key-0`
+                      : vp.proof.verificationMethod;
+                  } catch { /* enclave unavailable — proofValue stays PENDING */ }
                   setWalletState(prev => prev ? { ...prev, activePresentation: vp } : prev);
+                  // Tier 4 — write to audit log
+                  await logPresentationEvent({
+                    recipientDid:     'did:web:pilotrecognition.com#airline-portal',
+                    recipientName:    'Airline ATS Portal',
+                    presentationType: 'AviationRecordSummary',
+                    disclosedFields:  Object.entries(disclosureToggles).filter(([,v]) => v).map(([k]) => k),
+                    vpId:             vp.id,
+                    terminalClearance: vp.verifiableCredential.credentialSubject.terminalClearance,
+                    hoursBracket:      vp.verifiableCredential.credentialSubject.hoursBracket,
+                  }).catch(() => {/* storage not yet initialised — non-fatal */});
                 }
                 setExportOpen(o => !o);
               }}
@@ -904,15 +952,69 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         </div>
       </div>
 
-      {/* ── FOOTER ── */}
-      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #e2e8f0', marginTop: 28 }}>
-        <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700 }}>
-          <span style={{ color: '#dc2626' }}>wallet.</span><span style={{ color: '#94a3b8' }}>pilotrecognition.com</span>
-        </span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 9, color: '#94a3b8' }}>Powered by</span>
-          <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
-          <span style={{ fontSize: 8, fontWeight: 700, color: '#64748b', background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 3, padding: '1px 5px' }}>wallet</span>
+      {/* ── FOOTER — DATA SEGREGATION TRUST PANEL ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '20px 28px 36px', borderTop: '1px solid #e2e8f0', marginTop: 28 }}>
+        {/* Top row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
+          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700 }}>
+            <span style={{ color: '#dc2626' }}>wallet.</span><span style={{ color: '#94a3b8' }}>pilotrecognition.com</span>
+          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontSize: 9, color: '#94a3b8' }}>Powered by</span>
+            <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
+            <span style={{ fontSize: 8, fontWeight: 700, color: '#64748b', background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 3, padding: '1px 5px' }}>VC Data Model v2.0</span>
+          </div>
+        </div>
+
+        {/* Storage trust indicators */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+          {/* Tier 1 — Enclave */}
+          <div style={{ padding: '10px 12px', background: enclaveStatus?.keyPresent ? '#f0fdf4' : '#f8fafc', border: `1px solid ${enclaveStatus?.keyPresent ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 8 }}>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 1 — Enclave</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: enclaveStatus?.keyPresent ? '#16a34a' : '#94a3b8' }}>
+              {enclaveStatus?.keyPresent ? '✓ Key Active' : '○ Generating…'}
+            </p>
+            <p style={{ margin: 0, fontSize: 8, color: '#64748b', fontFamily: 'monospace', lineHeight: 1.4 }}>
+              {enclaveStatus?.platform || 'web-crypto'}<br/>
+              extractable: {String(enclaveStatus?.extractable ?? false)}
+            </p>
+          </div>
+
+          {/* Tier 2 — Credential DB */}
+          <div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 2 — Credentials</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>
+              {storageHealth?.tier2.credentialCount ?? 0} VC{storageHealth?.tier2.credentialCount !== 1 ? 's' : ''} stored
+            </p>
+            <p style={{ margin: 0, fontSize: 8, color: '#64748b', lineHeight: 1.4 }}>
+              AES-256-GCM<br/>
+              cloud: <span style={{ color: '#dc2626', fontWeight: 700 }}>none</span>
+            </p>
+          </div>
+
+          {/* Tier 3 — Network */}
+          <div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 3 — Network</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>
+              {storageHealth?.tier3.activeEndpoints ?? 0} endpoints
+            </p>
+            <p style={{ margin: 0, fontSize: 8, color: '#64748b', lineHeight: 1.4 }}>
+              {storageHealth?.tier3.statusPointers ?? 0} status ptr{storageHealth?.tier3.statusPointers !== 1 ? 's' : ''}<br/>
+              60s poll active
+            </p>
+          </div>
+
+          {/* Tier 4 — Audit Log */}
+          <div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 4 — Audit Log</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>
+              {storageHealth?.tier4.auditEntries ?? 0} event{storageHealth?.tier4.auditEntries !== 1 ? 's' : ''}
+            </p>
+            <p style={{ margin: 0, fontSize: 8, color: '#64748b', lineHeight: 1.4 }}>
+              local-only<br/>
+              cloud: <span style={{ color: '#dc2626', fontWeight: 700 }}>none</span>
+            </p>
+          </div>
         </div>
       </div>
 
