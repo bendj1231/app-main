@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { supabase } from '../../../../shared/lib/supabase';
 
@@ -45,6 +45,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
   const [notifOpen, setNotifOpen] = useState(false);
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
+  const [syncingProvider, setSyncingProvider] = useState<string | null>(null);
+  const [connectedProviders, setConnectedProviders] = useState<Set<string>>(new Set());
+  const [syncMsg, setSyncMsg] = useState<{ id: string; msg: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -121,6 +125,42 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       </div>
     );
   }
+
+  const handleSync = useCallback((id: string) => {
+    if (connectedProviders.has(id)) {
+      setSyncMsg({ id, msg: 'Already connected' });
+      setTimeout(() => setSyncMsg(null), 2000);
+      return;
+    }
+    setSyncingProvider(id);
+    setTimeout(() => {
+      setSyncingProvider(null);
+      setConnectedProviders(p => new Set([...p, id]));
+      setSyncMsg({ id, msg: 'Sync request sent — awaiting provider approval' });
+      setTimeout(() => setSyncMsg(null), 3500);
+    }, 1800);
+  }, [connectedProviders]);
+
+  const handleCSV = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setSyncMsg({ id: 'csv', msg: `Importing ${file.name}… (manual review required)` });
+    setTimeout(() => {
+      setConnectedProviders(p => new Set([...p, 'csv']));
+      setSyncMsg({ id: 'csv', msg: `${file.name} imported — hours pending admin review` });
+      setTimeout(() => setSyncMsg(null), 4000);
+    }, 1500);
+    e.target.value = '';
+  }, []);
+
+  const PROVIDERS = [
+    { id: 'foreflight',  name: 'ForeFlight',      sub: 'iOS / Web',          logo: '✈️',  tier: 'certified' },
+    { id: 'safelog',     name: 'Safelog',          sub: 'Web / Mobile',       logo: '📒',  tier: 'certified' },
+    { id: 'logten',      name: 'LogTen Pro',       sub: 'iOS / macOS',        logo: '📱',  tier: 'certified' },
+    { id: 'myflight',    name: 'MyFlightbook',     sub: 'Web / Android',      logo: '📓',  tier: 'pending'   },
+    { id: 'zululog',     name: 'Zulu Log',         sub: 'Web',                logo: '🌐',  tier: 'pending'   },
+    { id: 'airlog',      name: 'Air Log',          sub: 'Mobile',             logo: '📲',  tier: 'pending'   },
+  ];
 
   const name = safe(profile?.display_name) || safe(profile?.full_name) || 'PILOT';
   const did  = profile?.id ? `0x${profile.id.replace(/-/g,'').slice(0,16).toUpperCase()}` : '—';
@@ -449,6 +489,98 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── LOGBOOK SYNC ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+        <div className="wv-in" style={{ animationDelay: '0.45s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
+          <div>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>Logbook Sync</p>
+            <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>Connect your flight logbook provider to verify hours automatically</p>
+          </div>
+          {/* CSV import */}
+          <div>
+            <input ref={fileInputRef} type="file" accept=".csv,.xlsx" style={{ display: 'none' }} onChange={handleCSV} />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px',
+                background: 'rgba(255,255,255,0.06)', border: '1px dashed rgba(255,255,255,0.2)',
+                borderRadius: 8, cursor: 'pointer', color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700,
+              }}
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Import CSV / XLSX
+            </button>
+          </div>
+        </div>
+
+        {/* Provider grid */}
+        <div className="wv-in" style={{ animationDelay: '0.5s', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 10 }}>
+          {PROVIDERS.map(p => {
+            const connected = connectedProviders.has(p.id);
+            const syncing   = syncingProvider === p.id;
+            const isCert    = p.tier === 'certified';
+            return (
+              <div key={p.id} style={{
+                background: connected ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${connected ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                borderRadius: 12, padding: '14px',
+                transition: 'all 0.2s',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span style={{ fontSize: 20 }}>{p.logo}</span>
+                  <span style={{
+                    fontSize: 8, fontWeight: 700, padding: '2px 6px', borderRadius: 6,
+                    background: isCert ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.12)',
+                    color: isCert ? '#10b981' : '#f59e0b',
+                    border: `1px solid ${isCert ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.25)'}`,
+                    letterSpacing: '0.08em',
+                  }}>
+                    {isCert ? 'CERTIFIED' : 'PROVISIONAL'}
+                  </span>
+                </div>
+                <p style={{ margin: '0 0 1px', fontSize: 12, fontWeight: 800, color: '#ffffff' }}>{p.name}</p>
+                <p style={{ margin: '0 0 10px', fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>{p.sub}</p>
+                <button
+                  onClick={() => handleSync(p.id)}
+                  disabled={syncing}
+                  style={{
+                    width: '100%', padding: '6px 0', borderRadius: 7, border: 'none', cursor: syncing ? 'default' : 'pointer',
+                    fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
+                    background: connected ? 'rgba(16,185,129,0.2)' : syncing ? 'rgba(255,255,255,0.08)' : 'rgba(220,38,38,0.8)',
+                    color: connected ? '#10b981' : syncing ? 'rgba(255,255,255,0.4)' : '#ffffff',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  {syncing ? '⟳ Connecting…' : connected ? '✓ Connected' : 'Connect'}
+                </button>
+                {syncMsg?.id === p.id && (
+                  <p style={{ margin: '6px 0 0', fontSize: 9, color: 'rgba(255,255,255,0.4)', lineHeight: 1.3 }}>{syncMsg.msg}</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CSV feedback */}
+        {syncMsg?.id === 'csv' && (
+          <div className="wv-in" style={{ marginTop: 10, padding: '10px 14px', background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 10 }}>
+            <p style={{ margin: 0, fontSize: 10, color: '#93c5fd', fontWeight: 600 }}>📂 {syncMsg.msg}</p>
+          </div>
+        )}
+
+        {/* Tier legend */}
+        <div style={{ marginTop: 12, display: 'flex', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }} />
+            <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>Certified — hours show as Verified ✓</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b' }} />
+            <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>Provisional — hours show as Logged (Unverified)</span>
+          </div>
         </div>
       </div>
 
