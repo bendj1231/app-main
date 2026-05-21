@@ -35,11 +35,11 @@ const JURISDICTION_MAP: Record<string, JurisdictionInfo> = {
 const DEFAULT_JURISDICTION: JurisdictionInfo = {
     country: 'your jurisdiction',
     countryCode: 'INT',
-    governingLaw: 'applicable international law and the laws of the Republic of the Philippines as the platform\'s country of development',
-    dataAuthority: 'your regional data protection authority',
-    electronicConsentLaw: 'applicable electronic commerce and digital signature legislation in your jurisdiction',
+    governingLaw: 'the laws of the Republic of Singapore, including the Personal Data Protection Act 2012 (PDPA)',
+    dataAuthority: 'Personal Data Protection Commission (PDPC) of Singapore',
+    electronicConsentLaw: 'Electronic Transactions Act (Cap. 88)',
     aviationAuthority: 'your regional Civil Aviation Authority (CAA)',
-    privacyFramework: 'applicable regional data protection regulations',
+    privacyFramework: 'Singapore PDPA 2012 (primary) / applicable regional data protection regulations',
 };
 
 function getJurisdiction(countryCode: string): JurisdictionInfo {
@@ -78,7 +78,9 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                 <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
                     Terms of Service and Privacy Agreement
                 </h1>
-                <p className="text-sm text-slate-500 mb-2">Last updated: May 18, 2026</p>
+                <p className="text-sm text-slate-500 mb-2">Last updated: May 21, 2026</p>
+                <p className="text-sm text-slate-500 mb-1">Governing Jurisdiction: Republic of Singapore</p>
+                <p className="text-sm text-slate-500 mb-1">Statutory Baseline: Personal Data Protection Act 2012 (PDPA) · Electronic Transactions Act (Cap. 88)</p>
                 {!loading && (
                     <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 mb-8">
                         <span className="text-blue-600 text-xs font-bold uppercase tracking-wider">Jurisdiction detected:</span>
@@ -88,233 +90,985 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                 )}
 
                 <div className="space-y-8 text-slate-700">
+                    {/* ── PREAMBLE ── */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">Platform Operating Agreement</h2>
-                        <p className="mb-4">
-                            This Agreement is entered into by and between <strong>Pilot Recognition</strong> ("the Platform Operator") and you ("the User"). By creating an account on pilotrecognition.com, you explicitly agree to the following terms. The Platform operates as a neutral digital infrastructure utility.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Platform Operating Status:</strong> pilotrecognition.com operates as a neutral digital infrastructure utility connecting aviation stakeholders. The Platform functions strictly as a passive conduit and data intermediary, not as a data controller, processor, or verification authority.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Payment Processing:</strong> All payments processed through this platform are handled via Helio (MoonPay Commerce), a third-party decentralized payment gateway. The Platform operates on a commission basis from aggregate transaction fees. Payments are automatically distributed on-chain at the moment of transaction clearance to the respective integration partners responsible for providing underlying verification and data services.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Service Continuity:</strong> The Platform maintains operational continuity through its decentralized infrastructure architecture. This Agreement constitutes a valid, binding contract under applicable electronic commerce legislation regardless of any future structural formalization.
-                        </p>
-                        <p>
-                            <strong>Technical Risk Profile:</strong> Because the platform is architected as a stateless, client-side rendering interface with no central credential database, the technical risk profile of this pre-registration phase is near-zero. No raw pilot credentials, license documents, or sensitive identifiers are stored on platform infrastructure. User authentication is managed entirely by Auth0 (Okta), and profile data is stored in Supabase under standard security tiers. The absence of a proprietary data store means there is no central repository for unauthorized access during this phase.
+                        <div className="bg-slate-900 text-white rounded-xl p-5 mb-6">
+                            <p className="text-red-400 text-xs font-black uppercase tracking-wider mb-1">Platform Classification</p>
+                            <p className="font-bold text-base mb-1">walt.id In-Browser Wallet Orchestrator · Multi-Engine Infrastructure Provider · Infrastructure Controller</p>
+                            <p className="text-slate-300 text-xs leading-relaxed mb-2">Controls the processing environment and access permission matrices. Does not control or own data content (credentials, verification outcomes, logbook records). Verified Credential Tokens are issued into the pilot's client-side walt.id session — not stored on platform servers.</p>
+                            <p className="text-slate-400 text-xs"><span className="text-slate-300 font-semibold">Legal Summary of Processing:</span> The Platform Controls the processing environment and access permission matrices. It does not control or own data content (credentials, verification outcomes, logbook records). Verified Credential Tokens are issued into the pilot's client-side walt.id session — not stored on platform servers.</p>
+                        </div>
+                        <p className="mb-4 text-sm">
+                            This Terms of Service and Privacy Agreement ("Agreement") defines the architecture, data ownership parameters, and system boundary constraints of pilotrecognition.com ("the Platform"). By executing an account creation sequence, you explicitly assent to these provisions.
                         </p>
                     </section>
 
+                    {/* ══════════════════════════════════════════════
+                        SECTION 1 — STRUCTURAL DEFINITIONS & ONBOARDING
+                    ══════════════════════════════════════════════ */}
                     <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Structural Definitions &amp; Onboarding Protocol</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">1.1 Ultimate Data Sovereignty &amp; walt.id In-Browser Wallet</h3>
+                        <p className="mb-3 text-sm">Upon onboarding, the User acknowledges and agrees that they are the <strong>sole Data Controller of their own identity, credentials, and Decentralized Identifier (DID) wallet</strong>. The Platform Operator does not act as a custodian of master identity records.</p>
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-4">
+                            <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1">The walt.id Web Interface</p>
+                            <p className="text-blue-900 text-xs leading-relaxed mb-2">The platform deploys an embedded, client-side <strong>walt.id Web Wallet instance</strong> directly inside the user's browser runtime. This wallet reads self-claimed or verified datasets structured by the platform's cloud database layer (Supabase & Firebase Sync), presenting them as standardized <strong>W3C Verifiable Credentials</strong>. When a regional verification partner completes their audit, they append a cryptographically signed <strong>Verifiable Presentation (VP)</strong> directly into the browser-managed walt.id session.</p>
+                            <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1 mt-2">Interoperable Wallet Syncing</p>
+                            <p className="text-blue-900 text-xs leading-relaxed mb-3">The User may elect to <strong>instantiate a native walt.id wallet</strong> via the Platform terminal, or <strong>synchronise a pre-existing, W3C-compliant external DID wallet</strong>. During an external sync, the Platform infrastructure reads only the public DID descriptor string — leaving absolute control of the private keys in the sovereign possession of the User. Any historical credential claims nested inside an externally synced wallet are flagged as <strong>“Pending Read”</strong> until processed through the platform’s regional verification ecosystem.</p>
+                            <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1">Infrastructure-to-Wallet State Sync Boundary</p>
+                            <p className="text-blue-900 text-xs leading-relaxed">The User acknowledges that the platform’s cloud databases (Supabase/Firebase) function strictly as an <strong>infrastructure staging layer</strong> for raw data entry. The conversion of this data into cryptographically signed Verifiable Credentials occurs exclusively when the walt.id browser wallet queries and commits these entries. If a user modifies their profile or flight hours within the database layer, those changes are <strong>completely invalid for verification or operator pathway matching</strong> until the user executes a manual or session-based “Wallet Sync” to update the client-side walt.id presentation layer. The Platform Operator holds no liability for mismatched data states caused by a user’s failure to synchronise their browser runtime wallet.</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">1.2 Cryptographic Key Custody (Passkeys / Keychain)</h3>
+                        <p className="mb-3 text-sm">The master cryptographic access keys required to decrypt, sign, and unlock the walt.id profile layers are held exclusively by the User via localised hardware-tied authentication protocols:</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['OS Passkeys', 'Cryptographic key pairs secured inside the User\'s localised hardware environment using Google Passkeys or Apple iCloud Keychain.'],
+                                        ['Zero Knowledge Architecture', 'The Platform Operator never possesses, transits, receives, or has the technical capability to reset private cryptographic keys.'],
+                                        ['Irrecoverable Loss Acknowledgement', 'Loss of access to your device-level passkey architecture results in an unrecoverable loss of the associated DID wallet data layer.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">1.3 Electronic Assent &amp; Consent Timestamp</h3>
+                        <p className="mb-4 text-sm">In accordance with the Electronic Transactions Act (Cap. 88), clicking the "I Agree" checkbox during account creation constitutes an unalterable electronic signature. At the moment of creation the Platform records a system timestamp (e.g., <code className="text-xs bg-slate-100 px-1 rounded">2026-05-21T03:11:56Z</code>) mapped to the anonymous Auth0 token. This constitutes a non-discretionary regulatory audit trail, not a registry of Sensitive Personal Information (SPI).</p>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 2 — THREE-TERMINAL INFRASTRUCTURE
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">2. The Three-Terminal Infrastructure Ecosystem</h2>
+                        <p className="mb-4 text-sm">To satisfy civil aviation licensing realities, the Platform enforces an automated, permissions-based routing topology divided into three distinct operational Zones ("Terminals"):</p>
+
+                        <div className="overflow-x-auto mb-5">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-900 text-white">
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700 w-36">Terminal</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Zone Classification &amp; Permissions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className="bg-slate-50">
+                                        <td className="px-4 py-3 border border-slate-200 align-top">
+                                            <p className="font-black text-slate-900 text-xs">Terminal 1</p>
+                                            <p className="text-slate-500 text-[10px] font-semibold uppercase">Administrative</p>
+                                        </td>
+                                        <td className="px-4 py-3 border border-slate-200 text-xs text-slate-600">Platform Operator. Internal infrastructure, data routing, systemic nodes, and permission matrix management.</td>
+                                    </tr>
+                                    <tr className="bg-amber-50">
+                                        <td className="px-4 py-3 border border-amber-200 align-top">
+                                            <p className="font-black text-amber-800 text-xs">Terminal 2</p>
+                                            <p className="text-amber-600 text-[10px] font-semibold uppercase">Exploratory</p>
+                                        </td>
+                                        <td className="px-4 py-3 border border-amber-200 text-xs text-slate-600">
+                                            <p className="mb-1">Unverified public ecosystem. Free-tier, read-only display.</p>
+                                            <ul className="list-disc pl-4 space-y-0.5 text-slate-500">
+                                                <li><strong>SPL Limits:</strong> Algorithmically restricted to ATO educational pathways only.</li>
+                                                <li><strong>Submission Gating:</strong> SPL/PPL profiles blocked from career pathway submissions below statutory age or rating limits.</li>
+                                                <li><strong>PDPA Lawful Basis:</strong> Evaluating age and licence class to configure Terminal 2 access is a legitimate operational necessity — not arbitrary profiling.</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr className="bg-emerald-50">
+                                        <td className="px-4 py-3 border border-emerald-200 align-top">
+                                            <p className="font-black text-emerald-800 text-xs">Terminal 3</p>
+                                            <p className="text-emerald-600 text-[10px] font-semibold uppercase">Verified</p>
+                                        </td>
+                                        <td className="px-4 py-3 border border-emerald-200 text-xs text-slate-600">Strictly regulated verified domain. Authenticated via third-party secure APIs against sovereign civil aviation registries. Only active, validated, and compliant flight crew members possess routing clearance.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 3 — MULTI-ENGINE VAULT ARCHITECTURE
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">3. The Multi-Engine Vault Architecture &amp; Security Telemetry</h2>
+                        <p className="mb-4 text-sm">The Platform Operator acts as an <strong>Infrastructure Controller</strong>, providing a secure, dual-redundant processing venue designed for continuous flight-critical availability.</p>
+
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5 overflow-x-auto">
+                            <div className="min-w-max text-xs space-y-2">
+                                <div className="border border-slate-300 rounded-lg px-4 py-2 bg-white text-center mx-auto w-48">
+                                    <p className="font-bold text-slate-700">Hardware Passkey</p>
+                                    <p className="text-slate-500 text-[10px]">User-held private key</p>
+                                </div>
+                                <div className="text-center text-slate-400">↓</div>
+                                <div className="border-2 border-red-300 rounded-lg px-4 py-2 bg-red-50 text-center mx-auto w-56">
+                                    <p className="font-black text-red-700">Platform Infrastructure Node</p>
+                                </div>
+                                <div className="text-center text-slate-400">↓ splits ↓</div>
+                                <div className="flex gap-6 justify-center">
+                                    <div className="border border-blue-300 rounded-lg px-3 py-2 bg-blue-50 text-center w-44">
+                                        <p className="font-bold text-blue-700">Engine Alpha</p>
+                                        <p className="text-blue-600 text-[10px]">Supabase · Primary Storage</p>
+                                        <p className="text-blue-600 text-[10px]">pilot_credentials table</p>
+                                    </div>
+                                    <div className="border border-purple-300 rounded-lg px-3 py-2 bg-purple-50 text-center w-44">
+                                        <p className="font-bold text-purple-700">Engine Beta</p>
+                                        <p className="text-purple-600 text-[10px]">Firebase · Failover Sync</p>
+                                        <p className="text-purple-600 text-[10px]">Real-time Redundancy</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">3.1 Dual-Engine High Availability</h3>
+                        <p className="mb-4 text-sm">Account states and tokenised routing tables are synchronised across Supabase (Engine Alpha) and Firebase (Engine Beta). In the event of a primary engine failure, the secondary engine automatically sustains active session routing.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">3.2 Asymmetric Cryptographic Vault</h3>
+                        <p className="mb-4 text-sm">The Platform Operator functions as an infrastructure vault manager. All verified credentials, DID data, and identity records are cryptographically hashed and written to the <code className="bg-slate-100 px-1 rounded text-xs">pilot_credentials</code> table inside the Supabase storage layer as an encrypted string. The Platform Operator maintains infrastructure-level monitoring over public keys. The User’s hardware passkey signature is required to unlock the rendering pipeline. The <strong>Isolated Instrument Principle</strong> ensures verified credentials are decoded client-side only — fundamentally invisible to external network actors.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">3.3 Browser Local Cache &amp; Runtime Security Boundaries</h3>
+                        <p className="mb-3 text-sm">Because the walt.id instance executes within the user’s browser, certain session payloads, keys, and decrypted credentials may temporarily reside in the browser’s local volatile memory, IndexedDB, or localised cache storage to maintain session continuity.</p>
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-4">
+                            <p className="text-amber-800 text-xs font-black uppercase tracking-wide mb-2">User Volatile Environment Responsibility</p>
+                            <p className="text-amber-900 text-xs leading-relaxed">The User is uniquely responsible for securing their physical device and browser environment. If the User accesses the Platform via a <strong>shared, public, or unencrypted corporate terminal</strong> and fails to log out or clear the browser’s application cache, unauthorized third parties may intercept the active session state. The Platform Operator <strong>explicitly disclaims liability</strong> for local client-side memory scraping, unauthorized terminal access, or browser storage compromises resulting from the User’s failure to secure their device environment.</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">3.4 Account Erasure &amp; Sovereign Data Deletion</h3>
+                        <p className="mb-3 text-sm">Pursuant to Singapore PDPA 2012, upon account deletion the Platform Operator executes a <strong>destructive erase sequence</strong>, permanently scrubbing the encrypted identifier string from both Supabase and Firebase synchronisation logs within <strong>30 business days</strong>.</p>
+                        <div className="overflow-x-auto mb-2">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Key-Pair Erasure Effect', 'Deleting the infrastructure entry breaks the asymmetric key pairing, rendering any lingering backup hashes permanently unrecoverable — even if a forensic copy were obtained.'],
+                                        ['walt.id Session Deletion', 'The User retains the independent right to clear or delete their browser-resident walt.id wallet at any time via their device\'s browser settings, independently of platform-level account deletion.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 4 — FMS BROADCAST ENGINE
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Contextual Environment Broadcast Engine (FMS Protocol)</h2>
+                        <p className="mb-4 text-sm">The Platform implements a <strong>one-way telemetry broadcast system</strong>, modelled after an aviation Flight Management System (FMS) utilising ADS-B concepts.</p>
+
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5 overflow-x-auto">
+                            <div className="min-w-max text-xs space-y-2">
+                                <div className="border-2 border-slate-400 rounded-lg px-4 py-3 bg-white mx-auto max-w-md">
+                                    <p className="font-black text-slate-700 text-xs uppercase tracking-wide text-center mb-1">Public Operator Broadcast Tower</p>
+                                    <p className="text-slate-500 text-[10px] text-center">ATO / Flight School posts Pathway Requirements</p>
+                                    <p className="text-slate-500 text-[10px] text-center">Transmits: Hour minimums · Expectations · Target Scores</p>
+                                </div>
+                                <div className="text-center text-slate-400 font-bold">↓ One-Way Public Broadcast ↓</div>
+                                <div className="border-2 border-blue-400 rounded-lg px-4 py-3 bg-blue-50 mx-auto max-w-md">
+                                    <p className="font-black text-blue-800 text-xs uppercase tracking-wide text-center mb-1">Pilot Terminal Private Dashboard</p>
+                                    <p className="text-blue-600 text-[10px] text-center">Receives public broadcast · Executes local alignment processing</p>
+                                    <p className="text-red-600 text-[10px] text-center font-black mt-1">Platform Operator Vision Boundary: ABSOLUTE ZERO-SIGHT</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['One-Way Criteria Broadcasting', 'ATOs and flight school operators broadcast training pathways publicly: statutory hour prerequisites, operational experience expectations, and preferred target capability scores.'],
+                                        ['Local Environment-Aware Alignment', 'The pilot\'s dashboard locally evaluates public criteria against the user\'s encrypted, tokenised wallet data — processed strictly inside the client-side browser space.'],
+                                        ['Zero Platform Visibility', 'The Platform Operator cannot view, track, log, or scrape comparative alignment results or internal performance analytics. The Platform broadcasts targets; the pilot\'s instrument panel registers the trajectory in complete privacy.'],
+                                        ['Anti-Profiling Shield', 'Because automated matching occurs locally and not on Platform servers, the Platform bypasses "automated profiling" compliance burdens under PDPA and GDPR-equivalent frameworks.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 5 — ENTERPRISE GATEWAY & DUAL-CONSENT
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Commercial Enterprise Dashboard &amp; Dual-Consent Handshake</h2>
+                        <p className="mb-4 text-sm">The interaction between pilots and subscribing aviation enterprises is governed by a strict, multi-stage <strong>Cryptographic Consent Handshake</strong>. No pilot data crosses from the Private Vault to an Operator's dashboard without an explicit, user-initiated consent action.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-3">5.1 The Pilot Onboarding &amp; Verification Lifecycle</h3>
+                        <p className="mb-3 text-sm">The framework does not enforce artificial rating or experience barriers to initiate verification. The premium protocol serves to audit and cryptographically stamp the <strong>factual truth of whatever specific operational tier the pilot currently claims</strong> within their wallet environment. All pilot profiles transit a strict progression sequence:</p>
+
+                        {/* Lifecycle progression */}
+                        <div className="space-y-2 mb-4">
+                            {[
+                                { step: '1', label: 'Profile Creation & Initial Claims', tier: 'Terminal 1 · Free Tier', color: 'slate', desc: 'The pilot initialises their non-custodial wallet. The platform\'s cloud database layer (Supabase & Firebase Sync) populates raw tables with self-claimed aviation metadata (e.g., current student status, estimated hours, training logs, institutional enrollment). The wallet tokenises these records into W3C Verifiable Credential format inside the browser environment. The profile resides in the unverified exploratory ecosystem.' },
+                                { step: '2', label: 'Pre-Verification Regional Routing & Self-Audit Notice', tier: 'User-Initiated Trigger', color: 'blue', desc: 'The pilot elects to trigger an infrastructure upgrade for USD $100.00/year. The system requests the pilot\'s operational region and assigns the designated regional background check provider (e.g., Veremark). Mandatory Notice: The pilot must confirm that no training logs are falsified, medical certificates are valid, and current institution details are active before data handover.' },
+                                { step: '3', label: 'Consensual DID Read & Verification Profile Execution', tier: 'Adaptive Regional Verification', color: 'amber', desc: '' },
+                                { step: '4', label: 'Credential Issuance & Platform Triangulation', tier: 'Terminal 3 Clearance', color: 'emerald', desc: 'Upon validation, the independent verification entity issues a permanent Receipt of Validation / Verified Credential Token directly into the pilot\'s wallet and transmits a binary confirmation signal to the platform. The platform triangulates this signal, cryptographically signs a Terminal 3 Access Token, and unlocks the respective verified pathway registries matching the pilot\'s verified tier — including Charter Pathways and exclusive cadet tracks.' },
+                            ].map(({ step, label, tier, color, desc }) => (
+                                <div key={step} className={`border rounded-xl px-4 py-3 ${ color === 'slate' ? 'bg-slate-50 border-slate-200' : color === 'blue' ? 'bg-blue-50 border-blue-200' : color === 'amber' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200' }`}>
+                                    <div className="flex items-start gap-3">
+                                        <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black text-white ${ color === 'slate' ? 'bg-slate-600' : color === 'blue' ? 'bg-blue-600' : color === 'amber' ? 'bg-amber-600' : 'bg-emerald-600' }`}>{step}</div>
+                                        <div className="flex-1">
+                                            <p className="font-bold text-slate-900 text-xs">{label}</p>
+                                            <p className={`text-[10px] font-semibold uppercase tracking-wide mb-1 ${ color === 'slate' ? 'text-slate-500' : color === 'blue' ? 'text-blue-600' : color === 'amber' ? 'text-amber-600' : 'text-emerald-600' }`}>{tier}</p>
+                                            {step === '3' ? (
+                                                <div className="text-xs text-slate-600">
+                                                    <p className="mb-2">The regional verification provider receives user-initiated consent to access and read the pilot\'s wallet token profiles via secure API handshake. The screening matrix adapts dynamically to the pilot\'s claimed tier:</p>
+                                                    <div className="space-y-1.5">
+                                                        <div className="bg-white border border-amber-200 rounded-lg px-3 py-2">
+                                                            <p className="font-bold text-amber-800 text-[10px] uppercase mb-0.5">Licensed Tier (CPL / ATPL)</p>
+                                                            <p className="text-slate-600 text-[10px]">Verifies active licences, medicals, and credentials directly against civil aviation registries (e.g., CAAP, CAAS, GCAA) and Civil Aviation Authorities (CAA).</p>
+                                                        </div>
+                                                        <div className="bg-white border border-amber-200 rounded-lg px-3 py-2">
+                                                            <p className="font-bold text-amber-800 text-[10px] uppercase mb-0.5">Student / Cadet Tier (SPL / Enrolled)</p>
+                                                            <p className="text-slate-600 text-[10px]">Executes an Academic and Institution Enrollment Audit directly with the nominated flight school or ATO to verify active enrollment status, attendance windows, and cadet track placement.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <p className="text-xs text-slate-600">{desc}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Pre-Verification Warning */}
+                        <div className="bg-red-50 border-2 border-red-300 rounded-xl px-5 py-4 mb-5">
+                            <p className="text-red-700 text-xs font-black uppercase tracking-wide mb-2">⚠ Mandatory Pre-Verification Notice to Users</p>
+                            <p className="text-red-800 text-xs leading-relaxed mb-2">You are strictly required to audit, verify, and guarantee the absolute accuracy of your self-claimed data — including expiration frequencies, certificate validation bounds, and licensing operational constraints — <strong>prior to authorising the regional verification partner transmission</strong>.</p>
+                            <p className="text-red-800 text-xs leading-relaxed">The platform provides data diagnostics to capture formatting inconsistencies within your uploaded logbooks; however, <strong>the verification process incurs immediate operational costs</strong>. If your screening reveals revoked licences, lapsed medical checks, or invalid certifications, <strong>the verification fee will be fully processed and is non-refundable</strong>. Your submission will return a failed verification status, preventing access to Terminal 3, due to discrepancies you failed to resolve prior to submission.</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">5.2 Premium &amp; Restricted Pathway Channels</h3>
+                        <p className="mb-3 text-sm">Subscribing aviation enterprises use the platform's environment-aware framework to target exact talent brackets while maintaining operational confidentiality.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Exclusive Cadet & Training Pathways', 'Operators posting specialised cadet tracks, airline sponsorship programmes, or flight-school pathways may flag their entries to require Verified Credentials Only. This ensures their posting, criteria, and branding are visible only to student pilots whose enrollment and training metrics have been independently authenticated through the regional verification partner.'],
+                                        ['Charter & Corporate Pathways', 'Premium flight operators — luxury private jet networks, corporate flight departments, and business aviation charters — may flag postings as Charter Pathways. These are visible exclusively to pilots holding an active, stamped Recognition+ verification beacon.'],
+                                        ['Unverified Noise Mitigation', 'Unverified profiles are structurally restricted from viewing or interacting with restricted pathway channels. This eliminates speculative applications, preserving the operational integrity of the operator\'s dashboard and guaranteeing that any pilot submitting interest is actively enrolled or independently verified at their stated tier.'],
+                                        ['Universal Fairness Principle', 'The Platform does not lock users out based on age or lack of commercial hours. Verification gates confirm pilots against their own current, real-world milestones — educational enrollment for students, active licences for commercial pilots.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        {/* Operator Dashboard View Matrix */}
+                        <h3 className="font-semibold text-slate-800 mb-2">5.3 Operator Dashboard Visibility Matrix</h3>
+                        <div className="overflow-x-auto mb-5">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-900 text-white">
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700 w-40">Structural Element</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Operator Visibility Bound</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        ['Pilot Name', 'Exposed only upon deliberate "Submit Interest" action by the pilot.'],
+                                        ['Total Flight Hours', 'Exposed as a macro-metric summary block only.'],
+                                        ['Full Logbook Data', 'ABSOLUTE REDACTION. Platform infrastructure denies raw logbook browsing to operators at all times.'],
+                                        ['Verification State', 'Renders binary "Verified" or "Unverified" beacon via Recognition+ / Veremark API. No raw credential data visible.'],
+                                        ['Charter Pathways', 'Completely hidden from unverified (Terminal 2) accounts. Visible only to pilots holding an active Recognition+ cryptographic stamp.'],
+                                    ].map(([element, bound], i) => (
+                                        <tr key={String(element)} className={i === 2 ? 'bg-red-50' : i === 4 ? 'bg-amber-50' : i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className={`px-4 py-3 border font-semibold text-xs align-top ${ i === 2 ? 'border-red-200 text-red-800' : i === 4 ? 'border-amber-200 text-amber-800' : 'border-slate-200 text-slate-700' }`}>{element}</td>
+                                            <td className={`px-4 py-3 border text-xs ${ i === 2 ? 'border-red-200 text-red-700 font-bold' : i === 4 ? 'border-amber-200 text-amber-700 font-semibold' : 'border-slate-200 text-slate-600' }`}>{bound}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">5.4 Bring Your Own Verification (BYOV) &amp; External DID Sync Protocol</h3>
+                        <p className="mb-3 text-sm">The platform recognises that advanced pilots may possess pre-existing verification records, background clearance tokens, or fully initialised identity payloads stored within an existing external DID wallet. To maintain the absolute cryptographic integrity of Terminal 3, <strong>these external datasets must undergo automated protocol alignment</strong> before any access grant is signed:</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Wallet Sync Sequence', 'When a pilot connects a pre-existing external DID wallet, the platform\'s multi-engine infrastructure (Supabase + Firebase Sync) registers the public DID descriptor string. Any historical verification claims nested inside that wallet remain flagged as \'Pending Read\' until processed by the platform\'s regional verification ecosystem.'],
+                                        ['Verification-of-Verifier Workflow', 'If a pilot declares a third-party verification credential within their synced wallet, the underlying data payload is securely routed to the platform\'s designated regional verification partner (e.g., Veremark). The regional partner actively audits and cross-references the external issuer\'s cryptographic signatures, authority roots, and registry timestamps against live civil aviation records. The platform does not accept external badges, PDFs, or digital certificates at face value.'],
+                                        ['Token Bridge Issuance & Fee', 'Because the regional partner must perform an active, live audit on the external provider\'s historical payload, the standard USD $100.00/year operational fee applies without exception. Once the regional partner validates the external credential\'s currency and authenticity, they execute a trust-anchor handshake — bridging the external record into the platform\'s native Verified Credential Token, stamping it directly into the pilot\'s synced walt.id browser environment, and delivering the required confirmation signal to unlock Terminal 3 pathways.'],
+                                        ['Stale & Decayed Data Defence', 'A prior verification by an external provider does not guarantee current compliance. A licence may have been revoked by the CAA, or a medical certificate may have lapsed, since that external check was performed. The re-verification requirement forces the regional partner to validate the live status of any historical token before the platform cryptographically signs a Terminal 3 Access Token.'],
+                                        ['Injection Attack Prevention', 'This protocol structurally prevents malicious or unverified actors from injecting fraudulent \'verified\' claims into Terminal 3. All access grants — whether native, externally verified, or wallet-synced — must pass through the regional partner\'s auditing lens before the platform issues the Terminal 3 Access Token.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* BYOV / DID Sync flow diagram */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5 overflow-x-auto">
+                            <div className="min-w-max text-xs space-y-3">
+                                <div className="flex items-center gap-2 justify-center">
+                                    <div className="border border-slate-300 rounded-lg px-3 py-2 bg-white text-center w-44">
+                                        <p className="font-bold text-slate-700 text-[10px] uppercase">External / Synced DID Wallet</p>
+                                        <p className="text-slate-500 text-[10px]">Pre-existing credentials flagged</p>
+                                        <p className="text-slate-400 text-[10px] font-semibold">“Pending Read”</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-amber-300 rounded-lg px-3 py-2 bg-amber-50 text-center w-48">
+                                        <p className="font-bold text-amber-800 text-[10px] uppercase">Regional Partner</p>
+                                        <p className="text-amber-600 text-[10px]">Live CAA registry re-check</p>
+                                        <p className="text-amber-700 text-[10px] font-black">Trust Anchor Handshake</p>
+                                        <p className="text-amber-600 text-[10px]">USD $100.00/yr fee applies</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-emerald-300 rounded-lg px-3 py-2 bg-emerald-50 text-center w-44">
+                                        <p className="font-bold text-emerald-800 text-[10px] uppercase">Native Token Bridged</p>
+                                        <p className="text-emerald-600 text-[10px]">Stamped into synced DID Wallet</p>
+                                        <p className="text-emerald-600 text-[10px] font-black">Terminal 3 Unlocked</p>
+                                    </div>
+                                </div>
+                                <p className="text-center text-[10px] text-red-600 font-bold">All paths — native, external, or synced — route through regional partner live audit before Terminal 3 access is signed</p>
+                            </div>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">5.5 User-Initiated Handshake &amp; Sovereign Wallet Portability</h3>
+                        <p className="mb-3 text-sm">To investigate a pilot's specific sub-credentials beyond the macro dashboard metrics, the Operator must request an active initiation handshake through the platform:</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Granular Handshake Activation', 'The request alerts the Pilot via a secure platform notification. The Pilot must explicitly authorise via their hardware passkey signature. No passive or automatic access is possible.'],
+                                        ['Strict Read-Only Execution', 'Upon explicit user-initiated passkey approval, the Operator is granted a limited, time-bound, strictly read-only cryptographic lens to view the specific verified credentials required for that pathway. No ownership transfer or raw file extraction occurs.'],
+                                        ['Zero-Persistence Caching Block', 'The platform programmatically prevents the Operator from caching, storing, downloading, or replicating the decrypted payload. Once the session closes or consent is revoked, the Operator\'s cryptographic lens immediately de-authorises and shatters.'],
+                                        ['Sovereign Exportability & Deletion', 'Because Receipt of Validation and Verified Presentation (VP) tokens are stored directly within the pilot\'s non-custodial walt.id browser session, the User maintains absolute ownership over the asset. The User preserves the unbound right to download, export, or migrate their complete walt.id wallet to alternative third-party container systems, or delete their profile state from the platform entirely, erasing all network data trails outside their localised device.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Consent handshake diagram */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4 overflow-x-auto">
+                            <div className="min-w-max text-xs space-y-2">
+                                <div className="flex items-center gap-3 justify-center">
+                                    <div className="border-2 border-blue-400 rounded-lg px-4 py-2 bg-blue-50 text-center w-52">
+                                        <p className="font-black text-blue-800 text-[10px] uppercase">Pilot Private Dashboard</p>
+                                        <p className="text-blue-600 text-[10px]">Click "Submit Interest"</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-slate-300 rounded-lg px-4 py-2 bg-white text-center w-52">
+                                        <p className="font-black text-slate-700 text-[10px] uppercase">System</p>
+                                        <p className="text-slate-500 text-[10px]">Anonymous token only routed</p>
+                                    </div>
+                                </div>
+                                <div className="text-center text-slate-400 font-bold">↓ Operator requests deep access ↓</div>
+                                <div className="flex items-center gap-3 justify-center">
+                                    <div className="border-2 border-emerald-400 rounded-lg px-4 py-2 bg-emerald-50 text-center w-52">
+                                        <p className="font-black text-emerald-800 text-[10px] uppercase">Enterprise Operator</p>
+                                        <p className="text-emerald-600 text-[10px]">Initiates Wallet Query Request</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-amber-400 rounded-lg px-4 py-2 bg-amber-50 text-center w-52">
+                                        <p className="font-black text-amber-800 text-[10px] uppercase">Pilot Signs with Passkey</p>
+                                        <p className="text-red-600 text-[10px] font-black">Read-Only · Time-Bound · Revocable</p>
+                                        <p className="text-amber-600 text-[10px]">Zero-Persistence · Shatters on close</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 6 — COMPREHENSIVE TOPOLOGY
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Comprehensive Topology of Platform Data Control</h2>
+                        <p className="mb-4 text-sm">To ensure absolute clarity during systemic audits, operational responsibilities and data boundaries across all platform stakeholders are strictly defined:</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-900 text-white">
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Structural Component</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Primary Legal Status</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Legal Bounds &amp; Operational Scope</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        ['Identity Keys & Wallet Data', 'The Individual Pilot — Sovereign Data Controller', 'Holds private asymmetric cryptographic keys via localised Google Passkeys or Apple iCloud Keychain. Retains right of complete deletion and export from the walt.id browser runtime to alternative third-party container systems.'],
+                                        ['System Rules & Core Venue', 'Pilot Recognition — Infrastructure Controller', 'Manages the software environment, multi-engine database redundancy (Supabase & Firebase Sync), Terminal permission gates, and signs Terminal 3 access grants based on regional provider signals.'],
+                                        ['Public & Charter Flight Pathways', 'Flight School / Charter Operator — Independent Data Controller', 'Pays infrastructure subscription to broadcast requirements, enforce verification exclusivity gates, and access candidate investigative workflows under pilot-initiated consent only.'],
+                                        ['Live Validation Streams', 'Regional Partners (e.g., Veremark) — Authoritative Verification Issuers', 'Independently audits raw data payloads under user consent, issues credential tokens directly to user wallets, and transmits binary confirmation signals to the platform.'],
+                                    ].map(([component, status, scope], i) => (
+                                        <tr key={String(component)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-800 text-xs align-top">{component}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-xs text-slate-700 font-medium align-top">{status}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-xs text-slate-600 align-top">{scope}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-4">
+                            <p className="text-emerald-800 text-xs font-black uppercase tracking-wide mb-2">Cumulative Legal Effect</p>
+                            <ul className="space-y-1 text-xs text-emerald-900">
+                                <li><strong>No automated profiling liability:</strong> Matching happens locally in the pilot's browser — the Platform never sees or processes the comparison.</li>
+                                <li><strong>Mere conduit confirmed:</strong> The Platform operates the broadcast tower and the vault. It does not perform sorting, screening, or scoring on its own servers.</li>
+                                <li><strong>Four-party liability distribution:</strong> Data liability is structurally distributed across the Pilot, Pilot Recognition (infrastructure only), Flight Schools/ATOs, and Veremark/Integration Partners — eliminating single-point regulatory exposure.</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 7 — LIMITATION OF LIABILITY
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Limitation of Liability &amp; Non-Refundability of Processing Fees</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">7.1 Non-Refundability of Verification Processing Fees</h3>
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-4">
+                            <p className="text-amber-800 text-xs font-black uppercase tracking-wide mb-2">Fee Covers Process Execution — Not Guaranteed Outcome</p>
+                            <p className="text-amber-900 text-xs leading-relaxed">The USD $100.00/year premium infrastructure fee covers the operational cost of initiating and executing the background check protocol via the Platform's regional verification partners. The User explicitly acknowledges that this transaction <strong>pays for the execution of the screening process, not a guaranteed clearance outcome</strong>.</p>
+                        </div>
+                        <p className="mb-4 text-sm">In the event that a regional screening provider discovers discrepancies, expired credentials, or administrative flags that result in a denial of Terminal 3 access, <strong>the fee remains fully processed and non-refundable</strong>. The Platform Operator shall not be held liable for fees forfeited due to a pilot's failure to properly self-audit their wallet data prior to submission.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">7.2 Verification &amp; Screening Outcomes</h3>
+                        <p className="mb-4 text-sm">The Platform Operator provides the secure technical venue for the validation interface. The actual background checks, credential sourcing, and verification results are executed entirely by <strong>independent third-party regional screening providers</strong>. The Platform Operator disclaims all legal liability for processing delays, negative screening matches, registry access outages, or data discrepancies generated by external providers that result in an onboarding failure into Terminal 3.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">7.3 Match Optimisation Disclaimer</h3>
+                        <p className="mb-4 text-sm">The Platform Operator provides the infrastructure wires and broadcast towers to facilitate connection. The Platform Operator does not adjudicate, influence, or guarantee employment outcomes, training acceptances, or operational placements. The alignment score displayed on a pilot's panel is a localised mathematical calculation based purely on matching user-input values against an operator's public requirements template.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">7.4 Liability Valuation Cap</h3>
+                        <div className="bg-red-50 border border-red-200 rounded-xl px-5 py-4 mb-4">
+                            <p className="text-red-800 text-xs font-black uppercase tracking-wide mb-2">Maximum Aggregate Liability</p>
+                            <p className="text-red-900 text-sm font-bold">USD $50.00</p>
+                            <p className="text-red-700 text-xs mt-1">To the maximum extent permitted by applicable law (including the Singapore Unfair Contract Terms Act), the Platform Operator shall not be held liable for any loss of profits, lost training fees, missed corporate charter contracts, career delays, data access disruptions during an active cryptographic handshake, fees forfeited due to failed verification outcomes, or losses arising from a pilot withholding verification consent. The Platform Operator's maximum aggregate liability for any claim arising out of this ecosystem shall not exceed <strong>USD $50.00</strong>.</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">7.5 Payment Architecture &amp; AML Compliance</h3>
+                        <p className="mb-4 text-sm">All subscription and verification fees are routed via Helio (MoonPay Commerce). The Platform operates as a neutral automated storefront. Payments are distributed on-chain at the moment of clearance directly to the independent integration partners performing verification functions. The immutable blockchain ledger provides a transparent audit trail satisfying international AML traceability standards. The on-chain receipt identifies the exact institutional partner compensated — any disputes regarding screening results are legally attributable to that specific integration partner layer, not to the Platform Operator.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">7.6 Enterprise Member — 5-Day Activation Credit</h3>
                         <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-2">
-                            <p className="text-blue-700 text-xs font-bold uppercase tracking-wider mb-1">Platform Classification</p>
-                            <p className="text-blue-900 font-semibold text-sm">Neutral Data Infrastructure Provider — Passive Pipeline / Mere Conduit (Not a Controller or Processor)</p>
+                            <p className="text-blue-900 text-xs leading-relaxed">When a verification event involves an ATO or aviation enterprise, a <strong>5% credit</strong> ($4.95 per $99 verification) is automatically reserved for that organisation. The organisation has <strong>5 business days</strong> to activate an Enterprise Seat ($1,000/year) to claim this credit as an onboarding discount. If the window expires, the credit lapses to the platform infrastructure pool. Verification proceeds regardless of membership status.</p>
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">0. Neutral &amp; Stateless Platform Status</h2>
-                        <p className="mb-4">
-                            Pilot Recognition operates exclusively as a <strong>neutral data infrastructure provider</strong> — a passive pipeline and mere conduit. This platform is not a data controller and not a data processor under any applicable data privacy framework. It functions solely as a read-only display interface that renders data originating entirely from the User, approved Aviation Training Organisations (ATOs), regional civil aviation authorities, and independent verification providers. Data ownership and control sit exclusively with the pilot and the integration partners responsible for each respective data stream.
-                        </p>
-                        <p className="mb-4">
-                            <strong>We do not generate, write, edit, modify, or store pilot credentials, license data, logbook entries, or aviation records of any kind.</strong> All metrics, scores, and profile data displayed on this platform are rendered client-side, sourced read-only from the User's own declared inputs or from connected third-party provider data streams.
-                        </p>
-                        <p className="mb-4">
-                            Under this classification, Pilot Recognition is legally analogous to a <em>passive pipeline</em> or neutral conduit. As the platform does not originate or alter any underlying data, liability for data accuracy, credential validity, and verification outcomes rests exclusively with the data-originating parties: the User, the relevant aviation authority, and the independent verification provider.
-                        </p>
-
-                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
-                            <p className="text-amber-800 text-xs font-bold uppercase tracking-wider mb-2">Important Legal Clarification</p>
-                            <p className="text-amber-900 text-sm leading-relaxed">
-                                Infrastructure classification does <strong>not</strong> exempt Pilot Recognition from the applicability of data privacy laws. No technology platform that handles personal identifiers is completely immune from legislation such as the Philippines Data Privacy Act of 2012 (RA 10173), the GDPR, or equivalent regional frameworks. However, operating strictly as a neutral data infrastructure provider — without owning, storing, editing, or making decisions about data — <strong>removes Pilot Recognition from the legal definitions of both a data controller and a data processor</strong>, reducing direct legal liability to near-zero. The burden of data compliance sits on the two active bookends of the pipeline: the Pilot (who controls the input) and the integration Partners (who control the verification and storage).
-                            </p>
-                        </div>
-
-                        <p className="mb-4">
-                            <strong>Processing Environment Responsibility:</strong> Under applicable data privacy legislation, the term "processing" includes any operation performed on personal data, including retrieval, consultation, and browser-side display. Because Pilot Recognition's frontend code reaches out to authentication and database providers, decodes tokens, and renders pilot profile data within the browser, the platform executes a <em>data processing event</em> as defined by law. As operators of the domain where this processing occurs, the Developers are responsible for maintaining a secure processing environment even though no raw data is stored on Pilot Recognition's own servers.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Privacy by Design — Compliance by Architecture:</strong> By building a stateless application that refuses to store or retain raw pilot credentials, Pilot Recognition satisfies the highest tier of data security mandated by applicable privacy frameworks. The absence of a central data repository eliminates the risk of a server-side data breach, which constitutes the most common and most severe form of data privacy violation. This architectural choice is not merely a technical decision — it is an active, documented compliance measure under the Privacy by Design principle recognized across all major data protection frameworks.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Transfer of Fault:</strong> By explicitly stating that data ownership and control sit with the pilot and the originating integration partners, any legal dispute regarding incorrect credentials, flight hours, or background check outcomes is automatically directed to the data-originating source network — not to Pilot Recognition as the neutral display interface. The platform's role is limited to rendering what those source networks provide.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Dispute Resolution:</strong> Any disputes regarding the accuracy of background checks, flight hours, license validity, or verification outcomes must be directed exclusively to the respective Data Issuer (e.g., your regional Civil Aviation Authority) or Third-Party Verification Provider. The Platform acts as a read-only display interface and does not have the ability to alter, override, or amend verified credentials. The Platform holds no liability for employment or certification outcomes resulting from third-party API data.
-                        </p>
-                        <p>
-                            This neutral status is explicitly asserted on the platform interface and constitutes part of the binding agreement between the User and the Developers upon account creation or use of any platform feature.
-                        </p>
                     </section>
 
+                    {/* ══════════════════════════════════════════════
+                        SECTION 8 — GOVERNING LAW & CONTACT
+                    ══════════════════════════════════════════════ */}
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Consent to Data Processing</h2>
-                        <p className="mb-4">
-                            By creating an account, you provide your explicit, informed consent to the Platform Operator. You authorize us to store your anonymous user identifier and your estimated flight hours (user-declared metadata) in our Supabase database strictly for the purpose of displaying your pilot profile.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Authentication Proxy:</strong> Login and account security on this platform are independently managed by <strong>Auth0</strong> by Okta, a third-party authentication proxy service. When you enter your email and password, that data is sent directly to Auth0's secure servers — it never touches our own servers or database. Auth0 validates your credentials and returns a cryptographically secure token (JSON Web Token) to our application. Our Supabase database stores only an anonymous User ID token (e.g., auth0|12345...), not your email or password. We do not have the ability to view, access, or store your login credentials.
-                        </p>
-                        <p className="mb-4 mt-4">
-                            <strong>Data Limitation and Non-Verification Disclaimer:</strong> pilotrecognition.com displays only user-declared aviation metadata, such as estimated flight hours and general license ratings, based entirely on explicit user input. This platform does not collect, store, or verify official government-issued license numbers, logs, or legal credentials. Legal authentication of certifications remains strictly between the user, the relevant aviation Data Issuer, and authorized verification providers.
-                        </p>
-                        <p className="mb-4 mt-4">
-                            <strong>Third-Party Verification Disclaimer:</strong> pilotrecognition.com does not collect or store official government license documents or sensitive identification numbers on its own servers. Professional credential verification is securely offloaded to an independent, third-party screening provider. By initiating a verification check, you consent to sharing your basic contact information with the verification provider to process your credentials. Verified achievements are managed via your independent credential wallet.
-                        </p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Data Collection and Purpose</h2>
-                        <p className="mb-4">The Developers collect the following data solely to create and display your pilot profile on this platform:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Your anonymous User ID (provided via JWT token from Auth0)</li>
-                            <li>Your estimated total flight hours (user-declared metadata)</li>
-                            <li>Your general license ratings and type ratings (user-declared)</li>
-                            <li>Your pathway interests and program preferences</li>
-                        </ul>
-                        <p className="mt-4">We do <strong>not</strong> collect, store, or process your email address, password, or any login credentials. We do <strong>not</strong> collect, store, or verify official government-issued license numbers, medical certificate numbers, logbook serial numbers, or any other sensitive personal identification data. Legal authentication of all certifications remains strictly between the user, the relevant aviation Data Issuer, and authorized third-party verification providers. We do not collect passport data, financial account details, or any information not directly related to your pilot profile display.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Data Storage and Security</h2>
-                        <p>Your profile data (anonymous User ID and estimated flight hours) is stored securely in our Supabase database. Your login credentials (email and password) are stored exclusively by Auth0, Inc. While the Platform implements standard digital security measures, you acknowledge that no online database is 100% secure against unauthorized breaches. The Platform maintains technical safeguards as a Data Intermediary under {jurisdiction.privacyFramework}. Auth0 is solely responsible for the security of your authentication credentials.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Account Deletion and Data Retention</h2>
-                        <p>You retain the right to delete your profile at any time. Upon your request or account deletion, the Platform will permanently erase your profile data from the active database within 30 days, in accordance with {jurisdiction.privacyFramework}. Your consent timestamp (recorded at account creation) serves as legal proof of when you accepted these terms.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Account Registration</h2>
-                        <p className="mb-4">To use certain features of the platform, you must register for an account. You agree to:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Provide accurate, current, and complete information</li>
-                            <li>Maintain and update your account information</li>
-                            <li>Keep your password secure and confidential</li>
-                            <li>Notify us immediately of unauthorized access</li>
-                            <li>Accept responsibility for all activities under your account</li>
-                            <li>Accept these Terms of Service and Privacy Agreement before any data is submitted</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">6. User Conduct</h2>
-                        <p className="mb-4">You agree not to:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Use the platform for any illegal purpose</li>
-                            <li>Impersonate any person or entity</li>
-                            <li>Interfere with or disrupt the platform</li>
-                            <li>Upload malicious code or viruses</li>
-                            <li>Violate any applicable laws or regulations</li>
-                            <li>Harass, abuse, or harm other users</li>
-                            <li>Post false or misleading information about your credentials or flight hours</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">7. PilotRecognition Profile</h2>
-                        <p className="mb-4">By creating a PilotRecognition Profile, you agree to:</p>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>Provide accurate and verifiable information</li>
-                            <li>Allow verification of your credentials and certifications (through Recognition+)</li>
-                            <li>Accept that your recognition score is based on objective criteria</li>
-                            <li>Understand that false information may result in account termination</li>
-                            <li>Acknowledge that free-tier profile data is self-claimed and unverified until the verification workflow is completed</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Electronic Consent &amp; Consent Timestamp</h2>
-                        <p className="mb-4">Under the <strong>{jurisdiction.electronicConsentLaw}</strong>, clicking the "I Agree" checkbox or button during signup is legally binding — equivalent to signing a paper contract with a pen. We record a timestamp in our database at the moment you create your account, which serves as legal proof that you accepted these terms on that specific date and time. This consent mechanism complies with electronic signature legislation applicable in {jurisdiction.country}.</p>
-                        <p className="mb-4">
-                            <strong>Consent Timestamp — System Metadata, Not Personal Data:</strong> The timestamp recorded at account creation (e.g., <code className="text-xs bg-slate-100 px-1 py-0.5 rounded">2026-05-18T10:36:00Z</code>) is stored alongside an encrypted, alphanumeric anonymous user ID issued by Auth0. This constitutes an <em>operational audit trail</em> — system metadata — not a pilot profile registry or a store of Sensitive Personal Information (SPI) as defined under applicable data privacy frameworks.
-                        </p>
-                        <p className="mb-4">
-                            This log records a single immutable system event: that an anonymous user token activated the infrastructure pipeline at a specific moment. No raw pilot documents, license credentials, medical records, or logbook data are associated with or stored alongside this timestamp entry.
-                        </p>
-                        <p>
-                            <strong>Legal Basis for Timestamp Logging:</strong> Recording this consent event is not discretionary — it is mandated by electronic commerce legislation (including the {jurisdiction.electronicConsentLaw}) as the technical mechanism proving that the User directed the system to process their read-only data. This timestamp is Pilot Recognition's legal receipt of informed, affirmative user consent and establishes the exact moment the infrastructure pipeline was authorized to operate.
-                        </p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Aviation Authority & Credential Standards</h2>
-                        <p>For users located in {jurisdiction.country}, the relevant aviation regulatory authority is the <strong>{jurisdiction.aviationAuthority}</strong>. All credential verification workflows on this platform are designed to align with the licensing standards and frameworks administered by this authority. Pilot Recognition does not represent, act on behalf of, or hold any formal relationship with this authority. Verification results are for informational purposes only and do not constitute official regulatory recognition.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Intellectual Property</h2>
-                        <p>All content, features, and functionality of the PilotRecognition platform are owned by the Developers and are protected by international copyright, trademark, and other intellectual property laws.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Limitation of Liability</h2>
-                        <p className="mb-4">
-                            <strong>AS-IS Disclaimer:</strong> This platform is provided strictly "as-is" and "as-available" without any warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Severe Liability Cap:</strong> To the maximum extent permitted by applicable law, in no event shall the Platform Operator be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to: loss of profits, loss of employment opportunities, data loss, reputational harm, or operational damages. The Platform Operator's total maximum aggregate liability for any claim arising out of or relating to these terms shall not exceed the greater of: (a) the total amount you paid to the Platform in the preceding twelve (12) months, or (b) fifty United States Dollars (USD $50.00).
-                        </p>
-                        <p className="mb-4">
-                            <strong>Indemnification:</strong> You agree to defend, indemnify, and hold harmless the Platform Operator from and against any claims, liabilities, damages, judgments, awards, losses, costs, or fees (including reasonable attorneys' fees) arising out of or relating to: (i) your violation of these Terms, (ii) your use of the Platform, (iii) the submission of fraudulent, inaccurate, or unauthorized data, or (iv) any dispute between you and a third-party verification provider or data issuer.
-                        </p>
-                        <p>
-                            <strong>Third-Party Reliance:</strong> The Platform disclaims all liability for the accuracy, completeness, or reliability of any data provided by third-party verification providers, aviation authorities, or data issuers. You acknowledge that all credential verification, employment verification, and background checks are performed exclusively by independent third parties, and the Platform merely displays the output of those services.
-                        </p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Termination</h2>
-                        <p>We reserve the right to terminate or suspend your account at any time for violation of these Terms of Service or for any other reason at our sole discretion.</p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Governing Law</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Governing Law &amp; Regulatory Independence</h2>
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-4">
                             <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Detected Jurisdiction</p>
                             <p className="text-slate-900 font-semibold">{jurisdiction.country}</p>
+                            <p className="text-slate-500 text-xs mt-1">{jurisdiction.privacyFramework}</p>
                         </div>
-                        <p className="mb-4">These Terms of Service shall be governed by and construed in accordance with <strong>{jurisdiction.governingLaw}</strong>.</p>
-                        <p className="mb-4">Data protection rights and complaints may be directed to the <strong>{jurisdiction.dataAuthority}</strong> in your jurisdiction.</p>
-                        <p className="text-sm text-slate-500">Note: Regardless of your detected location, these terms are drafted in alignment with the platform's country of development (Republic of the Philippines) and comply with internationally recognized data protection principles including GDPR-equivalent standards.</p>
+                        <p className="mb-4 text-sm">This Agreement, its multi-engine structural configurations, and any disputes arising from the Terminal permission matrices shall be governed strictly by the <strong>laws of the Republic of Singapore</strong>. Any data handling inquiries or complaints may be directed to the <strong>Personal Data Protection Commission (PDPC)</strong> of Singapore.</p>
+                        <p className="mb-4 text-sm">For users in other jurisdictions, data protection rights and complaints may also be directed to the <strong>{jurisdiction.dataAuthority}</strong>. The Platform Operator's obligations as Infrastructure Controller are assessed under Singapore PDPA 2012 as the primary statutory baseline.</p>
+                        <p className="mb-4 text-sm"><strong>Regulatory Independence:</strong> The Platform Operator functions independently of all civil state organs. It maintains no formal corporate joint venture, partnership, or agency relationship with any civil aviation authority. Profile data rendered via third-party APIs is purely informational and does not constitute official regulatory documentation or licensing authorisation.</p>
+                        <p className="text-sm"><strong>Aviation Authority ({jurisdiction.aviationAuthority}):</strong> For users in {jurisdiction.country}, the sole regulatory authority for aviation licensing is the {jurisdiction.aviationAuthority}. Pilot Recognition maintains no formal relationship with this authority. Verification results are for informational purposes only.</p>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 9 — CROSS-BORDER DATA ORCHESTRATION
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Cross-Border Data Orchestration &amp; Sovereignty (PDPA Section 26)</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">9.1 Extraterritorial Data Transfer Protocol</h3>
+                        <p className="mb-3 text-sm">The Platform functions as a distributed regional orchestrator. While the multi-engine data storage infrastructure (Supabase &amp; Firebase Sync) is primarily anchored in the Republic of Singapore, regional verification partners (e.g., Veremark) and subscribing aviation enterprises operate globally across varying national jurisdictions (e.g., EASA, FAA, GCAA).</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Sovereign Consent for Cross-Border Egress', 'Pursuant to Section 26 of the Singapore PDPA 2012, the User explicitly acknowledges that initiating a Regional Verification Sequence or executing a User-Initiated Handshake with an overseas Operator constitutes an unalterable direction to transmit tokenized identity metadata across international borders.'],
+                                        ['Comparable Protection Standard', 'The Platform Operator enforces data protection requirements through its service agreements, ensuring that any overseas recipient provides a standard of protection to the transferred personal data that is comparable to the protection under the PDPA.'],
+                                        ['User-Directed Transfer', 'Because the cross-border transmission is triggered exclusively by the User\'s own consent action (passkey signature or verification trigger), the Platform Operator\'s liability as a transfer intermediary is structurally limited to the infrastructure conduit function only.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">9.2 The Re-Verification Sync Loop Gating</h3>
+                        <p className="mb-3 text-sm">A pilot's operational metrics (e.g., logged PIC flight hours, medical clearance statuses, type ratings) are inherently dynamic and subject to frequent alteration within the database staging layer.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Stale Token Invalidation Threshold', 'A verified cryptographic stamp issued into the client-side walt.id browser wallet features an algorithmic TTL (Time-To-Live) window of 365 days. Upon expiry, the Terminal 3 access grant is automatically revoked pending a new verification cycle.'],
+                                        ['Database Drift Gating', 'If a pilot updates their unverified flight logs in the Supabase/Firebase layer by a variance greater than twenty percent (20%) of their last verified baseline value, the Platform infrastructure will programmatically flag the associated Terminal 3 status as "Out of Sync." The profile\'s verified pathway registries will remain locked to external operators until a localised wallet synchronisation occurs and a supplementary audit token is issued via the regional partner API.'],
+                                        ['Drift Liability Attribution', 'Any processing friction, access delays, or pathway lockouts resulting from database drift exceeding the 20% threshold are the exclusive liability of the User. The Platform Operator shall not be held responsible for commercial opportunities missed during a drift-triggered lockout period.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 10 — SYSTEM VULNERABILITY & CSP DEFENCE
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">10. System Vulnerability &amp; Client-Side Script Injection Defence</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">10.1 Browser Runtime Sandbox Separation</h3>
+                        <p className="mb-3 text-sm">Because the walt.id orchestration engine executes directly within the user's client-side browser runtime, the integrity of the cryptographic environment relies fundamentally on the hygiene of the user's localised operating container.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Malicious Script & Extension Redaction', 'The Platform Operator deploys an aggressive Content Security Policy (CSP) designed to neutralise Cross-Site Scripting (XSS) vectors and unverified browser extension injections. The User acknowledges that running custom scripts, unauthorised developer tools, or malicious ad-blocking layers that alter the browser\'s runtime environment may break the trust-anchor handshake between Supabase and the walt.id instance.'],
+                                        ['System Failure Attribution', 'If a cryptographic verification failure or unauthorised credential presentation arises from a compromised user environment, an active malicious software payload on the pilot\'s device, or a localised man-in-the-middle script injection, the incident resides fundamentally outside the Platform Operator\'s control boundary.'],
+                                        ['Absolute Harmless Undertaking', 'The User holds the Platform Operator absolutely harmless against any downstream regulatory exposure, licensing denials, or administrative penalties resulting from client-side vector vulnerabilities — including XSS attacks, browser extension tampering, compromised passkey environments, or device-level malware intercepting the walt.id session.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 mb-2">
+                            <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-2">Platform CSP Enforcement Boundary</p>
+                            <div className="space-y-1 text-xs text-slate-600">
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Platform-deployed CSP headers block inline script injection at the server response layer</span></div>
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>walt.id session integrity monitored via origin-bound cryptographic nonces</span></div>
+                                <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Platform cannot inspect or control user-installed browser extensions</span></div>
+                                <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Platform cannot protect against device-level OS compromise or hardware keyloggers</span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 11 — CRYPTOGRAPHIC REVOCATION & RECOVERY
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Cryptographic Identity Revocation &amp; Wallet Recovery Boundaries</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">11.1 Absolute Non-Custodial Key Recovery Limits</h3>
+                        <p className="mb-3 text-sm">The Platform's architectural configuration relies on zero-knowledge execution. The private cryptographic keys generated to sign W3C Verifiable Credentials inside the client-side walt.id instance are structurally isolated within the User's hardware-backed operating environment (Google Passkeys or Apple iCloud Keychain).</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['The Irrecoverable Key Clause', 'The Platform Operator does not manage, store, escrow, or possess backup copies of the User\'s private asymmetric keys. If a User loses access to their physical hardware authentication devices, loses control of their biometric access vectors, or experiences an unrecoverable failure of their localised keychain architecture, the Platform Operator cannot decrypt the associated pilot_credentials entries or regenerate the profile state.'],
+                                        ['The Structural Reset Remedy', 'In the event of catastrophic key loss, the User\'s sole remedy is to request an account termination sequence. The multi-engine infrastructure (Supabase & Firebase Sync) will execute a destructive wipe of the public-key mapping table within 30 business days. The User must then execute an entirely new onboarding sequence, re-instantiate a blank walt.id browser wallet, and process an entirely new verification lifecycle — including full repayment of the USD $100.00/year regional screening fee.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">11.2 Token Revocation &amp; Sanction Gating</h3>
+                        <p className="mb-3 text-sm">If a third-party regional verification provider (e.g., Veremark) or an authoritative state civil aviation registry (e.g., CAAS, FAA, CAAP) issues a cryptographic revocation signal regarding a pilot's active licence, rating, or medical certificate, the Platform's multi-engine infrastructure will execute an automated response sequence:</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Instantaneous Terminal 3 Egress', 'Upon receipt of a live API revocation or failed trust-anchor handshake callback, the infrastructure layer instantly updates the pilot_credentials status to "Revoked" across both Supabase and Firebase. The corresponding Terminal 3 Access Token is algorithmically shattered, dropping the profile back to Terminal 2 (Exploratory) permissions within 60 seconds of the network callback event.'],
+                                        ['Anti-Spoofing Isolation', 'To prevent malicious injection attacks or spoofed civil registry callbacks, any revocation or validation signal must match the signed, public cryptographic signature of the designated authoritative regional verification issuer. Unsigned or invalidly signed metadata streams are rejected by the infrastructure controller, and the associated account is permanently blacklisted for potential fraud.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-red-50'}>
+                                            <td className={`px-4 py-3 border font-semibold text-xs whitespace-nowrap align-top ${i === 1 ? 'border-red-200 text-red-800' : 'border-slate-200 text-slate-700'} w-52`}>{label}</td>
+                                            <td className={`px-4 py-3 border text-xs ${i === 1 ? 'border-red-200 text-red-700' : 'border-slate-200 text-slate-600'}`}>{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Revocation flow diagram */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-2 overflow-x-auto">
+                            <div className="min-w-max text-xs space-y-2">
+                                <div className="flex items-center gap-2 justify-center">
+                                    <div className="border-2 border-red-300 rounded-lg px-3 py-2 bg-red-50 text-center w-44">
+                                        <p className="font-bold text-red-800 text-[10px] uppercase">CAA / Regional Partner</p>
+                                        <p className="text-red-600 text-[10px]">Issues signed revocation signal</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-amber-300 rounded-lg px-3 py-2 bg-amber-50 text-center w-48">
+                                        <p className="font-bold text-amber-800 text-[10px] uppercase">Infrastructure Controller</p>
+                                        <p className="text-amber-600 text-[10px]">Validates signature · Rejects spoofs</p>
+                                        <p className="text-amber-700 text-[10px] font-black">Updates pilot_credentials → Revoked</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-slate-300 rounded-lg px-3 py-2 bg-slate-100 text-center w-44">
+                                        <p className="font-bold text-slate-700 text-[10px] uppercase">Terminal 3 Token Shattered</p>
+                                        <p className="text-slate-600 text-[10px]">Profile drops to Terminal 2</p>
+                                        <p className="text-slate-500 text-[10px] font-bold">Within 60 seconds</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 12 — LOGBOOK ANALYTICS & ANTI-FALSIFICATION
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Automated Logbook Verification Analytics &amp; Anti-Falsification Safeguards</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">12.1 The Mechanical Validation Scope</h3>
+                        <p className="mb-3 text-sm">The Platform utilises automated data diagnostics to analyse uploaded logbooks, check totals, and check formatting inconsistencies before routing metadata profiles to regional partners. This process functions purely as a <strong>structural syntax check</strong> — not a truth evaluation.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Falsification Detection Liability', 'The mathematical data integrity check does not evaluate the truth of the flight hours claimed. If a User manually inputs fraudulent flight hours, manipulates Cross-Country (XC) metrics, or falsifies multi-engine command logs, and this misrepresentation is subsequently flagged during an active audit by a regional screening provider or flight school, the Platform will immediately terminate the User\'s operational privileges.'],
+                                        ['Indemnification of Placement Deficiencies', 'The User explicitly agrees to indemnify, defend, and hold harmless the Platform Operator, its integration partners, and subscribing aviation operators against any legal actions, regulatory investigations, or civil damages resulting from fraudulent or manipulated data payloads passing through the walt.id client-side wallet presentation layer.'],
+                                        ['Permanent Account Blacklisting', 'Accounts confirmed to have submitted fraudulent logbook data, spoofed credential tokens, or manipulated verification payloads are subject to permanent infrastructure-level blacklisting. The Platform Operator reserves the right to report confirmed fraud events to the applicable civil aviation authority and regional verification partner for independent investigation.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-2">
+                            <p className="text-amber-800 text-xs font-black uppercase tracking-wide mb-2">Platform Validation Scope — What the System Checks vs. What It Cannot Guarantee</p>
+                            <div className="grid grid-cols-2 gap-4 text-xs">
+                                <div>
+                                    <p className="font-bold text-emerald-700 mb-1">✓ Structural Checks (Automated)</p>
+                                    <ul className="space-y-0.5 text-slate-600">
+                                        <li>Logbook total arithmetic consistency</li>
+                                        <li>Date range formatting validation</li>
+                                        <li>Certificate expiry date bounds</li>
+                                        <li>Field completeness & schema compliance</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-red-600 mb-1">✗ Truth Evaluation (Not Platform Scope)</p>
+                                    <ul className="space-y-0.5 text-slate-600">
+                                        <li>Whether flights actually occurred</li>
+                                        <li>Whether claimed hours are genuine PIC time</li>
+                                        <li>Whether instructor signatures are authentic</li>
+                                        <li>Whether medical limitations are self-disclosed</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 13 — GLOBAL DATA SOVEREIGNTY & CROSS-BORDER TRANSFERS
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Global Data Sovereignty, Cross-Border Transfers &amp; Regional Sovereignty Boundaries</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">13.1 Global CBPR &amp; Statutory Data Sovereignty Alignment</h3>
+                        <p className="mb-3 text-sm">The multi-engine infrastructure (Supabase, Firebase Sync, and regional caching arrays) is engineered to comply dynamically with international data transfer mechanics, specifically aligning with the <strong>Global Cross-Border Privacy Rules (Global CBPR) System</strong>, the <strong>Global Privacy Recognition for Processors (PRP) System</strong>, and regional statutory privacy updates including the Singapore PDPA.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Sovereign Storage Isolation Protocol', 'While identity presentation occurs locally via the User\'s client-side walt.id browser wallet, any ancillary operational metadata, billing logs, and regional routing pointers stored server-side must reside strictly within cloud regions that match the user\'s legal jurisdiction or an approved equivalent-standard zone.'],
+                                        ['The Zero-Identifiers Mandate', 'In compliance with advanced data-minimisation statutes, the Platform structurally prohibits the storage, processing, or use of static national identification registries or national identification card numbers (e.g., Singapore NRIC, US SSN) for user account authentication, indexing, or password creation. All pilot profile indexing across Supabase database shards must rely exclusively on cryptographically unique, non-associative UUIDv4 strings generated at account creation.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">13.2 Cross-Border Verifiable Presentation Guardrails</h3>
+                        <p className="mb-3 text-sm">When a User initiates a Verifiable Presentation of their <code className="bg-slate-100 px-1 rounded text-xs">pilot_credentials</code> to a foreign aviation operator or external regional flight school located across international borders, the data transfer boundaries are subject to strict cryptographic containment:</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['The Explicit Presentation Handshake', 'The transit of personal data occurs on demand via a peer-to-peer, TLS 1.3-encrypted presentation channel initiated entirely by the User\'s active biometric confirmation. The Platform Operator acts strictly as a data intermediary, never persisting the unencrypted transit payload or maintaining a persistent cache of the decrypted credentials outside the ephemeral memory space of the walt.id verification container.'],
+                                        ['The Extraterritorial Indemnification Clause', 'The User acknowledges that once a Verifiable Presentation is successfully released to a foreign relying party, that data falls under the physical and statutory jurisdiction of the recipient\'s geographic region. The Platform Operator disclaims all liability for how third-party international operators manage, retain, or potentially misuse verified credential packets once transferred out of the secure client-side wallet ecosystem.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 14 — MULTI-TENANT ISOLATION & DB SHARDING
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">14. Multi-Tenant Infrastructure Isolation &amp; Database Sharding Security</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">14.1 Tenant-Level Access Control &amp; Row-Level Security (RLS)</h3>
+                        <p className="mb-3 text-sm">To guarantee multi-tenant structural integrity across commercial flight schools, independent charter operators, and regional verification agencies utilising the corporate dashboard, the Supabase backend architecture enforces <strong>absolute database separation at the database engine layer</strong>.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['The Leak-Proof RLS Mandate', 'Every database table containing tenant-specific operational records, screening requests, or pilot routing logs must implement Postgres Row-Level Security (RLS). RLS policies are hard-coded to evaluate the authenticated JWT context, filtering queries by a strict tenant_id claim injectively validated against the Firebase Auth session state. Under no circumstances shall cross-tenant cross-joins, unindexed table scans, or administrative overrides bypass the RLS layer during standard runtime execution.'],
+                                        ['Tenant Metadata Separation', 'Corporate administrative accounts are structurally blocked from inspecting the raw contents of individual pilot wallets or reading the underlying private metadata components of a pilot\'s decentralised logbook, unless the pilot has explicitly granted a time-bound, cryptographically signed access delegation token.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 mb-5">
+                            <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-2">RLS Enforcement Architecture</p>
+                            <div className="space-y-1 text-xs text-slate-600">
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>All queries evaluated against authenticated JWT <code className="bg-slate-100 px-1 rounded">tenant_id</code> claim at the Postgres engine layer</span></div>
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Cross-tenant joins structurally impossible during standard runtime — no administrative override path</span></div>
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Pilot wallet contents accessible to operators only via time-bound, pilot-signed delegation token</span></div>
+                                <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>RLS does not apply to raw Supabase service-role key usage — service-role keys are never exposed to client-side code</span></div>
+                            </div>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">14.2 Ephemeral Data Pruning &amp; Sanitisation</h3>
+                        <p className="mb-3 text-sm">To limit the risk of long-term data leaks and minimise regulatory liability under global data retention limitations, the platform implements <strong>automated, destructive pruning routines</strong> within its multi-engine synchronisation loop.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Transient Payload Discard Protocol', 'All intermediate screening payloads, unverified file uploads, and webhook callbacks received from external validation providers (e.g., Veremark) are retained in an encrypted, volatile Redis cache memory space for a maximum duration of 72 hours. If a verification lifecycle fails to reach a definitive terminal state ("Approved" or "Rejected") within this window due to timeout or bad formatting, the transient data is permanently overwritten using cryptographic zeroing algorithms.'],
+                                        ['Anonymisation of Abandoned Profiles', 'Following an account termination event or the catastrophic key-loss scenario outlined in Section 11.1, database pruning scripts execute a cascade delete across all relational child records. Any telemetry data kept for internal diagnostic analytics must be fully anonymised using irreversible salt-and-hash structures where the salt is destroyed post-execution — completely removing the ability to re-identify the pilot\'s original personal data footprint.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 15 — OID4VP & SELECTIVE DISCLOSURE
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">15. OpenID for Verifiable Presentations (OID4VP) &amp; Selective Disclosure Compliance</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">15.1 Presentation Definitions &amp; OID4VP Protocol</h3>
+                        <p className="mb-3 text-sm">The interaction between the User's client-side walt.id wallet and the Platform's Verifier API strictly adheres to the <strong>OpenID for Verifiable Presentations (OID4VP)</strong> specification. All requests to verify a pilot's credentials utilise standardised Presentation Definitions containing cryptographic constraints.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Direct Post Response Mode', 'The Platform enforces the direct_post response mode for all OID4VP flows. The Verifier API generates an ephemeral, nonce-backed verification session mapped to a {organizationID}.{tenantID}.{verifierServiceID} resource identifier. Session nonces are single-use and expire upon first consumption.'],
+                                        ['Format-Agnostic Interoperability', 'The Verifier Service is configured to accept structurally valid W3C Verifiable Credentials signed as JWTs (jwt_vc_json), ISO/IEC 18013-5 mDocs (mso_mdoc), and IETF SD-JWT VCs — ensuring compatibility with existing civil aviation authority credential formats across CAAP, CAAS, GCAA, FAA, and EASA-aligned registries.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">15.2 Selective Disclosure (SD-JWT) &amp; Privacy Preservation</h3>
+                        <p className="mb-3 text-sm">To enforce absolute data minimisation during background checks, the Platform defaults to requesting <strong>Selective Disclosure JWTs (SD-JWT VCs)</strong>.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Granular Payload Disclosures', 'When an aviation operator requests pilot data, the OID4VP Presentation Definition will only demand the specific disclosure hashes strictly necessary for the verification task (e.g., verifying a Medical Certificate expiration date without exposing the underlying health condition or diagnostic notes).'],
+                                        ['Subject-is-Issuer & Holder Binding', 'The verification pipeline mandates subject_is_issuer or is_holder constraints within the input descriptors. The Platform will immediately reject any verifiable presentation where the pilot\'s client-side cryptographic proof of possession (PoP) fails to match the bound credential — preventing credential theft and replay attacks.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-4 mb-2">
+                            <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-2">SD-JWT Selective Disclosure — Example Aviation Use Case</p>
+                            <div className="space-y-1 text-xs text-slate-600">
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Operator requests: <code className="bg-slate-100 px-1 rounded">medical_expiry_date</code> — disclosed</span></div>
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Operator requests: <code className="bg-slate-100 px-1 rounded">licence_class</code>, <code className="bg-slate-100 px-1 rounded">ratings[]</code> — disclosed</span></div>
+                                <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Health condition, diagnostic notes, waivers — never disclosed; hash salted and withheld</span></div>
+                                <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Full logbook raw data — structurally excluded from all SD-JWT presentation definitions</span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 16 — PDPA SUB-PROCESSOR & BYZANTINE FAULT TOLERANCE
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">16. 2026 PDPA Sub-Processor Transfer Limitations &amp; Engine Synchronisation</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">16.1 Transfer Limitation Obligation (Part 4 PDPA) &amp; Onward Transfers</h3>
+                        <p className="mb-3 text-sm">In direct compliance with the updated Singapore Personal Data Protection Act (PDPA) Transfer Limitation Obligations — and impending 2027 mandates banning NRIC/National ID usage for authentication — the Platform guarantees <strong>strict chain-of-custody oversight</strong> for all multi-engine data routing.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Prohibition of Unaudited Onward Transfers', 'When intermediate verification payloads are routed via Engine Alpha (Supabase) to a recognised sub-processor (e.g., Veremark), the Platform explicitly prohibits the overseas recipient from executing secondary onward transfers to third parties without executing an automated cryptographic audit validating comparable PDPA-level protections.'],
+                                        ['Financial Penalties & Data Breach Extraterritoriality', 'The Platform recognises that non-compliance with Cross-Border Data Transfer guidelines exposes the operator to enforcement under the PDPA turnover-based penalty structure. All cross-border API transmissions are encapsulated in TLS 1.3 tunnels, utilising tokenised aliases rather than raw identifying telemetry.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">16.2 Byzantine Fault Tolerance in Multi-Engine Arbitration</h3>
+                        <p className="mb-3 text-sm">Because the system relies on a dual-redundant multi-engine architecture (Supabase as Engine Alpha, Firebase Sync as Engine Beta), it employs a <strong>deterministic conflict resolution protocol</strong> to prevent state corruption during intermittent regional outages.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Timestamped Vector Clocks', 'All transactional operations (e.g., appending a newly verified flight hour log to the decentralised profile) are stamped with decentralised vector clocks at the client-side wallet level prior to backend ingestion. This prevents out-of-order write conflicts between Engine Alpha and Engine Beta during asynchronous replication windows.'],
+                                        ['Engine Out-of-Sync Arbitration', 'In the event that Engine Alpha and Engine Beta report divergent ledger states for a pilot\'s profile, the system defaults to the cryptographic truth held by the pilot\'s local hardware passkey/wallet. The backend engines are strictly treated as highly available caches; the client\'s cryptographically signed OID4VP history acts as the immutable master record, automatically overwriting asynchronous backend drift upon the next successful login.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 mb-2">
+                            <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-2">Multi-Engine Truth Hierarchy</p>
+                            <div className="space-y-1 text-xs text-slate-600">
+                                <div className="flex gap-2"><span className="font-black text-slate-800">1.</span><span><strong>Client walt.id wallet</strong> — cryptographically signed OID4VP history = immutable master record</span></div>
+                                <div className="flex gap-2"><span className="font-black text-slate-800">2.</span><span><strong>Engine Alpha (Supabase)</strong> — primary cache, vector-clock stamped writes</span></div>
+                                <div className="flex gap-2"><span className="font-black text-slate-800">3.</span><span><strong>Engine Beta (Firebase Sync)</strong> — failover cache, real-time replication from Alpha</span></div>
+                                <div className="flex gap-2"><span className="text-amber-600 font-bold">⚠</span><span>Divergence between Alpha and Beta resolved by client wallet on next login — backend drift is never authoritative</span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
+                        SECTION 17 — TRIPARTITE DATA CONTROLLER FRAMEWORK
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">17. Tripartite Data Controller Framework &amp; Platform Liability Disconnection</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">17.1 Explicit Tripartite Data Controller Separation</h3>
+                        <p className="mb-3 text-sm">To satisfy global privacy architectures (including the Singapore PDPA and GDPR equivalents), this ecosystem rejects the single-controller paradigm. The operational environment structurally recognises <strong>exactly three independent Data Controllers</strong>, each exercising completely autonomous determination over processing purposes and means:</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-800 text-white">
+                                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide w-12">#</th>
+                                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide w-56">Controller</th>
+                                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide">Autonomous Control Domain</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        ['1', 'The Individual Pilot — Sovereign Data Controller', 'Exercises exclusive controller authority over personal identity keys, local browser-based wallet state, individual profile claims, and selective disclosure settings. The pilot is the sole legal controller of their data assets.'],
+                                        ['2', 'The Aviation Operator / Airline — Operational Data Controller', 'Exercises exclusive controller authority over the creation, posting, and broadcasting of operational training pathways, institutional career prerequisites, and internal recruitment filters. Acts as an independent data puller and consumer of validated data upon pilot initiation.'],
+                                        ['3', 'Authorised Verification Partners — Authoritative Data Controllers & Issuers', 'Third-party background screening networks (e.g., Veremark) and associated registry nodes act as independent data controllers over specific validation processes, raw record indexing, and cryptographic issuance of flight hour verifications, licensing stamps, and medical certifications.'],
+                                    ].map(([num, label, desc], i) => (
+                                        <tr key={num} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-black text-slate-500 text-xs align-top">{num}</td>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 text-xs align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">17.2 The Platform Neutrality Mandate &amp; Zero-Liability Clause</h3>
+                        <p className="mb-3 text-sm">The Platform Operator functions strictly as an <strong>Infrastructure Controller and Neutral Technical Intermediary</strong>. The platform provides the cloud venue (Supabase and Firebase Sync routing pipelines) and wallet orchestration wires, but exercises <strong>zero control, zero insight, and zero discretionary judgment</strong> over the content of transactions passing between the three primary Data Controllers.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Absolute Inter-Controller Disconnection', 'The Platform Operator assumes absolute zero liability for any legal disputes, contractual breaches, regulatory non-compliance, or structural data errors that occur between the Individual Pilot, the Aviation Operator/Airline, and the Verification Partners.'],
+                                        ['Verification & Hours Liability Isolation', 'Because flight hours, licensing claims, and academic enrollment statuses are issued exclusively by Independent Verification Partners directly into the pilot\'s sovereign browser wallet, the Platform Operator explicitly disclaims all liability for fraudulent validation stamps, faulty registry queries, or delayed verification outputs.'],
+                                        ['Harm Indemnification', 'If a pilot presents a cryptographically signed credential that an airline or manufacturer subsequently relies upon to their detriment (or vice versa), the resolving liability rests entirely between those independent controllers. The Platform Operator is legally insulated from all downstream indemnification, civil actions, or administrative enforcement actions arising from these independent peer-to-peer transactions.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-slate-900 text-white rounded-xl px-5 py-4 mb-2">
+                            <p className="text-red-400 text-xs font-black uppercase tracking-wider mb-3">Tripartite Liability Distribution — Absolute</p>
+                            <div className="grid grid-cols-3 gap-3 text-xs">
+                                <div className="border border-blue-400 rounded-lg px-3 py-2 bg-blue-950">
+                                    <p className="text-blue-300 font-bold mb-1">Pilot</p>
+                                    <p className="text-blue-200 text-[10px]">Sovereign Controller of own wallet, keys &amp; claims</p>
+                                </div>
+                                <div className="border border-purple-400 rounded-lg px-3 py-2 bg-purple-950">
+                                    <p className="text-purple-300 font-bold mb-1">Operator / Airline</p>
+                                    <p className="text-purple-200 text-[10px]">Independent Controller of pathway criteria &amp; recruitment decisions</p>
+                                </div>
+                                <div className="border border-emerald-400 rounded-lg px-3 py-2 bg-emerald-950">
+                                    <p className="text-emerald-300 font-bold mb-1">Verification Partner</p>
+                                    <p className="text-emerald-200 text-[10px]">Authoritative Issuer of credential tokens &amp; registry validation</p>
+                                </div>
+                            </div>
+                            <div className="mt-3 pt-3 border-t border-slate-700 text-center">
+                                <p className="text-slate-400 text-[10px]">Platform Operator = Neutral Infrastructure Controller · Zero discretionary data access · Zero liability for inter-controller transactions</p>
+                            </div>
+                        </div>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">14. Payment Processing, Anti-Money Laundering &amp; Fee Distribution</h2>
-                        <p className="mb-4">
-                            All subscription and verification fees processed through this platform are routed exclusively via a decentralized payment gateway operating as a neutral, automated conduit. The Platform operates as a neutral digital storefront connecting Users to established verification providers. Payments are aggregate fees that cover third-party credential verification API costs, decentralized network processing, and a platform commission for infrastructure maintenance.
-                        </p>
-                        <p className="mb-4">
-                            The Platform does not independently verify credentials, issue licenses, or conduct background checks. Therefore, the Platform disclaims liability for the outcome of any third-party verification services purchased through this interface. Fee distributions are automatically allocated on-chain to the respective integration partners responsible for providing underlying data and verification services.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Anti-Money Laundering (AML) Compliance:</strong> Because Pilot Recognition never holds 100% of any transaction in a single account, it cannot be classified as a centralized financial entity or data reseller. The on-chain split architecture provides a transparent, immutable ledger demonstrating that all funds flow directly and immediately to verified institutional recipients. This structure is designed to satisfy AML compliance requirements by ensuring full traceability of every transaction. The decentralized gateway's automated systems log each distribution event, creating an auditable trail that identifies the exact parties compensated, the amount, and the corresponding service rendered.
-                        </p>
-                        <p className="mb-4">
-                            <strong>Liability Attribution:</strong> The on-chain payment record constitutes an irrefutable, time-stamped receipt. It identifies which entity was paid to perform each verification function, thereby establishing that any data processing errors, credential disputes, or service failures are attributable to the respective integration partner responsible for that layer — not to Pilot Recognition as the neutral display interface.
-                        </p>
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-4">
-                            <p className="text-blue-800 text-xs font-bold uppercase tracking-wider mb-2">Enterprise Member Benefit — 5-Day Credit System</p>
-                            <p className="text-blue-900 text-sm leading-relaxed">
-                                <strong>5% New Member Activation Credit:</strong> When a verification event occurs involving an Approved Training Organization (ATO) or aviation enterprise, a <strong>5% credit</strong> ($4.95 per $99 verification) is automatically calculated and reserved for that organization. This credit functions as a time-limited promotional benefit. The organization has <strong>5 business days</strong> to activate an Enterprise Seat ($1,000/year subscription) to claim this credit as an onboarding discount. If the activation window expires, the promotional credit lapses and returns to the platform infrastructure pool. Verification proceeds regardless of membership status — this mechanism is purely an incentive for Enterprise membership, not a gate on verification completion.
-                            </p>
-                        </div>
-                        <p className="mb-4">
-                            <strong>Member Benefit vs. Penalty:</strong> The 5% dividend is positioned exclusively as an <em>elite corporate privilege</em> for Enterprise members, not as a penalty for non-members. Flight schools and operators are not required to subscribe to process verifications — the verification workflow completes normally under pilot consent regardless of organizational membership status. The Activation Credit is simply an optional financial optimization available to organizations that choose to join the Enterprise Tier. This framing ensures no extortion or adversarial pressure is exerted on non-subscribed entities.
-                        </p>
-                        <p>
-                            By purchasing a Recognition+ subscription or initiating any verification workflow, you explicitly authorize this automated, split-payment distribution model and acknowledge that the funds are being allocated to the parties responsible for providing the underlying data services.
-                        </p>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-4">15. Contact Us</h2>
-                        <p>If you have any questions about these Terms of Service, please contact us at:</p>
-                        <p className="mt-2">legal@pilotrecognition.com</p>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">Contact</h2>
+                        <p className="mb-2 text-sm">For formal legal communications regarding infrastructure administration:</p>
+                        <p className="font-semibold mb-3"><a href="mailto:legal@pilotrecognition.com" className="text-blue-600 hover:underline">legal@pilotrecognition.com</a></p>
+                        <p className="text-sm text-slate-500">For data subject requests and privacy inquiries: <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a></p>
                     </section>
                 </div>
             </div>
         </div>
     );
 }
+
