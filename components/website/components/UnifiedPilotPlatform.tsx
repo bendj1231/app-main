@@ -120,9 +120,8 @@ const cardVariants: any = {
 
 const HomeTab: React.FC<{
   profile: any; walletChecks: any[]; onNavigate: (p: string) => void; setTab: (t: TabId) => void;
-  enrolledInFoundation: boolean; airlines: any[];
-}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines }) => {
-  const { user: auth0User } = useAuth0();
+  enrolledInFoundation: boolean; airlines: any[]; auth0User?: any;
+}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User }) => {
   const [visible, setVisible] = React.useState(false);
   const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
     try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
@@ -3491,7 +3490,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} />;
+      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
       case 'wallet':        return <WalletTab walletChecks={walletChecks} profile={profileData} />;
