@@ -84,182 +84,247 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     );
   }
 
+  const name = safe(profile?.display_name) || safe(profile?.full_name) || 'PILOT';
+  const did  = profile?.id ? `0x${profile.id.replace(/-/g,'').slice(0,16).toUpperCase()}` : '—';
+
   const content = (
-    <div style={{ position: 'fixed', inset: 0, background: '#f8fafc', fontFamily: 'system-ui, -apple-system, sans-serif', zIndex: 99999, overflowY: 'auto' }}>
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 99999, overflowY: 'auto',
+      fontFamily: "'SF Pro Display', system-ui, -apple-system, sans-serif",
+      background: 'linear-gradient(135deg, #1a0a00 0%, #2d1a0e 30%, #1a1a2e 60%, #0f0f1a 100%)',
+    }}>
       <style>{`
-        @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-        .wv-card { animation: fadeUp 0.35s ease both; }
-        .wv-sleeve:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
-        .wv-sleeve { transition: transform 0.2s, box-shadow 0.2s; }
+        @keyframes wvFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes wvShimmer { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
+        @keyframes wvGlow { 0%,100% { box-shadow: 0 0 20px rgba(220,38,38,0.3); } 50% { box-shadow: 0 0 40px rgba(220,38,38,0.6); } }
+        .wv-in { animation: wvFadeUp 0.4s ease both; }
+        .wv-card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer; }
+        .wv-card-hover:hover { transform: translateY(-4px) rotateX(2deg); box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important; }
       `}</style>
 
-      {/* ── TOP BAR ── */}
-      <div style={{ background: '#ffffff', borderBottom: '1px solid #e2e8f0', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
+      {/* ── LEATHER TEXTURE OVERLAY ── */}
+      <div style={{
+        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px),
+          repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px)`,
+      }} />
+
+      {/* ── HEADER ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '20px 28px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {onBack && (
-            <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1px solid #e2e8f0', borderRadius: 8, padding: '5px 10px', cursor: 'pointer', color: '#64748b', fontSize: 11, fontWeight: 600 }}>
+            <button onClick={onBack} style={{
+              display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, padding: '6px 12px',
+              cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 11, fontWeight: 600,
+              backdropFilter: 'blur(8px)',
+            }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
               Back
             </button>
           )}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/>
-            </svg>
-            <div>
-              <span style={{ fontSize: 13, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.01em' }}>
-                {safe(profile?.display_name) || safe(profile?.full_name) || 'Pilot Wallet'}
-              </span>
-              <span style={{ fontSize: 10, color: '#94a3b8', marginLeft: 8, fontFamily: 'monospace' }}>
-                {profile?.id ? `DID:0x${profile.id.replace(/-/g,'').slice(0,8).toUpperCase()}` : ''}
-              </span>
-            </div>
+          <div>
+            <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase' }}>PilotRecognition</p>
+            <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.01em' }}>Credential Wallet</p>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{
-            fontSize: 10, fontWeight: 700, padding: '4px 12px', borderRadius: 20, border: '1px solid',
-            ...(allVerified
-              ? { background: '#f0fdf4', color: '#16a34a', borderColor: '#bbf7d0' }
-              : hasExpired
-              ? { background: '#fef2f2', color: '#dc2626', borderColor: '#fecaca' }
-              : { background: '#f8fafc', color: '#64748b', borderColor: '#e2e8f0' })
+        <div style={{ textAlign: 'right' }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '5px 14px', borderRadius: 20,
+            background: allVerified ? 'rgba(16,185,129,0.15)' : hasExpired ? 'rgba(220,38,38,0.15)' : 'rgba(255,255,255,0.08)',
+            border: `1px solid ${allVerified ? 'rgba(16,185,129,0.4)' : hasExpired ? 'rgba(220,38,38,0.4)' : 'rgba(255,255,255,0.15)'}`,
           }}>
-            {allVerified ? '● Pre-Cleared' : hasExpired ? '● Action Required' : checks.length > 0 ? `● ${checks.length} Credentials` : '● No credentials yet'}
-          </span>
-          <span style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'monospace' }}>AES-256-GCM</span>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: allVerified ? '#10b981' : hasExpired ? '#dc2626' : '#94a3b8', animation: allVerified ? 'wvShimmer 2s ease infinite' : undefined }} />
+            <span style={{ fontSize: 10, fontWeight: 700, color: allVerified ? '#10b981' : hasExpired ? '#dc2626' : '#94a3b8', letterSpacing: '0.1em' }}>
+              {allVerified ? 'PRE-CLEARED' : hasExpired ? 'ACTION REQUIRED' : 'PENDING VERIFICATION'}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* ── BODY ── */}
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px 24px' }}>
+      {/* ── MAIN PILOT ID CARD ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 0' }}>
+        <div className="wv-in" style={{
+          background: 'linear-gradient(135deg, #1e3a5f 0%, #0f2744 40%, #1a1a3e 100%)',
+          borderRadius: 20, padding: '28px', position: 'relative', overflow: 'hidden',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.12)',
+        }}>
+          {/* Holographic shimmer strip */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+            background: 'linear-gradient(90deg, #dc2626, #f59e0b, #10b981, #3b82f6, #8b5cf6, #dc2626)',
+            backgroundSize: '200% 100%', animation: 'wvShimmer 3s ease infinite',
+          }} />
+          {/* Watermark */}
+          <div style={{
+            position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%) rotate(-15deg)',
+            fontSize: 80, fontWeight: 900, color: 'rgba(255,255,255,0.03)', letterSpacing: '-0.05em', userSelect: 'none',
+          }}>PILOT</div>
 
-        {/* ── CREDENTIAL SLEEVES ── */}
-        <div className="wv-card" style={{ marginBottom: 24 }}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 12 }}>Credential Sleeves</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12 }}>
-            {SLEEVE_CONFIG.map(slot => {
-              const val   = safe(profile?.[slot.profileKey]);
-              const sub   = slot.subKey ? safe(profile?.[slot.subKey]) : null;
-              const exp   = safe(profile?.[slot.expiryKey]);
-              const days  = daysUntil(exp);
-              const check = checks.find(c => c.check_type === slot.checkType);
-              const st    = check?.status ? STATUS_CONFIG[check.status] : null;
-              const isActive = activeSlot === slot.key;
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+            <div>
+              <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
+              <p style={{ margin: '0 0 12px', fontSize: 24, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
+              <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                {[
+                  { label: 'License Type', value: safe(profile?.license_type) || safe(profile?.current_occupation) || '—' },
+                  { label: 'License No.', value: safe(profile?.license_number) || safe(profile?.license_id) || '—' },
+                  { label: 'Total Hours', value: totalHours > 0 ? `${totalHours.toLocaleString()} hrs` : '—' },
+                  { label: 'Country', value: safe(profile?.country) || safe(profile?.citizenship) || '—' },
+                ].map(f => (
+                  <div key={f.label}>
+                    <p style={{ margin: 0, fontSize: 8, fontWeight: 700, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{f.label}</p>
+                    <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 700, color: '#ffffff' }}>{f.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Chip */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
+              <div style={{
+                width: 44, height: 34, borderRadius: 6,
+                background: 'linear-gradient(135deg, #d4a843 0%, #f5d178 40%, #c49a35 100%)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 8px rgba(0,0,0,0.4)',
+                display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 2, padding: 4,
+              }}>
+                {[0,1,2,3].map(i => <div key={i} style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 2 }} />)}
+              </div>
+              <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace', letterSpacing: '0.05em' }}>{did}</p>
+            </div>
+          </div>
 
-              return (
-                <div
-                  key={slot.key}
-                  className="wv-sleeve"
-                  onClick={() => setActiveSlot(isActive ? null : slot.key)}
-                  style={{
-                    background: '#ffffff', border: `1px solid ${isActive ? '#dc2626' : '#e2e8f0'}`,
-                    borderRadius: 14, padding: '16px', cursor: 'pointer',
-                    boxShadow: isActive ? '0 0 0 3px rgba(220,38,38,0.1)' : '0 1px 4px rgba(0,0,0,0.04)',
-                  }}
-                >
-                  <div style={{ fontSize: 22, marginBottom: 8 }}>{slot.icon}</div>
-                  <p style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px' }}>{slot.label}</p>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: val ? '#0f172a' : '#cbd5e1', margin: '0 0 2px', lineHeight: 1.3 }}>
-                    {val || '— Not entered'}
-                  </p>
-                  {sub && <p style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'monospace', margin: '0 0 6px' }}>{sub}</p>}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+          {/* Magnetic stripe */}
+          <div style={{ marginTop: 20, height: 32, background: 'rgba(0,0,0,0.5)', borderRadius: 4, position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 6px)' }} />
+            <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', display: 'flex', gap: 2 }}>
+              {Array.from({ length: 20 }).map((_, i) => (
+                <div key={i} style={{ width: 2, height: 16, background: `rgba(255,255,255,${0.05 + Math.random() * 0.15})`, borderRadius: 1 }} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── CREDENTIAL CARD SLEEVES ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+        <p className="wv-in" style={{ animationDelay: '0.1s', margin: '0 0 14px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
+          Credential Sleeves
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          {SLEEVE_CONFIG.map((slot, idx) => {
+            const val   = safe(profile?.[slot.profileKey]);
+            const sub   = slot.subKey ? safe(profile?.[slot.subKey]) : null;
+            const exp   = safe(profile?.[slot.expiryKey]);
+            const days  = daysUntil(exp);
+            const check = checks.find(c => c.check_type === slot.checkType);
+            const st    = check?.status ? STATUS_CONFIG[check.status] : null;
+            const isVerified = check?.status === 'verified';
+            const isExpired  = check?.status === 'expired';
+
+            const cardColors = [
+              { from: '#1a3a2a', to: '#0d2218', accent: '#10b981' },
+              { from: '#1a1a3e', to: '#0d0d2a', accent: '#3b82f6' },
+              { from: '#2a1a0e', to: '#1a0d00', accent: '#f59e0b' },
+              { from: '#2a0d1a', to: '#1a0010', accent: '#8b5cf6' },
+            ];
+            const cc = cardColors[idx % cardColors.length];
+
+            return (
+              <div key={slot.key} className={`wv-in wv-card-hover`} style={{ animationDelay: `${0.12 + idx * 0.06}s` }}>
+                <div style={{
+                  background: `linear-gradient(135deg, ${cc.from} 0%, ${cc.to} 100%)`,
+                  borderRadius: 16, padding: '18px', position: 'relative', overflow: 'hidden',
+                  border: `1px solid rgba(255,255,255,0.1)`,
+                  boxShadow: `0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)`,
+                }}>
+                  {/* Top accent bar */}
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: isVerified ? `linear-gradient(90deg, ${cc.accent}, transparent)` : isExpired ? 'linear-gradient(90deg, #dc2626, transparent)' : 'linear-gradient(90deg, rgba(255,255,255,0.1), transparent)' }} />
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                    <span style={{ fontSize: 20 }}>{slot.icon}</span>
                     {st ? (
-                      <span style={{ fontSize: 9, fontWeight: 700, color: st.text, background: st.bg, border: `1px solid ${st.border}`, borderRadius: 10, padding: '2px 7px' }}>
-                        ● {st.label}
-                      </span>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: st.dot, boxShadow: `0 0 8px ${st.dot}` }} />
                     ) : (
-                      <span style={{ fontSize: 9, color: '#cbd5e1', fontWeight: 600 }}>Unverified</span>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }} />
                     )}
+                  </div>
+
+                  <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{slot.label}</p>
+                  <p style={{ margin: '0 0 4px', fontSize: 14, fontWeight: 800, color: val ? '#ffffff' : 'rgba(255,255,255,0.2)', lineHeight: 1.2 }}>
+                    {val || 'Not entered'}
+                  </p>
+                  {sub && (
+                    <p style={{ margin: '0 0 8px', fontSize: 9, color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>{sub}</p>
+                  )}
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em',
+                      color: isVerified ? '#10b981' : isExpired ? '#dc2626' : 'rgba(255,255,255,0.25)'
+                    }}>
+                      {isVerified ? '✓ VERIFIED' : isExpired ? '✗ EXPIRED' : st ? st.label : 'UNVERIFIED'}
+                    </span>
                     {exp && days !== null && (
-                      <span style={{ fontSize: 9, fontWeight: 700, color: expiryColor(days) }}>
-                        {days < 0 ? `${Math.abs(days)}d ago` : `${days}d`}
+                      <span style={{ fontSize: 9, fontWeight: 700, color: expiryColor(days), fontFamily: 'monospace' }}>
+                        {days < 0 ? `EXP −${Math.abs(days)}d` : `EXP +${days}d`}
                       </span>
                     )}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── VERIFICATION CHECKS ── */}
-        {checks.length > 0 && (
-          <div className="wv-card" style={{ animationDelay: '0.05s', marginBottom: 24 }}>
-            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 12 }}>Verification Record</p>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 14, overflow: 'hidden' }}>
-              {checks.map((c, i) => {
-                const st = STATUS_CONFIG[c.status] || STATUS_CONFIG.pending;
-                const days = daysUntil(c.expires_at);
-                return (
-                  <div key={c.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: i < checks.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: st.dot, flexShrink: 0 }} />
-                      <div>
-                        <p style={{ fontSize: 12, fontWeight: 600, color: '#0f172a', margin: 0 }}>{CHECK_LABELS[c.check_type] || c.check_type}</p>
-                        {c.provider && <p style={{ fontSize: 10, color: '#94a3b8', margin: 0 }}>via {c.provider}</p>}
-                      </div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <span style={{ fontSize: 10, fontWeight: 700, color: st.text, background: st.bg, border: `1px solid ${st.border}`, borderRadius: 10, padding: '2px 8px' }}>
-                        {st.label}
-                      </span>
-                      {days !== null && (
-                        <p style={{ fontSize: 9, color: expiryColor(days), margin: '3px 0 0', fontWeight: 600 }}>
-                          {days < 0 ? `Expired ${Math.abs(days)}d ago` : `Expires in ${days}d`}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* ── FLIGHT HOURS ── */}
-        <div className="wv-card" style={{ animationDelay: '0.1s', marginBottom: 24 }}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 12 }}>Flight Hours</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 10 }}>
-            {[
-              { label: 'Total Hours',   value: totalHours || 0,                                   verified: checks.some(c => c.check_type === 'professional_qualification' && c.status === 'verified') },
-              { label: 'PIC Hours',     value: safe(profile?.pic_hours) || 0,                     verified: false },
-              { label: 'Instrument',    value: safe(profile?.instrument_hours) || 0,               verified: false },
-              { label: 'Multi-Engine',  value: safe(profile?.multi_engine_hours) || 0,             verified: false },
-              { label: 'Night Hours',   value: safe(profile?.night_hours) || 0,                   verified: false },
-            ].map(row => (
-              <div key={row.label} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: '14px 14px 12px' }}>
-                <p style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>{row.label}</p>
-                <p style={{ fontSize: 20, fontWeight: 900, color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
-                  {Number(row.value) > 0 ? Number(row.value).toLocaleString() : '—'}
-                </p>
-                <p style={{ fontSize: 9, marginTop: 4, fontWeight: 600, color: row.verified ? '#16a34a' : '#94a3b8' }}>
-                  {row.verified ? '✓ Verified' : 'Self-reported'}
-                </p>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-
-        {/* ── WALLET FOOTER ── */}
-        <div className="wv-card" style={{ animationDelay: '0.15s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
-              <span style={{ color: '#dc2626' }}>wallet.</span><span style={{ color: '#334155' }}>pilotrecognition.com</span>
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ fontSize: 9, color: '#94a3b8' }}>Powered by</span>
-            <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
-            <span style={{ fontSize: 8, fontWeight: 700, color: '#1e293b', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: 3, padding: '1px 4px' }}>wallet</span>
-          </div>
-        </div>
-
       </div>
+
+      {/* ── FLIGHT HOURS PANEL ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+        <p className="wv-in" style={{ animationDelay: '0.35s', margin: '0 0 14px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
+          Flight Hours Logbook
+        </p>
+        <div className="wv-in" style={{ animationDelay: '0.4s',
+          background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 16, overflow: 'hidden', backdropFilter: 'blur(12px)',
+        }}>
+          {[
+            { label: 'Total Flight Hours', value: totalHours, verified: checks.some(c => c.check_type === 'professional_qualification' && c.status === 'verified') },
+            { label: 'PIC Hours',          value: safe(profile?.pic_hours) || 0,           verified: false },
+            { label: 'Instrument Hours',   value: safe(profile?.instrument_hours) || 0,     verified: false },
+            { label: 'Multi-Engine Hours', value: safe(profile?.multi_engine_hours) || 0,   verified: false },
+            { label: 'Night Hours',        value: safe(profile?.night_hours) || 0,          verified: false },
+          ].map((row, i, arr) => (
+            <div key={row.label} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '14px 20px',
+              borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+            }}>
+              <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>{row.label}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ fontSize: 16, fontWeight: 900, color: '#ffffff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
+                  {Number(row.value) > 0 ? Number(row.value).toLocaleString() : '—'}
+                </span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: row.verified ? '#10b981' : 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>
+                  {row.verified ? '✓ VERIFIED' : 'SELF-REPORTED'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── FOOTER ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700 }}>
+          <span style={{ color: '#dc2626' }}>wallet.</span><span style={{ color: 'rgba(255,255,255,0.3)' }}>pilotrecognition.com</span>
+        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>Powered by</span>
+          <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
+          <span style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, padding: '1px 5px' }}>wallet</span>
+        </div>
+      </div>
+
     </div>
   );
 
