@@ -1647,12 +1647,12 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
         cta: 'Enter NTC',
       },
       {
-        icon: '✈️', label: 'Type Rating',
-        value: Array.isArray(profile?.aircraft_types) ? profile.aircraft_types.join(', ') : safe(profile?.aircraft_types),
-        sub: safe(profile?.ratings),
-        expiry: null,
-        check: walletChecks.find((c: any) => c.check_type === 'type_rating'),
-        cta: 'Enter Ratings',
+        icon: '🗣', label: 'ELP Certificate',
+        value: safe(profile?.language_proficiency) || safe(profile?.elp_level),
+        sub: safe(profile?.elp_certificate_no),
+        expiry: safe(profile?.elp_expiry),
+        check: walletChecks.find((c: any) => c.check_type === 'language_proficiency'),
+        cta: 'Enter ELP',
       },
     ];
 
@@ -2035,9 +2035,22 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
         fields: [
           { key: 'aircraft_types',       label: 'Aircraft Type Ratings', placeholder: 'e.g. B737, A320, C172', value: Array.isArray(profile?.aircraft_types) ? profile.aircraft_types.join(', ') : safe(profile?.aircraft_types) },
           { key: 'ratings',              label: 'Ratings',               placeholder: 'e.g. ASEL, AMEL, IR',  value: Array.isArray(profile?.ratings) ? profile.ratings.join(', ') : safe(profile?.ratings) },
-          { key: 'language_proficiency', label: 'ICAO Language Level',   placeholder: 'e.g. English Level 5', value: safe(profile?.language_proficiency) },
           { key: 'ntc_license',          label: 'NTC / Radio License',   placeholder: 'e.g. 22 RANCR-22517',  value: safe(profile?.ntc_license) },
           { key: 'ntc_expiry',           label: 'NTC Expiry',            placeholder: 'YYYY-MM-DD',           value: safe(profile?.ntc_expiry) },
+        ],
+      },
+      {
+        id: 'elp',
+        title: 'ELP Certificate',
+        icon: FileText,
+        color: '#0ea5e9',
+        fields: [
+          { key: 'language_proficiency', label: 'ICAO Language Level',       placeholder: 'e.g. English Level 5',         value: safe(profile?.language_proficiency) },
+          { key: 'elp_certificate_no',   label: 'ELP Certificate Number',    placeholder: 'e.g. ELP-2025-XXXXX',          value: safe(profile?.elp_certificate_no) },
+          { key: 'elp_issuing_authority',label: 'Issuing Authority',         placeholder: 'e.g. CAAP, EASA, FAA',         value: safe(profile?.elp_issuing_authority) },
+          { key: 'elp_date_issued',      label: 'Date Issued',               placeholder: 'YYYY-MM-DD',                   value: safe(profile?.elp_date_issued) },
+          { key: 'elp_expiry',           label: 'Expiry Date',               placeholder: 'YYYY-MM-DD (Level 4: 3yr, Level 5: 6yr, Level 6: lifetime)', value: safe(profile?.elp_expiry) },
+          { key: 'elp_level',            label: 'Proficiency Level',         placeholder: 'Level 4 / 5 / 6',             value: safe(profile?.elp_level) },
         ],
       },
       {
@@ -2150,6 +2163,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
           const licenseExpDays = daysUntil(sv(profile?.license_expiry));
           const medicalExpDays = daysUntil(sv(profile?.medical_expiry));
           const ntcExpDays     = daysUntil(sv(profile?.ntc_expiry));
+          const elpExpDays     = daysUntil(sv(profile?.elp_expiry));
 
           const checks = [
             {
@@ -2171,10 +2185,10 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
               days: ntcExpDays,
             },
             {
-              label: 'Type Rating',
-              icon: '✈️',
-              value: Array.isArray(profile?.aircraft_types) ? profile.aircraft_types[0] : sv(profile?.aircraft_types),
-              days: null,
+              label: 'ELP Certificate',
+              icon: '🗣',
+              value: sv(profile?.language_proficiency) || sv(profile?.elp_level),
+              days: elpExpDays,
             },
           ].map(c => {
             const missing = !c.value;
