@@ -102,6 +102,7 @@ export default function UCFOfficialReleasePage() {
     ? userProfile?.role === 'super_admin' || userProfile?.role === 'mentor_manager'
     : !!currentUser;
   const isSuperAdmin = profileLoaded ? userProfile?.role === 'super_admin' : !!currentUser;
+  const isAdmin = isSuperAdmin;
   const sessionUser = currentUser ? { email: currentUser.email } : null;
 
   const handleLogin = async (e: React.FormEvent) => {
