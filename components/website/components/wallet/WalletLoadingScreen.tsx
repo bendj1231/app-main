@@ -1,6 +1,7 @@
 /// <reference path="../../../../src/vite-env.d.ts" />
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import { supabase } from '../../../../shared/lib/supabase';
 
 interface WalletLoadingScreenProps {
@@ -442,30 +443,15 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           <div style={{ display: 'flex', gap: 14, marginBottom: 14, alignItems: 'flex-start' }}>
             {/* QR code (SVG placeholder — wallet.pilotrecognition.com DID) */}
             <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 88, height: 88, border: '1px solid #e2e8f0', borderRadius: 8, background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* QR corner squares */}
-                  <rect x="4" y="4" width="22" height="22" rx="2" fill="none" stroke="#0f172a" strokeWidth="3"/>
-                  <rect x="9" y="9" width="12" height="12" rx="1" fill="#0f172a"/>
-                  <rect x="54" y="4" width="22" height="22" rx="2" fill="none" stroke="#0f172a" strokeWidth="3"/>
-                  <rect x="59" y="9" width="12" height="12" rx="1" fill="#0f172a"/>
-                  <rect x="4" y="54" width="22" height="22" rx="2" fill="none" stroke="#0f172a" strokeWidth="3"/>
-                  <rect x="9" y="59" width="12" height="12" rx="1" fill="#0f172a"/>
-                  {/* QR data dots pattern */}
-                  {[32,36,40,44,48].map(x => [32,36,40,44,48].map(y => (
-                    (x + y) % 8 === 0 ? <rect key={`${x}-${y}`} x={x} y={y} width="3" height="3" fill="#0f172a"/> : null
-                  )))}
-                  <rect x="32" y="56" width="3" height="3" fill="#0f172a"/>
-                  <rect x="40" y="56" width="3" height="3" fill="#0f172a"/>
-                  <rect x="48" y="60" width="3" height="3" fill="#0f172a"/>
-                  <rect x="36" y="64" width="3" height="3" fill="#0f172a"/>
-                  <rect x="44" y="68" width="3" height="3" fill="#0f172a"/>
-                  <rect x="56" y="36" width="3" height="3" fill="#0f172a"/>
-                  <rect x="64" y="40" width="3" height="3" fill="#0f172a"/>
-                  <rect x="60" y="48" width="3" height="3" fill="#0f172a"/>
-                  <rect x="68" y="44" width="3" height="3" fill="#0f172a"/>
-                  <rect x="56" y="52" width="3" height="3" fill="#0f172a"/>
-                </svg>
+              <div style={{ width: 96, height: 96, border: '1px solid #e2e8f0', borderRadius: 8, background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4 }}>
+                <QRCodeSVG
+                  value={`https://wallet.pilotrecognition.com${sessionUser?.id ? `?uid=${sessionUser.id}` : ''}`}
+                  size={84}
+                  bgColor="#ffffff"
+                  fgColor="#0f172a"
+                  level="M"
+                  includeMargin={false}
+                />
               </div>
               <p style={{ fontSize: 8, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 500 }}>Scan with your<br/>DID Wallet</p>
             </div>
