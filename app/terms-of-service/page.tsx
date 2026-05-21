@@ -835,6 +835,36 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <p className="text-red-700 text-xs mt-2">The parties explicitly acknowledge that the availability of the baseline infrastructure at a zero-cost entry point for the User, combined with the User's absolute right to bypass the Platform entirely and seek employment or training placements via traditional, direct, or off-platform regulatory channels, satisfies the requirement of reasonableness under the Singapore Unfair Contract Terms Act (UCTA). The Platform does not operate as a monopolistic gatekeeper to aviation employment, and no element of duress, coercion, or lack of alternative avenues attaches to a User's election to utilise the Platform's services.</p>
                         </div>
 
+                        <h3 className="font-semibold text-slate-800 mb-2">7.4A Enterprise Tier Liability Ceiling</h3>
+                        <p className="mb-3 text-sm">The USD $50.00 aggregate cap defined in Section 7.4 applies to individual User accounts operating on the Platform's free or standard-fee tier. Subscribing aviation enterprises operating under a paid B2B enterprise subscription agreement are subject to a separate, tiered liability ceiling as defined in this section, reflecting the commercial nature of the enterprise relationship and satisfying the reasonableness standard under the Singapore Unfair Contract Terms Act as applied to sophisticated commercial parties.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-900 text-white">
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Enterprise Subscription Tier</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Maximum Aggregate Liability Ceiling</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Scope</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        ['Standard Enterprise Subscription', '3× the total subscription fees paid by the enterprise in the twelve (12) calendar months immediately preceding the event giving rise to the claim', 'Direct losses only — excludes consequential, indirect, or reputational losses'],
+                                        ['Premium / Custom Enterprise Agreement', 'As negotiated and specified in the applicable Order Form or Master Subscription Agreement', 'Subject to explicit written agreement — this Terms baseline governs absent a separate instrument'],
+                                    ].map(([tier, ceiling, scope], i) => (
+                                        <tr key={String(tier)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 text-xs align-top">{tier}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs align-top">{ceiling}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs align-top">{scope}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="border-l-4 border-red-400 bg-red-50 rounded-r-xl px-5 py-3 mb-4">
+                            <p className="text-red-800 text-xs font-bold uppercase tracking-wide mb-1">Enterprise Exclusions — Absolute</p>
+                            <p className="text-red-700 text-xs leading-relaxed">Regardless of subscription tier, the Platform Operator's liability ceiling under this section <strong>never includes</strong>: (i) indirect, consequential, or punitive damages; (ii) loss of profits, revenue, or business opportunity; (iii) reputational harm, brand diminution, or trade libel claims; (iv) losses arising from a third-party verification partner's security failure (governed by Section 5.7(g) and Section 3.5); (v) losses arising from the enterprise's own failure to maintain mandatory independent crew verification obligations under ICAO Annex 6 or applicable national air operator certification requirements. These exclusions apply to the maximum extent permitted by applicable law and survive any finding of fundamental breach under common-law contract principles.</p>
+                        </div>
+
                         <h3 className="font-semibold text-slate-800 mb-2">7.5 Payment Routing Architecture &amp; Non-Custodial Status</h3>
                         <p className="mb-3 text-sm">All financial transactions are processed through independent, third-party, non-custodial decentralized payment gateways and distributed via automated routing infrastructure directly to the integration partners executing the verification function. The Platform Operator does not hold, manage, escrow, or maintain custody of user funds or digital assets at any point in the payment lifecycle.</p>
                         <div className="bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 mb-4">
