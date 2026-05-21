@@ -297,6 +297,10 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 </tbody>
                             </table>
                         </div>
+                        <div className="border-l-4 border-blue-400 bg-blue-50 rounded-r-xl px-5 py-3 mb-2">
+                            <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1">Technical Assertion — Client-Side Execution Isolation</p>
+                            <p className="text-blue-900 text-xs leading-relaxed">The Platform Operator employs a client-side execution container (the walt.id browser wallet runtime) that structurally isolates the pilot's local alignment processing from the server-side API layer. This container corresponds to the <strong>Pilot Terminal</strong> node defined in the Section 6 topology. There is no technical path for unencrypted comparative data to egress the Pilot's Terminal during the alignment calculation. The server-side API layer receives only the pilot's anonymous token identifier — never the alignment result, the wallet payload, or the credential claim content.</p>
+                        </div>
                     </section>
 
                     {/* ══════════════════════════════════════════════
