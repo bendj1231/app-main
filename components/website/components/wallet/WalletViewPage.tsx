@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { supabase } from '../../../../shared/lib/supabase';
 
 interface WalletViewPageProps {
@@ -83,8 +84,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     );
   }
 
-  return (
-    <div style={{ position: 'fixed', inset: 0, background: '#f8fafc', fontFamily: 'system-ui, -apple-system, sans-serif', zIndex: 9998, overflowY: 'auto' }}>
+  const content = (
+    <div style={{ position: 'fixed', inset: 0, background: '#f8fafc', fontFamily: 'system-ui, -apple-system, sans-serif', zIndex: 99999, overflowY: 'auto' }}>
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
         .wv-card { animation: fadeUp 0.35s ease both; }
@@ -261,4 +262,6 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(content, document.body);
 };
