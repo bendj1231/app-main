@@ -811,6 +811,10 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 </tbody>
                             </table>
                         </div>
+                        <div className="bg-amber-50 border border-amber-300 rounded-xl px-5 py-4 mb-5">
+                            <p className="text-amber-800 text-xs font-black uppercase tracking-wide mb-1">⚠ Regulatory Deadline — PDPC Hard Enforcement: 31 December 2026</p>
+                            <p className="text-amber-900 text-xs leading-relaxed">The PDPC has confirmed that all private organisations operating in or from Singapore must entirely cease using NRIC numbers for any authentication, login, default password generation, or secondary verification flow by this date. This Platform has enacted total elimination of national identification digits from all such flows effective immediately and in advance of the statutory deadline. Non-compliance after 31 December 2026 constitutes a breach of the PDPA enforceable by the PDPC.</p>
+                        </div>
 
                         <h3 className="font-semibold text-slate-800 mb-2">13.2 Cross-Border Verifiable Presentation Guardrails</h3>
                         <p className="mb-3 text-sm">When a User initiates a Verifiable Presentation of their <code className="bg-slate-100 px-1 rounded text-xs">pilot_credentials</code> to a foreign aviation operator or external regional flight school located across international borders, the data transfer boundaries are subject to strict cryptographic containment:</p>
