@@ -11,6 +11,7 @@ import {
   GraduationCap, Activity, Cpu, Package, Lock
 } from 'lucide-react';
 import { useEnterpriseAuth, supabase, FIREBASE_BASE } from './hooks/useEnterpriseAuth';
+import { useAuth } from '../../src/contexts/AuthContext';
 import { InterviewerDashboard } from './InterviewerDashboard';
 import { InterviewHistoryPage } from './InterviewHistoryPage';
 import { FlightSchoolPortal } from './FlightSchoolPortal';
@@ -22,7 +23,7 @@ const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/dridtecu6/image/u
 const CLOUDINARY_UPLOAD_PRESET = 'enterprise_unsigned';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'analytics' | 'settings' | 'support' | 'admin' | 'interviews' | 'interview-history' | 'flight-school';
+type Page = 'dashboard' | 'pathway-cards' | 'job-listings' | 'airline-expectations' | 'pilot-search' | 'applications' | 'analytics' | 'settings' | 'support' | 'admin' | 'interviews' | 'interview-history' | 'flight-school' | 'sop';
 
 // ─── 72 Airlines List ────────────────────────────────────────────────────────
 const AIRLINE_LIST = [
@@ -146,13 +147,15 @@ const NAV = [
 
 const FLIGHT_SCHOOL_NAV = { id: 'flight-school', label: 'Flight School', icon: GraduationCap };
 const ADMIN_NAV = { id: 'admin', label: 'Enterprise Admin', icon: ShieldCheck };
+const SOP_NAV = { id: 'sop', label: 'Internal SOP', icon: Lock };
 
-function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, isManager, isFlightSchool }: {
+function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, isManager, isFlightSchool, isSuperAdmin }: {
   page: Page; setPage: (p: Page) => void;
   account: any; onLogout: () => void;
   collapsed: boolean; setCollapsed: (v: boolean) => void;
   isManager: boolean;
   isFlightSchool: boolean;
+  isSuperAdmin: boolean;
 }) {
   const accountType: AccountType = account?.account_type || 'airline';
   const portalLabel = accountType === 'sim_center' ? 'Sim Center Portal'
@@ -224,6 +227,22 @@ function Sidebar({ page, setPage, account, onLogout, collapsed, setCollapsed, is
             >
               <ShieldCheck className="w-4 h-4 shrink-0" />
               {!collapsed && <span>Enterprise Admin</span>}
+            </button>
+          </>
+        )}
+        {isSuperAdmin && (
+          <>
+            {!collapsed && <div className="px-3 pt-3 pb-1"><p className="text-red-600 text-[10px] font-bold uppercase tracking-wider">Super Admin</p></div>}
+            <button
+              onClick={() => setPage('sop')}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                page === 'sop'
+                  ? 'bg-red-600/20 text-red-400 border border-red-500/30'
+                  : 'text-slate-400 hover:text-red-400 hover:bg-red-800/20'
+              }`}
+            >
+              <Lock className="w-4 h-4 shrink-0" />
+              {!collapsed && <span>Internal SOP</span>}
             </button>
           </>
         )}
@@ -2258,6 +2277,189 @@ function BusinessOverview() {
   );
 }
 
+// ─── Internal SOP Panel ────────────────────────────────────────────────────────
+function InternalSOPPanel() {
+  const [activeSection, setActiveSection] = useState<string>('s11');
+
+  const sections = [
+    { id: 's11', label: 'S11.1 — Key Recovery Protocol' },
+    { id: 'partner', label: 'Partner Compliance (MSA)' },
+    { id: 'support', label: 'Support Desk Script' },
+    { id: 'breach', label: 'Breach Response' },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <div className="flex items-center gap-3 mb-1">
+          <div className="w-8 h-8 bg-red-600/20 border border-red-500/30 rounded-xl flex items-center justify-center">
+            <Lock className="w-4 h-4 text-red-400" />
+          </div>
+          <h1 className="text-2xl font-bold text-white">Internal SOP</h1>
+          <span className="text-xs bg-red-500/20 border border-red-500/30 text-red-400 px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">Super Admin Only</span>
+        </div>
+        <p className="text-slate-500 text-sm">Operational procedures for platform compliance. Not for public distribution. Not referenced in ToS.</p>
+      </div>
+
+      <div className="flex gap-2 flex-wrap">
+        {sections.map(s => (
+          <button key={s.id} onClick={() => setActiveSection(s.id)}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+              activeSection === s.id
+                ? 'bg-red-600/20 text-red-400 border border-red-500/30'
+                : 'text-slate-400 hover:text-white bg-slate-800/40'
+            }`}>
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {activeSection === 's11' && (
+        <div className="space-y-4">
+          <div className="bg-red-950/40 border border-red-800/40 rounded-2xl p-5">
+            <p className="text-red-400 text-xs font-black uppercase tracking-wider mb-2">Section 11.1 — Zero-Knowledge Architecture Enforcement</p>
+            <p className="text-red-200 text-sm font-semibold mb-1">The platform mathematically cannot recover a lost private key. There are no backup copies, no admin override tools, and no engineering backdoor.</p>
+            <p className="text-slate-400 text-xs">This is not a policy choice — it is an architectural reality. Any support agent who suggests otherwise verbally breaches the platform's zero-knowledge warranty and creates commercial liability exposure.</p>
+          </div>
+
+          <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5 space-y-3">
+            <p className="text-white font-bold text-sm">Forbidden Phrases — Support Staff Must Never Say:</p>
+            {[
+              '"Let me check with engineering"',
+              '"We may be able to restore a backup"',
+              '"Let me escalate this to the technical team"',
+              '"There might be a way to recover your data"',
+              '"I\'ll look into this for you"',
+            ].map(phrase => (
+              <div key={phrase} className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-red-500/20 border border-red-500/30 rounded flex items-center justify-center shrink-0 mt-0.5">
+                  <X className="w-3 h-3 text-red-400" />
+                </div>
+                <p className="text-red-300 text-sm font-mono">{phrase}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5 space-y-3">
+            <p className="text-white font-bold text-sm">Mandatory Phrases — Use Verbatim:</p>
+            {[
+              '"It is technically and mathematically impossible to recover your container data."',
+              '"The Platform Operator does not possess backup copies of private cryptographic keys."',
+              '"The sole path forward is a destructive account reset sequence."',
+            ].map(phrase => (
+              <div key={phrase} className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-emerald-500/20 border border-emerald-500/30 rounded flex items-center justify-center shrink-0 mt-0.5">
+                  <Check className="w-3 h-3 text-emerald-400" />
+                </div>
+                <p className="text-emerald-300 text-sm font-mono">{phrase}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5">
+            <p className="text-white font-bold text-sm mb-3">Helpdesk Macro — Copy/Paste Response Template</p>
+            <div className="bg-slate-900 rounded-xl p-4 font-mono text-xs text-slate-300 leading-relaxed whitespace-pre-wrap">{`Subject: Account Recovery Inquiry — Profile [User UUIDv4]
+
+Captain,
+
+We understand the critical nature of accessing your flight currency records and the operational urgency behind your request.
+
+Because this platform is engineered on a strict Zero-Knowledge Architecture, encryption and access keys are generated natively inside your device's secure hardware keychain. In direct compliance with Section 11.1 of our global Terms of Service, the Platform Operator does not manage, transit, or possess backup copies of your private cryptographic keys.
+
+Consequently, it is technically and mathematically impossible for our engineering team to recover your container data, bypass your lock, or restore your previous logbook state. We possess no backend tools to override this hardware sandbox.
+
+Your Sole Path Forward:
+To restore infrastructure access, we must execute a destructive account reset sequence. This completely purges your encrypted public-key mapping string from our synchronization engines within 30 business days.
+
+Once the purge is confirmed:
+— You will initiate a brand-new onboarding sequence.
+— You will instantiate a fresh, blank decentralized container.
+— You will settle the standard processing fee to have our independent verification partners re-audit your core credentials to unlock Terminal 3.
+
+Note: This is a standard re-certification cycle. Your logged hours and credentials exist in the physical world and with issuing authorities — the platform simply needs to re-verify what already exists.
+
+Please reply with "CONFIRM DESTRUCTIVE RESET" to authorise our automated engines to clear your identifier cache.
+
+PilotRecognition Platform Support`}</div>
+          </div>
+
+          <div className="bg-amber-950/40 border border-amber-800/40 rounded-2xl p-5">
+            <p className="text-amber-400 text-xs font-black uppercase tracking-wider mb-2">Escalation Rule — Hard Block</p>
+            <p className="text-slate-300 text-sm">Any ticket tagged <span className="font-mono bg-slate-800 px-1 rounded">data-recovery</span>, <span className="font-mono bg-slate-800 px-1 rounded">lost-device</span>, or <span className="font-mono bg-slate-800 px-1 rounded">restore-account</span> must be <strong className="text-amber-400">closed with the macro above</strong> — not escalated to engineering. Escalating implies a recovery tool exists. If it reaches an engineer, the platform's zero-knowledge warranty is verbally breached.</p>
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'partner' && (
+        <div className="space-y-4">
+          <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5">
+            <p className="text-white font-bold text-sm mb-3">MSA Compliance Requirements — All Verification Partners</p>
+            <p className="text-slate-400 text-xs mb-4">Every independent verification partner must sign an MSA that explicitly prohibits their support staff from the following. Any deviation is an automatic MSA breach event.</p>
+            {[
+              ['Prohibited', 'Disclosing screening methodology, data sources, or registry access logs to Users.'],
+              ['Prohibited', 'Discussing adverse finding rationale with individual applicants directly.'],
+              ['Prohibited', 'Promising re-screening outcomes, timelines, or result modifications.'],
+              ['Required', 'Partner support desk answer to "why did I fail?": "Screening outcomes are returned as a binary status token to the platform. We do not discuss result rationale with individual applicants."'],
+              ['Required', 'All liability for partner support desk warranty breaches indemnifies the Platform Operator and exposes the partner.'],
+            ].map(([type, rule], i) => (
+              <div key={i} className={`flex items-start gap-3 mb-3 p-3 rounded-xl border ${
+                type === 'Prohibited' ? 'bg-red-950/30 border-red-800/30' : 'bg-emerald-950/30 border-emerald-800/30'
+              }`}>
+                <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded shrink-0 mt-0.5 ${
+                  type === 'Prohibited' ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'
+                }`}>{type}</span>
+                <p className="text-slate-300 text-xs">{rule}</p>
+              </div>
+            ))}
+          </div>
+          <div className="bg-amber-950/40 border border-amber-800/40 rounded-2xl p-5">
+            <p className="text-amber-400 text-xs font-black uppercase tracking-wider mb-2">Breach Trigger</p>
+            <p className="text-slate-300 text-sm">If a User emails our helpdesk stating a verification partner disclosed screening rationale (e.g. "your partner told me I failed because of X"), this is an <strong className="text-amber-400">automatic MSA breach event</strong> — not a customer service ticket. Log it as a Partner Compliance Incident and escalate to legal.</p>
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'support' && (
+        <div className="space-y-4">
+          <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-5">
+            <p className="text-white font-bold text-sm mb-4">Three-Layer Support Firewall</p>
+            {[
+              ['Layer 1 — Zendesk Macro', 'A locked, non-editable canned response auto-triggered by keywords: "recover", "lost device", "restore account", "backup", "get my data back". Agent clicks one button, macro sends, no edits permitted to the legal language.'],
+              ['Layer 2 — Escalation Block', 'Tickets tagged data-recovery are closed with the macro — never escalated to engineering. Escalation path for these tickets is disabled in the helpdesk routing rules.'],
+              ['Layer 3 — Agent Training', 'All support staff complete a mandatory zero-knowledge architecture briefing. Signed acknowledgement required before handling live tickets. Deviation from macro language is a disciplinary matter.'],
+            ].map(([layer, desc], i) => (
+              <div key={i} className="mb-4 p-4 bg-slate-900/60 rounded-xl border border-slate-700/30">
+                <p className="text-blue-400 text-xs font-black uppercase tracking-wider mb-1">{layer}</p>
+                <p className="text-slate-300 text-sm">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'breach' && (
+        <div className="space-y-4">
+          <div className="bg-red-950/40 border border-red-800/40 rounded-2xl p-5">
+            <p className="text-red-400 text-xs font-black uppercase tracking-wider mb-2">Data Breach Response — Platform Liability Containment</p>
+            <p className="text-slate-300 text-sm mb-3">Because the Platform Operator structurally cannot view encrypted credential content, any breach investigation starts with scope determination: did the breach occur on platform infrastructure (S13) or on a partner/enterprise system (S5.7d)?</p>
+            {[
+              ['Step 1 — Scope Determination', 'Identify whether breach occurred within platform infrastructure boundary or past the outbound export boundary (Path B). If Path B: airline is 100% Data Controller — refer to S5.7(d). Issue holding statement only.'],
+              ['Step 2 — PDPC 72hr Notification', 'If breach involves platform infrastructure and affects Singapore-resident Users: notify PDPC within 72 hours per PDPA 2012 mandatory breach notification requirements.'],
+              ['Step 3 — User Notification', 'Notify affected Users via platform notification and email within 3 business days. State scope of exposure only — do not speculate on credential content (platform cannot see it).'],
+              ['Step 4 — Partner Indemnification Trigger', 'If breach originated at a verification partner: activate MSA indemnification clause immediately. Do not issue public statements attributing fault until legal review.'],
+            ].map(([step, desc], i) => (
+              <div key={i} className="mb-4 p-4 bg-slate-900/60 rounded-xl border border-red-900/20">
+                <p className="text-red-300 text-xs font-black uppercase tracking-wider mb-1">{step}</p>
+                <p className="text-slate-300 text-sm">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Admin Panel ───────────────────────────────────────────────────────────────
 function AdminPanel({ user }: { user: any }) {
   const [tab, setTab] = useState<'requests' | 'users' | 'overview'>('requests');
@@ -2422,11 +2624,13 @@ function AdminPanel({ user }: { user: any }) {
 // ─── Main Portal App ───────────────────────────────────────────────────────────
 export function EnterprisePortalApp() {
   const { user, account, loading, logout, refreshAccount, upsertEnterpriseAccount } = useEnterpriseAuth();
+  const { userProfile } = useAuth();
   const [page, setPage] = useState<Page>('dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [isManager, setIsManager] = useState(false);
   const [isFlightSchool, setIsFlightSchool] = useState(false);
   const [flightSchoolId, setFlightSchoolId] = useState<string | null>(null);
+  const isSuperAdmin = userProfile?.role === 'super_admin';
 
   useEffect(() => {
     if (!loading && !user) window.location.href = '/enterprise/login';
@@ -2468,7 +2672,7 @@ export function EnterprisePortalApp() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} />
+      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} isSuperAdmin={isSuperAdmin} />
       <main className="flex-1 overflow-y-auto p-6 lg:p-8">
         {page === 'dashboard' && <OperatorIntelDashboard user={user} account={account} onNavigate={(p) => setPage(p as Page)} />}
         {page === 'pathway-cards' && <PathwayCardsPage user={user} account={account} />}
@@ -2482,6 +2686,7 @@ export function EnterprisePortalApp() {
         {page === 'settings' && <SettingsPage user={user} account={account} refreshAccount={refreshAccount} upsertEnterpriseAccount={upsertEnterpriseAccount} />}
         {page === 'support' && <SupportPage user={user} account={account} />}
         {page === 'admin' && isManager && <AdminPanel user={user} />}
+        {page === 'sop' && isSuperAdmin && <InternalSOPPanel />}
         {page === 'flight-school' && isFlightSchool && flightSchoolId && <FlightSchoolPortal flightSchoolId={flightSchoolId} user={user} />}
       </main>
     </div>
