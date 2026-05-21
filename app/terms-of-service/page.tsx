@@ -538,6 +538,8 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 <li><strong>Mere conduit confirmed:</strong> The Platform operates the broadcast tower and the vault. It does not perform sorting, screening, or scoring on its own servers.</li>
                                 <li><strong>Four-party liability distribution:</strong> Data liability is structurally distributed across the Pilot, Pilot Recognition (infrastructure only), Flight Schools/ATOs, and Veremark/Integration Partners — eliminating single-point regulatory exposure.</li>
                             </ul>
+                            <p className="text-emerald-900 text-xs mt-3 pt-3 border-t border-emerald-200">The Platform Operator's systemic role is strictly limited to the provision of the digital communication infrastructure. It lacks the technical capability, access rights, and legal mandate to view, manipulate, or adjudicate the encrypted credential data flowing through its conduits.</p>
+                            <p className="text-emerald-700 text-xs mt-2 italic">This distribution of liability is governed by the Controller Framework established in Section 17, and the data sovereignty obligations set out in Section 13, ensuring that each party retains sole accountability for their specific data stream.</p>
                         </div>
                     </section>
 
