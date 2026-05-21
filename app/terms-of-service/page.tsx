@@ -1152,6 +1152,71 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         </div>
                     </section>
 
+                    {/* ══════════════════════════════════════════════
+                        SECTION 18 — LIABILITY DISCONNECTION FOR VERIFICATION FAILURES
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">18. Liability Disconnection for Verification Failures</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">18.1 Verification Outcome Disclaimer — Conduit, Not Adjudicator</h3>
+                        <p className="mb-3 text-sm">The Platform functions exclusively as a <strong>neutral cryptographic conduit</strong> between the Individual Pilot (Sovereign Data Controller) and Authorised Verification Partners (Authoritative Issuers). The Platform does not adjudicate, interpret, or produce verification outcomes. All pass, fail, expired, or inconclusive determinations are generated solely by the independent Verification Partner operating under its own regulatory mandate and internal methodology.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['No Adjudicator Status', 'The Platform Operator is not a licensing body, regulatory authority, or verification agency. It does not hold, assess, or certify the validity of any pilot licence, medical certificate, logbook record, or aviation qualification. The Platform\'s role is limited to routing encrypted credential presentations between the pilot\'s client-side walt.id wallet and the designated Verification Partner\'s API endpoint.'],
+                                        ['Outcome Non-Reliance Clause', 'Aviation operators, flight schools, and third-party employers are explicitly advised not to rely solely on Platform-routed verification outcomes as the definitive basis for hiring, licensing, or operational decisions. Independent verification directly with the issuing civil aviation authority remains the sole legally authoritative method of credential confirmation.'],
+                                        ['Intermediary Immunity', 'As a neutral data intermediary under Section 17.2 and consistent with the CAPE cross-border enforcement standards established in Section 13.2, the Platform Operator bears zero liability for any employment decision, pathway rejection, or regulatory action taken by a third party on the basis of a verification outcome produced by an independent Verification Partner.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">18.2 Force Majeure of Verification — External Partner Failure</h3>
+                        <p className="mb-3 text-sm">The Platform explicitly recognises that independent Verification Partners (including but not limited to Veremark, state civil aviation registries, and associated background screening networks) may produce erroneous, delayed, or contradictory verification outputs due to causes entirely beyond the Platform's control.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['False Positive / False Negative Indemnification', 'In the event that a Verification Partner issues a false positive (incorrectly confirming a revoked or fraudulent credential) or a false negative (incorrectly rejecting a valid, current credential), the Platform Operator is wholly indemnified from any resulting legal action, regulatory investigation, or civil damages claim. Liability for erroneous verification outputs rests exclusively with the issuing Verification Partner as an independent data controller under the tripartite framework (Section 17.1).'],
+                                        ['Registry Downtime & Delayed Output Disclaimer', 'If a state civil aviation registry (e.g., CAAP, CAAS, FAA) experiences an outage, data migration, or API deprecation that causes a verification delay or an inability to confirm a pilot\'s current licence status, the Platform Operator disclaims all liability for any consequential harm to the pilot\'s employment prospects, pathway eligibility, or professional standing during the period of registry unavailability.'],
+                                        ['Partner API Deprecation & Transition Liability', 'If a Verification Partner modifies, deprecates, or terminates its API without prior notice, causing a temporary disruption to the Platform\'s verification routing layer, the Platform Operator will make commercially reasonable efforts to restore service via an alternative partner. No liability accrues to the Platform Operator for service gaps occurring during this transition window.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-slate-900 text-white rounded-xl px-5 py-4 mb-2">
+                            <p className="text-amber-400 text-xs font-black uppercase tracking-wider mb-3">Verification Liability Distribution — Section 18 Absolute Rule</p>
+                            <div className="grid grid-cols-3 gap-3 text-xs">
+                                <div className="border border-blue-400 rounded-lg px-3 py-2 bg-blue-950">
+                                    <p className="text-blue-300 font-bold mb-1">Platform Operator</p>
+                                    <p className="text-blue-200 text-[10px]">Neutral conduit · Routes encrypted presentations · Zero adjudicator status · Zero outcome liability</p>
+                                </div>
+                                <div className="border border-purple-400 rounded-lg px-3 py-2 bg-purple-950">
+                                    <p className="text-purple-300 font-bold mb-1">Verification Partner</p>
+                                    <p className="text-purple-200 text-[10px]">Independent data controller · Sole owner of outcome accuracy · Bears liability for false positives / negatives</p>
+                                </div>
+                                <div className="border border-emerald-400 rounded-lg px-3 py-2 bg-emerald-950">
+                                    <p className="text-emerald-300 font-bold mb-1">Pilot / Operator</p>
+                                    <p className="text-emerald-200 text-[10px]">Independent relying parties · Must independently confirm credentials with issuing CAA · Cannot claim platform liability for outcome reliance</p>
+                                </div>
+                            </div>
+                            <div className="mt-3 pt-3 border-t border-slate-700 text-center">
+                                <p className="text-slate-400 text-[10px]">Aggregate Platform Operator liability cap: USD $50.00 (Section 7.4) · CAPE-compliant intermediary immunity (Section 13.2) · Verification Partner as sole authoritative adjudicator (Section 17.1)</p>
+                            </div>
+                        </div>
+                    </section>
+
                     <section>
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">Contact</h2>
                         <p className="mb-2 text-sm">For formal legal communications regarding infrastructure administration:</p>
