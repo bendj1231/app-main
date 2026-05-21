@@ -3448,7 +3448,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     const profileId = profileData?.id;
     if (!profileId) return;
     supabase
-      .from('verification_checks')
+      .from('pilot_credentials')
       .select('*')
       .eq('profile_id', profileId)
       .then(({ data }: { data: any[] | null }) => { if (data) setWalletChecks(data); });
