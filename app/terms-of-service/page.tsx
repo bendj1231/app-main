@@ -190,6 +190,14 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 </tbody>
                             </table>
                         </div>
+                        <div className="border-l-4 border-emerald-500 bg-emerald-50 rounded-r-xl px-5 py-3 mb-3">
+                            <p className="text-emerald-800 text-xs font-bold uppercase tracking-wide mb-1">Terminal 3 Gatekeeper — Compliance Assertion</p>
+                            <p className="text-emerald-900 text-xs leading-relaxed">Transition between Terminal 2 and Terminal 3 is not user-selectable. It is triggered exclusively by the successful completion of an independent cryptographic handshake with a registered civil aviation verification partner. The Platform Operator holds no manual override authority to grant Terminal 3 access outside of this cryptographic verification pathway.</p>
+                        </div>
+                        <div className="border-l-4 border-slate-300 bg-slate-50 rounded-r-xl px-5 py-3 mb-2">
+                            <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-1">Regulatory Neutrality — Terminal 3 Status</p>
+                            <p className="text-slate-600 text-xs leading-relaxed">Terminal 3 status does not certify airworthiness, medical fitness, or regulatory compliance for any civil aviation purpose. It serves exclusively as a visual beacon of third-party credential verification, provided for informational purposes to facilitate institutional workflows. The sole authoritative source for any airworthiness or licensing determination remains the issuing Civil Aviation Authority (see Section 8).</p>
+                        </div>
                     </section>
 
                     {/* ══════════════════════════════════════════════
