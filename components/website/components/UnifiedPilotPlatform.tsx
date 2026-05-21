@@ -1650,6 +1650,86 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
             </div>
           </div>
 
+          {/* ── HOURS SUMMARY PANEL ── */}
+          {(() => {
+            const totalHours = profile?.total_flight_hours || profile?.current_flight_hours || profile?.total_hours || 0;
+            const verifiedHoursCheck = walletChecks.find((c: any) => c.check_type === 'professional_qualification' && c.status === 'verified');
+            const verifiedHours = verifiedHoursCheck ? totalHours : 0;
+            const unverifiedHours = totalHours - verifiedHours;
+            const licenseCheck = walletChecks.find((c: any) => c.check_type === 'professional_qualification');
+            const medicalCheck = walletChecks.find((c: any) => c.check_type === 'education');
+            const licenseExpiry = profile?.license_expiry;
+            const medicalExpiry = profile?.medical_expiry;
+            const medicalExpired = medicalExpiry ? new Date(medicalExpiry) < new Date() : false;
+            const licenseType = profile?.license_type || profile?.current_occupation || null;
+            const isCipher = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+            const safeVal = (v: any) => (v && !isCipher(v)) ? v : null;
+
+            if (!totalHours && !licenseType && !licenseExpiry && !medicalExpiry) return null;
+
+            return (
+              <div style={{ borderTop: '1px solid #f1f5f9', background: '#f8fafc', padding: '16px 28px' }}>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 12 }}>Flight Hours & Credential Summary</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10 }}>
+
+                  {/* Verified Hours */}
+                  <div style={{ background: verifiedHours > 0 ? '#f0fdf4' : 'white', border: `1px solid ${verifiedHours > 0 ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 8, padding: '10px 14px' }}>
+                    <p style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', margin: 0, marginBottom: 3 }}>Verified Hours</p>
+                    <p style={{ fontSize: 20, fontWeight: 800, color: verifiedHours > 0 ? '#16a34a' : '#94a3b8', margin: 0, letterSpacing: '-0.03em' }}>
+                      {verifiedHours > 0 ? verifiedHours.toLocaleString() : '—'}
+                    </p>
+                    <p style={{ fontSize: 10, color: verifiedHours > 0 ? '#16a34a' : '#cbd5e1', margin: 0, marginTop: 2 }}>
+                      {verifiedHours > 0 ? '✓ Veremark confirmed' : 'Not verified yet'}
+                    </p>
+                  </div>
+
+                  {/* Unverified Hours */}
+                  {unverifiedHours > 0 && (
+                    <div style={{ background: 'white', border: '1px solid #fde68a', borderRadius: 8, padding: '10px 14px' }}>
+                      <p style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', margin: 0, marginBottom: 3 }}>Unverified Hours</p>
+                      <p style={{ fontSize: 20, fontWeight: 800, color: '#d97706', margin: 0, letterSpacing: '-0.03em' }}>{unverifiedHours.toLocaleString()}</p>
+                      <p style={{ fontSize: 10, color: '#d97706', margin: 0, marginTop: 2 }}>Self-reported only</p>
+                    </div>
+                  )}
+
+                  {/* Total Hours */}
+                  {totalHours > 0 && (
+                    <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 14px' }}>
+                      <p style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', margin: 0, marginBottom: 3 }}>Total Hours</p>
+                      <p style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.03em' }}>{Number(totalHours).toLocaleString()}</p>
+                      <p style={{ fontSize: 10, color: '#64748b', margin: 0, marginTop: 2 }}>Logged flight time</p>
+                    </div>
+                  )}
+
+                  {/* License status */}
+                  {safeVal(licenseType) && (
+                    <div style={{ background: licenseCheck?.status === 'verified' ? '#f0fdf4' : 'white', border: `1px solid ${licenseCheck?.status === 'verified' ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 8, padding: '10px 14px' }}>
+                      <p style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', margin: 0, marginBottom: 3 }}>License</p>
+                      <p style={{ fontSize: 13, fontWeight: 800, color: '#0f172a', margin: 0 }}>{safeVal(licenseType)}</p>
+                      <p style={{ fontSize: 10, margin: 0, marginTop: 2, color: licenseCheck?.status === 'verified' ? '#16a34a' : '#94a3b8' }}>
+                        {licenseCheck?.status === 'verified' ? '✓ Verified' : licenseExpiry ? `Exp: ${licenseExpiry}` : 'Unverified'}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Medical status */}
+                  {(safeVal(profile?.medical_class) || medicalExpiry) && (
+                    <div style={{ background: medicalExpired ? '#fef2f2' : medicalCheck?.status === 'verified' ? '#f0fdf4' : 'white', border: `1px solid ${medicalExpired ? '#fecaca' : medicalCheck?.status === 'verified' ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 8, padding: '10px 14px' }}>
+                      <p style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', margin: 0, marginBottom: 3 }}>Medical</p>
+                      <p style={{ fontSize: 13, fontWeight: 800, color: medicalExpired ? '#dc2626' : '#0f172a', margin: 0 }}>
+                        {safeVal(profile?.medical_class) || 'Class 1'}
+                      </p>
+                      <p style={{ fontSize: 10, margin: 0, marginTop: 2, color: medicalExpired ? '#dc2626' : medicalCheck?.status === 'verified' ? '#16a34a' : '#94a3b8', fontWeight: medicalExpired ? 700 : 400 }}>
+                        {medicalExpired ? '⚠ Expired' : medicalCheck?.status === 'verified' ? '✓ Verified' : medicalExpiry ? `Exp: ${medicalExpiry}` : 'Unverified'}
+                      </p>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+            );
+          })()}
+
           {/* ── ACTION CARDS ── */}
           <div style={{ borderTop: '1px solid #f1f5f9', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
 
@@ -3258,7 +3338,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   useEffect(() => {
     supabase
       .from('airlines')
-      .select('id, name, logo_url, country, minimum_hours, fleet_type')
+      .select('id, name, image, region, flight_hours, fleet')
       .limit(50)
       .then(({ data }: { data: any[] | null }) => { if (data) setAirlines(data); });
   }, []);
