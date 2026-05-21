@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { WalletPublicCard } from './WalletPublicCard';
 import { PasskeyGate } from './PasskeyGate';
 import { WalletLoadingScreen } from './WalletLoadingScreen';
+import { WalletViewPage } from './WalletViewPage';
 import { supabase } from '../../../../shared/lib/supabase';
 
 type View = 'loading' | 'public' | 'gate' | 'manage' | 'no-token';
@@ -44,7 +45,11 @@ export const WalletRouter: React.FC = () => {
   if (view === 'loading') {
     return (
       <WalletLoadingScreen
-        onComplete={() => setView(nextView)}
+        onComplete={async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user?.id) setAuthedUserId(session.user.id);
+          setView(nextView === 'no-token' ? 'manage' : nextView);
+        }}
       />
     );
   }
@@ -94,9 +99,15 @@ export const WalletRouter: React.FC = () => {
   }
 
   if (view === 'manage') {
-    // Redirect to the full platform wallet tab with auth already active
-    window.location.href = `https://pilotrecognition.com/platform?tab=wallet&uid=${authedUserId}`;
-    return null;
+    return (
+      <WalletViewPage
+        userId={authedUserId}
+        onBack={() => {
+          if (token) setView('public');
+          else window.location.href = 'https://pilotrecognition.com/platform?tab=wallet';
+        }}
+      />
+    );
   }
 
   // Default: public read-only card
