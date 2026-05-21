@@ -89,6 +89,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   });
   const [exportOpen, setExportOpen] = useState(false);
   const [signoffOpen, setSignoffOpen] = useState(false);
+  const [editingSlot, setEditingSlot] = useState<string | null>(null);
+  const [slotDraft, setSlotDraft] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   type TabID = 'overview' | 'credentials' | 'logbook' | 'vault';
   const [activeTab, setActiveTab] = useState<TabID>('overview');
   // W3C VC wallet state
@@ -114,7 +118,12 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         setWalletState(ws);
         // Tier 1 — init enclave key (idempotent)
         await generateEnclaveKey();
-        const es = await getEnclaveStatus();
+        // Poll until key is present — avoids IndexedDB write race
+        let es = await getEnclaveStatus();
+        if (!es.keyPresent) {
+          await new Promise(r => setTimeout(r, 400));
+          es = await getEnclaveStatus();
+        }
         setEnclaveStatus(es);
         // Tier 2 — init encrypted storage keyed to holder DID
         const hDid = es.holderDid || `did:web:wallet.pilotrecognition.com:${p.id}`;
@@ -194,13 +203,13 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     return 2;
   })();
   const terminalConfig = {
-    1: { label: 'TERMINAL 1 — BASELINE',        color: '#dc2626', bg: 'rgba(220,38,38,0.1)',   border: 'rgba(220,38,38,0.3)'   },
-    2: { label: 'TERMINAL 2 — ISOLATION',        color: '#d97706', bg: 'rgba(217,119,6,0.1)',   border: 'rgba(217,119,6,0.3)'   },
-    3: { label: 'TERMINAL 3 — VERIFIED',         color: '#16a34a', bg: 'rgba(22,163,74,0.1)',   border: 'rgba(22,163,74,0.3)'   },
-  } as const;
+    1: { tier: 1, label: 'TERMINAL 1 — BASELINE',  dot: '#dc2626', color: '#dc2626', bg: 'rgba(220,38,38,0.1)',  border: 'rgba(220,38,38,0.3)',  bar: 'linear-gradient(90deg,#dc2626,#f87171,#dc2626)' },
+    2: { tier: 2, label: 'TERMINAL 2 — ISOLATION', dot: '#d97706', color: '#d97706', bg: 'rgba(217,119,6,0.1)',  border: 'rgba(217,119,6,0.3)',  bar: 'linear-gradient(90deg,#f59e0b,#fbbf24,#f59e0b)' },
+    3: { tier: 3, label: 'TERMINAL 3 — VERIFIED',  dot: '#16a34a', color: '#16a34a', bg: 'rgba(22,163,74,0.1)', border: 'rgba(22,163,74,0.3)',  bar: 'linear-gradient(90deg,#10b981,#34d399,#10b981)' },
+  };
   const tc = terminalConfig[terminalTier];
   const liveDid = enclaveStatus?.holderDid
-    || (profile?.id ? `did:web:wallet.pilotrecognition.com:${profile.id.slice(0,8)}` : null);
+    || (profile?.id ? `did:web:wallet.pilotrecognition.com:${profile.id}` : null);
 
   const allNotifs: WalletNotif[] = [
     ...checks.filter(c => c.status === 'expired').map(c => ({
@@ -244,6 +253,18 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       setTimeout(() => setSyncMsg(null), 3500);
     }, 1800);
   }, [connectedProviders]);
+
+  const saveProfile = useCallback(async (patch: Record<string, any>) => {
+    if (!profile?.id) return;
+    setSaving(true);
+    setSaveError(null);
+    const { error } = await supabase.from('profiles').update(patch).eq('id', profile.id);
+    if (error) { setSaveError(error.message); setSaving(false); return; }
+    setProfile((prev: any) => prev ? { ...prev, ...patch } : prev);
+    setSaving(false);
+    setEditingSlot(null);
+    setSlotDraft({});
+  }, [profile?.id]);
 
   const handleCSV = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -529,84 +550,121 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           </div>
         </div>
 
-        {/* Credential status grid */}
+        {/* Credential status grid — G5: show real profile value */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
           {SLEEVE_CONFIG.map(sc => {
             const check = checks.find(c => c.check_type === sc.checkType);
             const st = check?.status || 'pending';
             const cfg = STATUS_CONFIG[st] || STATUS_CONFIG.pending;
+            const profileVal = safe(profile?.[sc.profileKey]);
             const expVal = safe(profile?.[sc.expiryKey]);
             const days = expVal ? daysUntil(expVal) : null;
             const expiredFlag = days !== null && days < 0;
+            const isEmpty = !profileVal;
+            const dotColor = expiredFlag ? '#dc2626' : isEmpty ? '#cbd5e1' : cfg.dot;
             return (
               <div
                 key={sc.key}
                 onClick={() => setActiveTab('credentials')}
-                style={{ padding: '12px 14px', background: '#ffffff', border: `1px solid ${expiredFlag ? '#fecaca' : cfg.border}`, borderRadius: 10, cursor: 'pointer', transition: 'box-shadow 0.15s' }}
+                style={{
+                  padding: '12px 14px', background: isEmpty ? '#f8fafc' : '#ffffff',
+                  border: `1px solid ${expiredFlag ? '#fecaca' : isEmpty ? '#e2e8f0' : cfg.border}`,
+                  borderRadius: 10, cursor: 'pointer', transition: 'box-shadow 0.15s',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: 16 }}>{sc.icon}</span>
-                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: expiredFlag ? '#dc2626' : cfg.dot }} />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+                  <span style={{ fontSize: 15 }}>{sc.icon}</span>
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: dotColor, boxShadow: !isEmpty && !expiredFlag && st === 'verified' ? `0 0 5px ${dotColor}` : 'none' }} />
                 </div>
-                <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>{sc.label}</p>
-                <p style={{ margin: 0, fontSize: 8, fontWeight: 700, color: expiredFlag ? '#dc2626' : cfg.text, letterSpacing: '0.08em' }}>
-                  {expiredFlag ? 'EXPIRED' : cfg.label}
+                <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{sc.label.split(' ')[0]}</p>
+                {isEmpty ? (
+                  <p style={{ margin: 0, fontSize: 10, color: '#cbd5e1', fontStyle: 'italic' }}>Not set →</p>
+                ) : (
+                  <p style={{ margin: '0 0 1px', fontSize: 10, fontWeight: 700, color: expiredFlag ? '#dc2626' : '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{profileVal}</p>
+                )}
+                <p style={{ margin: 0, fontSize: 8, fontWeight: 700, color: expiredFlag ? '#dc2626' : cfg.text, letterSpacing: '0.07em' }}>
+                  {expiredFlag ? 'EXPIRED' : isEmpty ? 'NOT SET' : cfg.label}
                 </p>
                 {days !== null && !expiredFlag && days <= 90 && (
-                  <p style={{ margin: '3px 0 0', fontSize: 8, color: '#f59e0b', fontWeight: 600 }}>{days}d remaining</p>
+                  <p style={{ margin: '2px 0 0', fontSize: 8, color: '#f59e0b', fontWeight: 600 }}>{days}d</p>
                 )}
               </div>
             );
           })}
         </div>
 
-        {/* Primary CTA */}
-        <div style={{ padding: '20px 22px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
-          <div>
-            <p style={{ margin: '0 0 3px', fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', color: '#64748b', textTransform: 'uppercase' }}>Workday / Taleo ATS Export</p>
-            <p style={{ margin: 0, fontSize: 11, color: '#334155' }}>
-              Generate a cryptographically signed, domain-scoped Verifiable Presentation for airline procurement.
-            </p>
-            <p style={{ margin: '3px 0 0', fontSize: 9, color: '#94a3b8' }}>Zero PII leaves this device · Nonce-bound · 24h TTL</p>
-          </div>
-          <button
-            onClick={async () => {
-              if (profile) {
-                const vp = buildAviationRecordSummaryVP(profile, checks, disclosureToggles);
-                try {
-                  const proofValue = await signCredentialPayload(JSON.stringify(vp.verifiableCredential.credentialSubject));
-                  vp.proof.proofValue = proofValue;
-                  vp.verifiableCredential.proof.proofValue = proofValue;
-                  vp.proof.verificationMethod = enclaveStatus?.holderDid
-                    ? `${enclaveStatus.holderDid}#key-0`
-                    : vp.proof.verificationMethod;
-                } catch { }
-                setWalletState(prev => prev ? { ...prev, activePresentation: vp } : prev);
-                await logPresentationEvent({
-                  recipientDid: 'did:web:pilotrecognition.com#airline-portal',
-                  recipientName: 'Airline ATS Portal',
-                  presentationType: 'AviationRecordSummary',
-                  disclosedFields: Object.entries(disclosureToggles).filter(([,v]) => v).map(([k]) => k),
-                  vpId: vp.id,
-                  terminalClearance: vp.verifiableCredential.credentialSubject.terminalClearance,
-                  hoursBracket: vp.verifiableCredential.credentialSubject.hoursBracket,
-                }).catch(() => {});
-                setExportOpen(true);
-              }
-            }}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px',
-              background: '#2563eb', border: '1px solid #3b82f6', borderRadius: 9,
-              color: '#ffffff', fontSize: 11, fontWeight: 700, cursor: 'pointer',
-              letterSpacing: '0.02em', whiteSpace: 'nowrap',
-              boxShadow: '0 2px 12px rgba(37,99,235,0.35)',
-              transition: 'all 0.18s ease',
-            }}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Generate Tokenized Candidate Record
-          </button>
-        </div>
+        {/* Primary CTA — G4: gate when profile is empty */}
+        {(() => {
+          const hasLicense = !!(safe(profile?.license_number) || safe(profile?.license_id) || safe(profile?.license_type) || safe(profile?.current_occupation));
+          const hasHours = totalHours > 0;
+          const exportReady = hasLicense || hasHours;
+          const missing = [
+            !hasLicense && 'license number',
+            !hasHours && 'flight hours',
+          ].filter(Boolean).join(' and ');
+          return (
+            <div style={{ padding: '20px 22px', background: '#ffffff', border: `1px solid ${exportReady ? '#e2e8f0' : '#fde68a'}`, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
+              <div>
+                <p style={{ margin: '0 0 3px', fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', color: '#64748b', textTransform: 'uppercase' }}>Workday / Taleo ATS Export</p>
+                {exportReady ? (
+                  <p style={{ margin: 0, fontSize: 11, color: '#334155' }}>
+                    Generate a cryptographically signed, domain-scoped Verifiable Presentation for airline procurement.
+                  </p>
+                ) : (
+                  <p style={{ margin: 0, fontSize: 11, color: '#92400e' }}>
+                    Add your {missing} in the <strong>Credentials</strong> and <strong>Logbook</strong> tabs to enable export.
+                  </p>
+                )}
+                <p style={{ margin: '3px 0 0', fontSize: 9, color: '#94a3b8' }}>Zero PII leaves this device · Nonce-bound · 24h TTL</p>
+              </div>
+              <button
+                disabled={!exportReady}
+                onClick={async () => {
+                  if (!exportReady || !profile) return;
+                  const vp = buildAviationRecordSummaryVP(profile, checks, disclosureToggles);
+                  try {
+                    const proofValue = await signCredentialPayload(JSON.stringify(vp.verifiableCredential.credentialSubject));
+                    vp.proof.proofValue = proofValue;
+                    vp.verifiableCredential.proof.proofValue = proofValue;
+                    vp.proof.verificationMethod = enclaveStatus?.holderDid
+                      ? `${enclaveStatus.holderDid}#key-0`
+                      : vp.proof.verificationMethod;
+                  } catch { }
+                  setWalletState(prev => prev ? { ...prev, activePresentation: vp } : prev);
+                  await logPresentationEvent({
+                    recipientDid: 'did:web:pilotrecognition.com#airline-portal',
+                    recipientName: 'Airline ATS Portal',
+                    presentationType: 'AviationRecordSummary',
+                    disclosedFields: Object.entries(disclosureToggles).filter(([,v]) => v).map(([k]) => k),
+                    vpId: vp.id,
+                    terminalClearance: vp.verifiableCredential.credentialSubject.terminalClearance,
+                    hoursBracket: vp.verifiableCredential.credentialSubject.hoursBracket,
+                  }).catch(() => {});
+                  setExportOpen(true);
+                }}
+                title={!exportReady ? `Complete your profile first — missing ${missing}` : 'Generate signed VP for ATS export'}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px',
+                  background: exportReady ? '#2563eb' : '#f1f5f9',
+                  border: `1px solid ${exportReady ? '#3b82f6' : '#e2e8f0'}`,
+                  borderRadius: 9,
+                  color: exportReady ? '#ffffff' : '#94a3b8',
+                  fontSize: 11, fontWeight: 700,
+                  cursor: exportReady ? 'pointer' : 'not-allowed',
+                  letterSpacing: '0.02em', whiteSpace: 'nowrap',
+                  boxShadow: exportReady ? '0 2px 12px rgba(37,99,235,0.35)' : 'none',
+                  transition: 'all 0.18s ease',
+                  opacity: exportReady ? 1 : 0.7,
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Generate Tokenized Candidate Record
+              </button>
+            </div>
+          );
+        })()}
 
         {/* VP export preview */}
         {exportOpen && walletState?.activePresentation && (
@@ -878,21 +936,107 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     )}
                   </div>
 
-                  {/* Import button */}
-                  {!isActive && !isScanning && (
-                    <button
-                      onClick={() => setQrSlot(slot.key)}
-                      style={{
-                        marginTop: 10, width: '100%', padding: '7px 0', borderRadius: 6,
-                        border: '1px solid #e2e8f0', cursor: 'pointer',
-                        background: '#f8fafc', color: '#64748b', fontSize: 10, fontWeight: 600,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
-                      }}
-                    >
-                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                      Scan QR / Import
-                    </button>
-                  )}
+                  {/* Edit / Import buttons */}
+                  {!isScanning && (() => {
+                    const isEditing = editingSlot === slot.key;
+                    const SLOT_FIELDS: Record<string, Array<{ key: string; label: string; type?: string; placeholder?: string }>> = {
+                      license: [
+                        { key: 'license_type',   label: 'License Type',   placeholder: 'e.g. ATPL, CPL, PPL' },
+                        { key: 'license_number', label: 'License No.',    placeholder: 'e.g. PH-CPL-00123' },
+                        { key: 'license_expiry', label: 'Expiry Date',    type: 'date' },
+                      ],
+                      medical: [
+                        { key: 'medical_class',  label: 'Medical Class',  placeholder: 'e.g. Class 1' },
+                        { key: 'medical_number', label: 'Certificate No.', placeholder: 'e.g. MED-00123' },
+                        { key: 'medical_expiry', label: 'Expiry Date',    type: 'date' },
+                      ],
+                      ntc: [
+                        { key: 'ntc_license',    label: 'NTC License No.', placeholder: 'e.g. NTC-00123' },
+                        { key: 'ntc_expiry',     label: 'Expiry Date',    type: 'date' },
+                      ],
+                      elp: [
+                        { key: 'language_proficiency', label: 'ICAO ELP Level', placeholder: 'e.g. Level 5' },
+                        { key: 'elp_certificate_no',   label: 'Certificate No.', placeholder: 'e.g. ELP-00123' },
+                        { key: 'elp_expiry',           label: 'Expiry Date',    type: 'date' },
+                      ],
+                    };
+                    const fields = SLOT_FIELDS[slot.key] || [];
+                    return (
+                      <>
+                        {isEditing ? (
+                          <div style={{ marginTop: 10, padding: '10px 12px', background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+                            {fields.map(f => (
+                              <div key={f.key} style={{ marginBottom: 8 }}>
+                                <label style={{ display: 'block', fontSize: 8, fontWeight: 700, color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 3 }}>{f.label}</label>
+                                <input
+                                  type={f.type || 'text'}
+                                  placeholder={f.placeholder || ''}
+                                  value={slotDraft[f.key] ?? (safe(profile?.[f.key]) || '')}
+                                  onChange={e => setSlotDraft(d => ({ ...d, [f.key]: e.target.value }))}
+                                  style={{
+                                    width: '100%', padding: '5px 8px', fontSize: 10, borderRadius: 5,
+                                    border: '1px solid #cbd5e1', background: '#ffffff', color: '#0f172a',
+                                    outline: 'none', boxSizing: 'border-box',
+                                  }}
+                                />
+                              </div>
+                            ))}
+                            {saveError && <p style={{ margin: '0 0 6px', fontSize: 9, color: '#dc2626' }}>{saveError}</p>}
+                            <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+                              <button
+                                onClick={() => saveProfile(slotDraft)}
+                                disabled={saving}
+                                style={{ flex: 1, padding: '6px 0', borderRadius: 5, border: 'none', background: cc.accent, color: '#fff', fontSize: 10, fontWeight: 700, cursor: saving ? 'wait' : 'pointer' }}
+                              >
+                                {saving ? 'Saving…' : 'Save'}
+                              </button>
+                              <button
+                                onClick={() => { setEditingSlot(null); setSlotDraft({}); setSaveError(null); }}
+                                style={{ padding: '6px 10px', borderRadius: 5, border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', fontSize: 10, cursor: 'pointer' }}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div style={{ marginTop: 10, display: 'flex', gap: 6 }}>
+                            <button
+                              onClick={() => {
+                                setEditingSlot(slot.key);
+                                const init: Record<string, string> = {};
+                                fields.forEach(f => { init[f.key] = safe(profile?.[f.key]) || ''; });
+                                setSlotDraft(init);
+                                setSaveError(null);
+                              }}
+                              style={{
+                                flex: 1, padding: '7px 0', borderRadius: 6,
+                                border: `1px solid ${cc.accent}40`, cursor: 'pointer',
+                                background: `${cc.accent}08`, color: cc.accent, fontSize: 10, fontWeight: 600,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                              }}
+                            >
+                              ✏ {val ? 'Edit' : 'Enter Details'}
+                            </button>
+                            {!isActive && (
+                              <button
+                                onClick={() => setQrSlot(slot.key)}
+                                style={{
+                                  padding: '7px 10px', borderRadius: 6,
+                                  border: '1px solid #e2e8f0', cursor: 'pointer',
+                                  background: '#f8fafc', color: '#64748b', fontSize: 10, fontWeight: 600,
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+                                }}
+                                title="Scan QR to import from authority app"
+                              >
+                                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                                QR
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                   {isScanning && (
                     <div style={{ marginTop: 10, height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: '60%', background: cc.accent, borderRadius: 2, animation: 'wvShimmer 0.8s ease infinite' }} />
@@ -1045,6 +1189,93 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           );
         })()}
 
+        {/* Hours entry form — G2 */}
+        {(() => {
+          const HOUR_FIELDS = [
+            { key: 'total_flight_hours', label: 'Total Flight Hours', profileKeys: ['total_flight_hours', 'current_flight_hours'] },
+            { key: 'pic_hours',          label: 'PIC Hours',          profileKeys: ['pic_hours'] },
+            { key: 'instrument_hours',   label: 'Instrument Hours',   profileKeys: ['instrument_hours'] },
+            { key: 'multi_engine_hours', label: 'Multi-Engine Hours', profileKeys: ['multi_engine_hours'] },
+            { key: 'night_hours',        label: 'Night Hours',        profileKeys: ['night_hours'] },
+          ];
+          const isEditingHours = editingSlot === 'hours';
+          return (
+            <div className="wv-in" style={{ animationDelay: '0.38s', marginBottom: 10 }}>
+              {isEditingHours ? (
+                <div style={{ padding: '16px 18px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12 }}>
+                  <p style={{ margin: '0 0 12px', fontSize: 9, fontWeight: 700, color: '#64748b', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Enter Flight Hours — Self-Reported</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10 }}>
+                    {HOUR_FIELDS.map(f => (
+                      <div key={f.key}>
+                        <label style={{ display: 'block', fontSize: 8, fontWeight: 700, color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>{f.label}</label>
+                        <input
+                          type="number"
+                          min="0"
+                          placeholder="0"
+                          value={slotDraft[f.key] ?? (safe(profile?.[f.profileKeys[0]]) || '')}
+                          onChange={e => setSlotDraft(d => ({ ...d, [f.key]: e.target.value }))}
+                          style={{
+                            width: '100%', padding: '6px 8px', fontSize: 12, fontWeight: 700,
+                            borderRadius: 6, border: '1px solid #cbd5e1', background: '#ffffff',
+                            color: '#0f172a', outline: 'none', boxSizing: 'border-box',
+                            textAlign: 'right',
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  {saveError && <p style={{ margin: '8px 0 0', fontSize: 9, color: '#dc2626' }}>{saveError}</p>}
+                  <p style={{ margin: '8px 0 10px', fontSize: 9, color: '#94a3b8' }}>
+                    Self-reported hours are labelled as such. Connect a logbook provider below to get Verified status.
+                  </p>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button
+                      onClick={() => {
+                        const patch: Record<string, any> = {};
+                        HOUR_FIELDS.forEach(f => {
+                          if (slotDraft[f.key] !== undefined && slotDraft[f.key] !== '') {
+                            patch[f.key] = Number(slotDraft[f.key]);
+                            f.profileKeys.forEach(k => { patch[k] = Number(slotDraft[f.key]); });
+                          }
+                        });
+                        saveProfile(patch);
+                      }}
+                      disabled={saving}
+                      style={{ padding: '8px 20px', borderRadius: 7, border: 'none', background: '#2563eb', color: '#fff', fontSize: 11, fontWeight: 700, cursor: saving ? 'wait' : 'pointer' }}
+                    >
+                      {saving ? 'Saving…' : 'Save Hours'}
+                    </button>
+                    <button
+                      onClick={() => { setEditingSlot(null); setSlotDraft({}); setSaveError(null); }}
+                      style={{ padding: '8px 16px', borderRadius: 7, border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', fontSize: 11, cursor: 'pointer' }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setEditingSlot('hours');
+                    const init: Record<string, string> = {};
+                    HOUR_FIELDS.forEach(f => { init[f.key] = safe(profile?.[f.profileKeys[0]]) || ''; });
+                    setSlotDraft(init);
+                    setSaveError(null);
+                  }}
+                  style={{
+                    width: '100%', padding: '10px 18px', borderRadius: 10,
+                    border: '1px dashed #cbd5e1', background: '#f8fafc', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: 8, color: '#64748b', fontSize: 11, fontWeight: 600,
+                  }}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  {totalHours > 0 ? `Update flight hours  ·  Current: ${totalHours.toLocaleString()} hrs` : 'Enter your flight hours'}
+                </button>
+              )}
+            </div>
+          );
+        })()}
+
         {/* Rows with toggles */}
         <div className="wv-in" style={{ animationDelay: '0.4s', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, overflow: 'hidden' }}>
           {[
@@ -1061,7 +1292,6 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                 borderBottom: i < arr.length - 1 ? '1px solid #f1f5f9' : 'none',
                 opacity: disclosed ? 1 : 0.4, transition: 'opacity 0.2s',
               }}>
-                {/* Disclosure toggle */}
                 <div
                   onClick={() => setDisclosureToggles(t => ({ ...t, [row.key]: !t[row.key] }))}
                   style={{
@@ -1077,7 +1307,6 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   }} />
                 </div>
                 <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#334155', flex: 1 }}>{row.label}</p>
-                {/* Dot trail */}
                 <div style={{ flex: 1, height: 1, background: 'repeating-linear-gradient(90deg, #cbd5e1 0px, #cbd5e1 3px, transparent 3px, transparent 8px)', margin: '0 12px' }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 180, justifyContent: 'flex-end' }}>
                   <span style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
@@ -1087,7 +1316,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', padding: '2px 8px', borderRadius: 5,
                     background: row.verified ? '#dcfce7' : '#f8fafc',
                     color: row.verified ? '#15803d' : '#94a3b8',
-                    border: `1px solid ${row.verified ? '#86efac' : '#e2e8f0'}`,  
+                    border: `1px solid ${row.verified ? '#86efac' : '#e2e8f0'}`,
                   }}>
                     {row.verified ? '✓ VERIFIED' : 'SELF-REPORTED'}
                   </span>
