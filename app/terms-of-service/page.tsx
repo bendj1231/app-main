@@ -101,6 +101,9 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <p className="mb-4 text-sm">
                             This Terms of Service and Privacy Agreement ("Agreement") defines the architecture, data ownership parameters, and system boundary constraints of pilotrecognition.com ("the Platform"). By executing an account creation sequence, you explicitly assent to these provisions.
                         </p>
+                        <p className="mb-3 text-sm"><strong>Neutrality Guarantee:</strong> The Platform Operator does not adjudicate, verify, or validate the content of the data presented by the User; it merely provides the secure cryptographic infrastructure through which third-party regional partners verify and issue credentials. All verification outcomes are the exclusive product of the independent regional verification partner, not of the Platform Operator.</p>
+                        <p className="mb-3 text-sm"><strong>Infrastructure Definition:</strong> For the purposes of this Agreement, "Infrastructure" includes all software conduits, multi-engine database redundancy layers (Supabase &amp; Firebase), and API gateways facilitating the flow of tokenized metadata between the User and third-party verification providers. The Platform Operator's obligations are limited to the availability and integrity of this Infrastructure layer only.</p>
+                        <p className="mb-4 text-sm"><strong>In-Browser Security Constraint:</strong> The security of the identity interface is contingent upon the User's local computing environment. The Platform Operator holds no liability for client-side injection attacks, browser extension interference, or malware present on the User's local device. Users are directed to Section 10 for the full scope of client-side security obligations.</p>
                     </section>
 
                     {/* ══════════════════════════════════════════════
