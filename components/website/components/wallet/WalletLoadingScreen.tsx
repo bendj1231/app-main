@@ -384,7 +384,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
                 animation: 'walletSpin 0.7s linear infinite',
               }} />
             )}
-            <span style={{ fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.02em', color: '#64748b' }}>
+            <span style={{ fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.02em', color: '#16a34a' }}>
               {step}
             </span>
           </div>
