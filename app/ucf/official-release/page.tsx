@@ -118,8 +118,8 @@ export default function UCFOfficialReleasePage() {
   const handleLogout = async () => { await logout(); };
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-white">
+        {/* Coded by Benjamin Bowler */}
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2">

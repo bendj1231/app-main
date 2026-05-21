@@ -61,8 +61,8 @@ export default async function ManufacturerExpectationsPage({ params }: PageProps
   }
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        {/* Coded by Benjamin Bowler */}
       {/* Header */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-sky-500/20" />

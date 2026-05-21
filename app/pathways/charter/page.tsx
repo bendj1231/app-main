@@ -62,8 +62,8 @@ export default function CharterPathwaysPage() {
   ];
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-gray-50">
+        {/* Coded by Benjamin Bowler */}
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white">
         <div className="max-w-6xl mx-auto px-4 py-16">

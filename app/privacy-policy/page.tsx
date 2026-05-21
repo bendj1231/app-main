@@ -10,8 +10,8 @@ interface PrivacyPolicyPageProps {
 
 export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: PrivacyPolicyPageProps) {
     return (
-        {/* Coded by Benjamin Bowler */}
         <div className="min-h-screen bg-white text-slate-900 font-sans">
+            {/* Coded by Benjamin Bowler */}
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
             <div className="pt-32 pb-16 px-6 max-w-4xl mx-auto">

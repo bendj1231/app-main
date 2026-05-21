@@ -2,8 +2,8 @@ import React from 'react';
 
 export default function TermsPage() {
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-50">
+        {/* Coded by Benjamin Bowler */}
       <div className="max-w-3xl mx-auto px-4 py-16">
 
         {/* Header */}

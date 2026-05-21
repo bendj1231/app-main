@@ -81,8 +81,8 @@ export default function EnterpriseOnboardingPage() {
   const selectedOperation = OPERATION_TYPES.find(t => t.id === selectedType);
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-50">
+        {/* Coded by Benjamin Bowler */}
       <TopNavbar 
         onNavigate={(page) => console.log(page)} 
         onLogin={() => {}} 

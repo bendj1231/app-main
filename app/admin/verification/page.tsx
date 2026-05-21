@@ -163,8 +163,8 @@ export default function AdminVerificationQueue() {
   };
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-50 font-sans">
+        {/* Coded by Benjamin Bowler */}
       {/* Header */}
       <div className="bg-white border-b border-slate-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

@@ -12,8 +12,8 @@ export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: Issuer
     const lastUpdated = 'May 19, 2026';
 
     return (
-        {/* Coded by Benjamin Bowler */}
         <div className="min-h-screen bg-[#0a0f1e] text-white">
+            {/* Coded by Benjamin Bowler */}
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onJoinUs={() => {}} onLoginModalOpen={() => {}} />
 
             <div className="max-w-3xl mx-auto px-6 py-24">

@@ -38,9 +38,9 @@ export const metadata: Metadata = {
 
 export default function FAQPage() {
   return (
-        {/* Coded by Benjamin Bowler */}
     <FAQPage 
-      onBack={() => window.history.back()} 
+      onBack={() =>
+        {/* Coded by Benjamin Bowler */} window.history.back()} 
       onNavigate={(page) => console.log('Navigate to:', page)}
       onLogin={() => console.log('Login clicked')}
     />

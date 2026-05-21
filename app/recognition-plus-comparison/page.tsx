@@ -14,8 +14,8 @@ export default function RecognitionPlusComparisonPage() {
   }, []);
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-white">
+        {/* Coded by Benjamin Bowler */}
       {/* Header */}
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 border-b-2 border-red-500">
         <div className="max-w-6xl mx-auto px-6 py-16">

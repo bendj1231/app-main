@@ -38,9 +38,9 @@ export const metadata: Metadata = {
 
 export default function PilotShortageRoute() {
   return (
-        {/* Coded by Benjamin Bowler */}
     <PilotShortagePage 
-      onBack={() => window.history.back()} 
+      onBack={() =>
+        {/* Coded by Benjamin Bowler */} window.history.back()} 
       onNavigate={(page) => {
         if (page.startsWith('/')) {
           window.location.href = page;

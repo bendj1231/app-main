@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 export default function FrameworkAdminPage() {
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-50 p-6">
+        {/* Coded by Benjamin Bowler */}
       <nav className="mb-6 flex items-center gap-4">
         <Link to="/framework" className="text-slate-900 font-semibold">← View Framework</Link>
         <h1 className="text-xl font-bold">Framework Admin</h1>

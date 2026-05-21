@@ -26,8 +26,8 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
   const renderDataRow = (tLine: string, idx: number) => {
     const cells = tLine.split('|').filter(c => c.trim());
     return (
-        {/* Coded by Benjamin Bowler */}
       <div key={idx} className={`grid py-2 border-b border-slate-200 ${gridClass}`}>
+          {/* Coded by Benjamin Bowler */}
         {cells.map((cell, j) => {
           const cellText = processCellText(cell.trim());
           const isCurrentState = j === 1;

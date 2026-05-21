@@ -56,8 +56,8 @@ export default function EnterprisePricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-white text-slate-900 font-sans">
+        {/* Coded by Benjamin Bowler */}
 
       {/* ─── NAV ─── */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-100 px-6 py-4 flex items-center justify-between">

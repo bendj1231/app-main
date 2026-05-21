@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 export default function FlightSchoolPartnersPage() {
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-gray-50">
+        {/* Coded by Benjamin Bowler */}
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white">
         <div className="max-w-6xl mx-auto px-4 py-20">

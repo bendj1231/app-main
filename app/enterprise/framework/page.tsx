@@ -129,8 +129,8 @@ export default function EnterpriseFrameworkPage() {
   const totalPillars = hubs.reduce((acc, hub) => acc + hub.pillars.length, 0);
 
   return (
-        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-50">
+        {/* Coded by Benjamin Bowler */}
       {/* Official Header */}
       <header className="bg-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
