@@ -93,6 +93,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const [slotDraft, setSlotDraft] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  // IPFS / Pinata
+  const [ipfsCid, setIpfsCid] = useState<string | null>(null);
+  const [ipfsPinning, setIpfsPinning] = useState(false);
+  const [ipfsError, setIpfsError] = useState<string | null>(null);
   // Recognition+
   const [isRecognitionPlus, setIsRecognitionPlus] = useState(false);
   const [veremarkStatus, setVeremarkStatus] = useState<string>('not_started');
@@ -124,6 +128,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         setIsRecognitionPlus(p.account_tier === 'recognition_plus' || p.account_tier === 'enterprise' || p.account_tier === 'enterprise_admin');
         setVeremarkStatus(p.veremark_status || 'not_started');
         setVeremarkRequestGuid(p.veremark_request_guid || null);
+        if (p.vp_ipfs_cid) setIpfsCid(p.vp_ipfs_cid);
         const ws = buildInitialWalletState(p, resolvedChecks);
         setWalletState(ws);
         // Tier 1 — init enclave key (idempotent)
@@ -1298,17 +1303,76 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             <div style={{ fontFamily: 'monospace', fontSize: 8.5, color: '#334155', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 12px', lineHeight: 1.9, overflowX: 'auto', whiteSpace: 'pre' }}>
               {JSON.stringify(walletState.activePresentation, null, 2)}
             </div>
-            <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
+            <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
               <button
                 onClick={() => navigator.clipboard?.writeText(JSON.stringify(walletState.activePresentation, null, 2))}
                 style={{ padding: '6px 14px', borderRadius: 6, border: '1px solid #bfdbfe', background: '#eff6ff', color: '#1e40af', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
               >
                 Copy JSON
               </button>
+              <button
+                onClick={async () => {
+                  setIpfsPinning(true);
+                  setIpfsError(null);
+                  try {
+                    const session = (await supabase.auth.getSession()).data.session;
+                    if (!session) throw new Error('Not authenticated');
+                    const res = await fetch(
+                      'https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/pinata-pin-vp',
+                      {
+                        method: 'POST',
+                        headers: {
+                          'Authorization': `Bearer ${session.access_token}`,
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          vp: walletState.activePresentation,
+                          filename: `pilot-vp-${userId || 'unknown'}.json`,
+                        }),
+                      }
+                    );
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Pin failed');
+                    setIpfsCid(data.cid);
+                  } catch (e: any) {
+                    setIpfsError(e.message);
+                  } finally {
+                    setIpfsPinning(false);
+                  }
+                }}
+                disabled={ipfsPinning}
+                style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: ipfsPinning ? '#94a3b8' : '#7c3aed', color: '#fff', fontSize: 10, fontWeight: 600, cursor: ipfsPinning ? 'wait' : 'pointer' }}
+              >
+                {ipfsPinning ? 'Pinning…' : ipfsCid ? '↑ Re-pin to IPFS' : '↑ Pin to IPFS'}
+              </button>
               <button style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: '#2563eb', color: '#fff', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}>
                 Submit to Airline ATS
               </button>
             </div>
+            {ipfsError && (
+              <p style={{ margin: '6px 0 0', fontSize: 9, color: '#dc2626' }}>IPFS error: {ipfsError}</p>
+            )}
+            {ipfsCid && (
+              <div style={{ marginTop: 10, padding: '8px 12px', background: '#f5f3ff', border: '1px solid #ddd6fe', borderRadius: 8 }}>
+                <p style={{ margin: '0 0 3px', fontSize: 9, fontWeight: 700, color: '#6d28d9' }}>Pinned to IPFS via Pinata</p>
+                <p style={{ margin: '0 0 4px', fontSize: 8, fontFamily: 'monospace', color: '#4c1d95', wordBreak: 'break-all' }}>{ipfsCid}</p>
+                <a
+                  href={`https://ipfs.io/ipfs/${ipfsCid}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: 9, color: '#7c3aed', fontWeight: 600 }}
+                >
+                  View on IPFS →
+                </a>
+                <span style={{ margin: '0 6px', color: '#a78bfa', fontSize: 9 }}>·</span>
+                <button
+                  onClick={() => navigator.clipboard?.writeText(`https://ipfs.io/ipfs/${ipfsCid}`)}
+                  style={{ background: 'none', border: 'none', color: '#7c3aed', fontSize: 9, fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                >
+                  Copy Link
+                </button>
+              </div>
+            )}
           </div>
         )}
         {exportOpen && !walletState?.activePresentation && (
