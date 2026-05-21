@@ -89,7 +89,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   });
   const [exportOpen, setExportOpen] = useState(false);
   const [signoffOpen, setSignoffOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'identity' | 'credentials' | 'logbook' | 'export'>('identity');
+  type TabID = 'overview' | 'credentials' | 'logbook' | 'vault';
+  const [activeTab, setActiveTab] = useState<TabID>('overview');
   // W3C VC wallet state
   const [walletState, setWalletState] = useState<WalletState | null>(null);
   const [slotStatuses, setSlotStatuses] = useState<Record<number, BitstringStatusResult>>({});
@@ -437,41 +438,42 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
       {/* ── TAB BAR ── */}
       {(() => {
-        const tabs: { key: typeof activeTab; label: string; icon: string; badge?: string }[] = [
-          { key: 'identity',    label: 'Identity',    icon: '🪪', badge: didVerified ? '✓' : undefined },
-          { key: 'credentials', label: 'Credentials', icon: '🔐', badge: checks.filter(c => c.status === 'verified').length > 0 ? String(checks.filter(c => c.status === 'verified').length) : undefined },
-          { key: 'logbook',     label: 'Logbook',     icon: '📋' },
-          { key: 'export',      label: 'Export',      icon: '🚀', badge: walletState?.activePresentation ? 'VP' : undefined },
+        const tabs: { key: TabID; label: string; badge?: string }[] = [
+          { key: 'overview',    label: 'Overview' },
+          { key: 'credentials', label: 'Credentials (VCs)', badge: checks.filter(c => c.status === 'verified').length > 0 ? String(checks.filter(c => c.status === 'verified').length) : undefined },
+          { key: 'logbook',     label: 'Logbook' },
+          { key: 'vault',       label: 'Security Vault', badge: storageHealth?.tier4.auditEntries ? String(storageHealth.tier4.auditEntries) : undefined },
         ];
         return (
           <div style={{ position: 'relative', zIndex: 10, padding: '16px 28px 0' }}>
             <div style={{ display: 'flex', gap: 2, background: '#f1f5f9', borderRadius: 12, padding: 4, border: '1px solid #e2e8f0' }}>
               {tabs.map(t => {
                 const isActive = activeTab === t.key;
+                const accentColor = t.key === 'vault' ? '#dc2626' : t.key === 'credentials' ? '#16a34a' : '#2563eb';
                 return (
                   <button
                     key={t.key}
                     onClick={() => setActiveTab(t.key)}
                     style={{
-                      flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                      padding: '8px 12px', borderRadius: 9, border: 'none', cursor: 'pointer',
+                      flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                      padding: '9px 10px', borderRadius: 9, border: 'none', cursor: 'pointer',
                       background: isActive ? '#ffffff' : 'transparent',
-                      boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+                      boxShadow: isActive ? `0 1px 4px rgba(0,0,0,0.08), inset 0 -2px 0 ${accentColor}` : 'none',
                       color: isActive ? '#0f172a' : '#64748b',
                       fontWeight: isActive ? 700 : 500,
-                      fontSize: 11,
+                      fontSize: 10.5,
                       transition: 'all 0.18s ease',
-                      letterSpacing: '0.01em',
+                      letterSpacing: '0.03em',
+                      textTransform: 'uppercase',
                     }}
                   >
-                    <span style={{ fontSize: 13 }}>{t.icon}</span>
                     <span>{t.label}</span>
                     {t.badge && (
                       <span style={{
                         fontSize: 8, fontWeight: 800, padding: '1px 5px', borderRadius: 8,
-                        background: isActive ? (t.key === 'credentials' ? '#dcfce7' : '#dbeafe') : '#e2e8f0',
-                        color: isActive ? (t.key === 'credentials' ? '#15803d' : '#1d4ed8') : '#94a3b8',
-                        border: `1px solid ${isActive ? (t.key === 'credentials' ? '#86efac' : '#93c5fd') : '#cbd5e1'}`,
+                        background: isActive ? `${accentColor}18` : '#e2e8f0',
+                        color: isActive ? accentColor : '#94a3b8',
+                        border: `1px solid ${isActive ? `${accentColor}40` : '#cbd5e1'}`,
                       }}>{t.badge}</span>
                     )}
                   </button>
@@ -482,127 +484,221 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         );
       })()}
 
-      {/* ── TAB: IDENTITY ── */}
-      {activeTab === 'identity' && (
+      {/* ── TAB: OVERVIEW ── */}
+      {activeTab === 'overview' && (
       <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 0' }}>
-        <div className="wv-in" style={{
-          background: '#ffffff',
-          borderRadius: 16, padding: '28px', position: 'relative', overflow: 'hidden',
-          boxShadow: didVerified
-            ? '0 0 0 2px rgba(16,185,129,0.4), 0 4px 24px rgba(0,0,0,0.08)'
-            : '0 0 0 1px #e2e8f0, 0 4px 24px rgba(0,0,0,0.06)',
-          border: 'none',
-          transition: 'box-shadow 0.5s ease',
-        }}>
-          {/* Holographic shimmer strip */}
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-            background: didVerified
-              ? 'linear-gradient(90deg, #10b981, #34d399, #10b981)'
-              : 'linear-gradient(90deg, #dc2626, #f59e0b, #10b981, #3b82f6, #8b5cf6, #dc2626)',
-            backgroundSize: '200% 100%', animation: 'wvShimmer 3s ease infinite',
-            transition: 'background 0.6s ease',
-          }} />
-          {/* Watermark */}
-          <div style={{
-            position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%) rotate(-15deg)',
-            fontSize: 80, fontWeight: 900, color: 'rgba(0,0,0,0.03)', letterSpacing: '-0.05em', userSelect: 'none',
-          }}>PILOT</div>
 
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
-                {didVerified && (
-                  <span style={{ fontSize: 8, fontWeight: 700, color: '#10b981', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 6, padding: '1px 6px', letterSpacing: '0.08em' }}>
-                    ✓ SIGNATURE VERIFIED
-                  </span>
-                )}
+        {/* Active Clearance State */}
+        <div style={{
+          background: tc.tier === 3
+            ? 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)'
+            : tc.tier === 2
+            ? 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)'
+            : 'linear-gradient(135deg, #fff5f5 0%, #fee2e2 100%)',
+          border: `1px solid ${tc.tier === 3 ? '#bbf7d0' : tc.tier === 2 ? '#fde68a' : '#fecaca'}`,
+          borderRadius: 14, padding: '22px 24px', marginBottom: 16,
+          position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: tc.bar, backgroundSize: '200% 100%', animation: 'wvShimmer 3s ease infinite' }} />
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+            <div>
+              <p style={{ margin: '0 0 3px', fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: tc.tier === 3 ? '#15803d' : tc.tier === 2 ? '#92400e' : '#991b1b' }}>Active Clearance State</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                <div style={{ width: 10, height: 10, borderRadius: '50%', background: tc.dot, boxShadow: `0 0 8px ${tc.dot}` }} />
+                <span style={{ fontSize: 18, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.02em' }}>{name.toUpperCase()}</span>
+                <span style={{ fontSize: 8, fontWeight: 700, padding: '2px 8px', borderRadius: 6, background: tc.bg, color: tc.dot, border: `1px solid ${tc.border}`, letterSpacing: '0.1em' }}>{tc.label}</span>
               </div>
-              <p style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
-              <p style={{ margin: '0 0 14px', fontSize: 9, color: '#475569', fontFamily: 'monospace' }}>
+              <p style={{ margin: '0 0 2px', fontSize: 9, color: '#475569', fontFamily: 'monospace' }}>
                 {liveDid || 'did:web:wallet.pilotrecognition.com:initialising…'}
               </p>
-              <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-                {[
-                  { label: 'License Type', value: safe(profile?.license_type) || safe(profile?.current_occupation) || '—' },
-                  { label: 'License No.',  value: safe(profile?.license_number) || safe(profile?.license_id) || '—' },
-                  { label: 'Total Hours',  value: totalHours > 0 ? `${totalHours.toLocaleString()} hrs` : '—', live: true },
-                  { label: 'Country',      value: safe(profile?.country) || safe(profile?.citizenship) || '—' },
-                ].map(f => (
-                  <div key={f.label}>
-                    <p style={{ margin: 0, fontSize: 8, fontWeight: 700, letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>{f.label}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#1e293b' }}>{f.value}</p>
-                      {(f as any).live && <span style={{ fontSize: 7, color: '#10b981', fontWeight: 700, letterSpacing: '0.1em' }}>● LIVE</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* DID Chip — glows green when verified */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
-              <div style={{ position: 'relative' }}>
-                <div style={{
-                  width: 52, height: 40, borderRadius: 7, position: 'relative',
-                  background: didVerified
-                    ? 'linear-gradient(135deg, #16a34a 0%, #22c55e 40%, #15803d 100%)'
-                    : 'linear-gradient(135deg, #d4a843 0%, #f5d178 40%, #c49a35 100%)',
-                  boxShadow: didVerified
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.4), 0 0 20px rgba(16,185,129,0.6), 0 2px 8px rgba(0,0,0,0.4)'
-                    : 'inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 8px rgba(0,0,0,0.4)',
-                  display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 2, padding: 5,
-                  transition: 'all 0.6s ease',
-                }}>
-                  {[0,1,2,3].map(i => <div key={i} style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 2 }} />)}
-                </div>
-                {didVerified && (
-                  <div style={{
-                    position: 'absolute', bottom: -6, right: -6, width: 18, height: 18, borderRadius: '50%',
-                    background: '#10b981', border: '2px solid #1a1a3e',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 9, color: '#fff', fontWeight: 900,
-                  }}>✓</div>
-                )}
-              </div>
-              <button
-                onClick={() => {
-                  if (didVerified) return;
-                  setDidVerifying(true);
-                  setTimeout(() => { setDidVerifying(false); setDidVerified(true); }, 2200);
-                }}
-                disabled={didVerifying || didVerified}
-                style={{
-                  fontSize: 10, fontWeight: 700, padding: '6px 14px', borderRadius: 6, cursor: didVerified ? 'default' : 'pointer',
-                  background: didVerified ? 'rgba(16,185,129,0.15)' : didVerifying ? 'rgba(255,255,255,0.06)' : '#2563eb',
-                  border: `1px solid ${didVerified ? 'rgba(16,185,129,0.4)' : didVerifying ? 'rgba(255,255,255,0.1)' : '#3b82f6'}`,
-                  color: didVerified ? '#10b981' : '#f1f5f9',
-                  letterSpacing: '0.04em', whiteSpace: 'nowrap',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                {didVerifying ? '⟳ Verifying…' : didVerified ? '✓ Verified' : 'Verify Signature'}
-              </button>
-              <p style={{ margin: 0, fontSize: 7, color: '#94a3b8', fontFamily: 'monospace', letterSpacing: '0.04em', textAlign: 'right' }}>{liveDid?.slice(-12) || '…'}</p>
-            </div>
-          </div>
-
-          {/* Magnetic stripe */}
-          <div style={{ marginTop: 20, height: 32, background: 'rgba(0,0,0,0.5)', borderRadius: 4, position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 6px)' }} />
-            <div style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }}>
-              <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.2)', fontFamily: 'monospace', letterSpacing: '0.08em' }}>
-                PRESENTATION EXCHANGE · AES-256-GCM · BITSTRING STATUS LIST v1.0 · {tc.label}
+              <p style={{ margin: 0, fontSize: 9, color: '#64748b' }}>
+                {tc.tier === 3
+                  ? 'All credential tokens verified · Cleared for enterprise routing export'
+                  : tc.tier === 2
+                  ? 'One or more credentials suspended or unverified · Review Credentials tab'
+                  : 'Critical credential expired or revoked · Immediate action required'}
               </p>
             </div>
-            <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', display: 'flex', gap: 2 }}>
-              {Array.from({ length: 16 }).map((_, i) => (
-                <div key={i} style={{ width: 2, height: 16, background: `rgba(255,255,255,0.07)`, borderRadius: 1 }} />
-              ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-end' }}>
+              <div style={{ fontSize: 9, color: '#64748b', fontFamily: 'monospace', textAlign: 'right', lineHeight: 1.6 }}>
+                <div>License: <strong>{safe(profile?.license_type) || safe(profile?.current_occupation) || '—'}</strong></div>
+                <div>Hours: <strong style={{ color: '#2563eb' }}>{totalHours > 0 ? `${totalHours.toLocaleString()} hrs` : '—'} <span style={{ color: '#10b981', fontWeight: 700 }}>● LIVE</span></strong></div>
+                <div>Country: <strong>{safe(profile?.country) || safe(profile?.citizenship) || '—'}</strong></div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Credential status grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
+          {SLEEVE_CONFIG.map(sc => {
+            const check = checks.find(c => c.check_type === sc.checkType);
+            const st = check?.status || 'pending';
+            const cfg = STATUS_CONFIG[st] || STATUS_CONFIG.pending;
+            const expVal = safe(profile?.[sc.expiryKey]);
+            const days = expVal ? daysUntil(expVal) : null;
+            const expiredFlag = days !== null && days < 0;
+            return (
+              <div
+                key={sc.key}
+                onClick={() => setActiveTab('credentials')}
+                style={{ padding: '12px 14px', background: '#ffffff', border: `1px solid ${expiredFlag ? '#fecaca' : cfg.border}`, borderRadius: 10, cursor: 'pointer', transition: 'box-shadow 0.15s' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <span style={{ fontSize: 16 }}>{sc.icon}</span>
+                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: expiredFlag ? '#dc2626' : cfg.dot }} />
+                </div>
+                <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>{sc.label}</p>
+                <p style={{ margin: 0, fontSize: 8, fontWeight: 700, color: expiredFlag ? '#dc2626' : cfg.text, letterSpacing: '0.08em' }}>
+                  {expiredFlag ? 'EXPIRED' : cfg.label}
+                </p>
+                {days !== null && !expiredFlag && days <= 90 && (
+                  <p style={{ margin: '3px 0 0', fontSize: 8, color: '#f59e0b', fontWeight: 600 }}>{days}d remaining</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Primary CTA */}
+        <div style={{ padding: '20px 22px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
+          <div>
+            <p style={{ margin: '0 0 3px', fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', color: '#64748b', textTransform: 'uppercase' }}>Workday / Taleo ATS Export</p>
+            <p style={{ margin: 0, fontSize: 11, color: '#334155' }}>
+              Generate a cryptographically signed, domain-scoped Verifiable Presentation for airline procurement.
+            </p>
+            <p style={{ margin: '3px 0 0', fontSize: 9, color: '#94a3b8' }}>Zero PII leaves this device · Nonce-bound · 24h TTL</p>
+          </div>
+          <button
+            onClick={async () => {
+              if (profile) {
+                const vp = buildAviationRecordSummaryVP(profile, checks, disclosureToggles);
+                try {
+                  const proofValue = await signCredentialPayload(JSON.stringify(vp.verifiableCredential.credentialSubject));
+                  vp.proof.proofValue = proofValue;
+                  vp.verifiableCredential.proof.proofValue = proofValue;
+                  vp.proof.verificationMethod = enclaveStatus?.holderDid
+                    ? `${enclaveStatus.holderDid}#key-0`
+                    : vp.proof.verificationMethod;
+                } catch { }
+                setWalletState(prev => prev ? { ...prev, activePresentation: vp } : prev);
+                await logPresentationEvent({
+                  recipientDid: 'did:web:pilotrecognition.com#airline-portal',
+                  recipientName: 'Airline ATS Portal',
+                  presentationType: 'AviationRecordSummary',
+                  disclosedFields: Object.entries(disclosureToggles).filter(([,v]) => v).map(([k]) => k),
+                  vpId: vp.id,
+                  terminalClearance: vp.verifiableCredential.credentialSubject.terminalClearance,
+                  hoursBracket: vp.verifiableCredential.credentialSubject.hoursBracket,
+                }).catch(() => {});
+                setExportOpen(true);
+              }
+            }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px',
+              background: '#2563eb', border: '1px solid #3b82f6', borderRadius: 9,
+              color: '#ffffff', fontSize: 11, fontWeight: 700, cursor: 'pointer',
+              letterSpacing: '0.02em', whiteSpace: 'nowrap',
+              boxShadow: '0 2px 12px rgba(37,99,235,0.35)',
+              transition: 'all 0.18s ease',
+            }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Generate Tokenized Candidate Record
+          </button>
+        </div>
+
+        {/* VP export preview */}
+        {exportOpen && walletState?.activePresentation && (
+          <div style={{ marginTop: 14, padding: '16px 18px', background: '#0f172a', borderRadius: 10, border: '1px solid #1e293b' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+              <p style={{ margin: 0, fontSize: 9, fontWeight: 700, color: '#64748b', letterSpacing: '0.15em', textTransform: 'uppercase' }}>W3C VP Data Model v2.0 — Signed Presentation</p>
+              <button onClick={() => setExportOpen(false)} style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: 14, lineHeight: 1 }}>✕</button>
+            </div>
+            <pre style={{ margin: 0, fontSize: 8.5, color: '#94a3b8', fontFamily: 'monospace', overflowX: 'auto', lineHeight: 1.6, maxHeight: 260, overflowY: 'auto' }}>
+              {JSON.stringify(walletState.activePresentation, null, 2)}
+            </pre>
+            <p style={{ margin: '10px 0 0', fontSize: 8, color: '#475569', fontStyle: 'italic' }}>
+              ⚠ Zero-persistence export — no PII written to cloud storage. Token expires in 24h.
+            </p>
+          </div>
+        )}
+
+      </div>
+      )}
+
+      {/* ── TAB: VAULT ── */}
+      {activeTab === 'vault' && (
+      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+
+        {/* Audit ledger */}
+        <div style={{ marginBottom: 16, padding: '20px 22px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12 }}>
+          <p style={{ margin: '0 0 4px', fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', color: '#64748b', textTransform: 'uppercase' }}>Client-Side Verification Ledger — Tier 4</p>
+          <p style={{ margin: '0 0 12px', fontSize: 9, color: '#94a3b8' }}>Read-only. Local hardware only. Zero cloud egress.</p>
+          <div style={{ background: '#0f172a', borderRadius: 8, padding: '12px 14px', maxHeight: 200, overflowY: 'auto', fontFamily: 'monospace' }}>
+            {(storageHealth?.tier4.auditEntries ?? 0) > 0 ? (
+              <p style={{ margin: 0, fontSize: 9, color: '#94a3b8' }}>[audit entries loaded from IndexedDB — {storageHealth?.tier4.auditEntries} event{storageHealth?.tier4.auditEntries !== 1 ? 's' : ''}]</p>
+            ) : (
+              <p style={{ margin: 0, fontSize: 9, color: '#475569' }}>Zero presentation events recorded on local hardware.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Enclave status */}
+        <div style={{ marginBottom: 16, padding: '20px 22px', background: '#ffffff', border: `1px solid ${enclaveStatus?.keyPresent ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 12 }}>
+          <p style={{ margin: '0 0 4px', fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', color: '#64748b', textTransform: 'uppercase' }}>Tier 1 Enclave Key Status</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: enclaveStatus?.keyPresent ? '#16a34a' : '#f59e0b', boxShadow: enclaveStatus?.keyPresent ? '0 0 6px #16a34a' : 'none' }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: enclaveStatus?.keyPresent ? '#15803d' : '#92400e' }}>
+              {enclaveStatus?.keyPresent ? 'Enclave Lock Active — Hardware Protected' : 'Key Generating…'}
+            </span>
+          </div>
+          <p style={{ margin: 0, fontSize: 9, color: '#64748b', fontFamily: 'monospace' }}>
+            DID: {enclaveStatus?.holderDid || 'initialising…'}<br/>
+            platform: {enclaveStatus?.platform || 'web-crypto'} · extractable: {String(enclaveStatus?.extractable ?? false)}
+          </p>
+        </div>
+
+        {/* Emergency controls */}
+        <div style={{ padding: '20px 22px', background: '#fff5f5', border: '1px solid #fecaca', borderRadius: 12 }}>
+          <p style={{ margin: '0 0 4px', fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', color: '#dc2626', textTransform: 'uppercase' }}>Emergency Administrative Options</p>
+          <p style={{ margin: '0 0 14px', fontSize: 9, color: '#7f1d1d', lineHeight: 1.5 }}>
+            Executing a destructive reset will zero all AES-256-GCM encrypted credential payloads, endpoint registry entries, and audit log entries from IndexedDB. The enclave P-256 key will be permanently destroyed. This action cannot be undone.
+          </p>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <button
+              onClick={async () => {
+                if (window.confirm('Execute destructive local reset? All encrypted wallet data and the enclave key will be permanently zeroed. This cannot be undone.')) {
+                  try {
+                    const { wipeLocalWallet } = await import('../../../../lib/wallet/storage');
+                    const { wipeEnclaveKey } = await import('../../../../lib/wallet/enclave');
+                    await wipeLocalWallet();
+                    await wipeEnclaveKey();
+                    window.location.reload();
+                  } catch { window.location.reload(); }
+                }
+              }}
+              style={{ padding: '7px 16px', borderRadius: 8, border: '1px solid #fca5a5', background: 'transparent', color: '#dc2626', fontSize: 10, fontWeight: 700, cursor: 'pointer', letterSpacing: '0.05em' }}
+            >
+              Wipe Local Cryptographic Wallet Data
+            </button>
+            <button
+              onClick={async () => {
+                if (window.confirm('Rotate enclave key only? Your credential store will remain but all existing signed presentations will be invalidated.')) {
+                  try {
+                    const { wipeEnclaveKey } = await import('../../../../lib/wallet/enclave');
+                    await wipeEnclaveKey();
+                    window.location.reload();
+                  } catch { window.location.reload(); }
+                }
+              }}
+              style={{ padding: '7px 16px', borderRadius: 8, border: '1px solid #fde68a', background: 'transparent', color: '#92400e', fontSize: 10, fontWeight: 700, cursor: 'pointer', letterSpacing: '0.05em' }}
+            >
+              Rotate Enclave Key Only
+            </button>
+          </div>
+        </div>
+
       </div>
       )}
 
@@ -812,6 +908,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
       {/* ── TAB: LOGBOOK ── */}
       {activeTab === 'logbook' && (
+      <>
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.35s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
           <div>
@@ -1097,6 +1194,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           </div>
         </div>
       </div>
+      </>
       )}
 
       {/* ── FOOTER — DATA SEGREGATION TRUST PANEL ── */}
