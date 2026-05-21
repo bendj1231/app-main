@@ -3602,7 +3602,72 @@ export default function UCFOfficialReleasePage() {
             </div>
           </div>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XII. The Accountability Protocol and Institutional Requirements</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XII. The Flight School Reality Check — Operational Layer vs. Trust Layer</h3>
+          <p className="text-slate-500 text-sm mb-4 uppercase tracking-wide font-semibold">Counter-Brief: Attack Vectors 27, 28, 29</p>
+          <p className="text-slate-700 leading-relaxed mb-4">The following section addresses the three most common objections raised by Approved Training Organization (ATO) owners and Chief Flight Instructors when evaluating platform adoption against their existing operational infrastructure.</p>
+
+          <div className="space-y-6 mb-8">
+
+            <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="bg-slate-900 px-5 py-3">
+                <p className="text-white font-bold text-sm">Objection 1 (AV27) — "My CFIs are transient. Why invest in employees who leave in 10 months?"</p>
+              </div>
+              <div className="px-5 py-4 bg-white">
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>You're not buying this for your CFIs. You're buying it for your students' future revenue.</strong> Your clipboard tracks instructor medicals. It does not track the $150,000 cadet scholarship your student is competing for, or the airline pathway they need to qualify for, or the verification beacon that gets them pulled from a corporate operator's dashboard.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3">The $1,000 isn't workforce management infrastructure — it's <strong>student acquisition and retention infrastructure</strong> that happens to give your CFIs a portable professional credential. Every student you graduate who cannot prove their hours to an airline becomes a negative referral. Every student who leaves with a Terminal 3 beacon becomes a walking advertisement.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3">Your transient CFIs are your <strong>distribution channel to the airlines.</strong> When they leave for the regionals, they take their verified profile and Recognition Score with them — discoverable by charter operators looking for 1,500-hour instructors. That's your instructor placement pipeline working for you, not against you.</p>
+                <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mt-2">
+                  <p className="text-amber-800 text-xs font-bold uppercase tracking-wide mb-1">The Whiteboard Risk</p>
+                  <p className="text-amber-700 text-xs">When a CFI's Class 2 medical expires and the whiteboard doesn't catch it, you ground an aircraft and cancel three student lessons. The platform sends alerts. It prevents the flight that shouldn't have launched. It generates the compliance log CAAS asks for when they investigate why an unmedicalled CFI was in the left seat. You're paying $83/month for liability prevention — something a whiteboard has never done.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="bg-slate-900 px-5 py-3">
+                <p className="text-white font-bold text-sm">Objection 2 (AV28) — "I already pay for FlightSchedulePro. You're creating tool fatigue."</p>
+              </div>
+              <div className="px-5 py-4 bg-white">
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>You don't double-enter. You connect the pipe.</strong> FlightSchedulePro manages your dispatch, scheduling, and billing. It does not verify that your student's PPL is authentic with the Civil Aviation Authority. It does not issue a cryptographic credential beacon that an airline can independently trust. It does not give your student a portable, verified professional identity that persists after they leave your school.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>The integration architecture:</strong> FlightSchedulePro handles the <em>operational layer</em> — lessons, aircraft, billing. PilotRecognition handles the <em>trust layer</em> — verified credentials, regulatory status, student placement into airline pathways. The data flows one way: FlightSchedulePro pushes the lesson completion record; PilotRecognition receives it, verifies it against the CAA registry, and issues the attestation.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3">Your dispatch desk doesn't double-input. They continue using FlightSchedulePro exactly as they do today. The difference is that when a student graduates, they don't walk out with a plastic folder of paper. They walk out with a <strong>verified, airline-discoverable credential</strong> that your school issued.</p>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 mt-2">
+                  <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1">Integration Roadmap</p>
+                  <p className="text-blue-700 text-xs">One-direction data flow: FlightSchedulePro webhook → Lesson completion record → Verification request against CAA registry → Terminal 3 beacon issuance. No tool fatigue. Just trust layer augmentation.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="bg-slate-900 px-5 py-3">
+                <p className="text-white font-bold text-sm">Objection 3 (AV29) — "CAAS wants paper, not apps. Your zero-knowledge vault breaks my audit trail."</p>
+              </div>
+              <div className="px-5 py-4 bg-white">
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>Category error.</strong> CAAS doesn't want to see a SaaS dashboard for your training records — they want the physical, ink-signed stage-check sheets and CFI endorsements in the student's logbook. <strong>The platform is not proposing to replace those records. It never has.</strong></p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3">The "zero-knowledge, ephemeral caching" protects <em>credential content</em> — licence numbers, medical details, identity data. What the platform holds is <em>verification state metadata</em> — the timestamp of the last successful CAA registry handshake, the Terminal permission level, the attestation hash. Two different things.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3">When CAAS sits in your office and asks to see a student's Stage 3 cross-country endorsement, you hand them the <strong>physical logbook.</strong> When they ask "is this student's PPL still valid with the Civil Aviation Authority," you pull up the platform dashboard and show them the <strong>live CAA registry verification.</strong> The platform answers a different question than your paper records.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                  <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-3">
+                    <p className="text-slate-800 text-xs font-bold uppercase tracking-wide mb-1">Paper Records Answer</p>
+                    <p className="text-slate-600 text-xs">"Did this student complete the required training and receive instructor endorsement?"</p>
+                  </div>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
+                    <p className="text-emerald-800 text-xs font-bold uppercase tracking-wide mb-1">Platform Answers</p>
+                    <p className="text-emerald-700 text-xs">"Has this credential been independently verified as current by the issuing authority?"</p>
+                  </div>
+                </div>
+                <p className="text-slate-500 text-xs italic">The platform reduces your $10,000 regulatory fine risk, not increases it. Without live verification, a student could present a forged medical — and your clipboard wouldn't catch it.</p>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 rounded-xl px-6 py-5">
+              <p className="text-white font-bold text-sm mb-2">The Hangar Answer</p>
+              <p className="text-slate-300 text-sm leading-relaxed">Keep your whiteboard for dispatch. Keep FlightSchedulePro for scheduling. Keep your physical folders for CAAS. Add the platform for <strong className="text-white">verification, student placement, and instructor discoverability.</strong> Three separate systems. Three separate jobs. The $1,000 pays for the one system that connects your graduates to the airlines that hire them — which is the entire point of running an ATO.</p>
+            </div>
+
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-3">XIII. The Accountability Protocol and Institutional Requirements</h3>
           <p className="text-slate-700 leading-relaxed mb-4">Verified Issuer status and the Recognition-Ready designation are maintained through continuous alignment with established operational baselines. The platform functions as an objective evaluation framework, ensuring that credential standards remain consistent with current industry requirements.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-6">
