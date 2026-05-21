@@ -289,28 +289,12 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       }} />
 
       {/* Wallet icon */}
-      <div style={{ position: 'relative', marginBottom: 32 }}>
-        <div style={{
-          width: 72, height: 72, borderRadius: 20,
-          background: '#fef2f2',
-          border: '1px solid #fecaca',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transition: 'all 0.4s',
-        }}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={shieldColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="5" width="20" height="14" rx="2"/>
-            <path d="M2 10h20"/>
-            <path d="M6 15h4"/>
-          </svg>
-        </div>
-        <div style={{
-          position: 'absolute', inset: -8, borderRadius: '50%',
-          border: '2px solid transparent',
-          borderTopColor: '#dc2626',
-          borderRightColor: 'rgba(220,38,38,0.3)',
-          animation: ringPaused ? 'walletPulse 1.5s ease infinite' : 'walletSpin 1.2s linear infinite',
-          transition: 'border-color 0.4s',
-        }} />
+      <div style={{ marginBottom: 28 }}>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="2"/>
+          <path d="M2 10h20"/>
+          <path d="M6 15h4"/>
+        </svg>
       </div>
 
       {/* Badge */}
