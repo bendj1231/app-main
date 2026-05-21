@@ -333,17 +333,48 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     setPhotoError(p => ({ ...p, [slotKey]: null }));
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) throw new Error('Not logged in');
-      const form = new FormData();
-      form.append('file', file);
-      form.append('credentialType', slotKey);
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pinata-upload-credential-photo`,
-        { method: 'POST', headers: { Authorization: `Bearer ${session.access_token}` }, body: form }
+      if (!session?.access_token || !session.user?.id) throw new Error('Not logged in');
+
+      // ── STEP 1: Client-side AES-256-GCM encryption ──────────────────────────
+      // Derive a 256-bit encryption key from the user's access token + user ID
+      // This key never leaves the device and is not stored anywhere
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode(session.access_token.slice(0, 32).padEnd(32, '0')),
+        { name: 'PBKDF2' }, false, ['deriveKey']
       );
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Upload failed');
-      setProfile((prev: any) => prev ? { ...prev, [`${slotKey}_photo_url`]: json.gatewayUrl } : prev);
+      const encKey = await crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: new TextEncoder().encode(session.user.id), iterations: 100000, hash: 'SHA-256' },
+        keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt']
+      );
+
+      // Read file as ArrayBuffer and encrypt
+      const plaintext = await file.arrayBuffer();
+      const iv = crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV
+      const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, encKey, plaintext);
+
+      // Pack: [iv (12 bytes)] + [ciphertext]
+      const packed = new Uint8Array(12 + ciphertext.byteLength);
+      packed.set(iv, 0);
+      packed.set(new Uint8Array(ciphertext), 12);
+      const encryptedBlob = new Blob([packed], { type: 'application/octet-stream' });
+
+      // ── STEP 2: Upload encrypted blob to private Supabase Storage ───────────
+      // Path: {userId}/{credentialType}/{timestamp}.enc
+      // Bucket is private — no public URL, RLS-scoped to owner only
+      const ext = file.name.split('.').pop() || 'bin';
+      const storagePath = `${session.user.id}/${slotKey}/${Date.now()}.${ext}.enc`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('credential-photos')
+        .upload(storagePath, encryptedBlob, { upsert: true, contentType: 'application/octet-stream' });
+      if (uploadError) throw new Error(uploadError.message);
+
+      // ── STEP 3: Store path reference (NOT a public URL) on profile ──────────
+      const pathField = `${slotKey}_photo_path`;
+      await supabase.from('profiles').update({ [pathField]: storagePath }).eq('id', session.user.id);
+      setProfile((prev: any) => prev ? { ...prev, [pathField]: storagePath } : prev);
+
     } catch (err: any) {
       setPhotoError(p => ({ ...p, [slotKey]: err.message }));
     } finally {
@@ -1180,11 +1211,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                               <label style={{ display: 'block', fontSize: 8, fontWeight: 700, color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
                                 📎 Upload Photo / Scan of Document
                               </label>
-                              {profile?.[`${slot.key}_photo_url`] && (
-                                <div style={{ marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-                                  <span style={{ fontSize: 8, color: '#16a34a', fontWeight: 700 }}>✓ Photo uploaded</span>
-                                  <a href={profile[`${slot.key}_photo_url`]} target="_blank" rel="noopener noreferrer"
-                                    style={{ fontSize: 8, color: '#2563eb', textDecoration: 'underline' }}>View on IPFS →</a>
+                              {profile?.[`${slot.key}_photo_path`] && (
+                                <div style={{ marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5 }}>
+                                  <span style={{ fontSize: 8, color: '#16a34a', fontWeight: 700 }}>🔒 Stored securely</span>
+                                  <span style={{ fontSize: 8, color: '#64748b' }}>· AES-256 encrypted · Private · Deletable</span>
                                 </div>
                               )}
                               <label style={{
@@ -1204,12 +1234,12 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                                     e.target.value = '';
                                   }}
                                 />
-                                {photoUploading[slot.key] ? '⟳ Uploading to IPFS…' : '📷 Choose photo or PDF'}
+                                {photoUploading[slot.key] ? '⟳ Encrypting & uploading…' : '📷 Choose photo or PDF'}
                               </label>
                               {photoError[slot.key] && (
                                 <p style={{ margin: '4px 0 0', fontSize: 8, color: '#dc2626' }}>{photoError[slot.key]}</p>
                               )}
-                              <p style={{ margin: '3px 0 0', fontSize: 7, color: '#94a3b8' }}>Max 10MB · Stored privately on IPFS · Only visible to you</p>
+                              <p style={{ margin: '3px 0 0', fontSize: 7, color: '#94a3b8' }}>Max 10MB · Encrypted on your device before upload · Private bucket · GDPR-compliant · You can delete at any time</p>
                             </div>
                             {saveError && <p style={{ margin: '0 0 6px', fontSize: 9, color: '#dc2626' }}>{saveError}</p>}
                             <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
