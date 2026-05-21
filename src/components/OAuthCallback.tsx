@@ -12,7 +12,11 @@ export const OAuthCallback = () => {
 
     const createSupabaseProfile = async () => {
       try {
+        console.log('[DEBUG][OAuthCallback] Running with user:', { sub: user.sub, email: user.email });
         const { supabase } = await import('@/src/lib/supabase');
+
+        const { data: { session: cbSession } } = await supabase.auth.getSession();
+        console.log('[DEBUG][OAuthCallback] Supabase session:', { userId: cbSession?.user?.id, hasToken: !!cbSession?.access_token });
 
         // 1. Check by auth0_id first
         let { data: existing } = await supabase
@@ -20,14 +24,17 @@ export const OAuthCallback = () => {
           .select('id, auth0_id, display_name, total_flight_hours')
           .eq('auth0_id', user.sub)
           .maybeSingle();
+        console.log('[DEBUG][OAuthCallback] Profile lookup by auth0_id:', { found: !!existing, id: existing?.id });
 
         // 2. Fallback: check by email (covers users registered before Auth0)
         if (!existing && user.email) {
+          console.log('[DEBUG][OAuthCallback] No profile by auth0_id, trying email:', user.email);
           const { data: byEmail } = await supabase
             .from('profiles')
             .select('id, auth0_id, display_name, total_flight_hours')
             .eq('email', user.email)
             .maybeSingle();
+          console.log('[DEBUG][OAuthCallback] Profile lookup by email:', { found: !!byEmail, id: byEmail?.id });
 
           if (byEmail) {
             await supabase
@@ -39,14 +46,20 @@ export const OAuthCallback = () => {
         }
 
         if (!existing) {
-          // Brand new user — create minimal profile, send to setup
-          const { data: newProfile } = await supabase.from('profiles').insert({
+          console.log('[DEBUG][OAuthCallback] No existing profile — creating new');
+          // Brand new user — get Supabase session UUID to satisfy RLS (auth.uid() = id)
+          const { data: { session } } = await supabase.auth.getSession();
+          const supabaseUid = session?.user?.id;
+          console.log('[DEBUG][OAuthCallback] Supabase UID for insert:', supabaseUid);
+          const { data: newProfile, error: upsertError } = await supabase.from('profiles').upsert({
+            ...(supabaseUid ? { id: supabaseUid } : {}),
             auth0_id: user.sub,
             email: user.email,
             avatar_url: user.picture,
             account_tier: 'free',
             created_at: new Date().toISOString(),
-          }).select('id').single();
+          }, { onConflict: 'auth0_id' }).select('id').maybeSingle();
+          console.log('[DEBUG][OAuthCallback] Profile upsert result:', { newProfileId: newProfile?.id, error: upsertError?.message });
 
           if (newProfile?.id) {
             await supabase.functions.invoke('generate-profile-token', {

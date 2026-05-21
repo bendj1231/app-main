@@ -80,7 +80,7 @@ export const App = () => {
           .from('profiles')
           .select('enrolled_programs')
           .eq('email', currentUser.email)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error fetching enrollment status:', error);
@@ -107,6 +107,9 @@ export const App = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!currentUser?.uid) return;
+      // Skip if uid is an Auth0 sub (not a Supabase UUID) — profile query would 400
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentUser.uid);
+      if (!isUUID) return;
 
       try {
         const { data, error } = await supabase

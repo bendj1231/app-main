@@ -69,7 +69,7 @@ export function useVaultProfile() {
       .from('profiles')
       .select('*')
       .eq('id', userId)
-      .single();
+      .maybeSingle();
 
     if (error || !data) return { data: null, error };
 
@@ -91,7 +91,7 @@ export function useVaultProfile() {
       .from('pilot_licensure_experience')
       .select('*')
       .eq('user_id', userId)
-      .single();
+      .maybeSingle();
 
     if (error || !data) return { data: null, error };
 
@@ -151,7 +151,7 @@ export function useVaultProfile() {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
       if (profile && hasPlaintextFields(profile, PROFILE_SENSITIVE_FIELDS as any)) {
         console.log('[vault] Re-encrypting plaintext profile fields for', userId);
@@ -165,7 +165,7 @@ export function useVaultProfile() {
         .from('pilot_licensure_experience')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       if (licensure && hasPlaintextFields(licensure, PILOT_LICENSURE_SENSITIVE_FIELDS as any)) {
         console.log('[vault] Re-encrypting plaintext licensure fields for', userId);

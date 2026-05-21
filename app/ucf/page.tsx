@@ -54,8 +54,7 @@ function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
     <div
       className="relative flex flex-row items-stretch overflow-hidden cursor-pointer"
       style={{ minHeight: '140px' }}
-      onMouseEnter={() =>
-        {/* Coded by Benjamin Bowler */} setHovered(true)}
+      onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Left: Dark navy panel */}

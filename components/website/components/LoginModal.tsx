@@ -15,6 +15,14 @@ const GoogleIcon = () => (
     </svg>
 );
 
+// Apple SVG icon
+const AppleIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.72 8.65c-.13 0-.26 0-.39.03-.65.17-1.28.6-1.73.95-.45.36-1.15.66-1.83.58-.1-.01-.21-.03-.31-.07-.6-.24-1.3-.37-2.04-.35-.95.02-1.86.28-2.56.74-.03.02-.05.04-.08.06-.03.02-.06.04-.09.07-.2.17-.38.35-.54.55-.14.18-.27.37-.39.57-.58.97-.87 2.12-.81 3.32.04.75.24 1.49.58 2.16.3.59.7 1.12 1.18 1.56.46.42 1 .75 1.58.97.58.22 1.2.33 1.82.32.39-.01.78-.08 1.15-.21.46-.16.93-.24 1.41-.24.48 0 .95.08 1.41.24.37.13.76.2 1.15.21.62.01 1.24-.1 1.82-.32.58-.22 1.12-.55 1.58-.97.48-.44.88-.97 1.18-1.56.34-.67.54-1.41.58-2.16.05-.88-.1-1.75-.42-2.55-.33-.82-.84-1.54-1.48-2.11-.66-.59-1.47-.98-2.33-1.12z" fill="currentColor"/>
+        <path d="M14.57 6.33c.73-.88 1.18-2 1.18-3.22 0-.16-.01-.32-.04-.48-.78.04-1.52.31-2.13.77-.63.48-1.1 1.13-1.35 1.88-.25.74-.32 1.54-.19 2.31.23-.02.46-.07.68-.15.56-.18 1.06-.5 1.47-.9.38-.37.68-.81.88-1.29.15-.36.26-.74.33-1.13-.01.4-.09.79-.24 1.16-.18.44-.44.84-.78 1.17-.33.32-.72.57-1.15.73-.43.16-.88.24-1.34.23-.1 0-.2-.01-.3-.03.59-.36 1.05-.9 1.3-1.53.25-.63.28-1.33.08-1.98-.1-.33-.25-.64-.45-.92-.2-.27-.45-.51-.73-.7.66.21 1.25.6 1.69 1.11.45.52.76 1.15.89 1.82z" fill="currentColor" opacity="0"/>
+    </svg>
+);
+
 interface LoginModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -424,11 +432,23 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                         onClick={() => loginWithRedirect({
                             authorizationParams: { connection: 'google-oauth2' }
                         })}
-                        className="w-full py-3 px-4 bg-white border border-slate-300 rounded-lg font-medium text-slate-700 hover:bg-slate-50 transition-all duration-200 flex items-center justify-center gap-3"
+                        className="w-full py-3 px-4 bg-white border border-slate-300 rounded-lg font-medium text-slate-700 hover:bg-slate-50 transition-all duration-200 flex items-center justify-center gap-3 mb-3"
                     >
                         <GoogleIcon />
                         Continue with Google
                     </button>
+
+                    {/* Apple Sign In - DISABLED: Requires Apple Developer Program ($99/year) */}
+                    {/* <button
+                        type="button"
+                        onClick={() => loginWithRedirect({
+                            authorizationParams: { connection: 'apple' }
+                        })}
+                        className="w-full py-3 px-4 bg-black border border-slate-700 rounded-lg font-medium text-white hover:bg-slate-900 transition-all duration-200 flex items-center justify-center gap-3"
+                    >
+                        <AppleIcon />
+                        Continue with Apple
+                    </button> */}
 
                     {/* Footer */}
                     <div className="mt-6 text-center">

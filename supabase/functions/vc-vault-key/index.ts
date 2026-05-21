@@ -100,11 +100,14 @@ Deno.serve(async (req: Request) => {
       .from('profiles')
       .select('auth0_id')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
     // Prefer auth0_id (google-oauth2|12345...) as it's the most stable identifier
-    // Falls back to Supabase UUID if no auth0_id
-    const stableSub = profile?.auth0_id || user.id;
+    // Falls back to user_metadata.sub (set by Auth0 on OAuth), then Supabase UUID
+    const stableSub = profile?.auth0_id
+      || user.user_metadata?.sub
+      || user.user_metadata?.provider_id
+      || user.id;
 
     const pepper = await derivePerPilotPepper(masterSecret, stableSub);
 

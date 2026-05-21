@@ -179,7 +179,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         const key = await getVaultKey(auth0User.sub!, session.access_token);
                         console.log('[vault] Key ready — checking for plaintext records');
 
-                        const userId = auth0User.sub!;
+                        const userId = session.user?.id || auth0User.sub!;
                         const VAULT_PREFIX = '{"iv":"';
                         const isPlain = (v: unknown) =>
                             v !== null && v !== undefined && v !== '' &&
@@ -189,7 +189,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                         // Re-encrypt profiles table if any sensitive field is plaintext
                         const { data: profile } = await supabase
-                            .from('profiles').select('*').eq('id', userId).single();
+                            .from('profiles').select('*').eq('id', userId).maybeSingle();
                         if (profile && needsReEncrypt(profile, PROFILE_SENSITIVE_FIELDS)) {
                             console.log('[vault] Re-encrypting profile for', userId);
                             const enc = await encryptFields(profile, PROFILE_SENSITIVE_FIELDS as any, key);
@@ -199,7 +199,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                         // Re-encrypt pilot_licensure_experience if any sensitive field is plaintext
                         const { data: lic } = await supabase
-                            .from('pilot_licensure_experience').select('*').eq('user_id', userId).single();
+                            .from('pilot_licensure_experience').select('*').eq('user_id', userId).maybeSingle();
                         if (lic && needsReEncrypt(lic, PILOT_LICENSURE_SENSITIVE_FIELDS)) {
                             console.log('[vault] Re-encrypting licensure for', userId);
                             const enc = await encryptFields(lic, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
@@ -369,7 +369,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .from('profiles')
                 .select('id')
                 .eq('id', userId)
-                .single();
+                .maybeSingle();
             
             if (checkError && checkError.code !== 'PGRST116') {
                 // PGRST116 is "not found", which is expected if profile doesn't exist
@@ -1259,6 +1259,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         // Verify session using Supabase native session check (bypassing Edge Function due to 403 errors)
         const verifySession = async () => {
+            console.log('[DEBUG][AuthContext] verifySession start — url:', window.location.href);
+            // If arriving on setup page (post-OAuth redirect), always clear the explicit logout flag
+            if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('setup') === '1') {
+                console.log('[DEBUG][AuthContext] setup=1 in URL — clearing explicitLogout before guard check');
+                setExplicitLogoutInStorage(false);
+            }
+            console.log('[DEBUG][AuthContext] explicitLogout flag:', localStorage.getItem('explicitLogout'));
             // Check if user explicitly logged out - prevent session restoration
             if (isExplicitLogout()) {
                 console.log("⚠️ User explicitly logged out, skipping session restoration");
@@ -1271,6 +1278,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             try {
                 // Use Supabase native session check instead of Edge Function
                 const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                console.log('[DEBUG][AuthContext] Supabase getSession result:', { userId: session?.user?.id, hasToken: !!session?.access_token, error: sessionError?.message });
 
                 if (sessionError) {
                     console.log("⚠️ Session check error:", sessionError);

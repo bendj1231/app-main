@@ -50,6 +50,12 @@ const GoogleIcon = () => (
     </svg>
 );
 
+const AppleIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" fill="currentColor"/>
+    </svg>
+);
+
 const LICENSE_ACCESS_MATRIX: Record<string, {
     terminal: string;
     color: string;
@@ -191,10 +197,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     // Must run synchronously before hooks/effects so AuthContext doesn't skip session restoration
     if (isSetup && typeof localStorage !== 'undefined') {
+        console.log('[DEBUG][BecomeMember] setup=1 detected — clearing explicitLogout flag');
+        console.log('[DEBUG][BecomeMember] explicitLogout before clear:', localStorage.getItem('explicitLogout'));
         localStorage.removeItem('explicitLogout');
         // Clear stale wallet state on every setup page load — re-evaluated after auth0 user loads
         sessionStorage.removeItem('wallet_claimed_provider');
         sessionStorage.removeItem('wallet_did');
+        console.log('[DEBUG][BecomeMember] localStorage after clear:', { explicitLogout: localStorage.getItem('explicitLogout') });
     }
 
     // Setup form state
@@ -249,6 +258,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setEnableShader(shouldEnable3DEffects());
     }, []);
 
+    // ── DEBUG: Log all auth state changes ──
+    useEffect(() => {
+        console.log('[DEBUG][BecomeMember] Auth0 state:', { isAuthenticated, isLoading, user: user?.sub, email: user?.email });
+    }, [isAuthenticated, isLoading, user]);
+
     useEffect(() => {
         const ref = new URLSearchParams(window.location.search).get('ref');
         if (ref) {
@@ -258,18 +272,28 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     useEffect(() => {
         if (isSetup && isLoading) {
-            const t = setTimeout(() => setAuthTimedOut(true), 3000);
+            console.log('[DEBUG][BecomeMember] Auth0 still loading — starting 3s timeout');
+            const t = setTimeout(() => {
+                console.warn('[DEBUG][BecomeMember] ⚠️ Auth0 timed out after 3s — forcing render with authTimedOut=true');
+                setAuthTimedOut(true);
+            }, 3000);
             return () => clearTimeout(t);
         }
     }, [isSetup, isLoading]);
 
     useEffect(() => {
         if (isSetup && user) {
+            console.log('[DEBUG][BecomeMember] Auth0 user loaded:', { sub: user.sub, email: user.email, name: user.name });
             setDisplayName(user.name || user.email?.split('@')[0] || '');
             // Cache so wallet button can resolve it even if hook re-renders slowly
-            if (user.sub) sessionStorage.setItem('mfb_auth0_id', user.sub);
+            if (user.sub) {
+                sessionStorage.setItem('mfb_auth0_id', user.sub);
+                console.log('[DEBUG][BecomeMember] Cached auth0Id in sessionStorage:', user.sub);
+            }
+        } else if (isSetup && !user && !isLoading) {
+            console.warn('[DEBUG][BecomeMember] ⚠️ isSetup=true but no Auth0 user and not loading — auth0Id will be null');
         }
-    }, [isSetup, user]);
+    }, [isSetup, user, isLoading]);
 
 
     // Issue verifiable credential directly via walt.id issuer
@@ -371,6 +395,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
 
         if (mfbHours && mfbProvider) {
+            console.log('[DEBUG][BecomeMember] Logbook data restored from sessionStorage:', { mfbHours, mfbProvider, logbookSynced });
             const hrs = parseFloat(mfbHours);
             setHoursWhole(String(Math.floor(hrs)));
             setHoursMinutes(String(Math.round((hrs % 1) * 60)));
@@ -379,6 +404,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
             // If returning from logbook OAuth, land on Wallet step (4)
             if (logbookSynced) {
+                console.log('[DEBUG][BecomeMember] logbook=synced — jumping to step 4 (wallet)');
                 setActiveInstrument(4);
             }
 
@@ -392,6 +418,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }, []);
 
     const handleSaveProfile = async () => {
+        console.log('[DEBUG][BecomeMember] handleSaveProfile called');
+        console.log('[DEBUG][BecomeMember] Auth0 user at save time:', { sub: user?.sub, email: user?.email });
+        const { data: { session: dbgSession } } = await supabase.auth.getSession();
+        console.log('[DEBUG][BecomeMember] Supabase session at save time:', { userId: dbgSession?.user?.id, hasToken: !!dbgSession?.access_token });
         console.log('🔵 [handleSaveProfile] CALLED');
         const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
         const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
@@ -470,7 +500,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     };
 
     const [showDCAModal, setShowDCAModal] = useState(false);
-    const [pendingSignupMethod, setPendingSignupMethod] = useState<'email' | 'google' | null>(null);
+    const [pendingSignupMethod, setPendingSignupMethod] = useState<'email' | 'google' | 'apple' | null>(null);
 
     const handleEmailSignup = () => {
         setPendingSignupMethod('email');
@@ -482,12 +512,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setShowDCAModal(true);
     };
 
+    const handleAppleSignup = () => {
+        setPendingSignupMethod('apple');
+        setShowDCAModal(true);
+    };
+
     const handleDCAAgree = () => {
         setShowDCAModal(false);
         if (pendingSignupMethod === 'google') {
             loginWithRedirect({
                 authorizationParams: {
                     connection: 'google-oauth2',
+                    screen_hint: 'signup',
+                    redirect_uri: `${window.location.origin}/auth/callback`,
+                },
+            });
+        } else if (pendingSignupMethod === 'apple') {
+            loginWithRedirect({
+                authorizationParams: {
+                    connection: 'apple',
                     screen_hint: 'signup',
                     redirect_uri: `${window.location.origin}/auth/callback`,
                 },
@@ -1118,13 +1161,18 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     type="button"
                                     disabled={activeInstrument < 4 || walletCreating === 'generating' || walletCreating === 'syncing'}
                                     onClick={async () => {
+                                        console.log('[DEBUG][Wallet] Create Wallet button clicked');
                                         if (walletConnected && !showPasskeyCancelled) { onNavigate('platform'); return; }
                                         // Resolve auth0Id — try Auth0 hook, then Supabase session sub, then sessionStorage
                                         let auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id') || null;
+                                        console.log('[DEBUG][Wallet] auth0Id from Auth0 hook:', user?.sub);
+                                        console.log('[DEBUG][Wallet] auth0Id from sessionStorage:', sessionStorage.getItem('mfb_auth0_id'));
                                         if (!auth0Id) {
                                             const { data: { session } } = await supabase.auth.getSession();
                                             auth0Id = (session?.user?.user_metadata?.sub as string) || session?.user?.id || null;
+                                            console.log('[DEBUG][Wallet] auth0Id from Supabase session fallback:', auth0Id, '| sessionUserId:', session?.user?.id);
                                         }
+                                        console.log('[DEBUG][Wallet] Final auth0Id:', auth0Id);
                                         const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
                                         const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
                                         const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
@@ -1136,6 +1184,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setSaving(true);
 
                                             if (!auth0Id) {
+                                                console.error('[DEBUG][Wallet] ❌ auth0Id is null — cannot create wallet');
                                                 setSaveError('Authentication error. Please sign in again.');
                                                 setWalletCreating('idle');
                                                 setSaving(false);
@@ -1144,6 +1193,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                             const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
                                             const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
+                                            console.log('[DEBUG][Wallet] SUPABASE_URL:', SUPABASE_URL, '| ANON_KEY exists:', !!ANON_KEY);
 
                                             // Time-bound token: base64(auth0Id + ':ts:' + timestamp) — verified server-side within 5-min window
                                             const requestToken = btoa(`${auth0Id}:ts:${Date.now()}`);
@@ -1158,21 +1208,28 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 dob: dob || null,
                                             };
                                             try {
+                                                console.log('[DEBUG][Wallet] Attempting vault encryption...');
                                                 const claims = await getIdTokenClaims?.();
                                                 const idToken = claims?.__raw;
+                                                console.log('[DEBUG][Wallet] idToken exists:', !!idToken);
                                                 if (idToken) {
                                                     const vaultKey = await getVaultKeyFromAuth0Token(auth0Id, idToken);
+                                                    console.log('[DEBUG][Wallet] vaultKey derived:', !!vaultKey);
                                                     encryptedPayload = await encryptFields(
                                                         encryptedPayload,
                                                         ['firstName', 'lastName'],
                                                         vaultKey
                                                     );
+                                                    console.log('[DEBUG][Wallet] ✅ Vault encryption complete');
+                                                } else {
+                                                    console.warn('[DEBUG][Wallet] ⚠️ No idToken — skipping vault encryption');
                                                 }
                                             } catch (vaultErr) {
                                                 console.warn('[vault] Encryption unavailable, proceeding with plaintext:', vaultErr);
                                             }
 
                                             // Edge function handles upsert — creates profile if missing, updates if exists
+                                            console.log('[DEBUG][Wallet] Calling create-wallet edge function with payload:', { auth0Id, totalHours: hrs, storageBackend: walletStorageChoice || 'supabase' });
                                             const res = await fetch(`${SUPABASE_URL}/functions/v1/create-wallet`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY },
@@ -1186,9 +1243,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 }),
                                             });
                                             const walletData = await res.json();
+                                            console.log('[DEBUG][Wallet] create-wallet response:', { status: res.status, ok: res.ok, walletData });
                                             if (!res.ok || !walletData.success) {
+                                                console.error('[DEBUG][Wallet] ❌ create-wallet failed:', walletData);
                                                 throw new Error(walletData.error || 'Wallet creation failed');
                                             }
+                                            console.log('[DEBUG][Wallet] ✅ Wallet created:', { did: walletData.did });
                                             sessionStorage.setItem('wallet_did', walletData.did || '');
                                             sessionStorage.setItem('wallet_claimed_provider', 'PilotRecognition Wallet');
 
@@ -1465,7 +1525,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                         .from('profiles')
                                                         .select('id')
                                                         .eq('auth0_id', auth0Id)
-                                                        .single();
+                                                        .maybeSingle();
                                                     const result = await issueAndStoreCredential(
                                                         auth0Id,
                                                         profile?.id || auth0Id,
@@ -1632,11 +1692,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <button
                                 onClick={handleGoogleSignup}
                                 disabled={!consentChecked}
-                                className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 font-semibold rounded-xl transition-all duration-200 mb-4 shadow-sm"
+                                className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 font-semibold rounded-xl transition-all duration-200 mb-3 shadow-sm"
                             >
                                 <GoogleIcon />
                                 Sign up with Google
                             </button>
+
+                            {/* Apple signup - DISABLED: Requires Apple Developer Program ($99/year) */}
+                            {/* <button
+                                onClick={handleAppleSignup}
+                                disabled={!consentChecked}
+                                className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-black hover:bg-slate-900 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 mb-4 shadow-sm border border-white/10"
+                            >
+                                <AppleIcon />
+                                Sign up with Apple
+                            </button> */}
 
                             {/* Divider */}
                             <div className="relative my-5">

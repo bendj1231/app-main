@@ -50,7 +50,7 @@ export const useSubscriptionStatus = (userId: string | null) => {
         .from('profiles')
         .select('subscription_tier, subscription_expires_at')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
       const plan = profile?.subscription_tier || 'free';
       const expiresAt = profile?.subscription_expires_at;

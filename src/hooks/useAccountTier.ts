@@ -32,7 +32,7 @@ export function useAccountTier(userId?: string | null): AccountTierState {
           .from('profiles')
           .select('account_tier')
           .eq('id', userId)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
 

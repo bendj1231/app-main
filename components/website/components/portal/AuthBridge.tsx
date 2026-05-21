@@ -27,7 +27,7 @@ export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
                         .from('profiles')
                         .select('*')
                         .eq('email', firebaseUser.email)
-                        .single();
+                        .maybeSingle();
 
                     if (!existingProfile) {
                         // Create profile in Supabase if it doesn't exist
