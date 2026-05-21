@@ -268,7 +268,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
   const content = (
     <div style={{
-      position: 'fixed', inset: 0, background: '#0a0f1e',
+      position: 'fixed', inset: 0, background: '#ffffff',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       zIndex: 9999, opacity: fading ? 0 : 1, transition: 'opacity 0.5s ease', padding: 24,
     }}>
@@ -281,7 +281,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       {/* Ambient glow */}
       <div style={{
         position: 'absolute', width: 600, height: 600, borderRadius: '50%', pointerEvents: 'none',
-        background: `radial-gradient(circle, ${authStage === 'gate' ? 'rgba(245,158,11,0.08)' : 'rgba(220,38,38,0.08)'} 0%, transparent 70%)`,
+        background: `radial-gradient(circle, ${authStage === 'gate' ? 'rgba(245,158,11,0.06)' : 'rgba(220,38,38,0.06)'} 0%, transparent 70%)`,
         transition: 'background 0.5s',
       }} />
 
@@ -289,8 +289,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       <div style={{ position: 'relative', marginBottom: 32 }}>
         <div style={{
           width: 72, height: 72, borderRadius: 20,
-          background: authStage === 'gate' ? 'rgba(245,158,11,0.12)' : 'rgba(220,38,38,0.1)',
-          border: `1px solid ${authStage === 'gate' ? 'rgba(245,158,11,0.35)' : 'rgba(220,38,38,0.25)'}`,
+          background: authStage === 'gate' ? '#fffbeb' : '#fef2f2',
+          border: `1px solid ${authStage === 'gate' ? '#fde68a' : '#fecaca'}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           transition: 'all 0.4s',
         }}>
@@ -312,19 +312,19 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.25em', color: authStage === 'gate' ? '#f59e0b' : '#dc2626', textTransform: 'uppercase', marginBottom: 8, transition: 'color 0.4s' }}>
         PilotRecognition Wallet
       </p>
-      <h1 style={{ fontSize: 22, fontWeight: 900, color: 'white', letterSpacing: '-0.03em', marginBottom: 6, textAlign: 'center' }}>
+      <h1 style={{ fontSize: 22, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', marginBottom: 6, textAlign: 'center' }}>
         {authStage === 'gate' || authStage === 'verifying'
           ? <>Identity verification<br />required</>
           : <>Decrypting your decentralised<br />pilot identity wallet</>
         }
       </h1>
-      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', marginBottom: 28, letterSpacing: '0.04em', textAlign: 'center' }}>
+      <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 28, letterSpacing: '0.04em', textAlign: 'center' }}>
         Supabase · Walt.id · Zero-knowledge · AES-256-GCM
       </p>
 
       {/* Progress bar */}
       <div style={{ width: '100%', maxWidth: 340, marginBottom: 20 }}>
-        <div style={{ height: 3, background: 'rgba(255,255,255,0.07)', borderRadius: 99, overflow: 'hidden' }}>
+        <div style={{ height: 3, background: '#e2e8f0', borderRadius: 99, overflow: 'hidden' }}>
           <div style={{
             height: '100%', width: `${progress}%`,
             background: authStage === 'gate'
@@ -359,7 +359,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
                 animation: 'walletSpin 0.7s linear infinite',
               }} />
             )}
-            <span style={{ fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.02em', color: 'rgba(255,255,255,0.4)' }}>
+            <span style={{ fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.02em', color: '#64748b' }}>
               {step}
             </span>
           </div>
@@ -370,15 +370,15 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       {(authStage === 'gate' || authStage === 'verifying') && (
         <div style={{
           width: '100%', maxWidth: 340,
-          background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(245,158,11,0.25)',
+          background: '#fffbeb',
+          border: '1px solid #fde68a',
           borderRadius: 14, padding: '18px 20px',
           animation: 'gateSlide 0.35s ease',
         }}>
           <p style={{ fontSize: 10, fontWeight: 700, color: '#f59e0b', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 6 }}>
             🔐 Encrypted vault — confirm identity to continue
           </p>
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 14, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 11, color: '#64748b', marginBottom: 14, lineHeight: 1.5 }}>
             {hasSession
               ? 'Save a passkey to this device so Touch ID unlocks your wallet every time.'
               : 'Your credential bundle is AES-256-GCM encrypted. Confirm with your passkey to release the decryption key.'
@@ -396,7 +396,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
               style={{
                 width: '100%', padding: '11px 0', borderRadius: 10, border: 'none',
                 background: authStage === 'verifying' ? 'rgba(245,158,11,0.3)' : '#f59e0b',
-                color: '#0a0f1e', fontSize: 12, fontWeight: 800,
+                color: '#ffffff', fontSize: 12, fontWeight: 800,
                 letterSpacing: '0.08em', textTransform: 'uppercase',
                 cursor: authStage === 'verifying' ? 'not-allowed' : 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -405,7 +405,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
             >
               {authStage === 'verifying' ? (
                 <>
-                  <div style={{ width: 13, height: 13, border: '2px solid rgba(0,0,0,0.2)', borderTopColor: '#0a0f1e', borderRadius: '50%', animation: 'walletSpin 0.7s linear infinite' }} />
+                  <div style={{ width: 13, height: 13, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#ffffff', borderRadius: '50%', animation: 'walletSpin 0.7s linear infinite' }} />
                   Verifying…
                 </>
               ) : (
@@ -423,8 +423,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
               disabled={authStage === 'verifying'}
               style={{
                 width: '100%', padding: '10px 0', borderRadius: 10,
-                background: 'transparent', border: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.6)', fontSize: 11, fontWeight: 600,
+                background: '#f8fafc', border: '1px solid #e2e8f0',
+                color: '#475569', fontSize: 11, fontWeight: 600,
                 cursor: authStage === 'verifying' ? 'not-allowed' : 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               }}
@@ -439,7 +439,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
             </button>
           </div>
 
-          <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.2)', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 9, color: '#94a3b8', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
             Private key never leaves your device · Google Password Manager
           </p>
         </div>
@@ -447,10 +447,10 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
       {/* Bottom watermark */}
       <div style={{ position: 'absolute', bottom: 24, display: 'flex', alignItems: 'center', gap: 6 }}>
-        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
         </svg>
-        <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.15)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+        <span style={{ fontSize: 9, color: '#cbd5e1', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
           wallet.pilotrecognition.com
         </span>
       </div>
