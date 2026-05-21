@@ -2122,6 +2122,110 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
           </div>
         </div>
 
+        {/* ── CREDENTIAL HEALTH CHECKUP ── */}
+        {(() => {
+          const isCT = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+          const sv = (v: any) => (v && !isCT(v)) ? v : null;
+
+          const daysUntil = (dateStr: string | null | undefined) => {
+            if (!dateStr) return null;
+            const d = new Date(dateStr);
+            return isNaN(d.getTime()) ? null : Math.floor((d.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+          };
+
+          const licenseExpDays = daysUntil(sv(profile?.license_expiry));
+          const medicalExpDays = daysUntil(sv(profile?.medical_expiry));
+          const ntcExpDays     = daysUntil(sv(profile?.ntc_expiry));
+
+          const checks = [
+            {
+              label: 'Pilot License',
+              icon: '📜',
+              value: sv(profile?.license_type || profile?.current_occupation),
+              days: licenseExpDays,
+            },
+            {
+              label: 'Medical',
+              icon: '🏥',
+              value: sv(profile?.medical_class) || (profile?.medical_expiry ? 'Class 1' : null),
+              days: medicalExpDays,
+            },
+            {
+              label: 'NTC / Radio',
+              icon: '📻',
+              value: sv(profile?.ntc_license),
+              days: ntcExpDays,
+            },
+            {
+              label: 'Type Rating',
+              icon: '✈️',
+              value: Array.isArray(profile?.aircraft_types) ? profile.aircraft_types[0] : sv(profile?.aircraft_types),
+              days: null,
+            },
+          ].map(c => {
+            const missing = !c.value;
+            const expired = c.days !== null && c.days < 0;
+            const warning = c.days !== null && c.days >= 0 && c.days <= 60;
+            const ok      = !missing && !expired && !warning;
+            return { ...c, missing, expired, warning, ok };
+          });
+
+          const anyIssue = checks.some(c => c.expired || c.warning || c.missing);
+          const allOk = checks.every(c => c.ok);
+
+          return (
+            <div style={{ marginBottom: 20, padding: '14px 20px', borderRadius: 10, background: allOk ? '#f0fdf4' : anyIssue ? '#fffbeb' : '#f8fafc', border: `1px solid ${allOk ? '#bbf7d0' : anyIssue ? '#fde68a' : '#e2e8f0'}` }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 13 }}>{allOk ? '✅' : '🔍'}</span>
+                  <p style={{ fontSize: 11, fontWeight: 800, color: allOk ? '#15803d' : '#92400e', margin: 0, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                    {allOk ? 'All Credentials Clear' : 'Credential Health Check'}
+                  </p>
+                </div>
+                {anyIssue && (
+                  <span style={{ fontSize: 10, fontWeight: 700, color: '#b45309', background: '#fef3c7', border: '1px solid #fde68a', padding: '2px 10px', borderRadius: 20 }}>
+                    Action Required
+                  </span>
+                )}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+                {checks.map((c, i) => {
+                  const dotColor = c.missing ? '#cbd5e1' : c.expired ? '#ef4444' : c.warning ? '#f59e0b' : '#22c55e';
+                  const bgColor  = c.missing ? '#f8fafc' : c.expired ? '#fef2f2' : c.warning ? '#fffbeb' : '#f0fdf4';
+                  const brColor  = c.missing ? '#e2e8f0' : c.expired ? '#fecaca' : c.warning ? '#fde68a' : '#bbf7d0';
+                  const txColor  = c.missing ? '#94a3b8' : c.expired ? '#dc2626' : c.warning ? '#d97706' : '#16a34a';
+                  const statusLabel = c.missing ? 'Missing' : c.expired ? `Exp ${Math.abs(c.days!)}d ago` : c.warning ? `${c.days}d left` : 'Valid';
+                  return (
+                    <div key={i} style={{ background: bgColor, border: `1px solid ${brColor}`, borderRadius: 8, padding: '10px 12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+                        <span style={{ fontSize: 14, lineHeight: 1 }}>{c.icon}</span>
+                        <span style={{ fontSize: 9, fontWeight: 700, color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{c.label}</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: dotColor, flexShrink: 0, display: 'inline-block', ...(c.warning || c.expired ? { boxShadow: `0 0 0 3px ${dotColor}30` } : {}) }} />
+                        <span style={{ fontSize: 10, fontWeight: 700, color: txColor }}>{statusLabel}</span>
+                      </div>
+                      {c.value && !c.missing && (
+                        <p style={{ fontSize: 9, color: '#94a3b8', margin: '3px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.value}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              {checks.some(c => c.warning) && (
+                <p style={{ fontSize: 10, color: '#d97706', marginTop: 10, fontWeight: 600 }}>
+                  ⚠ One or more credentials expire within 60 days — renew soon to maintain Pre-Cleared status.
+                </p>
+              )}
+              {checks.some(c => c.expired) && (
+                <p style={{ fontSize: 10, color: '#dc2626', marginTop: 10, fontWeight: 700 }}>
+                  ✕ Expired credential detected — your Pre-Cleared status is currently suspended.
+                </p>
+              )}
+            </div>
+          );
+        })()}
+
         {/* ── Credential sections ── */}
         <div className="space-y-4">
           {sections.map(section => {
