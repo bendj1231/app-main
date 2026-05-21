@@ -182,7 +182,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     <div style={{
       position: 'fixed', inset: 0, zIndex: 99999, overflowY: 'auto',
       fontFamily: "'SF Pro Display', system-ui, -apple-system, sans-serif",
-      background: '#0d1117',
+      background: '#f1f5f9',
     }}>
       <style>{`
         @keyframes wvFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
@@ -190,7 +190,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         @keyframes wvGlow { 0%,100% { box-shadow: 0 0 20px rgba(220,38,38,0.3); } 50% { box-shadow: 0 0 40px rgba(220,38,38,0.6); } }
         .wv-in { animation: wvFadeUp 0.4s ease both; }
         .wv-card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer; }
-        .wv-card-hover:hover { transform: translateY(-4px) rotateX(2deg); box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important; }
+        .wv-card-hover:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important; }
       `}</style>
 
       {/* clean bg — no texture noise */}
@@ -200,18 +200,17 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {onBack && (
             <button onClick={onBack} style={{
-              display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, padding: '6px 12px',
-              cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 11, fontWeight: 600,
-              backdropFilter: 'blur(8px)',
+              display: 'flex', alignItems: 'center', gap: 6, background: '#ffffff',
+              border: '1px solid #e2e8f0', borderRadius: 8, padding: '6px 12px',
+              cursor: 'pointer', color: '#475569', fontSize: 11, fontWeight: 600,
             }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
               Back
             </button>
           )}
           <div>
-            <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#ef4444', textTransform: 'uppercase' }}>PilotRecognition</p>
-            <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#f1f5f9', letterSpacing: '-0.01em' }}>Credential Wallet</p>
+            <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase' }}>PilotRecognition</p>
+            <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.01em' }}>Credential Wallet</p>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -219,8 +218,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
             padding: '5px 14px', borderRadius: 20,
-            background: allVerified ? 'rgba(16,185,129,0.15)' : hasExpired ? 'rgba(220,38,38,0.15)' : 'rgba(255,255,255,0.08)',
-            border: `1px solid ${allVerified ? 'rgba(16,185,129,0.4)' : hasExpired ? 'rgba(220,38,38,0.4)' : 'rgba(255,255,255,0.15)'}`,
+            background: allVerified ? 'rgba(16,185,129,0.1)' : hasExpired ? 'rgba(220,38,38,0.08)' : '#f8fafc',
+            border: `1px solid ${allVerified ? 'rgba(16,185,129,0.35)' : hasExpired ? 'rgba(220,38,38,0.3)' : '#e2e8f0'}`,  
           }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: allVerified ? '#10b981' : hasExpired ? '#dc2626' : '#94a3b8' }} />
             <span style={{ fontSize: 10, fontWeight: 700, color: allVerified ? '#10b981' : hasExpired ? '#dc2626' : '#94a3b8', letterSpacing: '0.1em' }}>
@@ -333,11 +332,11 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       {/* ── ZONE 1: MASTER CORE IDENTITY CARD ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 0' }}>
         <div className="wv-in" style={{
-          background: '#161b22',
+          background: '#ffffff',
           borderRadius: 16, padding: '28px', position: 'relative', overflow: 'hidden',
           boxShadow: didVerified
-            ? '0 0 0 1px rgba(16,185,129,0.5), 0 8px 32px rgba(0,0,0,0.4)'
-            : '0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.4)',
+            ? '0 0 0 2px rgba(16,185,129,0.4), 0 4px 24px rgba(0,0,0,0.08)'
+            : '0 0 0 1px #e2e8f0, 0 4px 24px rgba(0,0,0,0.06)',
           border: 'none',
           transition: 'box-shadow 0.5s ease',
         }}>
@@ -353,20 +352,20 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           {/* Watermark */}
           <div style={{
             position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%) rotate(-15deg)',
-            fontSize: 80, fontWeight: 900, color: 'rgba(255,255,255,0.03)', letterSpacing: '-0.05em', userSelect: 'none',
+            fontSize: 80, fontWeight: 900, color: 'rgba(0,0,0,0.03)', letterSpacing: '-0.05em', userSelect: 'none',
           }}>PILOT</div>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: '#64748b', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
+                <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
                 {didVerified && (
                   <span style={{ fontSize: 8, fontWeight: 700, color: '#10b981', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 6, padding: '1px 6px', letterSpacing: '0.08em' }}>
                     ✓ SIGNATURE VERIFIED
                   </span>
                 )}
               </div>
-              <p style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 900, color: '#f1f5f9', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
+              <p style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
               <p style={{ margin: '0 0 14px', fontSize: 9, color: '#94a3b8', fontFamily: 'monospace' }}>
                 did:web:wallet.pilotrecognition.com:{profile?.id?.slice(0,8) || 'pending'}
               </p>
@@ -378,9 +377,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   { label: 'Country',      value: safe(profile?.country) || safe(profile?.citizenship) || '—' },
                 ].map(f => (
                   <div key={f.label}>
-                    <p style={{ margin: 0, fontSize: 8, fontWeight: 700, letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase' }}>{f.label}</p>
+                    <p style={{ margin: 0, fontSize: 8, fontWeight: 700, letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>{f.label}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#e2e8f0' }}>{f.value}</p>
+                      <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#1e293b' }}>{f.value}</p>
                       {(f as any).live && <span style={{ fontSize: 7, color: '#10b981', fontWeight: 700, letterSpacing: '0.1em' }}>● LIVE</span>}
                     </div>
                   </div>
@@ -455,10 +454,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       {/* ── ZONE 2: MODULAR CREDENTIAL SLEEVES ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.1s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-          <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#64748b', textTransform: 'uppercase' }}>
+          <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>
             Zone 2 — Credential Sleeves
           </p>
-          <span style={{ fontSize: 9, color: '#64748b', fontWeight: 600 }}>Each sleeve holds an independent cryptographic proof block</span>
+          <span style={{ fontSize: 9, color: '#94a3b8', fontWeight: 600 }}>Each sleeve holds an independent cryptographic proof block</span>
         </div>
 
         {/* QR scan modal */}
@@ -544,10 +543,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             return (
               <div key={slot.key} className="wv-in wv-card-hover" style={{ animationDelay: `${0.12 + idx * 0.06}s` }}>
                 <div style={{
-                  background: isActive ? '#161b22' : '#161b22',
+                  background: '#ffffff',
                   borderRadius: 12, padding: '18px', position: 'relative', overflow: 'hidden',
-                  border: `1px solid ${isExpired ? 'rgba(239,68,68,0.5)' : isActive ? `${cc.accent}66` : 'rgba(255,255,255,0.08)'}`,
-                  boxShadow: isActive ? `0 0 0 0px transparent, inset 0 0 0 1px ${cc.accent}33` : 'none',
+                  border: `1px solid ${isExpired ? 'rgba(239,68,68,0.4)' : isActive ? `${cc.accent}55` : '#e2e8f0'}`,
+                  boxShadow: isActive ? `0 2px 12px ${cc.accent}18` : '0 1px 4px rgba(0,0,0,0.05)',
                   transition: 'all 0.4s ease',
                   height: '100%', boxSizing: 'border-box',
                 }}>  
@@ -559,16 +558,16 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     <div style={{ width: 9, height: 9, borderRadius: '50%', background: isExpired ? '#dc2626' : isActive ? cc.accent : 'rgba(255,255,255,0.15)', boxShadow: isActive ? `0 0 10px ${cc.accent}` : 'none', transition: 'all 0.5s ease' }} />
                   </div>
 
-                  <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: '#64748b', textTransform: 'uppercase' }}>{slot.label}</p>
-                  <p style={{ margin: '0 0 3px', fontSize: 13, fontWeight: 700, color: (val || isImported) ? '#e2e8f0' : '#475569', lineHeight: 1.3 }}>
+                  <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>{slot.label}</p>
+                  <p style={{ margin: '0 0 3px', fontSize: 13, fontWeight: 700, color: (val || isImported) ? '#0f172a' : '#94a3b8', lineHeight: 1.3 }}>
                     {isImported && !val ? 'Imported' : val || 'Not entered'}
                   </p>
-                  {sub && <p style={{ margin: '0 0 6px', fontSize: 9, color: '#94a3b8', fontFamily: 'monospace' }}>{sub}</p>}
+                  {sub && <p style={{ margin: '0 0 6px', fontSize: 9, color: '#64748b', fontFamily: 'monospace' }}>{sub}</p>}
 
                   {/* Independent proof block */}
                   {isActive && (
-                    <div style={{ margin: '8px 0', padding: '6px 8px', background: 'rgba(0,0,0,0.25)', borderRadius: 6, borderLeft: `2px solid ${cc.accent}` }}>
-                      <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace', lineHeight: 1.5 }}>
+                    <div style={{ margin: '8px 0', padding: '6px 8px', background: '#f8fafc', borderRadius: 6, borderLeft: `2px solid ${cc.accent}` }}>
+                      <p style={{ margin: 0, fontSize: 8, color: '#64748b', fontFamily: 'monospace', lineHeight: 1.5 }}>
                         proof: Ed25519Signature2020<br/>
                         issuer: did:web:caap.gov.ph<br/>
                         proofHash: 0x{profile?.id?.replace(/-/g,'').slice(0,12).toUpperCase() || 'A1B2C3D4E5F6'}…
@@ -576,7 +575,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 8, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 8, borderTop: '1px solid #f1f5f9' }}>
                     <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: isExpired ? '#ef4444' : isActive ? cc.accent : '#f59e0b' }}>
                       {isScanning ? '⟳ Importing…' : isExpired ? '✗ EXPIRED' : isActive ? '✓ VERIFIED' : 'UNVERIFIED'}
                     </span>
@@ -593,8 +592,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                       onClick={() => setQrSlot(slot.key)}
                       style={{
                         marginTop: 10, width: '100%', padding: '7px 0', borderRadius: 6,
-                        border: '1px solid rgba(255,255,255,0.12)', cursor: 'pointer',
-                        background: '#1e2530', color: '#94a3b8', fontSize: 10, fontWeight: 600,
+                        border: '1px solid #e2e8f0', cursor: 'pointer',
+                        background: '#f8fafc', color: '#64748b', fontSize: 10, fontWeight: 600,
                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
                       }}
                     >
@@ -618,8 +617,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.35s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
           <div>
-            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#64748b', textTransform: 'uppercase' }}>Zone 3 — Flight Hours Logbook</p>
-            <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>Toggle which fields to include in your presentation export</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Zone 3 — Flight Hours Logbook</p>
+            <p style={{ margin: 0, fontSize: 11, color: '#64748b' }}>Toggle which fields to include in your presentation export</p>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
             <button
@@ -650,15 +649,15 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         {/* Sign-off panel */}
         {signoffOpen && (
           <div className="wv-in" style={{ marginBottom: 14, padding: '16px 18px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)', borderRadius: 12 }}>
-            <p style={{ margin: '0 0 10px', fontSize: 11, fontWeight: 700, color: '#f59e0b' }}>Request Hour Sign-off</p>
-            <p style={{ margin: '0 0 12px', fontSize: 10, color: 'rgba(255,255,255,0.45)', lineHeight: 1.5 }}>
+            <p style={{ margin: '0 0 10px', fontSize: 11, fontWeight: 700, color: '#92400e' }}>Request Hour Sign-off</p>
+            <p style={{ margin: '0 0 12px', fontSize: 10, color: '#78350f', lineHeight: 1.5 }}>
               Send a sign-off request to your airline, flight school, or logbook provider. Once approved, those hours will be upgraded from Self-Reported to <strong style={{ color: '#10b981' }}>Verified ✓</strong>.
             </p>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {['My Airline / Operator', 'Flight School / ATO', 'ForeFlight Sync', 'Manual Upload'].map(opt => (
                 <button key={opt} style={{
-                  padding: '5px 12px', borderRadius: 7, border: '1px solid rgba(245,158,11,0.3)',
-                  background: 'rgba(245,158,11,0.1)', color: '#f59e0b', fontSize: 9, fontWeight: 700, cursor: 'pointer',
+                  padding: '5px 12px', borderRadius: 6, border: '1px solid #fcd34d',
+                  background: '#fef3c7', color: '#92400e', fontSize: 9, fontWeight: 600, cursor: 'pointer',
                 }}>{opt}</button>
               ))}
             </div>
@@ -668,9 +667,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         {/* Export preview panel */}
         {exportOpen && (
           <div className="wv-in" style={{ marginBottom: 14, padding: '16px 18px', background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 12 }}>
-            <p style={{ margin: '0 0 4px', fontSize: 11, fontWeight: 700, color: '#93c5fd' }}>Presentation Preview</p>
-            <p style={{ margin: '0 0 10px', fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>Only selected fields will be included when shared with an employer or ramp inspector.</p>
-            <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: '10px 12px', lineHeight: 1.8 }}>
+            <p style={{ margin: '0 0 4px', fontSize: 11, fontWeight: 700, color: '#1e40af' }}>Presentation Preview</p>
+            <p style={{ margin: '0 0 10px', fontSize: 10, color: '#3b82f6' }}>Only selected fields will be included when shared with an employer or ramp inspector.</p>
+            <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#475569', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 12px', lineHeight: 1.8 }}>
               {`{\n  "subject": "did:web:wallet.pilotrecognition.com:${profile?.id?.slice(0,8) || '...'}",\n  "presentation": [\n`}
               {Object.entries(disclosureToggles).filter(([,v]) => v).map(([k]) => `    "${k}_hours": redacted_unless_consented,\n`).join('')}
               {`  ],\n  "proof": "Ed25519Signature2020"\n}`}
@@ -682,7 +681,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         )}
 
         {/* Rows with toggles */}
-        <div className="wv-in" style={{ animationDelay: '0.4s', background: '#161b22', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, overflow: 'hidden' }}>
+        <div className="wv-in" style={{ animationDelay: '0.4s', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, overflow: 'hidden' }}>
           {[
             { key: 'total',      label: 'Total Flight Hours',  value: totalHours,                              verified: checks.some(c => c.check_type === 'professional_qualification' && c.status === 'verified') },
             { key: 'pic',        label: 'PIC Hours',           value: safe(profile?.pic_hours) || 0,           verified: false },
@@ -694,7 +693,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             return (
               <div key={row.key} style={{
                 display: 'flex', alignItems: 'center', gap: 14, padding: '14px 20px',
-                borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                borderBottom: i < arr.length - 1 ? '1px solid #f1f5f9' : 'none',
                 opacity: disclosed ? 1 : 0.4, transition: 'opacity 0.2s',
               }}>
                 {/* Disclosure toggle */}
@@ -702,8 +701,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   onClick={() => setDisclosureToggles(t => ({ ...t, [row.key]: !t[row.key] }))}
                   style={{
                     width: 30, height: 17, borderRadius: 9, cursor: 'pointer', flexShrink: 0,
-                    background: disclosed ? '#2563eb' : 'rgba(255,255,255,0.1)',
-                    position: 'relative', transition: 'background 0.2s', border: `1px solid ${disclosed ? '#3b82f6' : 'rgba(255,255,255,0.08)'}`,
+                    background: disclosed ? '#2563eb' : '#e2e8f0',
+                    position: 'relative', transition: 'background 0.2s', border: `1px solid ${disclosed ? '#3b82f6' : '#cbd5e1'}`,
                   }}
                 >
                   <div style={{
@@ -712,30 +711,30 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
                   }} />
                 </div>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#cbd5e1', flex: 1 }}>{row.label}</p>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#334155', flex: 1 }}>{row.label}</p>
                 {/* Dot trail */}
-                <div style={{ flex: 1, height: 1, background: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 4px, transparent 4px, transparent 8px)', margin: '0 12px' }} />
+                <div style={{ flex: 1, height: 1, background: 'repeating-linear-gradient(90deg, #cbd5e1 0px, #cbd5e1 3px, transparent 3px, transparent 8px)', margin: '0 12px' }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 180, justifyContent: 'flex-end' }}>
-                  <span style={{ fontSize: 16, fontWeight: 800, color: '#f1f5f9', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
                     {Number(row.value) > 0 ? Number(row.value).toLocaleString() : '—'}
                   </span>
                   <span style={{
                     fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', padding: '2px 8px', borderRadius: 5,
-                    background: row.verified ? 'rgba(16,185,129,0.12)' : 'rgba(255,255,255,0.05)',
-                    color: row.verified ? '#10b981' : '#64748b',
-                    border: `1px solid ${row.verified ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                    background: row.verified ? '#dcfce7' : '#f8fafc',
+                    color: row.verified ? '#15803d' : '#94a3b8',
+                    border: `1px solid ${row.verified ? '#86efac' : '#e2e8f0'}`,  
                   }}>
                     {row.verified ? '✓ VERIFIED' : 'SELF-REPORTED'}
                   </span>
                   {!disclosed && (
-                    <span style={{ fontSize: 8, fontWeight: 700, color: '#475569', letterSpacing: '0.1em', background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: 4 }}>HIDDEN</span>
+                    <span style={{ fontSize: 8, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.1em', background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, border: '1px solid #e2e8f0' }}>HIDDEN</span>
                   )}
                 </div>
               </div>
             );
           })}
         </div>
-        <p style={{ margin: '8px 0 0', fontSize: 9, color: '#475569', fontWeight: 600 }}>
+        <p style={{ margin: '8px 0 0', fontSize: 9, color: '#94a3b8', fontWeight: 600 }}>
           {Object.values(disclosureToggles).filter(Boolean).length} of 5 fields selected for disclosure
         </p>
       </div>
@@ -744,8 +743,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.45s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
           <div>
-            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#64748b', textTransform: 'uppercase' }}>Logbook Sync</p>
-            <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>Connect your flight logbook provider to verify hours automatically</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Logbook Sync</p>
+            <p style={{ margin: 0, fontSize: 11, color: '#64748b' }}>Connect your flight logbook provider to verify hours automatically</p>
           </div>
           {/* CSV import */}
           <div>
@@ -754,8 +753,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
               onClick={() => fileInputRef.current?.click()}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px',
-                background: '#1e2530', border: '1px solid rgba(255,255,255,0.12)',
-                borderRadius: 6, cursor: 'pointer', color: '#94a3b8', fontSize: 10, fontWeight: 600,
+                background: '#ffffff', border: '1px solid #e2e8f0',
+                borderRadius: 6, cursor: 'pointer', color: '#64748b', fontSize: 10, fontWeight: 600,
               }}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -772,8 +771,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             const isCert    = p.tier === 'certified';
             return (
               <div key={p.id} style={{
-                background: connected ? 'rgba(16,185,129,0.07)' : '#161b22',
-                border: `1px solid ${connected ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                background: connected ? '#f0fdf4' : '#ffffff',
+                border: `1px solid ${connected ? '#86efac' : '#e2e8f0'}`,
                 borderRadius: 10, padding: '14px',
                 transition: 'all 0.2s',
               }}>
@@ -789,8 +788,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     {isCert ? 'CERTIFIED' : 'PROVISIONAL'}
                   </span>
                 </div>
-                <p style={{ margin: '0 0 1px', fontSize: 12, fontWeight: 700, color: '#e2e8f0' }}>{p.name}</p>
-                <p style={{ margin: '0 0 10px', fontSize: 9, color: '#64748b' }}>{p.sub}</p>
+                <p style={{ margin: '0 0 1px', fontSize: 12, fontWeight: 700, color: '#0f172a' }}>{p.name}</p>
+                <p style={{ margin: '0 0 10px', fontSize: 9, color: '#94a3b8' }}>{p.sub}</p>
                 <button
                   onClick={() => handleSync(p.id)}
                   disabled={syncing}
@@ -805,7 +804,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   {syncing ? '⟳ Connecting…' : connected ? '✓ Connected' : 'Connect'}
                 </button>
                 {syncMsg?.id === p.id && (
-                  <p style={{ margin: '6px 0 0', fontSize: 9, color: '#94a3b8', lineHeight: 1.3 }}>{syncMsg.msg}</p>
+                  <p style={{ margin: '6px 0 0', fontSize: 9, color: '#64748b', lineHeight: 1.3 }}>{syncMsg.msg}</p>
                 )}
               </div>
             );
@@ -814,8 +813,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
         {/* CSV feedback */}
         {syncMsg?.id === 'csv' && (
-          <div className="wv-in" style={{ marginTop: 10, padding: '10px 14px', background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 10 }}>
-            <p style={{ margin: 0, fontSize: 10, color: '#93c5fd', fontWeight: 600 }}>📂 {syncMsg.msg}</p>
+          <div className="wv-in" style={{ marginTop: 10, padding: '10px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 10 }}>
+            <p style={{ margin: 0, fontSize: 10, color: '#2563eb', fontWeight: 600 }}>📂 {syncMsg.msg}</p>
           </div>
         )}
 
@@ -823,24 +822,24 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         <div style={{ marginTop: 12, display: 'flex', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }} />
-            <span style={{ fontSize: 9, color: '#64748b', fontWeight: 600 }}>Certified — hours show as Verified ✓</span>
+            <span style={{ fontSize: 9, color: '#475569', fontWeight: 600 }}>Certified — hours show as Verified ✓</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b' }} />
-            <span style={{ fontSize: 9, color: '#64748b', fontWeight: 600 }}>Provisional — hours show as Logged (Unverified)</span>
+            <span style={{ fontSize: 9, color: '#475569', fontWeight: 600 }}>Provisional — hours show as Logged (Unverified)</span>
           </div>
         </div>
       </div>
 
       {/* ── FOOTER ── */}
-      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.06)', marginTop: 28 }}>
+      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #e2e8f0', marginTop: 28 }}>
         <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700 }}>
-          <span style={{ color: '#ef4444' }}>wallet.</span><span style={{ color: '#475569' }}>pilotrecognition.com</span>
+          <span style={{ color: '#dc2626' }}>wallet.</span><span style={{ color: '#94a3b8' }}>pilotrecognition.com</span>
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 9, color: '#475569' }}>Powered by</span>
-          <span style={{ fontSize: 9, fontWeight: 800, color: '#ef4444' }}>walt.id</span>
-          <span style={{ fontSize: 8, fontWeight: 700, color: '#64748b', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 3, padding: '1px 5px' }}>wallet</span>
+          <span style={{ fontSize: 9, color: '#94a3b8' }}>Powered by</span>
+          <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
+          <span style={{ fontSize: 8, fontWeight: 700, color: '#64748b', background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 3, padding: '1px 5px' }}>wallet</span>
         </div>
       </div>
 
