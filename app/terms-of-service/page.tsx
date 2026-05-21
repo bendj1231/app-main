@@ -895,7 +895,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <table className="w-full text-sm border-collapse">
                                 <tbody>
                                     {[
-                                        ['Direct Post Response Mode', 'The Platform enforces the direct_post response mode for all OID4VP flows. The Verifier API generates an ephemeral, nonce-backed verification session mapped to a {organizationID}.{tenantID}.{verifierServiceID} resource identifier. Session nonces are single-use and expire upon first consumption.'],
+                                        ['Direct Post Response Mode', 'The Platform enforces the direct_post response mode for all OID4VP flows. The Verifier API generates an ephemeral, nonce-backed verification session mapped to a {organizationID}.{tenantID}.{verifierServiceID} resource identifier. Session nonces are single-use and expire upon first consumption or a hard 5-minute timeout window.'],
                                         ['Format-Agnostic Interoperability', 'The Verifier Service is configured to accept structurally valid W3C Verifiable Credentials signed as JWTs (jwt_vc_json), ISO/IEC 18013-5 mDocs (mso_mdoc), and IETF SD-JWT VCs — ensuring compatibility with existing civil aviation authority credential formats across CAAP, CAAS, GCAA, FAA, and EASA-aligned registries.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
@@ -913,8 +913,8 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <table className="w-full text-sm border-collapse">
                                 <tbody>
                                     {[
-                                        ['Granular Payload Disclosures', 'When an aviation operator requests pilot data, the OID4VP Presentation Definition will only demand the specific disclosure hashes strictly necessary for the verification task (e.g., verifying a Medical Certificate expiration date without exposing the underlying health condition or diagnostic notes).'],
-                                        ['Subject-is-Issuer & Holder Binding', 'The verification pipeline mandates subject_is_issuer or is_holder constraints within the input descriptors. The Platform will immediately reject any verifiable presentation where the pilot\'s client-side cryptographic proof of possession (PoP) fails to match the bound credential — preventing credential theft and replay attacks.'],
+                                        ['Granular Payload Disclosures', 'When an aviation operator requests pilot data, the OID4VP Presentation Definition will only demand the specific disclosure hashes strictly necessary for the verification task (e.g., verifying a Medical Certificate expiration date without exposing the underlying health condition or diagnostic notes). This aligns with the data minimisation principles under Section 13.1 and Section 16.1.'],
+                                        ['Subject-is-Issuer & Holder Binding', 'The verification pipeline mandates subject_is_issuer or is_holder constraints within the input descriptors. The Platform will immediately reject any verifiable presentation where the pilot\'s client-side cryptographic proof of possession (PoP) fails to match the bound credential — preventing credential theft, sybil routing, and replay attacks.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                             <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
@@ -930,7 +930,11 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Operator requests: <code className="bg-slate-100 px-1 rounded">medical_expiry_date</code> — disclosed</span></div>
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Operator requests: <code className="bg-slate-100 px-1 rounded">licence_class</code>, <code className="bg-slate-100 px-1 rounded">ratings[]</code> — disclosed</span></div>
                                 <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Health condition, diagnostic notes, waivers — never disclosed; hash salted and withheld</span></div>
-                                <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Full logbook raw data — structurally excluded from all SD-JWT presentation definitions</span></div>
+                                <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Full logbook raw data — structurally excluded from all SD-JWT presentation definitions to maintain strict isolation from infrastructure data caches</span></div>
+                            </div>
+                            <div className="mt-3 pt-3 border-t border-blue-200">
+                                <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1">🔒 Cryptographic Enforcement Rule</p>
+                                <p className="text-blue-900 text-xs leading-relaxed">The Platform Operator acts strictly as a transit medium for the encrypted OID4VP envelope. Under Section 17.2, decryption occurs exclusively in the client-side wallet runtime; the Platform's server layer cannot structurally view or store unblinded selectively disclosed claims.</p>
                             </div>
                         </div>
                     </section>
