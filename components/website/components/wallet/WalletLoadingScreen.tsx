@@ -417,8 +417,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         <div style={{
           position: 'fixed', inset: 0, zIndex: 10000,
           background: 'rgba(15,23,42,0.45)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: 24, animation: 'gateSlide 0.25s ease',
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+          paddingTop: 24, paddingLeft: 24, paddingRight: 24, paddingBottom: '6vh', animation: 'gateSlide 0.25s ease',
         }}>
         <div style={{
           width: '100%', maxWidth: 380,
