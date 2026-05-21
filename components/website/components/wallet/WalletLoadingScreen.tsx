@@ -311,6 +311,26 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         @keyframes gateSlide { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
       `}</style>
 
+      {/* Back to platform button */}
+      <button
+        onClick={() => onComplete()}
+        style={{
+          position: 'absolute', top: 20, left: 20,
+          display: 'flex', alignItems: 'center', gap: 6,
+          background: 'transparent', border: '1px solid #e2e8f0',
+          borderRadius: 8, padding: '6px 12px', cursor: 'pointer',
+          color: '#64748b', fontSize: 11, fontWeight: 600,
+          letterSpacing: '0.02em', transition: 'border-color 0.15s, color 0.15s',
+        }}
+        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#dc2626'; (e.currentTarget as HTMLButtonElement).style.color = '#dc2626'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLButtonElement).style.color = '#64748b'; }}
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to Platform
+      </button>
+
       {/* Ambient glow */}
       <div style={{
         position: 'absolute', width: 600, height: 600, borderRadius: '50%', pointerEvents: 'none',
