@@ -182,7 +182,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     <div style={{
       position: 'fixed', inset: 0, zIndex: 99999, overflowY: 'auto',
       fontFamily: "'SF Pro Display', system-ui, -apple-system, sans-serif",
-      background: 'linear-gradient(135deg, #1a0a00 0%, #2d1a0e 30%, #1a1a2e 60%, #0f0f1a 100%)',
+      background: '#0d1117',
     }}>
       <style>{`
         @keyframes wvFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
@@ -193,12 +193,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         .wv-card-hover:hover { transform: translateY(-4px) rotateX(2deg); box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important; }
       `}</style>
 
-      {/* ── LEATHER TEXTURE OVERLAY ── */}
-      <div style={{
-        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px),
-          repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px)`,
-      }} />
+      {/* clean bg — no texture noise */}
 
       {/* ── HEADER ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '20px 28px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -215,8 +210,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             </button>
           )}
           <div>
-            <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase' }}>PilotRecognition</p>
-            <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.01em' }}>Credential Wallet</p>
+            <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#ef4444', textTransform: 'uppercase' }}>PilotRecognition</p>
+            <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#f1f5f9', letterSpacing: '-0.01em' }}>Credential Wallet</p>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -338,13 +333,13 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       {/* ── ZONE 1: MASTER CORE IDENTITY CARD ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 0' }}>
         <div className="wv-in" style={{
-          background: 'linear-gradient(135deg, #1e3a5f 0%, #0f2744 40%, #1a1a3e 100%)',
-          borderRadius: 20, padding: '28px', position: 'relative', overflow: 'hidden',
+          background: '#161b22',
+          borderRadius: 16, padding: '28px', position: 'relative', overflow: 'hidden',
           boxShadow: didVerified
-            ? '0 24px 64px rgba(0,0,0,0.6), 0 0 40px rgba(16,185,129,0.25), inset 0 1px 0 rgba(255,255,255,0.1)'
-            : '0 24px 64px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)',
-          border: `1px solid ${didVerified ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.12)'}`,
-          transition: 'box-shadow 0.6s ease, border-color 0.6s ease',
+            ? '0 0 0 1px rgba(16,185,129,0.5), 0 8px 32px rgba(0,0,0,0.4)'
+            : '0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.4)',
+          border: 'none',
+          transition: 'box-shadow 0.5s ease',
         }}>
           {/* Holographic shimmer strip */}
           <div style={{
@@ -364,15 +359,15 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
+                <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: '#64748b', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
                 {didVerified && (
                   <span style={{ fontSize: 8, fontWeight: 700, color: '#10b981', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 6, padding: '1px 6px', letterSpacing: '0.08em' }}>
                     ✓ SIGNATURE VERIFIED
                   </span>
                 )}
               </div>
-              <p style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
-              <p style={{ margin: '0 0 14px', fontSize: 9, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace' }}>
+              <p style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 900, color: '#f1f5f9', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
+              <p style={{ margin: '0 0 14px', fontSize: 9, color: '#94a3b8', fontFamily: 'monospace' }}>
                 did:web:wallet.pilotrecognition.com:{profile?.id?.slice(0,8) || 'pending'}
               </p>
               <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
@@ -383,9 +378,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   { label: 'Country',      value: safe(profile?.country) || safe(profile?.citizenship) || '—' },
                 ].map(f => (
                   <div key={f.label}>
-                    <p style={{ margin: 0, fontSize: 8, fontWeight: 700, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{f.label}</p>
+                    <p style={{ margin: 0, fontSize: 8, fontWeight: 700, letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase' }}>{f.label}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#ffffff' }}>{f.value}</p>
+                      <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#e2e8f0' }}>{f.value}</p>
                       {(f as any).live && <span style={{ fontSize: 7, color: '#10b981', fontWeight: 700, letterSpacing: '0.1em' }}>● LIVE</span>}
                     </div>
                   </div>
@@ -426,11 +421,11 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                 }}
                 disabled={didVerifying || didVerified}
                 style={{
-                  fontSize: 9, fontWeight: 700, padding: '5px 10px', borderRadius: 7, cursor: didVerified ? 'default' : 'pointer',
-                  background: didVerified ? 'rgba(16,185,129,0.15)' : didVerifying ? 'rgba(255,255,255,0.06)' : 'rgba(220,38,38,0.7)',
-                  border: `1px solid ${didVerified ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.15)'}`,
-                  color: didVerified ? '#10b981' : 'rgba(255,255,255,0.8)',
-                  letterSpacing: '0.06em', whiteSpace: 'nowrap',
+                  fontSize: 10, fontWeight: 700, padding: '6px 14px', borderRadius: 6, cursor: didVerified ? 'default' : 'pointer',
+                  background: didVerified ? 'rgba(16,185,129,0.15)' : didVerifying ? 'rgba(255,255,255,0.06)' : '#2563eb',
+                  border: `1px solid ${didVerified ? 'rgba(16,185,129,0.4)' : didVerifying ? 'rgba(255,255,255,0.1)' : '#3b82f6'}`,
+                  color: didVerified ? '#10b981' : '#f1f5f9',
+                  letterSpacing: '0.04em', whiteSpace: 'nowrap',
                   transition: 'all 0.3s ease',
                 }}
               >
@@ -460,10 +455,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       {/* ── ZONE 2: MODULAR CREDENTIAL SLEEVES ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.1s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-          <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
-            Zone 2 — Modular Credential Sleeves
+          <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#64748b', textTransform: 'uppercase' }}>
+            Zone 2 — Credential Sleeves
           </p>
-          <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.2)', fontWeight: 600 }}>Each sleeve holds an independent cryptographic proof block</span>
+          <span style={{ fontSize: 9, color: '#64748b', fontWeight: 600 }}>Each sleeve holds an independent cryptographic proof block</span>
         </div>
 
         {/* QR scan modal */}
@@ -525,7 +520,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {SLEEVE_CONFIG.map((slot, idx) => {
             const val        = safe(profile?.[slot.profileKey]);
             const sub        = slot.subKey ? safe(profile?.[slot.subKey]) : null;
@@ -539,25 +534,23 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             const isActive   = isVerified || isImported;
 
             const cardColors = [
-              { muted: { from: '#1a3a2a', to: '#0d2218' }, active: { from: '#065f46', to: '#064e3b' }, accent: '#10b981' },
-              { muted: { from: '#1a1a3e', to: '#0d0d2a' }, active: { from: '#1e3a8a', to: '#1e3370' }, accent: '#3b82f6' },
-              { muted: { from: '#2a1a0e', to: '#1a0d00' }, active: { from: '#78350f', to: '#5c2e00' }, accent: '#f59e0b' },
-              { muted: { from: '#2a0d1a', to: '#1a0010' }, active: { from: '#4c1d95', to: '#3b0764' }, accent: '#8b5cf6' },
+              { accent: '#10b981' },
+              { accent: '#3b82f6' },
+              { accent: '#f59e0b' },
+              { accent: '#8b5cf6' },
             ];
-            const cc  = cardColors[idx % cardColors.length];
-            const bg  = isActive ? cc.active : cc.muted;
+            const cc = cardColors[idx % cardColors.length];
 
             return (
               <div key={slot.key} className="wv-in wv-card-hover" style={{ animationDelay: `${0.12 + idx * 0.06}s` }}>
                 <div style={{
-                  background: `linear-gradient(135deg, ${bg.from} 0%, ${bg.to} 100%)`,
-                  borderRadius: 16, padding: '18px', position: 'relative', overflow: 'hidden',
-                  border: `1px solid ${isExpired ? 'rgba(220,38,38,0.35)' : isActive ? `${cc.accent}55` : 'rgba(255,255,255,0.1)'}`,
-                  boxShadow: isActive
-                    ? `0 8px 32px rgba(0,0,0,0.4), 0 0 24px ${cc.accent}22, inset 0 1px 0 rgba(255,255,255,0.1)`
-                    : '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)',
-                  transition: 'all 0.5s ease',
-                }}>
+                  background: isActive ? '#161b22' : '#161b22',
+                  borderRadius: 12, padding: '18px', position: 'relative', overflow: 'hidden',
+                  border: `1px solid ${isExpired ? 'rgba(239,68,68,0.5)' : isActive ? `${cc.accent}66` : 'rgba(255,255,255,0.08)'}`,
+                  boxShadow: isActive ? `0 0 0 0px transparent, inset 0 0 0 1px ${cc.accent}33` : 'none',
+                  transition: 'all 0.4s ease',
+                  height: '100%', boxSizing: 'border-box',
+                }}>  
                   {/* Top accent bar */}
                   <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: isActive ? `linear-gradient(90deg, ${cc.accent}, transparent)` : isExpired ? 'linear-gradient(90deg, #dc2626, transparent)' : 'linear-gradient(90deg, rgba(255,255,255,0.08), transparent)', transition: 'background 0.5s ease' }} />
 
@@ -566,11 +559,11 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     <div style={{ width: 9, height: 9, borderRadius: '50%', background: isExpired ? '#dc2626' : isActive ? cc.accent : 'rgba(255,255,255,0.15)', boxShadow: isActive ? `0 0 10px ${cc.accent}` : 'none', transition: 'all 0.5s ease' }} />
                   </div>
 
-                  <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{slot.label}</p>
-                  <p style={{ margin: '0 0 3px', fontSize: 14, fontWeight: 800, color: (val || isImported) ? '#ffffff' : 'rgba(255,255,255,0.2)', lineHeight: 1.2 }}>
+                  <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: '#64748b', textTransform: 'uppercase' }}>{slot.label}</p>
+                  <p style={{ margin: '0 0 3px', fontSize: 13, fontWeight: 700, color: (val || isImported) ? '#e2e8f0' : '#475569', lineHeight: 1.3 }}>
                     {isImported && !val ? 'Imported' : val || 'Not entered'}
                   </p>
-                  {sub && <p style={{ margin: '0 0 6px', fontSize: 9, color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>{sub}</p>}
+                  {sub && <p style={{ margin: '0 0 6px', fontSize: 9, color: '#94a3b8', fontFamily: 'monospace' }}>{sub}</p>}
 
                   {/* Independent proof block */}
                   {isActive && (
@@ -584,7 +577,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   )}
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 8, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: isExpired ? '#dc2626' : isActive ? cc.accent : 'rgba(255,255,255,0.25)' }}>
+                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: isExpired ? '#ef4444' : isActive ? cc.accent : '#f59e0b' }}>
                       {isScanning ? '⟳ Importing…' : isExpired ? '✗ EXPIRED' : isActive ? '✓ VERIFIED' : 'UNVERIFIED'}
                     </span>
                     {exp && days !== null && (
@@ -599,9 +592,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     <button
                       onClick={() => setQrSlot(slot.key)}
                       style={{
-                        marginTop: 10, width: '100%', padding: '6px 0', borderRadius: 7,
-                        border: '1px dashed rgba(255,255,255,0.2)', cursor: 'pointer',
-                        background: 'transparent', color: 'rgba(255,255,255,0.45)', fontSize: 9, fontWeight: 700,
+                        marginTop: 10, width: '100%', padding: '7px 0', borderRadius: 6,
+                        border: '1px solid rgba(255,255,255,0.12)', cursor: 'pointer',
+                        background: '#1e2530', color: '#94a3b8', fontSize: 10, fontWeight: 600,
                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
                       }}
                     >
@@ -625,16 +618,16 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.35s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
           <div>
-            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>Zone 3 — Flight Hours Logbook</p>
-            <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>Toggle which fields to include in your presentation export</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#64748b', textTransform: 'uppercase' }}>Zone 3 — Flight Hours Logbook</p>
+            <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>Toggle which fields to include in your presentation export</p>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
             <button
               onClick={() => setSignoffOpen(o => !o)}
               style={{
-                display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px',
+                display: 'flex', alignItems: 'center', gap: 5, padding: '6px 14px',
                 background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)',
-                borderRadius: 8, cursor: 'pointer', color: '#f59e0b', fontSize: 10, fontWeight: 700,
+                borderRadius: 6, cursor: 'pointer', color: '#fbbf24', fontSize: 10, fontWeight: 600,
               }}
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -643,9 +636,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             <button
               onClick={() => setExportOpen(o => !o)}
               style={{
-                display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px',
-                background: 'rgba(220,38,38,0.8)', border: 'none',
-                borderRadius: 8, cursor: 'pointer', color: '#ffffff', fontSize: 10, fontWeight: 700,
+                display: 'flex', alignItems: 'center', gap: 5, padding: '6px 14px',
+                background: '#2563eb', border: '1px solid #3b82f6',
+                borderRadius: 6, cursor: 'pointer', color: '#f1f5f9', fontSize: 10, fontWeight: 600,
               }}
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -689,7 +682,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         )}
 
         {/* Rows with toggles */}
-        <div className="wv-in" style={{ animationDelay: '0.4s', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden' }}>
+        <div className="wv-in" style={{ animationDelay: '0.4s', background: '#161b22', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, overflow: 'hidden' }}>
           {[
             { key: 'total',      label: 'Total Flight Hours',  value: totalHours,                              verified: checks.some(c => c.check_type === 'professional_qualification' && c.status === 'verified') },
             { key: 'pic',        label: 'PIC Hours',           value: safe(profile?.pic_hours) || 0,           verified: false },
@@ -700,42 +693,49 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             const disclosed = disclosureToggles[row.key];
             return (
               <div key={row.key} style={{
-                display: 'flex', alignItems: 'center', gap: 12, padding: '13px 18px',
-                borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-                opacity: disclosed ? 1 : 0.45, transition: 'opacity 0.2s',
+                display: 'flex', alignItems: 'center', gap: 14, padding: '14px 20px',
+                borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                opacity: disclosed ? 1 : 0.4, transition: 'opacity 0.2s',
               }}>
                 {/* Disclosure toggle */}
                 <div
                   onClick={() => setDisclosureToggles(t => ({ ...t, [row.key]: !t[row.key] }))}
                   style={{
-                    width: 28, height: 16, borderRadius: 8, cursor: 'pointer', flexShrink: 0,
-                    background: disclosed ? '#dc2626' : 'rgba(255,255,255,0.12)',
-                    position: 'relative', transition: 'background 0.2s',
+                    width: 30, height: 17, borderRadius: 9, cursor: 'pointer', flexShrink: 0,
+                    background: disclosed ? '#2563eb' : 'rgba(255,255,255,0.1)',
+                    position: 'relative', transition: 'background 0.2s', border: `1px solid ${disclosed ? '#3b82f6' : 'rgba(255,255,255,0.08)'}`,
                   }}
                 >
                   <div style={{
-                    position: 'absolute', top: 2, left: disclosed ? 14 : 2, width: 12, height: 12,
+                    position: 'absolute', top: 2, left: disclosed ? 14 : 2, width: 11, height: 11,
                     borderRadius: '50%', background: '#ffffff', transition: 'left 0.2s',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
                   }} />
                 </div>
-                <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.7)', flex: 1 }}>{row.label}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 16, fontWeight: 900, color: '#ffffff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#cbd5e1', flex: 1 }}>{row.label}</p>
+                {/* Dot trail */}
+                <div style={{ flex: 1, height: 1, background: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 4px, transparent 4px, transparent 8px)', margin: '0 12px' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 180, justifyContent: 'flex-end' }}>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: '#f1f5f9', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
                     {Number(row.value) > 0 ? Number(row.value).toLocaleString() : '—'}
                   </span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: row.verified ? '#10b981' : 'rgba(255,255,255,0.2)', letterSpacing: '0.1em', minWidth: 80, textAlign: 'right' }}>
+                  <span style={{
+                    fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', padding: '2px 8px', borderRadius: 5,
+                    background: row.verified ? 'rgba(16,185,129,0.12)' : 'rgba(255,255,255,0.05)',
+                    color: row.verified ? '#10b981' : '#64748b',
+                    border: `1px solid ${row.verified ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                  }}>
                     {row.verified ? '✓ VERIFIED' : 'SELF-REPORTED'}
                   </span>
+                  {!disclosed && (
+                    <span style={{ fontSize: 8, fontWeight: 700, color: '#475569', letterSpacing: '0.1em', background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: 4 }}>HIDDEN</span>
+                  )}
                 </div>
-                {!disclosed && (
-                  <span style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>HIDDEN</span>
-                )}
               </div>
             );
           })}
         </div>
-        <p style={{ margin: '8px 0 0', fontSize: 9, color: 'rgba(255,255,255,0.2)', fontWeight: 600 }}>
+        <p style={{ margin: '8px 0 0', fontSize: 9, color: '#475569', fontWeight: 600 }}>
           {Object.values(disclosureToggles).filter(Boolean).length} of 5 fields selected for disclosure
         </p>
       </div>
@@ -744,8 +744,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.45s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
           <div>
-            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>Logbook Sync</p>
-            <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>Connect your flight logbook provider to verify hours automatically</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#64748b', textTransform: 'uppercase' }}>Logbook Sync</p>
+            <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>Connect your flight logbook provider to verify hours automatically</p>
           </div>
           {/* CSV import */}
           <div>
@@ -753,9 +753,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             <button
               onClick={() => fileInputRef.current?.click()}
               style={{
-                display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px',
-                background: 'rgba(255,255,255,0.06)', border: '1px dashed rgba(255,255,255,0.2)',
-                borderRadius: 8, cursor: 'pointer', color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 700,
+                display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px',
+                background: '#1e2530', border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: 6, cursor: 'pointer', color: '#94a3b8', fontSize: 10, fontWeight: 600,
               }}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -772,9 +772,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             const isCert    = p.tier === 'certified';
             return (
               <div key={p.id} style={{
-                background: connected ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.04)',
+                background: connected ? 'rgba(16,185,129,0.07)' : '#161b22',
                 border: `1px solid ${connected ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                borderRadius: 12, padding: '14px',
+                borderRadius: 10, padding: '14px',
                 transition: 'all 0.2s',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
@@ -789,23 +789,23 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                     {isCert ? 'CERTIFIED' : 'PROVISIONAL'}
                   </span>
                 </div>
-                <p style={{ margin: '0 0 1px', fontSize: 12, fontWeight: 800, color: '#ffffff' }}>{p.name}</p>
-                <p style={{ margin: '0 0 10px', fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>{p.sub}</p>
+                <p style={{ margin: '0 0 1px', fontSize: 12, fontWeight: 700, color: '#e2e8f0' }}>{p.name}</p>
+                <p style={{ margin: '0 0 10px', fontSize: 9, color: '#64748b' }}>{p.sub}</p>
                 <button
                   onClick={() => handleSync(p.id)}
                   disabled={syncing}
                   style={{
-                    width: '100%', padding: '6px 0', borderRadius: 7, border: 'none', cursor: syncing ? 'default' : 'pointer',
-                    fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
-                    background: connected ? 'rgba(16,185,129,0.2)' : syncing ? 'rgba(255,255,255,0.08)' : 'rgba(220,38,38,0.8)',
-                    color: connected ? '#10b981' : syncing ? 'rgba(255,255,255,0.4)' : '#ffffff',
+                    width: '100%', padding: '6px 0', borderRadius: 6, border: `1px solid ${connected ? 'rgba(16,185,129,0.3)' : syncing ? 'rgba(255,255,255,0.08)' : '#3b82f6'}`, cursor: syncing ? 'default' : 'pointer',
+                    fontSize: 10, fontWeight: 600, letterSpacing: '0.04em',
+                    background: connected ? 'rgba(16,185,129,0.12)' : syncing ? 'rgba(255,255,255,0.05)' : '#2563eb',
+                    color: connected ? '#10b981' : syncing ? '#64748b' : '#f1f5f9',
                     transition: 'all 0.2s',
                   }}
                 >
                   {syncing ? '⟳ Connecting…' : connected ? '✓ Connected' : 'Connect'}
                 </button>
                 {syncMsg?.id === p.id && (
-                  <p style={{ margin: '6px 0 0', fontSize: 9, color: 'rgba(255,255,255,0.4)', lineHeight: 1.3 }}>{syncMsg.msg}</p>
+                  <p style={{ margin: '6px 0 0', fontSize: 9, color: '#94a3b8', lineHeight: 1.3 }}>{syncMsg.msg}</p>
                 )}
               </div>
             );
@@ -823,24 +823,24 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         <div style={{ marginTop: 12, display: 'flex', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }} />
-            <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>Certified — hours show as Verified ✓</span>
+            <span style={{ fontSize: 9, color: '#64748b', fontWeight: 600 }}>Certified — hours show as Verified ✓</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b' }} />
-            <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>Provisional — hours show as Logged (Unverified)</span>
+            <span style={{ fontSize: 9, color: '#64748b', fontWeight: 600 }}>Provisional — hours show as Logged (Unverified)</span>
           </div>
         </div>
       </div>
 
       {/* ── FOOTER ── */}
-      <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.06)', marginTop: 28 }}>
         <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700 }}>
-          <span style={{ color: '#dc2626' }}>wallet.</span><span style={{ color: 'rgba(255,255,255,0.3)' }}>pilotrecognition.com</span>
+          <span style={{ color: '#ef4444' }}>wallet.</span><span style={{ color: '#475569' }}>pilotrecognition.com</span>
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>Powered by</span>
-          <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
-          <span style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, padding: '1px 5px' }}>wallet</span>
+          <span style={{ fontSize: 9, color: '#475569' }}>Powered by</span>
+          <span style={{ fontSize: 9, fontWeight: 800, color: '#ef4444' }}>walt.id</span>
+          <span style={{ fontSize: 8, fontWeight: 700, color: '#64748b', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 3, padding: '1px 5px' }}>wallet</span>
         </div>
       </div>
 
