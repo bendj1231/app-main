@@ -2053,6 +2053,19 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
           { key: 'home_base',     label: 'Home Base / City',  placeholder: 'e.g. Dubai, UAE',           value: safe(profile?.home_base || profile?.domicile) },
         ],
       },
+      {
+        id: 'background',
+        title: 'Background Checks',
+        icon: Shield,
+        color: '#dc2626',
+        fields: [
+          { key: 'nbi_clearance_no',    label: 'NBI Clearance Number',      placeholder: 'e.g. NBI-2025-XXXXXXXX',        value: safe(profile?.nbi_clearance_no) },
+          { key: 'nbi_clearance_date',  label: 'NBI Date Issued',           placeholder: 'YYYY-MM-DD',                    value: safe(profile?.nbi_clearance_date) },
+          { key: 'nbi_clearance_expiry',label: 'NBI Expiry Date',           placeholder: 'YYYY-MM-DD (valid 1 year)',     value: safe(profile?.nbi_clearance_expiry) },
+          { key: 'prc_license_no',      label: 'PRC License Number',        placeholder: 'e.g. 0123456 (if applicable)',  value: safe(profile?.prc_license_no) },
+          { key: 'background_check_status', label: 'Check Status',          placeholder: 'e.g. Clear / Pending / Flagged', value: safe(profile?.background_check_status) },
+        ],
+      },
     ];
 
     const [editValues, setEditValues] = React.useState<Record<string, string>>(() => {
@@ -2240,7 +2253,12 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
                     <Icon size={15} style={{ color: section.color }} />
                   </div>
                   <h3 style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', letterSpacing: '-0.01em' }}>{section.title}</h3>
-                  <div className="ml-auto">
+                  <div className="ml-auto flex items-center gap-2">
+                    {section.id === 'background' && (
+                      <span style={{ fontSize: 9, fontWeight: 700, color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', padding: '2px 8px', borderRadius: 4, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Verified by Veremark
+                      </span>
+                    )}
                     {section.fields.some(f => editValues[f.key]) ? (
                       <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                         {section.fields.filter(f => editValues[f.key]).length} / {section.fields.length} filled
@@ -2250,6 +2268,21 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
                     )}
                   </div>
                 </div>
+
+                {/* Background check info banner */}
+                {section.id === 'background' && (
+                  <div style={{ padding: '10px 24px', background: '#fef2f2', borderBottom: '1px solid #fecaca', display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                    <Shield size={13} style={{ color: '#dc2626', flexShrink: 0, marginTop: 1 }} />
+                    <div>
+                      <p style={{ fontSize: 11, color: '#7f1d1d', fontWeight: 600, margin: '0 0 2px' }}>NBI Police Clearance + Background Verification</p>
+                      <p style={{ fontSize: 10, color: '#991b1b', margin: 0, lineHeight: 1.6 }}>
+                        Enter your NBI Clearance details below. Veremark will independently verify your clearance directly with the{' '}
+                        <strong>National Bureau of Investigation (Philippines)</strong> as part of the background check bundle.
+                        NBI clearances are valid for <strong>1 year</strong> — keep this up to date to maintain Pre-Cleared status.
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Fields grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y divide-slate-50 md:divide-y-0">
