@@ -473,47 +473,24 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
             <label style={{ fontSize: 10, fontWeight: 700, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Or type / paste passkey
             </label>
-            <div style={{ display: 'flex', gap: 6 }}>
-              <div style={{ position: 'relative', flex: 1 }}>
-                <input
-                  type="password"
-                  value={manualPasskey}
-                  onChange={e => { setManualPasskey(e.target.value); setManualError(''); }}
-                  onKeyDown={e => { if (e.key === 'Enter' && manualPasskey.trim()) runPostAuth(); }}
-                  placeholder="Type or paste your passkey…"
-                  autoComplete="current-password webauthn"
-                  style={{
-                    width: '100%', padding: '10px 12px',
-                    border: `1px solid ${manualError ? '#fecaca' : '#e2e8f0'}`,
-                    borderRadius: 8, fontSize: 12, color: '#0f172a',
-                    background: '#ffffff', outline: 'none', boxSizing: 'border-box',
-                    fontFamily: 'monospace',
-                  }}
-                />
-              </div>
-              {/* iCloud Keychain button */}
-              <button
-                onClick={() => {
-                  if (!manualPasskey.trim()) { setManualError('Please enter your passkey first.'); return; }
-                  runPostAuth();
-                }}
-                title="Unlock with iCloud Keychain"
-                style={{
-                  flexShrink: 0, width: 42, borderRadius: 8, border: '1px solid #e2e8f0',
-                  background: '#f8fafc', cursor: 'pointer', display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', justifyContent: 'center', gap: 2, padding: '4px 6px',
-                }}
-              >
-                {/* iCloud cloud icon */}
-                <svg width="18" height="13" viewBox="0 0 24 17" fill="none" stroke="#0369a1" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6.5 14.5A4 4 0 0 1 6.5 6.5a4 4 0 0 1 .24-.01A5.5 5.5 0 0 1 17.5 8a3.5 3.5 0 0 1-.5 7H6.5z"/>
-                </svg>
-                <span style={{ fontSize: 7, fontWeight: 700, color: '#0369a1', letterSpacing: '0.04em' }}>iCloud</span>
-              </button>
-            </div>
+            <input
+              type="password"
+              value={manualPasskey}
+              onChange={e => { setManualPasskey(e.target.value); setManualError(''); }}
+              onKeyDown={e => { if (e.key === 'Enter' && manualPasskey.trim()) runPostAuth(); }}
+              placeholder="Type or paste your passkey…"
+              autoComplete="current-password webauthn"
+              style={{
+                width: '100%', padding: '10px 12px',
+                border: `1px solid ${manualError ? '#fecaca' : '#e2e8f0'}`,
+                borderRadius: 8, fontSize: 12, color: '#0f172a',
+                background: '#ffffff', outline: 'none', boxSizing: 'border-box',
+                fontFamily: 'monospace',
+              }}
+            />
             {manualError && <p style={{ fontSize: 10, color: '#dc2626', margin: 0 }}>⚠ {manualError}</p>}
             <p style={{ fontSize: 9, color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>
-              Saved in Notes, iCloud Keychain, or any password manager — press Enter or tap iCloud to unlock
+              Saved in Notes, iCloud Keychain, or any password manager — press Enter to unlock
             </p>
           </div>
 
