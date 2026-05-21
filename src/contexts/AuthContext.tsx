@@ -1260,10 +1260,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Verify session using Supabase native session check (bypassing Edge Function due to 403 errors)
         const verifySession = async () => {
             console.log('[DEBUG][AuthContext] verifySession start — url:', window.location.href);
-            // If arriving on setup page (post-OAuth redirect), always clear the explicit logout flag
-            if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('setup') === '1') {
-                console.log('[DEBUG][AuthContext] setup=1 in URL — clearing explicitLogout before guard check');
-                setExplicitLogoutInStorage(false);
+            // Clear explicit logout flag on OAuth redirect routes (callback or setup page)
+            if (typeof window !== 'undefined') {
+                const path = window.location.pathname;
+                const isOAuthCallback = path === '/auth/callback' || path === '/callback';
+                const isSetupPage = new URLSearchParams(window.location.search).get('setup') === '1';
+                if (isOAuthCallback || isSetupPage) {
+                    console.log('[DEBUG][AuthContext] OAuth/setup route — clearing explicitLogout before guard check');
+                    setExplicitLogoutInStorage(false);
+                }
             }
             console.log('[DEBUG][AuthContext] explicitLogout flag:', localStorage.getItem('explicitLogout'));
             // Check if user explicitly logged out - prevent session restoration

@@ -46,25 +46,31 @@ export const OAuthCallback = () => {
         }
 
         if (!existing) {
-          console.log('[DEBUG][OAuthCallback] No existing profile — creating new');
-          // Brand new user — get Supabase session UUID to satisfy RLS (auth.uid() = id)
+          console.log('[DEBUG][OAuthCallback] No existing profile — checking Supabase session before attempting upsert');
           const { data: { session } } = await supabase.auth.getSession();
           const supabaseUid = session?.user?.id;
           console.log('[DEBUG][OAuthCallback] Supabase UID for insert:', supabaseUid);
-          const { data: newProfile, error: upsertError } = await supabase.from('profiles').upsert({
-            ...(supabaseUid ? { id: supabaseUid } : {}),
-            auth0_id: user.sub,
-            email: user.email,
-            avatar_url: user.picture,
-            account_tier: 'free',
-            created_at: new Date().toISOString(),
-          }, { onConflict: 'auth0_id' }).select('id').maybeSingle();
-          console.log('[DEBUG][OAuthCallback] Profile upsert result:', { newProfileId: newProfile?.id, error: upsertError?.message });
 
-          if (newProfile?.id) {
-            await supabase.functions.invoke('generate-profile-token', {
-              body: { userId: newProfile.id }
-            }).catch(() => {});
+          if (supabaseUid) {
+            // Has a Supabase session — safe to upsert from client (RLS: auth.uid() = id)
+            const { data: newProfile, error: upsertError } = await supabase.from('profiles').upsert({
+              id: supabaseUid,
+              auth0_id: user.sub,
+              email: user.email,
+              avatar_url: user.picture,
+              account_tier: 'free',
+              created_at: new Date().toISOString(),
+            }, { onConflict: 'auth0_id' }).select('id').maybeSingle();
+            console.log('[DEBUG][OAuthCallback] Profile upsert result:', { newProfileId: newProfile?.id, error: upsertError?.message });
+
+            if (newProfile?.id) {
+              await supabase.functions.invoke('generate-profile-token', {
+                body: { userId: newProfile.id }
+              }).catch(() => {});
+            }
+          } else {
+            // No Supabase session yet (Auth0-only flow) — profile will be created by create-wallet edge function
+            console.log('[DEBUG][OAuthCallback] No Supabase session — skipping client upsert, create-wallet will handle profile creation');
           }
 
           setProfileCreated(true);
