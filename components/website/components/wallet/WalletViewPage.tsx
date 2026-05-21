@@ -582,10 +582,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             const isActive   = isVerified || isImported;
 
             const cardColors = [
-              { accent: '#10b981' },
-              { accent: '#3b82f6' },
-              { accent: '#f59e0b' },
-              { accent: '#8b5cf6' },
+              { accent: '#16a34a' },  // license   — green
+              { accent: '#dc2626' },  // medical   — red
+              { accent: '#92400e' },  // NTC/radio — brown
+              { accent: '#2563eb' },  // ELP       — blue
             ];
             const cc = cardColors[idx % cardColors.length];
 
@@ -600,11 +600,11 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   height: '100%', boxSizing: 'border-box',
                 }}>  
                   {/* Top accent bar */}
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: isActive ? `linear-gradient(90deg, ${cc.accent}, transparent)` : isExpired ? 'linear-gradient(90deg, #dc2626, transparent)' : 'linear-gradient(90deg, rgba(255,255,255,0.08), transparent)', transition: 'background 0.5s ease' }} />
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: isExpired ? 'linear-gradient(90deg, #dc2626, transparent)' : `linear-gradient(90deg, ${cc.accent}, transparent)`, opacity: isActive ? 1 : 0.35, transition: 'opacity 0.4s ease' }} />
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                     <span style={{ fontSize: 20 }}>{slot.icon}</span>
-                    <div style={{ width: 9, height: 9, borderRadius: '50%', background: isExpired ? '#dc2626' : isActive ? cc.accent : 'rgba(255,255,255,0.15)', boxShadow: isActive ? `0 0 10px ${cc.accent}` : 'none', transition: 'all 0.5s ease' }} />
+                    <div style={{ width: 9, height: 9, borderRadius: '50%', background: isExpired ? '#dc2626' : cc.accent, opacity: isActive ? 1 : 0.25, boxShadow: isActive ? `0 0 8px ${cc.accent}80` : 'none', transition: 'all 0.4s ease' }} />
                   </div>
 
                   <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>{slot.label}</p>
@@ -632,7 +632,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   })()}
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 8, borderTop: '1px solid #f1f5f9' }}>
-                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: isExpired ? '#ef4444' : isActive ? cc.accent : '#f59e0b' }}>
+                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: isExpired ? '#ef4444' : cc.accent }}>
                       {isScanning ? '⟳ Importing…' : isExpired ? '✗ EXPIRED' : isActive ? '✓ VERIFIED' : 'UNVERIFIED'}
                     </span>
                     {exp && days !== null && (
