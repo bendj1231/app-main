@@ -833,6 +833,48 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 </tbody>
                             </table>
                         </div>
+                        <h3 className="font-semibold text-slate-800 mb-2">13.3 Dynamic Geofencing &amp; Jurisdictional Legal Adapters</h3>
+                        <p className="mb-3 text-sm">To maintain compliance across asymmetric regional regulations without mutating core schema structures, the Platform utilises a <strong>runtime edge middleware routing layer</strong> implementing a Modular Legal Adapter Architecture.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Edge-Level IP Geofencing', 'Prior to handling any cryptographic payload or authentication handshake, the Platform\'s edge routing infrastructure intercepts the incoming network request, resolving the client\'s geographic region via deterministic IP-to-location mapping. This resolution occurs at the edge layer before any data is committed to the Supabase or Firebase Sync engines.'],
+                                        ['Runtime Legal Adapters', 'Based on the resolved IP jurisdiction, the platform dynamically swaps the active regulatory compliance profile inside the verification pipeline. Core schema structures remain immutable; only the compliance enforcement overlay is swapped per session context.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-800 text-white">
+                                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide w-44">Resolved Region</th>
+                                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide w-44">Active Regulatory Module</th>
+                                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide">Operational Enforcement Constraint</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        ['Singapore / ASEAN', 'SG-PDPA-2026', 'Enforces total NRIC digit exclusion from auth strings; sets mandatory 3-day data breach notification flags.'],
+                                        ['European Union', 'EU-GDPR-V2', 'Hard-locks cryptographic tracking mechanisms; opens automated Data Portability and right-to-erase endpoints.'],
+                                        ['United States', 'US-State-Federated', 'Maps data processing rules dynamically to state-level parameters (e.g., California CCPA/CPRA, Texas TDPSA).'],
+                                        ['Fallback / VPN / Unlisted', 'Global-CBPR-Core', 'Defaults to the Global CBPR Core operational matrix — data handling never drops below the baseline rules outlined in Section 13.1.'],
+                                    ].map(([region, module_, constraint], i) => (
+                                        <tr key={region} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 text-xs align-top">{region}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-xs align-top"><code className="bg-slate-100 px-1 rounded text-[10px]">{module_}</code></td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{constraint}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </section>
 
                     {/* ══════════════════════════════════════════════
