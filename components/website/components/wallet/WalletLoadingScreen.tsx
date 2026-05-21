@@ -302,7 +302,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
   const content = (
     <div style={{
-      position: 'fixed', inset: 0, background: '#f8fafc',
+      position: 'fixed', inset: 0,
+      background: 'rgba(15,23,42,0.55)',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       zIndex: 9999, opacity: fading ? 0 : 1, transition: 'opacity 0.5s ease', padding: 24,
     }}>
@@ -360,19 +361,19 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 8, display: 'none' }}>
         PIC Wallet
       </p>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', marginBottom: 8, textAlign: 'center' }}>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', marginBottom: 8, textAlign: 'center' }}>
         {authStage === 'gate' || authStage === 'verifying'
           ? <>Identity verification<br />required</>
           : <>Decrypting your decentralised<br />pilot identity wallet</>
         }
       </h1>
-      <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 28, letterSpacing: '0.02em', textAlign: 'center' }}>
+      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 28, letterSpacing: '0.02em', textAlign: 'center' }}>
         Supabase · Walt.id · Zero-knowledge · AES-256-GCM
       </p>
 
       {/* Progress bar */}
       <div style={{ width: '100%', maxWidth: 340, marginBottom: 20 }}>
-        <div style={{ height: 3, background: '#fee2e2', borderRadius: 99, overflow: 'hidden' }}>
+        <div style={{ height: 3, background: 'rgba(255,255,255,0.15)', borderRadius: 99, overflow: 'hidden' }}>
           <div style={{
             height: '100%', width: `${progress}%`,
             background: 'linear-gradient(90deg, #dc2626, #ef4444)',
