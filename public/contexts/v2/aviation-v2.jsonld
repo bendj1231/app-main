@@ -1,0 +1,85 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+
+    "id": "@id",
+    "type": "@type",
+
+    "pr": "https://pilotrecognition.com/vocab/v2#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+
+    "PilotLicenseCredential": {
+      "@id": "pr:PilotLicenseCredential",
+      "@context": {
+        "@protected": true,
+        "licenseNumber":     { "@id": "pr:licenseNumber",     "@type": "xsd:string" },
+        "pelNumber":         { "@id": "pr:pelNumber",         "@type": "xsd:string" },
+        "licenseType":       { "@id": "pr:licenseType",       "@type": "xsd:string" },
+        "issuingAuthority":  { "@id": "pr:issuingAuthority",  "@type": "xsd:string" },
+        "issuingDid":        { "@id": "pr:issuingDid",        "@type": "@id" },
+        "issueDate":         { "@id": "pr:issueDate",         "@type": "xsd:date" },
+        "expiryDate":        { "@id": "pr:expiryDate",        "@type": "xsd:date" },
+        "ratings":           { "@id": "pr:ratings",           "@container": "@set" },
+        "limitations":       { "@id": "pr:limitations",       "@container": "@set" },
+        "languageProficiency": {
+          "@id": "pr:languageProficiency",
+          "@context": {
+            "language":     { "@id": "pr:language",     "@type": "xsd:string" },
+            "level":        { "@id": "pr:level",        "@type": "xsd:integer" },
+            "standard":     { "@id": "pr:standard",     "@type": "xsd:string" }
+          }
+        },
+        "subjectDid":        { "@id": "pr:subjectDid",        "@type": "@id" }
+      }
+    },
+
+    "MedicalCurrencyCredential": {
+      "@id": "pr:MedicalCurrencyCredential",
+      "@context": {
+        "@protected": true,
+        "medicalClass":       { "@id": "pr:medicalClass",       "@type": "xsd:string" },
+        "controlNumber":      { "@id": "pr:controlNumber",      "@type": "xsd:string" },
+        "pelNumber":          { "@id": "pr:pelNumber",          "@type": "xsd:string" },
+        "examinationDate":    { "@id": "pr:examinationDate",    "@type": "xsd:date" },
+        "grantedDate":        { "@id": "pr:grantedDate",        "@type": "xsd:date" },
+        "expiryDate":         { "@id": "pr:expiryDate",         "@type": "xsd:date" },
+        "regulatoryStandard": { "@id": "pr:regulatoryStandard", "@type": "xsd:string" },
+        "examinerDid":        { "@id": "pr:examinerDid",        "@type": "@id" },
+        "medicalLimitations": { "@id": "pr:medicalLimitations", "@container": "@set" },
+        "waivers":            { "@id": "pr:waivers",            "@container": "@set" },
+        "isCurrent":          { "@id": "pr:isCurrent",          "@type": "xsd:boolean" },
+        "subjectDid":         { "@id": "pr:subjectDid",         "@type": "@id" }
+      }
+    },
+
+    "OEMAttestationRecord": {
+      "@id": "pr:OEMAttestationRecord",
+      "@context": {
+        "@protected": true,
+        "typeRatings":           { "@id": "pr:typeRatings",           "@container": "@set" },
+        "hoursBracket":          { "@id": "pr:hoursBracket",          "@type": "xsd:string" },
+        "totalHoursMinimum":     { "@id": "pr:totalHoursMinimum",     "@type": "xsd:integer" },
+        "picHoursMinimum":       { "@id": "pr:picHoursMinimum",       "@type": "xsd:integer" },
+        "instrumentHoursMin":    { "@id": "pr:instrumentHoursMin",    "@type": "xsd:integer" },
+        "multiEngineHoursMin":   { "@id": "pr:multiEngineHoursMin",   "@type": "xsd:integer" },
+        "nightHoursMin":         { "@id": "pr:nightHoursMin",         "@type": "xsd:integer" },
+        "trainingOrganizationDid": { "@id": "pr:trainingOrganizationDid", "@type": "@id" },
+        "attestationStandard":   { "@id": "pr:attestationStandard",   "@type": "xsd:string" },
+        "subjectDid":            { "@id": "pr:subjectDid",            "@type": "@id" }
+      }
+    },
+
+    "AviationRecordSummary": {
+      "@id": "pr:AviationRecordSummary",
+      "@context": {
+        "@protected": true,
+        "terminalClearance": { "@id": "pr:terminalClearance", "@type": "xsd:string" },
+        "hoursBracket":      { "@id": "pr:hoursBracket",      "@type": "xsd:string" },
+        "typeRatings":       { "@id": "pr:typeRatings",       "@container": "@set" },
+        "verificationTimestamp": { "@id": "pr:verificationTimestamp", "@type": "xsd:dateTime" }
+      }
+    }
+  }
+}

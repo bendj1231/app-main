@@ -1,6 +1,19 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { supabase } from '../../../../shared/lib/supabase';
+import {
+  buildInitialWalletState,
+  buildAviationRecordSummaryVP,
+  holderDid,
+  classifyTerminalClearance,
+  classifyHoursBracket,
+} from '../../../../lib/wallet/vcBuilder';
+import {
+  startStatusPolling,
+  stopStatusPolling,
+  invalidateStatusCache,
+} from '../../../../lib/wallet/statusList';
+import type { WalletState, BitstringStatusResult } from '../../../../lib/wallet/types/schemas';
 
 interface WalletViewPageProps {
   userId?: string;
@@ -62,6 +75,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   });
   const [exportOpen, setExportOpen] = useState(false);
   const [signoffOpen, setSignoffOpen] = useState(false);
+  // W3C VC wallet state
+  const [walletState, setWalletState] = useState<WalletState | null>(null);
+  const [slotStatuses, setSlotStatuses] = useState<Record<number, BitstringStatusResult>>({});
 
   useEffect(() => {
     const load = async () => {
@@ -73,11 +89,44 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         supabase.from('pilot_credentials').select('*').eq('user_id', uid),
       ]);
       setProfile(p);
-      setChecks(c || []);
+      const resolvedChecks = c || [];
+      setChecks(resolvedChecks);
+      if (p) {
+        const ws = buildInitialWalletState(p, resolvedChecks);
+        setWalletState(ws);
+      }
       setLoading(false);
     };
     load();
   }, [userId]);
+
+  useEffect(() => {
+    if (!walletState) return;
+    startStatusPolling(
+      walletState.statusListUrl,
+      [0, 1, 2],
+      (results) => {
+        const map: Record<number, BitstringStatusResult> = {};
+        results.forEach(r => { map[r.slotIndex] = r.status; });
+        setSlotStatuses(prev => ({ ...prev, ...map }));
+        setWalletState(prev => {
+          if (!prev) return prev;
+          const updated = { ...prev, lastStatusPoll: Date.now() };
+          const slotKeys = ['license', 'medical', 'elp'] as const;
+          slotKeys.forEach((key, idx) => {
+            if (map[idx]) {
+              updated.slots = { ...updated.slots, [key]: { ...updated.slots[key], statusBit: map[idx], lastStatusCheck: Date.now() } };
+            }
+          });
+          if (map[1] === 'revoked' || map[1] === 'suspended') {
+            updated.activePresentation = null;
+          }
+          return updated;
+        });
+      },
+    );
+    return () => stopStatusPolling();
+  }, [walletState?.statusListUrl]);
 
   const safe = (v: any) => {
     if (!v) return null;
@@ -564,16 +613,23 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                   </p>
                   {sub && <p style={{ margin: '0 0 6px', fontSize: 9, color: '#64748b', fontFamily: 'monospace' }}>{sub}</p>}
 
-                  {/* Independent proof block */}
-                  {isActive && (
-                    <div style={{ margin: '8px 0', padding: '6px 8px', background: '#f8fafc', borderRadius: 6, borderLeft: `2px solid ${cc.accent}` }}>
-                      <p style={{ margin: 0, fontSize: 8, color: '#64748b', fontFamily: 'monospace', lineHeight: 1.5 }}>
-                        proof: Ed25519Signature2020<br/>
-                        issuer: did:web:caap.gov.ph<br/>
-                        proofHash: 0x{profile?.id?.replace(/-/g,'').slice(0,12).toUpperCase() || 'A1B2C3D4E5F6'}…
-                      </p>
-                    </div>
-                  )}
+                  {/* Independent proof block — sourced from WalletState VC */}
+                  {isActive && (() => {
+                    const slotKey = slot.key as import('../../../../lib/wallet/types/schemas').CredentialSlotKey;
+                    const vcSlot  = walletState?.slots[slotKey];
+                    const vc      = vcSlot?.vc as any;
+                    const proof   = vc?.proof;
+                    return (
+                      <div style={{ margin: '8px 0', padding: '6px 8px', background: '#f8fafc', borderRadius: 6, borderLeft: `2px solid ${cc.accent}` }}>
+                        <p style={{ margin: 0, fontSize: 8, color: '#64748b', fontFamily: 'monospace', lineHeight: 1.5 }}>
+                          cryptosuite: {proof?.cryptosuite || 'ecdsa-2026'}<br/>
+                          issuer: {vc?.issuer || 'did:web:caap.gov.ph'}<br/>
+                          id: {vc?.id?.slice(0, 30) || 'urn:uuid:…'}…<br/>
+                          status: {vcSlot?.statusBit || 'unknown'}
+                        </p>
+                      </div>
+                    );
+                  })()}
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 8, borderTop: '1px solid #f1f5f9' }}>
                     <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: isExpired ? '#ef4444' : isActive ? cc.accent : '#f59e0b' }}>
@@ -633,7 +689,13 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
               Request Sign-off
             </button>
             <button
-              onClick={() => setExportOpen(o => !o)}
+              onClick={() => {
+                if (profile) {
+                  const vp = buildAviationRecordSummaryVP(profile, checks, disclosureToggles);
+                  setWalletState(prev => prev ? { ...prev, activePresentation: vp } : prev);
+                }
+                setExportOpen(o => !o);
+              }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 5, padding: '6px 14px',
                 background: '#2563eb', border: '1px solid #3b82f6',
@@ -664,19 +726,30 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           </div>
         )}
 
-        {/* Export preview panel */}
-        {exportOpen && (
-          <div className="wv-in" style={{ marginBottom: 14, padding: '16px 18px', background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 12 }}>
-            <p style={{ margin: '0 0 4px', fontSize: 11, fontWeight: 700, color: '#1e40af' }}>Presentation Preview</p>
-            <p style={{ margin: '0 0 10px', fontSize: 10, color: '#3b82f6' }}>Only selected fields will be included when shared with an employer or ramp inspector.</p>
-            <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#475569', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 12px', lineHeight: 1.8 }}>
-              {`{\n  "subject": "did:web:wallet.pilotrecognition.com:${profile?.id?.slice(0,8) || '...'}",\n  "presentation": [\n`}
-              {Object.entries(disclosureToggles).filter(([,v]) => v).map(([k]) => `    "${k}_hours": redacted_unless_consented,\n`).join('')}
-              {`  ],\n  "proof": "Ed25519Signature2020"\n}`}
+        {/* Export preview panel — W3C VP Data Model v2.0 */}
+        {exportOpen && walletState?.activePresentation && (
+          <div className="wv-in" style={{ marginBottom: 14, padding: '16px 18px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12 }}>
+            <p style={{ margin: '0 0 4px', fontSize: 11, fontWeight: 700, color: '#1e40af' }}>W3C Verifiable Presentation — AviationRecordSummary</p>
+            <p style={{ margin: '0 0 10px', fontSize: 10, color: '#3b82f6' }}>Selective disclosure active — only bracket claims are exposed. No PII transmitted.</p>
+            <div style={{ fontFamily: 'monospace', fontSize: 8.5, color: '#334155', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 12px', lineHeight: 1.9, overflowX: 'auto', whiteSpace: 'pre' }}>
+              {JSON.stringify(walletState.activePresentation, null, 2)}
             </div>
-            <button style={{ marginTop: 10, padding: '7px 16px', borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 10, fontWeight: 700, cursor: 'pointer' }}>
-              Generate Signed Presentation
-            </button>
+            <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
+              <button
+                onClick={() => navigator.clipboard?.writeText(JSON.stringify(walletState.activePresentation, null, 2))}
+                style={{ padding: '6px 14px', borderRadius: 6, border: '1px solid #bfdbfe', background: '#eff6ff', color: '#1e40af', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Copy JSON
+              </button>
+              <button style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: '#2563eb', color: '#fff', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}>
+                Submit to Airline ATS
+              </button>
+            </div>
+          </div>
+        )}
+        {exportOpen && !walletState?.activePresentation && (
+          <div className="wv-in" style={{ marginBottom: 14, padding: '12px 16px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10 }}>
+            <p style={{ margin: 0, fontSize: 10, color: '#64748b' }}>Click Export Presentation to generate a signed W3C VP from selected fields.</p>
           </div>
         )}
 
