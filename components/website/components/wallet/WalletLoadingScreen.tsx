@@ -458,7 +458,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
               />
             </div>
             <p style={{ fontSize: 9, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 600, letterSpacing: '0.03em' }}>
-              Scan with your DID Wallet app to open
+              Scan with mobile to submit passkey
             </p>
           </div>
 
