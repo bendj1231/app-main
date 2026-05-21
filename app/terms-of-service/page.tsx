@@ -881,17 +881,22 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 <table className="w-full text-sm border-collapse">
                                     <tbody>
                                         {[
-                                            ['Origin Jurisdiction Binding', 'The resolved geographic jurisdiction at initial account provisioning is persisted as an immutable origin_jurisdiction tag indexed to the pilot\'s UUIDv4 profile record. This tag is set once at account creation and cannot be self-modified by the User without triggering a full re-attestation event.'],
-                                            ['IP-Drift Detection & Re-Attestation Trigger', 'In the event of a detected change in residency via persistent IP-origin drift, the platform triggers an automated compliance re-attestation event. This event invalidates existing cached credential tokens and forces the pilot\'s walt.id wallet to re-verify their profile against the target jurisdiction\'s specific regulatory module (e.g., re-evaluating consent under local GDPR/PDPA equivalents) before re-enabling access to regional flight-school dashboards.'],
-                                            ['Regulatory Arbitrage Prevention', 'This protocol closes the loophole where a User could register under a less restrictive jurisdiction and subsequently attempt to operate within a stricter one (e.g., Singapore PDPA zone) while still holding a compliance token issued under the original lax module. The re-attestation burden is borne exclusively by the User as Sovereign Data Controller — not the Platform Operator.'],
-                                        ].map(([label, desc], i) => (
+                                            ['Origin Jurisdiction Binding', null],
+                                            ['IP-Drift Detection & Re-Attestation Trigger', null],
+                                        ].map(([label], i) => (
                                             <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                                 <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
-                                                <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">
+                                                    {label === 'Origin Jurisdiction Binding' ? <span>The resolved geographic jurisdiction at initial account provisioning is persisted as an immutable <code className="bg-slate-100 px-1 rounded">origin_jurisdiction</code> tag indexed to the pilot&apos;s <code className="bg-slate-100 px-1 rounded">UUIDv4</code> profile record. This tag is set once at account creation and cannot be self-modified by the User without triggering a full re-attestation event.</span> : <span>In the event of a detected change in residency via persistent IP-origin drift, the platform triggers an automated compliance re-attestation event. This event invalidates existing cached credential tokens and forces the pilot&apos;s <code className="bg-slate-100 px-1 rounded">walt.id</code> wallet to re-verify their profile against the target jurisdiction&apos;s specific regulatory module (e.g., re-evaluating consent under local GDPR/PDPA equivalents) before re-enabling access to regional flight-school dashboards.</span>}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
+                            </div>
+                            <div className="border-l-4 border-emerald-400 bg-emerald-50 rounded-r-xl px-4 py-3 mb-3">
+                                <p className="text-emerald-800 text-xs font-bold uppercase tracking-wide mb-1">Regulatory Arbitrage Prevention — Compliance Shield</p>
+                                <p className="text-emerald-900 text-xs leading-relaxed">This protocol closes the loophole where a User could register under a less restrictive jurisdiction and subsequently attempt to operate within a stricter one (e.g., Singapore PDPA zone) while still holding a compliance token issued under the original lax module. The re-attestation burden is borne exclusively by the User as Sovereign Data Controller — not the Platform Operator.</p>
                             </div>
                             <div className="space-y-1 text-xs text-slate-600">
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span><code className="bg-slate-100 px-1 rounded">origin_jurisdiction</code> tag persisted against UUIDv4 at provisioning — immutable without re-attestation</span></div>
