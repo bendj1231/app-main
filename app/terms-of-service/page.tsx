@@ -607,17 +607,18 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         SECTION 5.7 — ENTERPRISE SCREENING PROTOCOL
                     ══════════════════════════════════════════════ */}
                     <section>
-                        <h3 className="font-semibold text-slate-800 mb-2">5.7 Enterprise-Sponsored Employment Screening Protocol (Stage 3)</h3>
-                        <p className="mb-3 text-sm">The Platform distinguishes between the initial infrastructure onboarding check (the User-funded credential validation layer defined in Section 5.1) and advanced commercial background checks required for corporate recruitment pipelines, designated as <strong>Stage 3: Enterprise-Sponsored Employment Screening</strong>.</p>
+                        <h3 className="font-semibold text-slate-800 mb-2">5.7 Hybrid Enterprise Employment Screening &amp; Routing Protocol (Stage 3)</h3>
+                        <p className="mb-3 text-sm">The Platform distinguishes between the initial infrastructure onboarding check (the User-funded credential validation layer defined in Section 5.1) and advanced commercial background checks required for corporate recruitment pipelines, designated as <strong>Stage 3: Enterprise-Sponsored Employment Screening</strong>. Stage 3 supports two mutually exclusive routing paths selected by the subscribing aviation enterprise.</p>
                         <div className="overflow-x-auto mb-4">
                             <table className="w-full text-sm border-collapse">
                                 <tbody>
                                     {[
                                         ['(a) Bifurcated Verification Architecture', 'The Platform formally separates two operationally distinct verification workflows: Workflow 1 (User-Funded) — the baseline credential validation layer covering license currency, medical certificates, and type ratings, which unlocks Terminal 3 access as defined in Section 5.1; and Workflow 2 (Operator-Funded) — advanced commercial employment screening designated as Stage 3, covering employment history tracking, criminal registry checks, and secondary institutional references, initiated strictly at the request of a subscribing aviation enterprise.'],
-                                        ['(b) Explicit Commercial Consent Handshake', 'Advancing to Stage 3 requires an independent, explicit cryptographic consent action initiated by the User, entirely separate from the consents executed under Sections 5.5 and 5.6. By confirming the Stage 3 prompt via hardware passkey signature, the User explicitly authorises the platform\'s designated independent verification partners to initiate deep institutional background screenings — including but not limited to employment history tracking, criminal registry checks, and secondary references — specifically for employment-matching purposes. This elevated consent tier satisfies the heightened lawful basis requirements applicable to sensitive employment and criminal record processing under global data protection frameworks.'],
-                                        ['(c) Enterprise Surcharge & Non-Custodial Settlement', 'All operational costs, provider fees, and systemic surcharges associated with Stage 3 screenings are borne exclusively by the subscribing aviation enterprise at the then-current published corporate rate. In accordance with the non-custodial architecture defined in Section 7.5, financial settlement is routed automatically via decentralized contract execution directly to the independent third-party verification integrations conducting the screening. The Platform Operator never transiently holds, escrows, or handles corporate screening funds at any point in the payment lifecycle.'],
-                                        ['(d) Disclaimer of Employment Adjudication', 'The Platform Operator functions strictly as a neutral technical routing interface for the transmission of Stage 3 consent parameters and tokenized screening status flags. The Platform Operator does not author, inspect, analyse, or interpret the raw contents of employment screening results. Final hiring outcomes, contract awards, or pathway rejections resulting from favourable or adverse Stage 3 findings reside strictly within the autonomous data domains of the User and the subscribing aviation enterprise, governed by the Tripartite Data Controller Framework (Section 17.1). The Platform Operator is fully indemnified from any claim, regulatory investigation, or civil action arising from an adverse Stage 3 screening outcome.'],
-                                        ['(e) Screening Status Containment — Single-Enterprise Scope', 'A Stage 3 screening result — whether cleared or adverse — is scoped exclusively to the initiating aviation enterprise\'s private dashboard instance. An adverse finding for one enterprise does not propagate, flag, or modify the User\'s profile visibility, Terminal 3 status, or credential beacon across any other active corporate dashboard on the platform. Each Stage 3 screening is a discrete, bilaterally scoped data transaction between the User and the requesting enterprise only. The Platform Operator maintains zero cross-enterprise aggregation of Stage 3 outcomes.'],
+                                        ['(b) Dual-Routing Framework (Native vs. Enterprise-Proprietary)', 'Advancing to Stage 3 requires an independent, explicit cryptographic consent action initiated by the User via hardware passkey signature, entirely separate from the consents executed under Sections 5.5 and 5.6. Upon execution of consent, the processing lifecycle utilises one of two mutually exclusive routing paths selected by the subscribing aviation enterprise: Path A — Native Integrated Routing ("In-House"): the verification request is routed through the Platform\'s designated independent verification integrations; all transactional surcharges are billed to the enterprise profile and settled via the automated, non-custodial smart contract infrastructure defined in Section 7.5. Path B — Enterprise-Proprietary Routing ("Airline\'s Own"): the verification request, data payload, and consent parameters are exported directly to the subscribing aviation enterprise\'s proprietary external background screening vendor; the Platform functions solely as an outbound cryptographic transport layer for this handoff and assumes zero liability for any processing, compliance, or data protection obligations past the outbound export boundary.'],
+                                        ['(c) Allocation of Extraterritorial Screening Costs', 'All operational costs, provider fees, and systemic processing surcharges associated with Stage 3 screenings are borne exclusively by the subscribing aviation enterprise. Under Path A, fees are processed via the Platform\'s non-custodial architecture as defined in Section 7.5; the Platform Operator never transiently holds, escrows, or handles these funds. Under Path B, financial settlement occurs entirely off-platform between the enterprise and its proprietary vendor; the Platform Operator assumes null liability for processing failures, currency fluctuations, or settlement disputes occurring within the enterprise\'s private payment networks.'],
+                                        ['(d) Absolute Liability Exclusion for Proprietary Systems', 'For screenings executed under Path B, the Platform Operator explicitly disclaims all operational, legal, and statutory data protection liability. The subscribing aviation enterprise assumes sole, unmitigated accountability as the exclusive Data Controller for the security, processing hygiene, regulatory compliance, and outcomes generated by its proprietary external screening systems. Any data breach, transmission failure, or regulatory non-compliance occurring past the Platform\'s outbound export boundary resides fundamentally outside the Platform Operator\'s control, and the enterprise shall fully indemnify and hold harmless the Platform Operator against any resulting claims, regulatory investigations, or enforcement actions.'],
+                                        ['(e) Disclaimer of Employment Adjudication', 'Under both Path A and Path B, the Platform Operator functions strictly as a neutral technical routing interface for the transmission of Stage 3 consent parameters and tokenized binary status flags only. The Platform Operator does not author, inspect, analyse, or interpret the raw contents of employment screening results under either routing path. Final hiring outcomes, contract awards, or pathway rejections resulting from favourable or adverse Stage 3 findings reside strictly within the autonomous data domains of the User and the subscribing aviation enterprise, governed by the Tripartite Data Controller Framework (Section 17.1).'],
+                                        ['(f) Screening Status Containment — Single-Enterprise Scope', 'A Stage 3 screening result — whether cleared or adverse — is scoped exclusively to the initiating aviation enterprise\'s private dashboard instance under both routing paths. An adverse finding for one enterprise does not propagate, flag, or modify the User\'s profile visibility, Terminal 3 status, or credential beacon across any other active corporate dashboard on the platform. Each Stage 3 screening is a discrete, bilaterally scoped data transaction between the User and the requesting enterprise only. The Platform Operator maintains zero cross-enterprise aggregation of Stage 3 outcomes.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                             <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
@@ -628,36 +629,38 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             </table>
                         </div>
 
-                        {/* Stage 3 flow diagram */}
+                        {/* Stage 3 dual-routing flow diagram */}
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4 overflow-x-auto">
                             <div className="min-w-max text-xs space-y-2">
                                 <div className="flex items-center gap-3 justify-center">
-                                    <div className="border-2 border-emerald-400 rounded-lg px-4 py-2 bg-emerald-50 text-center w-52">
-                                        <p className="font-black text-emerald-800 text-[10px] uppercase">Stage 2 Accepted</p>
-                                        <p className="text-emerald-600 text-[10px]">Pilot assents to financial terms</p>
+                                    <div className="border-2 border-blue-300 rounded-lg px-4 py-2 bg-blue-50 text-center w-56">
+                                        <p className="font-black text-blue-800 text-[10px] uppercase">Pilot Executes Stage 3 Consent</p>
+                                        <p className="text-blue-600 text-[10px]">Independent passkey signature</p>
+                                        <p className="text-blue-500 text-[10px]">Separate from S5.5 &amp; S5.6</p>
                                     </div>
                                     <div className="text-slate-400 font-bold">→</div>
-                                    <div className="border-2 border-blue-300 rounded-lg px-4 py-2 bg-blue-50 text-center w-52">
-                                        <p className="font-black text-blue-800 text-[10px] uppercase">Stage 3 Prompt</p>
-                                        <p className="text-blue-600 text-[10px]">"Authorise Employment Check?"</p>
-                                        <p className="text-blue-500 text-[10px]">Separate passkey signature required</p>
-                                    </div>
-                                </div>
-                                <div className="text-center text-slate-400 font-bold">↓ Pilot signs ↓</div>
-                                <div className="flex items-center gap-3 justify-center">
                                     <div className="border-2 border-amber-400 rounded-lg px-4 py-2 bg-amber-50 text-center w-52">
-                                        <p className="font-black text-amber-800 text-[10px] uppercase">Automated Corporate Billing</p>
-                                        <p className="text-amber-600 text-[10px]">Surcharge → Airline billing layer</p>
-                                        <p className="text-amber-700 text-[10px] font-black">Platform: Zero custody of funds</p>
-                                    </div>
-                                    <div className="text-slate-400 font-bold">→</div>
-                                    <div className="border-2 border-slate-400 rounded-lg px-4 py-2 bg-slate-100 text-center w-52">
-                                        <p className="font-black text-slate-700 text-[10px] uppercase">Independent Partner</p>
-                                        <p className="text-slate-600 text-[10px]">Employment · Criminal · References</p>
-                                        <p className="text-slate-500 text-[10px]">Platform: Zero visibility to raw data</p>
+                                        <p className="font-black text-amber-800 text-[10px] uppercase">Airline Routing Selection</p>
+                                        <p className="text-amber-600 text-[10px]">Path A or Path B</p>
                                     </div>
                                 </div>
-                                <div className="text-center text-slate-400 font-bold">↓ Binary status beacon only ↓</div>
+                                <div className="text-center text-slate-400 font-bold">↓ routing fork ↓</div>
+                                <div className="flex items-start gap-4 justify-center">
+                                    <div className="border-2 border-emerald-400 rounded-lg px-3 py-2 bg-emerald-50 text-center w-52">
+                                        <p className="font-black text-emerald-800 text-[10px] uppercase">Path A — In-House</p>
+                                        <p className="text-emerald-600 text-[10px]">Platform integrated partner</p>
+                                        <p className="text-emerald-700 text-[10px]">Non-custodial billing (S7.5)</p>
+                                        <p className="text-emerald-600 text-[10px]">Platform: S18 immunity applies</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold mt-4">|</div>
+                                    <div className="border-2 border-slate-400 rounded-lg px-3 py-2 bg-slate-100 text-center w-52">
+                                        <p className="font-black text-slate-700 text-[10px] uppercase">Path B — Airline's Own Vendor</p>
+                                        <p className="text-slate-600 text-[10px]">Outbound cryptographic handoff</p>
+                                        <p className="text-slate-600 text-[10px]">Off-platform settlement</p>
+                                        <p className="text-red-600 text-[10px] font-black">Airline = 100% Data Controller</p>
+                                    </div>
+                                </div>
+                                <div className="text-center text-slate-400 font-bold">↓ binary status beacon only — both paths ↓</div>
                                 <div className="flex items-center gap-3 justify-center">
                                     <div className="border border-emerald-300 rounded-lg px-3 py-2 bg-emerald-50 text-center w-48">
                                         <p className="font-black text-emerald-700 text-[10px] uppercase">Screening Cleared</p>
@@ -674,8 +677,8 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         </div>
 
                         <div className="border-l-4 border-slate-500 bg-slate-50 rounded-r-xl px-5 py-3 mb-2">
-                            <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-1">Stage 3 Scope Isolation — No Cross-Enterprise Flagging</p>
-                            <p className="text-slate-600 text-xs leading-relaxed">An adverse Stage 3 finding returned by an independent verification partner for one subscribing enterprise is contained exclusively within that enterprise's private dashboard instance. The Platform does not aggregate, propagate, or cross-reference Stage 3 outcomes across multiple corporate dashboards. A failed check with Carrier A has zero effect on the User's profile visibility, credential beacon, or pathway eligibility with Carrier B, Carrier C, or any other subscribing operator. This containment is architecturally enforced, not merely contractually declared.</p>
+                            <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-1">Stage 3 Scope Isolation — No Cross-Enterprise Flagging (Both Paths)</p>
+                            <p className="text-slate-600 text-xs leading-relaxed">Regardless of which routing path is selected, an adverse Stage 3 finding is contained exclusively within the initiating enterprise's private dashboard instance. The Platform does not aggregate, propagate, or cross-reference Stage 3 outcomes across multiple corporate dashboards under either Path A or Path B. A failed check with Carrier A has zero effect on the User's profile visibility, credential beacon, or pathway eligibility with Carrier B, Carrier C, or any other subscribing operator. Under Path B, the Platform records only the binary handoff event — it has no visibility into, and no custody of, the raw screening data handled by the airline's proprietary vendor.</p>
                         </div>
                     </section>
 
