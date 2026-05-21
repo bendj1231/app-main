@@ -439,23 +439,21 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
             <p style={{ fontSize: 11, color: '#fca5a5', marginBottom: 12, fontWeight: 600 }}>⚠ {authError}</p>
           )}
 
-          {/* ── QR + DID options row ── */}
-          <div style={{ display: 'flex', gap: 14, marginBottom: 14, alignItems: 'flex-start' }}>
-            {/* QR code (SVG placeholder — wallet.pilotrecognition.com DID) */}
-            <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 96, height: 96, border: '1px solid #e2e8f0', borderRadius: 8, background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4 }}>
-                <QRCodeSVG
-                  value={`https://wallet.pilotrecognition.com${sessionUser?.id ? `?uid=${sessionUser.id}` : ''}`}
-                  size={84}
-                  bgColor="#ffffff"
-                  fgColor="#0f172a"
-                  level="M"
-                  includeMargin={false}
-                />
-              </div>
-              <p style={{ fontSize: 8, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 500 }}>Scan with your<br/>DID Wallet</p>
+          {/* ── QR code ── */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginBottom: 14 }}>
+            <div style={{ border: '1px solid #e2e8f0', borderRadius: 10, background: '#ffffff', padding: 10, display: 'inline-flex' }}>
+              <QRCodeSVG
+                value={`https://wallet.pilotrecognition.com${sessionUser?.id ? `?uid=${sessionUser.id}` : ''}`}
+                size={180}
+                bgColor="#ffffff"
+                fgColor="#0f172a"
+                level="M"
+                includeMargin={false}
+              />
             </div>
-
+            <p style={{ fontSize: 9, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 600, letterSpacing: '0.03em' }}>
+              Scan with your DID Wallet app to open
+            </p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
