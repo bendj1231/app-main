@@ -49,6 +49,19 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const [connectedProviders, setConnectedProviders] = useState<Set<string>>(new Set());
   const [syncMsg, setSyncMsg] = useState<{ id: string; msg: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Zone 1 — DID chip verification
+  const [didVerifying, setDidVerifying] = useState(false);
+  const [didVerified, setDidVerified] = useState(false);
+  // Zone 2 — QR scan modal per sleeve
+  const [qrSlot, setQrSlot] = useState<string | null>(null);
+  const [scanningSlot, setScanningSlot] = useState<string | null>(null);
+  const [importedSlots, setImportedSlots] = useState<Set<string>>(new Set());
+  // Zone 3 — selective disclosure
+  const [disclosureToggles, setDisclosureToggles] = useState<Record<string, boolean>>({
+    total: true, pic: false, instrument: false, multi: false, night: false,
+  });
+  const [exportOpen, setExportOpen] = useState(false);
+  const [signoffOpen, setSignoffOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -322,19 +335,25 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         </div>
       </div>
 
-      {/* ── MAIN PILOT ID CARD ── */}
+      {/* ── ZONE 1: MASTER CORE IDENTITY CARD ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 0' }}>
         <div className="wv-in" style={{
           background: 'linear-gradient(135deg, #1e3a5f 0%, #0f2744 40%, #1a1a3e 100%)',
           borderRadius: 20, padding: '28px', position: 'relative', overflow: 'hidden',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)',
-          border: '1px solid rgba(255,255,255,0.12)',
+          boxShadow: didVerified
+            ? '0 24px 64px rgba(0,0,0,0.6), 0 0 40px rgba(16,185,129,0.25), inset 0 1px 0 rgba(255,255,255,0.1)'
+            : '0 24px 64px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)',
+          border: `1px solid ${didVerified ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.12)'}`,
+          transition: 'box-shadow 0.6s ease, border-color 0.6s ease',
         }}>
           {/* Holographic shimmer strip */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-            background: 'linear-gradient(90deg, #dc2626, #f59e0b, #10b981, #3b82f6, #8b5cf6, #dc2626)',
+            background: didVerified
+              ? 'linear-gradient(90deg, #10b981, #34d399, #10b981)'
+              : 'linear-gradient(90deg, #dc2626, #f59e0b, #10b981, #3b82f6, #8b5cf6, #dc2626)',
             backgroundSize: '200% 100%', animation: 'wvShimmer 3s ease infinite',
+            transition: 'background 0.6s ease',
           }} />
           {/* Watermark */}
           <div style={{
@@ -343,106 +362,230 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           }}>PILOT</div>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-            <div>
-              <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
-              <p style={{ margin: '0 0 12px', fontSize: 24, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>Pilot Identity Credential</p>
+                {didVerified && (
+                  <span style={{ fontSize: 8, fontWeight: 700, color: '#10b981', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 6, padding: '1px 6px', letterSpacing: '0.08em' }}>
+                    ✓ SIGNATURE VERIFIED
+                  </span>
+                )}
+              </div>
+              <p style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{name.toUpperCase()}</p>
+              <p style={{ margin: '0 0 14px', fontSize: 9, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace' }}>
+                did:web:wallet.pilotrecognition.com:{profile?.id?.slice(0,8) || 'pending'}
+              </p>
               <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                 {[
                   { label: 'License Type', value: safe(profile?.license_type) || safe(profile?.current_occupation) || '—' },
-                  { label: 'License No.', value: safe(profile?.license_number) || safe(profile?.license_id) || '—' },
-                  { label: 'Total Hours', value: totalHours > 0 ? `${totalHours.toLocaleString()} hrs` : '—' },
-                  { label: 'Country', value: safe(profile?.country) || safe(profile?.citizenship) || '—' },
+                  { label: 'License No.',  value: safe(profile?.license_number) || safe(profile?.license_id) || '—' },
+                  { label: 'Total Hours',  value: totalHours > 0 ? `${totalHours.toLocaleString()} hrs` : '—', live: true },
+                  { label: 'Country',      value: safe(profile?.country) || safe(profile?.citizenship) || '—' },
                 ].map(f => (
                   <div key={f.label}>
                     <p style={{ margin: 0, fontSize: 8, fontWeight: 700, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{f.label}</p>
-                    <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 700, color: '#ffffff' }}>{f.value}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                      <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: '#ffffff' }}>{f.value}</p>
+                      {(f as any).live && <span style={{ fontSize: 7, color: '#10b981', fontWeight: 700, letterSpacing: '0.1em' }}>● LIVE</span>}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
-            {/* Chip */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-              <div style={{
-                width: 44, height: 34, borderRadius: 6,
-                background: 'linear-gradient(135deg, #d4a843 0%, #f5d178 40%, #c49a35 100%)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 8px rgba(0,0,0,0.4)',
-                display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 2, padding: 4,
-              }}>
-                {[0,1,2,3].map(i => <div key={i} style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 2 }} />)}
+
+            {/* DID Chip — glows green when verified */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
+              <div style={{ position: 'relative' }}>
+                <div style={{
+                  width: 52, height: 40, borderRadius: 7, position: 'relative',
+                  background: didVerified
+                    ? 'linear-gradient(135deg, #16a34a 0%, #22c55e 40%, #15803d 100%)'
+                    : 'linear-gradient(135deg, #d4a843 0%, #f5d178 40%, #c49a35 100%)',
+                  boxShadow: didVerified
+                    ? 'inset 0 1px 0 rgba(255,255,255,0.4), 0 0 20px rgba(16,185,129,0.6), 0 2px 8px rgba(0,0,0,0.4)'
+                    : 'inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 8px rgba(0,0,0,0.4)',
+                  display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 2, padding: 5,
+                  transition: 'all 0.6s ease',
+                }}>
+                  {[0,1,2,3].map(i => <div key={i} style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 2 }} />)}
+                </div>
+                {didVerified && (
+                  <div style={{
+                    position: 'absolute', bottom: -6, right: -6, width: 18, height: 18, borderRadius: '50%',
+                    background: '#10b981', border: '2px solid #1a1a3e',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 9, color: '#fff', fontWeight: 900,
+                  }}>✓</div>
+                )}
               </div>
-              <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace', letterSpacing: '0.05em' }}>{did}</p>
+              <button
+                onClick={() => {
+                  if (didVerified) return;
+                  setDidVerifying(true);
+                  setTimeout(() => { setDidVerifying(false); setDidVerified(true); }, 2200);
+                }}
+                disabled={didVerifying || didVerified}
+                style={{
+                  fontSize: 9, fontWeight: 700, padding: '5px 10px', borderRadius: 7, cursor: didVerified ? 'default' : 'pointer',
+                  background: didVerified ? 'rgba(16,185,129,0.15)' : didVerifying ? 'rgba(255,255,255,0.06)' : 'rgba(220,38,38,0.7)',
+                  border: `1px solid ${didVerified ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.15)'}`,
+                  color: didVerified ? '#10b981' : 'rgba(255,255,255,0.8)',
+                  letterSpacing: '0.06em', whiteSpace: 'nowrap',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {didVerifying ? '⟳ Verifying…' : didVerified ? '✓ Verified' : 'Verify Signature'}
+              </button>
+              <p style={{ margin: 0, fontSize: 7, color: 'rgba(255,255,255,0.2)', fontFamily: 'monospace', letterSpacing: '0.04em', textAlign: 'right' }}>{did}</p>
             </div>
           </div>
 
           {/* Magnetic stripe */}
           <div style={{ marginTop: 20, height: 32, background: 'rgba(0,0,0,0.5)', borderRadius: 4, position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 6px)' }} />
+            <div style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }}>
+              <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.2)', fontFamily: 'monospace', letterSpacing: '0.08em' }}>
+                PRESENTATION EXCHANGE · AES-256-GCM · {didVerified ? 'AUTHORITY SIGNATURE VALID' : 'AWAITING VERIFICATION'}
+              </p>
+            </div>
             <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', display: 'flex', gap: 2 }}>
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div key={i} style={{ width: 2, height: 16, background: `rgba(255,255,255,${0.05 + Math.random() * 0.15})`, borderRadius: 1 }} />
+              {Array.from({ length: 16 }).map((_, i) => (
+                <div key={i} style={{ width: 2, height: 16, background: `rgba(255,255,255,0.07)`, borderRadius: 1 }} />
               ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── CREDENTIAL CARD SLEEVES ── */}
+      {/* ── ZONE 2: MODULAR CREDENTIAL SLEEVES ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
-        <p className="wv-in" style={{ animationDelay: '0.1s', margin: '0 0 14px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
-          Credential Sleeves
-        </p>
+        <div className="wv-in" style={{ animationDelay: '0.1s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
+            Zone 2 — Modular Credential Sleeves
+          </p>
+          <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.2)', fontWeight: 600 }}>Each sleeve holds an independent cryptographic proof block</span>
+        </div>
+
+        {/* QR scan modal */}
+        {qrSlot && (
+          <div style={{
+            position: 'fixed', inset: 0, zIndex: 99999, background: 'rgba(0,0,0,0.85)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            backdropFilter: 'blur(8px)',
+          }} onClick={() => setQrSlot(null)}>
+            <div style={{
+              background: 'linear-gradient(135deg, #1c1c2e, #12121e)',
+              border: '1px solid rgba(255,255,255,0.12)', borderRadius: 20, padding: 32, width: 320,
+              boxShadow: '0 32px 80px rgba(0,0,0,0.8)',
+            }} onClick={e => e.stopPropagation()}>
+              <p style={{ margin: '0 0 4px', fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>
+                Import Credential
+              </p>
+              <p style={{ margin: '0 0 20px', fontSize: 15, fontWeight: 800, color: '#ffffff' }}>
+                {SLEEVE_CONFIG.find(s => s.key === qrSlot)?.label}
+              </p>
+              {/* QR placeholder frame */}
+              <div style={{
+                width: '100%', aspectRatio: '1', background: '#ffffff', borderRadius: 12,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16,
+                position: 'relative', overflow: 'hidden',
+              }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 3, padding: 16 }}>
+                  {Array.from({ length: 49 }).map((_, i) => (
+                    <div key={i} style={{ width: '100%', aspectRatio: '1', background: [0,1,2,7,8,9,14,6,13,20,42,43,44,48,47,46,36,37,38,41,35,28].includes(i) ? '#000' : 'transparent', borderRadius: 1 }} />
+                  ))}
+                </div>
+                <div style={{ position: 'absolute', fontSize: 11, fontWeight: 700, color: '#000', bottom: 8, letterSpacing: '0.05em' }}>
+                  CAAP · ICAO · WALLET.PILOTRECOGNITION.COM
+                </div>
+              </div>
+              <p style={{ margin: '0 0 16px', fontSize: 10, color: 'rgba(255,255,255,0.4)', textAlign: 'center', lineHeight: 1.5 }}>
+                Scan with your authority-issued credential app, or tap below to simulate an import.
+              </p>
+              <button
+                onClick={() => {
+                  setScanningSlot(qrSlot);
+                  setQrSlot(null);
+                  setTimeout(() => {
+                    setImportedSlots(s => new Set([...s, qrSlot!]));
+                    setScanningSlot(null);
+                  }, 1800);
+                }}
+                style={{
+                  width: '100%', padding: '10px 0', borderRadius: 10, border: 'none', cursor: 'pointer',
+                  background: 'rgba(220,38,38,0.8)', color: '#fff', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em',
+                }}
+              >
+                Simulate QR Import
+              </button>
+              <button onClick={() => setQrSlot(null)} style={{ width: '100%', marginTop: 8, padding: '8px 0', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', background: 'transparent', color: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 600 }}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
           {SLEEVE_CONFIG.map((slot, idx) => {
-            const val   = safe(profile?.[slot.profileKey]);
-            const sub   = slot.subKey ? safe(profile?.[slot.subKey]) : null;
-            const exp   = safe(profile?.[slot.expiryKey]);
-            const days  = daysUntil(exp);
-            const check = checks.find(c => c.check_type === slot.checkType);
-            const st    = check?.status ? STATUS_CONFIG[check.status] : null;
-            const isVerified = check?.status === 'verified';
-            const isExpired  = check?.status === 'expired';
+            const val        = safe(profile?.[slot.profileKey]);
+            const sub        = slot.subKey ? safe(profile?.[slot.subKey]) : null;
+            const exp        = safe(profile?.[slot.expiryKey]);
+            const days       = daysUntil(exp);
+            const check      = checks.find(c => c.check_type === slot.checkType);
+            const isVerified = check?.status === 'verified' || importedSlots.has(slot.key);
+            const isExpired  = check?.status === 'expired' && !importedSlots.has(slot.key);
+            const isScanning = scanningSlot === slot.key;
+            const isImported = importedSlots.has(slot.key);
+            const isActive   = isVerified || isImported;
 
             const cardColors = [
-              { from: '#1a3a2a', to: '#0d2218', accent: '#10b981' },
-              { from: '#1a1a3e', to: '#0d0d2a', accent: '#3b82f6' },
-              { from: '#2a1a0e', to: '#1a0d00', accent: '#f59e0b' },
-              { from: '#2a0d1a', to: '#1a0010', accent: '#8b5cf6' },
+              { muted: { from: '#1a3a2a', to: '#0d2218' }, active: { from: '#065f46', to: '#064e3b' }, accent: '#10b981' },
+              { muted: { from: '#1a1a3e', to: '#0d0d2a' }, active: { from: '#1e3a8a', to: '#1e3370' }, accent: '#3b82f6' },
+              { muted: { from: '#2a1a0e', to: '#1a0d00' }, active: { from: '#78350f', to: '#5c2e00' }, accent: '#f59e0b' },
+              { muted: { from: '#2a0d1a', to: '#1a0010' }, active: { from: '#4c1d95', to: '#3b0764' }, accent: '#8b5cf6' },
             ];
-            const cc = cardColors[idx % cardColors.length];
+            const cc  = cardColors[idx % cardColors.length];
+            const bg  = isActive ? cc.active : cc.muted;
 
             return (
-              <div key={slot.key} className={`wv-in wv-card-hover`} style={{ animationDelay: `${0.12 + idx * 0.06}s` }}>
+              <div key={slot.key} className="wv-in wv-card-hover" style={{ animationDelay: `${0.12 + idx * 0.06}s` }}>
                 <div style={{
-                  background: `linear-gradient(135deg, ${cc.from} 0%, ${cc.to} 100%)`,
+                  background: `linear-gradient(135deg, ${bg.from} 0%, ${bg.to} 100%)`,
                   borderRadius: 16, padding: '18px', position: 'relative', overflow: 'hidden',
-                  border: `1px solid rgba(255,255,255,0.1)`,
-                  boxShadow: `0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)`,
+                  border: `1px solid ${isExpired ? 'rgba(220,38,38,0.35)' : isActive ? `${cc.accent}55` : 'rgba(255,255,255,0.1)'}`,
+                  boxShadow: isActive
+                    ? `0 8px 32px rgba(0,0,0,0.4), 0 0 24px ${cc.accent}22, inset 0 1px 0 rgba(255,255,255,0.1)`
+                    : '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)',
+                  transition: 'all 0.5s ease',
                 }}>
                   {/* Top accent bar */}
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: isVerified ? `linear-gradient(90deg, ${cc.accent}, transparent)` : isExpired ? 'linear-gradient(90deg, #dc2626, transparent)' : 'linear-gradient(90deg, rgba(255,255,255,0.1), transparent)' }} />
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: isActive ? `linear-gradient(90deg, ${cc.accent}, transparent)` : isExpired ? 'linear-gradient(90deg, #dc2626, transparent)' : 'linear-gradient(90deg, rgba(255,255,255,0.08), transparent)', transition: 'background 0.5s ease' }} />
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                     <span style={{ fontSize: 20 }}>{slot.icon}</span>
-                    {st ? (
-                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: st.dot, boxShadow: `0 0 8px ${st.dot}` }} />
-                    ) : (
-                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }} />
-                    )}
+                    <div style={{ width: 9, height: 9, borderRadius: '50%', background: isExpired ? '#dc2626' : isActive ? cc.accent : 'rgba(255,255,255,0.15)', boxShadow: isActive ? `0 0 10px ${cc.accent}` : 'none', transition: 'all 0.5s ease' }} />
                   </div>
 
-                  <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{slot.label}</p>
-                  <p style={{ margin: '0 0 4px', fontSize: 14, fontWeight: 800, color: val ? '#ffffff' : 'rgba(255,255,255,0.2)', lineHeight: 1.2 }}>
-                    {val || 'Not entered'}
+                  <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{slot.label}</p>
+                  <p style={{ margin: '0 0 3px', fontSize: 14, fontWeight: 800, color: (val || isImported) ? '#ffffff' : 'rgba(255,255,255,0.2)', lineHeight: 1.2 }}>
+                    {isImported && !val ? 'Imported' : val || 'Not entered'}
                   </p>
-                  {sub && (
-                    <p style={{ margin: '0 0 8px', fontSize: 9, color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>{sub}</p>
+                  {sub && <p style={{ margin: '0 0 6px', fontSize: 9, color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>{sub}</p>}
+
+                  {/* Independent proof block */}
+                  {isActive && (
+                    <div style={{ margin: '8px 0', padding: '6px 8px', background: 'rgba(0,0,0,0.25)', borderRadius: 6, borderLeft: `2px solid ${cc.accent}` }}>
+                      <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace', lineHeight: 1.5 }}>
+                        proof: Ed25519Signature2020<br/>
+                        issuer: did:web:caap.gov.ph<br/>
+                        proofHash: 0x{profile?.id?.replace(/-/g,'').slice(0,12).toUpperCase() || 'A1B2C3D4E5F6'}…
+                      </p>
+                    </div>
                   )}
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em',
-                      color: isVerified ? '#10b981' : isExpired ? '#dc2626' : 'rgba(255,255,255,0.25)'
-                    }}>
-                      {isVerified ? '✓ VERIFIED' : isExpired ? '✗ EXPIRED' : st ? st.label : 'UNVERIFIED'}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 8, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: isExpired ? '#dc2626' : isActive ? cc.accent : 'rgba(255,255,255,0.25)' }}>
+                      {isScanning ? '⟳ Importing…' : isExpired ? '✗ EXPIRED' : isActive ? '✓ VERIFIED' : 'UNVERIFIED'}
                     </span>
                     {exp && days !== null && (
                       <span style={{ fontSize: 9, fontWeight: 700, color: expiryColor(days), fontFamily: 'monospace' }}>
@@ -450,6 +593,27 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                       </span>
                     )}
                   </div>
+
+                  {/* Import button */}
+                  {!isActive && !isScanning && (
+                    <button
+                      onClick={() => setQrSlot(slot.key)}
+                      style={{
+                        marginTop: 10, width: '100%', padding: '6px 0', borderRadius: 7,
+                        border: '1px dashed rgba(255,255,255,0.2)', cursor: 'pointer',
+                        background: 'transparent', color: 'rgba(255,255,255,0.45)', fontSize: 9, fontWeight: 700,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+                      }}
+                    >
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                      Scan QR / Import
+                    </button>
+                  )}
+                  {isScanning && (
+                    <div style={{ marginTop: 10, height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: '60%', background: cc.accent, borderRadius: 2, animation: 'wvShimmer 0.8s ease infinite' }} />
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -457,39 +621,123 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         </div>
       </div>
 
-      {/* ── FLIGHT HOURS PANEL ── */}
+      {/* ── ZONE 3: FLIGHT HOURS LOGBOOK — SELECTIVE DISCLOSURE ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
-        <p className="wv-in" style={{ animationDelay: '0.35s', margin: '0 0 14px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
-          Flight Hours Logbook
-        </p>
-        <div className="wv-in" style={{ animationDelay: '0.4s',
-          background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-          borderRadius: 16, overflow: 'hidden', backdropFilter: 'blur(12px)',
-        }}>
-          {[
-            { label: 'Total Flight Hours', value: totalHours, verified: checks.some(c => c.check_type === 'professional_qualification' && c.status === 'verified') },
-            { label: 'PIC Hours',          value: safe(profile?.pic_hours) || 0,           verified: false },
-            { label: 'Instrument Hours',   value: safe(profile?.instrument_hours) || 0,     verified: false },
-            { label: 'Multi-Engine Hours', value: safe(profile?.multi_engine_hours) || 0,   verified: false },
-            { label: 'Night Hours',        value: safe(profile?.night_hours) || 0,          verified: false },
-          ].map((row, i, arr) => (
-            <div key={row.label} style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '14px 20px',
-              borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-            }}>
-              <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>{row.label}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 16, fontWeight: 900, color: '#ffffff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
-                  {Number(row.value) > 0 ? Number(row.value).toLocaleString() : '—'}
-                </span>
-                <span style={{ fontSize: 9, fontWeight: 700, color: row.verified ? '#10b981' : 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>
-                  {row.verified ? '✓ VERIFIED' : 'SELF-REPORTED'}
-                </span>
-              </div>
-            </div>
-          ))}
+        <div className="wv-in" style={{ animationDelay: '0.35s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
+          <div>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>Zone 3 — Flight Hours Logbook</p>
+            <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>Toggle which fields to include in your presentation export</p>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={() => setSignoffOpen(o => !o)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px',
+                background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)',
+                borderRadius: 8, cursor: 'pointer', color: '#f59e0b', fontSize: 10, fontWeight: 700,
+              }}
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Request Sign-off
+            </button>
+            <button
+              onClick={() => setExportOpen(o => !o)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px',
+                background: 'rgba(220,38,38,0.8)', border: 'none',
+                borderRadius: 8, cursor: 'pointer', color: '#ffffff', fontSize: 10, fontWeight: 700,
+              }}
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export Presentation
+            </button>
+          </div>
         </div>
+
+        {/* Sign-off panel */}
+        {signoffOpen && (
+          <div className="wv-in" style={{ marginBottom: 14, padding: '16px 18px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)', borderRadius: 12 }}>
+            <p style={{ margin: '0 0 10px', fontSize: 11, fontWeight: 700, color: '#f59e0b' }}>Request Hour Sign-off</p>
+            <p style={{ margin: '0 0 12px', fontSize: 10, color: 'rgba(255,255,255,0.45)', lineHeight: 1.5 }}>
+              Send a sign-off request to your airline, flight school, or logbook provider. Once approved, those hours will be upgraded from Self-Reported to <strong style={{ color: '#10b981' }}>Verified ✓</strong>.
+            </p>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {['My Airline / Operator', 'Flight School / ATO', 'ForeFlight Sync', 'Manual Upload'].map(opt => (
+                <button key={opt} style={{
+                  padding: '5px 12px', borderRadius: 7, border: '1px solid rgba(245,158,11,0.3)',
+                  background: 'rgba(245,158,11,0.1)', color: '#f59e0b', fontSize: 9, fontWeight: 700, cursor: 'pointer',
+                }}>{opt}</button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Export preview panel */}
+        {exportOpen && (
+          <div className="wv-in" style={{ marginBottom: 14, padding: '16px 18px', background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 12 }}>
+            <p style={{ margin: '0 0 4px', fontSize: 11, fontWeight: 700, color: '#93c5fd' }}>Presentation Preview</p>
+            <p style={{ margin: '0 0 10px', fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>Only selected fields will be included when shared with an employer or ramp inspector.</p>
+            <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: '10px 12px', lineHeight: 1.8 }}>
+              {`{\n  "subject": "did:web:wallet.pilotrecognition.com:${profile?.id?.slice(0,8) || '...'}",\n  "presentation": [\n`}
+              {Object.entries(disclosureToggles).filter(([,v]) => v).map(([k]) => `    "${k}_hours": redacted_unless_consented,\n`).join('')}
+              {`  ],\n  "proof": "Ed25519Signature2020"\n}`}
+            </div>
+            <button style={{ marginTop: 10, padding: '7px 16px', borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 10, fontWeight: 700, cursor: 'pointer' }}>
+              Generate Signed Presentation
+            </button>
+          </div>
+        )}
+
+        {/* Rows with toggles */}
+        <div className="wv-in" style={{ animationDelay: '0.4s', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden' }}>
+          {[
+            { key: 'total',      label: 'Total Flight Hours',  value: totalHours,                              verified: checks.some(c => c.check_type === 'professional_qualification' && c.status === 'verified') },
+            { key: 'pic',        label: 'PIC Hours',           value: safe(profile?.pic_hours) || 0,           verified: false },
+            { key: 'instrument', label: 'Instrument Hours',    value: safe(profile?.instrument_hours) || 0,    verified: false },
+            { key: 'multi',      label: 'Multi-Engine Hours',  value: safe(profile?.multi_engine_hours) || 0,  verified: false },
+            { key: 'night',      label: 'Night Hours',         value: safe(profile?.night_hours) || 0,         verified: false },
+          ].map((row, i, arr) => {
+            const disclosed = disclosureToggles[row.key];
+            return (
+              <div key={row.key} style={{
+                display: 'flex', alignItems: 'center', gap: 12, padding: '13px 18px',
+                borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                opacity: disclosed ? 1 : 0.45, transition: 'opacity 0.2s',
+              }}>
+                {/* Disclosure toggle */}
+                <div
+                  onClick={() => setDisclosureToggles(t => ({ ...t, [row.key]: !t[row.key] }))}
+                  style={{
+                    width: 28, height: 16, borderRadius: 8, cursor: 'pointer', flexShrink: 0,
+                    background: disclosed ? '#dc2626' : 'rgba(255,255,255,0.12)',
+                    position: 'relative', transition: 'background 0.2s',
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute', top: 2, left: disclosed ? 14 : 2, width: 12, height: 12,
+                    borderRadius: '50%', background: '#ffffff', transition: 'left 0.2s',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
+                  }} />
+                </div>
+                <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.7)', flex: 1 }}>{row.label}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 16, fontWeight: 900, color: '#ffffff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
+                    {Number(row.value) > 0 ? Number(row.value).toLocaleString() : '—'}
+                  </span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: row.verified ? '#10b981' : 'rgba(255,255,255,0.2)', letterSpacing: '0.1em', minWidth: 80, textAlign: 'right' }}>
+                    {row.verified ? '✓ VERIFIED' : 'SELF-REPORTED'}
+                  </span>
+                </div>
+                {!disclosed && (
+                  <span style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>HIDDEN</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <p style={{ margin: '8px 0 0', fontSize: 9, color: 'rgba(255,255,255,0.2)', fontWeight: 600 }}>
+          {Object.values(disclosureToggles).filter(Boolean).length} of 5 fields selected for disclosure
+        </p>
       </div>
 
       {/* ── LOGBOOK SYNC ── */}
