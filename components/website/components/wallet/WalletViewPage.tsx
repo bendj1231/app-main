@@ -361,21 +361,34 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       packed.set(new Uint8Array(ciphertext), 12);
       const encryptedBlob = new Blob([packed], { type: 'application/octet-stream' });
 
-      // ── STEP 2: Upload encrypted blob to private Supabase Storage ───────────
-      // Path: {userId}/{credentialType}/{timestamp}.enc
-      // Bucket is private — no public URL, RLS-scoped to owner only
+      // ── STEP 2: Get presigned PUT URL from edge function ────────────────────
+      // Edge function scopes the object key to userId — cross-user access impossible
       const ext = file.name.split('.').pop() || 'bin';
-      const storagePath = `${session.user.id}/${slotKey}/${Date.now()}.${ext}.enc`;
+      const presignRes = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/r2-presign-upload`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ credentialType: slotKey, fileExt: ext, fileSizeBytes: encryptedBlob.size }),
+        }
+      );
+      const presignJson = await presignRes.json();
+      if (!presignRes.ok) throw new Error(presignJson.error || 'Failed to get upload URL');
+      const { uploadUrl, objectKey } = presignJson;
 
-      const { error: uploadError } = await supabase.storage
-        .from('credential-photos')
-        .upload(storagePath, encryptedBlob, { upsert: true, contentType: 'application/octet-stream' });
-      if (uploadError) throw new Error(uploadError.message);
+      // ── STEP 3: PUT encrypted blob directly to R2 (browser → R2, no proxy) ─
+      // Server never sees the plaintext — only the encrypted octet-stream
+      const putRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/octet-stream' },
+        body: encryptedBlob,
+      });
+      if (!putRes.ok) throw new Error(`R2 upload failed: ${putRes.status}`);
 
-      // ── STEP 3: Store path reference (NOT a public URL) on profile ──────────
+      // ── STEP 4: Store object key reference (NOT a URL) on profile ───────────
       const pathField = `${slotKey}_photo_path`;
-      await supabase.from('profiles').update({ [pathField]: storagePath }).eq('id', session.user.id);
-      setProfile((prev: any) => prev ? { ...prev, [pathField]: storagePath } : prev);
+      await supabase.from('profiles').update({ [pathField]: objectKey }).eq('id', session.user.id);
+      setProfile((prev: any) => prev ? { ...prev, [pathField]: objectKey } : prev);
 
     } catch (err: any) {
       setPhotoError(p => ({ ...p, [slotKey]: err.message }));
