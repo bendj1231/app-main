@@ -122,6 +122,7 @@ const HomeTab: React.FC<{
   profile: any; walletChecks: any[]; onNavigate: (p: string) => void; setTab: (t: TabId) => void;
   enrolledInFoundation: boolean; airlines: any[];
 }> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines }) => {
+  const { user: auth0User } = useAuth0();
   const [visible, setVisible] = React.useState(false);
   const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
     try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
@@ -220,8 +221,6 @@ const HomeTab: React.FC<{
   };
 
   React.useEffect(() => { const t = setTimeout(() => setVisible(true), 80); return () => clearTimeout(t); }, []);
-
-  const { user: auth0User } = useAuth0();
   const score   = profile?.recognition_score ?? 0;
   const hours   = profile?.total_flight_hours ?? 0;
   const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
