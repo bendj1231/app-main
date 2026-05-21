@@ -336,15 +336,17 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       if (!session?.access_token || !session.user?.id) throw new Error('Not logged in');
 
       // ── STEP 1: Client-side AES-256-GCM encryption ──────────────────────────
-      // Derive a 256-bit encryption key from the user's access token + user ID
-      // This key never leaves the device and is not stored anywhere
+      // Key is derived from the stable userId (UUID) — same key every session.
+      // The access_token rotates and must NOT be used as key material.
+      // PBKDF2(userId, salt="pr-vault-v1"+userId, 200k rounds) → AES-256-GCM key
+      const uid = session.user.id;
       const keyMaterial = await crypto.subtle.importKey(
         'raw',
-        new TextEncoder().encode(session.access_token.slice(0, 32).padEnd(32, '0')),
+        new TextEncoder().encode(uid),
         { name: 'PBKDF2' }, false, ['deriveKey']
       );
       const encKey = await crypto.subtle.deriveKey(
-        { name: 'PBKDF2', salt: new TextEncoder().encode(session.user.id), iterations: 100000, hash: 'SHA-256' },
+        { name: 'PBKDF2', salt: new TextEncoder().encode(`pr-vault-v1:${uid}`), iterations: 200000, hash: 'SHA-256' },
         keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt']
       );
 
