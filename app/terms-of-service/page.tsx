@@ -538,6 +538,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                         ['(b) Restricted Document Ingestion & Zero-Sight Vaulting', 'Subscribing aviation enterprises may upload highly confidential, non-public operational parameters — including localised financial packages, layover structures, contract durations, and training bond covenants — directly into an isolated session vault. The Platform Operator functions strictly as a neutral technical conduit for this payload and possesses zero technical capability, access rights, or administrative keys to read, audit, or scrape the contents of these private enterprise documents.'],
                                         ['(c) Affirmative Read-Receipt Verification', 'Access to the enterprise\'s private Stage 2 documentation is completely blocked until the User explicitly clicks the designated acknowledgement prompt. Executing this prompt generates a cryptographically secured, timestamped read-receipt transmitted back to the initiating enterprise. This receipt serves as irrefutable technical confirmation that the User has actively accessed and engaged with the confidential document payload, constituting a valid electronic acknowledgement under the Electronic Transactions Act (Cap. 88).'],
                                         ['(d) Mandatory Non-Disclosure & Anti-Leakage Bound', 'All documentation exposed within Stage 2 is explicitly deemed Proprietary Intellectual Property of the issuing aviation enterprise. The User is structurally barred from extracting, downloading, copying, or screenshotting the Stage 2 interface payload. Any unauthorised disclosure, public dissemination, or competitive leakage of these financial terms by the User constitutes a material breach of these Terms, resulting in immediate infrastructure termination and absolute legal liability localised strictly between the User and the affected enterprise. The Platform Operator bears zero liability for any downstream contractual, labour, or bond-enforcement dispute arising between the User and the enterprise from the contents of Stage 2 documentation.'],
+                                        ['(e) Ephemeral 24-Hour Non-Engagement Auto-Destruct Protocol', 'In the event that the User explicitly declines the Stage 2 invitation, or fails to actively respond or execute the affirmative acknowledgement prompt within a hard window of twenty-four (24) hours from the initial system notification timestamp, the underlying document routing pointers and access tokens shall automatically fail closed. The platform\'s automated pruning engines will execute an immediate, destructive memory deallocation, wiping the ephemeral session metadata from all active database cache engines within 24 hours of non-engagement or explicit rejection. Once this window expires, the invitation is permanently revoked and the sensitive enterprise data payload is rendered completely irrecoverable. The User acknowledges that this automated data expiration is a non-negotiable security parameter designed to enforce strict data minimization and protect the absolute confidentiality of the issuing aviation enterprise. The Platform Operator bears zero liability for any missed opportunity, lost employment prospect, or expired contractual offer resulting from the User\'s failure to respond within the designated 24-hour compliance window.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                             <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
@@ -564,7 +565,21 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                         <p className="text-blue-500 text-[10px]">Zero document content exposed</p>
                                     </div>
                                 </div>
-                                <div className="text-center text-slate-400 font-bold">↓ User affirmative click ↓</div>
+                                <div className="text-center text-slate-400 font-bold">↓ User responds within 24 hours ↓</div>
+                                <div className="flex items-center gap-3 justify-center mb-1">
+                                    <div className="border border-slate-300 rounded-lg px-3 py-1.5 bg-white text-center w-52">
+                                        <p className="font-black text-slate-600 text-[10px] uppercase">Decline or No Response</p>
+                                        <p className="text-red-600 text-[10px] font-black">Auto-Destruct Triggered</p>
+                                        <p className="text-slate-500 text-[10px]">Session metadata wiped · Payload irrecoverable</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">|</div>
+                                    <div className="border border-slate-300 rounded-lg px-3 py-1.5 bg-white text-center w-52">
+                                        <p className="font-black text-slate-600 text-[10px] uppercase">Affirmative Click</p>
+                                        <p className="text-emerald-600 text-[10px] font-black">Stage 2 Lens Opens</p>
+                                        <p className="text-slate-500 text-[10px]">Read-receipt locked · ETA Cap. 88</p>
+                                    </div>
+                                </div>
+                                <div className="text-center text-slate-400 font-bold">↓ affirmative path only ↓</div>
                                 <div className="flex items-center gap-3 justify-center">
                                     <div className="border-2 border-amber-400 rounded-lg px-4 py-2 bg-amber-50 text-center w-52">
                                         <p className="font-black text-amber-800 text-[10px] uppercase">Cryptographic Timestamp</p>
