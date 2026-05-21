@@ -50,6 +50,9 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
   const [fading, setFading] = useState(false);
   const [hasSession, setHasSession] = useState(false);
   const [sessionUser, setSessionUser] = useState<any>(null);
+  const [manualPasskey, setManualPasskey] = useState('');
+  const [showManualInput, setShowManualInput] = useState(false);
+  const [manualError, setManualError] = useState('');
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -448,6 +451,67 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
               Enter via Google Passkey
             </button>
           </div>
+
+          {/* Divider */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '12px 0 0' }}>
+            <div style={{ flex: 1, height: 1, background: '#f1f5f9' }} />
+            <span style={{ fontSize: 9, color: '#94a3b8', fontWeight: 500 }}>or paste manually</span>
+            <div style={{ flex: 1, height: 1, background: '#f1f5f9' }} />
+          </div>
+
+          {/* Manual passkey input toggle */}
+          {!showManualInput ? (
+            <button
+              onClick={() => setShowManualInput(true)}
+              style={{ width: '100%', marginTop: 8, padding: '8px 0', background: 'transparent', border: 'none', fontSize: 10, color: '#64748b', cursor: 'pointer', textDecoration: 'underline', textDecorationStyle: 'dotted', letterSpacing: '0.03em' }}
+            >
+              Enter passkey manually (from Notes / iCloud)
+            </button>
+          ) : (
+            <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <label style={{ fontSize: 10, fontWeight: 700, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Paste Passkey</label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="password"
+                  value={manualPasskey}
+                  onChange={e => { setManualPasskey(e.target.value); setManualError(''); }}
+                  placeholder="Paste your saved passkey here…"
+                  autoComplete="current-password webauthn"
+                  style={{
+                    width: '100%', padding: '10px 12px', paddingRight: 38,
+                    border: `1px solid ${manualError ? '#fecaca' : '#e2e8f0'}`,
+                    borderRadius: 8, fontSize: 12, color: '#0f172a',
+                    background: '#f8fafc', outline: 'none', boxSizing: 'border-box',
+                    fontFamily: 'monospace', letterSpacing: '0.1em',
+                  }}
+                />
+                <svg
+                  width="13" height="13" viewBox="0 0 24 24" fill="none"
+                  stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              {manualError && <p style={{ fontSize: 10, color: '#dc2626', margin: 0 }}>⚠ {manualError}</p>}
+              <button
+                onClick={() => {
+                  if (!manualPasskey.trim()) { setManualError('Please paste your passkey first.'); return; }
+                  runPostAuth();
+                }}
+                style={{
+                  width: '100%', padding: '10px 0', borderRadius: 8, border: 'none',
+                  background: '#dc2626', color: '#ffffff', fontSize: 11, fontWeight: 700,
+                  letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+                }}
+              >
+                Unlock Wallet
+              </button>
+              <p style={{ fontSize: 9, color: '#94a3b8', textAlign: 'center', margin: 0, lineHeight: 1.5 }}>
+                Supports iCloud Keychain, Notes, or any saved passkey string
+              </p>
+            </div>
+          )}
 
           <p style={{ fontSize: 9, color: '#94a3b8', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
             Private key never leaves your device · Google Password Manager
