@@ -130,15 +130,6 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
   const unreadCount = allNotifs.filter(n => n.type === 'error' || n.type === 'warning').length;
 
-  if (loading) {
-    return (
-      <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: 32, height: 32, border: '3px solid #fecaca', borderTopColor: '#dc2626', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    );
-  }
-
   const handleSync = useCallback((id: string) => {
     if (connectedProviders.has(id)) {
       setSyncMsg({ id, msg: 'Already connected' });
@@ -174,6 +165,15 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     { id: 'zululog',     name: 'Zulu Log',         sub: 'Web',                logo: '🌐',  tier: 'pending'   },
     { id: 'airlog',      name: 'Air Log',          sub: 'Mobile',             logo: '📲',  tier: 'pending'   },
   ];
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 32, height: 32, border: '3px solid #fecaca', borderTopColor: '#dc2626', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
   const name = safe(profile?.display_name) || safe(profile?.full_name) || 'PILOT';
   const did  = profile?.id ? `0x${profile.id.replace(/-/g,'').slice(0,16).toUpperCase()}` : '—';
