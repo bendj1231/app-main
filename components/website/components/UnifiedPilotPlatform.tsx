@@ -3717,7 +3717,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold text-white truncate">{displayName}</p>
-                <p className="text-[10px] text-white/40 truncate">{currentUser?.email}</p>
+                <p className="text-[10px] text-white/40 truncate">
+                  {profileData?.pilot_id ? <span className="text-orange-400/70 font-mono font-bold mr-1">{profileData.pilot_id}</span> : null}
+                  {currentUser?.email}
+                </p>
               </div>
               <button onClick={handleLogout} className="text-white/30 hover:text-white/80 transition-colors flex-shrink-0">
                 <LogOut size={14} />

@@ -465,7 +465,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           <div>
             <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase' }}>PilotRecognition</p>
             <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.01em' }}>Credential Wallet</p>
-            <p style={{ margin: 0, fontSize: 9, color: '#64748b', fontWeight: 600 }}>Profile Mode: Standard B2B</p>
+            <p style={{ margin: 0, fontSize: 9, color: '#64748b', fontWeight: 600 }}>
+              Profile Mode: Standard B2B
+              {profile?.pilot_id && <span style={{ marginLeft: 6, color: '#dc2626', fontFamily: 'monospace', fontWeight: 800, letterSpacing: '0.05em' }}>· {profile.pilot_id}</span>}
+            </p>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
