@@ -1816,6 +1816,36 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
           </div>
 
         </div>
+
+        {/* ── LEGAL NOTICE ── */}
+        <div style={{ marginTop: 16, padding: '14px 20px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 8 }}>Legal & Data Terms</p>
+          <p style={{ fontSize: 11, color: '#64748b', lineHeight: 1.7, margin: 0 }}>
+            By storing credentials in your Pilot Vault you agree to PilotRecognition's{' '}
+            <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 600, textDecoration: 'underline' }}>Terms of Service</a>
+            {' '}and{' '}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 600, textDecoration: 'underline' }}>Privacy Policy</a>.
+            {' '}Credential data is encrypted at rest using AES-256-GCM. Raw PII is never transmitted to third parties without your explicit consent.
+            Verification checks are processed by{' '}
+            <a href="https://veremark.com" target="_blank" rel="noopener noreferrer" style={{ color: '#475569', fontWeight: 600, textDecoration: 'underline' }}>Veremark</a>
+            {' '}under their{' '}
+            <a href="https://veremark.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#475569', fontWeight: 600, textDecoration: 'underline' }}>Data Processing Agreement</a>.
+            {' '}You may revoke data access at any time from Settings → Consent & Privacy.
+          </p>
+          <div style={{ display: 'flex', gap: 16, marginTop: 10, flexWrap: 'wrap' }}>
+            {[
+              { label: 'GDPR Art. 9 Compliant', color: '#3b82f6' },
+              { label: 'Illinois BIPA', color: '#8b5cf6' },
+              { label: 'PDPA (Philippines)', color: '#10b981' },
+              { label: 'UAE PDPL', color: '#f59e0b' },
+            ].map(({ label, color }) => (
+              <span key={label} style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color, textTransform: 'uppercase', padding: '2px 8px', border: `1px solid ${color}30`, borderRadius: 4, background: `${color}08` }}>
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+
       </motion.div>
     );
   }
