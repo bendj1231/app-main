@@ -1646,6 +1646,110 @@ export default function UCFOfficialReleasePage() {
 
           <hr className="my-6 border-slate-200" />
 
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-2 scroll-mt-24">CPO Counter-Brief — The Commercial Case</h3>
+          <p className="text-slate-500 text-sm italic mb-5">The following addresses the three most common enterprise procurement objections raised by Airline Chief Procurement Officers and HR Directors evaluating PilotRecognition against traditional job boards.</p>
+
+          <div className="space-y-6 mb-8">
+
+            <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="bg-slate-900 px-5 py-3">
+                <p className="text-white font-bold text-sm">Objection 1 — "You're a sourcing desert. Job boards give me volume. I need raw numbers."</p>
+              </div>
+              <div className="px-5 py-4 bg-white">
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>You're measuring the wrong metric.</strong> Job boards sell volume. PilotRecognition sells pre-qualified yield rate. Those are different products with different unit economics.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3">A $200/month LinkedIn post generates 2,000 resumes. Your ATS filters out 80% — that's 1,600 profiles your recruiters still touch to discard. At $60–80/hour loaded and 3 minutes per discard: <strong>1,600 profiles = 80 recruiter hours = $4,800–$6,400 per posting cycle</strong> before a single qualified candidate reaches a chief pilot's desk.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-4">PilotRecognition surfaces wide-body Singapore captains who have already cleared a civil registry check, hold valid medical certificates, and carry active Terminal 3 status. Your recruiter touches those files only. <strong>Zero discard time. First-pass yield rate structurally near 100%</strong> — pre-qualification happened upstream, paid for by the pilot, not by you.</p>
+                <div className="overflow-x-auto mb-3">
+                  <table className="w-full text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-slate-100">
+                        <th className="text-left px-3 py-2 font-semibold text-slate-700 border border-slate-200">Metric</th>
+                        <th className="text-left px-3 py-2 font-semibold text-red-600 border border-slate-200">LinkedIn $200/month</th>
+                        <th className="text-left px-3 py-2 font-semibold text-emerald-700 border border-slate-200">PilotRecognition $1,000/year</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        ['Candidates touched per hire', '~400', '~14'],
+                        ['Recruiter hours per hire', '80–120 hrs', '5–10 hrs'],
+                        ['True cost-per-qualified-screen', '~$5,200/cycle', '~$83/month'],
+                        ['Pre-qualification burden', "Your team's time", "Pilot's own cost"],
+                        ['Credential verification', 'Manual + CAAS query', 'Already done'],
+                        ['ATS integration', 'Native', 'Tokenized export (roadmap)'],
+                        ['Compensation confidentiality', 'PDF NDA (legally soft)', 'Cryptographic vault (structurally enforced)'],
+                        ['Candidate ghosting protection', 'None', '24-hour auto-destruct'],
+                      ].map(([metric, linkedin, pr], i) => (
+                        <tr key={metric} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                          <td className="px-3 py-2 border border-slate-200 text-slate-700 font-medium">{metric}</td>
+                          <td className="px-3 py-2 border border-slate-200 text-red-600">{linkedin}</td>
+                          <td className="px-3 py-2 border border-slate-200 text-emerald-700 font-semibold">{pr}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-slate-500 text-xs italic">On pool density at launch: that's a network-effects problem, not an architecture problem. LinkedIn had 14 users once. The question is whether you want to be on the platform before your competitors lock in the verified pipeline — or after.</p>
+              </div>
+            </div>
+
+            <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="bg-slate-900 px-5 py-3">
+                <p className="text-white font-bold text-sm">Objection 2 — "Your zero-persistence vault breaks our Workday/Taleo ATS workflow."</p>
+              </div>
+              <div className="px-5 py-4 bg-white">
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>You've described a gap we need to close — and can.</strong> The zero-persistence rule protects credential <em>content</em> — licence numbers, medical certificate details, identity data. That data never leaves the pilot's client-side container. What <em>can</em> be exported is a structured, tokenized Candidate Record:</p>
+                <ul className="space-y-1 mb-4 ml-4">
+                  {[
+                    'Terminal 3 status confirmation (verified / not verified)',
+                    'Credential category (CPL/ATPL, medical class, type ratings held)',
+                    'Last verification timestamp',
+                    'Hours tier (bracket, not raw figure)',
+                    'Pathway match score',
+                  ].map(item => (
+                    <li key={item} className="text-slate-700 text-sm flex items-start gap-2">
+                      <span className="text-emerald-600 mt-0.5 flex-shrink-0">✓</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-slate-700 text-sm leading-relaxed mb-2">No PII. No licence numbers. No raw identity data. Just the compliance-grade signal your chief pilots need for their CAAS audit trail, in a format your ATS can ingest via API.</p>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 mt-2">
+                  <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1">Product Roadmap Item</p>
+                  <p className="text-blue-700 text-xs leading-relaxed">Workday tokenized candidate record export — PDPA-compliant, zero PII, aviation-grade compliance signal. Your ATS gets what it needs. Your pilot's identity never touches your servers. You pass your next CAAS hiring audit automatically.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="bg-slate-900 px-5 py-3">
+                <p className="text-white font-bold text-sm">Objection 3 — "Stage 2 forces us to show our hand too early. Traditional NDAs give us more control."</p>
+              </div>
+              <div className="px-5 py-4 bg-white">
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>You've described the traditional model's problem, not ours.</strong> In your model: LinkedIn → phone screen → interview → references → NDA → contract. That's a 6–8 week cycle before a candidate sees compensation. In a global pilot shortage, your best candidates are interviewing at three carriers simultaneously. By week 6, you've lost them.</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-3"><strong>Stage 2 solves the speed problem while keeping confidentiality intact.</strong> The vault isn't a show-your-hand moment — it's a targeted interest signal. You only invite a pilot to Stage 2 after reviewing their Terminal 3 profile and deciding they're worth pursuing. That's equivalent to your phone screen — except instead of a recruiter spending 45 minutes on a call, the pilot reads the package in 3 minutes, decides yes or no, and you have a binding read-receipt as legal confirmation of engagement.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                  <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+                    <p className="text-red-800 text-xs font-bold uppercase tracking-wide mb-1">Traditional PDF NDA</p>
+                    <p className="text-red-700 text-xs">Enforceable only to the depth of your litigation budget. A pilot who leaks your training bond to a competitor knows you won't sue them for $50K in legal fees over a $15K breach.</p>
+                  </div>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
+                    <p className="text-emerald-800 text-xs font-bold uppercase tracking-wide mb-1">Stage 2 Cryptographic Vault</p>
+                    <p className="text-emerald-700 text-xs">Structurally more leak-resistant. Document never leaves the vault. 24-hour auto-destruct eliminates window-shopping and intelligence gathering. Read-receipt creates an audit trail no PDF NDA provides.</p>
+                  </div>
+                </div>
+                <p className="text-slate-500 text-xs italic">The 24-hour expiry is a pilot ghosting protection feature for the airline, not against it. If a pilot doesn't open your Stage 2 document within 24 hours, they're not serious. You've lost nothing — no NDA signed with a time-waster, no compensation data leaked.</p>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 rounded-xl px-6 py-5">
+              <p className="text-white font-bold text-sm mb-2">The Board Answer</p>
+              <p className="text-slate-300 text-sm leading-relaxed">LinkedIn is a volume play for entry-level. For wide-body captain recruitment in a global pilot shortage, the cost of a bad hire — sim time, type rating, 90-day probation, then termination — runs <strong className="text-white">$250,000–$400,000</strong>. The entire annual cost of this platform is <strong className="text-emerald-400">less than 0.5% of one bad hire.</strong></p>
+            </div>
+
+          </div>
+
+          <hr className="my-6 border-slate-200" />
+
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">FOR PILOTS: Career Pathways Page</h4>
           <p className="text-slate-700 leading-relaxed mb-4">A browsable directory of <strong>verified airline pathways</strong> with structured, timestamped requirement data. Each pathway card contains:</p>
           <ul className="space-y-1 mb-4">
