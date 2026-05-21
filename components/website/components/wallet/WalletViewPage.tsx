@@ -94,6 +94,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [debugOpen, setDebugOpen] = useState(false);
+  // Photo uploads per slot
+  const [photoUploading, setPhotoUploading] = useState<Record<string, boolean>>({});
+  const [photoError, setPhotoError] = useState<Record<string, string | null>>({});
   // IPFS / Pinata
   const [ipfsCid, setIpfsCid] = useState<string | null>(null);
   const [ipfsPinning, setIpfsPinning] = useState(false);
@@ -324,6 +327,29 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     setEditingSlot(null);
     setSlotDraft({});
   }, [profile?.id]);
+
+  const uploadCredentialPhoto = useCallback(async (slotKey: string, file: File) => {
+    setPhotoUploading(p => ({ ...p, [slotKey]: true }));
+    setPhotoError(p => ({ ...p, [slotKey]: null }));
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not logged in');
+      const form = new FormData();
+      form.append('file', file);
+      form.append('credentialType', slotKey);
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pinata-upload-credential-photo`,
+        { method: 'POST', headers: { Authorization: `Bearer ${session.access_token}` }, body: form }
+      );
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Upload failed');
+      setProfile((prev: any) => prev ? { ...prev, [`${slotKey}_photo_url`]: json.gatewayUrl } : prev);
+    } catch (err: any) {
+      setPhotoError(p => ({ ...p, [slotKey]: err.message }));
+    } finally {
+      setPhotoUploading(p => ({ ...p, [slotKey]: false }));
+    }
+  }, []);
 
   const handleCSV = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -1149,6 +1175,42 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                                 />
                               </div>
                             ))}
+                            {/* Photo upload */}
+                            <div style={{ marginBottom: 8 }}>
+                              <label style={{ display: 'block', fontSize: 8, fontWeight: 700, color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+                                📎 Upload Photo / Scan of Document
+                              </label>
+                              {profile?.[`${slot.key}_photo_url`] && (
+                                <div style={{ marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                  <span style={{ fontSize: 8, color: '#16a34a', fontWeight: 700 }}>✓ Photo uploaded</span>
+                                  <a href={profile[`${slot.key}_photo_url`]} target="_blank" rel="noopener noreferrer"
+                                    style={{ fontSize: 8, color: '#2563eb', textDecoration: 'underline' }}>View on IPFS →</a>
+                                </div>
+                              )}
+                              <label style={{
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                                padding: '8px 0', borderRadius: 6, border: '1.5px dashed #cbd5e1',
+                                background: '#f8fafc', cursor: photoUploading[slot.key] ? 'wait' : 'pointer',
+                                fontSize: 9, color: '#64748b', fontWeight: 600,
+                              }}>
+                                <input
+                                  type="file"
+                                  accept="image/*,application/pdf"
+                                  style={{ display: 'none' }}
+                                  disabled={photoUploading[slot.key]}
+                                  onChange={e => {
+                                    const f = e.target.files?.[0];
+                                    if (f) uploadCredentialPhoto(slot.key, f);
+                                    e.target.value = '';
+                                  }}
+                                />
+                                {photoUploading[slot.key] ? '⟳ Uploading to IPFS…' : '📷 Choose photo or PDF'}
+                              </label>
+                              {photoError[slot.key] && (
+                                <p style={{ margin: '4px 0 0', fontSize: 8, color: '#dc2626' }}>{photoError[slot.key]}</p>
+                              )}
+                              <p style={{ margin: '3px 0 0', fontSize: 7, color: '#94a3b8' }}>Max 10MB · Stored privately on IPFS · Only visible to you</p>
+                            </div>
                             {saveError && <p style={{ margin: '0 0 6px', fontSize: 9, color: '#dc2626' }}>{saveError}</p>}
                             <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
                               <button
