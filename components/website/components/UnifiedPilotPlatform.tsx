@@ -1715,7 +1715,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
                       ? '#f0fdf4'
                       : '#ffffff',
                     border: `1px solid ${isEmpty ? '#e2e8f0' : isExpired ? '#fecaca' : isVerified ? '#bbf7d0' : '#e2e8f0'}`,
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',`
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                     borderRadius: 10,
                     padding: '10px 12px',
                     cursor: 'pointer',
