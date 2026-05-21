@@ -525,6 +525,70 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                     </section>
 
                     {/* ══════════════════════════════════════════════
+                        SECTION 5.6 — ASYMMETRIC ENTERPRISE VAULT
+                    ══════════════════════════════════════════════ */}
+                    <section>
+                        <h3 className="font-semibold text-slate-800 mb-2">5.6 The Asymmetric Enterprise Vault &amp; Confidential Contractual Handshake</h3>
+                        <p className="mb-3 text-sm">Following the initial User-initiated submission under Section 5.5, a subscribing aviation enterprise may escalate engagement to a private, isolated negotiation layer designated as <strong>Stage 2: Operational &amp; Financial Evaluation</strong>. This layer operates under heightened confidentiality controls and zero-sight vaulting architecture.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['(a) The Phase 2 Invitation Model', 'Following an initial user-initiated submission under Section 5.5, a subscribing aviation enterprise may issue an operational request to advance the User to the private negotiation layer, designated as "Stage 2: Operational & Financial Evaluation." The Platform infrastructure routes an automated system notification alerting the User of the enterprise\'s targeted interest. No content from the enterprise\'s private payload is exposed to the User until an affirmative acknowledgement action is executed.'],
+                                        ['(b) Restricted Document Ingestion & Zero-Sight Vaulting', 'Subscribing aviation enterprises may upload highly confidential, non-public operational parameters — including localised financial packages, layover structures, contract durations, and training bond covenants — directly into an isolated session vault. The Platform Operator functions strictly as a neutral technical conduit for this payload and possesses zero technical capability, access rights, or administrative keys to read, audit, or scrape the contents of these private enterprise documents.'],
+                                        ['(c) Affirmative Read-Receipt Verification', 'Access to the enterprise\'s private Stage 2 documentation is completely blocked until the User explicitly clicks the designated acknowledgement prompt. Executing this prompt generates a cryptographically secured, timestamped read-receipt transmitted back to the initiating enterprise. This receipt serves as irrefutable technical confirmation that the User has actively accessed and engaged with the confidential document payload, constituting a valid electronic acknowledgement under the Electronic Transactions Act (Cap. 88).'],
+                                        ['(d) Mandatory Non-Disclosure & Anti-Leakage Bound', 'All documentation exposed within Stage 2 is explicitly deemed Proprietary Intellectual Property of the issuing aviation enterprise. The User is structurally barred from extracting, downloading, copying, or screenshotting the Stage 2 interface payload. Any unauthorised disclosure, public dissemination, or competitive leakage of these financial terms by the User constitutes a material breach of these Terms, resulting in immediate infrastructure termination and absolute legal liability localised strictly between the User and the affected enterprise. The Platform Operator bears zero liability for any downstream contractual, labour, or bond-enforcement dispute arising between the User and the enterprise from the contents of Stage 2 documentation.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Stage 2 flow diagram */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4 overflow-x-auto">
+                            <div className="min-w-max text-xs space-y-2">
+                                <div className="flex items-center gap-3 justify-center">
+                                    <div className="border-2 border-emerald-400 rounded-lg px-4 py-2 bg-emerald-50 text-center w-52">
+                                        <p className="font-black text-emerald-800 text-[10px] uppercase">Terminal 3 Recruiter</p>
+                                        <p className="text-emerald-600 text-[10px]">Reviews S5.5 read-only preview</p>
+                                        <p className="text-emerald-700 text-[10px] font-black">Executes "Advance to Stage 2"</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-blue-300 rounded-lg px-4 py-2 bg-blue-50 text-center w-52">
+                                        <p className="font-black text-blue-800 text-[10px] uppercase">System Notification</p>
+                                        <p className="text-blue-600 text-[10px]">Routes invitation to User</p>
+                                        <p className="text-blue-500 text-[10px]">Zero document content exposed</p>
+                                    </div>
+                                </div>
+                                <div className="text-center text-slate-400 font-bold">↓ User affirmative click ↓</div>
+                                <div className="flex items-center gap-3 justify-center">
+                                    <div className="border-2 border-amber-400 rounded-lg px-4 py-2 bg-amber-50 text-center w-52">
+                                        <p className="font-black text-amber-800 text-[10px] uppercase">Cryptographic Timestamp</p>
+                                        <p className="text-amber-600 text-[10px]">Read-receipt issued to enterprise</p>
+                                        <p className="text-amber-700 text-[10px] font-black">ETA Cap. 88 audit trail locked</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-red-400 rounded-lg px-4 py-2 bg-red-50 text-center w-52">
+                                        <p className="font-black text-red-800 text-[10px] uppercase">Private Stage 2 Lens</p>
+                                        <p className="text-red-600 text-[10px]">Financial terms · Bond covenants</p>
+                                        <p className="text-red-700 text-[10px] font-black">Download / Screenshot Blocked</p>
+                                        <p className="text-red-500 text-[10px]">Platform Operator: Zero visibility</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="border-l-4 border-red-500 bg-red-50 rounded-r-xl px-5 py-3 mb-2">
+                            <p className="text-red-800 text-xs font-bold uppercase tracking-wide mb-1">Platform Zero-Sight Assertion — Stage 2 Vault</p>
+                            <p className="text-red-900 text-xs leading-relaxed">The Platform Operator is architecturally barred from reading, auditing, or storing the contents of any Stage 2 enterprise document payload. All liability for the contractual terms, financial obligations, training bond enforceability, and downstream labour disputes arising from Stage 2 documentation rests exclusively between the issuing aviation enterprise and the User as independent parties. The Platform's role is limited strictly to routing the encrypted notification, generating the timestamped read-receipt, and enforcing the zero-extraction caching block.</p>
+                        </div>
+                    </section>
+
+                    {/* ══════════════════════════════════════════════
                         SECTION 6 — COMPREHENSIVE TOPOLOGY
                     ══════════════════════════════════════════════ */}
                     <section>
