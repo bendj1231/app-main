@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut, Sun, Moon, Plus } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
@@ -21,6 +22,8 @@ interface PilotRecognitionProfilePageProps {
     onNavigate: (page: string) => void;
     onBack?: () => void;
     embedded?: boolean;
+    injectedProfile?: any;
+    injectedWalletData?: { did: string | null; credentials: any[] };
 }
 
 interface RecognitionScore {
@@ -42,6 +45,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     onNavigate,
     onBack,
     embedded = false,
+    injectedProfile,
+    injectedWalletData,
 }) => {
     const [profileData, setProfileData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -72,6 +77,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const { score: recognitionScoreData, loading: scoreDataLoading } = useRecognitionScore();
     const [theme, setTheme] = useState<'dark' | 'light'>('dark');
     const [isPremium, setIsPremium] = useState(false);
+    const [showWalletGate, setShowWalletGate] = useState(false);
     const { currentUser } = useAuth();
 
     // Check subscription status using auth context user (avoids lock race)
@@ -500,44 +506,39 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     const fetchProfileData = async () => {
         try {
-            // Fetch user's profile data directly from Supabase
-            
-            const { data: { user }, error: userError } = await supabase.auth.getUser();
-            
-            if (userError) {
-                console.error('[ERROR] Supabase auth error:', userError);
-                setProfileData({
-                    user_id: '',
-                    total_hours: 0,
+            // If injected profile from Auth0 wallet — use it directly
+            if (injectedProfile) {
+                const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+                const merged = {
+                    user_id: injectedProfile.id,
+                    total_hours: injectedProfile.total_flight_hours || 0,
                     recent_flight_experience: 'N/A',
-                    overall_recognition_score: 0,
-                    recognition_score: 0,
-                    license_type: 'None',
+                    overall_recognition_score: injectedProfile.recognition_score || 0,
+                    recognition_score: injectedProfile.recognition_score || 0,
+                    license_type: injectedProfile.current_occupation || 'None',
                     medical_status: 'None',
-                    pathway_interests: [],
-                    certifications: [],
-                    type_ratings: [],
-                    enrolled_programs: []
-                });
+                    pathway_interests: injectedProfile.pathway_interests || [],
+                    certifications: injectedProfile.certifications || [],
+                    type_ratings: injectedProfile.aircraft_types || [],
+                    enrolled_programs: injectedProfile.enrolled_programs || [],
+                    full_name: isCiphertext(injectedProfile.full_name) ? '' : (injectedProfile.full_name || injectedProfile.display_name || ''),
+                    display_name: injectedProfile.display_name || '',
+                    profile_image_url: injectedProfile.profile_image_url || '',
+                    wallet_did: injectedWalletData?.did || injectedProfile.wallet_did || null,
+                    wallet_credentials: injectedWalletData?.credentials || [],
+                    ...injectedProfile,
+                };
+                setProfileData(merged);
+                if (merged.profile_image_url) setProfileImageUrl(merged.profile_image_url);
                 setLoading(false);
                 return;
             }
+
+            // Fetch user's profile data directly from Supabase
+            const { data: { user }, error: userError } = await supabase.auth.getUser();
             
-            if (!user) {
-                console.error('[ERROR] No user found in Supabase auth');
-                setProfileData({
-                    user_id: '',
-                    total_hours: 0,
-                    recent_flight_experience: 'N/A',
-                    overall_recognition_score: 0,
-                    recognition_score: 0,
-                    license_type: 'None',
-                    medical_status: 'None',
-                    pathway_interests: [],
-                    certifications: [],
-                    type_ratings: [],
-                    enrolled_programs: []
-                });
+            if (userError || !user) {
+                console.warn('[PROFILE] No Supabase session — waiting for injected profile');
                 setLoading(false);
                 return;
             }
@@ -1052,91 +1053,87 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         ) : null}
                 </div>
 
-                {/* ── PROFILE TOKEN CARD ── */}
+                {/* ── WALLET GATE OVERLAY ── */}
+                {showWalletGate && (
+                    <WalletLoadingScreen
+                        onComplete={() => {
+                            setShowWalletGate(false);
+                            window.dispatchEvent(new CustomEvent('switch-platform-tab', { detail: 'wallet' }));
+                        }}
+                    />
+                )}
+
+                {/* ── ACCESS WALLET BANNER ── */}
                 <div style={{ padding: '1.5rem clamp(1.5rem, 4vw, 3.5rem) 0' }}>
                     <div style={{
-                        background: 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.95) 100%)',
-                        border: '1px solid rgba(14,165,233,0.3)',
-                        borderRadius: '20px',
-                        padding: '1.5rem',
-                        backdropFilter: 'blur(14px)',
+                        background: 'white',
+                        border: '1px solid #e2e8f0',
+                        overflow: 'hidden',
+                        boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
                     }}>
-                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-                            <div style={{ flex: 1, minWidth: '240px' }}>
-                                <p style={{ fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#0ea5e9', fontWeight: 700, marginBottom: '0.5rem' }}>
-                                    Your Profile Token — Private
-                                </p>
-                                {profileData?.profile_token ? (
-                                    <>
-                                        <p style={{
-                                            fontFamily: 'monospace',
-                                            fontSize: '1rem',
-                                            fontWeight: 700,
-                                            color: '#f8fafc',
-                                            letterSpacing: '0.05em',
-                                            wordBreak: 'break-all',
-                                            marginBottom: '0.5rem'
-                                        }}>
-                                            {profileData.profile_token}
-                                        </p>
-                                        <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
-                                            Generated: {profileData.profile_token_generated_at
-                                                ? new Date(profileData.profile_token_generated_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-                                                : 'Unknown'}
-                                            &nbsp;·&nbsp;SHA-256 · v1
-                                        </p>
-                                    </>
-                                ) : (
-                                    <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
-                                        Token not yet generated — complete your profile to generate
-                                    </p>
-                                )}
+                        {/* Red top bar */}
+                        <div style={{ height: 4, background: '#dc2626' }} />
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.25rem 1.5rem', flexWrap: 'wrap' }}>
+                            {/* Icon */}
+                            <div style={{ width: 48, height: 48, borderRadius: 12, background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
                             </div>
 
-                            {/* Stats hashed into token */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', minWidth: '180px' }}>
-                                <p style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 700 }}>
-                                    Hashed Fields
+                            {/* Text */}
+                            <div style={{ flex: 1, minWidth: 200 }}>
+                                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 4 }}>
+                                    Pilot Credential Vault
                                 </p>
-                                {[
-                                    { label: 'Flight Hours', value: `${profileData?.current_flight_hours || profileData?.total_hours || 0} hrs` },
-                                    { label: 'License', value: profileData?.license_id || profileData?.license_type || 'Not set' },
-                                    { label: 'Country', value: profileData?.country_of_license || '—' },
-                                    { label: 'Verification', value: profileData?.verification_status || 'Unverified' },
-                                ].map(item => (
-                                    <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                                        <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)' }}>{item.label}</span>
-                                        <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>{item.value}</span>
-                                    </div>
-                                ))}
+                                <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4 }}>
+                                    Access Your Wallet
+                                </p>
+                                <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>
+                                    Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.
+                                </p>
                             </div>
-                        </div>
 
-                        <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-                            <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.25)' }}>
-                                🔒 Only visible to you when logged in · Airlines see only the token fingerprint, not your raw data
-                            </p>
-                            {profileData?.profile_token && (
-                                <button
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(profileData.profile_token);
-                                    }}
-                                    style={{
-                                        fontSize: '0.65rem',
-                                        fontWeight: 700,
-                                        letterSpacing: '0.1em',
-                                        textTransform: 'uppercase',
-                                        color: '#0ea5e9',
-                                        background: 'rgba(14,165,233,0.1)',
-                                        border: '1px solid rgba(14,165,233,0.3)',
-                                        borderRadius: '8px',
-                                        padding: '0.35rem 0.75rem',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    Copy Token
-                                </button>
-                            )}
+                            {/* Status pills */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#94a3b8', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 10, fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                                        {profileData?.verification_status || 'Unverified'}
+                                    </span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    <span style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>AES-256-GCM</span>
+                                </div>
+                            </div>
+
+                            {/* CTA button */}
+                            <button
+                                onClick={() => setShowWalletGate(true)}
+                                style={{
+                                    background: '#dc2626',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '10px 24px',
+                                    fontSize: 12,
+                                    fontWeight: 700,
+                                    letterSpacing: '0.08em',
+                                    textTransform: 'uppercase',
+                                    cursor: 'pointer',
+                                    flexShrink: 0,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    transition: 'background 0.15s',
+                                }}
+                                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
+                                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
+                            >
+                                Open Wallet
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>

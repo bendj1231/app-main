@@ -24,6 +24,7 @@ const IndustryStewardshipPage = lazy(() => import('@/components/website/componen
 const ContactSupportPage = lazy(() => import('@/components/website/components/ContactSupportPage').then(m => ({ default: m.ContactSupportPage })));
 const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
 const AccountConfirmationPage = lazy(() => import('@/components/website/components/AccountConfirmationPage').then(m => ({ default: m.AccountConfirmationPage })));
+const PasskeyRecoveryPage = lazy(() => import('@/components/website/components/PasskeyRecoveryPage').then(m => ({ default: m.PasskeyRecoveryPage })));
 const EmiratesAtplPage = lazy(() => import('@/components/website/components/pathways/EmiratesAtplPage').then(m => ({ default: m.EmiratesAtplPage })));
 const EmergingAirTaxiPage = lazy(() => import('@/components/website/components/pathways/EmergingAirTaxiPage').then(m => ({ default: m.EmergingAirTaxiPage })));
 const PilotedDronesPage = lazy(() => import('@/components/website/components/pathways/PilotedDronesPage').then(m => ({ default: m.PilotedDronesPage })));
@@ -116,6 +117,7 @@ const SpecializedOperationsIndex = lazy(() => import('@/portal/pages/Specialized
 const CareerPathwaysIndex = lazy(() => import('@/portal/pages/CareerPathwaysIndex'));
 const AccessPortal2Page = lazy(() => import('@/components/website/components/AccessPortal2Page').then(m => ({ default: m.AccessPortal2Page })));
 const UnifiedPilotPlatform = lazy(() => import('@/components/website/components/UnifiedPilotPlatform').then(m => ({ default: m.UnifiedPilotPlatform })));
+const WalletRouter = lazy(() => import('@/components/website/components/wallet/WalletRouter').then(m => ({ default: m.WalletRouter })));
 const ExaminationPortal = lazy(() => import('@/components/website/components/examinations/ExaminationPortal'));
 const EnterpriseAccessPage = lazy(() => import('@/app/enterprise-access/page'));
 const EnterpriseAccessLearnMorePage = lazy(() => import('@/app/enterprise-access/learn-more/page'));
@@ -139,6 +141,7 @@ const VerificationServicePage = lazy(() => import('@/app/verification-service/pa
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
 const IssuerPolicyPage = lazy(() => import('@/app/issuer-policy/page'));
 const EnterpriseVerificationDashboard = lazy(() => import('@/app/enterprise/verification-dashboard/page'));
+const ATOLaunchKitPage = lazy(() => import('@/components/website/components/ato/ATOLaunchKitPage').then(m => ({ default: m.ATOLaunchKitPage })));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -171,6 +174,20 @@ export const AppRoutes = () => {
   const handleBack = (fallback: string = '/') => {
     navigate(fallback);
   };
+
+  // Subdomain routing for wallet.pilotrecognition.com
+  // Also activates on localhost:3000?wallet=1 for local dev testing
+  const isWalletSubdomain = window.location.hostname === 'wallet.pilotrecognition.com';
+  const isWalletLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    && new URLSearchParams(window.location.search).get('wallet') === '1';
+
+  if (isWalletSubdomain || isWalletLocalDev) {
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <WalletRouter />
+      </Suspense>
+    );
+  }
 
   // Subdomain routing for platform.pilotrecognition.com
   // NOTE: must be AFTER all hooks to avoid React error #310
@@ -250,6 +267,7 @@ export const AppRoutes = () => {
       <Route path="/terms-of-service" element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/issuer-policy" element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/account-confirmation" element={<AccountConfirmationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/passkey-recovery" element={<PasskeyRecoveryPage onNavigate={handleNavigate} />} />
 
       {/* Onboarding routes */}
       <Route path="/onboarding-pilot-portal" element={<OnboardingPilotPortal onBack={() => handleBack()} onNavigate={handleNavigate} />} />
@@ -321,6 +339,7 @@ export const AppRoutes = () => {
       <Route path="/mentor-profile" element={<MentorProfilePage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/oem-register" element={<OEMPartnerRegisterPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/ato-dashboard" element={<ATODashboardPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/for-flight-schools" element={<ATOLaunchKitPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/score-optimization" element={<ScoreOptimizationPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-score-info" element={<RecognitionScoreInfoPage onBack={() => handleBack('/pilot-recognition-profile')} onNavigate={handleNavigate} />} />
       <Route path="/recognition-career-matches" element={<RecognitionCareerMatchesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />

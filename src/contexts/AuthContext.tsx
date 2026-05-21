@@ -482,6 +482,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 
                 console.log('✅ Portal profile created:', userId);
 
+                // Provision walt.id wallet in background (non-blocking)
+                try {
+                    const { data: { session: currentSession } } = await supabase.auth.getSession();
+                    if (currentSession?.access_token) {
+                        fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/wallet-provision`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${currentSession.access_token}`,
+                                'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+                            },
+                            body: JSON.stringify({
+                                profile_id: userId,
+                                auth0_id: userData.auth0Id || userId,
+                                email: email,
+                                name: userData.fullName || email.split('@')[0],
+                            }),
+                        }).then(r => r.json()).then(d => {
+                            if (d.success) console.log('✅ Walt.id wallet provisioned:', d.walletId);
+                            else console.warn('⚠️ Walt.id wallet provision skipped (wallet API offline):', d.error);
+                        }).catch(e => console.warn('⚠️ Walt.id wallet provision failed (non-critical):', e));
+                    }
+                } catch (walletErr) {
+                    console.warn('⚠️ Wallet provision non-critical error:', walletErr);
+                }
+
                 // Referral attribution — read code stored by /ref/[code] landing page
                 try {
                     const refCode = typeof document !== 'undefined'
@@ -528,6 +554,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 } catch (refErr) {
                     console.warn('⚠️ Referral attribution failed (non-critical):', refErr);
                 }
+
+                // Generate referral code for new pilot (non-blocking)
+                try {
+                    supabase.functions.invoke('generate-referral', {
+                        body: { auth0Id: userData.auth0Id || userId, profileId: userId },
+                    }).then(r => {
+                        if (r.data?.referralCode) console.log('✅ Referral code generated:', r.data.referralCode);
+                    }).catch(() => {});
+                } catch {}
 
                 console.log('🔵 Profile created successfully. Proceeding to next step...');
             }

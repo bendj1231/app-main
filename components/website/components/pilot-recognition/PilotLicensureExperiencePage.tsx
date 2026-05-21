@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
 import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2 } from 'lucide-react';
 
@@ -185,7 +186,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
 }) => {
   // Get auth context as fallback when accessed directly via URL
   const { currentUser, userProfile: authUserProfile } = useAuth();
-  const { writeLicensure, updateProfile } = useVaultProfile();
+  const { user: auth0User } = useAuth0();
+  const { readProfile, readLicensure, writeLicensure, updateProfile } = useVaultProfile();
   
   // Use prop if provided (nested navigation), otherwise use auth context (direct URL access)
   const userProfile = userProfileProp || authUserProfile || (currentUser ? {
@@ -309,21 +311,28 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   useEffect(() => {
     const loadExistingData = async () => {
       console.log('PilotLicensureExperiencePage - userProfile:', userProfile);
-      const userId = userProfile?.id || userProfile?.uid;
+      let userId = userProfile?.id || userProfile?.uid;
+
+      // Auth0-only fallback: resolve Supabase profile ID via auth0_id
+      if (!userId && auth0User?.sub) {
+        const { data: p } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('auth0_id', auth0User.sub)
+          .maybeSingle();
+        if (p?.id) userId = p.id;
+      }
+
       console.log('PilotLicensureExperiencePage - userId:', userId);
       if (!userId) {
         console.log('No userProfile id available, skipping data load');
-        setDataLoaded(true); // Mark as loaded so loader hides
+        setDataLoaded(true);
         return;
       }
 
       try {
-        // First, fetch from profiles table (account creation data)
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('full_name, display_name, phone, country, date_of_birth, email, onboarding_responses, nationality, flight_school_address, license_id, program_interests, pathway_interests, insight_interests')
-          .eq('id', userId)
-          .single();
+        // Use vault hook to fetch + decrypt profiles table
+        const { data: profileData, error: profileError } = await readProfile(userId);
 
         // Set initial values from profiles (if available)
         let initialData: any = {};
@@ -388,12 +397,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           }
         }
 
-        // Then, fetch from pilot_licensure_experience table
-        const { data, error } = await supabase
-          .from('pilot_licensure_experience')
-          .select('*')
-          .eq('user_id', userId)
-          .maybeSingle();
+        // Use vault hook to fetch + decrypt licensure table
+        const { data, error } = await readLicensure(userId);
 
         // Also fetch from pilot_profiles for flight hours and license data
         const { data: pilotProfileData, error: pilotProfileError } = await supabase

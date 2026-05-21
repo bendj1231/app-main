@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { TopNavbar } from './TopNavbar';
@@ -8,6 +9,8 @@ import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
 import { DataControllerAgreementModal } from './DataControllerAgreementModal';
 import { supabase } from '../../../src/lib/supabase';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
+import { issueAndStoreCredential } from '../../../src/lib/wallet';
+import { getVaultKeyFromAuth0Token, encryptFields } from '../../../lib/vault';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
@@ -182,9 +185,17 @@ const OCCUPATIONS = [
 
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
-    const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
+    const { loginWithRedirect, user, isAuthenticated, isLoading, getIdTokenClaims } = useAuth0();
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
+
+    // Must run synchronously before hooks/effects so AuthContext doesn't skip session restoration
+    if (isSetup && typeof localStorage !== 'undefined') {
+        localStorage.removeItem('explicitLogout');
+        // Clear stale wallet state on every setup page load — re-evaluated after auth0 user loads
+        sessionStorage.removeItem('wallet_claimed_provider');
+        sessionStorage.removeItem('wallet_did');
+    }
 
     // Setup form state
     const [firstName, setFirstName] = useState('');
@@ -215,34 +226,34 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [showWalletSelector, setShowWalletSelector] = useState(false);
     const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
     const [walletConnected, setWalletConnected] = useState(false);
+    const [showPasskeyCancelled, setShowPasskeyCancelled] = useState(false);
+    const [backupRecoveryKey, setBackupRecoveryKey] = useState('');
+    const [recoveryCopied, setRecoveryCopied] = useState(false);
     const [activeInstrument, setActiveInstrument] = useState(1);
     const [showWalletFirst, setShowWalletFirst] = useState(false);
-    const [walletStorageChoice, setWalletStorageChoice] = useState<string[]>([]);
+    const [walletStorageChoice, setWalletStorageChoice] = useState<string>('both');
     const [showWalletStorage, setShowWalletStorage] = useState(false);
+    const [walletCreating, setWalletCreating] = useState<'idle' | 'generating' | 'syncing' | 'active'>('idle');
+    const [consentChecked, setConsentChecked] = useState(false);
+    const [showBiometricNotice, setShowBiometricNotice] = useState(false);
 
     const CREDENTIAL_WALLETS = [
         { id: 'walt', name: 'walt.id Wallet', logo: '🔐', desc: 'DID · W3C VC · OID4VCI · open-source', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `${import.meta.env.VITE_WALT_WALLET_URL}?offer=${encodeURIComponent(url)}` },
-        { id: 'talao', name: 'Talao Wallet', logo: '🪪', desc: 'DID · eIDAS 2.0 · OID4VCI · SD-JWT', color: 'text-emerald-400', border: 'border-emerald-400/40', href: (url: string) => `https://app.talao.co/wallet?credential_offer=${encodeURIComponent(url)}` },
-        { id: 'lissi', name: 'Lissi ID Wallet', logo: '🔵', desc: 'DID · W3C VC · OID4VCI · enterprise', color: 'text-blue-400', border: 'border-blue-400/40', href: (url: string) => `https://lissi.id/wallet?credential_offer=${encodeURIComponent(url)}` },
-        { id: 'dock', name: 'Dock Wallet', logo: '⚓', desc: 'DID · W3C VC · decentralized identity', color: 'text-orange-400', border: 'border-orange-400/40', href: (url: string) => `https://certs.dock.io/claim?offer=${encodeURIComponent(url)}` },
-        { id: 'iota', name: 'IOTA Identity Wallet', logo: '🌐', desc: 'DID · W3C VC · self-sovereign identity', color: 'text-purple-400', border: 'border-purple-400/40', href: (url: string) => url },
-        { id: 'apple', name: 'Apple Wallet', logo: '🍎', desc: 'Coming soon', color: 'text-white/30', border: 'border-white/10', href: null },
-        { id: 'google', name: 'Google Wallet', logo: '💳', desc: 'Coming soon', color: 'text-white/30', border: 'border-white/10', href: null },
     ];
 
     const LOGBOOK_PROVIDERS = [
         { id: 'myflightbook', name: 'MyFlightBook', region: 'Global', logo: '📘', logoImg: 'https://myflightbook.com/logbook/Images/mfblogonew.png', badge: 'Free', status: 'available', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
-        { id: 'flightcrewview', name: 'Flight Crew View', region: 'Global', logo: '✈️', status: 'available', method: 'API Passkey', methodColor: 'text-purple-400' },
-        { id: 'rbpilot', name: 'RB Pilot Logbook', region: 'Global', logo: '🗒️', badge: 'CAE', status: 'coming_soon', method: 'Direct API', methodColor: 'text-green-400', desc: 'Developer registration required — contact rb-support@cae.com' },
-        { id: 'foreflight', name: 'ForeFlight', region: 'Global', logo: '📊', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
-        { id: 'logten', name: 'LogTen Pro', region: 'Global', logo: '📋', badge: 'Free 50hrs', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400', desc: 'API v2.0 on GitHub · Free for first 50 flight hours' },
-        { id: 'safelog', name: 'Safelog', region: 'Global', logo: '🛡️', status: 'available', method: 'CSV Import', methodColor: 'text-orange-400' },
-        { id: 'easa_logbook', name: 'EASA Digital Logbook', region: 'Europe', logo: '🇪🇺', status: 'coming_soon', method: 'OAuth 2.0', methodColor: 'text-[#00b4d8]' },
-        { id: 'manual', name: 'Manual Entry', region: 'All Regions', logo: '✏️', status: 'available', method: 'Self-Reported', methodColor: 'text-white/40' },
     ];
 
     useEffect(() => {
         setEnableShader(shouldEnable3DEffects());
+    }, []);
+
+    useEffect(() => {
+        const ref = new URLSearchParams(window.location.search).get('ref');
+        if (ref) {
+            document.cookie = `pr_ref=${ref}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+        }
     }, []);
 
     useEffect(() => {
@@ -255,8 +266,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     useEffect(() => {
         if (isSetup && user) {
             setDisplayName(user.name || user.email?.split('@')[0] || '');
+            // Cache so wallet button can resolve it even if hook re-renders slowly
+            if (user.sub) sessionStorage.setItem('mfb_auth0_id', user.sub);
         }
     }, [isSetup, user]);
+
 
     // Issue verifiable credential directly via walt.id issuer
     const issueFlightHoursCredential = async (hours: number, auth0Id: string) => {
@@ -338,9 +352,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
         const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
 
-        // Restore wallet state if returning from walt.id (stored when clicked)
+        // Restore wallet state only if it belongs to the current user
         const savedWallet = sessionStorage.getItem('wallet_claimed_provider');
-        if (savedWallet) {
+        const savedAuth0Id = sessionStorage.getItem('mfb_auth0_id');
+        // Clear stale wallet state if a different user is now logged in
+        if (auth0Id && savedAuth0Id && savedAuth0Id !== auth0Id) {
+            sessionStorage.removeItem('wallet_claimed_provider');
+            sessionStorage.removeItem('wallet_did');
+            sessionStorage.removeItem('mfb_auth0_id');
+        }
+        if (savedWallet && auth0Id && savedAuth0Id === auth0Id) {
             setWalletConnected(true);
             setSelectedWallet(savedWallet);
             // Unlock Commit card if we have logbook + wallet
@@ -371,30 +392,77 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }, []);
 
     const handleSaveProfile = async () => {
+        console.log('🔵 [handleSaveProfile] CALLED');
         const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
         const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
         const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
+        console.log('🔵 [handleSaveProfile] fields:', { cleanFirst, cleanLast, cleanName, occupation });
         if (!cleanFirst || cleanFirst.length < 1) { setSaveError('First name is required.'); return; }
         if (!cleanLast || cleanLast.length < 1) { setSaveError('Last name is required.'); return; }
         if (!cleanName || cleanName.length < 2) { setSaveError('Callsign is required.'); return; }
         if (!OCCUPATIONS.includes(occupation)) { setSaveError('Please select a valid role.'); return; }
         const wholeHrs = parseInt(hoursWhole);
         const mins = parseInt(hoursMinutes || '0');
-        if (!hoursWhole || isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999) { setSaveError('Please enter valid flight hours.'); return; }
+        if (hoursWhole && (isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999)) { setSaveError('Please enter valid flight hours.'); return; }
         if (isNaN(mins) || mins < 0 || mins > 59) { setSaveError('Minutes must be between 0 and 59.'); return; }
         const hours = wholeHrs + mins / 60;
         const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+        console.log('🔵 [handleSaveProfile] auth0Id:', auth0Id, '| user?.sub:', user?.sub);
         if (!auth0Id) { setSaveError('Authentication error. Please sign in again.'); return; }
         setSaving(true);
         setSaveError('');
         try {
+            console.log('🔵 [handleSaveProfile] saving to supabase...');
             const { error } = await supabase
                 .from('profiles')
                 .update({ display_name: cleanName, first_name: cleanFirst, last_name: cleanLast, current_occupation: occupation, date_of_birth: dob || null, total_hours: hours, aircraft_types: aircraftTypes })
                 .eq('auth0_id', auth0Id);
-            if (error) throw error;
+            if (error) { console.error('🔴 [handleSaveProfile] supabase error:', error); throw error; }
+            console.log('✅ [handleSaveProfile] profile saved');
+
+            // Passkey registration
+            console.log('🔵 [Passkey] PublicKeyCredential available:', !!window.PublicKeyCredential);
+            console.log('🔵 [Passkey] isSecureContext:', window.isSecureContext);
+            console.log('🔵 [Passkey] hostname:', window.location.hostname);
+            if (window.PublicKeyCredential) {
+                try {
+                    const { data: { session: sbSession } } = await supabase.auth.getSession();
+                    console.log('🔵 [Passkey] supabase session:', sbSession?.user?.id || 'none');
+                    const userId = sbSession?.user?.id || auth0Id;
+                    const userEmail = sbSession?.user?.email || user?.email || auth0Id;
+                    console.log('🔵 [Passkey] userId:', userId, '| userEmail:', userEmail);
+                    const challengeBytes = new Uint8Array(32);
+                    crypto.getRandomValues(challengeBytes);
+                    const userIdBytes = new TextEncoder().encode(userId);
+                    const rpId = window.location.hostname === 'localhost'
+                        ? 'localhost'
+                        : window.location.hostname.replace('www.', '');
+                    console.log('🔵 [Passkey] calling credentials.create with rpId:', rpId);
+                    const result = await navigator.credentials.create({
+                        publicKey: {
+                            challenge: challengeBytes.buffer,
+                            rp: { name: 'PilotRecognition Wallet', id: rpId },
+                            user: { id: userIdBytes.buffer, name: userEmail, displayName: cleanName },
+                            pubKeyCredParams: [
+                                { type: 'public-key', alg: -7 },
+                                { type: 'public-key', alg: -257 },
+                            ],
+                            authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
+                            timeout: 60000,
+                        },
+                    });
+                    console.log('✅ [Passkey] credentials.create result:', result ? result.type : 'null');
+                } catch (passkeyErr: any) {
+                    console.error('🔴 [Passkey] credentials.create FAILED:', passkeyErr?.name, passkeyErr?.message, passkeyErr);
+                }
+            } else {
+                console.warn('🟡 [Passkey] PublicKeyCredential not available — WebAuthn not supported');
+            }
+
+            console.log('🔵 [handleSaveProfile] navigating to platform...');
             onNavigate('platform');
-        } catch {
+        } catch (err) {
+            console.error('🔴 [handleSaveProfile] outer catch:', err);
             setSaveError('Failed to save. Please try again.');
         } finally {
             setSaving(false);
@@ -451,8 +519,26 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     if (isSetup && (isAuthenticated || authTimedOut || (!isLoading && logbookSynced))) {
         return (
             <>
-            <div style={{ minHeight: '100vh', background: '#0c1120', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: '#0c1120' }}>
+            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+
+                {/* ── Shader background ── */}
+                <div className="fixed inset-0 z-0">
+                    {enableShader ? (
+                        <MeshGradient
+                            className="w-full h-full"
+                            colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
+                            speed={0.22}
+                        />
+                    ) : (
+                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
+                    )}
+                    {/* Frosted glass smoke-blur overlay */}
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(15,23,42,0.45) 0%, rgba(30,58,95,0.35) 50%, rgba(15,23,42,0.65) 100%)', backdropFilter: 'blur(18px)', WebkitBackdropFilter: 'blur(18px)' }} />
+                    {/* Vignette */}
+                    <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%)' }} />
+                </div>
+
+                <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
                     <h1 className="text-base font-bold tracking-tight">
                         <span className="text-white">PILOT</span><span className="text-red-400">RECOGNITION</span>
                     </h1>
@@ -463,13 +549,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         ← Cancel
                     </button>
                 </div>
-                <div style={{ flex: 1, overflowY: 'auto', padding: '48px 24px 64px' }}>
+                <div style={{ flex: 1, overflowY: 'auto', padding: '48px 24px 64px', position: 'relative', zIndex: 10 }}>
                     <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
                         {/* Header */}
                         <div style={{ marginBottom: '40px' }}>
                             <p style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>Account Created</p>
                             <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 8px 0' }}>Complete your pilot profile</h2>
-                            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>6 steps — takes about 2 minutes</p>
+                            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>4 steps — takes about 2 minutes</p>
                         </div>
 
                         <style>{`
@@ -552,7 +638,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                         {/* Progress strip */}
                         <div style={{ display: 'flex', gap: '6px', marginBottom: '32px' }}>
-                            {[1,2,3,4,5,6].map(n => (
+                            {[1,2,3,4].map(n => (
                                 <div key={n} style={{ flex: 1, height: '3px', borderRadius: '9999px', background: activeInstrument > n ? '#22c55e' : activeInstrument === n ? '#dc2626' : 'rgba(255,255,255,0.1)', transition: 'background 0.4s' }} />
                             ))}
                         </div>
@@ -687,7 +773,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
                             <div className="step-card step-card-active" style={{ flex: 1, minWidth: '480px' }}>
                                 <span className={`fic-status-dot ${activeInstrument > 2 ? 'fic-dot-done' : activeInstrument === 2 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">Classification</div>
+                                <div className="fic-title">ATC: Identify Yourself</div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                     {/* ── LICENCE DETAILS ── */}
                                     <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9' }}>Licence Details</div>
@@ -900,13 +986,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {/* Step 2 right-side text */}
                             {activeInstrument === 2 && (
                                 <div style={{ width: '260px', flexShrink: 0, paddingTop: '8px' }}>
-                                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>Step 2 of 6</p>
+                                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>ATC Calling…</p>
                                     <p style={{ fontSize: '30px', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: 1.2, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
                                         Identify yourself,{' '}
                                         <span style={{ color: '#ef4444', fontWeight: 700 }}>pilot</span>
+                                        {' '}— and your{' '}
+                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
                                     </p>
                                     <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 20px 0' }}>
-                                        Select your licence type and aircraft category to unlock your pathway access level.
+                                        State your licence, issuing authority, and aircraft category. Squawk ident to unlock your pathway access level.
                                     </p>
                                     {occupation && (() => {
                                         const msg: Record<string, { headline: string; sub: string }> = {
@@ -935,11 +1023,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             </div>
                             </>)}{/* end step-2 row */}
 
-                            {/* ── STEP 3: Flight Time ── */}
+                            {/* ── STEP 3: Flight Hours & Logbook ── */}
                             {activeInstrument === 3 && (<>
                             <div className="step-card step-card-active">
                                 <span className={`fic-status-dot ${activeInstrument > 3 ? 'fic-dot-done' : activeInstrument === 3 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">Flight Time</div>
+                                <div className="fic-title">Flight Hours &amp; Logbook</div>
+                                <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '2px' }}>Estimated Total Flight Hours <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none', fontSize: '10px' }}>(optional — you can skip)</span></div>
                                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                     <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => setHoursWhole(e.target.value)} placeholder="250" disabled={activeInstrument < 3} />
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>HRS</span>
@@ -955,87 +1044,26 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 {/* Logbook provider — inline */}
                                 <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Logbook Provider</div>
+                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Logbook Provider <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
                                     <p style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.55, margin: 0 }}>
-                                        Connect your digital logbook <em>or</em> use the default <strong>PilotRecognition Credential Wallet</strong> (walt.id) to record your hours — cryptographically secured and stored across your chosen infrastructure.
+                                        Optionally connect your digital logbook to sync hours automatically.
                                     </p>
-                                    <div style={{ display: 'flex', gap: '8px' }}>
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowLogbookModal(true)}
-                                            disabled={activeInstrument < 3}
-                                            style={{ flex: 1, padding: '9px 8px', background: providerConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: activeInstrument < 3 ? 'not-allowed' : 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
-                                            {providerConnected ? '✓ Connected' : 'Digital Logbook'}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => { setShowWalletFirst(true); setShowWalletStorage(p => !p); }}
-                                            disabled={activeInstrument < 3}
-                                            style={{ flex: 1, padding: '9px 8px', background: showWalletFirst ? '#f0fdf4' : '#f8fafc', border: `1px solid ${showWalletFirst ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: showWalletFirst ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: activeInstrument < 3 ? 'not-allowed' : 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
-                                            {showWalletFirst ? '✓ walt.id' : 'Direct to Wallet'}
-                                        </button>
-                                    </div>
-                                    {/* walt.id storage backend selector */}
-                                    {showWalletStorage && (
-                                        <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                <span style={{ fontSize: '15px' }}>🔐</span>
-                                                <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>walt.id</span>
-                                                <span style={{ fontSize: '10px', color: '#64748b' }}>— hosted on PilotRecognition infrastructure</span>
-                                            </div>
-                                            <p style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.55, margin: 0 }}>
-                                                Your credential will be cryptographically signed and stored across the infrastructure you choose below. <strong>pilotrecognition.com recommends selecting Both</strong> — multi-engine redundancy means your credential remains accessible even when one server is down, preventing outages from blocking wallet access.
-                                            </p>
-                                            <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Choose Storage Backend</div>
-                                            {[
-                                                { id: 'supabase', label: 'Supabase', desc: 'PostgreSQL · RLS encrypted', icon: '🟢' },
-                                                { id: 'firebase', label: 'Firebase', desc: 'Firestore · Google Cloud', icon: '🔶' },
-                                                { id: 'both', label: 'Both', desc: 'Multi-engine · Recommended ★', icon: '⚡', recommended: true },
-                                            ].map(opt => {
-                                                const isActive = opt.id === 'both' ? walletStorageChoice.length === 0 && showWalletFirst : walletStorageChoice.includes(opt.id);
-                                                return (
-                                                    <button key={opt.id} type="button"
-                                                        onClick={() => {
-                                                            if (opt.id === 'both') { setWalletStorageChoice([]); }
-                                                            else { setWalletStorageChoice([opt.id]); }
-                                                            setShowWalletStorage(false);
-                                                        }}
-                                                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 10px', background: isActive ? '#0f172a' : '#ffffff', border: `1px solid ${isActive ? '#0f172a' : '#e2e8f0'}`, borderRadius: '8px', cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}>
-                                                        <span style={{ fontSize: '14px' }}>{opt.icon}</span>
-                                                        <div style={{ flex: 1 }}>
-                                                            <div style={{ fontSize: '12px', fontWeight: 700, color: isActive ? '#fff' : '#0f172a' }}>{opt.label}</div>
-                                                            <div style={{ fontSize: '10px', color: isActive ? 'rgba(255,255,255,0.6)' : '#64748b' }}>{opt.desc}</div>
-                                                        </div>
-                                                        {isActive && <span style={{ fontSize: '12px', color: '#22c55e' }}>✓</span>}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    )}
-                                    {providerConnected && (
-                                        <button
-                                            type="button"
-                                            onClick={async () => {
-                                                const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
-                                                const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
-                                                if (auth0Id && hrs > 0) await issueFlightHoursCredential(hrs, auth0Id);
-                                            }}
-                                            style={{ width: '100%', padding: '8px', background: '#00b4d8', border: '1px solid #00b4d8', borderRadius: '6px', color: 'white', fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
-                                            Create Flight Hours Credential →
-                                        </button>
-                                    )}
-                                    {/* Confirm — only enabled when hours entered AND provider/wallet chosen */}
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowLogbookModal(true)}
+                                        disabled={activeInstrument < 3}
+                                        style={{ width: '100%', padding: '9px 8px', background: providerConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: activeInstrument < 3 ? 'not-allowed' : 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
+                                        {providerConnected ? '✓ Logbook Connected' : 'Connect Digital Logbook'}
+                                    </button>
+                                    {/* Confirm — hours are optional, user can skip */}
                                     {(() => {
-                                        const hoursOk = !!hoursWhole && parseFloat(hoursWhole) >= 0;
-                                        const providerOk = providerConnected || showWalletFirst;
-                                        const ok = hoursOk && providerOk;
+                                        const hasHours = !!hoursWhole && parseFloat(hoursWhole) > 0;
                                         return (
                                             <button
                                                 type="button"
-                                                disabled={!ok}
-                                                onClick={() => { if (ok) setActiveInstrument(i => Math.max(i, 4)); }}
-                                                style={{ width: '100%', padding: '10px', background: ok ? '#0f172a' : '#f1f5f9', border: 'none', borderRadius: '8px', color: ok ? '#fff' : '#94a3b8', fontSize: '13px', fontWeight: 600, cursor: ok ? 'pointer' : 'not-allowed', transition: 'all 0.2s', marginTop: '4px' }}>
-                                                {ok ? 'Confirm Flight Time →' : 'Select a logbook provider to continue'}
+                                                onClick={() => setActiveInstrument(i => Math.max(i, 4))}
+                                                style={{ width: '100%', padding: '10px', background: '#0f172a', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', marginTop: '4px' }}>
+                                                {hasHours ? 'Confirm Flight Hours →' : 'Skip for Now →'}
                                             </button>
                                         );
                                     })()}
@@ -1056,65 +1084,236 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {activeInstrument === 4 && (<>
                             <div className="step-card step-card-active">
                                 <span className={`fic-status-dot ${walletConnected ? 'fic-dot-done' : activeInstrument === 4 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">Pilot Credentials Wallet</div>
+                                <div className="fic-title">Your Pilot Wallet</div>
+                                <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '14px' }}>
+                                    We automatically create a secure digital ID for you — like a passport that lives inside your profile. It holds your verified credentials and lets airlines confirm your qualifications instantly, with no paperwork.
+                                </div>
+
+                                {/* Passkey warning */}
+                                <div style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.35)', borderRadius: '10px', padding: '12px 14px', marginBottom: '14px' }}>
+                                    <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '12px' }}>
+                                        <span style={{ fontSize: '16px', lineHeight: 1, flexShrink: 0 }}>🔐</span>
+                                        <div>
+                                            <p style={{ fontSize: '12px', fontWeight: 700, color: '#ef4444', margin: '0 0 4px' }}>Your browser will prompt you to save a passkey</p>
+                                            <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.5 }}>
+                                                Without this key you will lose access to your wallet and be unable to retrieve your data. Save it to Touch ID, Face ID, or Google Password Manager when prompted.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                                        <img
+                                            src="/PASS.png"
+                                            alt="Safari passkey prompt"
+                                            style={{ width: '50%', maxWidth: '220px', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
+                                        />
+                                        <img
+                                            src="/CHROME.png"
+                                            alt="Chrome passkey prompt"
+                                            style={{ width: '50%', maxWidth: '220px', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
+                                        />
+                                    </div>
+                                </div>
+
                                 <button
                                     type="button"
-                                    onClick={() => { setShowWalletSelector(true); setActiveInstrument(i => Math.max(i, 5)); }}
-                                    disabled={activeInstrument < 4}
-                                    style={{ width: '100%', padding: '14px 16px', background: walletConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${walletConnected ? '#86efac' : '#e2e8f0'}`, borderRadius: '10px', color: walletConnected ? '#16a34a' : '#475569', fontSize: '14px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}
+                                    disabled={activeInstrument < 4 || walletCreating === 'generating' || walletCreating === 'syncing'}
+                                    onClick={async () => {
+                                        if (walletConnected && !showPasskeyCancelled) { onNavigate('platform'); return; }
+                                        // Resolve auth0Id — try Auth0 hook, then Supabase session sub, then sessionStorage
+                                        let auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id') || null;
+                                        if (!auth0Id) {
+                                            const { data: { session } } = await supabase.auth.getSession();
+                                            auth0Id = (session?.user?.user_metadata?.sub as string) || session?.user?.id || null;
+                                        }
+                                        const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
+                                        const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
+                                        const cleanName = displayName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
+                                        const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
+                                        try {
+                                            setWalletCreating('generating');
+                                            await new Promise(r => setTimeout(r, 900));
+                                            setWalletCreating('syncing');
+                                            setSaving(true);
+
+                                            if (!auth0Id) {
+                                                setSaveError('Authentication error. Please sign in again.');
+                                                setWalletCreating('idle');
+                                                setSaving(false);
+                                                return;
+                                            }
+
+                                            const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+                                            const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
+
+                                            // Time-bound token: base64(auth0Id + ':ts:' + timestamp) — verified server-side within 5-min window
+                                            const requestToken = btoa(`${auth0Id}:ts:${Date.now()}`);
+
+                                            // Encrypt sensitive fields client-side before sending to edge function
+                                            // Edge function stores only ciphertext — unreadable server-side
+                                            let encryptedPayload: Record<string, any> = {
+                                                displayName: cleanName,
+                                                firstName: cleanFirst,
+                                                lastName: cleanLast,
+                                                occupation,
+                                                dob: dob || null,
+                                            };
+                                            try {
+                                                const claims = await getIdTokenClaims?.();
+                                                const idToken = claims?.__raw;
+                                                if (idToken) {
+                                                    const vaultKey = await getVaultKeyFromAuth0Token(auth0Id, idToken);
+                                                    encryptedPayload = await encryptFields(
+                                                        encryptedPayload,
+                                                        ['firstName', 'lastName'],
+                                                        vaultKey
+                                                    );
+                                                }
+                                            } catch (vaultErr) {
+                                                console.warn('[vault] Encryption unavailable, proceeding with plaintext:', vaultErr);
+                                            }
+
+                                            // Edge function handles upsert — creates profile if missing, updates if exists
+                                            const res = await fetch(`${SUPABASE_URL}/functions/v1/create-wallet`, {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY },
+                                                body: JSON.stringify({
+                                                    auth0Id,
+                                                    ...encryptedPayload,
+                                                    totalHours: hrs,
+                                                    aircraftTypes,
+                                                    storageBackend: walletStorageChoice || 'supabase',
+                                                    requestToken,
+                                                }),
+                                            });
+                                            const walletData = await res.json();
+                                            if (!res.ok || !walletData.success) {
+                                                throw new Error(walletData.error || 'Wallet creation failed');
+                                            }
+                                            sessionStorage.setItem('wallet_did', walletData.did || '');
+                                            sessionStorage.setItem('wallet_claimed_provider', 'PilotRecognition Wallet');
+
+                                            setWalletCreating('active');
+                                            setSelectedWallet('walt.id Wallet');
+                                            setWalletConnected(true);
+                                            setSaving(false);
+
+                                            // Show biometric notice first, then register passkey
+                                            await new Promise<void>(resolve => {
+                                                setShowBiometricNotice(true);
+                                                const handler = () => { resolve(); };
+                                                window.addEventListener('passkey-notice-dismissed', handler, { once: true });
+                                            });
+
+                                            // Register passkey — wait for window focus first
+                                            console.log('🔵 [Passkey] Starting registration block');
+                                            console.log('🔵 [Passkey] PublicKeyCredential:', !!window.PublicKeyCredential, '| isSecureContext:', window.isSecureContext, '| hasFocus:', document.hasFocus());
+                                            let passkeySuccess = false;
+                                            if (window.PublicKeyCredential && window.isSecureContext) {
+                                                const doRegister = async (): Promise<boolean> => {
+                                                    console.log('🔵 [Passkey] doRegister called, hasFocus:', document.hasFocus());
+                                                    try {
+                                                        const { data: { session: sbSess } } = await supabase.auth.getSession();
+                                                        const pkUserId = sbSess?.user?.id || auth0Id || 'pilot-user';
+                                                        const pkEmail = sbSess?.user?.email || user?.email || pkUserId;
+                                                        const pkDisplay = cleanName || pkEmail;
+                                                        const rpId = window.location.hostname === 'localhost' ? 'localhost' : window.location.hostname.replace('www.', '');
+                                                        console.log('🔵 [Passkey] calling credentials.create, rpId:', rpId, 'userId:', pkUserId);
+                                                        const cb = new Uint8Array(32);
+                                                        crypto.getRandomValues(cb);
+                                                        await navigator.credentials.create({
+                                                            publicKey: {
+                                                                challenge: cb.buffer,
+                                                                rp: { name: 'PilotRecognition Wallet', id: rpId },
+                                                                user: { id: new TextEncoder().encode(pkUserId).buffer, name: pkEmail, displayName: pkDisplay },
+                                                                pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+                                                                authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
+                                                                timeout: 60000,
+                                                            },
+                                                        });
+                                                        console.log('✅ [Passkey] credentials.create succeeded');
+                                                        return true;
+                                                    } catch (pe: any) {
+                                                        console.error('🔴 [Passkey] credentials.create error:', pe?.name, pe?.message);
+                                                        if (pe?.name === 'NotAllowedError') return false; // cancelled
+                                                        return true; // other errors — don't block
+                                                    }
+                                                };
+
+                                                if (document.hasFocus()) {
+                                                    console.log('🔵 [Passkey] document focused — calling doRegister immediately');
+                                                    passkeySuccess = await doRegister();
+                                                } else {
+                                                    console.log('🔵 [Passkey] document NOT focused — waiting for focus event');
+                                                    passkeySuccess = await new Promise<boolean>(resolve => {
+                                                        const onFocus = async () => {
+                                                            console.log('🔵 [Passkey] focus event fired');
+                                                            window.removeEventListener('focus', onFocus);
+                                                            resolve(await doRegister());
+                                                        };
+                                                        window.addEventListener('focus', onFocus, { once: true });
+                                                        setTimeout(() => {
+                                                            console.warn('🟡 [Passkey] focus timeout — skipping passkey');
+                                                            window.removeEventListener('focus', onFocus);
+                                                            resolve(true);
+                                                        }, 3000);
+                                                    });
+                                                }
+                                            } else {
+                                                console.warn('🟡 [Passkey] Skipped — PublicKeyCredential:', !!window.PublicKeyCredential, '| isSecureContext:', window.isSecureContext);
+                                                passkeySuccess = true;
+                                            }
+
+                                            console.log('🔵 [Passkey] passkeySuccess:', passkeySuccess);
+                                            if (!passkeySuccess) {
+                                                console.log('🔵 [Passkey] User cancelled — redirecting to recovery page');
+                                                const recoveryBytes = new Uint8Array(24);
+                                                crypto.getRandomValues(recoveryBytes);
+                                                const key = Array.from(recoveryBytes)
+                                                    .map(b => b.toString(16).padStart(2, '0').toUpperCase())
+                                                    .join('')
+                                                    .match(/.{1,6}/g)!
+                                                    .join('-');
+                                                console.log('🔵 [Passkey] recovery key generated:', key);
+                                                sessionStorage.setItem('passkey_recovery_key', key);
+                                                sessionStorage.setItem('passkey_recovery_email', user?.email || '');
+                                                onNavigate('passkey-recovery');
+                                                return;
+                                            }
+
+                                            setTimeout(() => onNavigate('platform'), 1000);
+                                        } catch (e) {
+                                            console.error('Wallet creation error:', e);
+                                            setWalletCreating('idle');
+                                            setSaving(false);
+                                            setSaveError('Failed to create wallet. Please try again.');
+                                        }
+                                    }}
+                                    style={{
+                                        width: '100%', padding: '14px 16px', borderRadius: '10px',
+                                        fontSize: '14px', fontWeight: 600, cursor: walletCreating === 'generating' || walletCreating === 'syncing' ? 'wait' : 'pointer',
+                                        textAlign: 'left', transition: 'all 0.3s',
+                                        background: walletCreating === 'active' || walletConnected ? '#f0fdf4' : walletCreating === 'generating' ? '#eff6ff' : walletCreating === 'syncing' ? '#f0f9ff' : '#f8fafc',
+                                        border: `1px solid ${walletCreating === 'active' || walletConnected ? '#86efac' : walletCreating === 'generating' ? '#bfdbfe' : walletCreating === 'syncing' ? '#bae6fd' : '#e2e8f0'}`,
+                                        color: walletCreating === 'active' || walletConnected ? '#16a34a' : walletCreating === 'generating' ? '#1d4ed8' : walletCreating === 'syncing' ? '#0369a1' : '#475569',
+                                    }}
                                 >
-                                    {walletConnected ? `${selectedWallet} ✓ Connected` : 'Connect Credentials Wallet →'}
+                                    {walletCreating === 'generating' && '⏳ Generating Secure Keys...'}
+                                    {walletCreating === 'syncing' && '🔄 Registering Account & Issuing Credential...'}
+                                    {(walletCreating === 'active' || walletConnected) && '🎉 Wallet Active — Redirecting to Dashboard...'}
+                                    {walletCreating === 'idle' && '🔐 Create Wallet & Enter Platform →'}
                                 </button>
-                                <span className="fic-subtext">Decentralised identity wallet — cryptographically secured</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '8px' }}>
+                                    <span style={{ fontSize: '10px', color: '#94a3b8' }}>Decentralised identity</span>
+                                    <span style={{ fontSize: '10px', color: '#cbd5e1' }}>·</span>
+                                    <span style={{ fontSize: '10px', color: '#00b4d8', fontWeight: 600 }}>Powered by walt.id</span>
+                                </div>
                             </div>
                             <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
                                 <button type="button" onClick={() => setActiveInstrument(3)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
-                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 5))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
                             </div>
                             </>)}
 
-                            {/* ── STEP 5: Save Profile ── */}
-                            {activeInstrument === 5 && (<>
-                            <div className="step-card step-card-active">
-                                <span className={`fic-status-dot ${activeInstrument > 5 ? 'fic-dot-done' : activeInstrument === 5 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">Save Profile</div>
-                                <button
-                                    type="button"
-                                    onClick={() => { setShowWalletFirst(true); setActiveInstrument(i => Math.max(i, 6)); }}
-                                    disabled={activeInstrument < 5}
-                                    style={{ width: '100%', padding: '14px 16px', background: activeInstrument > 5 ? '#f0fdf4' : '#f8fafc', border: `1px solid ${activeInstrument > 5 ? '#86efac' : '#e2e8f0'}`, borderRadius: '10px', color: activeInstrument > 5 ? '#16a34a' : '#475569', fontSize: '14px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s' }}
-                                >
-                                    {activeInstrument > 5 ? '✓ Profile Saved' : 'Save & Continue →'}
-                                </button>
-                                <span className="fic-subtext">Save profile and proceed to final commit</span>
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-                                <button type="button" onClick={() => setActiveInstrument(4)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
-                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 6))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
-                            </div>
-                            </>)}
-
-                            {/* ── STEP 6: Commit ── */}
-                            {activeInstrument >= 6 && (<>
-                            <div className="step-card" style={{ borderColor: '#dc2626', boxShadow: '0 0 0 2px #dc2626, 0 8px 32px rgba(220,38,38,0.15)' }}>
-                                <span className={`fic-status-dot fic-dot-commit`} />
-                                <div className="fic-title">Commit</div>
-                                {saveError && <p style={{ color: '#dc2626', fontSize: '12px', margin: 0 }}>{saveError}</p>}
-                                <button
-                                    onClick={handleSaveProfile}
-                                    disabled={saving || activeInstrument < 6}
-                                    style={{ width: '100%', padding: '16px', background: '#dc2626', border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, fontSize: '15px', cursor: 'pointer', transition: 'all 0.2s', letterSpacing: '0.04em' }}
-                                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
-                                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
-                                >
-                                    {saving ? 'ENGAGING...' : 'COMPLETE PROFILE →'}
-                                </button>
-                                <span className="fic-subtext">Engage your pilot profile on PilotRecognition</span>
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-                                <button type="button" onClick={() => setActiveInstrument(5)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
-                            </div>
-                            </>)}
+                            {saveError && <p style={{ color: '#dc2626', fontSize: '11px', margin: '8px 0 0', textAlign: 'center' }}>{saveError}</p>}
 
                         </div>{/* end steps column */}
 
@@ -1125,6 +1324,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <span style={{ color: '#4ade80', fontSize: '11px', fontWeight: 600 }}>Secure Connection</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
                                 <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>Powered by Auth0</span>
+                                <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
+                                <span style={{ color: '#00b4d8', fontSize: '11px', fontWeight: 600 }}>Wallet by walt.id</span>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '4px 16px' }}>
                                 <button onClick={() => onNavigate('privacy-policy')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Privacy Policy</button>
@@ -1255,26 +1456,28 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setShowWalletSelector(false);
                                             sessionStorage.setItem('wallet_claimed_provider', w.name);
                                             
-                                            // For walt.id, open local mock wallet with credential offer
+                                            // For walt.id, issue + store in Supabase (hashed) — no external redirect
                                             if (w.id === 'walt') {
-                                                try {
-                                                    console.log('Opening local mock walt.id wallet');
-                                                    
-                                                    // Generate a fresh credential offer for the local wallet
-                                                    const localCredentialOfferUrl = 'openid-credential-offer://?credential_offer_uri=http://localhost:8080/offer';
-                                                    
-                                                    setVcCredentialUrl(localCredentialOfferUrl);
-                                                    setWalletConnected(true);
-                                                    
-                                                    // Open local mock wallet
-                                                    const localWalletUrl = 'http://localhost:8080';
-                                                    console.log('Opening local wallet:', localWalletUrl);
-                                                    window.open(localWalletUrl, '_blank');
-                                                    return;
-                                                    
-                                                } catch (err) {
-                                                    console.error('Failed to open local wallet:', err);
+                                                const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+                                                const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
+                                                if (auth0Id && hrs > 0) {
+                                                    const { data: profile } = await supabase
+                                                        .from('profiles')
+                                                        .select('id')
+                                                        .eq('auth0_id', auth0Id)
+                                                        .single();
+                                                    const result = await issueAndStoreCredential(
+                                                        auth0Id,
+                                                        profile?.id || auth0Id,
+                                                        hrs,
+                                                        walletStorageChoice as 'supabase' | 'firebase' | 'both'
+                                                    );
+                                                    if (result.success) {
+                                                        sessionStorage.setItem('vc_credential_hash', result.credential!.credentialHash);
+                                                    }
                                                 }
+                                                setWalletConnected(true);
+                                                return;
                                             }
                                             
                                             // For other wallets or fallback, open directly
@@ -1409,10 +1612,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         {/* Card */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
 
+                            {/* Consent checkbox */}
+                            <label className="flex items-start gap-3 mb-4 cursor-pointer group">
+                                <input
+                                    type="checkbox"
+                                    checked={consentChecked}
+                                    onChange={e => setConsentChecked(e.target.checked)}
+                                    className="mt-0.5 w-4 h-4 accent-red-600 flex-shrink-0 cursor-pointer"
+                                />
+                                <span className="text-xs text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
+                                    I am 16 or older and I agree to the{' '}
+                                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-white underline">Terms of Service</a>,{' '}
+                                    <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-white underline">Privacy Policy</a>, and{' '}
+                                    <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-white underline">Data Controller Agreement</a>.
+                                </span>
+                            </label>
+
                             {/* Google signup */}
                             <button
                                 onClick={handleGoogleSignup}
-                                className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 text-slate-800 font-semibold rounded-xl transition-all duration-200 mb-4 shadow-sm"
+                                disabled={!consentChecked}
+                                className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 font-semibold rounded-xl transition-all duration-200 mb-4 shadow-sm"
                             >
                                 <GoogleIcon />
                                 Sign up with Google
@@ -1431,7 +1651,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {/* Email/password signup via Auth0 Universal Login */}
                             <button
                                 onClick={handleEmailSignup}
-                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-200 text-sm tracking-wide shadow-lg shadow-blue-600/20"
+                                disabled={!consentChecked}
+                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 text-sm tracking-wide shadow-lg shadow-blue-600/20"
                             >
                                 Sign up with Email
                             </button>
@@ -1473,12 +1694,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         {/* Neutral disclaimer */}
-                        <p className="text-center text-xs text-slate-300 mt-4 leading-relaxed">
-                            You are the Data Controller. Your data is encrypted on your device before it reaches us.
-                            We cannot read, modify, or monetize your personal information. By continuing, you agree to our{' '}
-                            <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-white underline hover:text-slate-200 transition-colors">Privacy Policy & Terms</a>
-                            {' '}and the{' '}
-                            <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-white underline hover:text-slate-200 transition-colors">Data Controller Agreement</a>.
+                        <p className="text-center text-xs text-slate-400 mt-4 leading-relaxed">
+                            Your data is encrypted on your device before it reaches us. We cannot read, modify, or monetize your personal information.
                         </p>
                         </div>{/* end right column */}
                     </div>{/* end flex row */}
@@ -1523,6 +1740,98 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 onClose={() => { setShowDCAModal(false); setPendingSignupMethod(null); }}
                 onAgree={handleDCAAgree}
             />
+
+            {/* Biometric / Passkey Notice Modal */}
+            {showBiometricNotice && createPortal(
+                <div style={{ position: 'fixed', inset: 0, zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}>
+                    <div style={{ width: '100%', maxWidth: '400px', background: '#fff', borderRadius: '16px', padding: '28px 24px', boxShadow: '0 25px 60px rgba(0,0,0,0.4)' }}>
+                        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                            <span style={{ fontSize: '36px' }}>🔑</span>
+                        </div>
+                        <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', textAlign: 'center', margin: '0 0 10px' }}>Your browser will ask to save a Passkey</h3>
+                        <p style={{ fontSize: '12px', color: '#475569', lineHeight: 1.6, margin: '0 0 14px' }}>
+                            A <strong>passkey</strong> uses your device's biometrics (Touch ID, Face ID, or Windows Hello) or your password manager (Google, iCloud Keychain) to securely identify you. <strong>No biometric data leaves your device.</strong>
+                        </p>
+                        <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '12px', marginBottom: '18px' }}>
+                            <p style={{ fontSize: '11px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
+                                By clicking <strong>"Got it — Continue"</strong> you consent to your browser storing a passkey credential on this device. This is used solely to authenticate you to your PilotRecognition wallet.
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => {
+                                setShowBiometricNotice(false);
+                                window.dispatchEvent(new Event('passkey-notice-dismissed'));
+                            }}
+                            style={{ width: '100%', padding: '12px', borderRadius: '10px', border: 'none', background: '#0f172a', color: '#fff', fontSize: '14px', fontWeight: 700, cursor: 'pointer' }}
+                        >
+                            Got it — Continue
+                        </button>
+                        <p style={{ fontSize: '10px', color: '#94a3b8', textAlign: 'center', margin: '10px 0 0' }}>
+                            Covered under GDPR Art. 9 · Illinois BIPA · PDPA
+                        </p>
+                    </div>
+                </div>
+            , document.body)}
+
+            {/* Passkey Cancelled — Backup Recovery Key Modal (portal to body so it survives unmount) */}
+            {showPasskeyCancelled && createPortal(
+                <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}>
+                    <div style={{ width: '100%', maxWidth: '440px', background: '#0f172a', border: '1px solid rgba(220,38,38,0.4)', borderRadius: '16px', padding: '28px 24px', boxShadow: '0 25px 60px rgba(0,0,0,0.6)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                            <span style={{ fontSize: '22px' }}>⚠️</span>
+                            <div>
+                                <p style={{ fontSize: '14px', fontWeight: 800, color: '#ef4444', margin: 0 }}>Passkey not saved</p>
+                                <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>You cancelled the browser prompt</p>
+                            </div>
+                        </div>
+
+                        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, marginBottom: '18px' }}>
+                            Without a passkey, you will <strong style={{ color: '#ef4444' }}>permanently lose access</strong> to your wallet and all credentials stored inside. Copy your backup recovery key below and paste it into your Notes or a password manager before continuing.
+                        </p>
+
+                        {/* Recovery key display */}
+                        <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>Backup Recovery Key</p>
+                            <p style={{ fontSize: '15px', fontWeight: 700, color: '#fff', letterSpacing: '0.15em', fontFamily: 'monospace', margin: '0 0 12px', wordBreak: 'break-all' }}>{backupRecoveryKey}</p>
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(backupRecoveryKey);
+                                    setRecoveryCopied(true);
+                                }}
+                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: 700, background: recoveryCopied ? 'rgba(74,222,128,0.15)' : 'rgba(255,255,255,0.08)', color: recoveryCopied ? '#4ade80' : '#fff', transition: 'all 0.2s' }}
+                            >
+                                {recoveryCopied ? '✓ Copied to clipboard' : 'Copy Recovery Key'}
+                            </button>
+                        </div>
+
+                        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', lineHeight: 1.5, marginBottom: '18px', textAlign: 'center' }}>
+                            Paste this key into Apple Notes, Google Keep, or your password manager. Store it somewhere safe — we cannot recover it for you.
+                        </p>
+
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <button
+                                onClick={() => {
+                                    setShowPasskeyCancelled(false);
+                                    setRecoveryCopied(false);
+                                }}
+                                style={{ flex: 1, padding: '11px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.5)', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
+                            >
+                                Try Passkey Again
+                            </button>
+                            <button
+                                disabled={!recoveryCopied}
+                                onClick={() => {
+                                    setShowPasskeyCancelled(false);
+                                    onNavigate('platform');
+                                }}
+                                style={{ flex: 1, padding: '11px', borderRadius: '10px', border: 'none', background: recoveryCopied ? '#dc2626' : 'rgba(255,255,255,0.05)', color: recoveryCopied ? '#fff' : 'rgba(255,255,255,0.2)', fontSize: '12px', fontWeight: 700, cursor: recoveryCopied ? 'pointer' : 'not-allowed', transition: 'all 0.2s' }}
+                            >
+                                I've saved it — Continue →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            , document.body)}
         </>
     );
 };

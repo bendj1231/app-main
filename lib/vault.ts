@@ -124,6 +124,46 @@ export async function getVaultKey(
   return _vaultKey;
 }
 
+/**
+ * Derive vault key directly from Auth0 ID token (no Supabase session required).
+ * Uses the token's signature bytes as pepper — unique per pilot per session.
+ * Falls back to sub-only HKDF if token is malformed.
+ *
+ * Use this for Auth0-authenticated pilots who have no Supabase JWT.
+ */
+export async function getVaultKeyFromAuth0Token(
+  auth0Sub: string,
+  auth0IdToken: string
+): Promise<CryptoKey> {
+  if (_vaultKey) return _vaultKey;
+  const encoder = new TextEncoder();
+
+  // Use the JWT signature (third segment) as pepper material
+  let pepperBytes: Uint8Array;
+  try {
+    const parts = auth0IdToken.split('.');
+    const sig = parts[2] || auth0Sub;
+    // Pad to valid base64
+    const padded = sig.replace(/-/g, '+').replace(/_/g, '/').padEnd(
+      sig.length + (4 - sig.length % 4) % 4, '='
+    );
+    const decoded = Uint8Array.from(atob(padded), c => c.charCodeAt(0));
+    // HMAC-SHA256(signature_bytes, sub) → deterministic per pilot per token
+    const key = await crypto.subtle.importKey(
+      'raw', decoded, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+    );
+    const hmac = await crypto.subtle.sign('HMAC', key, encoder.encode(`pr:vault:auth0:${auth0Sub}`));
+    pepperBytes = new Uint8Array(hmac);
+  } catch {
+    // Fallback: derive purely from sub
+    const hash = await crypto.subtle.digest('SHA-256', encoder.encode(`pr:vault:fallback:${auth0Sub}`));
+    pepperBytes = new Uint8Array(hash);
+  }
+
+  _vaultKey = await deriveVaultKey(auth0Sub, pepperBytes);
+  return _vaultKey;
+}
+
 // ─── Encrypt / Decrypt ────────────────────────────────────────────────────────
 
 export interface VaultEncrypted {

@@ -1327,7 +1327,30 @@
 
 **Section 1ay Total: 19 operations = $1,881/year**
 
-atc| 923 | Instrument Student — Instrument Training | Training Aircraft | $99/year | $99 |
+atc[Debug] [vite] connecting... (client, line 789)
+[Debug] [vite] connected. (client, line 912)
+[Log] [Supabase Debug] URL: – "https://gkbhgrozrzhalnjherfu.supabase.co" (supabase.ts, line 5)
+[Log] [Supabase Debug] Key exists: – true (supabase.ts, line 6)
+[Log] [Supabase Debug] import.meta.env.VITE_SUPABASE_URL: – "https://gkbhgrozrzhalnjherfu.supabase.co" (supabase.ts, line 7)
+[Log] ⚠️ User explicitly logged out, skipping session restoration (AuthContext.tsx, line 819)
+[Log] Auth state changed: – "INITIAL_SESSION" – undefined (AuthContext.tsx, line 722)
+[Log] Wallet button clicked (BecomeMemberPage.tsx, line 944)
+[Log] Using working credential offer URL for walt.id (BecomeMemberPage.tsx, line 1590)
+[Log] Opening wallet with working credential offer: – "https://wallet.walt.id?offer=openid-credential-offer%3A%2F%2F%3Fcredential_offer_uri%3Dhttps%3A%2F%2Fissuer.demo.walt.id%2Fdraft13%2Fcredent…" (BecomeMemberPage.tsx, line 1595)
+"https://wallet.walt.id?offer=openid-credential-offer%3A%2F%2F%3Fcredential_offer_uri%3Dhttps%3A%2F%2Fissuer.demo.walt.id%2Fdraft13%2FcredentialOffer%3Fid%3Db5d16d84-f1a7-4ed0-ad9a-e5aacb1d7043"
+> Selected Element
+< <div class="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10"></div>
+[Log] Wallet button clicked (BecomeMemberPage.tsx, line 944)
+[Log] Using working credential offer URL for walt.id (BecomeMemberPage.tsx, line 1590)
+[Log] Opening wallet with working credential offer: – "https://wallet.walt.id?offer=openid-credential-offer%3A%2F%2F%3Fcredential_offer_uri%3Dhttps%3A%2F%2Fissuer.demo.walt.id%2Fdraft13%2Fcredent…" (BecomeMemberPage.tsx, line 1595)
+"https://wallet.walt.id?offer=openid-credential-offer%3A%2F%2F%3Fcredential_offer_uri%3Dhttps%3A%2F%2Fissuer.demo.walt.id%2Fdraft13%2FcredentialOffer%3Fid%3Db5d16d84-f1a7-4ed0-ad9a-e5aacb1d7043"
+[Debug] [vite] css hot updated: /index.css (client, line 948)
+[Debug] [vite] – "hot updated: /components/website/components/BecomeMemberPage.tsx" (client, line 220)
+[Debug] [vite] – "hot updated: /index.css" (client, line 220)
+[Log] Wallet button clicked (BecomeMemberPage.tsx, line 944)
+[Log] Opening walt.id wallet directly for Safari test (BecomeMemberPage.tsx, line 1590)
+[Log] Opening wallet directly: – "https://wallet.walt.id" (BecomeMemberPage.tsx, line 1592)
+[Log] Wallet button clicked (BecomeMemberPage.tsx, line 944)| 923 | Instrument Student — Instrument Training | Training Aircraft | $99/year | $99 |
 | 924 | Multi-Engine Student — Multi Training | Multi-Engine Aircraft | $99/year | $99 |
 | 925 | Commercial Student — Commercial Training | Training Aircraft | $99/year | $99 |
 | 926 | CFI Student — Instructor Training | Training Aircraft | $99/year | $99 |
