@@ -84,7 +84,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ position: 'fixed', inset: 0, background: '#f8fafc', fontFamily: 'system-ui, -apple-system, sans-serif', zIndex: 9998, overflowY: 'auto' }}>
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
         .wv-card { animation: fadeUp 0.35s ease both; }

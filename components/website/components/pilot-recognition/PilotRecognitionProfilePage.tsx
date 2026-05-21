@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
+import { WalletViewPage } from '../wallet/WalletViewPage';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut, Sun, Moon, Plus } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
@@ -78,6 +79,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [theme, setTheme] = useState<'dark' | 'light'>('dark');
     const [isPremium, setIsPremium] = useState(false);
     const [showWalletGate, setShowWalletGate] = useState(false);
+    const [showWalletView, setShowWalletView] = useState(false);
     const { currentUser } = useAuth();
 
     // Check subscription status using auth context user (avoids lock race)
@@ -1058,8 +1060,16 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     <WalletLoadingScreen
                         onComplete={() => {
                             setShowWalletGate(false);
-                            window.dispatchEvent(new CustomEvent('switch-platform-tab', { detail: 'wallet' }));
+                            setShowWalletView(true);
                         }}
+                    />
+                )}
+
+                {/* ── WALLET VIEW PAGE (post-auth) ── */}
+                {showWalletView && (
+                    <WalletViewPage
+                        userId={currentUser?.id}
+                        onBack={() => setShowWalletView(false)}
                     />
                 )}
 
