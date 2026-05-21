@@ -30,11 +30,21 @@ const SLEEVE_CONFIG = [
   { key: 'elp',      icon: '🗣', label: 'ELP Certificate',      profileKey: 'language_proficiency', subKey: 'elp_certificate_no', expiryKey: 'elp_expiry',     checkType: 'language_proficiency' },
 ];
 
+interface WalletNotif {
+  id: string;
+  type: 'error' | 'warning' | 'info' | 'success';
+  title: string;
+  body: string;
+  time: string;
+}
+
 export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }) => {
   const [profile, setProfile] = useState<any>(null);
   const [checks, setChecks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeSlot, setActiveSlot] = useState<string | null>(null);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const load = async () => {
@@ -74,6 +84,34 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const allVerified = checks.length > 0 && checks.every(c => c.status === 'verified');
   const hasExpired  = checks.some(c => c.status === 'expired');
   const totalHours  = Number(profile?.total_flight_hours || profile?.current_flight_hours || 0);
+
+  const allNotifs: WalletNotif[] = [
+    ...checks.filter(c => c.status === 'expired').map(c => ({
+      id: `exp-${c.id}`,
+      type: 'error' as const,
+      title: `${CHECK_LABELS[c.check_type] || c.check_type} Expired`,
+      body: 'This credential has expired and may affect your Pre-Cleared status with airlines.',
+      time: 'Action required',
+    })),
+    ...checks.filter(c => { const d = daysUntil(c.expires_at); return d !== null && d >= 0 && d < 60 && c.status !== 'expired'; }).map(c => ({
+      id: `soon-${c.id}`,
+      type: 'warning' as const,
+      title: `${CHECK_LABELS[c.check_type] || c.check_type} Expiring Soon`,
+      body: `Expires in ${daysUntil(c.expires_at)} days. Renew to maintain verified status.`,
+      time: `${daysUntil(c.expires_at)}d remaining`,
+    })),
+    ...SLEEVE_CONFIG.filter(s => s.checkType && !checks.find(c => c.check_type === s.checkType)).map(s => ({
+      id: `unverified-${s.key}`,
+      type: 'info' as const,
+      title: `${s.label} Not Yet Verified`,
+      body: 'Submit this credential for third-party verification to improve your Recognition score.',
+      time: 'Pending',
+    })),
+    ...(allVerified ? [{ id: 'pre-cleared', type: 'success' as const, title: 'Pre-Cleared Status Active', body: 'All credentials verified. Airlines can view your Pre-Cleared profile.', time: 'Active' }] : []),
+    { id: 'aes', type: 'info' as const, title: 'Wallet Secured — AES-256-GCM', body: 'Your credential bundle is encrypted end-to-end. Private key never leaves your device.', time: 'Now' },
+  ].filter(n => !dismissed.has(n.id));
+
+  const unreadCount = allNotifs.filter(n => n.type === 'error' || n.type === 'warning').length;
 
   if (loading) {
     return (
@@ -128,17 +166,118 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.01em' }}>Credential Wallet</p>
           </div>
         </div>
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {/* Status badge */}
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
             padding: '5px 14px', borderRadius: 20,
             background: allVerified ? 'rgba(16,185,129,0.15)' : hasExpired ? 'rgba(220,38,38,0.15)' : 'rgba(255,255,255,0.08)',
             border: `1px solid ${allVerified ? 'rgba(16,185,129,0.4)' : hasExpired ? 'rgba(220,38,38,0.4)' : 'rgba(255,255,255,0.15)'}`,
           }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: allVerified ? '#10b981' : hasExpired ? '#dc2626' : '#94a3b8', animation: allVerified ? 'wvShimmer 2s ease infinite' : undefined }} />
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: allVerified ? '#10b981' : hasExpired ? '#dc2626' : '#94a3b8' }} />
             <span style={{ fontSize: 10, fontWeight: 700, color: allVerified ? '#10b981' : hasExpired ? '#dc2626' : '#94a3b8', letterSpacing: '0.1em' }}>
               {allVerified ? 'PRE-CLEARED' : hasExpired ? 'ACTION REQUIRED' : 'PENDING VERIFICATION'}
             </span>
+          </div>
+
+          {/* Bell */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setNotifOpen(o => !o)}
+              style={{
+                position: 'relative', width: 38, height: 38, borderRadius: 10,
+                background: notifOpen ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.14)', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              {unreadCount > 0 && (
+                <div style={{
+                  position: 'absolute', top: -5, right: -5,
+                  minWidth: 17, height: 17, borderRadius: 9,
+                  background: '#dc2626', border: '2px solid #1a0a00',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 9, fontWeight: 800, color: '#fff', padding: '0 3px',
+                }}>{unreadCount}</div>
+              )}
+            </button>
+
+            {/* Dropdown */}
+            {notifOpen && (
+              <div style={{
+                position: 'absolute', top: 46, right: 0, width: 330, zIndex: 300,
+                background: 'linear-gradient(160deg, #1c1c2e 0%, #12121e 100%)',
+                border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16,
+                boxShadow: '0 28px 64px rgba(0,0,0,0.8)',
+                overflow: 'hidden',
+              }}>
+                {/* Header row */}
+                <div style={{ padding: '12px 16px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#ffffff', letterSpacing: '0.04em' }}>Wallet Alerts</span>
+                    {allNotifs.length > 0 && (
+                      <span style={{ fontSize: 9, fontWeight: 700, background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', borderRadius: 8, padding: '1px 6px' }}>
+                        {allNotifs.length}
+                      </span>
+                    )}
+                  </div>
+                  {allNotifs.length > 0 && (
+                    <button
+                      onClick={() => setDismissed(new Set(allNotifs.map(n => n.id)))}
+                      style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, padding: 0 }}
+                    >
+                      Clear all
+                    </button>
+                  )}
+                </div>
+
+                {/* Items */}
+                <div style={{ maxHeight: 380, overflowY: 'auto', padding: '6px 0 8px' }}>
+                  {allNotifs.length === 0 ? (
+                    <div style={{ padding: '28px 16px', textAlign: 'center' }}>
+                      <div style={{ fontSize: 24, marginBottom: 8 }}>✓</div>
+                      <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>All clear — no alerts</p>
+                    </div>
+                  ) : allNotifs.map(n => {
+                    const C = {
+                      error:   { left: '#dc2626', bg: 'rgba(220,38,38,0.08)',  icon: '⚠️',  label: '#dc2626' },
+                      warning: { left: '#f59e0b', bg: 'rgba(245,158,11,0.08)', icon: '⏰',  label: '#f59e0b' },
+                      info:    { left: '#3b82f6', bg: 'rgba(59,130,246,0.07)', icon: 'ℹ️',  label: '#3b82f6' },
+                      success: { left: '#10b981', bg: 'rgba(16,185,129,0.07)', icon: '✅',  label: '#10b981' },
+                    }[n.type];
+                    return (
+                      <div key={n.id} style={{
+                        margin: '4px 10px',
+                        background: C.bg,
+                        borderRadius: 10,
+                        borderLeft: `3px solid ${C.left}`,
+                        padding: '10px 10px 10px 12px',
+                        position: 'relative',
+                        display: 'flex', gap: 9, alignItems: 'flex-start',
+                      }}>
+                        <span style={{ fontSize: 14, flexShrink: 0, marginTop: 1 }}>{C.icon}</span>
+                        <div style={{ flex: 1, minWidth: 0, paddingRight: 18 }}>
+                          <p style={{ margin: '0 0 2px', fontSize: 11, fontWeight: 700, color: '#ffffff', lineHeight: 1.3 }}>{n.title}</p>
+                          <p style={{ margin: '0 0 5px', fontSize: 10, color: 'rgba(255,255,255,0.4)', lineHeight: 1.4 }}>{n.body}</p>
+                          <span style={{ fontSize: 9, fontWeight: 700, color: C.label, letterSpacing: '0.05em' }}>{n.time}</span>
+                        </div>
+                        <button
+                          onClick={() => setDismissed(d => new Set([...d, n.id]))}
+                          style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', fontSize: 14, lineHeight: 1, padding: 2 }}
+                        >×</button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
