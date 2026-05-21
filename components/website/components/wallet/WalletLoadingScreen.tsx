@@ -302,8 +302,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
   const content = (
     <div style={{
-      position: 'fixed', inset: 0,
-      background: 'rgba(15,23,42,0.55)',
+      position: 'fixed', inset: 0, background: '#f8fafc',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       zIndex: 9999, opacity: fading ? 0 : 1, transition: 'opacity 0.5s ease', padding: 24,
     }}>
@@ -361,19 +360,19 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 8, display: 'none' }}>
         PIC Wallet
       </p>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', marginBottom: 8, textAlign: 'center' }}>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', marginBottom: 8, textAlign: 'center' }}>
         {authStage === 'gate' || authStage === 'verifying'
           ? <>Identity verification<br />required</>
           : <>Decrypting your decentralised<br />pilot identity wallet</>
         }
       </h1>
-      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 28, letterSpacing: '0.02em', textAlign: 'center' }}>
+      <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 28, letterSpacing: '0.02em', textAlign: 'center' }}>
         Supabase · Walt.id · Zero-knowledge · AES-256-GCM
       </p>
 
       {/* Progress bar */}
       <div style={{ width: '100%', maxWidth: 340, marginBottom: 20 }}>
-        <div style={{ height: 3, background: 'rgba(255,255,255,0.15)', borderRadius: 99, overflow: 'hidden' }}>
+        <div style={{ height: 3, background: '#fee2e2', borderRadius: 99, overflow: 'hidden' }}>
           <div style={{
             height: '100%', width: `${progress}%`,
             background: 'linear-gradient(90deg, #dc2626, #ef4444)',
@@ -413,20 +412,22 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         ))}
       </div>
 
-      {/* ── PASSKEY GATE — overlay modal ── */}
-      {(authStage === 'gate' || authStage === 'verifying') && (
+      {/* ── PASSKEY GATE (mid-loading overlay) ── */}
+      {(authStage === 'gate' || authStage === 'verifying') && ReactDOM.createPortal(
         <div style={{
           position: 'fixed', inset: 0, zIndex: 10000,
           background: 'rgba(15,23,42,0.45)',
-          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-          paddingTop: 24, paddingLeft: 24, paddingRight: 24, paddingBottom: '6vh', animation: 'gateSlide 0.25s ease',
+          backdropFilter: 'blur(6px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 24,
+          animation: 'gateSlide 0.25s ease',
         }}>
         <div style={{
           width: '100%', maxWidth: 380,
           background: '#ffffff',
           border: '1px solid #e2e8f0',
           borderRadius: 20, padding: '28px',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.18)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.18)',
           maxHeight: '90vh', overflowY: 'auto',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -459,7 +460,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
               />
             </div>
             <p style={{ fontSize: 9, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 600, letterSpacing: '0.03em' }}>
-              Scan with mobile to submit passkey
+              Scan with your DID Wallet app to open
             </p>
           </div>
 
@@ -534,7 +535,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
             Private key never leaves your device · Google Password Manager
           </p>
         </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Bottom watermark */}
