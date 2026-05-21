@@ -1667,100 +1667,87 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           </div>
         </div>
 
-        {/* Debug explainer panel */}
-        <div style={{ marginBottom: 12 }}>
+        {/* How to use guide */}
+        <div style={{ marginBottom: 16 }}>
           <button
             onClick={() => setDebugOpen(o => !o)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 5 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}
           >
-            <span style={{ fontSize: 9, fontWeight: 700, color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>What's happening</span>
-            <span style={{ fontSize: 9, color: '#94a3b8' }}>{debugOpen ? '▲' : '▼'}</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: '#0f172a' }}>How does this work? {debugOpen ? '▲' : '▼'}</span>
           </button>
           {debugOpen && (
-            <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
-              {[
-                {
-                  tier: 'Tier 1 — Enclave',
-                  status: enclaveStatus?.keyPresent ? '✓ Key Active' : '○ Generating…',
-                  color: enclaveStatus?.keyPresent ? '#16a34a' : '#f59e0b',
-                  desc: 'The browser is creating an ECDSA P-256 keypair inside the WebCrypto API and storing it in IndexedDB. The key is marked extractable: false — it physically cannot leave the device. Once done, it derives a did:key identifier unique to this browser/device.',
-                },
-                {
-                  tier: 'Tier 2 — Credentials',
-                  status: `${storageHealth?.tier2.credentialCount ?? 0} VCs stored`,
-                  color: '#334155',
-                  desc: 'Verifiable Credentials (W3C VC Data Model v2.0) are encrypted with AES-256-GCM and stored in IndexedDB. They are never sent to any server. Generate a Tokenized Candidate Record in the Logbook tab to populate this tier.',
-                },
-                {
-                  tier: 'Tier 3 — Network',
-                  status: `${storageHealth?.tier3.activeEndpoints ?? 0} endpoints · 60s poll`,
-                  color: '#334155',
-                  desc: 'A Bitstring Status List is polled every 60 seconds to check if any issued credentials have been revoked or suspended by the issuing Civil Aviation Authority. Zero endpoints = no VCs issued yet.',
-                },
-                {
-                  tier: 'Tier 4 — Audit Log',
-                  status: `${storageHealth?.tier4.auditEntries ?? 0} events`,
-                  color: '#334155',
-                  desc: 'Every wallet action — key generation, VC creation, presentation export, IPFS pin — is logged here locally. This log never leaves the device. It is a tamper-evident record of credential lifecycle events.',
-                },
-              ].map(item => (
-                <div key={item.tier} style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
-                  <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 800, color: '#0f172a', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{item.tier}</p>
-                  <p style={{ margin: '0 0 5px', fontSize: 9, fontWeight: 700, color: item.color }}>{item.status}</p>
-                  <p style={{ margin: 0, fontSize: 9, color: '#475569', lineHeight: 1.55 }}>{item.desc}</p>
-                </div>
-              ))}
+            <div style={{ marginTop: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 12 }}>
+                {[
+                  { step: '1', icon: '📋', title: 'Fill in your credentials', desc: 'Go to the Credentials tab and enter your pilot license, medical certificate, and radio license details.' },
+                  { step: '2', icon: '📄', title: 'Generate your pilot record', desc: 'Go to the Logbook tab and click "Generate Tokenized Candidate Record". This creates a verified digital summary of your credentials.' },
+                  { step: '3', icon: '📌', title: 'Pin it to IPFS', desc: 'Click "Pin to IPFS" to save your pilot record to the internet permanently. You\'ll get a link you can send to any airline.' },
+                  { step: '4', icon: '✈️', title: 'Share with airlines', desc: 'Copy your IPFS link and paste it into your airline application or send it to HR. They can verify your credentials instantly — no login needed.' },
+                ].map(item => (
+                  <div key={item.step} style={{ display: 'flex', gap: 10, padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#0f172a', color: '#fff', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{item.step}</div>
+                    <div>
+                      <p style={{ margin: '0 0 3px', fontSize: 10, fontWeight: 700, color: '#0f172a' }}>{item.icon} {item.title}</p>
+                      <p style={{ margin: 0, fontSize: 9, color: '#475569', lineHeight: 1.5 }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ padding: '10px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8 }}>
+                <p style={{ margin: '0 0 3px', fontSize: 10, fontWeight: 700, color: '#1d4ed8' }}>🔒 Your data never leaves your device</p>
+                <p style={{ margin: 0, fontSize: 9, color: '#3b82f6', lineHeight: 1.5 }}>Your credentials are stored only on your browser — not on our servers. Only the shareable summary you choose to pin is made public. You are always in control.</p>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Storage trust indicators */}
+        {/* Status indicators */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
-          {/* Tier 1 — Enclave */}
+          {/* Identity */}
           <div style={{ padding: '10px 12px', background: enclaveStatus?.keyPresent ? '#f0fdf4' : '#f8fafc', border: `1px solid ${enclaveStatus?.keyPresent ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 8 }}>
-            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 1 — Enclave</p>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.10em', color: '#64748b', textTransform: 'uppercase' }}>🪪 Your Identity</p>
             <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: enclaveStatus?.keyPresent ? '#16a34a' : '#94a3b8' }}>
-              {enclaveStatus?.keyPresent ? '✓ Key Active' : '○ Generating…'}
+              {enclaveStatus?.keyPresent ? '✓ Ready' : '○ Setting up…'}
             </p>
-            <p style={{ margin: 0, fontSize: 8, color: '#64748b', fontFamily: 'monospace', lineHeight: 1.4 }}>
-              {enclaveStatus?.platform || 'web-crypto'}<br/>
-              extractable: {String(enclaveStatus?.extractable ?? false)}
+            <p style={{ margin: 0, fontSize: 8, color: '#64748b', lineHeight: 1.4 }}>
+              {enclaveStatus?.keyPresent ? 'Unique ID created' : 'Creating your unique ID'}<br/>
+              Stored on this device only
             </p>
           </div>
 
-          {/* Tier 2 — Credential DB */}
-          <div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
-            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 2 — Credentials</p>
-            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>
-              {storageHealth?.tier2.credentialCount ?? 0} VC{storageHealth?.tier2.credentialCount !== 1 ? 's' : ''} stored
+          {/* Credentials */}
+          <div style={{ padding: '10px 12px', background: (storageHealth?.tier2.credentialCount ?? 0) > 0 ? '#f0fdf4' : '#f8fafc', border: `1px solid ${(storageHealth?.tier2.credentialCount ?? 0) > 0 ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 8 }}>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.10em', color: '#64748b', textTransform: 'uppercase' }}>📁 Your Records</p>
+            <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: (storageHealth?.tier2.credentialCount ?? 0) > 0 ? '#16a34a' : '#94a3b8' }}>
+              {(storageHealth?.tier2.credentialCount ?? 0) > 0 ? `✓ ${storageHealth!.tier2.credentialCount} record${storageHealth!.tier2.credentialCount !== 1 ? 's' : ''} saved` : '○ No records yet'}
             </p>
             <p style={{ margin: 0, fontSize: 8, color: '#64748b', lineHeight: 1.4 }}>
-              AES-256-GCM<br/>
-              cloud: <span style={{ color: '#dc2626', fontWeight: 700 }}>none</span>
+              {(storageHealth?.tier2.credentialCount ?? 0) > 0 ? 'Saved on this device' : 'Generate a record first'}<br/>
+              Never sent to servers
             </p>
           </div>
 
-          {/* Tier 3 — Network */}
+          {/* Credential status */}
           <div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
-            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 3 — Network</p>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.10em', color: '#64748b', textTransform: 'uppercase' }}>🔄 Credential Check</p>
             <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>
-              {storageHealth?.tier3.activeEndpoints ?? 0} endpoints
+              {(storageHealth?.tier3.activeEndpoints ?? 0) > 0 ? 'Checking validity…' : 'Waiting for records'}
             </p>
             <p style={{ margin: 0, fontSize: 8, color: '#64748b', lineHeight: 1.4 }}>
-              {storageHealth?.tier3.statusPointers ?? 0} status ptr{storageHealth?.tier3.statusPointers !== 1 ? 's' : ''}<br/>
-              60s poll active
+              Auto-checks every 60s<br/>
+              Flags expired licences
             </p>
           </div>
 
-          {/* Tier 4 — Audit Log */}
+          {/* Activity */}
           <div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
-            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Tier 4 — Audit Log</p>
+            <p style={{ margin: '0 0 3px', fontSize: 8, fontWeight: 700, letterSpacing: '0.10em', color: '#64748b', textTransform: 'uppercase' }}>📝 Activity</p>
             <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, color: '#334155' }}>
-              {storageHealth?.tier4.auditEntries ?? 0} event{storageHealth?.tier4.auditEntries !== 1 ? 's' : ''}
+              {storageHealth?.tier4.auditEntries ?? 0} action{storageHealth?.tier4.auditEntries !== 1 ? 's' : ''} logged
             </p>
             <p style={{ margin: 0, fontSize: 8, color: '#64748b', lineHeight: 1.4 }}>
-              local-only<br/>
-              cloud: <span style={{ color: '#dc2626', fontWeight: 700 }}>none</span>
+              Private history<br/>
+              Stays on your device
             </p>
           </div>
         </div>
