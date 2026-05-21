@@ -649,9 +649,9 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <table className="w-full text-sm border-collapse">
                                 <tbody>
                                     {[
-                                        ['Malicious Script & Extension Redaction', 'The Platform Operator deploys an aggressive Content Security Policy (CSP) designed to neutralise Cross-Site Scripting (XSS) vectors and unverified browser extension injections. The User acknowledges that running custom scripts, unauthorised developer tools, or malicious ad-blocking layers that alter the browser\'s runtime environment may break the trust-anchor handshake between Supabase and the walt.id instance.'],
+                                        ['Malicious Script & Extension Redaction', 'The Platform Operator deploys an aggressive Content Security Policy (CSP) designed to neutralise Cross-Site Scripting (XSS) vectors and unverified browser extension injections. The User acknowledges that running custom scripts, unauthorised developer tools, or malicious ad-blocking layers that alter the browser\'s runtime environment may break the trust-anchor handshake between Supabase and the walt.id instance. If a client-side injection is detected or a CSP violation occurs, the cryptographic handshake is designed to fail closed — a deliberate security fail-safe intended to prevent the potential exposure of unblinded claims to an untrusted environment.'],
                                         ['System Failure Attribution', 'If a cryptographic verification failure or unauthorised credential presentation arises from a compromised user environment, an active malicious software payload on the pilot\'s device, or a localised man-in-the-middle script injection, the incident resides fundamentally outside the Platform Operator\'s control boundary.'],
-                                        ['Absolute Harmless Undertaking', 'The User holds the Platform Operator absolutely harmless against any downstream regulatory exposure, licensing denials, or administrative penalties resulting from client-side vector vulnerabilities — including XSS attacks, browser extension tampering, compromised passkey environments, or device-level malware intercepting the walt.id session.'],
+                                        ['Absolute Harmless Undertaking', 'The User holds the Platform Operator absolutely harmless against any downstream regulatory exposure, licensing denials, or administrative penalties resulting from client-side vector vulnerabilities — including XSS attacks, browser extension tampering, compromised passkey environments, or device-level malware intercepting the walt.id session. This undertaking is subject to and consistent with the aggregate liability cap set forth in Section 7.4, confirming that the Platform Operator bears no responsibility for the hygiene or integrity of the User\'s local computing environment.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                             <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
@@ -661,11 +661,18 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 </tbody>
                             </table>
                         </div>
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 mb-2">
-                            <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-2">Platform CSP Enforcement Boundary</p>
+                        <div className="border-l-4 border-emerald-500 bg-emerald-50 rounded-r-xl px-5 py-3 mb-3">
+                            <p className="text-emerald-800 text-xs font-bold uppercase tracking-wide mb-2">Platform Safe Zone — CSP Enforcement Boundary</p>
                             <div className="space-y-1 text-xs text-slate-600">
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Platform-deployed CSP headers block inline script injection at the server response layer</span></div>
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>walt.id session integrity monitored via origin-bound cryptographic nonces</span></div>
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Platform Operator fulfils its data-protection duty of care by deploying industry-standard cryptographic boundaries at the server and session layer</span></div>
+                            </div>
+                        </div>
+                        <div className="border-l-4 border-red-500 bg-red-50 rounded-r-xl px-5 py-3 mb-2">
+                            <p className="text-red-700 text-xs font-bold uppercase tracking-wide mb-2">User Liability Zone — Beyond the Browser Boundary</p>
+                            <p className="text-red-800 text-xs leading-relaxed mb-2">The Platform Operator's duty of care concludes at the client-side browser interface boundary; it does not extend to the protection of the underlying local operating system, peripheral device security, or user-managed browser configurations. The Platform Operator is not an intermediary under PDPA for incidents arising entirely within the User's local device environment.</p>
+                            <div className="space-y-1 text-xs text-slate-600">
                                 <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Platform cannot inspect or control user-installed browser extensions</span></div>
                                 <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Platform cannot protect against device-level OS compromise or hardware keyloggers</span></div>
                             </div>
