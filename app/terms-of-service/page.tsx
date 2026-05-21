@@ -605,7 +605,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 <tbody>
                                     {[
                                         ['Sovereign Consent for Cross-Border Egress', 'Pursuant to Section 26 of the Singapore PDPA 2012, the User explicitly acknowledges that initiating a Regional Verification Sequence or executing a User-Initiated Handshake with an overseas Operator constitutes an unalterable direction to transmit tokenized identity metadata across international borders.'],
-                                        ['Comparable Protection Standard', 'The Platform Operator enforces data protection requirements through its service agreements, ensuring that any overseas recipient provides a standard of protection to the transferred personal data that is comparable to the protection under the PDPA.'],
+                                        ['Comparable Protection Standard', 'The Platform Operator enforces data protection requirements through its service agreements, ensuring that any overseas recipient provides a standard of protection to the transferred personal data that is comparable to the protection under the PDPA. The Platform Operator\'s obligation is restricted to the execution of contractual transfer instruments (e.g., Data Transfer Agreements); the Platform Operator assumes no liability for the subsequent actions, omissions, or regulatory breaches committed by the overseas recipient after transfer.'],
                                         ['User-Directed Transfer', 'Because the cross-border transmission is triggered exclusively by the User\'s own consent action (passkey signature or verification trigger), the Platform Operator\'s liability as a transfer intermediary is structurally limited to the infrastructure conduit function only.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
@@ -624,8 +624,8 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 <tbody>
                                     {[
                                         ['Stale Token Invalidation Threshold', 'A verified cryptographic stamp issued into the client-side walt.id browser wallet features an algorithmic TTL (Time-To-Live) window of 365 days. Upon expiry, the Terminal 3 access grant is automatically revoked pending a new verification cycle.'],
-                                        ['Database Drift Gating', 'If a pilot updates their unverified flight logs in the Supabase/Firebase layer by a variance greater than twenty percent (20%) of their last verified baseline value, the Platform infrastructure will programmatically flag the associated Terminal 3 status as "Out of Sync." The profile\'s verified pathway registries will remain locked to external operators until a localised wallet synchronisation occurs and a supplementary audit token is issued via the regional partner API.'],
-                                        ['Drift Liability Attribution', 'Any processing friction, access delays, or pathway lockouts resulting from database drift exceeding the 20% threshold are the exclusive liability of the User. The Platform Operator shall not be held responsible for commercial opportunities missed during a drift-triggered lockout period.'],
+                                        ['Database Drift Gating', 'If the delta between current unverified staging metrics and the last cryptographically signed presentation hash stored in the walt.id wallet history exceeds twenty percent (20%), the Platform infrastructure will programmatically flag the associated Terminal 3 status as "Out of Sync" and execute a mandatory Sync Gating event. The profile\'s verified pathway registries will remain locked to external operators until a localised wallet synchronisation occurs and a supplementary audit token is issued via the regional partner API.'],
+                                        ['Drift Liability Attribution', 'Any processing friction, access delays, or pathway lockouts resulting from database drift exceeding the 20% threshold are the exclusive liability of the User. Consistent with the Platform\'s status as a neutral intermediary (Section 17.2), any drift-triggered access lockout is a protective feature for the relying party, not a service failure. Consequently, the Platform Operator excludes all liability for any consequential losses, including lost flight training time or missed employment opportunities, arising from such protective gating.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                             <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
@@ -634,6 +634,10 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="border-l-4 border-amber-500 bg-amber-50 rounded-r-xl px-5 py-3 mb-2">
+                            <p className="text-amber-800 text-xs font-bold uppercase tracking-wide mb-1">⚠ 20% Drift Threshold — Active Monitoring Rule</p>
+                            <p className="text-amber-900 text-xs leading-relaxed">The Platform actively monitors the delta between unverified staging data and the last cryptographically signed presentation hash in the pilot's walt.id wallet. Exceeding the 20% variance threshold is treated as a compliance event, not a technical error. Pilots are strongly advised to maintain synchronisation between their database staging layer and their client-side wallet to avoid automatic Terminal 3 lockout.</p>
                         </div>
                     </section>
 
