@@ -438,6 +438,84 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
             <p style={{ fontSize: 11, color: '#fca5a5', marginBottom: 12, fontWeight: 600 }}>⚠ {authError}</p>
           )}
 
+          {/* ── QR + DID options row ── */}
+          <div style={{ display: 'flex', gap: 14, marginBottom: 14, alignItems: 'flex-start' }}>
+            {/* QR code (SVG placeholder — wallet.pilotrecognition.com DID) */}
+            <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+              <div style={{ width: 88, height: 88, border: '1px solid #e2e8f0', borderRadius: 8, background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* QR corner squares */}
+                  <rect x="4" y="4" width="22" height="22" rx="2" fill="none" stroke="#0f172a" strokeWidth="3"/>
+                  <rect x="9" y="9" width="12" height="12" rx="1" fill="#0f172a"/>
+                  <rect x="54" y="4" width="22" height="22" rx="2" fill="none" stroke="#0f172a" strokeWidth="3"/>
+                  <rect x="59" y="9" width="12" height="12" rx="1" fill="#0f172a"/>
+                  <rect x="4" y="54" width="22" height="22" rx="2" fill="none" stroke="#0f172a" strokeWidth="3"/>
+                  <rect x="9" y="59" width="12" height="12" rx="1" fill="#0f172a"/>
+                  {/* QR data dots pattern */}
+                  {[32,36,40,44,48].map(x => [32,36,40,44,48].map(y => (
+                    (x + y) % 8 === 0 ? <rect key={`${x}-${y}`} x={x} y={y} width="3" height="3" fill="#0f172a"/> : null
+                  )))}
+                  <rect x="32" y="56" width="3" height="3" fill="#0f172a"/>
+                  <rect x="40" y="56" width="3" height="3" fill="#0f172a"/>
+                  <rect x="48" y="60" width="3" height="3" fill="#0f172a"/>
+                  <rect x="36" y="64" width="3" height="3" fill="#0f172a"/>
+                  <rect x="44" y="68" width="3" height="3" fill="#0f172a"/>
+                  <rect x="56" y="36" width="3" height="3" fill="#0f172a"/>
+                  <rect x="64" y="40" width="3" height="3" fill="#0f172a"/>
+                  <rect x="60" y="48" width="3" height="3" fill="#0f172a"/>
+                  <rect x="68" y="44" width="3" height="3" fill="#0f172a"/>
+                  <rect x="56" y="52" width="3" height="3" fill="#0f172a"/>
+                </svg>
+              </div>
+              <p style={{ fontSize: 8, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 500 }}>Scan with your<br/>DID Wallet</p>
+            </div>
+
+            {/* DID options */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <button
+                onClick={() => { window.open('https://wallet.walt.id', '_blank'); }}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#0f172a', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, textAlign: 'left' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                DID Wallet (Extension)
+              </button>
+              <button
+                onClick={handlePasskey}
+                disabled={authStage === 'verifying'}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#0f172a', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, textAlign: 'left' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Use Existing Passkey
+              </button>
+              <button
+                onClick={handlePasskey}
+                disabled={authStage === 'verifying'}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#0f172a', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, textAlign: 'left' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Create New Passkey
+              </button>
+            </div>
+          </div>
+
+          {/* Secured by walt.id */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, padding: '6px 10px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: 20, height: 20, borderRadius: 4, background: '#0ea5e9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <div>
+                <p style={{ fontSize: 9, fontWeight: 700, color: '#0f172a', margin: 0 }}>PIC Wallet Site</p>
+                <p style={{ fontSize: 8, color: '#94a3b8', margin: 0, fontFamily: 'monospace' }}>DID:wallet.pilotrecognition.com</p>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a' }} />
+              <span style={{ fontSize: 8, color: '#64748b', fontWeight: 500 }}>Secured by </span>
+              <span style={{ fontSize: 8, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
+            </div>
+          </div>
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <button
               onClick={handleGoogle}
