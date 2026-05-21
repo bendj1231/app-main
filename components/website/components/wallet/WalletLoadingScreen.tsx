@@ -288,7 +288,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         transition: 'background 0.5s',
       }} />
 
-      {/* Shield */}
+      {/* Wallet icon */}
       <div style={{ position: 'relative', marginBottom: 32 }}>
         <div style={{
           width: 72, height: 72, borderRadius: 20,
@@ -298,7 +298,9 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           transition: 'all 0.4s',
         }}>
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={shieldColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <path d="M2 10h20"/>
+            <path d="M6 15h4"/>
           </svg>
         </div>
         <div style={{
@@ -313,7 +315,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
       {/* Badge */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 999, marginBottom: 20 }}>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
         <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.15em', textTransform: 'uppercase' }}>PIC Wallet</span>
         <span style={{ width: 1, height: 10, background: '#fecaca', display: 'inline-block', margin: '0 2px' }} />
         <span style={{ fontSize: 9, fontWeight: 500, color: '#ef4444', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Pilot Identity Credentials</span>
