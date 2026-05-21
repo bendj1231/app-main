@@ -93,6 +93,13 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const [slotDraft, setSlotDraft] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  // Recognition+
+  const [isRecognitionPlus, setIsRecognitionPlus] = useState(false);
+  const [veremarkStatus, setVeremarkStatus] = useState<string>('not_started');
+  const [veremarkRequestGuid, setVeremarkRequestGuid] = useState<string | null>(null);
+  const [veremarkInitiating, setVeremarkInitiating] = useState(false);
+  const [veremarkError, setVeremarkError] = useState<string | null>(null);
+  const [veremarkFeedbackUrl, setVeremarkFeedbackUrl] = useState<string | null>(null);
   type TabID = 'overview' | 'credentials' | 'logbook' | 'vault';
   const [activeTab, setActiveTab] = useState<TabID>('overview');
   // W3C VC wallet state
@@ -114,6 +121,9 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       const resolvedChecks = c || [];
       setChecks(resolvedChecks);
       if (p) {
+        setIsRecognitionPlus(p.account_tier === 'recognition_plus' || p.account_tier === 'enterprise' || p.account_tier === 'enterprise_admin');
+        setVeremarkStatus(p.veremark_status || 'not_started');
+        setVeremarkRequestGuid(p.veremark_request_guid || null);
         const ws = buildInitialWalletState(p, resolvedChecks);
         setWalletState(ws);
         // Tier 1 — init enclave key (idempotent)
@@ -763,6 +773,158 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       {/* ── TAB: CREDENTIALS ── */}
       {activeTab === 'credentials' && (
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+
+        {/* ── RECOGNITION+ VEREMARK PANEL ── */}
+        {(() => {
+          const statusConfig: Record<string, { label: string; bg: string; border: string; text: string; dot: string }> = {
+            not_started: { label: 'Not Started',  bg: '#f8fafc', border: '#e2e8f0', text: '#475569', dot: '#94a3b8' },
+            in_progress: { label: 'In Progress',  bg: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8', dot: '#3b82f6' },
+            verified:    { label: 'Verified',      bg: '#f0fdf4', border: '#bbf7d0', text: '#15803d', dot: '#16a34a' },
+            expired:     { label: 'Expired',       bg: '#fef2f2', border: '#fecaca', text: '#dc2626', dot: '#ef4444' },
+          };
+          const sc = statusConfig[veremarkStatus] || statusConfig.not_started;
+
+          const CHECKS_DISPLAYED = [
+            { key: 'professional_qualification', label: 'Pilot License (CAAP / FAA)', icon: '📜' },
+            { key: 'education',                  label: 'Medical Certificate',         icon: '🏥' },
+            { key: 'language_proficiency',       label: 'ICAO ELP (Language)',          icon: '🗣' },
+            { key: 'identity',                   label: 'Identity / Passport',          icon: '🪪' },
+          ];
+
+          const initiateVeremark = async () => {
+            setVeremarkInitiating(true);
+            setVeremarkError(null);
+            try {
+              const session = (await supabase.auth.getSession()).data.session;
+              if (!session) throw new Error('Not authenticated');
+              const res = await fetch(
+                `https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/veremark-initiate`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Authorization': `Bearer ${session.access_token}`,
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error || 'Initiation failed');
+              setVeremarkStatus(data.status === 'already_in_progress' ? 'in_progress' :
+                                data.status === 'already_verified'    ? 'verified' : 'in_progress');
+              if (data.request_guid) setVeremarkRequestGuid(data.request_guid);
+              if (data.candidate_feedback_url) setVeremarkFeedbackUrl(data.candidate_feedback_url);
+            } catch (e: any) {
+              setVeremarkError(e.message);
+            } finally {
+              setVeremarkInitiating(false);
+            }
+          };
+
+          return (
+            <div className="wv-in" style={{ animationDelay: '0.05s', marginBottom: 20, borderRadius: 14, overflow: 'hidden', border: `1px solid ${isRecognitionPlus ? '#bbf7d0' : '#e2e8f0'}` }}>
+              {/* Header */}
+              <div style={{ padding: '14px 20px', background: isRecognitionPlus ? 'linear-gradient(135deg, #f0fdf4, #dcfce7)' : 'linear-gradient(135deg, #f8fafc, #f1f5f9)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 10, background: isRecognitionPlus ? '#16a34a' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>
+                    {isRecognitionPlus ? '✓' : '🔒'}
+                  </div>
+                  <div>
+                    <p style={{ margin: 0, fontSize: 11, fontWeight: 800, color: isRecognitionPlus ? '#15803d' : '#0f172a', letterSpacing: '0.02em' }}>Recognition+ Verification</p>
+                    <p style={{ margin: '1px 0 0', fontSize: 9, color: '#64748b' }}>
+                      {isRecognitionPlus ? 'Full Veremark credential chain verified — Terminal 3 active' : 'Third-party cryptographic verification via Veremark — unlocks Terminal 3'}
+                    </p>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: sc.dot, display: 'inline-block', flexShrink: 0 }} />
+                  <span style={{ fontSize: 9, fontWeight: 700, color: sc.text, letterSpacing: '0.08em' }}>{sc.label.toUpperCase()}</span>
+                </div>
+              </div>
+
+              {/* Body */}
+              {isRecognitionPlus ? (
+                <div style={{ padding: '14px 20px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+                    {CHECKS_DISPLAYED.map(ch => {
+                      const match = checks.find(c => c.check_type === ch.key || c.credential_type === ch.key);
+                      const isVerified = match?.status === 'verified';
+                      const isFlagged  = match?.status === 'flagged';
+                      return (
+                        <div key={ch.key} style={{ padding: '10px 12px', borderRadius: 8, border: `1px solid ${isVerified ? '#bbf7d0' : isFlagged ? '#fecaca' : '#e2e8f0'}`, background: isVerified ? '#f0fdf4' : isFlagged ? '#fef2f2' : '#f8fafc', textAlign: 'center' }}>
+                          <div style={{ fontSize: 18, marginBottom: 4 }}>{ch.icon}</div>
+                          <p style={{ margin: '0 0 4px', fontSize: 8, fontWeight: 700, color: '#64748b', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{ch.label}</p>
+                          <span style={{ fontSize: 8, fontWeight: 800, color: isVerified ? '#15803d' : isFlagged ? '#dc2626' : '#94a3b8', letterSpacing: '0.1em' }}>
+                            {isVerified ? '✓ VERIFIED' : isFlagged ? '✗ FLAGGED' : '— PENDING'}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {veremarkRequestGuid && (
+                    <p style={{ margin: '10px 0 0', fontSize: 8, color: '#94a3b8', fontFamily: 'monospace' }}>Request ID: {veremarkRequestGuid}</p>
+                  )}
+                </div>
+              ) : (
+                <div style={{ padding: '16px 20px' }}>
+                  {/* Check list preview */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 14 }}>
+                    {CHECKS_DISPLAYED.map(ch => (
+                      <div key={ch.key} style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', textAlign: 'center', filter: veremarkStatus === 'not_started' ? 'grayscale(1) opacity(0.5)' : 'none' }}>
+                        <div style={{ fontSize: 18, marginBottom: 4 }}>{ch.icon}</div>
+                        <p style={{ margin: '0 0 4px', fontSize: 8, fontWeight: 700, color: '#64748b', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{ch.label}</p>
+                        <span style={{ fontSize: 8, fontWeight: 800, color: veremarkStatus === 'in_progress' ? '#3b82f6' : '#94a3b8', letterSpacing: '0.1em' }}>
+                          {veremarkStatus === 'in_progress' ? '⟳ CHECKING' : '— LOCKED'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {veremarkStatus === 'in_progress' ? (
+                    <div style={{ padding: '12px 14px', background: '#eff6ff', borderRadius: 8, border: '1px solid #bfdbfe' }}>
+                      <p style={{ margin: '0 0 4px', fontSize: 10, fontWeight: 700, color: '#1d4ed8' }}>Verification in Progress</p>
+                      <p style={{ margin: 0, fontSize: 9, color: '#3b82f6', lineHeight: 1.5 }}>Check your email for the Veremark form link. Once you complete it, results will update automatically here. This typically takes 2–5 business days.</p>
+                      {veremarkFeedbackUrl && (
+                        <a href={veremarkFeedbackUrl} target="_blank" rel="noopener noreferrer"
+                          style={{ display: 'inline-block', marginTop: 8, padding: '5px 12px', borderRadius: 5, background: '#2563eb', color: '#fff', fontSize: 9, fontWeight: 700, textDecoration: 'none' }}>
+                          Open Veremark Form →
+                        </a>
+                      )}
+                      {veremarkRequestGuid && (
+                        <p style={{ margin: '6px 0 0', fontSize: 8, color: '#94a3b8', fontFamily: 'monospace' }}>Ref: {veremarkRequestGuid}</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ padding: '10px 14px', background: '#fffbeb', borderRadius: 8, border: '1px solid #fde68a', marginBottom: 12 }}>
+                        <p style={{ margin: '0 0 3px', fontSize: 10, fontWeight: 700, color: '#92400e' }}>Recognition+ — $99/year</p>
+                        <p style={{ margin: 0, fontSize: 9, color: '#78350f', lineHeight: 1.5 }}>Full VC chain: CAAP license · Medical · ELP · Identity · Veremark-attested. Unlocks Terminal 3, exportable signed VP, and priority airline visibility.</p>
+                      </div>
+                      {veremarkError && (
+                        <p style={{ margin: '0 0 8px', fontSize: 9, color: '#dc2626' }}>Error: {veremarkError}</p>
+                      )}
+                      <button
+                        onClick={initiateVeremark}
+                        disabled={veremarkInitiating}
+                        style={{
+                          width: '100%', padding: '10px 0', borderRadius: 8, border: 'none',
+                          background: veremarkInitiating ? '#94a3b8' : 'linear-gradient(135deg, #16a34a, #15803d)',
+                          color: '#fff', fontSize: 11, fontWeight: 800, cursor: veremarkInitiating ? 'wait' : 'pointer',
+                          letterSpacing: '0.04em',
+                        }}
+                      >
+                        {veremarkInitiating ? 'Initiating Veremark Check…' : 'Start Recognition+ Verification'}
+                      </button>
+                      <p style={{ margin: '8px 0 0', fontSize: 8, color: '#94a3b8', textAlign: 'center' }}>
+                        Powered by Veremark · Zero-persistence · No raw PII stored on our servers
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
         <div className="wv-in" style={{ animationDelay: '0.1s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
           <div>
             <p style={{ margin: 0, fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Zone 2 — W3C JSON-LD Credential Matrix</p>
