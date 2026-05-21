@@ -207,15 +207,45 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
   const handleGoogle = async () => {
     setAuthStage('verifying');
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.href}`,
-        queryParams: { prompt: 'select_account' },
-      },
-    });
-    if (error) {
-      setAuthError(error.message);
+    setAuthError('');
+
+    if (!window.PublicKeyCredential) {
+      setAuthError('Passkeys not supported on this browser.');
+      setAuthStage('gate');
+      return;
+    }
+
+    const rpId = window.location.hostname === 'localhost'
+      ? 'localhost'
+      : window.location.hostname.replace('www.', '');
+
+    try {
+      const challengeBytes = new Uint8Array(32);
+      crypto.getRandomValues(challengeBytes);
+
+      // Use WebAuthn get() with no allowCredentials — Google Password Manager
+      // will intercept this and offer any stored passkey for this origin
+      const assertion = await navigator.credentials.get({
+        publicKey: {
+          challenge: challengeBytes.buffer,
+          allowCredentials: [],
+          userVerification: 'required',
+          rpId,
+          timeout: 120000,
+        },
+      }) as PublicKeyCredential | null;
+
+      if (!assertion) throw new Error('No passkey returned.');
+      runPostAuth();
+    } catch (err: any) {
+      console.error('[Google Passkey]', err?.name, err?.message);
+      if (err?.name === 'NotAllowedError') {
+        setAuthError('Passkey dismissed. Try again or paste manually below.');
+      } else if (err?.name === 'SecurityError') {
+        setAuthError('Security error — must be on HTTPS.');
+      } else {
+        setAuthError(err?.message || 'Could not retrieve passkey. Try pasting manually.');
+      }
       setAuthStage('gate');
     }
   };
