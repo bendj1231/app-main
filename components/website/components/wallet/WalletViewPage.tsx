@@ -93,6 +93,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const [slotDraft, setSlotDraft] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [debugOpen, setDebugOpen] = useState(false);
   // IPFS / Pinata
   const [ipfsCid, setIpfsCid] = useState<string | null>(null);
   const [ipfsPinning, setIpfsPinning] = useState(false);
@@ -1664,6 +1665,53 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626' }}>walt.id</span>
             <span style={{ fontSize: 8, fontWeight: 700, color: '#64748b', background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 3, padding: '1px 5px' }}>VC Data Model v2.0</span>
           </div>
+        </div>
+
+        {/* Debug explainer panel */}
+        <div style={{ marginBottom: 12 }}>
+          <button
+            onClick={() => setDebugOpen(o => !o)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 5 }}
+          >
+            <span style={{ fontSize: 9, fontWeight: 700, color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>What's happening</span>
+            <span style={{ fontSize: 9, color: '#94a3b8' }}>{debugOpen ? '▲' : '▼'}</span>
+          </button>
+          {debugOpen && (
+            <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+              {[
+                {
+                  tier: 'Tier 1 — Enclave',
+                  status: enclaveStatus?.keyPresent ? '✓ Key Active' : '○ Generating…',
+                  color: enclaveStatus?.keyPresent ? '#16a34a' : '#f59e0b',
+                  desc: 'The browser is creating an ECDSA P-256 keypair inside the WebCrypto API and storing it in IndexedDB. The key is marked extractable: false — it physically cannot leave the device. Once done, it derives a did:key identifier unique to this browser/device.',
+                },
+                {
+                  tier: 'Tier 2 — Credentials',
+                  status: `${storageHealth?.tier2.credentialCount ?? 0} VCs stored`,
+                  color: '#334155',
+                  desc: 'Verifiable Credentials (W3C VC Data Model v2.0) are encrypted with AES-256-GCM and stored in IndexedDB. They are never sent to any server. Generate a Tokenized Candidate Record in the Logbook tab to populate this tier.',
+                },
+                {
+                  tier: 'Tier 3 — Network',
+                  status: `${storageHealth?.tier3.activeEndpoints ?? 0} endpoints · 60s poll`,
+                  color: '#334155',
+                  desc: 'A Bitstring Status List is polled every 60 seconds to check if any issued credentials have been revoked or suspended by the issuing Civil Aviation Authority. Zero endpoints = no VCs issued yet.',
+                },
+                {
+                  tier: 'Tier 4 — Audit Log',
+                  status: `${storageHealth?.tier4.auditEntries ?? 0} events`,
+                  color: '#334155',
+                  desc: 'Every wallet action — key generation, VC creation, presentation export, IPFS pin — is logged here locally. This log never leaves the device. It is a tamper-evident record of credential lifecycle events.',
+                },
+              ].map(item => (
+                <div key={item.tier} style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+                  <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 800, color: '#0f172a', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{item.tier}</p>
+                  <p style={{ margin: '0 0 5px', fontSize: 9, fontWeight: 700, color: item.color }}>{item.status}</p>
+                  <p style={{ margin: 0, fontSize: 9, color: '#475569', lineHeight: 1.55 }}>{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Storage trust indicators */}
