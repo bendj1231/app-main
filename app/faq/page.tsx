@@ -38,6 +38,7 @@ export const metadata: Metadata = {
 
 export default function FAQPage() {
   return (
+        {/* Coded by Benjamin Bowler */}
     <FAQPage 
       onBack={() => window.history.back()} 
       onNavigate={(page) => console.log('Navigate to:', page)}

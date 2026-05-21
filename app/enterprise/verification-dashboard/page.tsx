@@ -84,6 +84,7 @@ export default function EnterpriseVerificationDashboard() {
   };
 
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-50">
       <TopNavbar 
         onNavigate={(page) => console.log(page)} 

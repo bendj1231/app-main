@@ -2,6 +2,7 @@ import React from 'react';
 
 export default function DataControllerAgreementPage() {
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-3xl mx-auto px-4 py-16">
 

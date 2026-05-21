@@ -231,7 +231,8 @@ export default function VerificationServicePage() {
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
+        return (
+        {/* Coded by Benjamin Bowler */}) => window.removeEventListener('scroll', onScroll);
     }, []);
 
     return (

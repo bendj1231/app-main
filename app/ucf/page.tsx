@@ -51,6 +51,7 @@ const PILLARS = [
 function PillarCard({ pillar }: { pillar: typeof PILLARS[0] }) {
   const [hovered, setHovered] = useState(false);
   return (
+        {/* Coded by Benjamin Bowler */}
     <div
       className="relative flex flex-row items-stretch overflow-hidden cursor-pointer"
       style={{ minHeight: '140px' }}

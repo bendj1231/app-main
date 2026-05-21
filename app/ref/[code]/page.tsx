@@ -83,6 +83,7 @@ export default function ReferralLandingPage() {
   };
 
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
         {status === 'loading' && (

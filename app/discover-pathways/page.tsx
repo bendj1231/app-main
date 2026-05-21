@@ -159,6 +159,7 @@ export default function DiscoverPathwaysPage() {
   const comparingPathways = allPathways.filter(p => compareList.includes(p.id));
 
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-16">

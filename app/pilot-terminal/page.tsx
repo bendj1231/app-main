@@ -37,5 +37,6 @@ export const metadata: Metadata = {
 };
 
 export default function PilotTerminalPage() {
+  // Coded by Benjamin Bowler
   return <PilotTerminalDashboard />;
 }

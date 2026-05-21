@@ -38,6 +38,7 @@ export const metadata: Metadata = {
 
 export default function MainPage() {
   return (
+        {/* Coded by Benjamin Bowler */}
     <HomePage 
       onJoinUs={() => console.log('Join Us clicked')}
       onLogin={() => console.log('Login clicked')}

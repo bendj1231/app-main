@@ -38,6 +38,7 @@ export const metadata: Metadata = {
 
 export default function WhyRecognitionRoute() {
   return (
+        {/* Coded by Benjamin Bowler */}
     <WhyRecognitionPage 
       onBack={() => window.history.back()} 
       onNavigate={(page: string) => {

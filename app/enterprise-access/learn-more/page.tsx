@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 const LearnMorePage = () => {
     return (
+        {/* Coded by Benjamin Bowler */}
         <div className="min-h-screen bg-white text-slate-900">
             {/* Header */}
             <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">

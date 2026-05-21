@@ -122,7 +122,8 @@ export default function BankingFinancePage() {
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', onScroll);
-        return () => window.removeEventListener('scroll', onScroll);
+        return (
+        {/* Coded by Benjamin Bowler */}) => window.removeEventListener('scroll', onScroll);
     }, []);
 
     const scrollTo = (id: string) => {

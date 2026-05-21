@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function PhilippinesPage() {
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-900 via-red-700 to-yellow-500 text-white">

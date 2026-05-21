@@ -62,6 +62,7 @@ export default function CorporatePathwaysPage() {
   ];
 
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white">

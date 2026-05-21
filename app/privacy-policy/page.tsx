@@ -10,6 +10,7 @@ interface PrivacyPolicyPageProps {
 
 export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: PrivacyPolicyPageProps) {
     return (
+        {/* Coded by Benjamin Bowler */}
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
 
@@ -25,7 +26,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                 <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
                     Privacy Policy
                 </h1>
-                <p className="text-sm text-slate-500 mb-2">Last updated: 20 May 2026</p>
+                <p className="text-sm text-slate-500 mb-2">Last updated: 21 May 2026</p>
                 <p className="text-sm text-slate-500 mb-10">Effective date: 20 May 2026</p>
 
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-10">
@@ -318,6 +319,75 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                     <section>
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">13. Changes to This Policy</h2>
                         <p className="text-sm">We may update this Privacy Policy from time to time. We will notify you of material changes by email or by a prominent notice on the platform at least 14 days before the change takes effect. Continued use of the platform after the effective date constitutes acceptance of the updated Policy.</p>
+                    </section>
+
+                    {/* ── SECTION 15 ── */}
+                    <section>
+                        <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">15. Architectural Neutrality &amp; Data Intermediation</h2>
+                        <p className="text-xs text-slate-400 mb-4">Protocol Date: May 2026 · Regulatory Baseline: PDPA 2012 (Singapore), Electronic Transactions Act (Cap. 88), Privacy by Design Principles</p>
+
+                        <p className="text-sm mb-4">
+                            The Platform operates under a policy of <strong>absolute architectural neutrality</strong>. It does not function as an active data processor or credential-verifying authority. Instead, it serves exclusively as a <strong>stateless digital infrastructure utility</strong> — a passive pipeline designed to securely display aviation metadata without maintaining a centralised proprietary database of sensitive personal identifiers.
+                        </p>
+
+                        {/* Pipeline diagram */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5 overflow-x-auto">
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">The Passive Pipeline Architecture</p>
+                            <div className="flex items-center gap-2 text-xs min-w-max">
+                                <div className="border border-slate-300 rounded-lg px-3 py-2 bg-white text-center">
+                                    <p className="font-bold text-slate-700">The Pilot</p>
+                                    <p className="text-slate-500 text-[10px]">Controls account initiation</p>
+                                    <p className="text-slate-500 text-[10px]">Inputs self-claimed metadata</p>
+                                </div>
+                                <div className="text-slate-400 font-bold text-base">→</div>
+                                <div className="border-2 border-red-300 rounded-lg px-3 py-2 bg-red-50 text-center">
+                                    <p className="font-black text-red-700">Pilot Recognition</p>
+                                    <p className="text-red-500 text-[10px] font-semibold">Stateless Render Pipeline</p>
+                                </div>
+                                <div className="text-slate-400 font-bold text-base">→</div>
+                                <div className="border border-slate-300 rounded-lg px-3 py-2 bg-white text-center">
+                                    <p className="font-bold text-slate-700">Integration Partners</p>
+                                    <p className="text-slate-500 text-[10px]">Authoritative data stores (CAAS)</p>
+                                    <p className="text-slate-500 text-[10px]">Independent screening providers</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15a. The Passive Pipeline Specification</h3>
+                        <div className="overflow-x-auto mb-5">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Modifying Data', 'The Platform does not write, edit, generate, or alter aviation credentials.'],
+                                        ['Risk Attenuation', 'Zero storage of raw credentials, government licence IDs, or logbook records.'],
+                                        ['Fault Attribution', 'Liability for validation accuracy rests solely with data-originating sources.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={label} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-40 whitespace-nowrap">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15b. Authentication Isolation</h3>
+                        <p className="text-sm mb-3">Account authentication is completely decoupled from Platform infrastructure via Auth0 by Okta. Credentials (passwords and emails) never transit or reside on Platform servers. The Platform's back-end database stores only a non-identifiable, alphanumeric user token string.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15c. Decentralised Financial Settlement</h3>
+                        <p className="text-sm mb-3">All financial transactions are routed via an automated, decentralised split-payment architecture (Helio / MoonPay Commerce). The Platform does not hold pooled client funds, nor does it act as a centralised data reseller or financial custodian. The on-chain transaction log serves as an unalterable audit trail establishing the exact institutional or corporate partner compensated to perform a given verification process.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15d. Singapore PDPA &amp; ETA Compliance</h3>
+                        <p className="text-sm mb-3">Under Section 2(1) of the Personal Data Protection Act 2012 (PDPA), the Platform fulfils the core definitions of a <strong>Data Intermediary</strong>. Its responsibilities are strictly restricted to maintaining appropriate technical safeguards over the active session environment and honouring account deletion workflows within 30 business days.</p>
+                        <p className="text-sm mb-3">Pursuant to Singapore's Electronic Transactions Act (Cap. 88), user confirmation via interface checkboxes constitutes execution of valid <strong>electronic assent</strong>, legally equivalent to a physical signature.</p>
+
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-600 mb-4">
+                            <p className="font-semibold text-slate-700 mb-1">Consent Log Data Specification</p>
+                            <p><strong>System Metadata:</strong> Timestamp + anonymous Auth0 User ID · <strong>Legal Status:</strong> Non-SPI (Not Sensitive Personal Information) · <strong>Compliance Base:</strong> ETA Cap. 88 Mandated Proof of Authorised Pipeline Activation</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15e. Aviation Authority Disclaimer</h3>
+                        <p className="text-sm">The Platform maintains absolute independence from national regulatory bodies. The output generated by independent third-party verification tools within the profile interface is for <strong>informational networking purposes only</strong> and possesses no formal weight as official regulatory documentation. Total liability for licensing authentication remains strictly between the individual aviator and the competent civil aviation authority.</p>
                     </section>
 
                     {/* ── SECTION 14 ── */}

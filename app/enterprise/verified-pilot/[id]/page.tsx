@@ -58,6 +58,7 @@ export default function EnterpriseVerifiedPilotPage() {
   const { id } = useParams();
   
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-slate-100">
       <TopNavbar 
         onNavigate={(page) => console.log(page)} 

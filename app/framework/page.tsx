@@ -63,6 +63,7 @@ const problemsByStakeholder = {
 // Accordion component
 function Accordion({ title, children, isOpen, onToggle }: { title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void }) {
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="border border-slate-200 rounded-lg overflow-hidden mb-3">
       <button
         onClick={onToggle}

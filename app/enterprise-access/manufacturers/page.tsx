@@ -4,6 +4,7 @@ import React from 'react';
 
 export default function ManufacturersPage() {
   return (
+        {/* Coded by Benjamin Bowler */}
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-20">

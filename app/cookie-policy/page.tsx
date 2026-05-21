@@ -10,6 +10,7 @@ interface CookiePolicyPageProps {
 
 export default function CookiePolicyPage({ onBack, onNavigate, onLogin }: CookiePolicyPageProps) {
     return (
+        {/* Coded by Benjamin Bowler */}
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <TopNavbar onNavigate={onNavigate} onLogin={onLogin} forceScrolled={true} isLight={true} />
             
