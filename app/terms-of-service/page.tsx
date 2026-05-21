@@ -1018,6 +1018,9 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <p className="mb-3 text-sm">The platform architecture relies on strict zero-knowledge execution. The private cryptographic keys used to sign credentials inside the localised container are structurally isolated within the User’s hardware-backed native device keychain or hardware authentication framework. The Platform Operator does not manage, store, escrow, or possess backup copies of these private keys.</p>
                         <p className="mb-4 text-sm">If a User loses access to their physical hardware authentication devices, loses control of biometric access vectors, or experiences an unrecoverable failure of their local keychain architecture, the Platform Operator cannot restore data, decrypt credentials, or regenerate the profile state. The User’s sole remedy is to request an account reset sequence. The platform will execute a destructive wipe of the public-key mapping tables within <strong>30 business days</strong> — aligned with applicable regulatory data retention guidelines. The User must then execute an entirely new onboarding sequence and settle all re-initiation costs required by independent verification partners to re-establish Terminal 3 access.</p>
 
+                        <h3 className="font-semibold text-slate-800 mb-2">11.3 Minor Account Destructive Reset — Guardian Verification Gate</h3>
+                        <p className="mb-3 text-sm">Where an account is registered under a declared age below eighteen (18) years, or where the Platform Operator has reasonable grounds to believe the account holder is a minor, an automated destructive reset sequence — including the public-key mapping wipe described in Section 11.1 — shall not be executed solely on the basis of an unverified email confirmation from the account holder. The Platform Operator's support infrastructure shall require a secondary co-verification step from the registered parent or legal guardian on record before any irreversible destructive sequence is initiated on a minor account. This guardian verification gate applies regardless of the instruction method used to trigger the reset (support ticket, automated prompt, or direct request). The Platform Operator excludes all liability for reset-related data loss where a minor has misrepresented their age at registration and no guardian co-verification record exists.</p>
+
                         <h3 className="font-semibold text-slate-800 mb-2">11.2 Continuous Revocation Syncing &amp; Access Containment</h3>
                         <p className="mb-3 text-sm">If an independent verification partner or an authoritative civil aviation registry issues a signed cryptographic revocation signal regarding a user’s licence, rating, or medical certificate, the infrastructure layer will execute an automated containment sequence:</p>
                         <ul className="space-y-3 mb-4 text-sm text-slate-600">
@@ -1545,6 +1548,58 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <div className="mt-3 pt-3 border-t border-slate-700 text-center">
                                 <p className="text-slate-400 text-[10px]">Aggregate Platform Operator liability cap: USD $50.00 (Section 7.4) · CAPE-compliant intermediary immunity (Section 13.2) · Verification Partner as sole authoritative adjudicator (Section 17.1)</p>
                             </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-bold text-slate-900 mb-4">19. Minor Pilot Cadet Programme — Contractual Capacity, Parental Consent &amp; Reduced Data Processing</h2>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">19.1 Age of Contractual Capacity &amp; Beneficial Contract Classification</h3>
+                        <p className="mb-3 text-sm">Under the Civil Law Act of Singapore and applicable common law, the age of contractual capacity for general commercial agreements is eighteen (18) years. A User who has not attained the age of eighteen (18) at the time of registration is classified as a <strong>Minor Pilot Cadet</strong> for the purposes of this Agreement. The Platform Operator acknowledges that a click-wrap agreement executed by a minor is voidable at the minor's election under general contractual law.</p>
+                        <p className="mb-3 text-sm">The Platform Operator asserts that access to a structured aviation career pathway platform, credential verification infrastructure, and cadet training progress tracking constitutes a <strong>beneficial contract</strong> within the meaning of the beneficial employment and educational contract exception under Singapore common law — being a contract for the acquisition of professional skills, career recognition infrastructure, and verified training records that is demonstrably to the minor's benefit and consistent with their vocational development. This characterisation does not, however, displace the parental co-acceptance requirement set out in Section 19.2.</p>
+                        <div className="border-l-4 border-amber-400 bg-amber-50 rounded-r-xl px-5 py-3 mb-4">
+                            <p className="text-amber-800 text-xs font-bold uppercase tracking-wide mb-1">Minor Account — Voidability Notice</p>
+                            <p className="text-amber-700 text-xs leading-relaxed">If a User is under 18 years of age at the time of registration, this Agreement is voidable at the minor's option. Disaffirmation entitles the minor to terminate future obligations under this Agreement. It does not entitle the minor to retain the benefits of services already received while simultaneously pursuing uncapped tort claims arising from the same platform relationship. The Platform Operator's liability in tort, absent this Agreement, is assessed under standard common-law negligence principles — duty, breach, causation, and provable loss — not on a strict liability or uncapped damages basis.</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">19.2 Parental &amp; Guardian Co-Acceptance Requirement</h3>
+                        <p className="mb-3 text-sm">Registration by a Minor Pilot Cadet requires the affirmative co-acceptance of a parent or legal guardian aged eighteen (18) or over. The co-accepting guardian must: (i) confirm their legal relationship to the minor; (ii) review and accept the full Terms of Service on behalf of the minor; (iii) acknowledge the nature of the data processing activities described in Section 19.3; and (iv) provide a verifiable contact address for guardian communications. Co-acceptance by a guardian creates a binding contractual framework that is not voidable at the minor's election, as the guardian is the contracting party for the purposes of these Terms.</p>
+                        <p className="mb-3 text-sm">Where a minor has registered without completing the guardian co-acceptance flow — whether by misrepresenting their age or circumventing the age gate — the Platform Operator shall, upon discovery, suspend the account pending guardian co-acceptance or account deletion. The Platform Operator excludes all liability for data processing, credential handling, or platform activity occurring prior to discovery of the undisclosed minor status.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">19.3 Reduced Data Processing Scope for Minor Accounts — PDPA Advisory Compliance</h3>
+                        <p className="mb-3 text-sm">In accordance with the Personal Data Protection Commission (PDPC) of Singapore's Advisory Guidelines on Selected Topics: Children's Data, the Platform Operator applies a reduced data processing scope to all accounts registered under the Minor Pilot Cadet classification. The Platform Operator recognises that a minor aged 13–17 cannot be presumed to have the full cognitive and legal maturity to independently consent to the processing of hardware passkey signatures, biometric authentication hashes, and cryptographic identity metadata within a zero-knowledge decentralised credential container without parental oversight.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="bg-slate-900 text-white">
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Data Category</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Standard Account</th>
+                                        <th className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wide border border-slate-700">Minor Pilot Cadet Account</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        ['Hardware passkey / biometric hash', 'Processed for Terminal 3 authentication', 'Processing requires explicit guardian consent in co-acceptance flow'],
+                                        ['Device fingerprint & telemetry metadata', 'Collected for security event logging', 'Minimised — session-scope only, not retained beyond session close'],
+                                        ['Training log & hours metadata', 'Full profile indexing', 'Processed under guardian-co-accepted reduced retention scope'],
+                                        ['Credential verification beacon', 'Full Terminal 3 issuance', 'Cadet-tier only — restricted to ATO educational pathways per S1 SPL limits'],
+                                        ['Destructive reset execution', 'User-initiated via support', 'Blocked pending guardian co-verification (Section 11.3)'],
+                                    ].map(([category, standard, minor], i) => (
+                                        <tr key={String(category)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 text-xs align-top">{category}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs align-top">{standard}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-amber-700 text-xs align-top font-medium">{minor}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">19.4 Authoritative Training Record Disclaimer — Solo Endorsement &amp; CAA Records</h3>
+                        <p className="mb-3 text-sm">The Platform does not function as an authoritative Civil Aviation Authority-recognised training record system. A flight instructor's solo endorsement, checkride result, or training milestone issued under applicable civil aviation regulations is legally operative in the instructor's physical logbook, the flight school's official training records, and the relevant Civil Aviation Authority's student pilot file — not in a third-party SaaS profile layer. The Platform provides a supplementary digital profile layer for career visibility and pathway matching purposes only.</p>
+                        <div className="border-l-4 border-red-400 bg-red-50 rounded-r-xl px-5 py-3 mb-4">
+                            <p className="text-red-800 text-xs font-bold uppercase tracking-wide mb-1">Not an Authoritative CAA Record — Absolute</p>
+                            <p className="text-red-700 text-xs leading-relaxed">No platform profile, credential beacon, or training progress indicator constitutes a legally operative training record, solo endorsement, medical certification, or regulatory authorisation under any civil aviation regulatory framework. Users and Minor Pilot Cadets who rely on the Platform as their sole or primary record of training milestones do so at their own risk. The Platform Operator excludes all liability for scholarship evaluation outcomes, regulatory proceedings, or employment decisions where a third party has relied on the Platform as an authoritative training record in lieu of official CAA documentation, instructor logbooks, or flight school records. The authoritative record always resides with the issuing authority — not with this platform.</p>
                         </div>
                     </section>
 
