@@ -1688,15 +1688,15 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
         {/* ── PHYSICAL WALLET ── */}
         <div style={{
           display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: 0,
-          background: 'linear-gradient(145deg, #1c1917 0%, #292524 40%, #1c1917 100%)',
+          background: '#ffffff',
           borderRadius: 16, overflow: 'hidden',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
+          border: '1px solid #e2e8f0',
         }}>
 
           {/* ── LEFT PANEL: LICENSE SLEEVES ── */}
-          <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', margin: '0 0 6px' }}>License Sleeves</p>
+          <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 10, background: '#f8fafc' }}>
+            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase', margin: '0 0 6px' }}>License Sleeves</p>
 
             {licenseSlots.map((slot, i) => {
               const isEmpty = !slot.value;
@@ -1708,13 +1708,14 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
                   onClick={() => setScreen('credentials')}
                   style={{
                     background: isEmpty
-                      ? 'rgba(255,255,255,0.03)'
+                      ? '#ffffff'
                       : isExpired
-                      ? 'rgba(239,68,68,0.08)'
+                      ? '#fef2f2'
                       : isVerified
-                      ? 'rgba(16,185,129,0.08)'
-                      : 'rgba(255,255,255,0.06)',
-                    border: `1px solid ${isEmpty ? 'rgba(255,255,255,0.07)' : isExpired ? 'rgba(239,68,68,0.3)' : isVerified ? 'rgba(16,185,129,0.25)' : 'rgba(255,255,255,0.12)'}`,
+                      ? '#f0fdf4'
+                      : '#ffffff',
+                    border: `1px solid ${isEmpty ? '#e2e8f0' : isExpired ? '#fecaca' : isVerified ? '#bbf7d0' : '#e2e8f0'}`,
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',`
                     borderRadius: 10,
                     padding: '10px 12px',
                     cursor: 'pointer',
@@ -1723,26 +1724,26 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
                     position: 'relative',
                     overflow: 'hidden',
                   }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = isEmpty ? 'rgba(255,255,255,0.06)' : isExpired ? 'rgba(239,68,68,0.14)' : isVerified ? 'rgba(16,185,129,0.14)' : 'rgba(255,255,255,0.10)'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isEmpty ? 'rgba(255,255,255,0.03)' : isExpired ? 'rgba(239,68,68,0.08)' : isVerified ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.06)'; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = isEmpty ? '#f8fafc' : isExpired ? '#fee2e2' : isVerified ? '#dcfce7' : '#f1f5f9'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isEmpty ? '#ffffff' : isExpired ? '#fef2f2' : isVerified ? '#f0fdf4' : '#ffffff'; }}
                 >
                   {/* sleeve top notch */}
-                  <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 28, height: 3, background: 'rgba(255,255,255,0.06)', borderRadius: '0 0 4px 4px' }} />
+                  <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 28, height: 3, background: '#e2e8f0', borderRadius: '0 0 4px 4px' }} />
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                     <span style={{ fontSize: 16, lineHeight: 1, flexShrink: 0, marginTop: 1 }}>{slot.icon}</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4 }}>
-                        <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', margin: 0 }}>{slot.label}</p>
+                        <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#94a3b8', textTransform: 'uppercase', margin: 0 }}>{slot.label}</p>
                         {isVerified && <span style={{ fontSize: 8, fontWeight: 700, color: '#10b981', background: 'rgba(16,185,129,0.15)', padding: '1px 5px', borderRadius: 3 }}>VERIFIED</span>}
                         {isExpired && <span style={{ fontSize: 8, fontWeight: 700, color: '#ef4444', background: 'rgba(239,68,68,0.15)', padding: '1px 5px', borderRadius: 3 }}>EXPIRED</span>}
                       </div>
                       {isEmpty ? (
-                        <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', margin: '3px 0 0', fontStyle: 'italic' }}>{slot.cta} →</p>
+                        <p style={{ fontSize: 11, color: '#cbd5e1', margin: '3px 0 0', fontStyle: 'italic' }}>{slot.cta} →</p>
                       ) : (
                         <>
-                          <p style={{ fontSize: 13, fontWeight: 700, color: isExpired ? '#fca5a5' : isVerified ? '#6ee7b7' : '#ffffff', margin: '3px 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{slot.value}</p>
-                          {slot.sub && <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', margin: '1px 0 0' }}>{slot.sub}</p>}
-                          {slot.expiry && <p style={{ fontSize: 9, margin: '2px 0 0', color: isExpired ? '#ef4444' : 'rgba(255,255,255,0.3)', fontWeight: isExpired ? 700 : 400 }}>Exp: {slot.expiry}</p>}
+                          <p style={{ fontSize: 13, fontWeight: 700, color: isExpired ? '#dc2626' : isVerified ? '#16a34a' : '#0f172a', margin: '3px 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{slot.value}</p>
+                          {slot.sub && <p style={{ fontSize: 10, color: '#94a3b8', margin: '1px 0 0' }}>{slot.sub}</p>}
+                          {slot.expiry && <p style={{ fontSize: 9, margin: '2px 0 0', color: isExpired ? '#ef4444' : '#94a3b8', fontWeight: isExpired ? 700 : 400 }}>Exp: {slot.expiry}</p>}
                         </>
                       )}
                     </div>
@@ -1753,35 +1754,35 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
           </div>
 
           {/* ── CENTRE SPINE ── */}
-          <div style={{ background: 'rgba(255,255,255,0.06)', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%) rotate(90deg)', fontSize: 8, fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.15)', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Pilot Recognition</div>
+          <div style={{ background: '#e2e8f0', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%) rotate(90deg)', fontSize: 8, fontWeight: 700, letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Pilot Recognition</div>
           </div>
 
           {/* ── RIGHT PANEL: HOURS TABLE ── */}
-          <div style={{ padding: '24px 20px' }}>
-            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', margin: '0 0 12px' }}>Flight Hours</p>
+          <div style={{ padding: '24px 20px', background: '#ffffff' }}>
+            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase', margin: '0 0 12px' }}>Flight Hours</p>
 
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.25)', textAlign: 'left', paddingBottom: 6, textTransform: 'uppercase' }}>Category</th>
-                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.25)', textAlign: 'right', paddingBottom: 6, textTransform: 'uppercase' }}>Hours</th>
-                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.25)', textAlign: 'right', paddingBottom: 6, textTransform: 'uppercase' }}>Status</th>
+                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textAlign: 'left', paddingBottom: 6, textTransform: 'uppercase' }}>Category</th>
+                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textAlign: 'right', paddingBottom: 6, textTransform: 'uppercase' }}>Hours</th>
+                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textAlign: 'right', paddingBottom: 6, textTransform: 'uppercase' }}>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {hoursRows.map((row, i) => (
-                  <tr key={i} style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={{ padding: '7px 0', fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 500 }}>{row.label}</td>
-                    <td style={{ padding: '7px 0', fontSize: 13, fontWeight: 800, color: row.value === '—' ? 'rgba(255,255,255,0.2)' : row.verified ? '#6ee7b7' : '#ffffff', textAlign: 'right', letterSpacing: '-0.02em' }}>{row.value}</td>
+                  <tr key={i} style={{ borderTop: '1px solid #f1f5f9' }}>
+                    <td style={{ padding: '7px 0', fontSize: 11, color: '#475569', fontWeight: 500 }}>{row.label}</td>
+                    <td style={{ padding: '7px 0', fontSize: 13, fontWeight: 800, color: row.value === '—' ? '#cbd5e1' : row.verified ? '#16a34a' : '#0f172a', textAlign: 'right', letterSpacing: '-0.02em' }}>{row.value}</td>
                     <td style={{ padding: '7px 0', textAlign: 'right' }}>
                       <span style={{
                         fontSize: 8, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                         ...(row.verified
-                          ? { background: 'rgba(16,185,129,0.15)', color: '#10b981' }
+                          ? { background: '#dcfce7', color: '#16a34a' }
                           : row.value === '—'
-                          ? { background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.2)' }
-                          : { background: 'rgba(245,158,11,0.12)', color: '#f59e0b' }),
+                          ? { background: '#f1f5f9', color: '#cbd5e1' }
+                          : { background: '#fef9c3', color: '#d97706' }),
                       }}>
                         {row.verified ? 'VERIFIED' : row.value === '—' ? 'EMPTY' : 'UNVERIFIED'}
                       </span>
@@ -1792,10 +1793,10 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
             </table>
 
             {/* Source note */}
-            <div style={{ marginTop: 14, padding: '8px 10px', background: 'rgba(255,255,255,0.04)', borderRadius: 6, border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', margin: 0, lineHeight: 1.6 }}>
-                <span style={{ color: '#10b981', fontWeight: 700 }}>Verified</span> = Confirmed by Veremark background check.{' '}
-                <span style={{ color: '#f59e0b', fontWeight: 700 }}>Unverified</span> = Self-reported — not yet confirmed by a third party.
+            <div style={{ marginTop: 14, padding: '8px 10px', background: '#f8fafc', borderRadius: 6, border: '1px solid #e2e8f0' }}>
+              <p style={{ fontSize: 9, color: '#94a3b8', margin: 0, lineHeight: 1.6 }}>
+                <span style={{ color: '#16a34a', fontWeight: 700 }}>Verified</span> = Confirmed by Veremark background check.{' '}
+                <span style={{ color: '#d97706', fontWeight: 700 }}>Unverified</span> = Self-reported — not yet confirmed by a third party.
               </p>
             </div>
 
@@ -1809,7 +1810,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
               </button>
               <button
                 onClick={() => setScreen('verification')}
-                style={{ padding: '9px 14px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.6)', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}
+                style={{ padding: '9px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#475569', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}
               >
                 <Shield size={12} /> View Verification Status
               </button>
@@ -1826,15 +1827,15 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
         </div>
 
         {/* ── ZK STRIP ── */}
-        <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', background: 'rgba(15,23,42,0.5)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8 }}>
+        <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
           {([
             { icon: Lock,   label: 'AES-256-GCM encrypted' },
             { icon: Shield, label: 'Zero-knowledge — no raw PII' },
             { icon: User,   label: 'Pilot-owned — revoke anytime' },
           ] as const).map(({ icon: Icon, label }, i) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 14px', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
-              <Icon size={10} style={{ color: 'rgba(255,255,255,0.25)', flexShrink: 0 }} />
-              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', fontWeight: 500 }}>{label}</span>
+            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 14px', borderRight: i < 2 ? '1px solid #e2e8f0' : 'none' }}>
+              <Icon size={10} style={{ color: '#94a3b8', flexShrink: 0 }} />
+              <span style={{ fontSize: 10, color: '#64748b', fontWeight: 500 }}>{label}</span>
             </div>
           ))}
         </div>
