@@ -1259,29 +1259,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setWalletConnected(true);
                                             setSaving(false);
 
-                                            // Store passkey registration fn — will be called directly from "Got it" button
-                                            const pkAuth0Id = auth0Id;
-                                            const pkCleanName = cleanName;
-                                            passkeyRegistrationRef.current = async () => {
-                                                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                                                console.log('🔵 [Passkey] Starting registration | PublicKeyCredential:', !!window.PublicKeyCredential, '| isSecureContext:', window.isSecureContext, '| isLocalhost:', isLocalhost);
-                                                if (!window.PublicKeyCredential || (!window.isSecureContext && !isLocalhost)) {
-                                                    console.warn('🟡 [Passkey] Skipped — not supported or not secure context (non-localhost). Will work on HTTPS production.');
-                                                    setTimeout(() => onNavigate('platform'), 500);
-                                                    return;
-                                                }
-                                                if (!window.isSecureContext && isLocalhost) {
-                                                    console.warn('🟡 [Passkey] localhost without HTTPS — Safari blocks credentials.create. Use Chrome on localhost or test on production HTTPS.');
-                                                    setTimeout(() => onNavigate('platform'), 500);
-                                                    return;
-                                                }
+                                            // Register passkey directly — still within the button click user gesture
+                                            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                                            console.log('🔵 [Passkey] Starting | PublicKeyCredential:', !!window.PublicKeyCredential, '| isSecureContext:', window.isSecureContext, '| isLocalhost:', isLocalhost);
+                                            if (window.PublicKeyCredential && (window.isSecureContext || isLocalhost)) {
                                                 try {
                                                     const { data: { session: sbSess } } = await supabase.auth.getSession();
-                                                    const pkUserId = sbSess?.user?.id || pkAuth0Id || 'pilot-user';
+                                                    const pkUserId = sbSess?.user?.id || auth0Id || 'pilot-user';
                                                     const pkEmail = sbSess?.user?.email || user?.email || pkUserId;
-                                                    const pkDisplay = pkCleanName || pkEmail;
-                                                    const rpId = window.location.hostname === 'localhost' ? 'localhost' : window.location.hostname.replace('www.', '');
-                                                    console.log('🔵 [Passkey] credentials.create, rpId:', rpId, 'userId:', pkUserId);
+                                                    const pkDisplay = cleanName || pkEmail;
+                                                    const rpId = isLocalhost ? 'localhost' : window.location.hostname.replace('www.', '');
+                                                    console.log('🔵 [Passkey] credentials.create, rpId:', rpId, '| userId:', pkUserId);
                                                     const cb = new Uint8Array(32);
                                                     crypto.getRandomValues(cb);
                                                     await navigator.credentials.create({
@@ -1295,11 +1283,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                         },
                                                     });
                                                     console.log('✅ [Passkey] credentials.create succeeded');
-                                                    setTimeout(() => onNavigate('platform'), 500);
                                                 } catch (pe: any) {
                                                     console.error('🔴 [Passkey] credentials.create error:', pe?.name, pe?.message);
                                                     if (pe?.name === 'NotAllowedError') {
-                                                        // User cancelled — show recovery key
                                                         const recoveryBytes = new Uint8Array(24);
                                                         crypto.getRandomValues(recoveryBytes);
                                                         const key = Array.from(recoveryBytes)
@@ -1308,12 +1294,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                         sessionStorage.setItem('passkey_recovery_key', key);
                                                         sessionStorage.setItem('passkey_recovery_email', user?.email || '');
                                                         onNavigate('passkey-recovery');
-                                                    } else {
-                                                        setTimeout(() => onNavigate('platform'), 500);
+                                                        return;
                                                     }
                                                 }
-                                            };
-                                            setShowBiometricNotice(true);
+                                            } else {
+                                                console.warn('🟡 [Passkey] Skipped — not supported or not secure context');
+                                            }
+                                            setTimeout(() => onNavigate('platform'), 500);
                                         } catch (e) {
                                             console.error('Wallet creation error:', e);
                                             setWalletCreating('idle');
