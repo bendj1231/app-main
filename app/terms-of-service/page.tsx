@@ -282,6 +282,53 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             </table>
                         </div>
                         <p className="text-sm mt-3">This destructive erase sequence fulfils the Platform Operator's obligations under the Singapore PDPA 2012 regarding the retention of personal data. Once the erasure sequence is initiated and confirmed, the Pilot acknowledges and accepts that recovery of any deleted data is technically impossible by design, and the Platform Operator bears no obligation to restore, reconstruct, or compensate for any data loss resulting from a User-initiated deletion request.</p>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">3.5 Supply-Chain Integrity &amp; Emergency Token Revocation Protocol</h3>
+                        <p className="mb-3 text-sm">The cryptographic validity of a Terminal 3 Access Token is dependent upon the key management hygiene of the independent third-party verification partner that generated the underlying verification signature. The Platform Operator maintains automated circuit-breaker infrastructure to contain the blast radius of any upstream supply-chain security compromise.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['(a) Token Provenance Disclaimer', 'The Platform Operator explicitly disclaims all liability for downstream supply-chain compromises, unauthorised private key exfiltrations, or malicious webhook injections arising from a verification partner\'s internal security failure. The User acknowledges that Terminal 3 Access Tokens are cryptographically valid only to the extent that the issuing partner\'s private signing keys remain uncompromised. A token that passes signature verification against a stolen key is a partner-side key management failure — not a Platform infrastructure failure.'],
+                                        ['(b) Emergency Invalidation & Circuit-Breaker Execution', 'Upon receipt of a partner breach notification under the 24-hour SLA defined in Section 5.7(g), or upon objective architectural detection of anomalous cryptographic signatures originating from an integration partner, the Platform Operator shall activate an automated network circuit-breaker. This protocol executes an immediate, systemic Time-To-Live (TTL) zero-out, invalidating all active Terminal 3 Access Tokens issued under the compromised partner\'s signing keys within sixty (60) seconds of event detection. No human intervention is required to trigger this automated safety sequence.'],
+                                        ['(c) Automated Drop-Back & Re-Certification Duty', 'Profiles holding tokens invalidated under the emergency circuit-breaker protocol shall be automatically dropped back to Terminal 2 (Exploratory) functions to preserve ecosystem integrity pending re-certification. The Platform Operator excludes all liability for consequential commercial losses, career disruptions, missed deployment slots, or enterprise dashboard access interruptions resulting from an emergency security isolation event. Restoring Terminal 3 privileges requires a full, uncorrupted re-certification sequence executed once the independent trust anchor has been independently verified as structurally remediated and its signing key infrastructure confirmed as secure.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-2 overflow-x-auto">
+                            <div className="min-w-max text-xs space-y-2">
+                                <div className="flex items-center gap-3 justify-center">
+                                    <div className="border-2 border-red-400 rounded-lg px-4 py-2 bg-red-50 text-center w-52">
+                                        <p className="font-black text-red-800 text-[10px] uppercase">Partner Security Breach</p>
+                                        <p className="text-red-600 text-[10px]">Key exfiltration / SQL injection</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-amber-400 rounded-lg px-4 py-2 bg-amber-50 text-center w-52">
+                                        <p className="font-black text-amber-800 text-[10px] uppercase">24-Hour SLA Notification</p>
+                                        <p className="text-amber-600 text-[10px]">Partner → Platform Operator</p>
+                                    </div>
+                                </div>
+                                <div className="text-center text-slate-400 font-bold">↓ automated circuit-breaker fires ↓</div>
+                                <div className="flex items-center gap-3 justify-center">
+                                    <div className="border-2 border-slate-500 rounded-lg px-4 py-2 bg-slate-100 text-center w-52">
+                                        <p className="font-black text-slate-700 text-[10px] uppercase">TTL Zero-Out ≤ 60 Seconds</p>
+                                        <p className="text-slate-600 text-[10px]">All tokens under compromised key</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-blue-400 rounded-lg px-4 py-2 bg-blue-50 text-center w-52">
+                                        <p className="font-black text-blue-800 text-[10px] uppercase">Terminal 3 Registry Lock</p>
+                                        <p className="text-blue-600 text-[10px]">Affected profiles → Terminal 2</p>
+                                        <p className="text-blue-500 text-[10px]">Re-certification required</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </section>
 
                     {/* ══════════════════════════════════════════════
@@ -690,6 +737,30 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <div className="border-l-4 border-slate-500 bg-slate-50 rounded-r-xl px-5 py-3 mb-2">
                             <p className="text-slate-700 text-xs font-bold uppercase tracking-wide mb-1">Stage 3 Scope Isolation — No Cross-Enterprise Flagging (Both Paths)</p>
                             <p className="text-slate-600 text-xs leading-relaxed">Regardless of which routing path is selected, an adverse Stage 3 finding is contained exclusively within the initiating enterprise's private dashboard instance. The Platform does not aggregate, propagate, or cross-reference Stage 3 outcomes across multiple corporate dashboards under either Path A or Path B. A failed check with Carrier A has zero effect on the User's profile visibility, credential beacon, or pathway eligibility with Carrier B, Carrier C, or any other subscribing operator. Under Path B, the Platform records only the binary handoff event — it has no visibility into, and no custody of, the raw screening data handled by the airline's proprietary vendor.</p>
+                        </div>
+
+                        <h3 className="font-semibold text-slate-800 mb-2">5.7(g) Independent Integration Partner Security Covenant &amp; Audit Baseline</h3>
+                        <p className="mb-3 text-sm">As a mandatory structural condition of platform integration under Path A, any independent third-party verification partner routing data through the Platform's infrastructure must contractually covenant to the following minimum security obligations. These covenants constitute the Platform Operator's reasonable security arrangement under Section 24 of the Singapore PDPA 2012 and serve as the statutory due diligence baseline in any regulatory investigation arising from a partner-side security incident.</p>
+                        <div className="overflow-x-auto mb-4">
+                            <table className="w-full text-sm border-collapse">
+                                <tbody>
+                                    {[
+                                        ['Minimum Security Architecture', 'Partners must maintain active, certified compliance with internationally recognised security frameworks including but not limited to ISO/IEC 27001 certification and SOC 2 Type II compliance. Comprehensive data-at-rest encryption protocols must be in force across all infrastructure layers handling Platform-routed payload data. Lapse of any required certification constitutes an automatic integration suspension event.'],
+                                        ['Platform Right-to-Audit', 'The Platform Operator reserves an absolute, non-delegable contractual right to audit the partner\'s API integration endpoints, key management infrastructure, and data handling protocols on an annual basis, or at any time following a suspected security incident. Refusal to co-operate with an audit request constitutes a material breach of the integration agreement and triggers immediate suspension of the partner\'s integration access.'],
+                                        ['24-Hour Breach Notification SLA', 'In the event of a suspected or confirmed data security incident, credential theft, private key compromise, or unauthorised data exfiltration within the partner\'s infrastructure, the partner is contractually bound to provide immediate technical disclosure to the Platform Operator within twenty-four (24) hours of detection. This notification triggers the Platform\'s automated circuit-breaker protocol defined in Section 3.5(b). Failure to notify within the SLA window constitutes gross breach and activates full MSA indemnification liability against the partner.'],
+                                        ['User Acknowledgement of Reasonable Arrangements', 'The User acknowledges that the Platform Operator\'s enforcement of these contractual security covenants — including certification requirements, audit rights, and breach notification SLAs — constitutes a full and reasonable security arrangement under Section 24 of the Singapore PDPA 2012. The Platform Operator\'s liability for a partner-side breach is structurally limited to the adequacy of these contractual arrangements at the point of integration onboarding, not to the partner\'s subsequent internal security execution failures.'],
+                                    ].map(([label, desc], i) => (
+                                        <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                            <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
+                                            <td className="px-4 py-3 border border-slate-200 text-slate-600 text-xs">{desc}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="border-l-4 border-red-500 bg-red-50 rounded-r-xl px-5 py-3 mb-2">
+                            <p className="text-red-800 text-xs font-bold uppercase tracking-wide mb-1">Sub-Processor Liability Boundary — PDPA Section 24</p>
+                            <p className="text-red-700 text-xs leading-relaxed">The Platform Operator's statutory protection obligation extends to the enforcement of these contractual security covenants at the point of partner onboarding. Any security failure occurring within the partner's own infrastructure after onboarding — including SQL injection, credential harvesting, or private key exfiltration — constitutes a partner-side data controller failure for which the partner bears sole regulatory and civil liability. The Platform Operator's automated circuit-breaker response (Section 3.5) further demonstrates active, good-faith protective measures executed immediately upon breach detection, satisfying the reasonableness standard under Section 24.</p>
                         </div>
                     </section>
 
