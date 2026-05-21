@@ -685,7 +685,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 <tbody>
                                     {[
                                         ['The Irrecoverable Key Clause', 'The Platform Operator does not manage, store, escrow, or possess backup copies of the User\'s private asymmetric keys. If a User loses access to their physical hardware authentication devices, loses control of their biometric access vectors, or experiences an unrecoverable failure of their localised keychain architecture, the Platform Operator cannot decrypt the associated pilot_credentials entries or regenerate the profile state.'],
-                                        ['The Structural Reset Remedy', 'In the event of catastrophic key loss, the User\'s sole remedy is to request an account termination sequence. The multi-engine infrastructure (Supabase & Firebase Sync) will execute a destructive wipe of the public-key mapping table within 30 business days. The User must then execute an entirely new onboarding sequence, re-instantiate a blank walt.id browser wallet, and process an entirely new verification lifecycle — including full repayment of the USD $100.00/year regional screening fee.'],
+                                        ['The Structural Reset Remedy', 'In the event of catastrophic key loss, the User\'s sole remedy is to request an account termination sequence. The account is suspended immediately upon request. The multi-engine infrastructure (Supabase & Firebase Sync) will then execute a destructive wipe of the public-key mapping table within 30 business days to allow for database backup rotation cycle completion — a period consistent with the PDPC\'s Reasonable Data Retention guidelines. The User must then execute an entirely new onboarding sequence, re-instantiate a blank walt.id browser wallet, and process an entirely new verification lifecycle — including settlement of re-initiation costs of external verification services charged directly by the applicable regional screening partner.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                             <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-52 text-xs whitespace-nowrap align-top">{label}</td>
@@ -702,7 +702,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                             <table className="w-full text-sm border-collapse">
                                 <tbody>
                                     {[
-                                        ['Instantaneous Terminal 3 Egress', 'Upon receipt of a live API revocation or failed trust-anchor handshake callback, the infrastructure layer instantly updates the pilot_credentials status to "Revoked" across both Supabase and Firebase. The corresponding Terminal 3 Access Token is algorithmically shattered, dropping the profile back to Terminal 2 (Exploratory) permissions within 60 seconds of the network callback event.'],
+                                        ['Instantaneous Terminal 3 Egress', 'Upon receipt of a live API revocation or failed trust-anchor handshake callback, the infrastructure layer instantly updates the pilot_credentials status to "Revoked" across both Supabase and Firebase. The corresponding Terminal 3 Access Token is cryptographically invalidated via immediate TTL zero-out, dropping the profile back to Terminal 2 (Exploratory) permissions within 60 seconds of the network callback event.'],
                                         ['Anti-Spoofing Isolation', 'To prevent malicious injection attacks or spoofed civil registry callbacks, any revocation or validation signal must match the signed, public cryptographic signature of the designated authoritative regional verification issuer. Unsigned or invalidly signed metadata streams are rejected by the infrastructure controller, and the associated account is permanently blacklisted for potential fraud.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={String(label)} className={i % 2 === 0 ? 'bg-white' : 'bg-red-50'}>
@@ -730,9 +730,15 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                     </div>
                                     <div className="text-slate-400 font-bold">→</div>
                                     <div className="border-2 border-slate-300 rounded-lg px-3 py-2 bg-slate-100 text-center w-44">
-                                        <p className="font-bold text-slate-700 text-[10px] uppercase">Terminal 3 Token Shattered</p>
-                                        <p className="text-slate-600 text-[10px]">Profile drops to Terminal 2</p>
+                                        <p className="font-bold text-slate-700 text-[10px] uppercase">Terminal 3 Token Invalidated</p>
+                                        <p className="text-slate-600 text-[10px]">TTL zero-out · Profile drops to Terminal 2</p>
                                         <p className="text-slate-500 text-[10px] font-bold">Within 60 seconds</p>
+                                    </div>
+                                    <div className="text-slate-400 font-bold">→</div>
+                                    <div className="border-2 border-blue-300 rounded-lg px-3 py-2 bg-blue-50 text-center w-44">
+                                        <p className="font-bold text-blue-800 text-[10px] uppercase">Client Walt.id Wallet</p>
+                                        <p className="text-blue-600 text-[10px]">Local credential status synchronised</p>
+                                        <p className="text-blue-700 text-[10px] font-black">Status → Revoked</p>
                                     </div>
                                 </div>
                             </div>
