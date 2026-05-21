@@ -529,8 +529,8 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
-          <span style={{ fontSize: 9, color: '#334155', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
-            wallet.pilotrecognition.com
+          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
+            <span style={{ color: '#dc2626' }}>wallet.</span><span style={{ color: '#334155' }}>pilotrecognition.com</span>
           </span>
         </div>
         <span style={{ color: '#e2e8f0', fontSize: 9 }}>·</span>
