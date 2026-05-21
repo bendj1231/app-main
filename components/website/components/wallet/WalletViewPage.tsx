@@ -104,6 +104,49 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   const [veremarkInitiating, setVeremarkInitiating] = useState(false);
   const [veremarkError, setVeremarkError] = useState<string | null>(null);
   const [veremarkFeedbackUrl, setVeremarkFeedbackUrl] = useState<string | null>(null);
+
+  const VEREMARK_STATUS_CONFIG: Record<string, { label: string; dot: string; text: string }> = {
+    not_started: { label: 'Not Started', dot: '#94a3b8', text: '#475569' },
+    in_progress: { label: 'In Progress', dot: '#3b82f6', text: '#1d4ed8' },
+    verified:    { label: 'Verified',     dot: '#16a34a', text: '#15803d' },
+    expired:     { label: 'Expired',      dot: '#ef4444', text: '#dc2626' },
+  };
+
+  const VEREMARK_CHECKS = [
+    { key: 'professional_qualification', label: 'Pilot License (CAAP / FAA)', icon: '📜' },
+    { key: 'education',                  label: 'Medical Certificate',         icon: '🏥' },
+    { key: 'language_proficiency',       label: 'ICAO ELP (Language)',          icon: '🗣' },
+    { key: 'identity',                   label: 'Identity / Passport',          icon: '🪪' },
+  ];
+
+  const initiateVeremark = async () => {
+    setVeremarkInitiating(true);
+    setVeremarkError(null);
+    try {
+      const session = (await supabase.auth.getSession()).data.session;
+      if (!session) throw new Error('Not authenticated');
+      const res = await fetch(
+        'https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/veremark-initiate',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Initiation failed');
+      setVeremarkStatus(data.status === 'already_in_progress' ? 'in_progress' :
+                        data.status === 'already_verified'    ? 'verified' : 'in_progress');
+      if (data.request_guid) setVeremarkRequestGuid(data.request_guid);
+      if (data.candidate_feedback_url) setVeremarkFeedbackUrl(data.candidate_feedback_url);
+    } catch (e: any) {
+      setVeremarkError(e.message);
+    } finally {
+      setVeremarkInitiating(false);
+    }
+  };
   type TabID = 'overview' | 'credentials' | 'logbook' | 'vault';
   const [activeTab, setActiveTab] = useState<TabID>('overview');
   // W3C VC wallet state
@@ -781,50 +824,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
         {/* ── RECOGNITION+ VEREMARK PANEL ── */}
         {(() => {
-          const statusConfig: Record<string, { label: string; bg: string; border: string; text: string; dot: string }> = {
-            not_started: { label: 'Not Started',  bg: '#f8fafc', border: '#e2e8f0', text: '#475569', dot: '#94a3b8' },
-            in_progress: { label: 'In Progress',  bg: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8', dot: '#3b82f6' },
-            verified:    { label: 'Verified',      bg: '#f0fdf4', border: '#bbf7d0', text: '#15803d', dot: '#16a34a' },
-            expired:     { label: 'Expired',       bg: '#fef2f2', border: '#fecaca', text: '#dc2626', dot: '#ef4444' },
-          };
-          const sc = statusConfig[veremarkStatus] || statusConfig.not_started;
-
-          const CHECKS_DISPLAYED = [
-            { key: 'professional_qualification', label: 'Pilot License (CAAP / FAA)', icon: '📜' },
-            { key: 'education',                  label: 'Medical Certificate',         icon: '🏥' },
-            { key: 'language_proficiency',       label: 'ICAO ELP (Language)',          icon: '🗣' },
-            { key: 'identity',                   label: 'Identity / Passport',          icon: '🪪' },
-          ];
-
-          const initiateVeremark = async () => {
-            setVeremarkInitiating(true);
-            setVeremarkError(null);
-            try {
-              const session = (await supabase.auth.getSession()).data.session;
-              if (!session) throw new Error('Not authenticated');
-              const res = await fetch(
-                `https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/veremark-initiate`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Authorization': `Bearer ${session.access_token}`,
-                    'Content-Type': 'application/json',
-                  },
-                }
-              );
-              const data = await res.json();
-              if (!res.ok) throw new Error(data.error || 'Initiation failed');
-              setVeremarkStatus(data.status === 'already_in_progress' ? 'in_progress' :
-                                data.status === 'already_verified'    ? 'verified' : 'in_progress');
-              if (data.request_guid) setVeremarkRequestGuid(data.request_guid);
-              if (data.candidate_feedback_url) setVeremarkFeedbackUrl(data.candidate_feedback_url);
-            } catch (e: any) {
-              setVeremarkError(e.message);
-            } finally {
-              setVeremarkInitiating(false);
-            }
-          };
-
+          const sc = VEREMARK_STATUS_CONFIG[veremarkStatus] || VEREMARK_STATUS_CONFIG.not_started;
           return (
             <div className="wv-in" style={{ animationDelay: '0.05s', marginBottom: 20, borderRadius: 14, overflow: 'hidden', border: `1px solid ${isRecognitionPlus ? '#bbf7d0' : '#e2e8f0'}` }}>
               {/* Header */}
@@ -850,7 +850,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
               {isRecognitionPlus ? (
                 <div style={{ padding: '14px 20px' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
-                    {CHECKS_DISPLAYED.map(ch => {
+                    {VEREMARK_CHECKS.map(ch => {
                       const match = checks.find(c => c.check_type === ch.key || c.credential_type === ch.key);
                       const isVerified = match?.status === 'verified';
                       const isFlagged  = match?.status === 'flagged';
@@ -873,7 +873,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
                 <div style={{ padding: '16px 20px' }}>
                   {/* Check list preview */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 14 }}>
-                    {CHECKS_DISPLAYED.map(ch => (
+                    {VEREMARK_CHECKS.map(ch => (
                       <div key={ch.key} style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', textAlign: 'center', filter: veremarkStatus === 'not_started' ? 'grayscale(1) opacity(0.5)' : 'none' }}>
                         <div style={{ fontSize: 18, marginBottom: 4 }}>{ch.icon}</div>
                         <p style={{ margin: '0 0 4px', fontSize: 8, fontWeight: 700, color: '#64748b', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{ch.label}</p>
