@@ -350,7 +350,8 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                         <div className="bg-red-50 border-2 border-red-300 rounded-xl px-5 py-4 mb-5">
                             <p className="text-red-700 text-xs font-black uppercase tracking-wide mb-2">⚠ Mandatory Pre-Verification Notice to Users</p>
                             <p className="text-red-800 text-xs leading-relaxed mb-2">You are strictly required to audit, verify, and guarantee the absolute accuracy of your self-claimed data — including expiration frequencies, certificate validation bounds, and licensing operational constraints — <strong>prior to authorising the regional verification partner transmission</strong>.</p>
-                            <p className="text-red-800 text-xs leading-relaxed">The platform provides data diagnostics to capture formatting inconsistencies within your uploaded logbooks; however, <strong>the verification process incurs immediate operational costs</strong>. If your screening reveals revoked licences, lapsed medical checks, or invalid certifications, <strong>the verification fee will be fully processed and is non-refundable</strong>. Your submission will return a failed verification status, preventing access to Terminal 3, due to discrepancies you failed to resolve prior to submission.</p>
+                            <p className="text-red-800 text-xs leading-relaxed mb-2">The platform provides data diagnostics to capture formatting inconsistencies within your uploaded logbooks; however, <strong>the verification process incurs immediate operational costs</strong>. If your screening reveals revoked licences, lapsed medical checks, or invalid certifications, <strong>the verification fee will be fully processed and is non-refundable</strong>. Your submission will return a failed verification status, preventing access to Terminal 3, due to discrepancies you failed to resolve prior to submission.</p>
+                            <p className="text-red-800 text-xs leading-relaxed"><strong>Hardware Authentication Requirement:</strong> The use of hardware-based authentication (Google Passkeys or Apple iCloud Keychain) is the mandatory standard for Terminal 3 access. Software-simulated credentials or password-only authentication vectors are not accepted as valid signing mechanisms for the cryptographic consent handshake.</p>
                         </div>
 
                         <h3 className="font-semibold text-slate-800 mb-2">5.2 Premium &amp; Restricted Pathway Channels</h3>
@@ -399,6 +400,10 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div className="border-l-4 border-slate-300 bg-slate-50 rounded-r-xl px-4 py-3 mb-5">
+                            <p className="text-slate-600 text-xs leading-relaxed">The Platform Operator has no visibility into the comparative data evaluated within a pilot's local browser session. Operator pathway criteria are broadcast publicly; the matching computation occurs entirely client-side. This distribution of data processing responsibility is governed by the Controller Framework in Section 17, ensuring each party retains sole accountability for their specific data stream.</p>
                         </div>
 
                         <h3 className="font-semibold text-slate-800 mb-2">5.4 Bring Your Own Verification (BYOV) &amp; External DID Sync Protocol</h3>
