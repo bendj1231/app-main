@@ -412,15 +412,22 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         ))}
       </div>
 
-      {/* ── PASSKEY GATE (mid-loading paywall) ── */}
+      {/* ── PASSKEY GATE — overlay modal ── */}
       {(authStage === 'gate' || authStage === 'verifying') && (
         <div style={{
-          width: '100%', maxWidth: 340,
+          position: 'fixed', inset: 0, zIndex: 10000,
+          background: 'rgba(15,23,42,0.45)',
+          backdropFilter: 'blur(6px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 24, animation: 'gateSlide 0.25s ease',
+        }}>
+        <div style={{
+          width: '100%', maxWidth: 380,
           background: '#ffffff',
           border: '1px solid #e2e8f0',
-          borderRadius: 16, padding: '24px',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-          animation: 'gateSlide 0.35s ease',
+          borderRadius: 20, padding: '28px',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.18)',
+          maxHeight: '90vh', overflowY: 'auto',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
             <div style={{ width: 32, height: 32, borderRadius: 8, background: '#fef2f2', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -526,6 +533,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           <p style={{ fontSize: 9, color: '#94a3b8', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
             Private key never leaves your device · Google Password Manager
           </p>
+        </div>
         </div>
       )}
 
