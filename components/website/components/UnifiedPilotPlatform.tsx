@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
+import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import {
   Home, User, Shield, Map, BookOpen, Plane, Wrench, FileText,
   BookMarked, Calendar, Newspaper, Settings, LogOut, Bell, Search,
@@ -1666,196 +1667,118 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
       { label: 'Night Hours', value: safe(profile?.night_hours) ? Number(profile.night_hours).toLocaleString() : '—', verified: false, source: 'Self-reported' },
     ];
 
+    const pilotName = safe(profile?.full_name) || safe(profile?.first_name) || 'Pilot';
+    const licenseType = safe(profile?.license_type) || safe(profile?.current_occupation) || null;
+    const totalHoursDisplay = totalHours > 0 ? Number(totalHours).toLocaleString() : null;
+    const verifiedCount = licenseSlots.filter(s => s.check?.status === 'verified').length;
+    const expiredCount = licenseSlots.filter(s => s.expired || (s.expiry && new Date(s.expiry) < new Date())).length;
+
+    const clearanceColor = allVerified ? '#16a34a' : hasExpired ? '#dc2626' : '#f59e0b';
+    const clearanceBg   = allVerified ? '#f0fdf4' : hasExpired ? '#fef2f2' : '#fffbeb';
+    const clearanceBdr  = allVerified ? '#bbf7d0' : hasExpired ? '#fecaca' : '#fde68a';
+    const clearanceLabel = allVerified ? 'Pre-Cleared' : hasExpired ? 'Action Required' : walletChecks.length > 0 ? 'In Review' : 'Not Started';
+
     return (
-      <motion.div style={{ maxWidth: 820 }} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <motion.div style={{ maxWidth: 480 }} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 
-        {/* ── WALLET HEADER ── */}
-        <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-          <div>
-            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', margin: 0 }}>Pilot Credential Vault</p>
-            <h1 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', margin: '4px 0 0', letterSpacing: '-0.02em' }}>Your Pilot Wallet</h1>
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <span style={{ fontSize: 10, fontWeight: 600, padding: '4px 10px', borderRadius: 20, border: '1px solid', ...(allVerified ? { background: '#f0fdf4', color: '#16a34a', borderColor: '#bbf7d0' } : hasExpired ? { background: '#fef2f2', color: '#dc2626', borderColor: '#fecaca' } : { background: '#f8fafc', color: '#64748b', borderColor: '#e2e8f0' }) }}>
-              {allVerified ? '● Pre-Cleared' : hasExpired ? '● Action Required' : walletChecks.length > 0 ? `● ${walletChecks.length} Pending` : '● No credentials yet'}
-            </span>
-            <span style={{ fontSize: 10, fontWeight: 600, padding: '4px 10px', borderRadius: 20, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#64748b', display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Lock size={8} /> AES-256-GCM
-            </span>
-          </div>
-        </div>
-
-        {/* ── PHYSICAL WALLET ── */}
+        {/* ── WALLET FRONT CARD ── */}
         <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: 0,
           background: '#ffffff',
-          borderRadius: 16, overflow: 'hidden',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
+          borderRadius: 20,
+          boxShadow: '0 8px 40px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.05)',
           border: '1px solid #e2e8f0',
+          overflow: 'hidden',
+          position: 'relative',
         }}>
 
-          {/* ── LEFT PANEL: LICENSE SLEEVES ── */}
-          <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 10, background: '#f8fafc' }}>
-            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase', margin: '0 0 6px' }}>License Sleeves</p>
+          {/* Holographic top strip */}
+          <div style={{
+            height: 4,
+            background: allVerified
+              ? 'linear-gradient(90deg, #10b981, #34d399, #10b981)'
+              : hasExpired
+              ? 'linear-gradient(90deg, #dc2626, #f87171, #dc2626)'
+              : 'linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b)',
+            backgroundSize: '200% 100%',
+            animation: 'wvShimmer 3s ease infinite',
+          }} />
 
-            {licenseSlots.map((slot, i) => {
-              const isEmpty = !slot.value;
-              const isExpired = slot.expired || (slot.expiry && new Date(slot.expiry) < new Date());
-              const isVerified = slot.check?.status === 'verified';
-              return (
-                <button
-                  key={i}
-                  onClick={() => setScreen('credentials')}
-                  style={{
-                    background: isEmpty
-                      ? '#ffffff'
-                      : isExpired
-                      ? '#fef2f2'
-                      : isVerified
-                      ? '#f0fdf4'
-                      : '#ffffff',
-                    border: `1px solid ${isEmpty ? '#e2e8f0' : isExpired ? '#fecaca' : isVerified ? '#bbf7d0' : '#e2e8f0'}`,
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                    borderRadius: 10,
-                    padding: '10px 12px',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    transition: 'all 0.15s',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = isEmpty ? '#f8fafc' : isExpired ? '#fee2e2' : isVerified ? '#dcfce7' : '#f1f5f9'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isEmpty ? '#ffffff' : isExpired ? '#fef2f2' : isVerified ? '#f0fdf4' : '#ffffff'; }}
-                >
-                  {/* sleeve top notch */}
-                  <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 28, height: 3, background: '#e2e8f0', borderRadius: '0 0 4px 4px' }} />
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                    <span style={{ fontSize: 16, lineHeight: 1, flexShrink: 0, marginTop: 1 }}>{slot.icon}</span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4 }}>
-                        <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#94a3b8', textTransform: 'uppercase', margin: 0 }}>{slot.label}</p>
-                        {isVerified && <span style={{ fontSize: 8, fontWeight: 700, color: '#10b981', background: 'rgba(16,185,129,0.15)', padding: '1px 5px', borderRadius: 3 }}>VERIFIED</span>}
-                        {isExpired && <span style={{ fontSize: 8, fontWeight: 700, color: '#ef4444', background: 'rgba(239,68,68,0.15)', padding: '1px 5px', borderRadius: 3 }}>EXPIRED</span>}
-                      </div>
-                      {isEmpty ? (
-                        <p style={{ fontSize: 11, color: '#cbd5e1', margin: '3px 0 0', fontStyle: 'italic' }}>{slot.cta} →</p>
-                      ) : (
-                        <>
-                          <p style={{ fontSize: 13, fontWeight: 700, color: isExpired ? '#dc2626' : isVerified ? '#16a34a' : '#0f172a', margin: '3px 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{slot.value}</p>
-                          {slot.sub && <p style={{ fontSize: 10, color: '#94a3b8', margin: '1px 0 0' }}>{slot.sub}</p>}
-                          {slot.expiry && <p style={{ fontSize: 9, margin: '2px 0 0', color: isExpired ? '#ef4444' : '#94a3b8', fontWeight: isExpired ? 700 : 400 }}>Exp: {slot.expiry}</p>}
-                        </>
-                      )}
-                    </div>
+          {/* Card body */}
+          <div style={{ padding: '24px 28px' }}>
+
+            {/* Header row */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
+              <div>
+                <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#dc2626', textTransform: 'uppercase' }}>Pilot Credential Vault</p>
+                <p style={{ margin: 0, fontSize: 22, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', lineHeight: 1.1 }}>{pilotName}</p>
+                {licenseType && <p style={{ margin: '4px 0 0', fontSize: 11, color: '#64748b', fontWeight: 500 }}>{licenseType}</p>}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
+                {/* Clearance pill */}
+                <span style={{ fontSize: 9, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: clearanceBg, color: clearanceColor, border: `1px solid ${clearanceBdr}`, letterSpacing: '0.08em' }}>
+                  ● {clearanceLabel}
+                </span>
+                <span style={{ fontSize: 9, fontWeight: 600, padding: '3px 9px', borderRadius: 20, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#64748b', display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <Lock size={7} /> AES-256-GCM
+                </span>
+              </div>
+            </div>
+
+            {/* Credential status row */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 20 }}>
+              {licenseSlots.map((slot, i) => {
+                const isEmpty = !slot.value;
+                const isExpired = slot.expired || (slot.expiry && new Date(slot.expiry) < new Date());
+                const isVerified = slot.check?.status === 'verified';
+                const dotColor = isExpired ? '#dc2626' : isVerified ? '#16a34a' : isEmpty ? '#cbd5e1' : '#f59e0b';
+                return (
+                  <div key={i} style={{ padding: '10px 10px 9px', background: '#f8fafc', border: `1px solid ${isExpired ? '#fecaca' : isVerified ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: 10, textAlign: 'center', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 20, height: 2.5, background: '#e2e8f0', borderRadius: '0 0 3px 3px' }} />
+                    <span style={{ fontSize: 18, display: 'block', marginBottom: 5, lineHeight: 1 }}>{slot.icon}</span>
+                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: dotColor, margin: '0 auto 4px', boxShadow: isVerified ? '0 0 5px #16a34a' : 'none' }} />
+                    <p style={{ margin: 0, fontSize: 8, fontWeight: 700, color: '#64748b', lineHeight: 1.2 }}>{slot.label.split(' ')[0]}</p>
                   </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* ── CENTRE SPINE ── */}
-          <div style={{ background: '#e2e8f0', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%) rotate(90deg)', fontSize: 8, fontWeight: 700, letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Pilot Recognition</div>
-          </div>
-
-          {/* ── RIGHT PANEL: HOURS TABLE ── */}
-          <div style={{ padding: '24px 20px', background: '#ffffff' }}>
-            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase', margin: '0 0 12px' }}>Flight Hours</p>
-
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textAlign: 'left', paddingBottom: 6, textTransform: 'uppercase' }}>Category</th>
-                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textAlign: 'right', paddingBottom: 6, textTransform: 'uppercase' }}>Hours</th>
-                  <th style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: '#94a3b8', textAlign: 'right', paddingBottom: 6, textTransform: 'uppercase' }}>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {hoursRows.map((row, i) => (
-                  <tr key={i} style={{ borderTop: '1px solid #f1f5f9' }}>
-                    <td style={{ padding: '7px 0', fontSize: 11, color: '#475569', fontWeight: 500 }}>{row.label}</td>
-                    <td style={{ padding: '7px 0', fontSize: 13, fontWeight: 800, color: row.value === '—' ? '#cbd5e1' : row.verified ? '#16a34a' : '#0f172a', textAlign: 'right', letterSpacing: '-0.02em' }}>{row.value}</td>
-                    <td style={{ padding: '7px 0', textAlign: 'right' }}>
-                      <span style={{
-                        fontSize: 8, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
-                        ...(row.verified
-                          ? { background: '#dcfce7', color: '#16a34a' }
-                          : row.value === '—'
-                          ? { background: '#f1f5f9', color: '#cbd5e1' }
-                          : { background: '#fef9c3', color: '#d97706' }),
-                      }}>
-                        {row.verified ? 'VERIFIED' : row.value === '—' ? 'EMPTY' : 'UNVERIFIED'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* Source note */}
-            <div style={{ marginTop: 14, padding: '8px 10px', background: '#f8fafc', borderRadius: 6, border: '1px solid #e2e8f0' }}>
-              <p style={{ fontSize: 9, color: '#94a3b8', margin: 0, lineHeight: 1.6 }}>
-                <span style={{ color: '#16a34a', fontWeight: 700 }}>Verified</span> = Confirmed by Veremark background check.{' '}
-                <span style={{ color: '#d97706', fontWeight: 700 }}>Unverified</span> = Self-reported — not yet confirmed by a third party.
-              </p>
+                );
+              })}
             </div>
 
-            {/* Action buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 14 }}>
-              <button
-                onClick={() => setScreen('credentials')}
-                style={{ padding: '9px 14px', borderRadius: 8, border: 'none', background: '#dc2626', color: 'white', fontSize: 11, fontWeight: 700, cursor: 'pointer', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}
-              >
-                <FileText size={12} /> Enter Credentials
-              </button>
-              <button
-                onClick={() => setScreen('verification')}
-                style={{ padding: '9px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#475569', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}
-              >
-                <Shield size={12} /> View Verification Status
-              </button>
-              {isRecognitionPlus && (
-                <button
-                  onClick={() => setScreen('documents')}
-                  style={{ padding: '9px 14px', borderRadius: 8, border: '1px solid rgba(14,165,233,0.3)', background: 'rgba(14,165,233,0.08)', color: '#38bdf8', fontSize: 11, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}
-                >
-                  <Upload size={12} /> Upload Documents
-                </button>
-              )}
+            {/* Stats row */}
+            <div style={{ display: 'flex', gap: 0, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, overflow: 'hidden', marginBottom: 20 }}>
+              {[
+                { label: 'Credentials', value: `${verifiedCount} / ${licenseSlots.length}`, sub: 'verified', color: verifiedCount === licenseSlots.length ? '#16a34a' : '#64748b' },
+                { label: 'Flight Hours', value: totalHoursDisplay || '—', sub: totalHoursDisplay ? 'logged' : 'not set', color: totalHoursDisplay ? '#2563eb' : '#94a3b8' },
+                { label: 'Alerts', value: expiredCount > 0 ? String(expiredCount) : '—', sub: expiredCount > 0 ? 'expired' : 'clear', color: expiredCount > 0 ? '#dc2626' : '#16a34a' },
+              ].map((stat, i, arr) => (
+                <div key={stat.label} style={{ flex: 1, padding: '10px 12px', borderRight: i < arr.length - 1 ? '1px solid #e2e8f0' : 'none', textAlign: 'center' }}>
+                  <p style={{ margin: '0 0 1px', fontSize: 16, fontWeight: 900, color: stat.color, letterSpacing: '-0.02em', lineHeight: 1 }}>{stat.value}</p>
+                  <p style={{ margin: 0, fontSize: 8, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{stat.label}</p>
+                </div>
+              ))}
             </div>
-          </div>
-        </div>
 
-        {/* ── ZK STRIP ── */}
-        <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
-          {([
-            { icon: Lock,   label: 'AES-256-GCM encrypted' },
-            { icon: Shield, label: 'Zero-knowledge — no raw PII' },
-            { icon: User,   label: 'Pilot-owned — revoke anytime' },
-          ] as const).map(({ icon: Icon, label }, i) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 14px', borderRight: i < 2 ? '1px solid #e2e8f0' : 'none' }}>
-              <Icon size={10} style={{ color: '#94a3b8', flexShrink: 0 }} />
-              <span style={{ fontSize: 10, color: '#64748b', fontWeight: 500 }}>{label}</span>
-            </div>
-          ))}
-        </div>
+            {/* Primary CTA */}
+            <button
+              onClick={() => setScreen('credentials')}
+              style={{
+                width: '100%', padding: '13px 0', borderRadius: 11, border: 'none',
+                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                color: '#ffffff', fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                boxShadow: '0 2px 16px rgba(15,23,42,0.25)',
+                transition: 'all 0.18s ease',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)'; }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Access Wallet Portal
+            </button>
 
-        {/* ── LEGAL NOTICE ── */}
-        <div style={{ marginTop: 10, padding: '12px 16px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase', marginBottom: 6 }}>Legal & Data Terms</p>
-          <p style={{ fontSize: 11, color: '#64748b', lineHeight: 1.7, margin: 0 }}>
-            By storing credentials in your Pilot Vault you agree to PilotRecognition's{' '}
-            <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 600, textDecoration: 'underline' }}>Terms of Service</a>
-            {' '}and{' '}
-            <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#dc2626', fontWeight: 600, textDecoration: 'underline' }}>Privacy Policy</a>.
-            {' '}Credential data is encrypted at rest using AES-256-GCM. Raw PII is never transmitted to third parties without your explicit consent.
-            Verification checks are processed by <a href="https://veremark.com" target="_blank" rel="noopener noreferrer" style={{ color: '#475569', fontWeight: 600, textDecoration: 'underline' }}>Veremark</a> under their <a href="https://veremark.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#475569', fontWeight: 600, textDecoration: 'underline' }}>Data Processing Agreement</a>.
-            {' '}You may revoke data access at any time from Settings → Consent & Privacy.
-          </p>
-          <div style={{ display: 'flex', gap: 10, marginTop: 8, flexWrap: 'wrap' }}>
-            {[{ label: 'GDPR Art. 9', color: '#3b82f6' }, { label: 'Illinois BIPA', color: '#8b5cf6' }, { label: 'PDPA (PH)', color: '#10b981' }, { label: 'UAE PDPL', color: '#f59e0b' }].map(({ label, color }) => (
-              <span key={label} style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color, textTransform: 'uppercase', padding: '2px 8px', border: `1px solid ${color}30`, borderRadius: 4, background: `${color}08` }}>{label}</span>
-            ))}
+            {/* Footnote */}
+            <p style={{ textAlign: 'center', fontSize: 9, color: '#94a3b8', margin: '10px 0 0', letterSpacing: '0.04em' }}>
+              Pilot-owned · Zero-knowledge · AES-256-GCM encrypted
+            </p>
           </div>
         </div>
 
@@ -2658,7 +2581,9 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
 
   React.useEffect(() => {
     const id = setInterval(() => {
-      if (!paused.current) setCarouselIdx(p => (p + 1) % PATHWAY_CARDS.length);
+      if (!paused.current && document.visibilityState === 'visible') {
+        setCarouselIdx(p => (p + 1) % PATHWAY_CARDS.length);
+      }
     }, 4000);
     return () => clearInterval(id);
   }, []);
@@ -3340,14 +3265,17 @@ const NewsroomTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate
 
   React.useEffect(() => { setActiveIdx(0); }, [activeCategory]);
 
+  const filteredLenRef = React.useRef(filtered.length);
+  React.useEffect(() => { filteredLenRef.current = filtered.length; }, [filtered.length]);
+
   React.useEffect(() => {
     const interval = setInterval(() => {
-      if (Date.now() - lastInteraction.current >= 6000) {
-        setActiveIdx(prev => (prev + 1) % filtered.length);
+      if (document.visibilityState === 'visible' && Date.now() - lastInteraction.current >= 6000) {
+        setActiveIdx(prev => (prev + 1) % filteredLenRef.current);
       }
     }, 6000);
     return () => clearInterval(interval);
-  }, [filtered.length]);
+  }, []);
 
   if (!item) return null;
 
@@ -3589,11 +3517,15 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       <div className="fixed inset-0 z-0">
-        <MeshGradient
-          className="w-full h-full"
-          colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
-          speed={0.22}
-        />
+        {getHomepageGraphicsConfig().enableMeshGradient ? (
+          <MeshGradient
+            className="w-full h-full"
+            colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
+            speed={getHomepageGraphicsConfig().meshGradientSpeed}
+          />
+        ) : (
+          <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-500/20 via-slate-800/35 to-slate-950/60" />
         <div className="absolute inset-0 backdrop-blur-[3px] bg-slate-900/10" />
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
