@@ -89,6 +89,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   });
   const [exportOpen, setExportOpen] = useState(false);
   const [signoffOpen, setSignoffOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'identity' | 'credentials' | 'logbook' | 'export'>('identity');
   // W3C VC wallet state
   const [walletState, setWalletState] = useState<WalletState | null>(null);
   const [slotStatuses, setSlotStatuses] = useState<Record<number, BitstringStatusResult>>({});
@@ -434,7 +435,55 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         </div>
       </div>
 
-      {/* ── ZONE 1: MASTER CORE IDENTITY CARD ── */}
+      {/* ── TAB BAR ── */}
+      {(() => {
+        const tabs: { key: typeof activeTab; label: string; icon: string; badge?: string }[] = [
+          { key: 'identity',    label: 'Identity',    icon: '🪪', badge: didVerified ? '✓' : undefined },
+          { key: 'credentials', label: 'Credentials', icon: '🔐', badge: checks.filter(c => c.status === 'verified').length > 0 ? String(checks.filter(c => c.status === 'verified').length) : undefined },
+          { key: 'logbook',     label: 'Logbook',     icon: '📋' },
+          { key: 'export',      label: 'Export',      icon: '🚀', badge: walletState?.activePresentation ? 'VP' : undefined },
+        ];
+        return (
+          <div style={{ position: 'relative', zIndex: 10, padding: '16px 28px 0' }}>
+            <div style={{ display: 'flex', gap: 2, background: '#f1f5f9', borderRadius: 12, padding: 4, border: '1px solid #e2e8f0' }}>
+              {tabs.map(t => {
+                const isActive = activeTab === t.key;
+                return (
+                  <button
+                    key={t.key}
+                    onClick={() => setActiveTab(t.key)}
+                    style={{
+                      flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                      padding: '8px 12px', borderRadius: 9, border: 'none', cursor: 'pointer',
+                      background: isActive ? '#ffffff' : 'transparent',
+                      boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+                      color: isActive ? '#0f172a' : '#64748b',
+                      fontWeight: isActive ? 700 : 500,
+                      fontSize: 11,
+                      transition: 'all 0.18s ease',
+                      letterSpacing: '0.01em',
+                    }}
+                  >
+                    <span style={{ fontSize: 13 }}>{t.icon}</span>
+                    <span>{t.label}</span>
+                    {t.badge && (
+                      <span style={{
+                        fontSize: 8, fontWeight: 800, padding: '1px 5px', borderRadius: 8,
+                        background: isActive ? (t.key === 'credentials' ? '#dcfce7' : '#dbeafe') : '#e2e8f0',
+                        color: isActive ? (t.key === 'credentials' ? '#15803d' : '#1d4ed8') : '#94a3b8',
+                        border: `1px solid ${isActive ? (t.key === 'credentials' ? '#86efac' : '#93c5fd') : '#cbd5e1'}`,
+                      }}>{t.badge}</span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── TAB: IDENTITY ── */}
+      {activeTab === 'identity' && (
       <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 0' }}>
         <div className="wv-in" style={{
           background: '#ffffff',
@@ -555,8 +604,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           </div>
         </div>
       </div>
+      )}
 
-      {/* ── ZONE 2: MODULAR CREDENTIAL SLEEVES ── */}
+      {/* ── TAB: CREDENTIALS ── */}
+      {activeTab === 'credentials' && (
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.1s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
           <div>
@@ -757,8 +808,10 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           })}
         </div>
       </div>
+      )}
 
-      {/* ── ZONE 3: FLIGHT HOURS LOGBOOK — SELECTIVE DISCLOSURE ── */}
+      {/* ── TAB: LOGBOOK ── */}
+      {activeTab === 'logbook' && (
       <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.35s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
           <div>
@@ -954,8 +1007,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
         </p>
       </div>
 
-      {/* ── LOGBOOK SYNC ── */}
-      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+      <div style={{ position: 'relative', zIndex: 10, padding: '16px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.45s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
           <div>
             <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Logbook Sync</p>
@@ -1045,6 +1097,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
           </div>
         </div>
       </div>
+      )}
 
       {/* ── FOOTER — DATA SEGREGATION TRUST PANEL ── */}
       <div style={{ position: 'relative', zIndex: 10, padding: '20px 28px 36px', borderTop: '1px solid #e2e8f0', marginTop: 28 }}>
