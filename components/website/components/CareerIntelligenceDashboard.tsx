@@ -150,7 +150,10 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
       {/* Gap Analyzer Input */}
       <div style={{ margin: '16px 20px 0', padding: '16px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)' }}>
         <p style={{ margin: '0 0 4px', fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Your Career Gap Analyzer</p>
-        <p style={{ margin: '0 0 10px', fontSize: 9, color: 'rgba(255,255,255,0.3)', lineHeight: 1.5 }}>Enter an airline slug (e.g. <code style={{ color: '#f59e0b' }}>cebu-pacific</code>, <code style={{ color: '#f59e0b' }}>emirates</code>) to pull live fleet age from Airfleets.net — or enter the year built manually.</p>
+        <p style={{ margin: '0 0 10px', fontSize: 9, color: 'rgba(255,255,255,0.3)', lineHeight: 1.5 }}>
+          Enter an airline slug (e.g. <code style={{ color: '#f59e0b' }}>cebu-pacific</code>, <code style={{ color: '#f59e0b' }}>emirates</code>) to pull live fleet age via
+          {' '}<strong style={{ color: 'rgba(255,255,255,0.4)' }}>Airlabs API → AeroDataBox → Airfleets.net → Boeing AEL average</strong> — or enter year built manually.
+        </p>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <input
             value={aircraftType}
