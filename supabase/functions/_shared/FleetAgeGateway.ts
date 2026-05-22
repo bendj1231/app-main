@@ -44,6 +44,11 @@ export type ProviderName =
   | 'opensky'
   | 'arla'
   | 'bts_open_data'
+  | 'opendatasoft'
+  | 'wrobell_github'
+  | 'openflights_github'
+  | 'uk_caa'
+  | 'casa_australia'
   | 'airfleets_scrape'
   | 'boeing_ael_static';
 
@@ -123,6 +128,46 @@ export const PROVIDERS: ProviderConfig[] = [
     url: 'https://www.transtats.bts.gov/api_airport.asp',
     tier: 'free_api',
     note: 'Free .gov API. US carriers only. Returns average_age, oldest_age, youngest_age.',
+    keyEnvVar: null,
+  },
+  {
+    name: 'opendatasoft',
+    label: 'OpenDataSoft World Aircraft Database',
+    url: 'https://data.opendatasoft.com/explore/dataset/world-aircraft-database',
+    tier: 'free_api',
+    note: 'No key. REST query by tail number. Returns year_of_construction and operator. Global coverage.',
+    keyEnvVar: null,
+  },
+  {
+    name: 'wrobell_github',
+    label: 'wrobell/aircraft GitHub Dataset (ICAO hex → model)',
+    url: 'https://github.com/wrobell/aircraft',
+    tier: 'free_api',
+    note: 'No key. Raw GitHub JSON. Maps ICAO24 hex codes to model type. Used for narrowbody/widebody classification.',
+    keyEnvVar: null,
+  },
+  {
+    name: 'openflights_github',
+    label: 'jpatokal/openflights Aircraft Database',
+    url: 'https://raw.githubusercontent.com/jpatokal/openflights/master/data/planes.dat',
+    tier: 'free_api',
+    note: 'No key. CSV on GitHub. Definitive aircraft type list — A320-200 vs neo classification for Weibull segment routing.',
+    keyEnvVar: null,
+  },
+  {
+    name: 'uk_caa',
+    label: 'UK CAA G-INFO Aircraft Register',
+    url: 'https://siteapps.caa.co.uk/g-info/',
+    tier: 'free_api',
+    note: 'No key. UK G-registered aircraft. Links tail to date of manufacture and airworthiness status.',
+    keyEnvVar: null,
+  },
+  {
+    name: 'casa_australia',
+    label: 'CASA Australia Aircraft Register',
+    url: 'https://www.casa.gov.au/aircraft/aircraft-register',
+    tier: 'free_api',
+    note: 'No key. VH-registered Australian aircraft. Manufacturing year + design type in open dataset.',
     keyEnvVar: null,
   },
   {
@@ -596,7 +641,100 @@ function fromBoeingAEL(family: string, airlineIata: string | null): FleetAgeResu
   };
 }
 
-// ─── Main gateway ─────────────────────────────────────────────────────────
+// ─── Free global / government registry implementations ───────────────────
+
+async function fromOpenDataSoft(
+  registration: string,
+  family: string,
+): Promise<FleetAgeResult | null> {
+  try {
+    // OpenDataSoft world-aircraft-database: query by registration number
+    const url = `https://data.opendatasoft.com/api/explore/v2.1/catalog/datasets/world-aircraft-database/records?where=registration%3D%22${encodeURIComponent(registration.toUpperCase())}%22&limit=5`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' }, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const records: any[] = json?.results || [];
+    if (!records.length) return null;
+
+    const currentYear = new Date().getFullYear();
+    const ages: number[] = records
+      .map((r: any) => {
+        const yoc = r.year_of_construction || r.yearofconstruction || r.built;
+        return yoc ? currentYear - parseInt(String(yoc)) : null;
+      })
+      .filter((a): a is number => typeof a === 'number' && a >= 0 && a <= 60);
+
+    if (!ages.length) return null;
+    const avg = ages.reduce((s, a) => s + a, 0) / ages.length;
+    return {
+      fleetAge: Math.round(avg * 10) / 10, matchedCount: records.length,
+      provider: 'opendatasoft', providerLabel: 'OpenDataSoft World Aircraft Database',
+      dataQuality: 'live_api',
+      sourceUrl: 'https://data.opendatasoft.com/explore/dataset/world-aircraft-database',
+      airlineIata: null, aircraftFamily: family, resolvedAt: new Date().toISOString(),
+    };
+  } catch (err) { console.warn('OpenDataSoft error:', err); return null; }
+}
+
+async function fromUKCAA(
+  registration: string,
+  family: string,
+): Promise<FleetAgeResult | null> {
+  // UK CAA G-INFO open data API — G-registered aircraft only
+  try {
+    const reg = registration.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+    const url = `https://siteapps.caa.co.uk/g-info/api/aircraft?registration=${encodeURIComponent(reg)}`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' }, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const record = Array.isArray(json) ? json[0] : json;
+    if (!record) return null;
+    const yom = record.year_of_manufacture || record.yearOfManufacture || record.manufacturedYear;
+    if (!yom) return null;
+    const age = new Date().getFullYear() - parseInt(String(yom));
+    if (isNaN(age) || age < 0 || age > 60) return null;
+    return {
+      fleetAge: age, matchedCount: 1,
+      provider: 'uk_caa', providerLabel: 'UK CAA G-INFO Aircraft Register',
+      dataQuality: 'live_api',
+      sourceUrl: 'https://siteapps.caa.co.uk/g-info/',
+      airlineIata: null, aircraftFamily: family, resolvedAt: new Date().toISOString(),
+    };
+  } catch (err) { console.warn('UK CAA error:', err); return null; }
+}
+
+async function fromCASA(
+  registration: string,
+  family: string,
+): Promise<FleetAgeResult | null> {
+  // CASA Australia open data — VH-registered aircraft
+  try {
+    const reg = registration.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+    // CASA provides downloadable CSV; query via data.gov.au CKAN API
+    const url = `https://data.gov.au/api/3/action/datastore_search?resource_id=2dfc59e2-57c1-497e-9636-7c9b8a11e2e1&q=${encodeURIComponent(reg)}&limit=5`;
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' }, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const records: any[] = json?.result?.records || [];
+    if (!records.length) return null;
+    const currentYear = new Date().getFullYear();
+    const ages: number[] = records
+      .map((r: any) => {
+        const yom = r.year_of_manufacture || r.Year_of_Manufacture || r.built;
+        return yom ? currentYear - parseInt(String(yom)) : null;
+      })
+      .filter((a): a is number => typeof a === 'number' && a >= 0 && a <= 60);
+    if (!ages.length) return null;
+    const avg = ages.reduce((s, a) => s + a, 0) / ages.length;
+    return {
+      fleetAge: Math.round(avg * 10) / 10, matchedCount: records.length,
+      provider: 'casa_australia', providerLabel: 'CASA Australia Aircraft Register (data.gov.au)',
+      dataQuality: 'live_api',
+      sourceUrl: 'https://data.gov.au',
+      airlineIata: null, aircraftFamily: family, resolvedAt: new Date().toISOString(),
+    };
+  } catch (err) { console.warn('CASA error:', err); return null; }
+}
 
 export class FleetAgeGateway {
   /**
@@ -659,14 +797,67 @@ export class FleetAgeGateway {
       if (r) return r;
     }
 
-    // 8. Airfleets scrape
+    // 8. OpenDataSoft world aircraft database (tail number lookup)
+    if (airlineSlug) {
+      const r = await fromOpenDataSoft(airlineSlug, family);
+      if (r) return r;
+    }
+
+    // 9. UK CAA G-INFO (G-registered aircraft, tail number)
+    if (airlineSlug && airlineSlug.toUpperCase().startsWith('G-')) {
+      const r = await fromUKCAA(airlineSlug, family);
+      if (r) return r;
+    }
+
+    // 10. CASA Australia (VH-registered aircraft)
+    if (airlineSlug && airlineSlug.toUpperCase().startsWith('VH-')) {
+      const r = await fromCASA(airlineSlug, family);
+      if (r) return r;
+    }
+
+    // 11. Airfleets scrape
     if (airlineSlug) {
       const r = await fromAirfleets(airlineSlug, family);
       if (r) return r;
     }
 
-    // 9. Boeing AEL static average — always succeeds
+    // 12. Boeing AEL static average — always succeeds
     return fromBoeingAEL(family, iata);
+  }
+
+  /**
+   * Classify aircraft family into Weibull segment using openflights planes.dat.
+   * Returns 'narrowbody' | 'widebody' | 'regional' | 'freighter'.
+   * Falls back to keyword matching if GitHub fetch fails.
+   */
+  static async classifySegment(aircraftFamily: string): Promise<string> {
+    const family = aircraftFamily.toLowerCase().replace(/[\s-]/g, '');
+    // Try openflights planes.dat for IATA/ICAO type classification
+    try {
+      const res = await fetch('https://raw.githubusercontent.com/jpatokal/openflights/master/data/planes.dat', { signal: AbortSignal.timeout(5000) });
+      if (res.ok) {
+        const text = await res.text();
+        for (const line of text.split('\n')) {
+          const parts = line.split(',');
+          if (parts.length < 3) continue;
+          const name = parts[0].replace(/"/g, '').toLowerCase().replace(/[\s-]/g, '');
+          const iata = parts[1].replace(/"/g, '').toLowerCase();
+          if (name.includes(family) || iata === family.substring(0, 3)) {
+            const fullName = parts[0].toLowerCase();
+            if (fullName.includes('freighter') || fullName.includes('cargo') || fullName.includes('-f ')) return 'freighter';
+            if (fullName.includes('a380') || fullName.includes('a350') || fullName.includes('777') || fullName.includes('787') || fullName.includes('a330') || fullName.includes('747')) return 'widebody';
+            if (fullName.includes('atr') || fullName.includes('crj') || fullName.includes('embraer') || fullName.includes('e1') || fullName.includes('e17') || fullName.includes('q400') || fullName.includes('dash')) return 'regional';
+            return 'narrowbody';
+          }
+        }
+      }
+    } catch { /* fall through to keyword match */ }
+
+    // Keyword fallback
+    if (['777', '787', 'a350', 'a330', 'a380', 'a340', '747', '767'].some(k => family.includes(k))) return 'widebody';
+    if (['atr', 'crj', 'e170', 'e175', 'e190', 'e195', 'q400', 'dash8', 'saab'].some(k => family.includes(k))) return 'regional';
+    if (['freighter', '747f', '777f', 'a330f', 'a350f'].some(k => family.includes(k))) return 'freighter';
+    return 'narrowbody';
   }
 
   /**
