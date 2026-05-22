@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../../../src/lib/supabase';
 
 const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
 

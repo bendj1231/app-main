@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../../../src/lib/supabase';
 import { FleetIntelligenceCard } from './FleetIntelligenceCard';
 import PremiumFeaturesPanel from './PremiumFeaturesPanel';
 
