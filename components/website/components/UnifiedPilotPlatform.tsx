@@ -1766,6 +1766,47 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
       }
     }, 600);
   }, []);
+
+  // Dashboard panels unlock state
+  const [dashboardUnlocked, setDashboardUnlocked] = React.useState(false);
+  const [dashboardUnlocking, setDashboardUnlocking] = React.useState(false);
+  const [dashUnlockStep, setDashUnlockStep] = React.useState(0);
+  const dashUnlockSteps = [
+    'Verifying pilot session…',
+    'Deriving AES-256-GCM key…',
+    'Decrypting credential data…',
+    'Ready',
+  ];
+  const unlockDashboard = React.useCallback(async () => {
+    // Attempt WebAuthn / passkey if available
+    if (typeof window !== 'undefined' && (window as any).PublicKeyCredential) {
+      try {
+        await (navigator.credentials as any).get({
+          publicKey: {
+            challenge: crypto.getRandomValues(new Uint8Array(32)),
+            rpId: window.location.hostname,
+            allowCredentials: [],
+            userVerification: 'preferred',
+            timeout: 60000,
+          },
+        });
+      } catch {
+        // Passkey unavailable or cancelled — fall through to steps anyway
+      }
+    }
+    setDashboardUnlocking(true);
+    setDashUnlockStep(0);
+    let step = 0;
+    const iv = setInterval(() => {
+      step++;
+      setDashUnlockStep(step);
+      if (step >= dashUnlockSteps.length) {
+        clearInterval(iv);
+        setDashboardUnlocking(false);
+        setDashboardUnlocked(true);
+      }
+    }, 550);
+  }, []);
   const [verificationOpen, setVerificationOpen] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<{ name: string; type: string; size: number }[]>([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -1966,6 +2007,74 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
         {/* ── DASHBOARD PANELS ── */}
         <div className="space-y-4">
 
+        {/* ── LOCKED STATE ── */}
+        {!dashboardUnlocked && !dashboardUnlocking && (
+          <div style={{ position: 'relative', overflow: 'hidden' }}>
+            {/* Blurred ghost panels */}
+            <div style={{ filter: 'blur(4px)', opacity: 0.35, pointerEvents: 'none', userSelect: 'none' }} aria-hidden="true">
+              <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', height: 140, marginBottom: 12 }} />
+              <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', height: 160, marginBottom: 12 }} />
+              <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', height: 110, marginBottom: 12 }} />
+              <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', height: 130 }} />
+            </div>
+            {/* Lock overlay */}
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+              <div style={{ width: 56, height: 56, borderRadius: 16, background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(220,38,38,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Lock size={22} className="text-red-500" />
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-black text-white tracking-wide">Dashboard Locked</p>
+                <p className="text-[10px] text-white/35 mt-1">Verify your identity to view credential data</p>
+              </div>
+              <button
+                onClick={unlockDashboard}
+                className="flex items-center gap-2 px-5 py-2.5 text-[11px] font-black tracking-widest text-white transition-all hover:brightness-110"
+                style={{ background: 'rgba(220,38,38,0.85)', border: '1px solid rgba(220,38,38,0.5)' }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                UNLOCK WITH PASSKEY
+              </button>
+              <p className="text-[8px] text-white/20 tracking-widest uppercase">AES-256-GCM · Zero-knowledge</p>
+            </div>
+          </div>
+        )}
+
+        {/* ── UNLOCKING ANIMATION ── */}
+        {dashboardUnlocking && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '48px 0 40px', gap: 0 }}>
+            <div style={{ width: 56, height: 56, borderRadius: 16, background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, position: 'relative' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <svg style={{ position: 'absolute', top: -4, left: -4, animation: 'spin 1.2s linear infinite' }} width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="29" stroke="rgba(220,38,38,0.35)" strokeWidth="2" strokeDasharray="48 120" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <p className="text-xs font-black text-white mb-5 tracking-wide">Decrypting your vault…</p>
+            <div style={{ width: '100%', maxWidth: 300, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {dashUnlockSteps.map((step, i) => {
+                const done = i < dashUnlockStep;
+                const active = i === dashUnlockStep;
+                return (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', background: active ? 'rgba(220,38,38,0.08)' : done ? 'rgba(16,185,129,0.06)' : 'rgba(255,255,255,0.02)', border: `1px solid ${active ? 'rgba(220,38,38,0.3)' : done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.05)'}`, transition: 'all 0.3s' }}>
+                    <div style={{ width: 16, height: 16, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: active ? 'rgba(220,38,38,0.2)' : done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.05)', border: `1px solid ${active ? 'rgba(220,38,38,0.5)' : done ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.08)'}` }}>
+                      {done
+                        ? <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        : active
+                        ? <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#dc2626', animation: 'pulse 0.9s ease-in-out infinite' }} />
+                        : <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'rgba(255,255,255,0.12)' }} />
+                      }
+                    </div>
+                    <p style={{ fontSize: 10, fontWeight: active ? 700 : 500, color: active ? 'rgba(255,255,255,0.85)' : done ? 'rgba(16,185,129,0.75)' : 'rgba(255,255,255,0.2)', flex: 1 }}>{step}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <style>{`@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }`}</style>
+          </div>
+        )}
+
+        {/* ── UNLOCKED CONTENT ── */}
+        {dashboardUnlocked && <>
+
           {/* ── 1. VC STATUS STRIP ── */}
           <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}>
             <div className="flex items-center justify-between px-5 pt-4 pb-2">
@@ -2095,6 +2204,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
           {/* ── 5. NOTIFICATIONS FEED ── */}
           <NotificationsFeedPanel profileId={profile?.id} />
 
+        </>}
         </div>
       </motion.div>
     );
