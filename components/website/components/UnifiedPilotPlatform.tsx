@@ -1743,6 +1743,40 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
     return (
       <motion.div style={{ maxWidth: 480 }} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 
+        {/* ── PILOT CREDENTIAL VAULT BANNER ── */}
+        <div style={{ background: 'white', border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', marginBottom: 16 }}>
+          <div style={{ height: 4, background: '#dc2626' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.25rem 1.5rem', flexWrap: 'wrap' }}>
+            <div style={{ width: 48, height: 48, borderRadius: 12, background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 4 }}>Pilot Credential Vault</p>
+              <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4 }}>Access Your Wallet</p>
+              <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.</p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: allVerified ? '#16a34a' : '#94a3b8', flexShrink: 0 }} />
+                <span style={{ fontSize: 10, fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{allVerified ? 'Verified' : 'Unverified'}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>AES-256-GCM</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setScreen('credentials')}
+              style={{ background: '#dc2626', color: 'white', border: 'none', padding: '10px 24px', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, transition: 'background 0.15s' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
+            >
+              Open Wallet
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
         {/* ── PENDING CREDENTIAL REQUESTS ── */}
         {pendingRequests.length > 0 && (
           <div className="mb-4 space-y-3">
