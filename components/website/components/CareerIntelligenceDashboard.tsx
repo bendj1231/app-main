@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { FleetIntelligenceCard } from './FleetIntelligenceCard';
+import PremiumFeaturesPanel from './PremiumFeaturesPanel';
 
 const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
 
@@ -79,20 +80,29 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
   const [showWeibull, setShowWeibull] = useState(false);
   const [showProvenance, setShowProvenance] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [authToken, setAuthToken] = useState<string>('');
+  const [isPremium, setIsPremium] = useState<boolean>(false);
   const [forecastsLoading, setForecastsLoading] = useState(true);
   const [activeSegment, setActiveSegment] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>('heatmap');
 
-  // Load all OEM forecasts on mount
+  // Load all OEM forecasts + auth token + premium status on mount
   useEffect(() => {
     const load = async () => {
       setForecastsLoading(true);
-      const { data } = await supabase
-        .from('oem_market_forecasts')
-        .select('*')
-        .order('demand_index', { ascending: false });
-      setForecasts(data ?? []);
+      const [{ data: forecastData }, session] = await Promise.all([
+        supabase.from('oem_market_forecasts').select('*').order('demand_index', { ascending: false }),
+        supabase.auth.getSession(),
+      ]);
+      setForecasts(forecastData ?? []);
       setForecastsLoading(false);
+      const token = session.data.session?.access_token || '';
+      setAuthToken(token);
+      if (token && profile?.id) {
+        const { data: prof } = await supabase.from('profiles').select('recognition_plus, recognition_plus_expires').eq('id', profile.id).maybeSingle();
+        const exp = prof?.recognition_plus_expires ? new Date(prof.recognition_plus_expires) > new Date() : true;
+        setIsPremium(!!(prof?.recognition_plus && exp));
+      }
     };
     load();
   }, []);
@@ -363,6 +373,19 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
                 onCidGenerated={cid => setIpfsCid(cid)}
               />
             </div>
+
+            {/* Recognition+ Premium Features */}
+            {authToken && (
+              <div style={{ marginTop: 12 }}>
+                <PremiumFeaturesPanel
+                  isPremium={isPremium}
+                  pilotId={profile?.id ?? ''}
+                  authToken={authToken}
+                  supabaseUrl={SUPABASE_URL}
+                  gapAnalysisResult={gapAnalysis}
+                />
+              </div>
+            )}
 
             {/* Data provenance toggle */}
             {gapAnalysis.dataSources && (
