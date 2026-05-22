@@ -1,52 +1,58 @@
 ---
-description: Set up Pinata IPFS for wallet VP pinning
+description: Storage architecture — R2 for private pilot data, Pinata IPFS for public institutional data
 ---
 
-## Step 1 — Create a Pinata account
+## Architecture split
+
+| Data type | Storage | Reason |
+|---|---|---|
+| Pilot credential photos, VP exports, logbook scans | **Cloudflare R2** (`pilot-encrypted-vault` bucket) | Private, AES-256-GCM encrypted, pilot-owned, never public |
+| Airline info, manufacturer data (Airbus, Boeing etc), flight school profiles, operator content | **Pinata IPFS** | Public reference data we don't own — IPFS proves we don't hold or modify it |
+
+**Pinata is NOT used for any pilot personal data.** It is only for publicly-sourced institutional content that we pin to prove immutability.
+
+---
+
+## Setting up Pinata for public institutional content
+
+### Step 1 — Create a Pinata account
 
 1. Go to https://pinata.cloud and sign up (free tier: 1 GB, 100 pins/month)
 2. Verify your email
 
-## Step 2 — Generate an API Key
+### Step 2 — Generate an API Key
 
 1. In the Pinata dashboard, click **API Keys** in the left sidebar
-2. Click **+ New Key**
-3. Toggle **Admin** on (gives full pin access)
-4. Give it a name: `pilotrecognition-wallet`
-5. Click **Generate API Key**
-6. **Copy the JWT** shown — you will NOT be able to see it again
+2. Click **+ New Key**, toggle **Admin** on, name it `pilotrecognition-public`
+3. **Copy the JWT** — you will NOT be able to see it again
 
-## Step 3 — Get your dedicated gateway (optional but recommended)
-
-1. In Pinata dashboard, click **Gateways**
-2. Copy your gateway subdomain — it looks like: `amber-defensive-minnow-123.mypinata.cloud`
-3. The subdomain part before `.mypinata.cloud` is your gateway slug
-
-## Step 4 — Add secrets to Supabase
+### Step 3 — Add secrets to Supabase
 
 1. Go to https://supabase.com/dashboard/project/gkbhgrozrzhalnjherfu/settings/edge-functions
-2. Click **Add secret** and add each of the following:
+2. Add:
 
 | Secret Name | Value |
 |---|---|
-| `PINATA_JWT` | The JWT you copied in Step 2 |
-| `PINATA_GATEWAY` | Your gateway slug (e.g. `amber-defensive-minnow-123.mypinata.cloud`) — optional |
+| `PINATA_JWT` | The JWT from Step 2 |
+| `PINATA_GATEWAY` | Your gateway slug e.g. `amber-defensive-minnow-123.mypinata.cloud` |
 
-3. Click **Save**
+### Step 4 — Usage (public data only)
 
-## Step 5 — Test it
+Use Pinata only to pin:
+- Airline/operator public profile JSON
+- Manufacturer (Airbus, Boeing, Embraer) aircraft type data
+- Flight school / ATO public information
+- Any reference dataset sourced from public registries (CAAP, FAA, ICAO)
 
-1. Go to https://pilotrecognition.com/platform?tab=wallet
-2. Log in, go to the **Logbook** tab
-3. Click **Generate Tokenized Candidate Record**
-4. In the VP export panel, click **↑ Pin to IPFS**
-5. After ~2 seconds, a purple tile should appear with the CID and a "View on IPFS →" link
-6. Click the link — it should open your pilot VP JSON on the public IPFS gateway
+**Never pin pilot credentials, photos, or personal data to IPFS.**
 
-## What the CID URL looks like
+---
 
-```
-https://ipfs.io/ipfs/bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra
-```
+## R2 for pilot private data
 
-This is the permanent, shareable link pilots send to airline HR instead of a PDF resume.
+The `r2-presign-upload` edge function handles all pilot credential uploads:
+- Issues a 5-minute presigned PUT URL scoped to `{userId}/{credentialType}/`
+- Browser encrypts file AES-256-GCM client-side before uploading
+- R2 never sees plaintext
+
+No Pinata involvement in the pilot vault flow.

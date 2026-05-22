@@ -97,10 +97,8 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
   // Photo uploads per slot
   const [photoUploading, setPhotoUploading] = useState<Record<string, boolean>>({});
   const [photoError, setPhotoError] = useState<Record<string, string | null>>({});
-  // IPFS / Pinata
-  const [ipfsCid, setIpfsCid] = useState<string | null>(null);
-  const [ipfsPinning, setIpfsPinning] = useState(false);
-  const [ipfsError, setIpfsError] = useState<string | null>(null);
+  // R2 object key after encrypted upload
+  const [r2ObjectKey, setR2ObjectKey] = useState<string | null>(null);
   // Recognition+
   const [isRecognitionPlus, setIsRecognitionPlus] = useState(false);
   const [veremarkStatus, setVeremarkStatus] = useState<string>('not_started');
@@ -1423,65 +1421,36 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
               </button>
               <button
                 onClick={async () => {
-                  setIpfsPinning(true);
-                  setIpfsError(null);
                   try {
                     const session = (await supabase.auth.getSession()).data.session;
                     if (!session) throw new Error('Not authenticated');
-                    const res = await fetch(
-                      'https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/pinata-pin-vp',
+                    const blob = new Blob([JSON.stringify(walletState.activePresentation, null, 2)], { type: 'application/json' });
+                    const { uploadUrl, objectKey } = await fetch(
+                      'https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/r2-presign-upload',
                       {
                         method: 'POST',
-                        headers: {
-                          'Authorization': `Bearer ${session.access_token}`,
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                          vp: walletState.activePresentation,
-                          filename: `pilot-vp-${userId || 'unknown'}.json`,
-                        }),
+                        headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ credentialType: 'vp-export', fileExt: 'json', fileSizeBytes: blob.size }),
                       }
-                    );
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.error || 'Pin failed');
-                    setIpfsCid(data.cid);
+                    ).then(r => r.json());
+                    await fetch(uploadUrl, { method: 'PUT', body: blob, headers: { 'Content-Type': 'application/json' } });
+                    setR2ObjectKey(objectKey);
                   } catch (e: any) {
-                    setIpfsError(e.message);
-                  } finally {
-                    setIpfsPinning(false);
+                    console.error('R2 VP export error:', e.message);
                   }
                 }}
-                disabled={ipfsPinning}
-                style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: ipfsPinning ? '#94a3b8' : '#7c3aed', color: '#fff', fontSize: 10, fontWeight: 600, cursor: ipfsPinning ? 'wait' : 'pointer' }}
+                style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: '#2563eb', color: '#fff', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
               >
-                {ipfsPinning ? 'Pinning…' : ipfsCid ? '↑ Re-pin to IPFS' : '↑ Pin to IPFS'}
+                {r2ObjectKey ? '↑ Re-export to Vault' : '↑ Export to R2 Vault'}
               </button>
               <button style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: '#2563eb', color: '#fff', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}>
                 Submit to Airline ATS
               </button>
             </div>
-            {ipfsError && (
-              <p style={{ margin: '6px 0 0', fontSize: 9, color: '#dc2626' }}>IPFS error: {ipfsError}</p>
-            )}
-            {ipfsCid && (
-              <div style={{ marginTop: 10, padding: '8px 12px', background: '#f5f3ff', border: '1px solid #ddd6fe', borderRadius: 8 }}>
-                <p style={{ margin: '0 0 3px', fontSize: 9, fontWeight: 700, color: '#6d28d9' }}>Pinned to IPFS via Pinata</p>
-                <p style={{ margin: '0 0 4px', fontSize: 8, fontFamily: 'monospace', color: '#4c1d95', wordBreak: 'break-all' }}>{ipfsCid}</p>
-                <a
-                  href={`https://ipfs.io/ipfs/${ipfsCid}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: 9, color: '#7c3aed', fontWeight: 600 }}
-                >
-                  View on IPFS →
-                </a>
-                <span style={{ margin: '0 6px', color: '#a78bfa', fontSize: 9 }}>·</span>
-                <button
-                  onClick={() => navigator.clipboard?.writeText(`https://ipfs.io/ipfs/${ipfsCid}`)}
-                  style={{ background: 'none', border: 'none', color: '#7c3aed', fontSize: 9, fontWeight: 600, cursor: 'pointer', padding: 0 }}
-                >
-                  Copy Link
-                </button>
+            {r2ObjectKey && (
+              <div style={{ marginTop: 10, padding: '8px 12px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8 }}>
+                <p style={{ margin: '0 0 3px', fontSize: 9, fontWeight: 700, color: '#1e40af' }}>Saved to Cloudflare R2 Vault</p>
+                <p style={{ margin: 0, fontSize: 8, fontFamily: 'monospace', color: '#1e3a8a', wordBreak: 'break-all' }}>{r2ObjectKey}</p>
               </div>
             )}
           </div>
