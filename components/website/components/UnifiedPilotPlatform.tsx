@@ -3374,6 +3374,29 @@ const NewsroomTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate
   );
 };
 
+// ─── EMAIL VERIFY GATE ────────────────────────────────────────────────────
+const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> = ({ onResend, sent }) => (
+  <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
+    <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-5">
+      <Bell size={28} className="text-amber-400" />
+    </div>
+    <h2 className="text-xl font-black text-white mb-2">Verify your email first</h2>
+    <p className="text-sm text-white/50 max-w-sm mb-6 leading-relaxed">
+      Your credential wallet is locked until you confirm your email address. Check your inbox for a verification link from PilotRecognition.
+    </p>
+    {sent ? (
+      <p className="text-xs text-emerald-400 font-semibold">✓ Verification email sent — check your inbox</p>
+    ) : (
+      <button
+        onClick={onResend}
+        className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-black rounded-lg transition-colors tracking-wider"
+      >
+        RESEND VERIFICATION EMAIL
+      </button>
+    )}
+  </div>
+);
+
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
 const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const sections = [
@@ -3417,6 +3440,26 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [airlines, setAirlines] = useState<any[]>([]);
   const [notifCount] = useState(0);
   const [profileData, setProfileData] = useState<any>(userProfile);
+  const [emailVerified, setEmailVerified] = useState<boolean>(true);
+  const [resendingSent, setResendingSent] = useState(false);
+  const [tcUpdatePending, setTcUpdatePending] = useState(false);
+
+  // Check email verification status
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setEmailVerified(!!session.user.email_confirmed_at);
+      }
+    });
+  }, []);
+
+  // Check if T&C version has been updated since user last accepted
+  useEffect(() => {
+    const CURRENT_TC_VERSION = 'v2-2026';
+    if (profileData?.consent_version && profileData.consent_version !== CURRENT_TC_VERSION) {
+      setTcUpdatePending(true);
+    }
+  }, [profileData?.consent_version]);
 
   // Sync URL with active tab
   useEffect(() => {
@@ -3493,7 +3536,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
-      case 'wallet':        return <WalletTab walletChecks={walletChecks} profile={profileData} />;
+      case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
       case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
@@ -3566,10 +3609,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               </button>
 
               {/* Notification bell */}
-              <button className="relative w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all">
+              <button className="relative w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all" onClick={() => setTab('settings')}>
                 <Bell size={15} />
-                {notifCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{notifCount}</span>
+                {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-amber-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                    {notifCount > 0 ? notifCount : '!'}
+                  </span>
                 )}
               </button>
 
