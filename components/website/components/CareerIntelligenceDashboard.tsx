@@ -70,6 +70,7 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
   const [region, setRegion] = useState('Asia-Pacific');
   const [forecasts, setForecasts] = useState<Forecast[]>([]);
   const [yearOfManufacture, setYearOfManufacture] = useState<string>('');
+  const [airlineSlug, setAirlineSlug] = useState<string>('');
   const [gapAnalysis, setGapAnalysis] = useState<GapAnalysis | null>(null);
   const [showWeibull, setShowWeibull] = useState(false);
   const [showProvenance, setShowProvenance] = useState(false);
@@ -106,7 +107,7 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
       const res = await fetch(`${SUPABASE_URL}/functions/v1/aviation-data-agent`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'gap_analysis', aircraftType, region, yearOfManufacture: yearOfManufacture ? parseInt(yearOfManufacture) : null }),
+        body: JSON.stringify({ action: 'gap_analysis', aircraftType, region, yearOfManufacture: yearOfManufacture ? parseInt(yearOfManufacture) : null, airlineSlug: airlineSlug.trim() || null }),
       });
       const data = await res.json();
       if (res.ok) setGapAnalysis(data);
@@ -115,7 +116,7 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
     } finally {
       setLoading(false);
     }
-  }, [aircraftType, region]);
+  }, [aircraftType, region, yearOfManufacture, airlineSlug]);
 
   const filteredForecasts = activeSegment
     ? forecasts.filter(f => f.aircraft_segment === activeSegment)
@@ -141,7 +142,8 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
 
       {/* Gap Analyzer Input */}
       <div style={{ margin: '16px 20px 0', padding: '16px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)' }}>
-        <p style={{ margin: '0 0 10px', fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Your Career Gap Analyzer</p>
+        <p style={{ margin: '0 0 4px', fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Your Career Gap Analyzer</p>
+        <p style={{ margin: '0 0 10px', fontSize: 9, color: 'rgba(255,255,255,0.3)', lineHeight: 1.5 }}>Enter an airline slug (e.g. <code style={{ color: '#f59e0b' }}>cebu-pacific</code>, <code style={{ color: '#f59e0b' }}>emirates</code>) to pull live fleet age from Airfleets.net — or enter the year built manually.</p>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <input
             value={aircraftType}
@@ -150,12 +152,18 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
             style={{ flex: 1, minWidth: 140, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'white', fontSize: 12, outline: 'none' }}
           />
           <input
+            value={airlineSlug}
+            onChange={e => setAirlineSlug(e.target.value)}
+            placeholder="Airline slug (e.g. cebu-pacific)"
+            style={{ width: 160, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: `1px solid ${airlineSlug ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.12)'}`, color: 'white', fontSize: 12, outline: 'none' }}
+          />
+          <input
             value={yearOfManufacture}
             onChange={e => setYearOfManufacture(e.target.value)}
-            placeholder="Year built (e.g. 2005)"
+            placeholder="Year built (manual)"
             type="number"
             min={1960} max={new Date().getFullYear()}
-            style={{ width: 130, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'white', fontSize: 12, outline: 'none' }}
+            style={{ width: 120, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'white', fontSize: 12, outline: 'none' }}
           />
           <select
             value={region}
@@ -201,13 +209,28 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
             {gapAnalysis.weibull && (
               <>
                 {gapAnalysis.weibull.demandSignal && (
-                  <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ fontSize: 14 }}>{gapAnalysis.weibull.retirementStatus === 'stable' ? '✅' : gapAnalysis.weibull.retirementStatus === 'window' ? '⚡' : '🔴'}</span>
-                    <div>
-                      <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: 'white' }}>{gapAnalysis.weibull.demandSignal}</p>
-                      <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace' }}>P_R({gapAnalysis.weibull.fleetAge}) = {gapAnalysis.weibull.retirementProbabilityPct}%</p>
+                  <>
+                    <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ fontSize: 14 }}>{gapAnalysis.weibull.retirementStatus === 'stable' ? '✅' : gapAnalysis.weibull.retirementStatus === 'window' ? '⚡' : '🔴'}</span>
+                        <div>
+                          <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: 'white' }}>{gapAnalysis.weibull.demandSignal}</p>
+                          <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace' }}>P_R({gapAnalysis.weibull.fleetAge}) = {gapAnalysis.weibull.retirementProbabilityPct}%</p>
+                        </div>
+                      </div>
+                      {/* t source badge */}
+                      <span style={{ fontSize: 8, padding: '2px 8px', background: (gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)', color: (gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? '#10b981' : '#f59e0b', border: `1px solid ${(gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}`, letterSpacing: '0.06em', fontWeight: 700 }}>
+                        {(gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? '🔴 LIVE SCRAPE — Airfleets.net' : '✏ MANUAL INPUT'}
+                      </span>
                     </div>
-                  </div>
+                    {/* Pilot action box */}
+                    {(gapAnalysis.weibull as any).pilotActionRequired && (
+                      <div style={{ marginTop: 6, padding: '10px 12px', background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>
+                        <p style={{ margin: '0 0 2px', fontSize: 8, fontWeight: 700, color: '#dc2626', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Pilot Action Required</p>
+                        <p style={{ margin: 0, fontSize: 11, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6 }}>{(gapAnalysis.weibull as any).pilotActionRequired}</p>
+                      </div>
+                    )}
+                  </>
                 )}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 5, marginTop: 8 }}>
                   {[
