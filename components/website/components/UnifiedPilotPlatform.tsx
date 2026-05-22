@@ -1556,6 +1556,69 @@ const ProfileTab: React.FC<{ onNavigate: (p: string) => void; profile: any; wall
   />
 );
 
+// ─── CREDENTIAL REQUEST CARD ──────────────────────────────────────────────
+const CredentialRequestCard: React.FC<{ request: any; onRespond: (approved: boolean) => Promise<void> }> = ({ request, onRespond }) => {
+  const [responding, setResponding] = React.useState<'approve' | 'deny' | null>(null);
+  const [done, setDone] = React.useState(false);
+  const [decision, setDecision] = React.useState<'approved' | 'denied' | null>(null);
+
+  const handle = async (approved: boolean) => {
+    setResponding(approved ? 'approve' : 'deny');
+    await onRespond(approved);
+    setDecision(approved ? 'approved' : 'denied');
+    setDone(true);
+    setResponding(null);
+  };
+
+  const enterpriseName = request.enterprise_accounts?.name ?? 'An airline';
+  const fields: string[] = request.requested_fields ?? ['license', 'medical', 'elp'];
+  const requestedAt = new Date(request.requested_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  if (done) {
+    return (
+      <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: decision === 'approved' ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.07)', border: `1px solid ${decision === 'approved' ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.2)'}` }}>
+        <span className="text-sm">{decision === 'approved' ? '✅' : '🚫'}</span>
+        <p className="text-xs font-bold text-white/70">{decision === 'approved' ? `Access granted to ${enterpriseName}` : `Request from ${enterpriseName} declined`}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-xl overflow-hidden" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.3)' }}>
+      <div className="flex items-start gap-3 px-4 pt-4 pb-3">
+        <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.3)' }}>
+          <Building2 size={16} className="text-orange-400" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-black text-white tracking-wide">{enterpriseName} — Credential Request</p>
+          <p className="text-[10px] text-white/45 mt-0.5">Requested {requestedAt} · Fields: {fields.join(', ')}</p>
+          {request.request_message && (
+            <p className="text-[10px] text-white/60 mt-1.5 leading-relaxed italic">"{request.request_message}"</p>
+          )}
+        </div>
+      </div>
+      <div className="flex gap-2 px-4 pb-4">
+        <button
+          disabled={!!responding}
+          onClick={() => handle(true)}
+          className="flex-1 py-2 text-[11px] font-black tracking-wider text-white rounded-lg transition-all"
+          style={{ background: responding === 'approve' ? 'rgba(16,185,129,0.5)' : 'rgba(16,185,129,0.75)', border: '1px solid rgba(16,185,129,0.4)' }}
+        >
+          {responding === 'approve' ? 'Approving…' : '✓ APPROVE'}
+        </button>
+        <button
+          disabled={!!responding}
+          onClick={() => handle(false)}
+          className="flex-1 py-2 text-[11px] font-black tracking-wider text-white/70 rounded-lg transition-all"
+          style={{ background: responding === 'deny' ? 'rgba(239,68,68,0.3)' : 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)' }}
+        >
+          {responding === 'deny' ? 'Declining…' : '✕ DECLINE'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // ─── TAB: WALLET (Credentials + Verification) ──────────────────────────────
 const ATO_LIST = [
   'Philippine Airlines Training Centre', 'CAE Oxford Aviation Academy', 'Emirates Flight Training Academy',
@@ -1563,7 +1626,7 @@ const ATO_LIST = [
   'Asia Pacific Aviation Centre', 'CAA Approved Local ATO', 'Other / Not Listed',
 ];
 
-const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChecks, profile }) => {
+const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?: any[] }> = ({ walletChecks, profile, pendingRequests = [] }) => {
   // 'landing' | 'credentials' | 'documents' | 'verification'
   const [screen, setScreen] = React.useState<'landing' | 'credentials' | 'documents' | 'verification'>('landing');
   const [verificationOpen, setVerificationOpen] = React.useState(false);
@@ -1678,6 +1741,22 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any }> = ({ walletChec
 
     return (
       <motion.div style={{ maxWidth: 480 }} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+
+        {/* ── PENDING CREDENTIAL REQUESTS ── */}
+        {pendingRequests.length > 0 && (
+          <div className="mb-4 space-y-3">
+            {pendingRequests.map((req: any) => (
+              <CredentialRequestCard key={req.id} request={req} onRespond={async (approved: boolean) => {
+                await supabase.from('credential_requests').update({
+                  status: approved ? 'approved' : 'denied',
+                  responded_at: new Date().toISOString(),
+                  ...(approved ? { access_granted_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() } : {}),
+                }).eq('id', req.id);
+                await supabase.from('pilot_notifications').update({ is_read: true }).eq('related_id', req.id);
+              }} />
+            ))}
+          </div>
+        )}
 
         {/* ── WALLET FRONT CARD ── */}
         <div style={{
@@ -3438,7 +3517,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [walletChecks, setWalletChecks] = useState<any[]>([]);
   const [airlines, setAirlines] = useState<any[]>([]);
-  const [notifCount] = useState(0);
+  const [notifCount, setNotifCount] = useState(0);
+  const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [profileData, setProfileData] = useState<any>(userProfile);
   const [emailVerified, setEmailVerified] = useState<boolean>(true);
   const [resendingSent, setResendingSent] = useState(false);
@@ -3471,6 +3551,23 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     const t = searchParams.get('tab') as TabId;
     if (t && t !== activeTab) setActiveTab(t);
   }, []); // eslint-disable-line
+
+  // Live unread notification count + pending credential requests
+  useEffect(() => {
+    const profileId = profileData?.id || currentUser?.id;
+    if (!profileId) return;
+    const fetchNotifs = async () => {
+      const [{ count }, { data: reqs }] = await Promise.all([
+        supabase.from('pilot_notifications').select('id', { count: 'exact', head: true }).eq('pilot_id', profileId).eq('is_read', false),
+        supabase.from('credential_requests').select('id, enterprise_account_id, requested_fields, request_message, requested_at, enterprise_accounts(name)').eq('pilot_id', profileId).eq('status', 'pending'),
+      ]);
+      setNotifCount(count ?? 0);
+      setPendingRequests(reqs ?? []);
+    };
+    fetchNotifs();
+    const interval = setInterval(fetchNotifs, 60000);
+    return () => clearInterval(interval);
+  }, [profileData?.id, currentUser?.id]);
 
   // Keep profileData in sync — prefer Supabase userProfile, fall back to auth0_id lookup
   useEffect(() => {
@@ -3536,7 +3633,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
-      case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} />;
+      case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
       case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
