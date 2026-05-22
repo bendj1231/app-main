@@ -22,6 +22,7 @@ import TypeRatingSearchPage from '../../../pages/TypeRatingSearchPage';
 import { PortalAirlineExpectationsPage } from '../../../portal/pages/PortalAirlineExpectationsPage';
 import { PathwaysPageModern } from '../../../portal/pages/PathwaysPageModern';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
+import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -30,7 +31,7 @@ interface UnifiedPilotPlatformProps {
 type TabId =
   | 'home' | 'profile' | 'wallet' | 'pathways' | 'programs'
   | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook'
-  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard';
+  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel';
 
 interface NavItem {
   id: TabId;
@@ -4000,6 +4001,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
       case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
+      case 'market-intel':  return <CareerIntelligenceDashboard profile={profileData} />;
       case 'airlines':      return <AirlinesTab onNavigate={onNavigate} />;
       case 'manufacturers': return <ManufacturersTab onNavigate={onNavigate} />;
       case 'atlas-cv':      return <AtlasCVTab profile={profileData} onNavigate={onNavigate} />;
@@ -4151,7 +4153,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   { id: 'home',      label: 'Home',             icon: Home,       premium: false },
                   { id: 'profile',   label: 'My Profile',       icon: User,       premium: false },
                   { id: 'wallet',    label: 'Pilot Credentials', icon: Shield,     premium: false },
-                  { id: 'logbook',   label: 'Digital Logbook',   icon: BookMarked, premium: false },
+                  { id: 'logbook',       label: 'Digital Logbook',     icon: BookMarked,  premium: false },
+                  { id: 'market-intel',  label: 'Market Intelligence', icon: TrendingUp,   premium: false },
                 ],
               },
               {
