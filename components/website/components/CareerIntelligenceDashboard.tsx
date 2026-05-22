@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
+import { FleetIntelligenceCard } from './FleetIntelligenceCard';
 
 const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
 
@@ -45,6 +46,8 @@ interface GapAnalysis {
   };
   dataSources: { name: string; url: string; type: string; pii: boolean }[];
   legalBasis: string;
+  ipfsCid?: string | null;
+  ipfsUrl?: string | null;
 }
 
 interface CareerIntelligenceDashboardProps {
@@ -72,6 +75,7 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
   const [yearOfManufacture, setYearOfManufacture] = useState<string>('');
   const [airlineSlug, setAirlineSlug] = useState<string>('');
   const [gapAnalysis, setGapAnalysis] = useState<GapAnalysis | null>(null);
+  const [ipfsCid, setIpfsCid] = useState<string | null>(null);
   const [showWeibull, setShowWeibull] = useState(false);
   const [showProvenance, setShowProvenance] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -110,7 +114,10 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
         body: JSON.stringify({ action: 'gap_analysis', aircraftType, region, yearOfManufacture: yearOfManufacture ? parseInt(yearOfManufacture) : null, airlineSlug: airlineSlug.trim() || null }),
       });
       const data = await res.json();
-      if (res.ok) setGapAnalysis(data);
+      if (res.ok) {
+        setGapAnalysis(data);
+        if (data.ipfsCid) setIpfsCid(data.ipfsCid);
+      }
     } catch (e) {
       console.error('Gap analysis error:', e);
     } finally {
@@ -331,6 +338,29 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
                 <p style={{ margin: '3px 0 0', fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{gapAnalysis.transitionReason}</p>
               </div>
             )}
+            {/* Fleet Intelligence Card */}
+            <div style={{ marginTop: 12 }}>
+              <FleetIntelligenceCard
+                aircraftType={gapAnalysis.currentAircraftType}
+                segment={gapAnalysis.segment}
+                fleetAge={gapAnalysis.weibull.fleetAge}
+                retirementProbPct={gapAnalysis.weibull.retirementProbabilityPct ?? 0}
+                retirementStatus={gapAnalysis.weibull.retirementStatus ?? 'stable'}
+                pilotActionRequired={(gapAnalysis.weibull as any).pilotActionRequired ?? ''}
+                demandSignal={gapAnalysis.weibull.demandSignal ?? ''}
+                recommendedTransition={gapAnalysis.recommendedTransition}
+                age30Pct={gapAnalysis.weibull.age30PctRetirement}
+                age50Pct={gapAnalysis.weibull.age50PctRetirement}
+                age70Pct={gapAnalysis.weibull.age70PctRetirement}
+                yearsToWindow={gapAnalysis.weibull.yearsToReplacementWindow}
+                marketAlignmentScore={gapAnalysis.marketAlignmentScore}
+                tSource={(gapAnalysis.weibull.variables?.t as any)?.source ?? 'manual'}
+                tMethod={(gapAnalysis.weibull.variables?.t as any)?.method ?? 'manual'}
+                pilotId={profile?.id ?? ''}
+                onCidGenerated={cid => setIpfsCid(cid)}
+              />
+            </div>
+
             {/* Data provenance toggle */}
             {gapAnalysis.dataSources && (
               <div style={{ marginTop: 8 }}>
