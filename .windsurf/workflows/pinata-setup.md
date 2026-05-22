@@ -38,13 +38,25 @@ description: Storage architecture — R2 for private pilot data, Pinata IPFS for
 
 ### Step 4 — Usage (public data only)
 
-Use Pinata only to pin:
-- Airline/operator public profile JSON
-- Manufacturer (Airbus, Boeing, Embraer) aircraft type data
-- Flight school / ATO public information
-- Any reference dataset sourced from public registries (CAAP, FAA, ICAO)
+Use Pinata only to pin **publicly-declared institutional reference data**:
+- Airline cadet intake expectations & hiring rubrics (AirAsia, Scoot, PAL, Cebu Pacific etc.)
+- Flight school / ATO syllabus PDFs and training stage checklists
+- Type-rating checkride parameters published by manufacturers (Airbus, Boeing, Embraer)
+- CAAP/FAA/ICAO public regulatory standards and advisory circulars
+- Pathway programme outcome criteria published by airlines/operators
 
-**Never pin pilot credentials, photos, or personal data to IPFS.**
+**Why IPFS for this data:**
+- CID is derived from file hash — content is tamper-proof. Airlines cannot retroactively alter old hiring expectations; the old CID is a permanent record
+- Zero database bloat — Supabase only stores the `ipfs://Qm...` pointer string, not the PDF
+- Cross-school sync — multiple ATOs across the Philippines can all reference the same CID for the same airline pathway standard
+
+**Supabase only stores the pointer:**
+```sql
+-- e.g. in airline_pathways or ato_programmes table
+ipfs_cid TEXT -- e.g. 'bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4fra'
+```
+
+**Never pin pilot credentials, photos, logbooks, medicals, or any PII to IPFS.**
 
 ---
 
