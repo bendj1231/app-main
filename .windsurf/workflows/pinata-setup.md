@@ -58,6 +58,18 @@ ipfs_cid TEXT -- e.g. 'bafybeihgxdzljxb26q6nf3r3eifqeedsvt2eubqtskghpme66cgjyw4f
 
 **Never pin pilot credentials, photos, logbooks, medicals, or any PII to IPFS.**
 
+**Never include `pilot_id` in any IPFS artifact** — identity binding (pilot_id ↔ CID) lives in Supabase only.
+
+### aviation-data-agent v7 storage split
+
+| Action | IPFS artifact (no PII) | Supabase (pointer only) |
+|---|---|---|
+| `gap_analysis` | Market alignment JSON: aircraft type, Weibull result, OEM data | `pilot_career_intelligence.ipfs_cid` |
+| `pin_market_audit` | Same as above, explicit pin | Same |
+| `seniority_risk` | Fleet snapshot: airline IATA, risk score, retirement curve | `pilot_seniority_risk.ipfs_cid` |
+| `pay_projection` | Pay scale comparison: carrier tiers, 5yr projections | `pilot_pay_projections.ipfs_cid` |
+| `audit_locker` | SHA-256 hash + document type only — NO document content, NO pilot_id | `pilot_audit_locker.ipfs_cid` + `pilot_id` binding |
+
 ---
 
 ## R2 for pilot private data
