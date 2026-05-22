@@ -433,6 +433,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                 console.log('🔵 Experience level:', experienceLevel);
 
+                // Auto-generate PR pilot ID: PR0003, PR0004, etc.
+                let autoPilotId = userData.pilotId || null;
+                if (!autoPilotId) {
+                    try {
+                        const { count } = await supabase
+                            .from('profiles')
+                            .select('id', { count: 'exact', head: true });
+                        const nextNum = (count ?? 2) + 1;
+                        autoPilotId = `PR${String(nextNum).padStart(4, '0')}`;
+                        console.log('✅ Auto-generated pilot ID:', autoPilotId);
+                    } catch {
+                        console.warn('⚠️ Could not generate pilot ID');
+                    }
+                }
+
                 const rawInsertPayload = {
                         email: email,
                         display_name: userData.fullName || email.split('@')[0],
@@ -448,7 +463,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString(),
                         terms_accepted_at: userData.termsAcceptedAt || new Date().toISOString(),
-                        pilot_id: userData.pilotId,
+                        pilot_id: autoPilotId,
                         flight_school_address: userData.flightSchoolAddress,
                         license_id: userData.licenseId,
                         country_of_license: userData.countryOfLicense,
