@@ -1741,16 +1741,16 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
     const clearanceLabel = allVerified ? 'Pre-Cleared' : hasExpired ? 'Action Required' : walletChecks.length > 0 ? 'In Review' : 'Not Started';
 
     return (
-      <motion.div style={{ maxWidth: 480 }} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 
         {/* ── PILOT CREDENTIAL VAULT BANNER ── */}
-        <div style={{ background: 'white', border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', marginBottom: 16 }}>
+        <div style={{ background: 'white', border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.06)', marginBottom: 20 }}>
           <div style={{ height: 4, background: '#dc2626' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.25rem 1.5rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.25rem 1.5rem', flexWrap: 'nowrap' }}>
             <div style={{ width: 48, height: 48, borderRadius: 12, background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
-            <div style={{ flex: 1, minWidth: 200 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 4 }}>Pilot Credential Vault</p>
               <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4 }}>Access Your Wallet</p>
               <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.</p>
@@ -1771,11 +1771,14 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
             >
-              Open Wallet
+              Open Wallet →
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
         </div>
+
+        {/* ── BELOW CONTENT: constrained width ── */}
+        <div style={{ maxWidth: 480 }}>
 
         {/* ── PENDING CREDENTIAL REQUESTS ── */}
         {pendingRequests.length > 0 && (
@@ -1894,6 +1897,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
           </div>
         </div>
 
+        </div>{/* end maxWidth:480 */}
       </motion.div>
     );
   }
