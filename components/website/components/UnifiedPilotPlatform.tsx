@@ -16,6 +16,7 @@ import { useAuth } from '@/src/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '@/shared/lib/supabase';
 import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
+import { DigitalLogbookPage } from './pilot-recognition/DigitalLogbookPage';
 import { PilotLicensureExperiencePage } from './pilot-recognition/PilotLicensureExperiencePage';
 import TypeRatingSearchPage from '../../../pages/TypeRatingSearchPage';
 import { PortalAirlineExpectationsPage } from '../../../portal/pages/PortalAirlineExpectationsPage';
@@ -3077,7 +3078,18 @@ const SAMPLE_FLAGGED_HOURS = [
   { date: '02 Feb 2025', aircraft: 'PA-28 — RP-C2210', hours: 0.9, type: 'Solo', ato: 'Asia Pacific Aviation Centre', issue: 'Hours logged exceed ATO duty roster for that date', id: 'FLG-002' },
 ];
 
-const LogbookTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
+const LogbookTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile }) => {
+  return (
+    <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7">
+      <DigitalLogbookPage
+        onBack={() => {}}
+        userProfile={profile ? { id: profile.id, uid: profile.id, firstName: profile.display_name?.split(' ')[0] || '', lastName: profile.display_name?.split(' ').slice(1).join(' ') || '', email: profile.email || '' } : null}
+      />
+    </div>
+  );
+};
+
+const _LogbookTabUnused: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
   const hours = profile?.total_flight_hours ?? 0;
   const [syncExpanded, setSyncExpanded] = React.useState(false);
   const [flagExpanded, setFlagExpanded] = React.useState(true);
