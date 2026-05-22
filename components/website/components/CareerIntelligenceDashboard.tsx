@@ -22,7 +22,8 @@ interface Forecast {
   retiring_units: number; demand_index: number; source_url: string; report_title: string;
 }
 
-interface WeibullPoint { age: number; retirementProb: number; survivingPct: number; }
+interface WeibullPoint { age: number; retirementProb: number; survivingPct: number; status: string; }
+interface WeibullVar  { value: number | string | null; unit: string; description?: string; source: string; url?: string; }
 interface GapAnalysis {
   currentAircraftType: string; segment: string; demandIndex: number;
   demandBracket: string; fleetRetirementRisk: boolean; retirementWindowEnd: number;
@@ -30,11 +31,17 @@ interface GapAnalysis {
   projected20YrDeliveries: number; fleetGrowthPct: number; retiringUnits: number;
   region: string; marketAlignmentScore: number;
   weibull: {
-    formula: string; parameters: { beta: number; eta: number };
-    fleetAge: number | string; retirementProbabilityPct: number | null;
-    age50PctRetirement: number; age75PctRetirement: number;
-    yearsToMedianRetirement: number | null; retirementCurve: WeibullPoint[];
-    source: string;
+    formula: string;
+    variables: { t: WeibullVar; eta: WeibullVar; beta: WeibullVar; C_total: WeibullVar; U_annual: WeibullVar };
+    parameters: { beta: number; eta: number; utilHrsPerYear: number };
+    fleetAge: number | string;
+    retirementProbabilityPct: number | null;
+    retirementStatus: string | null;
+    demandSignal: string | null;
+    age30PctRetirement: number; age50PctRetirement: number; age70PctRetirement: number;
+    yearsToReplacementWindow: number | null; yearsToPhaseOut: number | null;
+    retirementCurve: WeibullPoint[];
+    source: string; sourceUrl: string;
   };
   dataSources: { name: string; url: string; type: string; pii: boolean }[];
   legalBasis: string;
@@ -190,24 +197,46 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
                 <p style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#10b981' }}>{gapAnalysis.marketAlignmentScore.toFixed(1)} / 10</p>
               </div>
             </div>
-            {/* Weibull stats row */}
+            {/* Weibull — 5 variable readout + demand signal */}
             {gapAnalysis.weibull && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8, marginTop: 10 }}>
-                <div style={{ padding: '8px 10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p style={{ margin: '0 0 2px', fontSize: 8, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Fleet Age</p>
-                  <p style={{ margin: 0, fontSize: 15, fontWeight: 900, color: 'white' }}>{gapAnalysis.weibull.fleetAge !== 'unknown' ? `${gapAnalysis.weibull.fleetAge} yrs` : '—'}</p>
+              <>
+                {gapAnalysis.weibull.demandSignal && (
+                  <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span style={{ fontSize: 14 }}>{gapAnalysis.weibull.retirementStatus === 'stable' ? '✅' : gapAnalysis.weibull.retirementStatus === 'window' ? '⚡' : '🔴'}</span>
+                    <div>
+                      <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: 'white' }}>{gapAnalysis.weibull.demandSignal}</p>
+                      <p style={{ margin: 0, fontSize: 8, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace' }}>P_R({gapAnalysis.weibull.fleetAge}) = {gapAnalysis.weibull.retirementProbabilityPct}%</p>
+                    </div>
+                  </div>
+                )}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 5, marginTop: 8 }}>
+                  {[
+                    { label: 't (Age)',      value: gapAnalysis.weibull.fleetAge !== 'unknown' ? `${gapAnalysis.weibull.fleetAge}y` : '—',   sub: 'Airfleets/FAA', color: 'white' },
+                    { label: 'η Char.Life',  value: `${gapAnalysis.weibull.parameters.eta}y`,                                                  sub: 'Boeing AEL',   color: '#94a3b8' },
+                    { label: 'β Wear-out',   value: gapAnalysis.weibull.parameters.beta,                                                        sub: 'Boeing AEL',   color: '#8b5cf6' },
+                    { label: 'U Annual',     value: `${((gapAnalysis.weibull.parameters as any).utilHrsPerYear || 3000).toLocaleString()}h`,    sub: 'Boeing AEL',   color: '#3b82f6' },
+                    { label: 'C Total est.', value: gapAnalysis.weibull.variables?.C_total?.value != null ? Number(gapAnalysis.weibull.variables.C_total.value).toLocaleString() : '—', sub: 'AviationDB', color: '#f59e0b' },
+                  ].map((v, i) => (
+                    <div key={i} style={{ padding: '7px 6px', background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <p style={{ margin: '0 0 1px', fontSize: 7, color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{v.label}</p>
+                      <p style={{ margin: '0 0 1px', fontSize: 12, fontWeight: 900, color: v.color, lineHeight: 1 }}>{v.value}</p>
+                      <p style={{ margin: 0, fontSize: 6, color: 'rgba(255,255,255,0.18)' }}>{v.sub}</p>
+                    </div>
+                  ))}
                 </div>
-                <div style={{ padding: '8px 10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p style={{ margin: '0 0 2px', fontSize: 8, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Retirement Prob.</p>
-                  <p style={{ margin: 0, fontSize: 15, fontWeight: 900, color: gapAnalysis.weibull.retirementProbabilityPct !== null && gapAnalysis.weibull.retirementProbabilityPct > 50 ? '#ef4444' : '#f59e0b' }}>
-                    {gapAnalysis.weibull.retirementProbabilityPct !== null ? `${gapAnalysis.weibull.retirementProbabilityPct}%` : '—'}
-                  </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 5, marginTop: 5 }}>
+                  {[
+                    { label: '< 30% Stable',   age: (gapAnalysis.weibull as any).age30PctRetirement, color: '#10b981' },
+                    { label: '30–60% Window',   age: (gapAnalysis.weibull as any).age30PctRetirement, color: '#f59e0b' },
+                    { label: '> 70% Phase-out', age: (gapAnalysis.weibull as any).age70PctRetirement, color: '#ef4444' },
+                  ].map((th, i) => (
+                    <div key={i} style={{ padding: '5px 8px', background: 'rgba(0,0,0,0.15)', border: `1px solid ${th.color}33` }}>
+                      <p style={{ margin: '0 0 1px', fontSize: 7, color: th.color, fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{th.label}</p>
+                      <p style={{ margin: 0, fontSize: 11, fontWeight: 800, color: 'white' }}>@ {th.age} yrs</p>
+                    </div>
+                  ))}
                 </div>
-                <div style={{ padding: '8px 10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p style={{ margin: '0 0 2px', fontSize: 8, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>50% Retire Age</p>
-                  <p style={{ margin: 0, fontSize: 15, fontWeight: 900, color: '#94a3b8' }}>{gapAnalysis.weibull.age50PctRetirement} yrs</p>
-                </div>
-              </div>
+              </>
             )}
 
             {/* Weibull curve toggle */}
