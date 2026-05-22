@@ -7,12 +7,15 @@
  *
  * Provider priority waterfall (first available API key wins):
  *   1. Aviation Edge      — AVIATION_EDGE_API_KEY      (direct avg_age field, free tier available)
- *   2. Airlabs            — AIRLABS_API_KEY             (per-aircraft age array, $49/mo)
- *   3. AeroDataBox        — AERODATABOX_API_KEY         (RapidAPI, $5–15/mo)
- *   4. Flightradar24      — FR24_API_KEY                (enterprise, MCP-compatible)
- *   5. BTS Open Data      — no key required             (US carriers only, .gov)
- *   6. Airfleets scrape   — no key required             (HTML fallback)
- *   7. Boeing AEL static  — no key required             (hardcoded regional averages)
+ *   2. Airlabs            — AIRLABS_API_KEY             (1,000 free calls/mo; $49/mo paid)
+ *   3. Aviationstack      — AVIATIONSTACK_API_KEY       (500 free calls/mo forever — best free tier)
+ *   4. AeroDataBox        — AERODATABOX_API_KEY         (RapidAPI, $5–15/mo)
+ *   5. Flightradar24      — FR24_API_KEY                (enterprise, MCP-compatible)
+ *   6. OpenSky Network    — no key required             (research nonprofit, ICAO24 metadata CSV)
+ *   7. ARLA               — no key required             (FAA daily CSV dumps, US tail numbers)
+ *   8. BTS Open Data      — no key required             (US carriers only, .gov)
+ *   9. Airfleets scrape   — no key required             (HTML fallback)
+ *  10. Boeing AEL static  — no key required             (hardcoded regional averages)
  *
  * All providers return the same FleetAgeResult shape.
  * The math engine is completely decoupled from data sources.
@@ -35,8 +38,11 @@ export interface FleetAgeResult {
 export type ProviderName =
   | 'aviation_edge'
   | 'airlabs'
+  | 'aviationstack'
   | 'aerodatabox'
   | 'flightradar24'
+  | 'opensky'
+  | 'arla'
   | 'bts_open_data'
   | 'airfleets_scrape'
   | 'boeing_ael_static';
@@ -72,6 +78,14 @@ export const PROVIDERS: ProviderConfig[] = [
     keyEnvVar: 'AIRLABS_API_KEY',
   },
   {
+    name: 'aviationstack',
+    label: 'Aviationstack API (Free Tier)',
+    url: 'https://aviationstack.com/',
+    tier: 'free_api',
+    note: '500 free API calls/month forever. Returns fleet JSON with production_line and airplane_age. Register at aviationstack.com.',
+    keyEnvVar: 'AVIATIONSTACK_API_KEY',
+  },
+  {
     name: 'aerodatabox',
     label: 'AeroDataBox (RapidAPI)',
     url: 'https://rapidapi.com/aedbx-aedbx/api/aerodatabox',
@@ -86,6 +100,22 @@ export const PROVIDERS: ProviderConfig[] = [
     tier: 'commercial_api',
     note: 'True factory delivery dates (airframe age, not registration date). MCP-compatible.',
     keyEnvVar: 'FR24_API_KEY',
+  },
+  {
+    name: 'opensky',
+    label: 'OpenSky Network Metadata API',
+    url: 'https://opensky-network.org/apidoc/',
+    tier: 'free_api',
+    note: 'Research nonprofit. Free, no key required. Monthly aircraft metadata snapshots link ICAO24 hex codes to manufacturer delivery dates.',
+    keyEnvVar: null,
+  },
+  {
+    name: 'arla',
+    label: 'ARLA — FAA Aircraft Registration Lookup',
+    url: 'https://arla.njf.dev/',
+    tier: 'free_api',
+    note: 'Open-source. Pulls directly from daily FAA Aircraft Registration Database CSV dumps. Returns year_of_manufacture per tail number. US only.',
+    keyEnvVar: null,
   },
   {
     name: 'bts_open_data',
@@ -164,7 +194,138 @@ export function slugToIata(slug: string): string | null {
   return SLUG_TO_IATA[clean] || SLUG_TO_IATA[clean.replace(/-/g, '')] || null;
 }
 
-// ─── Provider implementations ────────────────────────────────────────────
+// ─── Free provider implementations ─────────────────────────────────────────
+
+async function fromAviationstack(
+  iata: string,
+  family: string,
+  apiKey: string,
+): Promise<FleetAgeResult | null> {
+  try {
+    // Aviationstack /v1/airplanes — free tier returns 500 calls/mo
+    // Filter by airline_iata to get the fleet array
+    const url = `http://api.aviationstack.com/v1/airplanes?access_key=${apiKey}&airline_iata=${encodeURIComponent(iata)}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const aircraft: any[] = json?.data || [];
+    if (!aircraft.length) return null;
+
+    // Filter by aircraft type
+    const matched = aircraft.filter((ac: any) => {
+      const model = (ac.plane_type || ac.iata_code_long || ac.iata_code_short || '').toLowerCase().replace(/[\s-]/g, '');
+      return model.includes(family) || family.includes(model.substring(0, 4));
+    });
+    const fleet = matched.length > 0 ? matched : aircraft;
+
+    const currentYear = new Date().getFullYear();
+    const ages: number[] = fleet
+      .map((ac: any) => {
+        // Aviationstack returns plane_age (years) or construction_number / delivery_date
+        if (ac.plane_age && !isNaN(parseFloat(ac.plane_age))) return parseFloat(ac.plane_age);
+        const delivery = ac.delivery_date || ac.first_flight_date;
+        if (delivery) { const yr = parseInt(String(delivery).substring(0, 4)); return isNaN(yr) ? null : currentYear - yr; }
+        return null;
+      })
+      .filter((a): a is number => typeof a === 'number' && a >= 0 && a <= 60);
+
+    if (!ages.length) return null;
+    const avg = ages.reduce((s, a) => s + a, 0) / ages.length;
+    return {
+      fleetAge: Math.round(avg * 10) / 10,
+      matchedCount: fleet.length,
+      provider: 'aviationstack',
+      providerLabel: 'Aviationstack API (Free Tier)',
+      dataQuality: 'live_api',
+      sourceUrl: 'https://aviationstack.com/',
+      airlineIata: iata, aircraftFamily: family,
+      resolvedAt: new Date().toISOString(),
+    };
+  } catch (err) { console.warn('Aviationstack error:', err); return null; }
+}
+
+async function fromOpenSky(
+  iata: string,
+  family: string,
+): Promise<FleetAgeResult | null> {
+  try {
+    // OpenSky aircraft metadata endpoint — no auth required
+    // Search by operator ICAO (which matches airline ICAO, close to IATA for most carriers)
+    const url = `https://opensky-network.org/api/metadata/aircraft/list?operatorIcao=${encodeURIComponent(iata)}&limit=200`;
+    const res = await fetch(url, {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(12000),
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const aircraft: any[] = json?.content || json?.aircrafts || json || [];
+    if (!Array.isArray(aircraft) || !aircraft.length) return null;
+
+    const matched = aircraft.filter((ac: any) => {
+      const model = (ac.typecode || ac.model || '').toLowerCase().replace(/[\s-]/g, '');
+      return model.includes(family) || family.includes(model.substring(0, 4));
+    });
+    const fleet = matched.length > 0 ? matched : aircraft;
+
+    const currentYear = new Date().getFullYear();
+    const ages: number[] = fleet
+      .map((ac: any) => {
+        const built = ac.built || ac.firstFlightDate || ac.manufacturerserialNo;
+        if (!built) return null;
+        const yr = parseInt(String(built).substring(0, 4));
+        return isNaN(yr) || yr < 1950 ? null : currentYear - yr;
+      })
+      .filter((a): a is number => typeof a === 'number' && a >= 0 && a <= 60);
+
+    if (!ages.length) return null;
+    const avg = ages.reduce((s, a) => s + a, 0) / ages.length;
+    return {
+      fleetAge: Math.round(avg * 10) / 10,
+      matchedCount: fleet.length,
+      provider: 'opensky',
+      providerLabel: 'OpenSky Network Metadata API',
+      dataQuality: 'live_api',
+      sourceUrl: 'https://opensky-network.org/apidoc/',
+      airlineIata: iata, aircraftFamily: family,
+      resolvedAt: new Date().toISOString(),
+    };
+  } catch (err) { console.warn('OpenSky error:', err); return null; }
+}
+
+async function fromARLA(
+  registration: string,   // single tail number — used for individual aircraft lookups
+  family: string,
+): Promise<FleetAgeResult | null> {
+  // ARLA works per-registration (tail number), not per-airline.
+  // Use it when a specific N-number is provided rather than an airline IATA.
+  try {
+    const reg = registration.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const url = `https://arla.njf.dev/aircraft/${encodeURIComponent(reg)}`;
+    const res = await fetch(url, {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    // ARLA returns: { year_of_manufacture, aircraft_type, ... }
+    const yom = json?.year_of_manufacture || json?.yearMfr;
+    if (!yom) return null;
+    const age = new Date().getFullYear() - parseInt(String(yom));
+    if (isNaN(age) || age < 0 || age > 60) return null;
+    return {
+      fleetAge: age,
+      matchedCount: 1,
+      provider: 'arla',
+      providerLabel: 'ARLA — FAA Aircraft Registration (arla.njf.dev)',
+      dataQuality: 'live_api',
+      sourceUrl: 'https://arla.njf.dev/',
+      airlineIata: null, aircraftFamily: family,
+      resolvedAt: new Date().toISOString(),
+    };
+  } catch (err) { console.warn('ARLA error:', err); return null; }
+}
+
+// ─── Paid provider implementations ───────────────────────────────────────
 
 async function fromAviationEdge(
   iata: string,
@@ -465,33 +626,46 @@ export class FleetAgeGateway {
       if (r) return r;
     }
 
-    // 3. AeroDataBox
+    // 3. Aviationstack (500 free calls/mo — free forever)
+    const asKey = Deno.env.get('AVIATIONSTACK_API_KEY');
+    if (asKey && iata) {
+      const r = await fromAviationstack(iata, family, asKey);
+      if (r) return r;
+    }
+
+    // 4. AeroDataBox
     const adbKey = Deno.env.get('AERODATABOX_API_KEY');
     if (adbKey && iata) {
       const r = await fromAeroDataBox(iata, family, adbKey);
       if (r) return r;
     }
 
-    // 4. Flightradar24
+    // 5. Flightradar24
     const fr24Key = Deno.env.get('FR24_API_KEY');
     if (fr24Key && iata) {
       const r = await fromFlightradar24(iata, family, fr24Key);
       if (r) return r;
     }
 
-    // 5. BTS (US carriers — free, no key)
+    // 6. OpenSky Network (free, no key — research nonprofit)
+    if (iata) {
+      const r = await fromOpenSky(iata, family);
+      if (r) return r;
+    }
+
+    // 7. BTS (US carriers — free, no key)
     if (iata) {
       const r = await fromBTS(iata, family);
       if (r) return r;
     }
 
-    // 6. Airfleets scrape
+    // 8. Airfleets scrape
     if (airlineSlug) {
       const r = await fromAirfleets(airlineSlug, family);
       if (r) return r;
     }
 
-    // 7. Boeing AEL static average — always succeeds
+    // 9. Boeing AEL static average — always succeeds
     return fromBoeingAEL(family, iata);
   }
 
