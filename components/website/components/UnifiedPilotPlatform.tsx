@@ -23,6 +23,7 @@ import { PortalAirlineExpectationsPage } from '../../../portal/pages/PortalAirli
 import { PathwaysPageModern } from '../../../portal/pages/PathwaysPageModern';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
+import { DataProvenancePage } from '../pages/DataProvenancePage';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -31,7 +32,7 @@ interface UnifiedPilotPlatformProps {
 type TabId =
   | 'home' | 'profile' | 'wallet' | 'pathways' | 'programs'
   | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook'
-  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel';
+  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel' | 'data-provenance';
 
 interface NavItem {
   id: TabId;
@@ -4001,7 +4002,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
       case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
-      case 'market-intel':  return <CareerIntelligenceDashboard profile={profileData} />;
+      case 'market-intel':    return <CareerIntelligenceDashboard profile={profileData} />;
+      case 'data-provenance': return <DataProvenancePage onNavigate={onNavigate} />;
       case 'airlines':      return <AirlinesTab onNavigate={onNavigate} />;
       case 'manufacturers': return <ManufacturersTab onNavigate={onNavigate} />;
       case 'atlas-cv':      return <AtlasCVTab profile={profileData} onNavigate={onNavigate} />;
@@ -4170,9 +4172,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               {
                 group: 'PROGRAMS & TOOLS',
                 items: [
-                  { id: 'programs',  label: 'Programs',  icon: BookOpen,  premium: false },
-                  { id: 'atlas-cv',  label: 'Atlas CV',  icon: FileText,  premium: true  },
-                  { id: 'score',     label: 'My Score',  icon: TrendingUp, premium: false },
+                  { id: 'programs',        label: 'Programs',         icon: BookOpen,      premium: false },
+                  { id: 'atlas-cv',        label: 'Atlas CV',         icon: FileText,      premium: true  },
+                  { id: 'score',           label: 'My Score',         icon: TrendingUp,    premium: false },
+                  { id: 'data-provenance', label: 'Data Sources',     icon: Globe,         premium: false },
                 ],
               },
               {

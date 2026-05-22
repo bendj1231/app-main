@@ -22,12 +22,22 @@ interface Forecast {
   retiring_units: number; demand_index: number; source_url: string; report_title: string;
 }
 
+interface WeibullPoint { age: number; retirementProb: number; survivingPct: number; }
 interface GapAnalysis {
   currentAircraftType: string; segment: string; demandIndex: number;
   demandBracket: string; fleetRetirementRisk: boolean; retirementWindowEnd: number;
   recommendedTransition: string; transitionReason: string;
-  projected20YrDeliveries: number; region: string;
-  marketAlignmentScore: number; sources: string[];
+  projected20YrDeliveries: number; fleetGrowthPct: number; retiringUnits: number;
+  region: string; marketAlignmentScore: number;
+  weibull: {
+    formula: string; parameters: { beta: number; eta: number };
+    fleetAge: number | string; retirementProbabilityPct: number | null;
+    age50PctRetirement: number; age75PctRetirement: number;
+    yearsToMedianRetirement: number | null; retirementCurve: WeibullPoint[];
+    source: string;
+  };
+  dataSources: { name: string; url: string; type: string; pii: boolean }[];
+  legalBasis: string;
 }
 
 interface CareerIntelligenceDashboardProps {
@@ -52,7 +62,10 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
   const [aircraftType, setAircraftType] = useState(profile?.aircraft_type || profile?.current_aircraft || '');
   const [region, setRegion] = useState('Asia-Pacific');
   const [forecasts, setForecasts] = useState<Forecast[]>([]);
+  const [yearOfManufacture, setYearOfManufacture] = useState<string>('');
   const [gapAnalysis, setGapAnalysis] = useState<GapAnalysis | null>(null);
+  const [showWeibull, setShowWeibull] = useState(false);
+  const [showProvenance, setShowProvenance] = useState(false);
   const [loading, setLoading] = useState(false);
   const [forecastsLoading, setForecastsLoading] = useState(true);
   const [activeSegment, setActiveSegment] = useState<string | null>(null);
@@ -86,7 +99,7 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
       const res = await fetch(`${SUPABASE_URL}/functions/v1/aviation-data-agent`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'gap_analysis', aircraftType, region }),
+        body: JSON.stringify({ action: 'gap_analysis', aircraftType, region, yearOfManufacture: yearOfManufacture ? parseInt(yearOfManufacture) : null }),
       });
       const data = await res.json();
       if (res.ok) setGapAnalysis(data);
@@ -127,7 +140,15 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
             value={aircraftType}
             onChange={e => setAircraftType(e.target.value)}
             placeholder="Aircraft type (e.g. A320, 737MAX, ATR72)"
-            style={{ flex: 1, minWidth: 160, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'white', fontSize: 12, outline: 'none' }}
+            style={{ flex: 1, minWidth: 140, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'white', fontSize: 12, outline: 'none' }}
+          />
+          <input
+            value={yearOfManufacture}
+            onChange={e => setYearOfManufacture(e.target.value)}
+            placeholder="Year built (e.g. 2005)"
+            type="number"
+            min={1960} max={new Date().getFullYear()}
+            style={{ width: 130, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'white', fontSize: 12, outline: 'none' }}
           />
           <select
             value={region}
@@ -169,6 +190,83 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
                 <p style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#10b981' }}>{gapAnalysis.marketAlignmentScore.toFixed(1)} / 10</p>
               </div>
             </div>
+            {/* Weibull stats row */}
+            {gapAnalysis.weibull && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8, marginTop: 10 }}>
+                <div style={{ padding: '8px 10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <p style={{ margin: '0 0 2px', fontSize: 8, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Fleet Age</p>
+                  <p style={{ margin: 0, fontSize: 15, fontWeight: 900, color: 'white' }}>{gapAnalysis.weibull.fleetAge !== 'unknown' ? `${gapAnalysis.weibull.fleetAge} yrs` : '—'}</p>
+                </div>
+                <div style={{ padding: '8px 10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <p style={{ margin: '0 0 2px', fontSize: 8, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Retirement Prob.</p>
+                  <p style={{ margin: 0, fontSize: 15, fontWeight: 900, color: gapAnalysis.weibull.retirementProbabilityPct !== null && gapAnalysis.weibull.retirementProbabilityPct > 50 ? '#ef4444' : '#f59e0b' }}>
+                    {gapAnalysis.weibull.retirementProbabilityPct !== null ? `${gapAnalysis.weibull.retirementProbabilityPct}%` : '—'}
+                  </p>
+                </div>
+                <div style={{ padding: '8px 10px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <p style={{ margin: '0 0 2px', fontSize: 8, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>50% Retire Age</p>
+                  <p style={{ margin: 0, fontSize: 15, fontWeight: 900, color: '#94a3b8' }}>{gapAnalysis.weibull.age50PctRetirement} yrs</p>
+                </div>
+              </div>
+            )}
+
+            {/* Weibull curve toggle */}
+            {gapAnalysis.weibull?.retirementCurve && (
+              <div style={{ marginTop: 10 }}>
+                <button onClick={() => setShowWeibull(!showWeibull)}
+                  style={{ background: 'none', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.4)', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 12px', cursor: 'pointer' }}>
+                  {showWeibull ? '▲ Hide' : '▼ Show'} Weibull Attrition Curve
+                </button>
+                {showWeibull && (
+                  <div style={{ marginTop: 8, padding: '12px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <p style={{ margin: '0 0 8px', fontSize: 8, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                      F(t) = 1 − exp(−(t/η)^β) &nbsp;·&nbsp; β={gapAnalysis.weibull.parameters.beta} η={gapAnalysis.weibull.parameters.eta} &nbsp;·&nbsp; Source: {gapAnalysis.weibull.source}
+                    </p>
+                    {/* SVG mini chart */}
+                    <svg viewBox="0 0 360 80" width="100%" style={{ display: 'block' }}>
+                      {/* Grid lines */}
+                      {[0,25,50,75,100].map(pct => (
+                        <line key={pct} x1={0} y1={80 - pct * 0.8} x2={360} y2={80 - pct * 0.8}
+                          stroke="rgba(255,255,255,0.06)" strokeWidth={0.5} />
+                      ))}
+                      {/* 50% threshold marker */}
+                      <line x1={0} y1={40} x2={360} y2={40} stroke="rgba(239,68,68,0.3)" strokeWidth={0.8} strokeDasharray="4 3" />
+                      <text x={2} y={37} fontSize={6} fill="rgba(239,68,68,0.5)">50% retire</text>
+                      {/* Surviving fleet curve (green) */}
+                      <polyline
+                        fill="none" stroke="#10b981" strokeWidth={1.5}
+                        points={gapAnalysis.weibull.retirementCurve.map((p, i) => `${i * (360 / 35)},${80 - p.survivingPct * 0.8}`).join(' ')}
+                      />
+                      {/* Retirement probability curve (red) */}
+                      <polyline
+                        fill="none" stroke="#ef4444" strokeWidth={1.5}
+                        points={gapAnalysis.weibull.retirementCurve.map((p, i) => `${i * (360 / 35)},${80 - p.retirementProb * 0.8}`).join(' ')}
+                      />
+                      {/* Current fleet age marker */}
+                      {typeof gapAnalysis.weibull.fleetAge === 'number' && (
+                        <line
+                          x1={gapAnalysis.weibull.fleetAge * (360 / 35)}
+                          y1={0}
+                          x2={gapAnalysis.weibull.fleetAge * (360 / 35)}
+                          y2={80}
+                          stroke="#f59e0b" strokeWidth={1.2} strokeDasharray="3 2"
+                        />
+                      )}
+                      {/* X-axis labels */}
+                      {[0, 5, 10, 15, 20, 25, 30, 35].map(yr => (
+                        <text key={yr} x={yr * (360 / 35) + 1} y={78} fontSize={6} fill="rgba(255,255,255,0.25)">{yr}y</text>
+                      ))}
+                    </svg>
+                    <div style={{ display: 'flex', gap: 14, marginTop: 6 }}>
+                      <span style={{ fontSize: 8, color: '#10b981' }}>— Surviving fleet %</span>
+                      <span style={{ fontSize: 8, color: '#ef4444' }}>— Retirement probability %</span>
+                      {typeof gapAnalysis.weibull.fleetAge === 'number' && <span style={{ fontSize: 8, color: '#f59e0b' }}>┊ Current fleet age</span>}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {gapAnalysis.fleetRetirementRisk && (
               <div style={{ marginTop: 10, padding: '10px 12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
                 <p style={{ margin: '0 0 4px', fontSize: 10, fontWeight: 700, color: '#ef4444' }}>⚠ Fleet Retirement Risk Detected</p>
@@ -181,14 +279,27 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
                 <p style={{ margin: '3px 0 0', fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>{gapAnalysis.transitionReason}</p>
               </div>
             )}
-            {gapAnalysis.sources.length > 0 && (
-              <div style={{ marginTop: 8, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {gapAnalysis.sources.map((s, i) => (
-                  <a key={i} href={s} target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 8, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.05em', textDecoration: 'underline' }}>
-                    Source {i + 1} ↗
-                  </a>
-                ))}
+            {/* Data provenance toggle */}
+            {gapAnalysis.dataSources && (
+              <div style={{ marginTop: 8 }}>
+                <button onClick={() => setShowProvenance(!showProvenance)}
+                  style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.25)', fontSize: 8, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', padding: 0, cursor: 'pointer' }}>
+                  {showProvenance ? '▲ Hide' : '▼ Show'} Data Sources & Legal Basis
+                </button>
+                {showProvenance && (
+                  <div style={{ marginTop: 6, padding: '10px 12px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <p style={{ margin: '0 0 6px', fontSize: 8, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>{gapAnalysis.legalBasis}</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      {gapAnalysis.dataSources.map((s, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <span style={{ fontSize: 8, padding: '1px 6px', background: 'rgba(16,185,129,0.1)', color: '#10b981', border: '1px solid rgba(16,185,129,0.2)', letterSpacing: '0.05em' }}>PUBLIC</span>
+                          <a href={s.url} target="_blank" rel="noopener noreferrer"
+                            style={{ fontSize: 8, color: 'rgba(255,255,255,0.35)', textDecoration: 'underline' }}>{s.name} ↗</a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
