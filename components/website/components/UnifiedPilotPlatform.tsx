@@ -1557,6 +1557,119 @@ const ProfileTab: React.FC<{ onNavigate: (p: string) => void; profile: any; wall
   />
 );
 
+// ─── LOGBOOK PREVIEW PANEL ────────────────────────────────────────────────
+const LogbookPreviewPanel: React.FC<{ profile: any; onOpenLogbook: () => void }> = ({ profile, onOpenLogbook }) => {
+  const [logs, setLogs] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    const id = profile?.id;
+    if (!id) return;
+    supabase.from('pilot_flight_logs').select('id,date,aircraft_type,route,hours').eq('user_id', id).order('date', { ascending: false }).limit(3).then(({ data }) => setLogs(data ?? []));
+  }, [profile?.id]);
+  const totalHours = profile?.total_flight_hours ?? 0;
+  return (
+    <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}>
+      <div className="flex items-center justify-between px-5 pt-4 pb-3">
+        <div>
+          <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Digital Logbook</p>
+          <p className="text-sm font-black text-white tracking-wide">Recent Flights</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-black text-sky-300">{Number(totalHours).toLocaleString()} hrs total</span>
+          <button onClick={onOpenLogbook} className="text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 transition-colors">ADD FLIGHT +</button>
+        </div>
+      </div>
+      <div className="px-5 pb-4">
+        {logs.length === 0 ? (
+          <div className="flex items-center gap-3 py-3" style={{ border: '1px dashed rgba(255,255,255,0.1)' }}>
+            <BookMarked size={14} className="text-white/20 mx-auto" />
+            <p className="text-[10px] text-white/25 text-center w-full">No flights logged yet</p>
+          </div>
+        ) : (
+          <div className="space-y-1">
+            {logs.map(log => (
+              <div key={log.id} className="flex items-center gap-3 px-3 py-2" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div className="w-6 h-6 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(14,165,233,0.12)', border: '1px solid rgba(14,165,233,0.2)' }}>
+                  <Plane size={10} className="text-sky-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-black text-white truncate">{log.aircraft_type || '—'} {log.route ? `· ${log.route}` : ''}</p>
+                  <p className="text-[9px] text-white/30">{log.date ? new Date(log.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' }) : '—'}</p>
+                </div>
+                <span className="text-[10px] font-black text-sky-300 flex-shrink-0">{log.hours}h</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── NOTIFICATIONS FEED PANEL ──────────────────────────────────────────────
+const NotificationsFeedPanel: React.FC<{ profileId?: string }> = ({ profileId }) => {
+  const [notifs, setNotifs] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    if (!profileId) return;
+    supabase.from('pilot_notifications').select('*').eq('pilot_id', profileId).order('created_at', { ascending: false }).limit(8).then(({ data }) => setNotifs(data ?? []));
+  }, [profileId]);
+
+  const markRead = async (id: string) => {
+    await supabase.from('pilot_notifications').update({ is_read: true }).eq('id', id);
+    setNotifs(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
+  };
+
+  const iconFor = (type: string) => {
+    if (type === 'credential_request') return { icon: Building2, color: '#f97316', bg: 'rgba(249,115,22,0.12)' };
+    if (type === 'credential_expiry') return { icon: AlertTriangle, color: '#ef4444', bg: 'rgba(239,68,68,0.1)' };
+    if (type === 'tc_update') return { icon: FileText, color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' };
+    if (type === 'subscription_expiry') return { icon: Star, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' };
+    return { icon: Bell, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' };
+  };
+
+  return (
+    <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}>
+      <div className="flex items-center justify-between px-5 pt-4 pb-3">
+        <div>
+          <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Activity</p>
+          <p className="text-sm font-black text-white tracking-wide">Notifications</p>
+        </div>
+        {notifs.some(n => !n.is_read) && (
+          <span className="text-[9px] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)' }}>
+            {notifs.filter(n => !n.is_read).length} UNREAD
+          </span>
+        )}
+      </div>
+      <div className="px-5 pb-4">
+        {notifs.length === 0 ? (
+          <div className="flex items-center justify-center py-4">
+            <p className="text-[10px] text-white/20">No notifications</p>
+          </div>
+        ) : (
+          <div className="space-y-1">
+            {notifs.map(n => {
+              const cfg = iconFor(n.type);
+              const Icon = cfg.icon;
+              return (
+                <div key={n.id} className="flex items-start gap-3 px-3 py-2.5 cursor-pointer hover:brightness-110 transition-all" style={{ background: n.is_read ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.05)', border: `1px solid ${n.is_read ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.1)'}` }} onClick={() => !n.is_read && markRead(n.id)}>
+                  <div className="w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: cfg.bg, border: `1px solid ${cfg.color}30` }}>
+                    <Icon size={10} style={{ color: cfg.color }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-[10px] font-black truncate ${n.is_read ? 'text-white/50' : 'text-white'}`}>{n.title}</p>
+                    {n.body && <p className="text-[9px] text-white/30 mt-0.5 leading-relaxed line-clamp-2">{n.body}</p>}
+                    <p className="text-[8px] text-white/20 mt-1">{new Date(n.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                  </div>
+                  {!n.is_read && <span className="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0 mt-1.5" />}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ─── CREDENTIAL REQUEST CARD ──────────────────────────────────────────────
 const CredentialRequestCard: React.FC<{ request: any; onRespond: (approved: boolean) => Promise<void> }> = ({ request, onRespond }) => {
   const [responding, setResponding] = React.useState<'approve' | 'deny' | null>(null);
@@ -1777,26 +1890,125 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
           </div>
         </div>
 
-        {/* ── BELOW CONTENT: constrained width ── */}
-        <div style={{ maxWidth: 480 }}>
+        {/* ── DASHBOARD PANELS ── */}
+        <div className="space-y-4">
 
-        {/* ── PENDING CREDENTIAL REQUESTS ── */}
-        {pendingRequests.length > 0 && (
-          <div className="mb-4 space-y-3">
-            {pendingRequests.map((req: any) => (
-              <CredentialRequestCard key={req.id} request={req} onRespond={async (approved: boolean) => {
-                await supabase.from('credential_requests').update({
-                  status: approved ? 'approved' : 'denied',
-                  responded_at: new Date().toISOString(),
-                  ...(approved ? { access_granted_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() } : {}),
-                }).eq('id', req.id);
-                await supabase.from('pilot_notifications').update({ is_read: true }).eq('related_id', req.id);
-              }} />
-            ))}
+          {/* ── 1. VC STATUS STRIP ── */}
+          <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}>
+            <div className="flex items-center justify-between px-5 pt-4 pb-2">
+              <div>
+                <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Credential Status</p>
+                <p className="text-sm font-black text-white tracking-wide">Verifiable Credentials</p>
+              </div>
+              <button onClick={() => setScreen('credentials')} className="text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 transition-colors">MANAGE →</button>
+            </div>
+            <div className="grid grid-cols-4 gap-0 px-5 pb-4">
+              {licenseSlots.map((slot, i) => {
+                const isExpired = slot.expired || (slot.expiry && new Date(slot.expiry) < new Date());
+                const isVerified = slot.check?.status === 'verified';
+                const isFlagged = slot.check?.status === 'flagged';
+                const isPending = slot.check?.status === 'pending';
+                const isEmpty = !slot.value;
+                const statusLabel = isExpired ? 'EXPIRED' : isVerified ? 'VERIFIED' : isFlagged ? 'FLAGGED' : isPending ? 'PENDING' : isEmpty ? 'NOT SET' : 'UNVERIFIED';
+                const dotColor = isExpired ? '#ef4444' : isVerified ? '#10b981' : isFlagged ? '#f59e0b' : isPending ? '#3b82f6' : '#475569';
+                const borderColor = isExpired ? 'rgba(239,68,68,0.3)' : isVerified ? 'rgba(16,185,129,0.3)' : isFlagged ? 'rgba(245,158,11,0.3)' : 'rgba(255,255,255,0.07)';
+                const bgColor = isExpired ? 'rgba(239,68,68,0.06)' : isVerified ? 'rgba(16,185,129,0.06)' : isFlagged ? 'rgba(245,158,11,0.06)' : 'rgba(255,255,255,0.03)';
+                return (
+                  <div key={i} className="flex flex-col items-center gap-2 p-3 mx-1 first:ml-0 last:mr-0" style={{ background: bgColor, border: `1px solid ${borderColor}` }}>
+                    <span className="text-2xl">{slot.icon}</span>
+                    <div className="text-center">
+                      <p className="text-[10px] font-black text-white/80 tracking-wide">{slot.label.split(' ')[0]}</p>
+                      <div className="flex items-center justify-center gap-1 mt-1">
+                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: dotColor, display: 'inline-block', boxShadow: isVerified ? `0 0 6px ${dotColor}` : 'none' }} />
+                        <span style={{ fontSize: 8, fontWeight: 700, color: dotColor, letterSpacing: '0.08em' }}>{statusLabel}</span>
+                      </div>
+                      {slot.expiry && <p className="text-[8px] text-white/25 mt-0.5">{new Date(slot.expiry).toLocaleDateString('en-GB', { month: 'short', year: '2-digit' })}</p>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        )}
 
-        </div>{/* end maxWidth:480 */}
+          {/* ── 2. HOURS BREAKDOWN ── */}
+          <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}>
+            <div className="flex items-center justify-between px-5 pt-4 pb-3">
+              <div>
+                <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Flight Hours</p>
+                <p className="text-sm font-black text-white tracking-wide">Hours Verification Status</p>
+              </div>
+              <span className="text-[10px] font-black tracking-wider" style={{ color: verifiedHours > 0 ? '#10b981' : '#f59e0b' }}>{verifiedHours > 0 ? '✓ VERIFIED' : 'UNVERIFIED'}</span>
+            </div>
+            <div className="px-5 pb-4 space-y-3">
+              {/* Bar */}
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-[9px] text-white/40 font-bold">0</span>
+                  <span className="text-[9px] text-white/40 font-bold">{Number(totalHours).toLocaleString()} hrs total</span>
+                </div>
+                <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <div className="h-full flex">
+                    {verifiedHours > 0 && <div style={{ width: `${Math.min(100, (verifiedHours / Math.max(Number(totalHours), 1)) * 100)}%`, background: 'linear-gradient(90deg, #10b981, #34d399)', transition: 'width 0.6s ease' }} />}
+                    {unverifiedHours > 0 && <div style={{ width: `${Math.min(100, (unverifiedHours / Math.max(Number(totalHours), 1)) * 100)}%`, background: 'rgba(245,158,11,0.5)', transition: 'width 0.6s ease' }} />}
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 mt-2">
+                  <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-400" /><span className="text-[9px] text-white/50 font-bold">Verified {verifiedHours > 0 ? verifiedHours.toLocaleString() : '0'} hrs</span></div>
+                  <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-yellow-500/50" /><span className="text-[9px] text-white/50 font-bold">Unverified {unverifiedHours > 0 ? unverifiedHours.toLocaleString() : Number(totalHours).toLocaleString()} hrs</span></div>
+                </div>
+              </div>
+              {/* Stat grid */}
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { label: 'TOTAL', value: Number(totalHours).toLocaleString(), color: 'text-white' },
+                  { label: 'PIC', value: (profile?.pic_hours ?? 0).toLocaleString(), color: 'text-sky-300' },
+                  { label: 'NIGHT', value: (profile?.night_hours ?? 0).toLocaleString(), color: 'text-indigo-300' },
+                  { label: 'INST', value: (profile?.instrument_hours ?? 0).toLocaleString(), color: 'text-purple-300' },
+                ].map(s => (
+                  <div key={s.label} className="text-center py-2" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <p className={`text-base font-black ${s.color}`}>{s.value}</p>
+                    <p className="text-[8px] text-white/30 uppercase tracking-widest mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+              {unverifiedHours > 0 && (
+                <div className="flex items-start gap-2 p-2.5" style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                  <AlertTriangle size={10} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-[9px] text-yellow-300/70 leading-relaxed">Your hours are self-reported and unverified. Start a Veremark verification to get a cryptographic confirmation token.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ── 3. LOGBOOK PREVIEW ── */}
+          <LogbookPreviewPanel profile={profile} onOpenLogbook={() => {}} />
+
+          {/* ── 4. PENDING CREDENTIAL REQUESTS ── */}
+          {pendingRequests.length > 0 && (
+            <div style={{ background: 'rgba(15,23,42,0.75)', border: '1px solid rgba(249,115,22,0.25)', backdropFilter: 'blur(8px)' }}>
+              <div className="px-5 pt-4 pb-2">
+                <p className="text-[9px] font-black tracking-[0.2em] text-orange-400/60 uppercase">Airline Requests</p>
+                <p className="text-sm font-black text-white tracking-wide">Pending Credential Requests</p>
+              </div>
+              <div className="px-5 pb-4 space-y-3">
+                {pendingRequests.map((req: any) => (
+                  <CredentialRequestCard key={req.id} request={req} onRespond={async (approved: boolean) => {
+                    await supabase.from('credential_requests').update({
+                      status: approved ? 'approved' : 'denied',
+                      responded_at: new Date().toISOString(),
+                      ...(approved ? { access_granted_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() } : {}),
+                    }).eq('id', req.id);
+                    await supabase.from('pilot_notifications').update({ is_read: true }).eq('related_id', req.id);
+                  }} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── 5. NOTIFICATIONS FEED ── */}
+          <NotificationsFeedPanel profileId={profile?.id} />
+
+        </div>
       </motion.div>
     );
   }
