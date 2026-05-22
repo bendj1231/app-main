@@ -1743,6 +1743,29 @@ const ATO_LIST = [
 const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?: any[] }> = ({ walletChecks, profile, pendingRequests = [] }) => {
   // 'landing' | 'credentials' | 'documents' | 'verification'
   const [screen, setScreen] = React.useState<'landing' | 'credentials' | 'documents' | 'verification'>('landing');
+  const [vaultUnlocking, setVaultUnlocking] = React.useState(false);
+  const [unlockStep, setUnlockStep] = React.useState(0);
+  const unlockSteps = [
+    'Authenticating pilot identity…',
+    'Deriving AES-256-GCM vault key…',
+    'Decrypting credential store…',
+    'Loading verifiable credentials…',
+  ];
+  const openVault = React.useCallback(() => {
+    setVaultUnlocking(true);
+    setUnlockStep(0);
+    let step = 0;
+    const iv = setInterval(() => {
+      step++;
+      if (step < unlockSteps.length) {
+        setUnlockStep(step);
+      } else {
+        clearInterval(iv);
+        setVaultUnlocking(false);
+        setScreen('credentials');
+      }
+    }, 600);
+  }, []);
   const [verificationOpen, setVerificationOpen] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<{ name: string; type: string; size: number }[]>([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -1853,6 +1876,56 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
     const clearanceBdr  = allVerified ? '#bbf7d0' : hasExpired ? '#fecaca' : '#fde68a';
     const clearanceLabel = allVerified ? 'Pre-Cleared' : hasExpired ? 'Action Required' : walletChecks.length > 0 ? 'In Review' : 'Not Started';
 
+    if (vaultUnlocking) {
+      return (
+        <motion.div
+          key="vault-unlock"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 380 }}
+        >
+          {/* Shield icon */}
+          <div style={{ width: 72, height: 72, borderRadius: 20, background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28, position: 'relative' }}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            {/* Spinning ring */}
+            <svg style={{ position: 'absolute', top: -4, left: -4, animation: 'spin 1.2s linear infinite' }} width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="37" stroke="rgba(220,38,38,0.3)" strokeWidth="2" strokeDasharray="60 160" strokeLinecap="round"/>
+            </svg>
+          </div>
+
+          {/* Title */}
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 6 }}>Pilot Credential Vault</p>
+          <p style={{ fontSize: 18, fontWeight: 900, color: 'white', letterSpacing: '-0.02em', marginBottom: 28 }}>Unlocking Vault</p>
+
+          {/* Step list */}
+          <div style={{ width: '100%', maxWidth: 340, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {unlockSteps.map((step, i) => {
+              const done = i < unlockStep;
+              const active = i === unlockStep;
+              return (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: active ? 'rgba(220,38,38,0.08)' : done ? 'rgba(16,185,129,0.06)' : 'rgba(255,255,255,0.03)', border: `1px solid ${active ? 'rgba(220,38,38,0.3)' : done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.06)'}`, transition: 'all 0.3s' }}>
+                  <div style={{ width: 18, height: 18, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: active ? 'rgba(220,38,38,0.2)' : done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.06)', border: `1px solid ${active ? 'rgba(220,38,38,0.5)' : done ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.1)'}` }}>
+                    {done
+                      ? <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      : active
+                      ? <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#dc2626', animation: 'pulse 1s ease-in-out infinite' }} />
+                      : <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }} />
+                    }
+                  </div>
+                  <p style={{ fontSize: 11, fontWeight: active ? 700 : 500, color: active ? 'rgba(255,255,255,0.9)' : done ? 'rgba(16,185,129,0.8)' : 'rgba(255,255,255,0.25)', letterSpacing: '0.01em', flex: 1 }}>{step}</p>
+                  {active && <div style={{ width: 16, height: 2, background: 'rgba(220,38,38,0.4)', borderRadius: 2, animation: 'pulse 0.8s ease-in-out infinite' }} />}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Footer */}
+          <p style={{ marginTop: 24, fontSize: 9, color: 'rgba(255,255,255,0.18)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>AES-256-GCM · Zero-knowledge · Pilot-owned</p>
+
+          <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+        </motion.div>
+      );
+    }
+
     return (
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 
@@ -1879,7 +1952,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
               </div>
             </div>
             <button
-              onClick={() => setScreen('credentials')}
+              onClick={() => openVault()}
               style={{ background: '#dc2626', color: 'white', border: 'none', padding: '10px 24px', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, transition: 'background 0.15s' }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
