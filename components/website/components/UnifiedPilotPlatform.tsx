@@ -1902,7 +1902,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
               </div>
               <button onClick={() => setScreen('credentials')} className="text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 transition-colors">MANAGE →</button>
             </div>
-            <div className="grid grid-cols-4 gap-0 px-5 pb-4">
+            <div className="grid grid-cols-4 gap-2 px-5 pb-4">
               {licenseSlots.map((slot, i) => {
                 const isExpired = slot.expired || (slot.expiry && new Date(slot.expiry) < new Date());
                 const isVerified = slot.check?.status === 'verified';
@@ -1913,16 +1913,30 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
                 const dotColor = isExpired ? '#ef4444' : isVerified ? '#10b981' : isFlagged ? '#f59e0b' : isPending ? '#3b82f6' : '#475569';
                 const borderColor = isExpired ? 'rgba(239,68,68,0.3)' : isVerified ? 'rgba(16,185,129,0.3)' : isFlagged ? 'rgba(245,158,11,0.3)' : 'rgba(255,255,255,0.07)';
                 const bgColor = isExpired ? 'rgba(239,68,68,0.06)' : isVerified ? 'rgba(16,185,129,0.06)' : isFlagged ? 'rgba(245,158,11,0.06)' : 'rgba(255,255,255,0.03)';
+                const previewValue = slot.value || null;
+                const previewSub = slot.sub || null;
                 return (
-                  <div key={i} className="flex flex-col items-center gap-2 p-3 mx-1 first:ml-0 last:mr-0" style={{ background: bgColor, border: `1px solid ${borderColor}` }}>
-                    <span className="text-2xl">{slot.icon}</span>
-                    <div className="text-center">
-                      <p className="text-[10px] font-black text-white/80 tracking-wide">{slot.label.split(' ')[0]}</p>
-                      <div className="flex items-center justify-center gap-1 mt-1">
-                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: dotColor, display: 'inline-block', boxShadow: isVerified ? `0 0 6px ${dotColor}` : 'none' }} />
-                        <span style={{ fontSize: 8, fontWeight: 700, color: dotColor, letterSpacing: '0.08em' }}>{statusLabel}</span>
+                  <div key={i} className="flex flex-col justify-between p-3" style={{ background: bgColor, border: `1px solid ${borderColor}`, minHeight: 88 }}>
+                    {/* Top: label + status dot */}
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-[9px] font-black text-white/40 tracking-widest uppercase">{slot.label.split(' ')[0]}</p>
+                      <div className="flex items-center gap-1">
+                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: dotColor, display: 'inline-block', flexShrink: 0, boxShadow: isVerified ? `0 0 5px ${dotColor}` : 'none' }} />
                       </div>
-                      {slot.expiry && <p className="text-[8px] text-white/25 mt-0.5">{new Date(slot.expiry).toLocaleDateString('en-GB', { month: 'short', year: '2-digit' })}</p>}
+                    </div>
+                    {/* Middle: main data value */}
+                    <div className="flex-1">
+                      {previewValue ? (
+                        <p className="text-sm font-black leading-tight" style={{ color: dotColor }}>{previewValue}</p>
+                      ) : (
+                        <p className="text-lg font-black text-white/15">—</p>
+                      )}
+                      {previewSub && <p className="text-[9px] text-white/30 mt-0.5 truncate">{previewSub}</p>}
+                    </div>
+                    {/* Bottom: status label + expiry */}
+                    <div className="flex items-center justify-between mt-2">
+                      <span style={{ fontSize: 8, fontWeight: 700, color: dotColor, letterSpacing: '0.1em' }}>{statusLabel}</span>
+                      {slot.expiry && <span className="text-[8px] text-white/20">{new Date(slot.expiry).toLocaleDateString('en-GB', { month: 'short', year: '2-digit' })}</span>}
                     </div>
                   </div>
                 );
