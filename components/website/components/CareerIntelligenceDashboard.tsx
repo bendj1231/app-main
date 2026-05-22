@@ -162,7 +162,7 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
         <p style={{ margin: '0 0 4px', fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Your Career Gap Analyzer</p>
         <p style={{ margin: '0 0 10px', fontSize: 9, color: 'rgba(255,255,255,0.3)', lineHeight: 1.5 }}>
           Enter an airline slug (e.g. <code style={{ color: '#f59e0b' }}>cebu-pacific</code>, <code style={{ color: '#f59e0b' }}>emirates</code>) to pull live fleet age via
-          {' '}<strong style={{ color: 'rgba(255,255,255,0.4)' }}>Airlabs API → AeroDataBox → Airfleets.net → Boeing AEL average</strong> — or enter year built manually.
+          {' '}<strong style={{ color: 'rgba(255,255,255,0.4)' }}>Aviationstack → OpenSky → ARLA/FAA → BTS.gov → OpenDataSoft → UK CAA → CASA → Airfleets.net → Boeing AEL</strong> — or enter year built manually.
         </p>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <input
@@ -240,7 +240,9 @@ export const CareerIntelligenceDashboard: React.FC<CareerIntelligenceDashboardPr
                       </div>
                       {/* t source badge */}
                       <span style={{ fontSize: 8, padding: '2px 8px', background: (gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)', color: (gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? '#10b981' : '#f59e0b', border: `1px solid ${(gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}`, letterSpacing: '0.06em', fontWeight: 700 }}>
-                        {(gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') ? '🔴 LIVE SCRAPE — Airfleets.net' : '✏ MANUAL INPUT'}
+                        {(gapAnalysis.weibull.variables?.t as any)?.method?.startsWith('scraped') || (gapAnalysis.weibull.variables?.t as any)?.method === 'api'
+                          ? `🔴 LIVE — ${(gapAnalysis.weibull.variables?.t as any)?.source ?? 'Live Provider'}`
+                          : '✏ MANUAL INPUT'}
                       </span>
                     </div>
                     {/* Pilot action box */}
