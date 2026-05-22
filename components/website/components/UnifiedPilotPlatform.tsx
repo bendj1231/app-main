@@ -1778,10 +1778,10 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
     'Ready',
   ];
   const unlockDashboard = React.useCallback(async () => {
-    // Attempt WebAuthn / passkey if available
+    // Attempt WebAuthn / passkey if available — abort on cancel/failure
     if (typeof window !== 'undefined' && (window as any).PublicKeyCredential) {
       try {
-        await (navigator.credentials as any).get({
+        const result = await (navigator.credentials as any).get({
           publicKey: {
             challenge: crypto.getRandomValues(new Uint8Array(32)),
             rpId: window.location.hostname,
@@ -1790,9 +1790,14 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
             timeout: 60000,
           },
         });
-      } catch {
-        // Passkey unavailable or cancelled — fall through to steps anyway
+        if (!result) return; // cancelled / no credential returned
+      } catch (err: any) {
+        // NotAllowedError = user cancelled; AbortError = timeout — do not proceed
+        return;
       }
+    } else {
+      // WebAuthn not supported — fallback: do nothing, keep locked
+      return;
     }
     setDashboardUnlocking(true);
     setDashUnlockStep(0);
