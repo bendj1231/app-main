@@ -393,6 +393,16 @@ interface DigitalLogbookPageProps {
 }
 
 export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, userProfile }) => {
+  const [resolvedUserId, setResolvedUserId] = useState<string | null>(userProfile?.id ?? userProfile?.uid ?? null);
+
+  useEffect(() => {
+    if (!resolvedUserId) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user?.id) setResolvedUserId(session.user.id);
+      });
+    }
+  }, []);
+
   const [flightLogs, setFlightLogs] = useState<FlightLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [logbookFormat, setLogbookFormat] = useState<'standard' | 'compact' | 'detailed' | 'timeline' | 'anac' | 'casa' | 'brazil' | 'cae' | 'qcaa' | 'tcca' | 'dgac' | 'caac' | 'easa' | 'hkcad' | 'dgacindia' | 'jcab' | 'nzcaa' | 'sacaa' | 'gcaa' | 'ukcaa' | 'faa' | 'caap'>('standard');
@@ -752,11 +762,11 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   });
 
   useEffect(() => {
-    fetchFlightLogs();
-  }, [userProfile?.id, userProfile?.uid]);
+    if (resolvedUserId) fetchFlightLogs();
+  }, [resolvedUserId]);
 
   const fetchFlightLogs = async () => {
-    const userId = userProfile?.id || userProfile?.uid;
+    const userId = resolvedUserId;
     if (!userId) {
       console.log('No user ID provided');
       setLoading(false);
@@ -795,25 +805,9 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   };
 
   const handleAddEntry = async () => {
-    const userId = userProfile?.id || userProfile?.uid;
-    console.log('=== Save Entry Debug Info ===');
-    console.log('userProfile:', userProfile);
-    console.log('userProfile type:', typeof userProfile);
-    console.log('userProfile keys:', userProfile ? Object.keys(userProfile) : 'null');
-    console.log('userProfile.id:', userProfile?.id);
-    console.log('userProfile.uid:', userProfile?.uid);
-    console.log('formData:', formData);
-    console.log('============================');
-    
+    const userId = resolvedUserId;
     if (!userId) {
-      console.error('No user ID found - userProfile is:', userProfile);
-      alert(`User not authenticated. Debug info: ${JSON.stringify({
-        hasUserProfile: !!userProfile,
-        userProfileType: typeof userProfile,
-        userProfileKeys: userProfile ? Object.keys(userProfile) : null,
-        hasId: !!userProfile?.id,
-        hasUid: !!userProfile?.uid
-      })}`);
+      alert('Not authenticated — please sign in and try again.');
       return;
     }
     
@@ -1197,7 +1191,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   };
 
   const handleDeleteEntry = async (entryId: string) => {
-    const userId = userProfile?.id || userProfile?.uid;
+    const userId = resolvedUserId;
     if (!userId) return;
     if (!confirm('Are you sure you want to delete this flight entry?')) return;
 
