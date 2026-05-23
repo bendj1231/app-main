@@ -973,27 +973,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <>
                                         <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9', marginTop: '4px' }}>Aircraft &amp; Privileges</div>
 
-                                        {/* Aircraft Class / Type — collapsible */}
+                                        {/* Aircraft Class / Type — always visible */}
                                         {(() => {
                                             const PRIMARY = ['Single Engine Land (SEL)', 'Multi-Engine Land (MEL)', 'Rotorcraft — Helicopter', 'Multi-Engine Sea (MES)'];
-                                            const EXTENDED = ['Single Engine Sea (SES)', 'Rotorcraft — Gyroplane', 'Glider', 'Powered Lift', 'Light Sport (LSA)', 'eVTOL / Powered Lift', 'Lighter-Than-Air', 'Weight-Shift Control', 'Powered Parachute', 'Tilt-Rotor', 'Amphibian', 'Turboprop', 'Piston', 'Electric / Hybrid', 'UAS / Drone', 'Experimental / Homebuilt'];
+                                            const EXTENDED = ['Single Engine Sea (SES)', 'Rotorcraft — Gyroplane', 'Glider', 'Powered Lift', 'Light Sport (LSA)', 'eVTOL / Powered Lift', 'Lighter-Than-Air', 'UAS / Drone', 'Turboprop', 'Experimental / Homebuilt'];
                                             const visible = showMoreClasses ? [...PRIMARY, ...EXTENDED] : PRIMARY;
-                                            const hasSelection = aircraftTypes.length > 0;
                                             return (
-                                                <div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: showAircraftSection ? '8px' : '0' }}>
-                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Aircraft Class / Type <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(select all that apply)</span></div>
-                                                        <button type="button" onClick={() => setShowAircraftSection(p => !p)} style={{ fontSize: '11px', fontWeight: 600, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', padding: '0 0 0 8px', whiteSpace: 'nowrap' }}>
-                                                            {showAircraftSection ? '↑ Collapse' : hasSelection ? `${aircraftTypes[0] === '__none__' ? 'None' : aircraftTypes.length + ' selected'} ↓` : 'View ↓'}
-                                                        </button>
-                                                    </div>
-                                                    {showAircraftSection && <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Aircraft Class / Type <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(select all that apply)</span></div>
+                                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                                         {(occupation === 'Student Pilot' || occupation === 'Cadet') && (() => {
                                                             const isNone = aircraftTypes.includes('__none__');
                                                             return (
                                                                 <button key="none" type="button"
                                                                     onClick={() => setAircraftTypes(isNone ? [] : ['__none__'])}
-                                                                    style={{ padding: '6px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                                                                    style={{ padding: '5px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                                                     None required{isNone && <span style={{ opacity: 0.55 }}>×</span>}
                                                                 </button>
                                                             );
@@ -1003,41 +997,44 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                             return (
                                                                 <button key={cls} type="button"
                                                                     onClick={() => setAircraftTypes(prev => isSel ? prev.filter(t => t !== cls) : [...prev, cls])}
-                                                                    style={{ padding: '6px 12px', background: isSel ? '#0f172a' : '#f8fafc', border: `1px solid ${isSel ? '#0f172a' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                                                                    {cls}{isSel && <span style={{ opacity: 0.55 }}>×</span>}
+                                                                    style={{ padding: '5px 12px', background: isSel ? '#0f172a' : '#f8fafc', border: `1px solid ${isSel ? '#0f172a' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                                                    {cls}{isSel && <span style={{ opacity: 0.5, marginLeft: '2px' }}>×</span>}
                                                                 </button>
                                                             );
                                                         })}
                                                         {!aircraftTypes.includes('__none__') && (
-                                                        <button type="button" onClick={() => setShowMoreClasses(p => !p)}
-                                                            style={{ padding: '6px 12px', background: 'transparent', border: '1px dashed #cbd5e1', borderRadius: '20px', color: '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                                                            {showMoreClasses ? '↑ Show less' : `+ ${EXTENDED.length} more classes`}
-                                                        </button>
+                                                            <button type="button" onClick={() => setShowMoreClasses(p => !p)}
+                                                                style={{ padding: '5px 12px', background: 'transparent', border: '1px dashed #cbd5e1', borderRadius: '20px', color: '#94a3b8', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                                                                {showMoreClasses ? '↑ Less' : `+ ${EXTENDED.length} more`}
+                                                            </button>
                                                         )}
-                                                    </div>}
+                                                    </div>
                                                 </div>
                                             );
                                         })()}
 
-                                        {/* Operational Ratings — collapsible */}
+                                        {/* Operational Ratings — always visible, expanded list */}
                                         {(() => {
-                                            const OPS_RATINGS = ['Instrument Rating (IR)', 'Night Rating', 'Seaplane Rating', 'Aerobatic Rating', 'Flight Instructor (CFI)'];
-                                            const hasRatings = ratings.length > 0;
+                                            const OPS_RATINGS = [
+                                                'Instrument Rating (IR)', 'Night Rating', 'Multi-Engine Rating (ME)',
+                                                'Seaplane Rating', 'Aerobatic Rating', 'Mountain Rating',
+                                                'Flight Instructor (CFI)', 'Check Airman', 'ATPL Frozen',
+                                                'EBT Qualified', 'Type Rating Instructor (TRI)', 'Type Rating Examiner (TRE)',
+                                            ];
+                                            const hasRatings = ratings.filter(r => r !== '__none__').length > 0;
                                             return (
-                                                <div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: showRatingsSection ? '8px' : '0' }}>
-                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Operational Ratings <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(select all that apply)</span></div>
-                                                        <button type="button" onClick={() => setShowRatingsSection(p => !p)} style={{ fontSize: '11px', fontWeight: 600, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', padding: '0 0 0 8px', whiteSpace: 'nowrap' }}>
-                                                            {showRatingsSection ? '↑ Collapse' : hasRatings ? `${ratings[0] === '__none__' ? 'None' : ratings.length + ' selected'} ↓` : 'View ↓'}
-                                                        </button>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Operational Ratings <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(select all that apply)</span></div>
+                                                        {hasRatings && <span style={{ fontSize: '10px', color: '#ef4444', fontWeight: 700 }}>{ratings.filter(r => r !== '__none__').length} selected</span>}
                                                     </div>
-                                                    {showRatingsSection && <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                                         {(occupation === 'Student Pilot' || occupation === 'Cadet') && (() => {
                                                             const isNone = ratings.includes('__none__');
                                                             return (
                                                                 <button key="none" type="button"
                                                                     onClick={() => setRatings(isNone ? [] : ['__none__'])}
-                                                                    style={{ padding: '6px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                                                                    style={{ padding: '5px 12px', background: isNone ? '#64748b' : '#f8fafc', border: `1px solid ${isNone ? '#64748b' : '#e2e8f0'}`, borderRadius: '20px', color: isNone ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                                                     None required{isNone && <span style={{ opacity: 0.55 }}>×</span>}
                                                                 </button>
                                                             );
@@ -1047,12 +1044,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                             return (
                                                                 <button key={rating} type="button"
                                                                     onClick={() => setRatings(prev => isSel ? prev.filter(r => r !== rating) : [...prev, rating])}
-                                                                    style={{ padding: '6px 12px', background: isSel ? '#dc2626' : '#f8fafc', border: `1px solid ${isSel ? '#dc2626' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                                                                    {rating}{isSel && <span style={{ opacity: 0.55 }}>×</span>}
+                                                                    style={{ padding: '5px 12px', background: isSel ? '#dc2626' : '#f8fafc', border: `1px solid ${isSel ? '#dc2626' : '#e2e8f0'}`, borderRadius: '20px', color: isSel ? '#fff' : '#475569', fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                                                    {rating}{isSel && <span style={{ opacity: 0.5, marginLeft: '2px' }}>×</span>}
                                                                 </button>
                                                             );
                                                         })}
-                                                    </div>}
+                                                    </div>
                                                 </div>
                                             );
                                         })()}
@@ -1060,7 +1057,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         {['Commercial Pilot (CPL)', 'Airline Pilot (ATPL)', 'First Officer', 'Captain', 'Flight Instructor (CFI)'].includes(occupation) && (
                                         <div>
                                             <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
-                                                Type Ratings Held <span style={{ color: '#cbd5e1', fontWeight: 400 }}>(optional)</span>
+                                                Type Ratings Held <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span>
+                                            </div>
+                                            {/* Popular type quick-select */}
+                                            <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '6px' }}>
+                                                {['A320', 'B737', 'A350', 'B777', 'ATR72', 'E190', 'B787', 'A330', 'DHC-8', 'CRJ900'].map(t => {
+                                                    const isSel = typeRatings.includes(t);
+                                                    return (
+                                                        <button key={t} type="button"
+                                                            onClick={() => { if (!isSel) { setTypeRatings(prev => [...prev, t]); } else { setTypeRatings(prev => prev.filter(r => r !== t)); } }}
+                                                            style={{ padding: '4px 10px', background: isSel ? '#0f172a' : '#f1f5f9', border: `1px solid ${isSel ? '#0f172a' : '#e2e8f0'}`, borderRadius: '6px', color: isSel ? '#fff' : '#64748b', fontSize: '11px', fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s', letterSpacing: '0.02em' }}>
+                                                            {t}
+                                                        </button>
+                                                    );
+                                                })}
                                             </div>
                                             {typeRatings.length > 0 && (
                                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '6px' }}>
