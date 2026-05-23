@@ -258,10 +258,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
                             onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
                         >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
-                                <path d="M12 10v4m0 0-2 2m2-2 2 2"/>
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <svg width="18" height="18" viewBox="0 0 814 1000" fill="currentColor">
+                                <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-43.4-150.3-109.8c-62.1-90.3-112.5-228-112.5-358.8 0-221.9 145.5-339.3 288.4-339.3 76.5 0 140.5 50.5 189 50.5 46.3 0 119.2-53.4 179.8-53.4zM640 .8c-30.7 14.2-93.6 49.4-136.4 115.2-36.7 55.2-64.8 139.6-64.8 223.9 0 10.3 1.9 20.6 2.6 24.1 4.5.6 12.2 1.9 19.8 1.9 36.7 0 95.5-30.7 133.5-92.4 42.8-66.5 61.3-143.3 61.3-213.6 0-7.7-.6-15.4-1.3-23.1z"/>
                             </svg>
                             {passkeyLoading ? 'Verifying...' : 'Sign in with Passkey (Touch ID)'}
                         </button>
