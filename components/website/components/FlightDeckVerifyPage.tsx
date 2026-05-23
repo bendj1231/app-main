@@ -304,11 +304,11 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             }
             setWalletKeyVerifying(true);
             try {
-                // 1. Fetch the user's encrypted profile from Supabase
+                // 1. Fetch profile id + stored hash
                 const auth0Sub = user?.sub || '';
                 const { data: profile } = await supabase
                     .from('profiles')
-                    .select('id, full_name, email')
+                    .select('id, vault_recovery_key_hash')
                     .eq('auth0_id', auth0Sub)
                     .maybeSingle();
 
@@ -318,35 +318,31 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
                     return;
                 }
 
-                // 2. Derive a vault key from the recovery key using PBKDF2
+                // 2. PBKDF2-hash the entered key with profile id as salt
                 const enc = new TextEncoder();
-                const keyBase = await crypto.subtle.importKey(
-                    'raw', enc.encode(trimmed), 'PBKDF2', false, ['deriveKey']
-                );
-                const derivedKey = await crypto.subtle.deriveKey(
+                const base = await crypto.subtle.importKey('raw', enc.encode(trimmed), 'PBKDF2', false, ['deriveKey']);
+                const derived = await crypto.subtle.deriveKey(
                     { name: 'PBKDF2', salt: enc.encode(`pr:wallet:recovery:${profile.id}`), iterations: 200_000, hash: 'SHA-256' },
-                    keyBase, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+                    base, { name: 'AES-GCM', length: 256 }, true, ['encrypt']
                 );
+                const raw = await crypto.subtle.exportKey('raw', derived);
+                const enteredHash = Array.from(new Uint8Array(raw)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-                // 3. Find an encrypted field to attempt decryption as proof
-                const VAULT_PREFIX = '{"iv":"';
-                const encryptedField = ['full_name', 'email'].map(f => (profile as any)[f]).find(v => typeof v === 'string' && v.startsWith(VAULT_PREFIX));
-
-                if (encryptedField) {
-                    // Attempt decrypt — AES-GCM auth tag will throw if key is wrong
-                    try {
-                        const { iv, data: cipherData } = JSON.parse(encryptedField);
-                        const ivBytes = Uint8Array.from(atob(iv.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
-                        const cipherBytes = Uint8Array.from(atob(cipherData.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
-                        await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivBytes, tagLength: 128 }, derivedKey, cipherBytes);
-                        // Decryption succeeded — key is valid
-                    } catch {
-                        setWalletKeyError('Key is incorrect. The recovery key does not match this account.');
-                        setWalletKeyVerifying(false);
-                        return;
-                    }
+                // 3. If no hash stored yet — first use, store it and allow through
+                if (!profile.vault_recovery_key_hash) {
+                    await supabase.from('profiles').update({ vault_recovery_key_hash: enteredHash }).eq('id', profile.id);
+                    localStorage.setItem('pr_passkey_registered', 'true');
+                    navigate('/platform');
+                    return;
                 }
-                // Either decryption passed or field is plaintext (pre-vault account) — allow through
+
+                // 4. Compare hashes
+                if (enteredHash !== profile.vault_recovery_key_hash) {
+                    setWalletKeyError('Key is incorrect. Check your wallet recovery key and try again.');
+                    setWalletKeyVerifying(false);
+                    return;
+                }
+
                 localStorage.setItem('pr_passkey_registered', 'true');
                 navigate('/platform');
             } catch {
