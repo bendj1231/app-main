@@ -482,8 +482,28 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
                             timeout: 60000,
                         },
-                    });
-                    console.log('✅ [Passkey] credentials.create result:', result ? result.type : 'null');
+                    }) as PublicKeyCredential | null;
+                    if (result) {
+                        const attestation = result.response as AuthenticatorAttestationResponse;
+                        const pubKeyBuf = attestation.getPublicKey?.();
+                        // Persist credential ID to localStorage so login modal can use it
+                        localStorage.setItem('pr_passkey_registered', 'true');
+                        localStorage.setItem('pr_passkey_credential_id', result.id);
+                        // Persist public key to Supabase pilot_passkeys for server-side verify
+                        const ua = navigator.userAgent;
+                        const deviceName = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Unknown';
+                        await supabase.from('pilot_passkeys').upsert({
+                            user_id: userId,
+                            credential_id: result.id,
+                            public_key: pubKeyBuf ? Array.from(new Uint8Array(pubKeyBuf)) : [],
+                            sign_count: 0,
+                            device_name: deviceName,
+                            transports: (result as any).response?.getTransports?.() ?? [],
+                        }, { onConflict: 'credential_id' });
+                        console.log('✅ [Passkey] registered and saved:', result.id);
+                    } else {
+                        console.log('✅ [Passkey] credentials.create returned null — skipped');
+                    }
                 } catch (passkeyErr: any) {
                     console.error('🔴 [Passkey] credentials.create FAILED:', passkeyErr?.name, passkeyErr?.message, passkeyErr);
                 }

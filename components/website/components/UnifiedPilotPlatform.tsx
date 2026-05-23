@@ -25,6 +25,7 @@ import { PortalAirlineExpectationsPage } from '../../../portal/pages/PortalAirli
 import { PathwaysPageModern } from '../../../portal/pages/PathwaysPageModern';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 import { InfrastructureDashboard } from './InfrastructureDashboard';
+import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import ProfileImage from '../../../src/components/ProfileImage';
@@ -1751,7 +1752,7 @@ const ATO_LIST = [
   'Asia Pacific Aviation Centre', 'CAA Approved Local ATO', 'Other / Not Listed',
 ];
 
-const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?: any[] }> = ({ walletChecks, profile, pendingRequests = [] }) => {
+const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?: any[]; hasActiveSession?: boolean }> = ({ walletChecks, profile, pendingRequests = [], hasActiveSession = false }) => {
   // 'landing' | 'credentials' | 'documents' | 'verification'
   const [screen, setScreen] = React.useState<'landing' | 'credentials' | 'documents' | 'verification'>('landing');
   const [vaultUnlocking, setVaultUnlocking] = React.useState(false);
@@ -1789,26 +1790,47 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
     'Ready',
   ];
   const unlockDashboard = React.useCallback(async () => {
-    // Attempt WebAuthn / passkey if available — abort on cancel/failure
     if (typeof window !== 'undefined' && (window as any).PublicKeyCredential) {
+      const storedCredentialId = localStorage.getItem('pr_passkey_credential_id');
       try {
+        const allowCredentials = storedCredentialId
+          ? [{
+              id: (() => {
+                const base64 = storedCredentialId.replace(/-/g, '+').replace(/_/g, '/');
+                const binary = atob(base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '='));
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                return bytes.buffer;
+              })(),
+              type: 'public-key' as const,
+            }]
+          : []; // empty = discoverable credential — iCloud Keychain will auto-prompt if one exists
         const result = await (navigator.credentials as any).get({
           publicKey: {
             challenge: crypto.getRandomValues(new Uint8Array(32)),
-            rpId: window.location.hostname,
-            allowCredentials: [],
-            userVerification: 'preferred',
+            rpId: window.location.hostname === 'localhost' ? 'localhost' : window.location.hostname.replace('www.', ''),
+            allowCredentials,
+            userVerification: 'required',
             timeout: 60000,
           },
         });
-        if (!result) return; // cancelled / no credential returned
+        if (!result) {
+          // No credential returned — fall back to session check below
+          throw new Error('no-credential');
+        }
       } catch (err: any) {
-        // NotAllowedError = user cancelled; AbortError = timeout — do not proceed
-        return;
+        if (err.name === 'NotAllowedError') {
+          // User explicitly cancelled passkey prompt — keep locked
+          return;
+        }
+        // NotSupportedError, no credential found, or no passkey registered yet —
+        // fall back to verifying active session (Auth0 or Supabase)
+        if (!hasActiveSession) return; // truly not authenticated
+        // Session confirmed — proceed to unlock without passkey
       }
     } else {
-      // WebAuthn not supported — fallback: do nothing, keep locked
-      return;
+      // WebAuthn not supported — fall back to session check
+      if (!hasActiveSession) return;
     }
     setDashboardUnlocking(true);
     setDashUnlockStep(0);
@@ -4144,7 +4166,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
-      case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} />;
+      case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} hasActiveSession={!!(auth0User?.sub || currentUser?.id)} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
       case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
@@ -4162,6 +4184,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   };
 
   const activeNavItem = NAV_ITEMS.find(n => n.id === activeTab);
+  const [passkeyPromptDismissed, setPasskeyPromptDismissed] = React.useState(false);
+  const shouldShowPasskeyPrompt = useShouldShowPasskeyPrompt();
+  const showPasskeyPrompt = shouldShowPasskeyPrompt && !passkeyPromptDismissed && !!(auth0User?.sub || currentUser?.id);
 
   return (
     <div className="relative min-h-screen flex flex-col font-sans">
@@ -4399,6 +4424,15 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           </div>
         </main>
       </div>
+
+      {/* ── POST-LOGIN PASSKEY REGISTRATION PROMPT ── */}
+      {showPasskeyPrompt && (
+        <PasskeyPrompt
+          userId={profileData?.id || auth0User?.sub || currentUser?.id || ''}
+          userEmail={profileData?.email || auth0User?.email || currentUser?.email || ''}
+          onDismiss={() => setPasskeyPromptDismissed(true)}
+        />
+      )}
     </div>
   );
 };
