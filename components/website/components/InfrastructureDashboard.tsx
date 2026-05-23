@@ -71,6 +71,18 @@ interface InfraStats {
   emailsSentTotal: number;
   // IPFS
   ipfsPins: number;
+  // Extended stats
+  mfaRequiredUsers: number;
+  passkeysRegistered: number;
+  pilotDocuments: number;
+  payoutsPending: number;
+  atoPendingCommissions: number;
+  atoVerificationRequests: number;
+  recognitionScores: number;
+  atlasResumes: number;
+  referralConversions: number;
+  referralDividends: number;
+  cacheStatRows: number;
 }
 
 const REFRESH_INTERVAL = 30000; // 30s
@@ -167,6 +179,9 @@ export const InfrastructureDashboard: React.FC = () => {
         helioRes, paymentSplitsRes,
         waltDidsRes, waltWalletsRes,
         emailsRes, ipfsPinsRes,
+        mfaRes, passkeysRes, pilotDocsRes, payoutsPendingRes,
+        atoCommRes, atoVerifRes, recScoreRes, atlasRes,
+        refConvRes, refDivRes, cacheRes,
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', weekAgo),
@@ -215,6 +230,18 @@ export const InfrastructureDashboard: React.FC = () => {
         supabase.from('notifications').select('*', { count: 'exact', head: true }),
         // IPFS
         supabase.from('public_ipfs_pins').select('*', { count: 'exact', head: true }),
+        // Extended
+        supabase.from('mfa_settings').select('*', { count: 'exact', head: true }).eq('mfa_required', true),
+        supabase.from('pilot_passkeys').select('*', { count: 'exact', head: true }),
+        supabase.from('pilot_documents').select('*', { count: 'exact', head: true }),
+        supabase.from('payouts').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('ato_pending_commissions').select('*', { count: 'exact', head: true }),
+        supabase.from('ato_verification_requests').select('*', { count: 'exact', head: true }),
+        supabase.from('recognition_scores').select('*', { count: 'exact', head: true }),
+        supabase.from('atlas_resumes').select('*', { count: 'exact', head: true }),
+        supabase.from('referral_conversions').select('*', { count: 'exact', head: true }),
+        supabase.from('referral_dividend_ledger').select('*', { count: 'exact', head: true }),
+        supabase.from('cache_statistics').select('*', { count: 'exact', head: true }),
       ]);
 
       const uniqueAIUsers = new Set((aiUsersRes.data || []).map((r: any) => r.user_id)).size;
@@ -264,6 +291,17 @@ export const InfrastructureDashboard: React.FC = () => {
         waltWalletsActive: waltWalletsRes.count ?? 0,
         emailsSentTotal: emailsRes.count ?? 0,
         ipfsPins: ipfsPinsRes.count ?? 0,
+        mfaRequiredUsers: mfaRes.count ?? 0,
+        passkeysRegistered: passkeysRes.count ?? 0,
+        pilotDocuments: pilotDocsRes.count ?? 0,
+        payoutsPending: payoutsPendingRes.count ?? 0,
+        atoPendingCommissions: atoCommRes.count ?? 0,
+        atoVerificationRequests: atoVerifRes.count ?? 0,
+        recognitionScores: recScoreRes.count ?? 0,
+        atlasResumes: atlasRes.count ?? 0,
+        referralConversions: refConvRes.count ?? 0,
+        referralDividends: refDivRes.count ?? 0,
+        cacheStatRows: cacheRes.count ?? 0,
       });
       setLastRefresh(new Date());
       setError(null);
@@ -296,6 +334,82 @@ export const InfrastructureDashboard: React.FC = () => {
 
   const aiPct = Math.min(100, Math.round((stats.aiRequestsToday / 500) * 100));
   const aiBarColor = aiPct > 80 ? '#ef4444' : aiPct > 60 ? '#f59e0b' : '#22c55e';
+
+  // ── INTEGRATION STATUS REGISTRY ─────────────────────────────────────────
+  type IntegStatus = 'live' | 'partial' | 'missing' | 'stub';
+  interface Integ {
+    name: string;
+    category: string;
+    status: IntegStatus;
+    envKey?: string;
+    edgeFn?: string;
+    notes: string;
+    dbCheck?: number | null; // non-zero means data flowing
+  }
+
+  const hasEnv = (k: string) => {
+    // We can't read env on the client — we infer from known keys loaded at build
+    // Treat as configured if the dashboard itself loaded (Supabase works)
+    return true; // placeholder — actual check is the edge fn being deployed
+  };
+
+  const integrations: Integ[] = [
+    // ── AUTH ──────────────────────────────────────────────────
+    { name: 'Auth0', category: 'Auth', status: 'live', envKey: 'VITE_AUTH0_CLIENT_ID', notes: 'Login/logout/MFA via Auth0 React SDK. Session bridged to Supabase JWT.' },
+    { name: 'Supabase Auth', category: 'Auth', status: 'live', notes: 'JWT session, RLS policies, edge function auth.' },
+    { name: 'MFA (TOTP)', category: 'Auth', status: 'partial', edgeFn: 'auth-mfa-setup', notes: `Edge fns deployed. mfa_secrets unencrypted (TODO: pgcrypto). ${stats.mfaRequiredUsers} users with MFA required.`, dbCheck: stats.mfaRequiredUsers },
+    { name: 'Passkeys (WebAuthn)', category: 'Auth', status: 'partial', edgeFn: 'passkey-challenge / passkey-verify', notes: 'Edge fns deployed. pilot_passkeys table exists. 0 passkeys registered.', dbCheck: stats.passkeysRegistered ?? 0 },
+    // ── STORAGE ───────────────────────────────────────────────
+    { name: 'Cloudinary', category: 'Storage', status: 'live', notes: `Profile images. ${stats.profilesWithImages} pilots have uploaded. Unsigned preset, auto-optimize.` },
+    { name: 'Cloudflare R2', category: 'Storage', status: 'partial', edgeFn: 'r2-presign-upload', notes: 'Edge fn built. Env vars R2_ACCOUNT_ID/KEY needed. Pilot encrypted vault bucket. Not yet wired to UI upload flow.' },
+    { name: 'Backblaze B2', category: 'Storage', status: 'partial', edgeFn: 'b2-backup', notes: 'Edge fn deployed for cold backup. No automated cron trigger set up yet.' },
+    { name: 'Supabase Storage', category: 'Storage', status: 'live', notes: `pilot-documents bucket. ${stats.pilotDocuments ?? 0} documents uploaded. Signed URL 5-min TTL.` },
+    // ── PAYMENTS ──────────────────────────────────────────────
+    { name: 'Stripe', category: 'Payments', status: 'live', edgeFn: 'stripe-checkout / stripe-webhook / ato-stripe-checkout', notes: `${stats.activeSubscriptions} active subs. Webhook live. ATO checkout variant deployed.` },
+    { name: 'Helio (USDC)', category: 'Payments', status: 'partial', edgeFn: 'helio-webhook', notes: `Webhook handler deployed. HELIO_WEBHOOK_SECRET env needed. ${stats.helioTokensTotal} tokens issued. Payment splitter built but not triggered.` },
+    { name: 'Payment Splitter', category: 'Payments', status: 'partial', edgeFn: 'payment-splitter', notes: `3-way split logic built (Veremark 23% / ATO 5% / Platform). ${stats.paymentSplitsTotal} splits executed.` },
+    { name: 'Payout Manager', category: 'Payments', status: 'partial', edgeFn: 'payout-manager', notes: `${stats.payoutsPending ?? 0} pending payouts. Payout logic built, no live payment rail connected (Stripe Connect / bank transfer TBD).` },
+    { name: 'Commission Manager', category: 'Payments', status: 'partial', edgeFn: 'commission-manager', notes: `ATO commission tracking built. ${stats.atoPendingCommissions} pending. No automated release trigger.` },
+    // ── VERIFICATION ──────────────────────────────────────────
+    { name: 'Veremark Webhooks', category: 'Verification', status: stats.veremarkWebhooksTotal > 0 ? 'live' : 'partial', edgeFn: 'veremark-webhook', notes: `${stats.veremarkWebhooksTotal} webhooks received. Schema confirmed. CAAP PEL single-pull pending technical feasibility from Veremark.` },
+    { name: 'Verification Checks', category: 'Verification', status: stats.vcTotal > 0 ? 'live' : 'stub', notes: `${stats.vcTotal} checks submitted. ${stats.vcVerified} verified / ${stats.vcPending} pending / ${stats.vcFlagged} flagged. verification_checks table ready.` },
+    { name: 'ATO Verification Requests', category: 'Verification', status: 'stub', notes: `ato_verification_requests table exists. ${stats.atoVerificationRequests ?? 0} requests. UI flow not built yet.` },
+    { name: 'Pilot Documents', category: 'Verification', status: stats.pilotDocuments > 0 ? 'live' : 'partial', notes: `${stats.pilotDocuments ?? 0} documents uploaded. Admin review queue built (/admin/verification).` },
+    // ── WALLET / CREDENTIALS ──────────────────────────────────
+    { name: 'Pilot Wallet (W3C VC)', category: 'Wallet', status: 'live', notes: `${stats.pilotWallets} wallets. AES-256-GCM encrypted storage. Bitstring status list polling.` },
+    { name: 'Walt.id Issuer', category: 'Wallet', status: 'partial', edgeFn: 'wallet-provision / pilot-terminal-issue', notes: `${stats.waltWalletsActive} active walt wallets. ${stats.waltDids} DIDs. Issuer API live at issuer.portal.walt.id. Proof signatures still PENDING_ENCLAVE_SIGNATURE.` },
+    { name: 'Truvera (VC issuer)', category: 'Wallet', status: 'partial', notes: 'TRUVERA_API_KEY configured. TruveraWalletSetup component built. Not yet wired to production pilot flow.' },
+    { name: 'VC Revocation', category: 'Wallet', status: 'live', edgeFn: 'vc-revoke / vc-status', notes: `${stats.vcRevocations} revocations. Bitstring Status List circuit breaker. vc_revocation_registry table active.` },
+    { name: 'DID Registry', category: 'Wallet', status: stats.waltDids > 0 ? 'live' : 'partial', notes: `${stats.waltDids} DIDs in pilot_dids table. did:key derivation from P-256 enclave key.` },
+    // ── AI ────────────────────────────────────────────────────
+    { name: 'Groq AI Coaching', category: 'AI', status: 'live', edgeFn: 'ai-coaching', notes: `${stats.aiRequestsToday}/500 requests today. Rate limited. ai_usage_log active. Coaching / chat / pathway / atlas-cv types.` },
+    { name: 'Recognition Score', category: 'AI', status: stats.recognitionScores > 0 ? 'live' : 'partial', edgeFn: 'recognition-score', notes: `${stats.recognitionScores ?? 0} scores computed. Edge fn deployed. Score = career currency for pathway access.` },
+    { name: 'Atlas Resume (AI)', category: 'AI', status: stats.atlasResumes > 0 ? 'live' : 'partial', notes: `${stats.atlasResumes ?? 0} resumes generated. Builder component exists. atlas_resumes table ready.` },
+    { name: 'EBT Video Scoring', category: 'AI', status: 'missing', notes: 'Not built. Core IP — behaviorism + constructivism scoring of recorded interviews. Required for Transition Program.' },
+    // ── EMAIL / COMMS ─────────────────────────────────────────
+    { name: 'Resend (Email)', category: 'Comms', status: 'live', edgeFn: 'send-account-created-email / send-enrollment-email / ato-notification', notes: `${stats.notificationsTotal} notifications total. RESEND_API_KEY configured.` },
+    { name: 'Firebase (Notifications)', category: 'Comms', status: 'partial', notes: 'Firebase SDK configured. Firestore writes client-side. No server-side invocation logging in Supabase.' },
+    // ── REFERRAL / GROWTH ─────────────────────────────────────
+    { name: 'Referral System', category: 'Growth', status: 'partial', edgeFn: 'generate-referral / referral-tracker / referral-credit', notes: `${stats.totalReferrals} referrals. ${stats.referralConversions ?? 0} conversions. ${stats.referralDividends ?? 0} dividend ledger entries.` },
+    { name: 'ATO Activation Credits', category: 'Growth', status: 'live', edgeFn: 'activation-credit-expiry / ato-subscription-credit-release', notes: `5-day credit on verification. Cron expiry fn deployed. ato_activation_credits table active.` },
+    // ── LOGBOOK ───────────────────────────────────────────────
+    { name: 'MyFlightBook OAuth', category: 'Logbook', status: 'partial', edgeFn: 'mfb-token-exchange (functions/)', notes: `VITE_MFB_CLIENT_ID configured. OAuth callback built. ${stats.logbookConnectionsActive} active connections. Token exchange fn present but not in supabase/functions.` },
+    { name: 'Digital Logbook', category: 'Logbook', status: 'live', notes: `${stats.totalFlightLogs} flight log entries. pilot_flight_logs table. Manual entry UI built.` },
+    // ── SECURITY ──────────────────────────────────────────────
+    { name: 'Rate Limiting', category: 'Security', status: 'live', notes: `${stats.rateLimitBuckets} active buckets. Sliding window. Per-user and per-IP.` },
+    { name: 'Security Events', category: 'Security', status: 'live', notes: `${stats.securityEventsToday} events today. Logged to security_events table.` },
+    { name: 'Vault Encryption', category: 'Security', status: 'live', notes: 'AES-256-GCM profile field encryption. Key derivation from Auth0 JWT signature.' },
+    { name: 'Cache Invalidator', category: 'Security', status: 'partial', edgeFn: 'cache-invalidator', notes: `${stats.cacheStatRows ?? 0} cache_statistics rows. Edge fn deployed. Not yet wired to cache warming schedule.` },
+    // ── ENTERPRISE ────────────────────────────────────────────
+    { name: 'Enterprise Access', category: 'Enterprise', status: 'live', edgeFn: 'enterprise-access', notes: 'Airline/ATO portal. Enterprise account gate. Pilot pull API deployed.' },
+    { name: 'Pilot Pull API', category: 'Enterprise', status: 'live', edgeFn: 'pilot-pull-api', notes: 'Enterprise filter: hours, country, license, medical, verified. PII gated. Audit logged.' },
+    { name: 'IPFS Pins', category: 'Enterprise', status: stats.ipfsPins > 0 ? 'live' : 'stub', notes: `${stats.ipfsPins} public IPFS pins. public_ipfs_pins table. Pinata integration not confirmed in env.` },
+    // ── MONITORING ────────────────────────────────────────────
+    { name: 'Sentry', category: 'Monitoring', status: 'partial', notes: 'src/lib/sentry.ts configured. Error events sent to Sentry cloud. No counts in Supabase.' },
+    { name: 'Metrics Dashboard (internal)', category: 'Monitoring', status: 'live', edgeFn: 'metrics-dashboard', notes: 'METRICS_API_KEY gated. Queryable by internal tooling.' },
+    { name: 'Health Check', category: 'Monitoring', status: 'live', edgeFn: 'health-check', notes: 'Public health endpoint. Used for uptime monitoring.' },
+    { name: 'API Gateway', category: 'Monitoring', status: 'live', edgeFn: 'api-gateway', notes: 'Central routing. Auth validation. Rate limit enforcement.' },
+  ];
 
   return (
     <div className="space-y-4">
