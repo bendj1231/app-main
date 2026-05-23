@@ -4163,7 +4163,6 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
     setDeleteError('');
     try {
       const token = await getToken();
-      console.log('[delete-account] token length:', token?.length, '| starts with:', token?.substring(0, 20));
 
       // Passkey gate — triggers iCloud Keychain / Touch ID before deletion
       if (window.PublicKeyCredential) {
@@ -4191,7 +4190,6 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
         },
       });
       const json = await res.json().catch(() => ({}));
-      console.error('[delete-account] status:', res.status, '| body:', json);
       if (!res.ok) throw new Error(json.error || json.message || `Server error ${res.status}`);
       localStorage.clear();
       sessionStorage.clear();
@@ -4666,7 +4664,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'logbook':       return <LogbookHub profile={profileData} onNavigate={onNavigate} />;
       case 'events':        return <EventsTab />;
       case 'newsroom':      return <NewsroomTab onNavigate={onNavigate} />;
-      case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { const claims = await getIdTokenClaims(); const t = claims?.__raw; console.log('[getToken] Auth0 ID token ok, length:', t?.length, '| starts with:', t?.substring(0,20)); if (t) return t; throw new Error('no id token'); } catch (e: any) { console.warn('[getToken] Auth0 ID token failed:', e?.message, '— trying Supabase session'); const { data: { session } } = await supabase.auth.getSession(); const t = session?.access_token; console.log('[getToken] Supabase session token:', t ? `length ${t.length}` : 'NONE'); if (!t) throw new Error('No auth token available — please log out and back in'); return t; } }} profileId={profileData?.id ?? null} />;
+      case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { const claims = await getIdTokenClaims(); const t = claims?.__raw; if (t) return t; throw new Error('no id token'); } catch { const { data: { session } } = await supabase.auth.getSession(); const t = session?.access_token; if (!t) throw new Error('No auth token available — please log out and back in'); return t; } }} profileId={profileData?.id ?? null} />;
       default:              return null;
     }
   };
