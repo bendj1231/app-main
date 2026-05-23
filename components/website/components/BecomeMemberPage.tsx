@@ -1129,13 +1129,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         Complete your free profile first — then upgrade to <strong style={{ color: '#0f172a' }}>Recognition+</strong> to upload your licence documents for verification. Operators and airlines will see a <strong style={{ color: '#16a34a' }}>✓ Verified</strong> badge on your profile, confirming your credentials are current and authentic.
                                     </p>
                                 </div>
-                                {/* Encrypted storage notice */}
-                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px 12px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px' }}>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '1px' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                    <p style={{ fontSize: '10px', color: '#15803d', margin: 0, lineHeight: 1.6 }}>
-                                        All uploaded documents are stored in <strong>end-to-end encrypted storage</strong>, provisioned exclusively through your <strong>Recognition+</strong> subscription. Your files are never accessible to third parties without your explicit consent.
-                                    </p>
-                                </div>
                                 {/* Confirm button */}
                                 {(() => {
                                     const ok = !!occupation && !!issuingAuthority;
@@ -1177,9 +1170,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         {' '}— and your{' '}
                                         <span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
                                     </p>
-                                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 20px 0' }}>
+                                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 16px 0' }}>
                                         State your licence, issuing authority, and aircraft category. Squawk ident to unlock your pathway access level.
                                     </p>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px 12px', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)', borderRadius: '10px', marginBottom: '16px' }}>
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '1px' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6 }}>
+                                            All uploaded documents are stored in <strong style={{ color: 'rgba(255,255,255,0.8)' }}>end-to-end encrypted storage</strong>, provisioned exclusively through your <strong style={{ color: '#ef4444' }}>Recognition+</strong> subscription. Your files are never shared without your explicit consent.
+                                        </p>
+                                    </div>
                                     {occupation && (() => {
                                         const msg: Record<string, { headline: string; sub: string }> = {
                                             'Student Pilot':              { headline: 'Able to submit interest to cadet & flight school pathways.', sub: 'Aimed towards active students and enrolled trainees building their first 50 hours.' },
