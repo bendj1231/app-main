@@ -1129,6 +1129,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         Complete your free profile first — then upgrade to <strong style={{ color: '#0f172a' }}>Recognition+</strong> to upload your licence documents for verification. Operators and airlines will see a <strong style={{ color: '#16a34a' }}>✓ Verified</strong> badge on your profile, confirming your credentials are current and authentic.
                                     </p>
                                 </div>
+                                {/* Encrypted storage notice */}
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px 12px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px' }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '1px' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    <p style={{ fontSize: '10px', color: '#15803d', margin: 0, lineHeight: 1.6 }}>
+                                        All uploaded documents are stored in <strong>end-to-end encrypted storage</strong>, provisioned exclusively through your <strong>Recognition+</strong> subscription. Your files are never accessible to third parties without your explicit consent.
+                                    </p>
+                                </div>
                                 {/* Confirm button */}
                                 {(() => {
                                     const ok = !!occupation && !!issuingAuthority;
