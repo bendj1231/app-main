@@ -344,7 +344,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             >
                 {passkeyLoading
                     ? <><span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} /> Setting up...</>
-                    : '⿕  Set up Touch ID / Face ID'
+                    : '🔑  Authorize with Touch ID / Passkey'
                 }
             </button>
 
