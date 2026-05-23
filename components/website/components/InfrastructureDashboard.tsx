@@ -8,7 +8,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/shared/lib/supabase';
 import {
   Database, Cloud, Zap, Users, Shield, Activity, Image,
-  CreditCard, Mail, RefreshCw, AlertTriangle, CheckCircle,
+  CreditCard, Mail, RefreshCw, AlertTriangle, CheckCircle, XCircle,
   Server, Globe, Lock, FileText, TrendingUp, BarChart3, Clock
 } from 'lucide-react';
 
@@ -31,6 +31,17 @@ interface InfraStats {
   // Veremark
   veremarkWebhooksTotal: number;
   veremarkWebhooksWeek: number;
+  veremarkWebhooksProcessed: number;
+  veremarkWebhooksErrored: number;
+  // verification_checks (outbound requests)
+  vcTotal: number;
+  vcPending: number;
+  vcInProgress: number;
+  vcVerified: number;
+  vcFailed: number;
+  vcFlagged: number;
+  vcExpired: number;
+  vcManuallyOverridden: number;
   // Stripe
   stripeCheckoutsTotal: number;
   // Cloudinary (profile images)
@@ -145,10 +156,12 @@ export const InfrastructureDashboard: React.FC = () => {
       const [
         pilotsRes, pilotsWeekRes, subRes, credRes, enrollRes, flightRes, refRes,
         secRes, actRes, aiTodayRes, aiTotalRes, aiUsersRes,
-        veremarkRes, veremarkWeekRes,
+        veremarkRes, veremarkWeekRes, veremarkDetailRes,
         notifTodayRes, notifTotalRes,
         walletRes, vcRevRes,
         rateLimitRes, imagesRes,
+        vcTotalRes, vcPendingRes, vcInProgressRes, vcVerifiedRes,
+        vcFailedRes, vcFlaggedRes, vcExpiredRes, vcOverriddenRes,
         auth0TodayRes, auth0TotalRes,
         logbookTotalRes, logbookActiveRes, logbookProvidersRes,
         helioRes, paymentSplitsRes,
@@ -169,12 +182,22 @@ export const InfrastructureDashboard: React.FC = () => {
         supabase.from('ai_usage_log').select('user_id').eq('date', today),
         supabase.from('veremark_webhook_logs').select('*', { count: 'exact', head: true }),
         supabase.from('veremark_webhook_logs').select('*', { count: 'exact', head: true }).gte('created_at', weekAgo),
+        supabase.from('verification_checks').select('id, status, manually_overridden'),
         supabase.from('notifications').select('*', { count: 'exact', head: true }).gte('created_at', today),
         supabase.from('notifications').select('*', { count: 'exact', head: true }),
         supabase.from('pilot_verification_wallet').select('*', { count: 'exact', head: true }),
         supabase.from('vc_revocation_registry').select('*', { count: 'exact', head: true }),
         supabase.from('rate_limit_buckets').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).not('profile_image_url', 'is', null),
+        // verification_checks status breakdown
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }),
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'in_progress'),
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'verified'),
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'failed'),
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'flagged'),
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('status', 'expired'),
+        supabase.from('verification_checks').select('*', { count: 'exact', head: true }).eq('manually_overridden', true),
         // Auth0 — via activity log
         supabase.from('user_activity_log').select('*', { count: 'exact', head: true }).gte('created_at', today).or('activity_type.ilike.%login%,activity_type.ilike.%auth%'),
         supabase.from('user_activity_log').select('*', { count: 'exact', head: true }).or('activity_type.ilike.%login%,activity_type.ilike.%auth%'),
@@ -213,6 +236,16 @@ export const InfrastructureDashboard: React.FC = () => {
         aiUniqueUsersToday: uniqueAIUsers,
         veremarkWebhooksTotal: veremarkRes.count ?? 0,
         veremarkWebhooksWeek: veremarkWeekRes.count ?? 0,
+        veremarkWebhooksProcessed: (veremarkDetailRes.data || []).filter((r: any) => r.status === 'processed').length,
+        veremarkWebhooksErrored: (veremarkDetailRes.data || []).filter((r: any) => r.status === 'error').length,
+        vcTotal: vcTotalRes.count ?? 0,
+        vcPending: vcPendingRes.count ?? 0,
+        vcInProgress: vcInProgressRes.count ?? 0,
+        vcVerified: vcVerifiedRes.count ?? 0,
+        vcFailed: vcFailedRes.count ?? 0,
+        vcFlagged: vcFlaggedRes.count ?? 0,
+        vcExpired: vcExpiredRes.count ?? 0,
+        vcManuallyOverridden: vcOverriddenRes.count ?? 0,
         stripeCheckoutsTotal: enrollRes.count ?? 0,
         profilesWithImages: imagesRes.count ?? 0,
         notificationsToday: notifTodayRes.count ?? 0,
@@ -370,15 +403,72 @@ export const InfrastructureDashboard: React.FC = () => {
       </ServiceBlock>
 
       {/* ── VEREMARK ───────────────────────────────────────────── */}
-      <ServiceBlock title="Veremark — Credential Verification" status={stats.veremarkWebhooksTotal > 0 ? 'live' : 'partial'} icon={CheckCircle} color="#10b981">
-        <div className="grid grid-cols-2 gap-2">
-          <StatCard icon={CheckCircle} label="Webhooks Received (Total)" value={stats.veremarkWebhooksTotal} color="#10b981" />
-          <StatCard icon={Clock} label="Webhooks This Week" value={stats.veremarkWebhooksWeek} color="#34d399" />
+      <ServiceBlock
+        title="Veremark — Credential Verification Pipeline"
+        status={stats.vcTotal > 0 ? 'live' : stats.veremarkWebhooksTotal > 0 ? 'live' : 'partial'}
+        icon={CheckCircle}
+        color="#10b981"
+      >
+        {/* Outbound: checks we sent to Veremark */}
+        <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-2">Outbound — Verification Requests Sent</p>
+        <div className="grid grid-cols-4 gap-2 mb-3">
+          <StatCard icon={FileText} label="Total Submitted" value={stats.vcTotal} color="#10b981" />
+          <StatCard icon={Clock} label="Pending" value={stats.vcPending} color="#f59e0b" alert={stats.vcPending > 5} />
+          <StatCard icon={Activity} label="In Progress" value={stats.vcInProgress} color="#3b82f6" />
+          <StatCard icon={CheckCircle} label="Verified ✓" value={stats.vcVerified} color="#22c55e" />
         </div>
-        {stats.veremarkWebhooksTotal === 0 && (
-          <p className="text-[9px] text-white/30 mt-2">
-            No Veremark webhooks received yet — integration pending CAAP PEL API confirmation
-          </p>
+        <div className="grid grid-cols-4 gap-2 mb-3">
+          <StatCard icon={XCircle} label="Failed" value={stats.vcFailed} color="#ef4444" alert={stats.vcFailed > 0} />
+          <StatCard icon={AlertTriangle} label="Flagged ⚠" value={stats.vcFlagged} color="#f97316" alert={stats.vcFlagged > 0} />
+          <StatCard icon={Clock} label="Expired" value={stats.vcExpired} color="#6b7280" alert={stats.vcExpired > 0} />
+          <StatCard icon={Shield} label="Manually Overridden" value={stats.vcManuallyOverridden} color="#8b5cf6" />
+        </div>
+
+        {/* Visual status bar */}
+        {stats.vcTotal > 0 && (
+          <div className="mb-3">
+            <div className="flex w-full h-2 rounded-full overflow-hidden gap-0.5">
+              {stats.vcVerified > 0 && <div style={{ flex: stats.vcVerified, background: '#22c55e' }} title={`Verified: ${stats.vcVerified}`} />}
+              {stats.vcInProgress > 0 && <div style={{ flex: stats.vcInProgress, background: '#3b82f6' }} title={`In Progress: ${stats.vcInProgress}`} />}
+              {stats.vcPending > 0 && <div style={{ flex: stats.vcPending, background: '#f59e0b' }} title={`Pending: ${stats.vcPending}`} />}
+              {stats.vcFlagged > 0 && <div style={{ flex: stats.vcFlagged, background: '#f97316' }} title={`Flagged: ${stats.vcFlagged}`} />}
+              {stats.vcFailed > 0 && <div style={{ flex: stats.vcFailed, background: '#ef4444' }} title={`Failed: ${stats.vcFailed}`} />}
+              {stats.vcExpired > 0 && <div style={{ flex: stats.vcExpired, background: '#6b7280' }} title={`Expired: ${stats.vcExpired}`} />}
+            </div>
+            <div className="flex gap-3 mt-1">
+              {[
+                { label: 'Verified', color: '#22c55e', v: stats.vcVerified },
+                { label: 'In Progress', color: '#3b82f6', v: stats.vcInProgress },
+                { label: 'Pending', color: '#f59e0b', v: stats.vcPending },
+                { label: 'Flagged', color: '#f97316', v: stats.vcFlagged },
+                { label: 'Failed', color: '#ef4444', v: stats.vcFailed },
+                { label: 'Expired', color: '#6b7280', v: stats.vcExpired },
+              ].filter(x => x.v > 0).map(({ label, color, v }) => (
+                <span key={label} className="flex items-center gap-1 text-[8px] text-white/40">
+                  <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: color }} />
+                  {label} ({v})
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Inbound: webhooks Veremark sent us */}
+        <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-2 mt-1">Inbound — Webhooks Received from Veremark</p>
+        <div className="grid grid-cols-4 gap-2">
+          <StatCard icon={Globe} label="Total Received" value={stats.veremarkWebhooksTotal} color="#10b981" />
+          <StatCard icon={Clock} label="This Week" value={stats.veremarkWebhooksWeek} color="#34d399" />
+          <StatCard icon={CheckCircle} label="Processed OK" value={stats.veremarkWebhooksProcessed} color="#22c55e" />
+          <StatCard icon={AlertTriangle} label="Errors" value={stats.veremarkWebhooksErrored} color="#ef4444" alert={stats.veremarkWebhooksErrored > 0} />
+        </div>
+
+        {stats.vcTotal === 0 && (
+          <div className="mt-3 flex items-start gap-2 p-2 rounded-lg text-[9px] text-white/40"
+            style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.12)' }}>
+            <AlertTriangle size={10} className="flex-shrink-0 mt-0.5 text-emerald-500" />
+            No verification checks submitted yet. Integration pending CAAP PEL API confirmation.
+            Webhook endpoint: /veremark-webhook &nbsp;·&nbsp; Table: verification_checks
+          </div>
         )}
       </ServiceBlock>
 
