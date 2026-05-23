@@ -299,7 +299,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
     return (
         <Shell>
             <div style={{ textAlign: 'center', marginBottom: 28 }}>
-                <div style={{ fontSize: 44, marginBottom: 12 }}>🔑</div>
+                <div style={{ fontSize: 44, marginBottom: 12 }}>�</div>
                 <h2 style={{ color: '#ffffff', fontSize: 20, fontWeight: 700, margin: '0 0 10px' }}>
                     Secure your Flight Deck
                 </h2>
@@ -344,7 +344,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             >
                 {passkeyLoading
                     ? <><span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} /> Setting up...</>
-                    : '🔑  Authorize with Touch ID / Passkey'
+                    : '�  Authorize with Touch ID / Passkey'
                 }
             </button>
 
