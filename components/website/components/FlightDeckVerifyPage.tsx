@@ -4,6 +4,11 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { supabase } from '../../../src/lib/supabase';
 
+// Read pending login state set by FlightDeckLoginPage before Auth0
+function getPendingEmail(): string { return sessionStorage.getItem('fd_pending_email') || ''; }
+function getPendingConnection(): string { return sessionStorage.getItem('fd_pending_connection') || 'email'; }
+function clearPending() { sessionStorage.removeItem('fd_pending_email'); sessionStorage.removeItem('fd_pending_connection'); }
+
 const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
 const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
 
@@ -15,7 +20,7 @@ type Stage = 'passkey' | 'otp-sending' | 'otp-entry' | 'success' | 'wallet-key';
 
 export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNavigate }) => {
     const navigate = useNavigate();
-    const { user, isAuthenticated } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, user } = useAuth0();
     const [stage, setStage] = useState<Stage>('passkey');
     const [passkeyLoading, setPasskeyLoading] = useState(false);
     const [otp, setOtp] = useState('');
@@ -26,20 +31,48 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
     const [walletKeyError, setWalletKeyError] = useState('');
     const [walletKeyVerifying, setWalletKeyVerifying] = useState(false);
 
+    // If already Auth0-authenticated (e.g. came from Google login), go straight to platform
     useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/flight-deck-login');
+        if (isAuthenticated) {
+            navigate('/platform');
         }
     }, [isAuthenticated, navigate]);
+
+    // If no pending email and not authenticated, redirect back to login
+    useEffect(() => {
+        if (!isAuthenticated && !getPendingEmail()) {
+            navigate('/flight-deck-login');
+        }
+    }, []);
+
+    // Derive display info from sessionStorage (pre-Auth0) or Auth0 user (post-Auth0)
+    const pendingEmail = getPendingEmail() || user?.email || '';
+    const displayName = user?.name || pendingEmail.split('@')[0] || 'Pilot';
+
+    // After verification passes, trigger Auth0 login
+    const proceedToAuth0 = async () => {
+        const email = getPendingEmail();
+        const connection = getPendingConnection();
+        clearPending();
+        localStorage.setItem('pr_passkey_registered', 'true');
+        await loginWithRedirect({
+            authorizationParams: {
+                login_hint: email,
+                redirect_uri: `${window.location.origin}/auth/callback`,
+                ...(connection === 'google-oauth2' ? { connection: 'google-oauth2' } : {}),
+            },
+            appState: { returnTo: '/platform' },
+        });
+    };
 
 
     const handlePasskeySetup = async () => {
         setPasskeyLoading(true);
         setStatusMsg('');
         try {
-            const email = user?.email || '';
-            const name = user?.name || user?.email?.split('@')[0] || 'Pilot';
-            const userId = user?.sub || '';
+            const email = pendingEmail;
+            const name = displayName;
+            const userId = pendingEmail; // use email as user id before Auth0 sub is known
 
             const challenge = new Uint8Array(32);
             crypto.getRandomValues(challenge);
@@ -83,7 +116,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
                 }, { onConflict: 'credential_id' });
 
                 setStage('success');
-                setTimeout(() => navigate('/platform'), 1200);
+                setTimeout(() => proceedToAuth0(), 1200);
             }
         } catch (err: any) {
             setPasskeyLoading(false);
@@ -99,7 +132,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
 
     const sendOtp = async () => {
         setStage('otp-sending');
-        const email = user?.email;
+        const email = pendingEmail;
         if (!email) {
             setOtpError('No email found. Please go back and sign in again.');
             setStage('otp-entry');
@@ -121,7 +154,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
     const handleOtpVerify = async () => {
         setOtpVerifying(true);
         setOtpError('');
-        const email = user?.email || '';
+        const email = pendingEmail;
         try {
             const { error } = await supabase.auth.verifyOtp({
                 email,
@@ -130,7 +163,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             });
             if (error) throw error;
             setStage('success');
-            setTimeout(() => navigate('/platform'), 1200);
+            setTimeout(() => proceedToAuth0(), 1200);
         } catch {
             setOtpError('Invalid or expired code. Please try again.');
         } finally {
@@ -138,7 +171,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
         }
     };
 
-    const handleSkip = () => navigate('/platform');
+    const handleSkip = () => proceedToAuth0();
 
     // Shared shell
     const Shell = ({ children }: { children: React.ReactNode }) => (
@@ -304,12 +337,12 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             }
             setWalletKeyVerifying(true);
             try {
-                // 1. Fetch profile id + stored hash
-                const auth0Sub = user?.sub || '';
+                // 1. Fetch profile id + stored hash — use email since we're pre-Auth0
+                const emailToLookup = pendingEmail || user?.email || '';
                 const { data: profile } = await supabase
                     .from('profiles')
                     .select('id, vault_recovery_key_hash')
-                    .eq('auth0_id', auth0Sub)
+                    .eq('email', emailToLookup)
                     .maybeSingle();
 
                 if (!profile) {
@@ -331,8 +364,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
                 // 3. If no hash stored yet — first use, store it and allow through
                 if (!profile.vault_recovery_key_hash) {
                     await supabase.from('profiles').update({ vault_recovery_key_hash: enteredHash }).eq('id', profile.id);
-                    localStorage.setItem('pr_passkey_registered', 'true');
-                    navigate('/platform');
+                    await proceedToAuth0();
                     return;
                 }
 
@@ -343,8 +375,7 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
                     return;
                 }
 
-                localStorage.setItem('pr_passkey_registered', 'true');
-                navigate('/platform');
+                await proceedToAuth0();
             } catch {
                 setWalletKeyError('Verification failed. Try again.');
                 setWalletKeyVerifying(false);
@@ -441,8 +472,8 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span style={{ fontSize: 24 }}>👤</span>
                     <div>
-                        <p style={{ margin: 0, color: '#fff', fontSize: 14, fontWeight: 600 }}>{user?.name || 'Pilot'}</p>
-                        <p style={{ margin: 0, color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>{user?.email}</p>
+                        <p style={{ margin: 0, color: '#fff', fontSize: 14, fontWeight: 600 }}>{displayName}</p>
+                        <p style={{ margin: 0, color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>{pendingEmail}</p>
                     </div>
                 </div>
             </div>

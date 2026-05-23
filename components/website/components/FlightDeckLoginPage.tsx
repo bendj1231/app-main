@@ -18,7 +18,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/flight-deck-verify');
+            navigate('/platform');
         }
     }, [isAuthenticated, navigate]);
 
@@ -27,29 +27,20 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         if (!email.trim()) return;
         setEmailSubmitting(true);
         setError('');
-        try {
-            const isGmail = email.trim().toLowerCase().endsWith('@gmail.com');
-            await loginWithRedirect({
-                authorizationParams: {
-                    login_hint: email.trim(),
-                    redirect_uri: `${window.location.origin}/auth/callback`,
-                    ...(isGmail ? { connection: 'google-oauth2' } : {}),
-                },
-                appState: { returnTo: '/platform' },
-            });
-        } catch {
-            setError('Unable to continue. Please try again.');
-            setEmailSubmitting(false);
-        }
+        // Store email so verify page can use it before Auth0
+        sessionStorage.setItem('fd_pending_email', email.trim());
+        sessionStorage.setItem('fd_pending_connection', email.trim().toLowerCase().endsWith('@gmail.com') ? 'google-oauth2' : 'email');
+        navigate('/flight-deck-verify');
     };
 
     const handleGoogleLogin = () => {
+        // Google goes straight to Auth0 (no pre-verify needed, passkey handled post-auth)
         loginWithRedirect({
             authorizationParams: {
                 connection: 'google-oauth2',
                 redirect_uri: `${window.location.origin}/auth/callback`,
             },
-            appState: { returnTo: '/platform' },
+            appState: { returnTo: '/flight-deck-verify' },
         });
     };
 

@@ -81,7 +81,7 @@ export const OAuthCallback = () => {
           navigate('/become-member?setup=1');
         } else {
           setProfileCreated(true);
-          navigate('/flight-deck-verify');
+          navigate('/platform');
         }
       } catch (err) {
         console.error('Profile creation error:', err);
