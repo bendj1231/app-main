@@ -1885,6 +1885,26 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
   const [wizardStep, setWizardStep]   = React.useState(1);
   const [selectedATO, setSelectedATO] = React.useState('');
   const [consentSigned, setConsentSigned] = React.useState(false);
+  const [editValues, setEditValues] = React.useState<Record<string, string>>({});
+  const [saving, setSaving] = React.useState(false);
+  const [saved, setSaved] = React.useState(false);
+  React.useEffect(() => {
+    if (!profile?.id) return;
+    const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+    const safe = (v: any) => (v && !isCiphertext(v)) ? v : '';
+    const init: Record<string, string> = {
+      display_name: safe(profile?.display_name), license_number: safe(profile?.license_number || profile?.license_id),
+      license_type: safe(profile?.current_occupation), issuing_authority: safe(profile?.license_issuing_authority || profile?.country_of_license),
+      nationality: safe(profile?.nationality), medical_class: safe(profile?.medical_class), medical_expiry: safe(profile?.medical_expiry),
+      medical_number: safe(profile?.medical_number), total_flight_hours: safe(profile?.total_flight_hours), pic_hours: safe(profile?.pic_hours),
+      instrument_hours: safe(profile?.instrument_hours), multi_engine_hours: safe(profile?.multi_engine_hours), night_hours: safe(profile?.night_hours),
+      license_expiry: safe(profile?.license_expiry), ntc_license: safe(profile?.ntc_license), ntc_expiry: safe(profile?.ntc_expiry),
+      elp_level: safe(profile?.language_proficiency || profile?.elp_level), elp_certificate_no: safe(profile?.elp_certificate_no), elp_expiry: safe(profile?.elp_expiry),
+      nbi_clearance_no: safe(profile?.nbi_clearance_no), nbi_clearance_date: safe(profile?.nbi_clearance_date), nbi_clearance_expiry: safe(profile?.nbi_clearance_expiry),
+      prc_license_no: safe(profile?.prc_license_no), background_check_status: safe(profile?.background_check_status),
+    };
+    setEditValues(init);
+  }, [profile?.id]);
 
   const checkLabels: Record<string, string> = {
     professional_qualification: 'Pilot License (CPL/ATPL)',
@@ -2491,14 +2511,6 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
         ],
       },
     ];
-
-    const [editValues, setEditValues] = React.useState<Record<string, string>>(() => {
-      const init: Record<string, string> = {};
-      sections.forEach(s => s.fields.forEach(f => { init[f.key] = f.value || ''; }));
-      return init;
-    });
-    const [saving, setSaving] = React.useState(false);
-    const [saved, setSaved] = React.useState(false);
 
     const handleSave = async () => {
       setSaving(true);
