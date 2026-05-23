@@ -872,7 +872,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>Step 1 of 6</p>
                                 <p style={{ fontSize: '34px', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: 1.2, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
                                     Your first step to getting{' '}
-                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>recognition</span>
+                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>free recognition</span>
                                 </p>
                                 <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: 0 }}>
                                     Enter your name and callsign to begin.
