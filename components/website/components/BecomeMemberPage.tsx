@@ -1123,11 +1123,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         onChange={e => setElpLevel(e.target.value)}
                                         style={{ width: '100%', padding: '9px 10px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '13px', color: elpLevel ? '#0f172a' : '#94a3b8', background: '#fff', appearance: 'auto' }}
                                     >
-                                        <option value="">Select ELP level</option>
-                                        <option value="ELP Level 3">Level 3 — Pre-operational</option>
-                                        <option value="ELP Level 4">Level 4 — Operational</option>
-                                        <option value="ELP Level 5">Level 5 — Extended</option>
-                                        <option value="ELP Level 6">Level 6 — Expert</option>
+                                        <option value="">Select ICAO ELP level...</option>
+                                        <option value="ELP Level 3">Level 3 — Pre-operational (minimum passing; limited phraseology, restricted ops)</option>
+                                        <option value="ELP Level 4">Level 4 — Operational (ICAO standard; required for international flight ops)</option>
+                                        <option value="ELP Level 5">Level 5 — Extended (above standard; handles complex ATC exchanges, non-routine)</option>
+                                        <option value="ELP Level 6">Level 6 — Expert (native/near-native; no retest required, lifetime validity)</option>
                                     </select>
                                 </div>
                                 {/* ELP upload slot — Radio/NTC licence */}
