@@ -61,6 +61,7 @@
     "@types/node": "^22.19.19",
     "@typescript-eslint/eslint-plugin": "^8.55.0",
     "@typescript-eslint/parser": "^8.55.0",
+    "@vercel/node": "^5.8.4",
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/ui": "^4.0.18",
     "autoprefixer": "^10.4.17",
