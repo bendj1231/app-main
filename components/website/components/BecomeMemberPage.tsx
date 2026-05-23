@@ -222,6 +222,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [aircraftCategory, setAircraftCategory] = useState('');
     const [typeRatings, setTypeRatings] = useState<string[]>([]);
     const [typeRatingInput, setTypeRatingInput] = useState('');
+    const [elpLevel, setElpLevel] = useState('');
     const [showMoreClasses, setShowMoreClasses] = useState(false);
     const [showMoreCategories, setShowMoreCategories] = useState(false);
     const [showAircraftSection, setShowAircraftSection] = useState(false);
@@ -1068,13 +1069,28 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </>
                                     )}
                                 </div>
+                                {/* ELP Level */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>English Language Proficiency <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none' }}>(optional)</span></div>
+                                    <select
+                                        value={elpLevel}
+                                        onChange={e => setElpLevel(e.target.value)}
+                                        style={{ width: '100%', padding: '9px 10px', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '13px', color: elpLevel ? '#0f172a' : '#94a3b8', background: '#fff', appearance: 'auto' }}
+                                    >
+                                        <option value="">Select ELP level</option>
+                                        <option value="ELP Level 3">Level 3 — Pre-operational</option>
+                                        <option value="ELP Level 4">Level 4 — Operational</option>
+                                        <option value="ELP Level 5">Level 5 — Extended</option>
+                                        <option value="ELP Level 6">Level 6 — Expert</option>
+                                    </select>
+                                </div>
                                 {/* Confirm button */}
                                 {(() => {
                                     const ok = !!occupation && !!issuingAuthority;
                                     return (
                                         <button
                                             type="button"
-                                            onClick={() => { if (ok) { setActiveInstrument(i => Math.max(i, 3)); const cleanRatings = ratings.filter(r => r !== '__none__'); savePartialProfile({ current_occupation: occupation, license_issuing_authority: issuingAuthority || null, country_of_license: issuingAuthority || null, license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null), aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null, ratings: cleanRatings.length > 0 ? cleanRatings : null }); } }}
+                                            onClick={() => { if (ok) { setActiveInstrument(i => Math.max(i, 3)); const cleanRatings = ratings.filter(r => r !== '__none__'); savePartialProfile({ current_occupation: occupation, license_issuing_authority: issuingAuthority || null, country_of_license: issuingAuthority || null, license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null), aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null, ratings: cleanRatings.length > 0 ? cleanRatings : null, elp_level: elpLevel || null }); } }}
                                             disabled={!ok}
                                             style={{
                                                 width: '100%', padding: '11px 16px',
@@ -1315,6 +1331,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     issuingAuthority: issuingAuthority || null,
                                                     licenseTypes: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
                                                     ratings: ratings.filter(r => r !== '__none__').length > 0 ? ratings.filter(r => r !== '__none__') : null,
+                                                    elpLevel: elpLevel || null,
                                                     storageBackend: walletStorageChoice || 'supabase',
                                                     requestToken,
                                                 }),
