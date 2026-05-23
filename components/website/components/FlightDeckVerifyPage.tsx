@@ -11,7 +11,7 @@ interface FlightDeckVerifyPageProps {
     onNavigate: (page: string) => void;
 }
 
-type Stage = 'passkey' | 'otp-sending' | 'otp-entry' | 'success';
+type Stage = 'passkey' | 'otp-sending' | 'otp-entry' | 'success' | 'wallet-key';
 
 export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNavigate }) => {
     const navigate = useNavigate();
@@ -22,6 +22,9 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
     const [otpError, setOtpError] = useState('');
     const [otpVerifying, setOtpVerifying] = useState(false);
     const [statusMsg, setStatusMsg] = useState('');
+    const [walletKey, setWalletKey] = useState('');
+    const [walletKeyError, setWalletKeyError] = useState('');
+    const [walletKeyVerifying, setWalletKeyVerifying] = useState(false);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -289,6 +292,105 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
         );
     }
 
+    if (stage === 'wallet-key') {
+        const WALLET_KEY_RE = /^[0-9A-F]{6}(-[0-9A-F]{6}){7}$/i;
+
+        const handleWalletKeySubmit = async () => {
+            setWalletKeyError('');
+            const trimmed = walletKey.trim().toUpperCase();
+            if (!WALLET_KEY_RE.test(trimmed)) {
+                setWalletKeyError('Invalid format. Key should look like: 9203C5-BC7511-0F3A71-...');
+                return;
+            }
+            setWalletKeyVerifying(true);
+            try {
+                // Check the key against Supabase profiles
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('wallet_recovery_key', trimmed)
+                    .maybeSingle();
+
+                if (error || !data) {
+                    setWalletKeyError('Key not recognised. Check and try again.');
+                    setWalletKeyVerifying(false);
+                    return;
+                }
+                localStorage.setItem('pr_passkey_registered', 'true');
+                navigate('/platform');
+            } catch {
+                setWalletKeyError('Verification failed. Try again.');
+                setWalletKeyVerifying(false);
+            }
+        };
+
+        return (
+            <Shell>
+                <div style={{ marginBottom: 24 }}>
+                    <button
+                        onClick={() => { setStage('passkey'); setWalletKey(''); setWalletKeyError(''); }}
+                        style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0, marginBottom: 16 }}
+                    >
+                        ← Back
+                    </button>
+                    <h2 style={{ color: '#ffffff', fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Enter wallet recovery key</h2>
+                    <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, margin: 0, lineHeight: 1.5 }}>
+                        Paste the key you received when your wallet was created.<br />
+                        Format: <span style={{ fontFamily: 'monospace', color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>XXXXXX-XXXXXX-XXXXXX-...</span>
+                    </p>
+                </div>
+
+                {walletKeyError && (
+                    <div style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.3)', borderRadius: 8, padding: '10px 14px', marginBottom: 14, color: '#fca5a5', fontSize: 13 }}>
+                        {walletKeyError}
+                    </div>
+                )}
+
+                <input
+                    type="text"
+                    value={walletKey}
+                    onChange={e => { setWalletKey(e.target.value); setWalletKeyError(''); }}
+                    onKeyDown={e => { if (e.key === 'Enter') handleWalletKeySubmit(); }}
+                    placeholder="9203C5-BC7511-0F3A71-76969D-..."
+                    autoFocus
+                    style={{
+                        width: '100%',
+                        padding: '13px 14px',
+                        border: `1px solid ${walletKeyError ? 'rgba(220,38,38,0.5)' : 'rgba(255,255,255,0.2)'}`,
+                        borderRadius: 8,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        letterSpacing: '0.05em',
+                        color: '#ffffff',
+                        background: 'rgba(255,255,255,0.08)',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                        fontFamily: 'monospace',
+                        marginBottom: 14,
+                    }}
+                />
+
+                <button
+                    onClick={handleWalletKeySubmit}
+                    disabled={!walletKey.trim() || walletKeyVerifying}
+                    style={{
+                        width: '100%',
+                        padding: '12px',
+                        background: !walletKey.trim() || walletKeyVerifying ? 'rgba(220,38,38,0.4)' : '#dc2626',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 8,
+                        fontSize: 15,
+                        fontWeight: 700,
+                        cursor: !walletKey.trim() || walletKeyVerifying ? 'not-allowed' : 'pointer',
+                    }}
+                >
+                    {walletKeyVerifying ? 'Verifying...' : 'Unlock with key →'}
+                </button>
+            </Shell>
+        );
+    }
+
     // Default: passkey stage
     return (
         <Shell>
@@ -356,9 +458,26 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
                     fontWeight: 500,
                     color: 'rgba(255,255,255,0.7)',
                     cursor: 'pointer',
+                    marginBottom: 8,
                 }}
             >
                 Use email code instead →
+            </button>
+
+            <button
+                onClick={() => setStage('wallet-key')}
+                style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: 'none',
+                    border: 'none',
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,0.35)',
+                    cursor: 'pointer',
+                }}
+            >
+                Enter wallet recovery key →
             </button>
         </Shell>
     );
