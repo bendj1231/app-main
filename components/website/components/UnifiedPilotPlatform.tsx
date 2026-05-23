@@ -4423,12 +4423,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         <div className="flex items-center gap-1.5 flex-shrink-0">
           {currentUser ? (
             <>
-              {/* Search */}
-              <div className="hidden md:flex items-center gap-2 bg-white/10 rounded-lg px-3 py-1.5 w-40">
-                <Search size={12} className="text-white/50" />
-                <input placeholder="Search…" className="bg-transparent text-xs text-white outline-none placeholder:text-white/40 w-full" />
-              </div>
-
               {/* Settings */}
               <button
                 onClick={() => setTab('settings')}
