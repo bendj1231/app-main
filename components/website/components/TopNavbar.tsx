@@ -821,7 +821,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Access Portal button - Only show when not logged in */}
                                 {!currentUser && (
                                     <button
-                                        onClick={onLoginModalOpen || (() => {})}
+                                        onClick={() => onNavigate('flight-deck-login')}
                                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5"
                                     >
                                         Login
@@ -1270,7 +1270,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     </button>
 
                                     <button
-                                        onClick={currentUser ? () => onNavigate('portal') : onLoginModalOpen || (() => {})}
+                                        onClick={currentUser ? () => onNavigate('portal') : () => onNavigate('flight-deck-login')}
                                         className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg text-sm font-bold uppercase tracking-widest shadow-xl`}
                                     >
                                         {currentUser ? 'Access Portal' : 'Login'}
