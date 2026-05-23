@@ -928,7 +928,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
                                         <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed' }}>↑ Upload Pilot Licence</button>
                                         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
-                                            <span style={{ fontSize: '16px' }}>🔒</span>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                         </div>
                                     </div>
                                     {/* Issuing Authority */}
@@ -948,7 +948,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <div style={{ position: 'relative', display: 'inline-block', width: '100%', marginTop: '6px' }}>
                                             <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed' }}>↑ Upload Medical Certificate</button>
                                             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
-                                                <span style={{ fontSize: '16px' }}>🔒</span>
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                             </div>
                                         </div>
                                     </div>
@@ -1108,7 +1108,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
                                     <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed' }}>↑ Upload Radio / NTC Licence</button>
                                     <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
-                                        <span style={{ fontSize: '16px' }}>🔒</span>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                     </div>
                                 </div>
                                 {/* Single eligibility notice */}
