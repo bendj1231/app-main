@@ -18,7 +18,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/platform');
+            navigate('/flight-deck-verify');
         }
     }, [isAuthenticated, navigate]);
 
@@ -28,10 +28,12 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         setEmailSubmitting(true);
         setError('');
         try {
+            const isGmail = email.trim().toLowerCase().endsWith('@gmail.com');
             await loginWithRedirect({
                 authorizationParams: {
                     login_hint: email.trim(),
                     redirect_uri: `${window.location.origin}/auth/callback`,
+                    ...(isGmail ? { connection: 'google-oauth2' } : {}),
                 },
                 appState: { returnTo: '/platform' },
             });
