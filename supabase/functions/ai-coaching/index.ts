@@ -4,6 +4,12 @@ import { getCorsHeaders } from '../_shared/cors.ts';
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const MODEL = 'llama-3.3-70b-versatile';
 
+// Hard limits — adjust as needed
+const LIMITS = {
+  free: { perUser: 5, perDay: 500 },    // free tier pilots: 5 requests/day
+  premium: { perUser: 20, perDay: 500 }, // Recognition+ pilots: 20 requests/day
+};
+
 Deno.serve(async (req: Request) => {
   const corsHeaders = getCorsHeaders(req);
 
@@ -37,6 +43,53 @@ Deno.serve(async (req: Request) => {
       status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
+
+  // Rate limiting — count requests per user per day
+  const serviceClient = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+  );
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+  const { count: userCount } = await serviceClient
+    .from('ai_usage_log')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .eq('date', today);
+
+  const { count: globalCount } = await serviceClient
+    .from('ai_usage_log')
+    .select('*', { count: 'exact', head: true })
+    .eq('date', today);
+
+  // Check if user is premium
+  const { data: sub } = await serviceClient
+    .from('subscriptions')
+    .select('status')
+    .eq('user_id', user.id)
+    .eq('status', 'active')
+    .maybeSingle();
+
+  const isPremium = !!sub;
+  const limit = isPremium ? LIMITS.premium : LIMITS.free;
+
+  if ((userCount ?? 0) >= limit.perUser) {
+    return new Response(JSON.stringify({
+      error: 'Daily limit reached',
+      limit: limit.perUser,
+      reset: 'tomorrow',
+      upgrade: !isPremium ? 'Upgrade to Recognition+ for 20 requests/day' : undefined
+    }), { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+  }
+
+  if ((globalCount ?? 0) >= LIMITS.free.perDay) {
+    return new Response(JSON.stringify({ error: 'Service limit reached, try again tomorrow' }), {
+      status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+
+  // Log this request
+  await serviceClient.from('ai_usage_log').insert({ user_id: user.id, date: today });
 
   try {
     const body = await req.json();
