@@ -4198,11 +4198,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       const result = await uploadRes.json();
       console.log('[avatar] edge fn response:', result);
       if (!result.success) throw new Error(result.error || 'Upload failed');
-      const { error: updateError } = await supabase.from('profiles').update({
-        profile_image_url: result.url,
-        profile_image_public_id: result.publicId,
-      }).eq('id', profileData.id);
-      console.log('[avatar] supabase update error:', updateError, '| new url:', result.url, '| new publicId:', result.publicId);
+      console.log('[avatar] upload success — url:', result.url, '| publicId:', result.publicId);
+      // Supabase profile update handled server-side in edge fn (service role, bypasses RLS)
       setProfileData((prev: any) => ({ ...prev, profile_image_url: result.url, profile_image_public_id: result.publicId }));
       console.log('[avatar] profileData updated in state ✓');
     } catch (err: any) {
