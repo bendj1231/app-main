@@ -465,66 +465,70 @@ const AccessPlatformCard: React.FC<{
     isLoggedIn: boolean;
 }> = ({ onLogin, onNavigate, isLoggedIn }) => {
     return (
-        <div className="relative w-full h-full flex overflow-hidden rounded-none border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]">
-            {/* Left: Blue access panel */}
-            <div className="relative flex-1 h-full bg-[#0a1628] flex flex-col justify-between px-4 py-4 md:px-5 md:py-5">
-                {/* Top accent line */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
+        <div className="relative w-full h-full overflow-hidden rounded-none border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]">
+            {/* Full-width background: pilots photo */}
+            <img
+                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png"
+                alt="Pilots"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: '70% center' }}
+            />
+            {/* Dark overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/95 via-[#0a1628]/60 to-[#0a1628]/10 pointer-events-none" />
+            {/* Top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
 
-                {/* Header */}
-                <div className="flex-1 flex flex-col justify-center gap-2 md:gap-3">
-                    <div className="flex items-center gap-1.5">
-                        <span className="text-[#00b4d8] text-xs font-bold">&#8811;</span>
-                        <p className="text-[10px] md:text-xs text-[#00b4d8] font-bold uppercase tracking-[0.15em]">
-                            Pilot Platform
+            {/* Content layout: left text + center phone card */}
+            <div className="relative h-full flex items-stretch">
+                {/* Left: text + buttons */}
+                <div className="flex flex-col justify-between px-5 py-5 md:px-7 md:py-6 w-[52%] md:w-[42%] lg:w-[38%]">
+                    <div className="flex flex-col gap-2 md:gap-3">
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-[#00b4d8] text-xs font-bold">&#8811;</span>
+                            <p className="text-[10px] md:text-xs text-[#00b4d8] font-bold uppercase tracking-[0.15em]">Pilot Platform</p>
+                        </div>
+                        <h3 className="text-white text-lg md:text-2xl lg:text-3xl font-light uppercase tracking-widest leading-tight">
+                            Access Your Digital Flight Deck
+                        </h3>
+                        <div className="w-8 h-[2px] bg-[#00b4d8]" />
+                        <p className="text-slate-300 text-[10px] md:text-xs leading-relaxed">
+                            Authenticate credentials to launch your digital flight deck, manage verified credential tokens, and audit live operator pathways.
                         </p>
                     </div>
-                    <h3 className="text-white text-sm md:text-base lg:text-lg font-light uppercase tracking-widest leading-tight">
-                        Access the Platform
-                    </h3>
-                    <div className="w-8 h-[2px] bg-[#00b4d8]" />
-                    <p className="text-slate-400 text-[9px] md:text-[10px] leading-relaxed line-clamp-3 md:line-clamp-4">
-                        Authenticate credentials to launch your digital flight deck, manage verified credential tokens, and audit live operator pathways.
-                    </p>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col gap-2 mt-3">
-                    {isLoggedIn ? (
-                        <button
-                            onClick={() => onNavigate('platform')}
-                            className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
-                        >
-                            Enter Flight Deck →
-                        </button>
-                    ) : (
-                        <>
+                    <div className="flex flex-col gap-2 mt-3">
+                        {isLoggedIn ? (
                             <button
-                                onClick={() => onNavigate('become-member')}
+                                onClick={() => onNavigate('platform')}
                                 className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
                             >
-                                Get Recognition Free
+                                Enter Flight Deck →
                             </button>
-                            <button
-                                onClick={onLogin}
-                                className="w-full py-2.5 bg-transparent border border-white/50 hover:border-white/80 hover:bg-white/5 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200"
-                            >
-                                Sign In to Flight Deck →
-                            </button>
-                        </>
-                    )}
+                        ) : (
+                            <>
+                                <button
+                                    onClick={() => onNavigate('become-member')}
+                                    className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
+                                >
+                                    Get Recognition Free
+                                </button>
+                                <button
+                                    onClick={onLogin}
+                                    className="w-full py-2.5 bg-transparent border border-white/50 hover:border-white/80 hover:bg-white/5 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200"
+                                >
+                                    Sign In to Flight Deck →
+                                </button>
+                            </>
+                        )}
+                    </div>
                 </div>
-            </div>
 
-            {/* Right: Photo */}
-            <div className="relative w-1/2 h-full flex-shrink-0">
-                <img
-                    src="https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png"
-                    alt="Pilots"
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: '75% center' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a1628]/60 pointer-events-none" />
+                {/* Center: Singapore Airlines eligibility callout */}
+                <div className="hidden md:flex flex-col items-start justify-center px-4 lg:px-8 gap-2">
+                    <p className="text-white font-bold text-xs md:text-sm uppercase tracking-wider leading-tight">
+                        Are You Eligible for<br />Singapore Airlines?<br />
+                        <span className="text-[#00b4d8] font-normal normal-case tracking-normal text-[10px]">Check Now.</span>
+                    </p>
+                </div>
             </div>
         </div>
     );
@@ -1005,31 +1009,6 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 style={{ touchAction: 'pan-y', cursor: 'grab', overscrollBehaviorX: 'contain' }}
             >
                 {/* Grid Content */}
-                {/* Side Navigation Arrows - Left */}
-                <button
-                    onClick={goToPrevious}
-                    disabled={isAnimating}
-                    className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-20 z-50 w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed group"
-                    aria-label="Previous view"
-                    style={{ pointerEvents: 'none' }}
-                >
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <ChevronLeft className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-110 transition-transform" />
-                    </div>
-                </button>
-
-                {/* Side Navigation Arrows - Right */}
-                <button
-                    onClick={goToNext}
-                    disabled={isAnimating}
-                    className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-20 z-50 w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed group"
-                    aria-label="Next view"
-                    style={{ pointerEvents: 'none' }}
-                >
-                    <div style={{ pointerEvents: 'auto' }}>
-                        <ChevronRight className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:scale-110 transition-transform" />
-                    </div>
-                </button>
 
                 {/* Minimal Compass Header - Just the revolving word */}
                 <div className="w-full max-w-[980px] xl:max-w-[1040px] mx-auto mb-4 md:mb-5">
@@ -1126,43 +1105,33 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                             ))}
                                         </div>
                                     )}
-                                    {/* Tablet: 2-col top, 3-col bottom — scaled down */}
+                                    {/* Tablet: full-width hero top, 3-col bottom */}
                                     {isTabletView && (
                                         <>
-                                            <div className="grid grid-cols-2 gap-2 mb-2.5">
-                                                <motion.div key={currentCards[0].id} variants={cardVariants} className="h-[260px]">
-                                                    <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
-                                                </motion.div>
-                                                <motion.div key={currentCards[1].id} variants={cardVariants} className="h-[260px]">
-                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1].id} onHover={() => setHoveredCard(currentCards[1].id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
-                                                </motion.div>
-                                            </div>
+                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-2.5 h-[240px]">
+                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                            </motion.div>
                                             <div className="grid grid-cols-3 gap-2 mb-2.5">
                                                 {currentCards.slice(2, 5).map((card) => (
-                                                    <motion.div key={card.id} variants={cardVariants} className="h-[150px]">
-                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
+                                                    <motion.div key={card.id} variants={cardVariants} className="h-[170px]">
+                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
                                                     </motion.div>
                                                 ))}
                                             </div>
                                         </>
                                     )}
-                                    {/* Desktop / Wide: 2-col top, 3-col bottom — full size */}
+                                    {/* Desktop / Wide: Full-width hero top, 3-col bottom — full size */}
                                     {!isMobileView && !isTabletView && (
                                         <>
-                                            <div className="grid grid-cols-2 gap-2 md:gap-2.5 mb-2.5">
-                                                {/* Top-left: Access Platform custom card */}
-                                                <motion.div key={currentCards[0].id} variants={cardVariants} className="h-[300px] lg:h-[340px] xl:h-[360px] 2xl:h-[400px]">
-                                                    <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
-                                                </motion.div>
-                                                {/* Top-right: card-2 */}
-                                                <motion.div key={currentCards[1].id} variants={cardVariants} className="h-[300px] lg:h-[340px] xl:h-[360px] 2xl:h-[400px]">
-                                                    <GridCard card={currentCards[1]} isHovered={hoveredCard === currentCards[1].id} onHover={() => setHoveredCard(currentCards[1].id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(currentCards[1])} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
-                                                </motion.div>
-                                            </div>
+                                            {/* Full-width panoramic hero card */}
+                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-2.5 h-[280px] lg:h-[320px] xl:h-[340px] 2xl:h-[380px]">
+                                                <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
+                                            </motion.div>
+                                            {/* Bottom 3 cards — larger than before */}
                                             <div className="grid grid-cols-3 gap-2 md:gap-2.5 mb-2.5">
                                                 {currentCards.slice(2, 5).map((card) => (
-                                                    <motion.div key={card.id} variants={cardVariants} className="h-[150px] lg:h-[170px] xl:h-[185px] 2xl:h-[200px]">
-                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={false} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
+                                                    <motion.div key={card.id} variants={cardVariants} className="h-[185px] lg:h-[210px] xl:h-[225px] 2xl:h-[245px]">
+                                                        <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
                                                     </motion.div>
                                                 ))}
                                             </div>

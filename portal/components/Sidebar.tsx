@@ -21,6 +21,7 @@ const navItems = [
     { id: 'recognition', title: 'Recognition', subtitle: 'Awards' },
     { id: 'wingmentor-network', title: 'Network', subtitle: 'Community hub' },
     { id: 'w1000', title: 'W1000', subtitle: 'Advanced training' },
+    { id: 'market-intelligence', title: 'Market Intelligence', subtitle: 'Fleet age & demand signals' },
     { id: 'atlas-resume', title: 'Atlas Resume', subtitle: 'Build your resume' },
     { id: 'subscription', title: 'Subscription', subtitle: 'Billing & plans' },
 ];

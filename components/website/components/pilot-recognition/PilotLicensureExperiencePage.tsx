@@ -3,7 +3,8 @@ import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
-import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2 } from 'lucide-react';
+import { useAccountTier } from '../../../../src/hooks/useAccountTier';
+import { Search, HelpCircle, ChevronRight, Check, Upload, FileText, X, Lock, Scan, Shield, Clock, FileDigit, Loader2, Star } from 'lucide-react';
 
 interface UploadedDoc {
   id: string;
@@ -282,6 +283,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeUploadType, setActiveUploadType] = useState<'license' | 'medical' | 'rating' | null>(null);
+  
+  // Tier gating
+  const { isRecognitionPlus, tier, loading: tierLoading } = useAccountTier(userProfile?.id || currentUser?.id);
   
   // Filtered options based on search
   const filteredCountries = useMemo(() => {
@@ -1998,17 +2002,48 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
             </div>
           ))}
           
-          {/* Type Rating Certificate Upload - Terminal Style */}
+          {/* Type Rating Certificate Upload - Terminal Style - Recognition+ Gated */}
           <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'white', borderRadius: '6px', border: `1px solid ${SLATE[200]}` }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.625rem' }}>
-              <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                Type Rating Documentation
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.625rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Shield style={{ width: '14px', height: '14px', color: '#001E3C' }} />
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                  Type Rating Documentation
+                </span>
+                {!isRecognitionPlus && !tierLoading && (
+                  <span style={{ fontSize: '0.7rem', color: '#d97706', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Star style={{ width: '12px', height: '12px' }} />
+                    Recognition+ Required
+                  </span>
+                )}
+              </div>
               <span style={{ fontSize: '0.7rem', color: SLATE[400] }}>Optional</span>
             </div>
-            
-            {getDocsByType('rating').length === 0 ? (
+
+            {!isRecognitionPlus && getDocsByType('rating').length === 0 ? (
+              <div style={{ padding: '1rem', background: '#fef3c7', borderRadius: '4px', border: '1px solid #fbbf24' }}>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#92400e', lineHeight: 1.5 }}>
+                  <strong>Recognition+ Required:</strong> Document uploads are a premium feature.
+                  Free users can still add type ratings as text above. Upgrade to upload official ATO certificates for verification.
+                </p>
+                <button
+                  onClick={() => window.location.href = '/recognition-plus'}
+                  style={{
+                    marginTop: '0.75rem',
+                    padding: '0.5rem 1rem',
+                    background: '#d97706',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Upgrade to Recognition+
+                </button>
+              </div>
+            ) : getDocsByType('rating').length === 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <div
                   onDragOver={handleDragOver}

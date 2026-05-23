@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { supabase } from '../../../../src/lib/supabase';
+import { useAccountTier } from '../../../../src/hooks/useAccountTier';
 import { 
   Upload, FileText, Check, AlertCircle, X, Camera, FileCheck, Shield, 
   Lock, Clock, History, ChevronRight, FileDigit, Stethoscope, Plane, 
-  BookOpen, File as FileIcon, Scan, HardDrive, Fingerprint
+  BookOpen, File as FileIcon, Scan, HardDrive, Fingerprint, Star,
+  AlertTriangle
 } from 'lucide-react';
 
 interface DocumentVaultPageProps {
@@ -99,6 +101,7 @@ const SLATE = {
 };
 
 export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, onViewAtlasCV, userProfile }) => {
+  const { isRecognitionPlus, tier, loading: tierLoading } = useAccountTier(userProfile?.id);
   const [documents, setDocuments] = useState<UploadedDocument[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedDocType, setSelectedDocType] = useState<string>('');
@@ -107,6 +110,7 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
   const [showOCRConfirm, setShowOCRConfirm] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [history, setHistory] = useState<VerificationHistory[]>([]);
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
 
   const loadDocuments = useCallback(async () => {
     if (!userProfile?.id) return;
@@ -386,9 +390,19 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
 
         {/* Document Type Grid */}
         <div style={{ marginBottom: '1.5rem' }}>
-          <p style={{ margin: '0 0 1rem', fontSize: '0.75rem', color: SLATE[500], textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>
-            Select Document Type
-          </p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <p style={{ margin: 0, fontSize: '0.75rem', color: SLATE[500], textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>
+              Select Document Type
+            </p>
+            {!isRecognitionPlus && !tierLoading && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.375rem 0.75rem', background: '#fef3c7', borderRadius: '4px', border: '1px solid #fbbf24' }}>
+                <Star style={{ width: '14px', height: '14px', color: '#d97706' }} />
+                <span style={{ fontSize: '0.625rem', color: '#92400e', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Recognition+ Required for Uploads
+                </span>
+              </div>
+            )}
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
             {DOCUMENT_TYPES.map(type => {
               const Icon = type.icon;
@@ -400,7 +414,11 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
                   key={type.value}
                   onClick={() => {
                     setSelectedDocType(type.value);
-                    setShowUploadModal(true);
+                    if (isRecognitionPlus) {
+                      setShowUploadModal(true);
+                    } else {
+                      setShowUpgradePrompt(true);
+                    }
                   }}
                   style={{
                     padding: '1.25rem',
@@ -411,7 +429,8 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
                     cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'all 0.15s',
-                    boxShadow: isSelected ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
+                    boxShadow: isSelected ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none',
+                    opacity: hasUpload || isRecognitionPlus ? 1 : 0.7
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
@@ -421,12 +440,17 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
                         <Check style={{ width: '12px', height: '12px', color: 'white' }} />
                       </div>
                     )}
+                    {!hasUpload && !isRecognitionPlus && (
+                      <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Star style={{ width: '12px', height: '12px', color: '#d97706' }} />
+                      </div>
+                    )}
                   </div>
                   <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: SLATE[800], textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     {type.label}
                   </p>
                   <p style={{ margin: '0.25rem 0 0', fontSize: '0.625rem', color: SLATE[500], lineHeight: 1.4 }}>
-                    {type.format}
+                    {isRecognitionPlus ? type.format : 'Recognition+ required for upload'}
                   </p>
                 </button>
               );
@@ -799,16 +823,16 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
                 {selectedTypeInfo?.format}
               </p>
             </div>
-            
+
             <div style={{ padding: '1.5rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  style={{ 
-                    padding: '1.25rem', 
-                    border: `1px solid ${SLATE[200]}`, 
-                    borderRadius: '6px', 
-                    background: SLATE[50], 
+                  style={{
+                    padding: '1.25rem',
+                    border: `1px solid ${SLATE[200]}`,
+                    borderRadius: '6px',
+                    background: SLATE[50],
                     cursor: 'pointer',
                     textAlign: 'center',
                     transition: 'all 0.15s'
@@ -818,13 +842,13 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
                   <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 600, color: SLATE[700], textTransform: 'uppercase', letterSpacing: '0.025em' }}>Browse</p>
                 </button>
                 <button
-                  style={{ 
-                    padding: '1.25rem', 
-                    border: `1px solid ${SLATE[200]}`, 
-                    borderRadius: '6px', 
-                    background: SLATE[50], 
+                  style={{
+                    padding: '1.25rem',
+                    border: `1px solid ${SLATE[200]}`,
+                    borderRadius: '6px',
+                    background: SLATE[50],
                     cursor: 'pointer',
-                    textAlign: 'center' 
+                    textAlign: 'center'
                   }}
                 >
                   <Camera style={{ width: '24px', height: '24px', color: SLATE[600], marginBottom: '0.5rem' }} />
@@ -849,19 +873,103 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
             <div style={{ padding: '1rem 1.5rem', borderTop: `1px solid ${SLATE[200]}`, display: 'flex', justifyContent: 'flex-end' }}>
               <button
                 onClick={() => setShowUploadModal(false)}
-                style={{ 
-                  padding: '0.5rem 1rem', 
-                  border: 'none', 
-                  background: 'transparent', 
-                  color: SLATE[600], 
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: 'none',
+                  background: 'transparent',
+                  color: SLATE[600],
                   fontSize: '0.75rem',
                   fontWeight: 600,
                   textTransform: 'uppercase',
                   letterSpacing: '0.025em',
-                  cursor: 'pointer' 
+                  cursor: 'pointer'
                 }}
               >
                 Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Upgrade Prompt Modal - Free Users */}
+      {showUpgradePrompt && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(4px)' }}>
+          <div style={{ background: 'white', borderRadius: '8px', maxWidth: '420px', width: '90%', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
+            <div style={{ padding: '1.5rem', borderBottom: `1px solid ${SLATE[200]}`, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Star style={{ width: '20px', height: '20px', color: '#d97706' }} />
+              </div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: SLATE[800], textTransform: 'uppercase', letterSpacing: '0.025em' }}>
+                  Recognition+ Required
+                </h3>
+                <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: SLATE[500] }}>
+                  Document uploads are a premium feature
+                </p>
+              </div>
+            </div>
+
+            <div style={{ padding: '1.5rem' }}>
+              <p style={{ margin: '0 0 1rem', fontSize: '0.875rem', color: SLATE[600], lineHeight: 1.5 }}>
+                Free users can claim their profile by entering text data. To upload and verify official documents (license, medical, ratings), upgrade to <strong>Recognition+</strong>.
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem', background: SLATE[50], borderRadius: '4px' }}>
+                  <Check style={{ width: '16px', height: '16px', color: EMERALD }} />
+                  <span style={{ fontSize: '0.75rem', color: SLATE[600] }}>Upload license, medical, and rating documents</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem', background: SLATE[50], borderRadius: '4px' }}>
+                  <Check style={{ width: '16px', height: '16px', color: EMERALD }} />
+                  <span style={{ fontSize: '0.75rem', color: SLATE[600] }}>OCR extraction with admin verification</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem', background: SLATE[50], borderRadius: '4px' }}>
+                  <Check style={{ width: '16px', height: '16px', color: EMERALD }} />
+                  <span style={{ fontSize: '0.75rem', color: SLATE[600] }}>Verified badges on ATLAS CV</span>
+                </div>
+              </div>
+
+              <div style={{ padding: '0.75rem', background: '#eff6ff', borderRadius: '6px', border: '1px solid #bfdbfe', marginBottom: '1rem' }}>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: SLATE[600], textAlign: 'center' }}>
+                  <strong>Alternative:</strong> Use the <em>Pilot Licensure & Experience Data Entry</em> page to enter your credentials as text (free tier).
+                </p>
+              </div>
+            </div>
+
+            <div style={{ padding: '1rem 1.5rem', borderTop: `1px solid ${SLATE[200]}`, display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setShowUpgradePrompt(false)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: 'none',
+                  background: 'transparent',
+                  color: SLATE[600],
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.025em',
+                  cursor: 'pointer'
+                }}
+              >
+                Close
+              </button>
+              <button
+                onClick={() => window.location.href = '/recognition-plus'}
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: 'none',
+                  background: '#d97706',
+                  color: 'white',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.025em',
+                  cursor: 'pointer',
+                  borderRadius: '4px'
+                }}
+              >
+                Upgrade to Recognition+
               </button>
             </div>
           </div>

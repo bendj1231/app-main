@@ -3,6 +3,12 @@
  * Refactored for performance with lazy loading and modular architecture
  */
 
+// Buffer polyfill for gray-matter (browser compatibility)
+import { Buffer } from 'buffer';
+if (typeof window !== 'undefined') {
+  (window as any).Buffer = Buffer;
+}
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

@@ -130,6 +130,7 @@ const PilotShortagePage = lazy(() => import('@/components/website/components/Pil
 const WhyRecognitionPage = lazy(() => import('@/components/website/components/WhyRecognitionPage').then(m => ({ default: m.WhyRecognitionPage })));
 const GlobalAviationAuthoritiesPage = lazy(() => import('@/pages/GlobalAviationAuthoritiesPage'));
 const BlogPage = lazy(() => import('@/app/blog/page'));
+const BlogPostPage = lazy(() => import('@/app/blog/[slug]/page'));
 const StorePage = lazy(() => import('@/app/store/page'));
 const FrameworkPage = lazy(() => import('@/app/framework/page'));
 const FrameworkFullPage = lazy(() => import('@/app/framework/full/page'));
@@ -361,6 +362,10 @@ export const AppRoutes = () => {
       <Route path="/official-examination-board" element={<OfficialExaminationBoardPage onBack={() => handleBack('access-portal-2?tab=programs')} onNavigate={handleNavigate} />} />
       <Route path="/digital-logbook-directory" element={<DigitalLogbookDirectoryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/digital-logbook" element={<DigitalLogbookPage onBack={() => handleBack()} userProfile={null} />} />
+
+      {/* Blog routes */}
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/blog/:slug" element={<BlogPostPage />} />
 
       {/* Other routes */}
       <Route path="/pilot-gap" element={<PilotGapAboutPage onBack={() => handleBack('/about')} onNavigate={handleNavigate} />} />

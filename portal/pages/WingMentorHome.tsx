@@ -43,6 +43,7 @@ import InterviewEvaluationPage from './InterviewEvaluationPage';
 import ProgramSyllabusPage from './ProgramSyllabusPage';
 import PilotLicensureExperiencePage from './PilotLicensureExperiencePage';
 import { Sidebar } from '../components/Sidebar';
+import { CareerIntelligenceDashboard } from '../../components/website/components/CareerIntelligenceDashboard';
 import { TopBar } from '../components/TopBar';
 
 // Foundational Enrollment Check Component
@@ -284,7 +285,8 @@ export type MainView =
   | 'license-selection'
   | 'pilot-licensure-experience'
   | 'interview-evaluation'
-  | 'program-syllabus';
+  | 'program-syllabus'
+  | 'market-intelligence';
 
 const pathwayUpdates = [
   {
@@ -3686,6 +3688,8 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
         return <DigitalLogbookDirectoryPage onBack={() => setMainView('programs')} onNavigate={(page) => setMainView(page as MainView)} onLogin={() => {}} />;
       case 'mentor-logbook':
         return <MentorLogbookPage onBack={() => setMainView('pilot-portfolio')} userProfile={userProfile ?? undefined} />;
+      case 'market-intelligence':
+        return <CareerIntelligenceDashboard profile={userProfile} />;
       case 'atlas-resume':
         return <AtlasResumeBuilder onBack={() => setMainView('pilot-portfolio')} />;
       case 'wingmentor-network':

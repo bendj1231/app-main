@@ -8,7 +8,7 @@
  * Provider priority waterfall (first available API key wins):
  *   1. Aviation Edge      — AVIATION_EDGE_API_KEY      (direct avg_age field, free tier available)
  *   2. Airlabs            — AIRLABS_API_KEY             (1,000 free calls/mo; $49/mo paid)
- *   3. Aviationstack      — AVIATIONSTACK_API_KEY       (500 free calls/mo forever — best free tier)
+ *   3. Aviationstack      — AVIATIONSTACK_API_KEY       (100 free calls/mo — cached in Neon 7-day TTL)
  *   4. AeroDataBox        — AERODATABOX_API_KEY         (RapidAPI, $5–15/mo)
  *   5. Flightradar24      — FR24_API_KEY                (enterprise, MCP-compatible)
  *   6. OpenSky Network    — no key required             (research nonprofit, ICAO24 metadata CSV)
@@ -736,6 +736,58 @@ async function fromCASA(
   } catch (err) { console.warn('CASA error:', err); return null; }
 }
 
+// ─── Neon cache helpers (conserve Aviationstack 100 call/mo quota) ──────────
+
+async function neonCacheGet(iata: string, family: string): Promise<FleetAgeResult | null> {
+  try {
+    const neonUrl = Deno.env.get('NEON_DATABASE_URL');
+    if (!neonUrl) return null;
+    const { Pool } = await import('https://deno.land/x/postgres@v0.17.0/mod.ts');
+    const pool = new Pool(neonUrl, 1, true);
+    const conn = await pool.connect();
+    try {
+      const result = await conn.queryObject<{ payload: FleetAgeResult }>(
+        `SELECT payload FROM aviation_api_cache
+         WHERE airline_iata = $1 AND aircraft_family = $2
+           AND provider = 'aviationstack' AND expires_at > NOW()
+         ORDER BY fetched_at DESC LIMIT 1`,
+        [iata, family],
+      );
+      return result.rows[0]?.payload ?? null;
+    } finally {
+      conn.release();
+      await pool.end();
+    }
+  } catch (err) {
+    console.warn('[NeonCache] get error:', err);
+    return null;
+  }
+}
+
+async function neonCacheSet(iata: string, family: string, result: FleetAgeResult): Promise<void> {
+  try {
+    const neonUrl = Deno.env.get('NEON_DATABASE_URL');
+    if (!neonUrl) return;
+    const { Pool } = await import('https://deno.land/x/postgres@v0.17.0/mod.ts');
+    const pool = new Pool(neonUrl, 1, true);
+    const conn = await pool.connect();
+    try {
+      await conn.queryObject(
+        `INSERT INTO aviation_api_cache
+           (provider, airline_iata, aircraft_family, payload, fleet_age, data_quality, expires_at)
+         VALUES ('aviationstack', $1, $2, $3, $4, $5, NOW() + INTERVAL '7 days')
+         ON CONFLICT DO NOTHING`,
+        [iata, family, JSON.stringify(result), result.fleetAge, result.dataQuality],
+      );
+    } finally {
+      conn.release();
+      await pool.end();
+    }
+  } catch (err) {
+    console.warn('[NeonCache] set error:', err);
+  }
+}
+
 export class FleetAgeGateway {
   /**
    * Resolve fleet age for a given airline + aircraft family.
@@ -764,11 +816,17 @@ export class FleetAgeGateway {
       if (r) return r;
     }
 
-    // 3. Aviationstack (500 free calls/mo — free forever)
+    // 3. Aviationstack (100 free calls/mo — cache in Neon to conserve quota)
     const asKey = Deno.env.get('AVIATIONSTACK_API_KEY');
     if (asKey && iata) {
+      // Check Neon cache first — 7-day TTL for fleet age data
+      const cached = await neonCacheGet(iata, family);
+      if (cached) return cached;
       const r = await fromAviationstack(iata, family, asKey);
-      if (r) return r;
+      if (r) {
+        await neonCacheSet(iata, family, r);
+        return r;
+      }
     }
 
     // 4. AeroDataBox
