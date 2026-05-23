@@ -304,18 +304,49 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
             }
             setWalletKeyVerifying(true);
             try {
-                // Check the key against Supabase profiles
-                const { data, error } = await supabase
+                // 1. Fetch the user's encrypted profile from Supabase
+                const auth0Sub = user?.sub || '';
+                const { data: profile } = await supabase
                     .from('profiles')
-                    .select('id')
-                    .eq('wallet_recovery_key', trimmed)
+                    .select('id, full_name, email')
+                    .eq('auth0_id', auth0Sub)
                     .maybeSingle();
 
-                if (error || !data) {
-                    setWalletKeyError('Key not recognised. Check and try again.');
+                if (!profile) {
+                    setWalletKeyError('Account not found. Try Google login instead.');
                     setWalletKeyVerifying(false);
                     return;
                 }
+
+                // 2. Derive a vault key from the recovery key using PBKDF2
+                const enc = new TextEncoder();
+                const keyBase = await crypto.subtle.importKey(
+                    'raw', enc.encode(trimmed), 'PBKDF2', false, ['deriveKey']
+                );
+                const derivedKey = await crypto.subtle.deriveKey(
+                    { name: 'PBKDF2', salt: enc.encode(`pr:wallet:recovery:${profile.id}`), iterations: 200_000, hash: 'SHA-256' },
+                    keyBase, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+                );
+
+                // 3. Find an encrypted field to attempt decryption as proof
+                const VAULT_PREFIX = '{"iv":"';
+                const encryptedField = ['full_name', 'email'].map(f => (profile as any)[f]).find(v => typeof v === 'string' && v.startsWith(VAULT_PREFIX));
+
+                if (encryptedField) {
+                    // Attempt decrypt — AES-GCM auth tag will throw if key is wrong
+                    try {
+                        const { iv, data: cipherData } = JSON.parse(encryptedField);
+                        const ivBytes = Uint8Array.from(atob(iv.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+                        const cipherBytes = Uint8Array.from(atob(cipherData.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+                        await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivBytes, tagLength: 128 }, derivedKey, cipherBytes);
+                        // Decryption succeeded — key is valid
+                    } catch {
+                        setWalletKeyError('Key is incorrect. The recovery key does not match this account.');
+                        setWalletKeyVerifying(false);
+                        return;
+                    }
+                }
+                // Either decryption passed or field is plaintext (pre-vault account) — allow through
                 localStorage.setItem('pr_passkey_registered', 'true');
                 navigate('/platform');
             } catch {
