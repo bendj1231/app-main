@@ -544,19 +544,29 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     }
                 }
                 
-                // Fix encrypted full_name for injected profile
-                let injectedFullName = decryptedProfile.full_name || decryptedProfile.display_name || 'Pilot';
-                if (typeof injectedFullName === 'string' && injectedFullName.startsWith('{"iv"')) {
-                    injectedFullName = decryptedProfile.display_name || 'Pilot';
+                // Fix encrypted full_name for injected profile — prefer display_name (always plain text)
+                const isCiphertextInj = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+                let injectedFullName = '';
+                if (decryptedProfile.display_name && !isCiphertextInj(decryptedProfile.display_name)) {
+                    injectedFullName = decryptedProfile.display_name;
+                } else if (decryptedProfile.full_name && !isCiphertextInj(decryptedProfile.full_name)) {
+                    injectedFullName = decryptedProfile.full_name;
+                } else {
+                    injectedFullName = 'Pilot';
                 }
-                
+
+                const injLicenseType = (decryptedProfile.license_types?.length > 0 ? decryptedProfile.license_types.join(', ') : null)
+                    || decryptedProfile.current_occupation || 'None';
+
                 const merged = {
+                    ...decryptedProfile,
                     user_id: decryptedProfile.id,
                     total_hours: decryptedProfile.total_flight_hours || 0,
                     recent_flight_experience: 'N/A',
                     overall_recognition_score: decryptedProfile.recognition_score || 0,
                     recognition_score: decryptedProfile.recognition_score || 0,
-                    license_type: decryptedProfile.current_occupation || 'None',
+                    license_type: injLicenseType,
+                    license_authority: decryptedProfile.license_issuing_authority || decryptedProfile.country_of_license || '',
                     medical_status: 'None',
                     pathway_interests: decryptedProfile.pathway_interests || [],
                     certifications: decryptedProfile.certifications || [],
@@ -567,7 +577,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     profile_image_url: decryptedProfile.profile_image_url || '',
                     wallet_did: injectedWalletData?.did || decryptedProfile.wallet_did || null,
                     wallet_credentials: injectedWalletData?.credentials || [],
-                    ...decryptedProfile,
                 };
                 setProfileData(merged);
                 setLoading(false);
@@ -594,7 +603,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // Fetch profile image and basic user data from profiles table (with vault decryption)
             const { data: profileImage, error: imageError } = await supabase
                 .from('profiles')
-                .select('profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings, profile_token, profile_token_generated_at, auth0_id')
+                .select('profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, license_issuing_authority, ratings, license_types, current_occupation, profile_token, profile_token_generated_at, auth0_id')
                 .eq('id', user.id)
                 .maybeSingle();
             
@@ -621,11 +630,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // Use decrypted profile data if available
             const sourceProfile = decryptedProfileImage || profileImage;
             
-            // Fix encrypted full_name - use display_name if full_name is encrypted
-            let resolvedFullName = sourceProfile?.full_name || sourceProfile?.display_name || 'Pilot';
-            if (typeof resolvedFullName === 'string' && resolvedFullName.startsWith('{"iv"')) {
-                // Vault decryption failed - use display_name instead
-                resolvedFullName = sourceProfile?.display_name || 'Pilot';
+            // Prefer display_name (always plain text) over full_name (may be AES-encrypted)
+            const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+            let resolvedFullName = '';
+            if (sourceProfile?.display_name && !isCiphertext(sourceProfile.display_name)) {
+                resolvedFullName = sourceProfile.display_name;
+            } else if (sourceProfile?.full_name && !isCiphertext(sourceProfile.full_name)) {
+                resolvedFullName = sourceProfile.full_name;
+            } else {
+                resolvedFullName = 'Pilot';
             }
             
             const finalProfileData = {
@@ -651,22 +664,25 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 // Override with profiles table data if pilot_recognition_matches is empty
                 ...(sourceProfile && !profileData ? {
                     full_name: resolvedFullName,
-                    first_name: sourceProfile.display_name?.split(' ')[0] || '',
-                    last_name: sourceProfile.display_name?.split(' ').slice(1).join(' ') || '',
+                    first_name: resolvedFullName.split(' ')[0] || '',
+                    last_name: resolvedFullName.split(' ').slice(1).join(' ') || '',
                     email: sourceProfile.email || user.email || '',
                     total_hours: sourceProfile.current_flight_hours || 0,
                     overall_recognition_score: sourceProfile.overall_recognition_score || 0,
-                    current_occupation: 'STUDENT PILOT',
-                    license_type: sourceProfile.ratings?.join(', ') || 'None',
+                    current_occupation: sourceProfile.current_occupation || 'STUDENT PILOT',
+                    license_type: (sourceProfile.license_types?.length > 0 ? sourceProfile.license_types.join(', ') : null) || sourceProfile.current_occupation || 'None',
+                    license_authority: sourceProfile.license_issuing_authority || sourceProfile.country_of_license || '',
                     license_id: sourceProfile.license_id || '',
                     country_of_license: sourceProfile.country_of_license || '',
                     type_ratings: sourceProfile.ratings || []
                 } : {}),
-                // Always include profile image and license data from profiles table
+                // Always include profile image, name and license data from profiles table
                 ...(sourceProfile ? {
+                    full_name: resolvedFullName,
                     profile_image_url: sourceProfile.profile_image_url || '',
                     profile_image_public_id: sourceProfile.profile_image_public_id || '',
-                    license_type: sourceProfile.ratings?.join(', ') || 'None',
+                    license_type: (sourceProfile.license_types?.length > 0 ? sourceProfile.license_types.join(', ') : null) || sourceProfile.current_occupation || 'None',
+                    license_authority: sourceProfile.license_issuing_authority || sourceProfile.country_of_license || '',
                     license_id: sourceProfile.license_id || '',
                     country_of_license: sourceProfile.country_of_license || '',
                     type_ratings: sourceProfile.ratings || []
@@ -1401,18 +1417,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             const licenseLower = license.toLowerCase();
                                             let highestLicense = 'None';
                                             
-                                            // Check in order of ranking: CPL > PPL > SPL
-                                            if (licenseLower.includes('cpl')) {
+                                            // Check in order of ranking: ATPL > CPL > PPL > SPL
+                                            if (licenseLower.includes('atpl') || licenseLower.includes('airline')) {
+                                                highestLicense = 'ATPL';
+                                            } else if (licenseLower.includes('cpl') || licenseLower.includes('commercial')) {
                                                 highestLicense = 'CPL';
-                                            } else if (licenseLower.includes('ppl')) {
+                                            } else if (licenseLower.includes('ppl') || licenseLower.includes('private')) {
                                                 highestLicense = 'PPL';
-                                            } else if (licenseLower.includes('spl')) {
+                                            } else if (licenseLower.includes('spl') || licenseLower.includes('student')) {
                                                 highestLicense = 'SPL';
+                                            } else if (license && license !== 'None') {
+                                                highestLicense = license;
                                             }
 
                                             return [
                                                 { label: 'License Type', value: highestLicense },
                                                 { label: 'License Number', value: profileData?.license_id || '' },
+                                                { label: 'License Authority', value: profileData?.license_authority || profileData?.country_of_license || '' },
                                                 { label: 'License Status', value: profileData?.license_status || '' },
                                                 { label: 'English Level', value: profileData?.english_proficiency_level || '' },
                                                 { label: 'Career Stage', value: profileData?.career_stage || '' }

@@ -446,25 +446,43 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setSaveError('');
         try {
             console.log('🔵 [handleSaveProfile] saving to supabase...');
-            const { error } = await supabase
+            const payload = {
+                display_name: cleanName,
+                full_name: `${cleanFirst} ${cleanLast}`.trim(),
+                current_occupation: occupation,
+                date_of_birth: dob || null,
+                total_flight_hours: hours || null,
+                aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null,
+                aircraft_rated_on: aircraftTypes.length > 0 ? aircraftTypes.join(', ') : null,
+                nationality: nationality || null,
+                license_issuing_authority: issuingAuthority || null,
+                country_of_license: issuingAuthority || null,
+                ratings: ratings.length > 0 ? ratings : null,
+                license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
+            };
+
+            // Primary: update by auth0_id
+            const { error, count } = await supabase
                 .from('profiles')
-                .update({
-                    display_name: cleanName,
-                    full_name: `${cleanFirst} ${cleanLast}`.trim(),
-                    current_occupation: occupation,
-                    date_of_birth: dob || null,
-                    total_flight_hours: hours || null,
-                    aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null,
-                    aircraft_rated_on: aircraftTypes.length > 0 ? aircraftTypes.join(', ') : null,
-                    nationality: nationality || null,
-                    license_issuing_authority: issuingAuthority || null,
-                    country_of_license: issuingAuthority || null,
-                    ratings: ratings.length > 0 ? ratings : null,
-                    license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
-                })
-                .eq('auth0_id', auth0Id);
+                .update(payload)
+                .eq('auth0_id', auth0Id)
+                .select('id', { count: 'exact', head: true });
             if (error) { console.error('🔴 [handleSaveProfile] supabase error:', error); throw error; }
-            console.log('✅ [handleSaveProfile] profile saved');
+
+            // Fallback: if auth0_id matched nothing, update by Supabase session user id
+            if ((count ?? 0) === 0) {
+                console.warn('🟡 [handleSaveProfile] auth0_id matched 0 rows — falling back to session user.id');
+                const sbUserId = dbgSession?.user?.id;
+                if (!sbUserId) throw new Error('No Supabase session user id available');
+                const { error: fbError } = await supabase
+                    .from('profiles')
+                    .update({ ...payload, auth0_id: auth0Id })
+                    .eq('id', sbUserId);
+                if (fbError) { console.error('🔴 [handleSaveProfile] fallback error:', fbError); throw fbError; }
+                console.log('✅ [handleSaveProfile] profile saved via fallback user.id:', sbUserId);
+            } else {
+                console.log('✅ [handleSaveProfile] profile saved via auth0_id');
+            }
 
             // Passkey registration
             console.log('🔵 [Passkey] PublicKeyCredential available:', !!window.PublicKeyCredential);
