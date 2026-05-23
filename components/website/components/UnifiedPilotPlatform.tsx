@@ -48,7 +48,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard',     label: 'Dashboard',       icon: BarChart3 },
+  { id: 'dashboard',     label: 'Recognition Board', icon: BarChart3 },
   { id: 'home',          label: 'Home',           icon: Home },
   { id: 'profile',       label: 'My Profile',      icon: User },
   { id: 'wallet',        label: 'Credential Wallet', icon: Shield },
@@ -4892,7 +4892,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               {
                 group: 'MY FLIGHT DECK',
                 items: [
-                  { id: 'dashboard', label: 'Dashboard',        icon: BarChart3,  premium: false },
+                  { id: 'dashboard', label: 'Recognition Board', icon: BarChart3,  premium: false },
                   { id: 'home',      label: 'Home',             icon: Home,       premium: false },
                   { id: 'profile',   label: 'My Profile',       icon: User,       premium: false },
                   { id: 'wallet',    label: 'Pilot Credentials', icon: Shield,     premium: false },
