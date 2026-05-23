@@ -51,7 +51,7 @@ Deno.serve(async (req: Request) => {
     const isAuth0 = sub.includes('|');
     const { data: profile } = await supabase
       .from('profiles')
-      .select('id')
+      .select('id, auth0_id')
       .eq(isAuth0 ? 'auth0_id' : 'id', sub)
       .maybeSingle();
 
@@ -128,9 +128,12 @@ Deno.serve(async (req: Request) => {
 
     await supabase.from('profiles').delete().eq('id', userId);
 
-    // Delete the auth user
-    const { error: deleteError } = await supabase.auth.admin.deleteUser(userId);
-    if (deleteError) throw deleteError;
+    // Delete the Supabase auth user only if this is a native Supabase user
+    // Auth0 users have no Supabase auth record — attempting deleteUser would fail
+    if (!profile.auth0_id) {
+      const { error: deleteError } = await supabase.auth.admin.deleteUser(userId);
+      if (deleteError) console.error('deleteUser error (non-fatal):', deleteError.message);
+    }
 
     return new Response(
       JSON.stringify({ success: true, message: 'Account and all associated data permanently deleted.', deleted_at: new Date().toISOString() }),

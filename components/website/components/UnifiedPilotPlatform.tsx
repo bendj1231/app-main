@@ -4189,8 +4189,9 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
           'apikey': (import.meta as any).env?.VITE_SUPABASE_ANON_KEY,
         },
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Deletion failed');
+      const json = await res.json().catch(() => ({}));
+      console.error('[delete-account] status:', res.status, '| body:', json);
+      if (!res.ok) throw new Error(json.error || json.message || `Server error ${res.status}`);
       localStorage.clear();
       sessionStorage.clear();
       onLogout();
