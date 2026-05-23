@@ -3986,9 +3986,39 @@ const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> = ({ on
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
 const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
+  const [deleteConfirm, setDeleteConfirm] = React.useState(false);
+  const [deleting, setDeleting] = React.useState(false);
+  const [deleteError, setDeleteError] = React.useState('');
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    setDeleteError('');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-account`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+        },
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Deletion failed');
+      // Clear all local state and log out
+      localStorage.clear();
+      sessionStorage.clear();
+      onLogout();
+    } catch (err: any) {
+      setDeleteError(err.message || 'Something went wrong. Please try again.');
+      setDeleting(false);
+    }
+  };
+
   const sections = [
     { title: 'Account', items: ['Edit Profile', 'Change Password', 'Email Preferences'] },
-    { title: 'Consent & Privacy', items: ['Manage Vault Consent', 'Manage Veremark Consent', 'Operator Access Log', 'Download My Data', 'Delete Account'] },
+    { title: 'Consent & Privacy', items: ['Manage Vault Consent', 'Manage Veremark Consent', 'Operator Access Log', 'Download My Data'] },
     { title: 'Notifications', items: ['Pathway Alerts', 'Credential Expiry Warnings', 'News & Updates', 'Operator Interest Notifications'] },
     { title: 'Subscription', items: ['View Plan', 'Upgrade to Recognition Plus', 'Billing History'] },
   ];
@@ -4009,6 +4039,48 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           </div>
         </SectionCard>
       ))}
+
+      {/* Delete Account */}
+      <SectionCard title="Danger Zone">
+        {!deleteConfirm ? (
+          <button
+            onClick={() => setDeleteConfirm(true)}
+            className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-red-400 rounded-lg transition-all font-bold tracking-wider hover:text-red-300"
+            style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239,68,68,0.08)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+          >
+            DELETE ACCOUNT
+            <ChevronRight size={12} className="text-red-400/50" />
+          </button>
+        ) : (
+          <div className="px-3 py-3 space-y-3">
+            <p className="text-xs text-white/70 leading-relaxed">
+              This will permanently delete your profile, credentials, documents, passkeys, and all associated data. <span className="text-red-400 font-bold">This cannot be undone.</span>
+            </p>
+            {deleteError && <p className="text-xs text-red-400">{deleteError}</p>}
+            <div className="flex gap-2">
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleting}
+                className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all disabled:opacity-50"
+                style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid rgba(239,68,68,0.4)', color: '#f87171' }}
+              >
+                {deleting ? 'DELETING...' : 'YES, DELETE EVERYTHING'}
+              </button>
+              <button
+                onClick={() => { setDeleteConfirm(false); setDeleteError(''); }}
+                disabled={deleting}
+                className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all"
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        )}
+      </SectionCard>
+
       <button onClick={onLogout} className="flex items-center gap-2 text-xs text-red-400 font-bold hover:text-red-300 transition-colors px-3 py-2 tracking-wider">
         <LogOut size={14} /> SIGN OUT
       </button>
