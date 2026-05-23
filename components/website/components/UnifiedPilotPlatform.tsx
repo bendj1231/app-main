@@ -24,6 +24,7 @@ import { PathwaysPageModern } from '../../../portal/pages/PathwaysPageModern';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
+import ProfileImage from '../../../src/components/ProfileImage';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -350,11 +351,16 @@ const HomeTab: React.FC<{
                 </button>
               )}
 
-              {/* Avatar */}
+              {/* Avatar - with IndexedDB caching */}
               <div className="relative w-24 h-24 mx-auto mb-4">
-                {profile?.profile_image_url
-                  ? <img src={profile.profile_image_url} alt={name} className="w-full h-full object-cover rounded-full border-2 border-white/30" />
-                  : <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: '#3b82f6' }}>{initials}</div>}
+                <ProfileImage
+                  url={profile?.profile_image_url}
+                  publicId={profile?.profile_image_public_id}
+                  name={name}
+                  size={96}
+                  className="rounded-full border-2 border-white/30"
+                  fallbackClassName="rounded-full bg-blue-500 text-white text-xl"
+                />
               </div>
 
               <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
@@ -3941,7 +3947,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     } else if (auth0User?.sub) {
       supabase
         .from('profiles')
-        .select('*')
+        .select('*, profile_image_public_id')
         .eq('auth0_id', auth0User.sub)
         .maybeSingle()
         .then(({ data }) => { if (data) setProfileData(data); });
@@ -4082,14 +4088,19 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 )}
               </button>
 
-              {/* Avatar */}
+              {/* Avatar - with IndexedDB caching */}
               <button
                 onClick={() => setTab('profile')}
                 className="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-md overflow-hidden flex-shrink-0"
               >
-                {profileData?.profile_image_url
-                  ? <img src={profileData.profile_image_url} alt={displayName} className="w-full h-full object-cover" />
-                  : <span className="text-sm font-bold text-slate-700">{initials}</span>}
+                <ProfileImage
+                  url={profileData?.profile_image_url}
+                  publicId={profileData?.profile_image_public_id}
+                  name={displayName}
+                  size={32}
+                  className="w-full h-full"
+                  fallbackClassName="rounded-full text-sm"
+                />
               </button>
             </>
           ) : (
@@ -4219,13 +4230,14 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           {/* Bottom user strip */}
           <div className="px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="flex items-center gap-3">
-              <div
-                className="w-9 h-9 rounded-full bg-slate-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 overflow-hidden"
-              >
-                {profileData?.profile_image_url
-                  ? <img src={profileData.profile_image_url} alt={displayName} className="w-full h-full object-cover" />
-                  : initials}
-              </div>
+              <ProfileImage
+                url={profileData?.profile_image_url}
+                publicId={profileData?.profile_image_public_id}
+                name={displayName}
+                size={36}
+                className="rounded-full flex-shrink-0"
+                fallbackClassName="rounded-full bg-slate-600 text-white text-xs"
+              />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold text-white truncate">{displayName}</p>
                 <p className="text-[10px] text-white/40 truncate">

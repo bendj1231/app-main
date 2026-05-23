@@ -15,7 +15,11 @@ import { VerificationWalletSection } from './VerificationWalletSection';
 import { ATOVerificationRequestSection } from './ATOVerificationRequestSection';
 import { PathwayPriority } from './CareerPathwayPriority';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
+import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
+import { uploadProfileImage } from '../../../../src/lib/cloudinaryClient';
+import ProfileImage from '../../../../src/components/ProfileImage';
+import { getProfileImageUrl } from '../../../../src/lib/cloudinaryConfig';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '../../../../src/contexts/AuthContext';
 
@@ -51,7 +55,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 }) => {
     const [profileData, setProfileData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const [profileImageUrl, setProfileImageUrl] = useState<string>('');
     const [showScoreTooltip, setShowScoreTooltip] = useState(false);
     const [selectedScoreCategory, setSelectedScoreCategory] = useState<'all' | 'low' | 'middle' | 'high'>('all');
     const [recommendedPathways, setRecommendedPathways] = useState<any[]>([]);
@@ -76,6 +79,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
     const { score: recognitionScoreData, loading: scoreDataLoading } = useRecognitionScore();
+    const { readProfile } = useVaultProfile();
     const [theme, setTheme] = useState<'dark' | 'light'>('dark');
     const [isPremium, setIsPremium] = useState(false);
     const [showWalletGate, setShowWalletGate] = useState(false);
@@ -470,37 +474,36 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         }
     }, [isProfileDropdownOpen, isSettingsDropdownOpen, isNotificationDropdownOpen]);
 
+    // Profile image upload using Cloudinary (free tier)
+    // Zero edge function invocations - client-side upload directly to Cloudinary
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file || !profileData?.user_id) return;
 
         setUploadingImage(true);
         try {
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${profileData.user_id}-${Date.now()}.${fileExt}`;
-            const filePath = `${profileData.user_id}/${fileName}`;
+            // Upload directly to Cloudinary (no edge function!)
+            const result = await uploadProfileImage(file, profileData.user_id);
 
-            const { error: uploadError } = await supabase.storage
-                .from('profile pics')
-                .upload(filePath, file);
+            if (!result.success) {
+                throw new Error(result.error || 'Upload failed');
+            }
 
-            if (uploadError) throw uploadError;
-
-            const { data: { publicUrl } } = supabase.storage
-                .from('profile pics')
-                .getPublicUrl(filePath);
-
+            // Update profile with new image URL
             const { error: updateError } = await supabase
                 .from('profiles')
-                .update({ profile_image_url: publicUrl })
+                .update({ 
+                    profile_image_url: result.url,
+                    profile_image_public_id: result.publicId,
+                })
                 .eq('id', profileData.user_id);
 
             if (updateError) throw updateError;
 
-            setProfileImageUrl(publicUrl);
-        } catch (err) {
+            console.log('✅ Profile image uploaded to Cloudinary:', result.publicId);
+        } catch (err: any) {
             console.error('❌ Error uploading image:', err);
-            alert('Failed to upload image. Please try again.');
+            alert('Failed to upload image: ' + err.message);
         } finally {
             setUploadingImage(false);
         }
@@ -511,27 +514,40 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // If injected profile from Auth0 wallet — use it directly
             if (injectedProfile) {
                 const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+                
+                // Attempt to decrypt if we have encrypted fields
+                let decryptedProfile = { ...injectedProfile };
+                if (injectedProfile.id && isCiphertext(injectedProfile.full_name)) {
+                    try {
+                        const { data: vaultData } = await readProfile(injectedProfile.id);
+                        if (vaultData) {
+                            decryptedProfile = { ...injectedProfile, ...vaultData };
+                        }
+                    } catch (vaultErr) {
+                        console.warn('[PROFILE] Vault decryption failed, using raw data:', vaultErr);
+                    }
+                }
+                
                 const merged = {
-                    user_id: injectedProfile.id,
-                    total_hours: injectedProfile.total_flight_hours || 0,
+                    user_id: decryptedProfile.id,
+                    total_hours: decryptedProfile.total_flight_hours || 0,
                     recent_flight_experience: 'N/A',
-                    overall_recognition_score: injectedProfile.recognition_score || 0,
-                    recognition_score: injectedProfile.recognition_score || 0,
-                    license_type: injectedProfile.current_occupation || 'None',
+                    overall_recognition_score: decryptedProfile.recognition_score || 0,
+                    recognition_score: decryptedProfile.recognition_score || 0,
+                    license_type: decryptedProfile.current_occupation || 'None',
                     medical_status: 'None',
-                    pathway_interests: injectedProfile.pathway_interests || [],
-                    certifications: injectedProfile.certifications || [],
-                    type_ratings: injectedProfile.aircraft_types || [],
-                    enrolled_programs: injectedProfile.enrolled_programs || [],
-                    full_name: isCiphertext(injectedProfile.full_name) ? '' : (injectedProfile.full_name || injectedProfile.display_name || ''),
-                    display_name: injectedProfile.display_name || '',
-                    profile_image_url: injectedProfile.profile_image_url || '',
-                    wallet_did: injectedWalletData?.did || injectedProfile.wallet_did || null,
+                    pathway_interests: decryptedProfile.pathway_interests || [],
+                    certifications: decryptedProfile.certifications || [],
+                    type_ratings: decryptedProfile.aircraft_types || [],
+                    enrolled_programs: decryptedProfile.enrolled_programs || [],
+                    full_name: decryptedProfile.full_name || decryptedProfile.display_name || 'Pilot',
+                    display_name: decryptedProfile.display_name || '',
+                    profile_image_url: decryptedProfile.profile_image_url || '',
+                    wallet_did: injectedWalletData?.did || decryptedProfile.wallet_did || null,
                     wallet_credentials: injectedWalletData?.credentials || [],
-                    ...injectedProfile,
+                    ...decryptedProfile,
                 };
                 setProfileData(merged);
-                if (merged.profile_image_url) setProfileImageUrl(merged.profile_image_url);
                 setLoading(false);
                 return;
             }
@@ -553,12 +569,25 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 .eq('user_id', user.id)
                 .maybeSingle();
             
-            // Fetch profile image and basic user data from profiles table
+            // Fetch profile image and basic user data from profiles table (with vault decryption)
             const { data: profileImage, error: imageError } = await supabase
                 .from('profiles')
-                .select('profile_image_url, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings, profile_token, profile_token_generated_at, auth0_id')
+                .select('profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings, profile_token, profile_token_generated_at, auth0_id')
                 .eq('id', user.id)
                 .maybeSingle();
+            
+            // Decrypt profile data using vault
+            let decryptedProfileImage = profileImage;
+            if (profileImage) {
+                try {
+                    const { data: vaultData } = await readProfile(user.id);
+                    if (vaultData) {
+                        decryptedProfileImage = { ...profileImage, ...vaultData };
+                    }
+                } catch (vaultErr) {
+                    console.warn('[PROFILE] Vault decryption failed for profile fetch:', vaultErr);
+                }
+            }
             
             
             if (profileError) {
@@ -567,6 +596,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             }
             
             // Provide default values if no profile exists, and merge with profiles table data
+            // Use decrypted profile data if available
+            const sourceProfile = decryptedProfileImage || profileImage;
             const finalProfileData = {
                 ...{
                     user_id: user.id,
@@ -588,34 +619,31 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 },
                 ...profileData,
                 // Override with profiles table data if pilot_recognition_matches is empty
-                ...(profileImage && !profileData ? {
-                    full_name: profileImage.full_name || profileImage.display_name || '',
-                    first_name: profileImage.display_name?.split(' ')[0] || '',
-                    last_name: profileImage.display_name?.split(' ').slice(1).join(' ') || '',
-                    email: profileImage.email || user.email || '',
-                    total_hours: profileImage.current_flight_hours || 0,
-                    overall_recognition_score: profileImage.overall_recognition_score || 0,
+                ...(sourceProfile && !profileData ? {
+                    full_name: sourceProfile.full_name || sourceProfile.display_name || 'Pilot',
+                    first_name: sourceProfile.display_name?.split(' ')[0] || '',
+                    last_name: sourceProfile.display_name?.split(' ').slice(1).join(' ') || '',
+                    email: sourceProfile.email || user.email || '',
+                    total_hours: sourceProfile.current_flight_hours || 0,
+                    overall_recognition_score: sourceProfile.overall_recognition_score || 0,
                     current_occupation: 'STUDENT PILOT',
-                    license_type: profileImage.ratings?.join(', ') || 'None',
-                    license_id: profileImage.license_id || '',
-                    country_of_license: profileImage.country_of_license || '',
-                    type_ratings: profileImage.ratings || []
+                    license_type: sourceProfile.ratings?.join(', ') || 'None',
+                    license_id: sourceProfile.license_id || '',
+                    country_of_license: sourceProfile.country_of_license || '',
+                    type_ratings: sourceProfile.ratings || []
                 } : {}),
                 // Always include license data from profiles table
-                ...(profileImage ? {
-                    license_type: profileImage.ratings?.join(', ') || 'None',
-                    license_id: profileImage.license_id || '',
-                    country_of_license: profileImage.country_of_license || '',
-                    type_ratings: profileImage.ratings || []
+                ...(sourceProfile ? {
+                    license_type: sourceProfile.ratings?.join(', ') || 'None',
+                    license_id: sourceProfile.license_id || '',
+                    country_of_license: sourceProfile.country_of_license || '',
+                    type_ratings: sourceProfile.ratings || []
                 } : {})
             };
             
             
             setProfileData(finalProfileData);
-            // Use profile image from profiles table first, then fall back to pilot_recognition_matches
-            const imageUrl = profileImage?.profile_image_url || finalProfileData.profile_image_url || '';
-            setProfileImageUrl(imageUrl);
-            
+            // Use decrypted profile image from profiles table first, then fall back to pilot_recognition_matches
             // Call Supabase Edge Function to calculate pathway matches
             const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
             const edgeFunctionUrl = `${supabaseUrl}/functions/v1/calculate-pathway-matches`;
@@ -823,17 +851,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 title="Profile"
                                 style={{ borderRadius: '45% / 50%' }}
                             >
-                                {profileImageUrl ? (
-                                    <img
-                                        src={profileImageUrl}
-                                        alt="Profile"
-                                        className="w-full h-full object-cover"
-                                    />
-                                ) : (
-                                    <span className="text-lg font-bold text-slate-700">
-                                        {(profileData?.full_name || 'Pilot').charAt(0)}
-                                    </span>
-                                )}
+                                <ProfileImage
+                                    url={profileData?.profile_image_url}
+                                    publicId={profileData?.profile_image_public_id}
+                                    name={profileData?.full_name}
+                                    size={48}
+                                    className="w-full h-full"
+                                    fallbackClassName="rounded-[45%/50%] bg-slate-100 text-slate-700 text-lg"
+                                />
                             </button>
 
                             {/* Profile Dropdown Menu */}
@@ -1180,19 +1205,21 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         >
                                             {uploadingImage ? (
                                                 <div style={{ color: 'white', fontSize: '0.75rem', textAlign: 'center' }}>Uploading...</div>
-                                            ) : profileImageUrl ? (
+                                            ) : (
                                                 <>
-                                                    <img 
-                                                        src={profileImageUrl} 
-                                                        alt="Profile" 
-                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                        onError={(e) => console.error('[IMAGE] Profile image error:', profileImageUrl, e)}
+                                                    <ProfileImage
+                                                        url={profileData?.profile_image_url}
+                                                        publicId={profileData?.profile_image_public_id}
+                                                        name={profileData?.full_name}
+                                                        size={100}
+                                                        className="w-full h-full"
+                                                        fallbackClassName="rounded-full bg-slate-900 text-white text-2xl"
                                                     />
                                                     <div style={{
                                                         position: 'absolute',
                                                         inset: 0,
                                                         background: 'rgba(0,0,0,0.5)',
-                                                        display: 'flex',
+                                                        display: profileData?.profile_image_url ? 'flex' : 'none',
                                                         alignItems: 'center',
                                                         justifyContent: 'center',
                                                         opacity: 0,
@@ -1206,8 +1233,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                         Change
                                                     </div>
                                                 </>
-                                            ) : (
-                                                <span>{initials}</span>
                                             )}
                                         </div>
                                         <input
