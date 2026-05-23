@@ -1008,23 +1008,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                 currentPage="home"
             />
 
-            {/* NOT A JOB BOARD Banner */}
-            <div className="bg-amber-50 border-b-2 border-amber-300 px-4 py-3">
-                <div className="max-w-7xl mx-auto flex items-start gap-3">
-                    <svg className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <p className="text-amber-800 font-bold text-sm">
-                            NOT A JOB BOARD — A RECOGNITION & INFORMATION PLATFORM
-                        </p>
-                        <p className="text-amber-700 text-sm mt-1">
-                            We don't post jobs or accept applications. Pilots get verified and discover pathway information. 
-                            Partners list requirements and access recognition data. No hiring promises. Just verified discovery.
-                        </p>
-                    </div>
-                </div>
-            </div>
 
 
 
