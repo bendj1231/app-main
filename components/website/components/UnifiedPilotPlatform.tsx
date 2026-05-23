@@ -4056,27 +4056,43 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     return () => clearInterval(interval);
   }, [profileData?.id, currentUser?.id]);
 
-  // Keep profileData in sync — prefer Supabase userProfile, fall back to auth0_id lookup
+  // Keep profileData in sync — prefer Supabase userProfile, fall back to auth0_id then email lookup
   useEffect(() => {
     if (userProfile) {
       setProfileData(userProfile);
     } else if (auth0User?.sub) {
+      const email = auth0User?.email || currentUser?.email;
       supabase
         .from('profiles')
         .select('*, profile_image_public_id')
         .eq('auth0_id', auth0User.sub)
         .maybeSingle()
         .then(async ({ data }) => {
-          if (!data) return;
-          if (data.id) {
+          if (data) {
+            // Found by auth0_id
             const { data: decrypted } = await readProfile(data.id);
             setProfileData(decrypted || data);
-          } else {
-            setProfileData(data);
+          } else if (email) {
+            // Fallback: look up by email (covers accounts where auth0_id not yet linked)
+            const { data: emailData } = await supabase
+              .from('profiles')
+              .select('*, profile_image_public_id')
+              .eq('email', email)
+              .maybeSingle();
+            if (emailData) {
+              // Link auth0_id for future lookups
+              supabase
+                .from('profiles')
+                .update({ auth0_id: auth0User.sub })
+                .eq('id', emailData.id)
+                .then(() => {});
+              const { data: decrypted } = await readProfile(emailData.id);
+              setProfileData(decrypted || emailData);
+            }
           }
         });
     }
-  }, [userProfile, auth0User?.sub]);
+  }, [userProfile, auth0User?.sub, auth0User?.email, currentUser?.email]);
 
   // Fetch wallet checks — works for both Supabase and Auth0-only users
   useEffect(() => {
