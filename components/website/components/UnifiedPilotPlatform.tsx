@@ -4130,6 +4130,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarError, setAvatarError] = useState('');
+  const [bellOpen, setBellOpen] = useState(false);
+  const [profileDropOpen, setProfileDropOpen] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -4373,6 +4376,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const shouldShowPasskeyPrompt = useShouldShowPasskeyPrompt();
   const showPasskeyPrompt = shouldShowPasskeyPrompt && !passkeyPromptDismissed && !!(auth0User?.sub || currentUser?.id);
 
+  useEffect(() => {
+    const close = () => { setBellOpen(false); setProfileDropOpen(false); setHamburgerOpen(false); };
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
+  }, []);
+
   return (
     <div className="relative min-h-screen flex flex-col font-sans">
 
@@ -4428,30 +4437,80 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 <Settings size={15} />
               </button>
 
-              {/* Notification bell */}
-              <button className="relative w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all" onClick={() => setTab('settings')}>
-                <Bell size={15} />
-                {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-amber-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                    {notifCount > 0 ? notifCount : '!'}
-                  </span>
+              {/* Notification bell dropdown */}
+              <div className="relative" onMouseDown={e => e.stopPropagation()}>
+                <button
+                  className="relative w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all"
+                  onClick={() => { setBellOpen(v => !v); setProfileDropOpen(false); setHamburgerOpen(false); }}
+                >
+                  <Bell size={15} />
+                  {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
+                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-amber-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                      {notifCount > 0 ? notifCount : '!'}
+                    </span>
+                  )}
+                </button>
+                {bellOpen && (
+                  <div className="absolute right-0 top-10 w-80 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                    <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                      <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Activity</p>
+                      <p className="text-sm font-black text-white">Notifications</p>
+                    </div>
+                    <NotificationsFeedPanel profileId={profileData?.id} />
+                    <button onClick={() => { setBellOpen(false); setTab('notifications' as TabId); }} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
+                      VIEW ALL NOTIFICATIONS →
+                    </button>
+                  </div>
                 )}
-              </button>
+              </div>
 
-              {/* Avatar - with IndexedDB caching */}
-              <button
-                onClick={() => setTab('profile')}
-                className="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-md overflow-hidden flex-shrink-0"
-              >
-                <ProfileImage
-                  url={profileData?.profile_image_url}
-                  publicId={profileData?.profile_image_public_id}
-                  name={displayName}
-                  size={32}
-                  className="w-full h-full"
-                  fallbackClassName="rounded-full text-sm"
-                />
-              </button>
+              {/* Avatar dropdown */}
+              <div className="relative" onMouseDown={e => e.stopPropagation()}>
+                <button
+                  onClick={() => { setProfileDropOpen(v => !v); setBellOpen(false); setHamburgerOpen(false); }}
+                  className="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-md overflow-hidden flex-shrink-0"
+                >
+                  <ProfileImage
+                    url={profileData?.profile_image_url}
+                    publicId={profileData?.profile_image_public_id}
+                    name={displayName}
+                    size={32}
+                    className="w-full h-full"
+                    fallbackClassName="rounded-full text-sm"
+                  />
+                </button>
+                {profileDropOpen && (
+                  <div className="absolute right-0 top-10 w-64 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                    <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                      <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Account</p>
+                      <p className="text-sm font-black text-white truncate">{displayName}</p>
+                      <p className="text-[10px] text-white/40 truncate">{profileData?.email ?? auth0User?.email}</p>
+                    </div>
+                    <div className="py-1">
+                      {[
+                        { label: 'Edit Profile', tab: 'profile' as TabId, icon: User },
+                        { label: 'My Wallet', tab: 'wallet' as TabId, icon: Shield },
+                        { label: 'Pathways', tab: 'pathways' as TabId, icon: Map },
+                        { label: 'Settings', tab: 'settings' as TabId, icon: Settings },
+                      ].map(({ label, tab, icon: Icon }) => (
+                        <button key={tab} onClick={() => { setTab(tab); setProfileDropOpen(false); }} className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors group">
+                          <div className="flex items-center gap-3">
+                            <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
+                            <span className="text-[11px] font-black text-white/70 group-hover:text-white tracking-wide transition-colors">{label.toUpperCase()}</span>
+                          </div>
+                          <ChevronRight size={12} className="text-white/20 group-hover:text-white/50 transition-colors" />
+                        </button>
+                      ))}
+                    </div>
+                    <div className="border-t border-white/5 py-1">
+                      <button onClick={() => { setProfileDropOpen(false); logout(); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
+                        <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
+                        <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <>
@@ -4471,13 +4530,41 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
               </button>
             </>
           )}
-          {/* Hamburger — always on the far right */}
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-all flex-shrink-0"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            <Menu size={18} />
-          </button>
+          {/* Hamburger dropdown — always on the far right */}
+          <div className="relative" onMouseDown={e => e.stopPropagation()}>
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-all flex-shrink-0"
+              onClick={() => { setHamburgerOpen(v => !v); setBellOpen(false); setProfileDropOpen(false); }}
+            >
+              <Menu size={18} />
+            </button>
+            {hamburgerOpen && (
+              <div className="absolute right-0 top-10 w-56 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                  <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Navigation</p>
+                </div>
+                <div className="py-1">
+                  {NAV_ITEMS.map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <button key={item.id} onClick={() => { setTab(item.id); setHamburgerOpen(false); setSidebarOpen(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors group">
+                        <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
+                        <span className="text-[11px] font-black text-white/60 group-hover:text-white tracking-wide transition-colors">{item.label.toUpperCase()}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {currentUser && (
+                  <div className="border-t border-white/5 py-1">
+                    <button onClick={() => { setHamburgerOpen(false); logout(); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
+                      <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
+                      <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
