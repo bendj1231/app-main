@@ -1402,6 +1402,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                 displayName: auth0Name || auth0Email.split('@')[0],
                             };
                             setCurrentUser(restoredUser);
+                            
+                            // Fetch profile data from Supabase (includes profile_image_url)
+                            try {
+                                const { data: profileData } = await supabase
+                                    .from('profiles')
+                                    .select('profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings')
+                                    .eq('auth0_id', auth0UserId)
+                                    .maybeSingle();
+                                
+                                if (profileData) {
+                                    console.log("✅ Profile data loaded for Auth0 session");
+                                    setUserProfile({
+                                        ...profileData,
+                                        user_id: auth0UserId,
+                                        profile_image_url: profileData.profile_image_url || '',
+                                        profile_image_public_id: profileData.profile_image_public_id || '',
+                                    });
+                                }
+                            } catch (err) {
+                                console.warn("⚠️ Could not load profile data for Auth0 session:", err);
+                            }
                         } else {
                             console.log("⚠️ Auth0 session expired");
                             // Clear expired session data
