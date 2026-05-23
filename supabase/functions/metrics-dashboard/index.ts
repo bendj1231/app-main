@@ -158,13 +158,16 @@ serve(async (req) => {
     const authHeader = req.headers.get('Authorization')
     const apiKey = Deno.env.get('METRICS_API_KEY')
     
-    if (apiKey && authHeader !== `Bearer ${apiKey}`) {
-      // In production, verify against admin users table
+    if (!apiKey || authHeader !== `Bearer ${apiKey}`) {
       console.warn(JSON.stringify({ 
         level: 'warn', 
         message: 'Unauthorized metrics access attempt',
         requestId 
       }))
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     // Fetch dashboard data

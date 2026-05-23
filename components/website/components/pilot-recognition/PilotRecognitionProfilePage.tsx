@@ -544,6 +544,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     }
                 }
                 
+                // Fix encrypted full_name for injected profile
+                let injectedFullName = decryptedProfile.full_name || decryptedProfile.display_name || 'Pilot';
+                if (typeof injectedFullName === 'string' && injectedFullName.startsWith('{"iv"')) {
+                    injectedFullName = decryptedProfile.display_name || 'Pilot';
+                }
+                
                 const merged = {
                     user_id: decryptedProfile.id,
                     total_hours: decryptedProfile.total_flight_hours || 0,
@@ -556,7 +562,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     certifications: decryptedProfile.certifications || [],
                     type_ratings: decryptedProfile.aircraft_types || [],
                     enrolled_programs: decryptedProfile.enrolled_programs || [],
-                    full_name: decryptedProfile.full_name || decryptedProfile.display_name || 'Pilot',
+                    full_name: injectedFullName,
                     display_name: decryptedProfile.display_name || '',
                     profile_image_url: decryptedProfile.profile_image_url || '',
                     wallet_did: injectedWalletData?.did || decryptedProfile.wallet_did || null,
@@ -614,6 +620,14 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // Provide default values if no profile exists, and merge with profiles table data
             // Use decrypted profile data if available
             const sourceProfile = decryptedProfileImage || profileImage;
+            
+            // Fix encrypted full_name - use display_name if full_name is encrypted
+            let resolvedFullName = sourceProfile?.full_name || sourceProfile?.display_name || 'Pilot';
+            if (typeof resolvedFullName === 'string' && resolvedFullName.startsWith('{"iv"')) {
+                // Vault decryption failed - use display_name instead
+                resolvedFullName = sourceProfile?.display_name || 'Pilot';
+            }
+            
             const finalProfileData = {
                 ...{
                     user_id: user.id,
@@ -636,7 +650,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 ...profileData,
                 // Override with profiles table data if pilot_recognition_matches is empty
                 ...(sourceProfile && !profileData ? {
-                    full_name: sourceProfile.full_name || sourceProfile.display_name || 'Pilot',
+                    full_name: resolvedFullName,
                     first_name: sourceProfile.display_name?.split(' ')[0] || '',
                     last_name: sourceProfile.display_name?.split(' ').slice(1).join(' ') || '',
                     email: sourceProfile.email || user.email || '',

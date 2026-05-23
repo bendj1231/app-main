@@ -27,5 +27,10 @@ external-references/
 *.sw?
 .vercel
 
+# Environment variables — never commit
+.env
+.env.*
+!.env.example
+
 # Firebase functions
 functions/.env
