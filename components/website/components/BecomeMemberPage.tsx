@@ -925,15 +925,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         )}
                                     </div>
                                     {/* Pilot licence upload slot */}
-                                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', background: '#f8fafc', border: '1px dashed #e2e8f0', borderRadius: '8px', overflow: 'hidden' }}>
-                                        <span style={{ fontSize: '15px', flexShrink: 0 }}>📜</span>
-                                        <div style={{ flex: 1 }}>
-                                            <p style={{ fontSize: '11px', fontWeight: 600, color: '#94a3b8', margin: 0 }}>Upload Pilot Licence</p>
-                                        </div>
-                                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(248,250,252,0.93)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', cursor: 'not-allowed' }}>
-                                            <span style={{ fontSize: '11px' }}>🔒</span>
-                                            <span style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444' }}>Recognition+</span>
-                                            <span style={{ fontSize: '10px', color: '#64748b' }}>— get verified so operators know your licence is current</span>
+                                    <div style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
+                                        <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', textAlign: 'center' }}>↑ Upload</button>
+                                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(241,245,249,0.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', cursor: 'not-allowed', borderRadius: '8px' }}>
+                                            <span style={{ fontSize: '10px', color: '#64748b' }}>Complete your free recognition profile for</span>
+                                            <span style={{ fontSize: '10px', fontWeight: 700, color: '#ef4444' }}>Recognition+</span>
+                                            <span style={{ fontSize: '10px', color: '#64748b' }}>eligibility</span>
                                         </div>
                                     </div>
                                     {/* Issuing Authority */}
@@ -950,15 +947,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             {['CAAP (Philippines)', 'FAA (USA)', 'EASA (Europe)', 'GCAA (UAE)', 'CASA (Australia)', 'CAA (UK)', 'DGCA (India)', 'TCCA (Canada)', 'SACAA (South Africa)', 'JCAB (Japan)', 'CAAS (Singapore)', 'CAAT (Thailand)', 'DGAC (France)', 'LBA (Germany)', 'ENAC (Italy)', 'Other'].map(a => <option key={a} value={a}>{a}</option>)}
                                         </select>
                                         {/* Medical certificate upload slot */}
-                                        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', marginTop: '6px', background: '#f8fafc', border: '1px dashed #e2e8f0', borderRadius: '8px', overflow: 'hidden' }}>
-                                            <span style={{ fontSize: '15px', flexShrink: 0 }}>🏥</span>
-                                            <div style={{ flex: 1 }}>
-                                                <p style={{ fontSize: '11px', fontWeight: 600, color: '#94a3b8', margin: 0 }}>Upload Medical Certificate</p>
-                                            </div>
-                                            <div style={{ position: 'absolute', inset: 0, background: 'rgba(248,250,252,0.93)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', cursor: 'not-allowed' }}>
-                                                <span style={{ fontSize: '11px' }}>🔒</span>
-                                                <span style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444' }}>Recognition+</span>
-                                                <span style={{ fontSize: '10px', color: '#64748b' }}>— get verified so operators know your medical is current</span>
+                                        <div style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', marginTop: '6px' }}>
+                                            <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', textAlign: 'center' }}>↑ Upload</button>
+                                            <div style={{ position: 'absolute', inset: 0, background: 'rgba(241,245,249,0.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', cursor: 'not-allowed', borderRadius: '8px' }}>
+                                                <span style={{ fontSize: '10px', color: '#64748b' }}>Complete your free recognition profile for</span>
+                                                <span style={{ fontSize: '10px', fontWeight: 700, color: '#ef4444' }}>Recognition+</span>
+                                                <span style={{ fontSize: '10px', color: '#64748b' }}>eligibility</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1115,15 +1109,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </select>
                                 </div>
                                 {/* ELP upload slot — Radio/NTC licence */}
-                                <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', background: '#f8fafc', border: '1px dashed #e2e8f0', borderRadius: '8px', overflow: 'hidden' }}>
-                                    <span style={{ fontSize: '15px', flexShrink: 0 }}>📡</span>
-                                    <div style={{ flex: 1 }}>
-                                        <p style={{ fontSize: '11px', fontWeight: 600, color: '#94a3b8', margin: 0 }}>Upload Radio / NTC Licence</p>
-                                    </div>
-                                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(248,250,252,0.93)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', cursor: 'not-allowed' }}>
-                                        <span style={{ fontSize: '11px' }}>🔒</span>
-                                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444' }}>Recognition+</span>
-                                        <span style={{ fontSize: '10px', color: '#64748b' }}>— get verified so operators know your radio licence is current</span>
+                                <div style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
+                                    <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', textAlign: 'center' }}>↑ Upload</button>
+                                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(241,245,249,0.92)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', cursor: 'not-allowed', borderRadius: '8px' }}>
+                                        <span style={{ fontSize: '10px', color: '#64748b' }}>Complete your free recognition profile for</span>
+                                        <span style={{ fontSize: '10px', fontWeight: 700, color: '#ef4444' }}>Recognition+</span>
+                                        <span style={{ fontSize: '10px', color: '#64748b' }}>eligibility</span>
                                     </div>
                                 </div>
                                 {/* Confirm button */}
