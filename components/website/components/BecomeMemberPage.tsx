@@ -926,7 +926,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </div>
                                     {/* Pilot licence upload slot */}
                                     <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-                                        <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed' }}>↑ Upload Pilot Licence</button>
+                                        <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Upload Pilot Licence</button>
                                         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                         </div>
@@ -946,7 +946,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </select>
                                         {/* Medical certificate upload slot */}
                                         <div style={{ position: 'relative', display: 'inline-block', width: '100%', marginTop: '6px' }}>
-                                            <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed' }}>↑ Upload Medical Certificate</button>
+                                            <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Upload Medical Certificate</button>
                                             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                             </div>
@@ -1106,7 +1106,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 {/* ELP upload slot — Radio/NTC licence */}
                                 <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-                                    <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed' }}>↑ Upload Radio / NTC Licence</button>
+                                    <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Upload Radio / NTC Licence</button>
                                     <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                     </div>
