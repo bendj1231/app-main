@@ -10,7 +10,8 @@ import {
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Star, Target,
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
   Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye,
-  Brain, FolderOpen, PlayCircle, GraduationCap
+  Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
+  CreditCard, Mail, Server, Database, Cloud
 } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useVaultProfile } from '@/src/hooks/useVaultProfile';
@@ -23,6 +24,7 @@ import TypeRatingSearchPage from '../../../pages/TypeRatingSearchPage';
 import { PortalAirlineExpectationsPage } from '../../../portal/pages/PortalAirlineExpectationsPage';
 import { PathwaysPageModern } from '../../../portal/pages/PathwaysPageModern';
 import FlightInstrumentDashboard from './dashboard/FlightInstrumentDashboard';
+import { InfrastructureDashboard } from './InfrastructureDashboard';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import ProfileImage from '../../../src/components/ProfileImage';
@@ -3242,9 +3244,9 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
       {/* Flight Instrument Dashboard */}
       <FlightInstrumentDashboard userId={currentUser.id} />
 
-      {/* Admin Token Tollbooth Panel — only visible to super admin */}
+      {/* Admin Infrastructure Command Centre — only visible to super admin */}
       {(currentUser.email === SUPER_ADMIN_EMAIL || profile?.role === 'super_admin') && (
-        <AdminTokenPanel />
+        <InfrastructureDashboard />
       )}
 
       {/* Programs */}
