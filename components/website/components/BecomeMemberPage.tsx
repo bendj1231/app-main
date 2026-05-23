@@ -448,7 +448,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             console.log('🔵 [handleSaveProfile] saving to supabase...');
             const { error } = await supabase
                 .from('profiles')
-                .update({ display_name: cleanName, first_name: cleanFirst, last_name: cleanLast, current_occupation: occupation, date_of_birth: dob || null, total_hours: hours, aircraft_types: aircraftTypes })
+                .update({
+                    display_name: cleanName,
+                    full_name: `${cleanFirst} ${cleanLast}`.trim(),
+                    current_occupation: occupation,
+                    date_of_birth: dob || null,
+                    total_flight_hours: hours || null,
+                    aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null,
+                    aircraft_rated_on: aircraftTypes.length > 0 ? aircraftTypes.join(', ') : null,
+                    nationality: nationality || null,
+                    license_issuing_authority: issuingAuthority || null,
+                    country_of_license: issuingAuthority || null,
+                    ratings: ratings.length > 0 ? ratings : null,
+                    license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
+                })
                 .eq('auth0_id', auth0Id);
             if (error) { console.error('🔴 [handleSaveProfile] supabase error:', error); throw error; }
             console.log('✅ [handleSaveProfile] profile saved');

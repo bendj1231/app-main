@@ -1927,7 +1927,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
     const licenseSlots = [
       {
         icon: '📜', label: 'Pilot License',
-        value: safe(profile?.license_type || profile?.current_occupation),
+        value: safe(profile?.current_occupation || (profile?.license_types && profile?.license_types[0])),
         sub: safe(profile?.license_number || profile?.license_id),
         expiry: safe(profile?.license_expiry),
         check: licenseCheck,
@@ -2407,7 +2407,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
         fields: [
           { key: 'license_number',   label: 'License Number',    placeholder: 'e.g. 155660-CPL',         value: safe(profile?.license_number   || profile?.license_id) },
           { key: 'license_type',     label: 'License Type',      placeholder: 'e.g. CPL, ATPL, PPL',     value: safe(profile?.license_type     || profile?.current_occupation) },
-          { key: 'issuing_authority',label: 'Issuing Authority', placeholder: 'e.g. CAAP, EASA, FAA',    value: safe(profile?.issuing_authority || profile?.country_of_license) },
+          { key: 'issuing_authority',label: 'Issuing Authority', placeholder: 'e.g. CAAP, EASA, FAA',    value: safe(profile?.issuing_authority || profile?.license_issuing_authority || profile?.country_of_license) },
           { key: 'license_expiry',   label: 'Expiry Date',       placeholder: 'YYYY-MM-DD',              value: safe(profile?.license_expiry) },
           { key: 'pel_number',       label: 'PEL / Reg Number',  placeholder: 'e.g. 155660',             value: safe(profile?.pel_number) },
         ],
@@ -2471,7 +2471,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
         color: '#ec4899',
         fields: [
           { key: 'display_name',  label: 'Full Name',         placeholder: 'Your full name',            value: safe(profile?.display_name) },
-          { key: 'nationality',   label: 'Nationality',       placeholder: 'e.g. Filipino, Emirati',    value: safe(profile?.nationality || profile?.country_of_license) },
+          { key: 'nationality',   label: 'Nationality',       placeholder: 'e.g. Filipino, Emirati',    value: safe(profile?.nationality) },
           { key: 'date_of_birth', label: 'Date of Birth',     placeholder: 'YYYY-MM-DD',                value: safe(profile?.date_of_birth) },
           { key: 'passport_no',   label: 'Passport Number',   placeholder: 'e.g. A1234567',             value: safe(profile?.passport_no) },
           { key: 'home_base',     label: 'Home Base / City',  placeholder: 'e.g. Dubai, UAE',           value: safe(profile?.home_base || profile?.domicile) },
@@ -2509,13 +2509,16 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
         );
         await sb.from('profiles').update({
-          display_name:        editValues.display_name        || undefined,
-          license_id:          editValues.license_number      || undefined,
-          license_type:        editValues.license_type        || undefined,
-          country_of_license:  editValues.issuing_authority   || undefined,
-          medical_class:       editValues.medical_class       || undefined,
-          medical_expiry:      editValues.medical_expiry      || undefined,
-          current_flight_hours: editValues.total_flight_hours ? Number(editValues.total_flight_hours) : undefined,
+          display_name:            editValues.display_name        || undefined,
+          license_id:              editValues.license_number      || undefined,
+          license_number:          editValues.license_number      || undefined,
+          current_occupation:      editValues.license_type        || undefined,
+          country_of_license:      editValues.issuing_authority   || undefined,
+          license_issuing_authority: editValues.issuing_authority || undefined,
+          nationality:             editValues.nationality         || undefined,
+          medical_class:           editValues.medical_class       || undefined,
+          medical_expiry:          editValues.medical_expiry      || undefined,
+          current_flight_hours:    editValues.total_flight_hours ? Number(editValues.total_flight_hours) : undefined,
         }).eq('id', profile?.id);
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
