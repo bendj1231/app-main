@@ -129,7 +129,11 @@ const cardVariants: any = {
 const HomeTab: React.FC<{
   profile: any; walletChecks: any[]; onNavigate: (p: string) => void; setTab: (t: TabId) => void;
   enrolledInFoundation: boolean; airlines: any[]; auth0User?: any;
-}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User }) => {
+  avatarInputRef?: React.RefObject<HTMLInputElement | null>;
+  avatarUploading?: boolean;
+  avatarError?: string;
+  handleAvatarUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User, avatarInputRef, avatarUploading, avatarError, handleAvatarUpload }) => {
   const [visible, setVisible] = React.useState(false);
   const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
     try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
@@ -355,8 +359,21 @@ const HomeTab: React.FC<{
                 </button>
               )}
 
-              {/* Avatar - with IndexedDB caching */}
-              <div className="relative w-24 h-24 mx-auto mb-4">
+              {/* Hidden file input */}
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarUpload}
+              />
+
+              {/* Avatar - clickable to upload */}
+              <div
+                className="relative w-24 h-24 mx-auto mb-1 cursor-pointer group"
+                onClick={() => !avatarUploading && avatarInputRef?.current?.click()}
+                title="Click to change photo"
+              >
                 <ProfileImage
                   url={profile?.profile_image_url}
                   publicId={profile?.profile_image_public_id}
@@ -365,7 +382,15 @@ const HomeTab: React.FC<{
                   className="rounded-full border-2 border-white/30"
                   fallbackClassName="rounded-full bg-blue-500 text-white text-xl"
                 />
+                {/* Camera overlay on hover */}
+                <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {avatarUploading
+                    ? <div className="w-5 h-5 border-2 border-white/60 border-t-white rounded-full animate-spin" />
+                    : <Camera size={20} className="text-white" />}
+                </div>
               </div>
+              {avatarError && <p className="text-red-400 text-[10px] text-center mb-2">{avatarError}</p>}
+              {!avatarError && <p className="text-white/30 text-[10px] text-center mb-3">Tap to change photo</p>}
 
               <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
               <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">{level}</p>
@@ -4101,6 +4126,55 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [notifCount, setNotifCount] = useState(0);
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [profileData, setProfileData] = useState<any>(userProfile);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState('');
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !profileData?.id) return;
+    if (!file.type.startsWith('image/')) { setAvatarError('Must be an image file'); return; }
+    if (file.size > 5 * 1024 * 1024) { setAvatarError('Image must be under 5MB'); return; }
+    setAvatarUploading(true);
+    setAvatarError('');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!(session as any)?.access_token) throw new Error('Not authenticated');
+      const canvas = document.createElement('canvas');
+      const imgEl = document.createElement('img') as HTMLImageElement;
+      await new Promise<void>((res, rej) => {
+        imgEl.onload = () => {
+          const max = 400;
+          let w = imgEl.width, h = imgEl.height;
+          if (w > h && w > max) { h = h * max / w; w = max; }
+          else if (h > max) { w = w * max / h; h = max; }
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d')!.drawImage(imgEl, 0, 0, w, h);
+          res();
+        };
+        imgEl.onerror = rej;
+        imgEl.src = URL.createObjectURL(file);
+      });
+      const base64 = canvas.toDataURL('image/jpeg', 0.8);
+      const uploadRes = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/cloudinary-upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${(session as any).access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ file: base64, userId: profileData.id }),
+      });
+      const result = await uploadRes.json();
+      if (!result.success) throw new Error(result.error || 'Upload failed');
+      await supabase.from('profiles').update({
+        profile_image_url: result.url,
+        profile_image_public_id: result.publicId,
+      }).eq('id', profileData.id);
+      setProfileData((prev: any) => ({ ...prev, profile_image_url: result.url, profile_image_public_id: result.publicId }));
+    } catch (err: any) {
+      setAvatarError(err.message || 'Upload failed');
+    } finally {
+      setAvatarUploading(false);
+      if (avatarInputRef.current) avatarInputRef.current.value = '';
+    }
+  };
   const [emailVerified, setEmailVerified] = useState<boolean>(true);
   const [resendingSent, setResendingSent] = useState(false);
   const [tcUpdatePending, setTcUpdatePending] = useState(false);
@@ -4235,7 +4309,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} />;
+      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} avatarInputRef={avatarInputRef} avatarUploading={avatarUploading} avatarError={avatarError} handleAvatarUpload={handleAvatarUpload} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
       case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} hasActiveSession={!!(auth0User?.sub || currentUser?.id)} />;
