@@ -11,13 +11,36 @@ if (typeof window !== 'undefined') {
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { Styles } from '@/src/components/ui/Styles';
 import { AuthProvider } from '@/src/contexts/AuthContext';
 import { ToastProvider } from '@/src/components/ui/toast';
 import { AppRoutes } from '@/src/routes/AppRoutes';
 import './index.css';
+
+const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
+  return (
+    <Auth0Provider
+      domain={import.meta.env.VITE_AUTH0_DOMAIN || 'dev-ir828tguibp1dh5f.eu.auth0.com'}
+      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || 'FSW7zJxyBNJRvZGxN2xGH2bAQxwzHVmb'}
+      authorizationParams={{
+        redirect_uri: `${window.location.origin}/auth/callback`,
+        scope: 'openid profile email'
+      }}
+      onRedirectCallback={() => {
+        navigate('/auth/callback', { replace: true });
+      }}
+      skipRedirectCallback={
+        window.location.pathname === '/auth/logbook/callback' ||
+        (window.location.search.includes('code=') && !window.location.search.includes('state='))
+      }
+    >
+      {children}
+    </Auth0Provider>
+  );
+};
 
 // Suppress ResizeObserver loop warning (benign framer-motion issue)
 const resizeObserverErrorHandler = (e: ErrorEvent) => {
@@ -48,28 +71,14 @@ if (rootElement && !(rootElement as any)._reactRoot) {
 }
 
 root.render(
-  <Auth0Provider
-    domain={import.meta.env.VITE_AUTH0_DOMAIN || 'dev-ir828tguibp1dh5f.eu.auth0.com'}
-    clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || 'FSW7zJxyBNJRvZGxN2xGH2bAQxwzHVmb'}
-    authorizationParams={{
-      redirect_uri: `${window.location.origin}/auth/callback`,
-      scope: 'openid profile email'
-    }}
-    onRedirectCallback={(appState) => {
-      window.history.replaceState({}, document.title, '/auth/callback');
-    }}
-    skipRedirectCallback={
-      window.location.pathname === '/auth/logbook/callback' ||
-      (window.location.search.includes('code=') && !window.location.search.includes('state='))
-    }
-  >
-    <BrowserRouter>
+  <BrowserRouter>
+    <Auth0ProviderWithNavigate>
       <AuthProvider>
         <ToastProvider>
           <Styles />
           <AppRoutes />
         </ToastProvider>
       </AuthProvider>
-    </BrowserRouter>
-  </Auth0Provider>
+    </Auth0ProviderWithNavigate>
+  </BrowserRouter>
 );
