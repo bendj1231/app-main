@@ -81,7 +81,9 @@ export const OAuthCallback = () => {
           navigate('/become-member?setup=1');
         } else {
           setProfileCreated(true);
-          navigate('/platform');
+          // Passkey already registered on this device — skip verify gate
+          const hasPasskey = localStorage.getItem('pr_passkey_registered') === 'true';
+          navigate(hasPasskey ? '/platform' : '/flight-deck-verify');
         }
       } catch (err) {
         console.error('Profile creation error:', err);

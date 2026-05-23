@@ -144,6 +144,7 @@ const IssuerPolicyPage = lazy(() => import('@/app/issuer-policy/page'));
 const EnterpriseVerificationDashboard = lazy(() => import('@/app/enterprise/verification-dashboard/page'));
 const ATOLaunchKitPage = lazy(() => import('@/components/website/components/ato/ATOLaunchKitPage').then(m => ({ default: m.ATOLaunchKitPage })));
 const FlightDeckLoginPage = lazy(() => import('@/components/website/components/FlightDeckLoginPage').then(m => ({ default: m.FlightDeckLoginPage })));
+const FlightDeckVerifyPage = lazy(() => import('@/components/website/components/FlightDeckVerifyPage').then(m => ({ default: m.FlightDeckVerifyPage })));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -393,6 +394,7 @@ export const AppRoutes = () => {
       <Route path="/access-portal-2" element={<AccessPortal2Page onNavigate={handleNavigate} />} />
       <Route path="/platform" element={<UnifiedPilotPlatform onNavigate={handleNavigate} />} />
       <Route path="/flight-deck-login" element={<FlightDeckLoginPage onNavigate={handleNavigate} />} />
+      <Route path="/flight-deck-verify" element={<FlightDeckVerifyPage onNavigate={handleNavigate} />} />
       <Route path="/examination-portal" element={
         <ProtectedRoute>
           <ExaminationPortal />
