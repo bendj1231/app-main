@@ -56,7 +56,9 @@ root.render(
       scope: 'openid profile email'
     }}
     onRedirectCallback={(appState) => {
-      window.history.replaceState({}, document.title, appState?.returnTo || '/');
+      const returnTo = appState?.returnTo || '/';
+      window.history.replaceState({}, document.title, returnTo);
+      window.location.replace(returnTo);
     }}
     skipRedirectCallback={
       window.location.pathname === '/auth/logbook/callback' ||

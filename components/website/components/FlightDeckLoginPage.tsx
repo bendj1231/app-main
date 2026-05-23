@@ -34,7 +34,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                     login_hint: email.trim(),
                     redirect_uri: `${window.location.origin}/auth/callback`,
                 },
-                appState: { returnTo: '/platform' },
+                appState: { returnTo: '/flight-deck-verify' },
             });
         } catch {
             setError('Unable to continue. Please try again.');
@@ -48,7 +48,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                 connection: 'google-oauth2',
                 redirect_uri: `${window.location.origin}/auth/callback`,
             },
-            appState: { returnTo: '/platform' },
+            appState: { returnTo: '/flight-deck-verify' },
         });
     };
 
