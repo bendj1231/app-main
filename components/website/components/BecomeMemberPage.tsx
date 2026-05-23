@@ -1074,7 +1074,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     return (
                                         <button
                                             type="button"
-                                            onClick={() => { if (ok) { setActiveInstrument(i => Math.max(i, 3)); savePartialProfile({ current_occupation: occupation, license_issuing_authority: issuingAuthority || null, country_of_license: issuingAuthority || null, license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null), aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null, ratings: ratings.length > 0 ? ratings : null }); } }}
+                                            onClick={() => { if (ok) { setActiveInstrument(i => Math.max(i, 3)); const cleanRatings = ratings.filter(r => r !== '__none__'); savePartialProfile({ current_occupation: occupation, license_issuing_authority: issuingAuthority || null, country_of_license: issuingAuthority || null, license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null), aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null, ratings: cleanRatings.length > 0 ? cleanRatings : null }); } }}
                                             disabled={!ok}
                                             style={{
                                                 width: '100%', padding: '11px 16px',
@@ -1314,7 +1314,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                     aircraftTypes,
                                                     issuingAuthority: issuingAuthority || null,
                                                     licenseTypes: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
-                                                    ratings: ratings.length > 0 ? ratings : null,
+                                                    ratings: ratings.filter(r => r !== '__none__').length > 0 ? ratings.filter(r => r !== '__none__') : null,
                                                     storageBackend: walletStorageChoice || 'supabase',
                                                     requestToken,
                                                 }),
