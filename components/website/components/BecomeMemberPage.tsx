@@ -420,6 +420,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
     }, []);
 
+    // Silent partial save — called after each step confirm so data is never lost even if user drops off
+    const savePartialProfile = async (fields: Record<string, any>) => {
+        try {
+            const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+            if (!auth0Id) return;
+            const { data: { session } } = await supabase.auth.getSession();
+            const sbUserId = session?.user?.id;
+
+            // Try auth0_id first
+            const { count } = await supabase.from('profiles').update(fields)
+                .eq('auth0_id', auth0Id).select('id', { count: 'exact', head: true });
+            if ((count ?? 0) === 0 && sbUserId) {
+                await supabase.from('profiles').update({ ...fields, auth0_id: auth0Id }).eq('id', sbUserId);
+            }
+        } catch (e) {
+            console.warn('[BecomeMember] partial save failed (non-blocking):', e);
+        }
+    };
+
     const handleSaveProfile = async () => {
         console.log('[DEBUG][BecomeMember] handleSaveProfile called');
         console.log('[DEBUG][BecomeMember] Auth0 user at save time:', { sub: user?.sub, email: user?.email });
@@ -820,7 +839,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 <button
                                     type="button"
-                                    onClick={() => { if (firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && dob && nationality) setActiveInstrument(i => Math.max(i, 2)); }}
+                                    onClick={() => { if (firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && dob && nationality) { setActiveInstrument(i => Math.max(i, 2)); savePartialProfile({ display_name: displayName.trim(), full_name: `${firstName.trim()} ${lastName.trim()}`.trim(), date_of_birth: dob || null, nationality: nationality || null }); } }}
                                     disabled={firstName.trim().length < 1 || lastName.trim().length < 1 || displayName.trim().length < 2 || !dob || !nationality}
                                     style={{
                                         width: '100%', padding: '12px 16px',
@@ -1055,7 +1074,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     return (
                                         <button
                                             type="button"
-                                            onClick={() => { if (ok) setActiveInstrument(i => Math.max(i, 3)); }}
+                                            onClick={() => { if (ok) { setActiveInstrument(i => Math.max(i, 3)); savePartialProfile({ current_occupation: occupation, license_issuing_authority: issuingAuthority || null, country_of_license: issuingAuthority || null, license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null), aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null, ratings: ratings.length > 0 ? ratings : null }); } }}
                                             disabled={!ok}
                                             style={{
                                                 width: '100%', padding: '11px 16px',
