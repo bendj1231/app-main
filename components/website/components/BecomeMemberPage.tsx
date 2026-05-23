@@ -1460,7 +1460,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                 <span style={{ color: '#4ade80', fontSize: '11px', fontWeight: 600 }}>Secure Connection</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
-                                <span style={{ color: '#635bff', fontSize: '11px', fontWeight: 600 }}>Powered by Auth0</span>
+                                <span style={{ color: '#7dd3fc', fontSize: '11px', fontWeight: 600 }}>Powered by Auth0</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
                                 <span style={{ color: '#ef4444', fontSize: '11px', fontWeight: 600 }}>Wallet by walt.id</span>
                             </div>
