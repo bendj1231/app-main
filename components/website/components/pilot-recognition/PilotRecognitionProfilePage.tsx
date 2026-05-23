@@ -662,8 +662,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     country_of_license: sourceProfile.country_of_license || '',
                     type_ratings: sourceProfile.ratings || []
                 } : {}),
-                // Always include license data from profiles table
+                // Always include profile image and license data from profiles table
                 ...(sourceProfile ? {
+                    profile_image_url: sourceProfile.profile_image_url || '',
+                    profile_image_public_id: sourceProfile.profile_image_public_id || '',
                     license_type: sourceProfile.ratings?.join(', ') || 'None',
                     license_id: sourceProfile.license_id || '',
                     country_of_license: sourceProfile.country_of_license || '',
