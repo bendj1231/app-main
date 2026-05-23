@@ -43,6 +43,23 @@ interface InfraStats {
   vcRevocations: number;
   // Rate limits / security
   rateLimitBuckets: number;
+  // Auth0
+  auth0LoginsToday: number;
+  auth0EventsTotal: number;
+  // Logbook providers (MyFlightBook etc)
+  logbookConnectionsTotal: number;
+  logbookConnectionsActive: number;
+  connectedProviders: string[];
+  // Helio (crypto payments)
+  helioTokensTotal: number;
+  paymentSplitsTotal: number;
+  // Walt.id / DID
+  waltDids: number;
+  waltWalletsActive: number;
+  // Resend (email)
+  emailsSentTotal: number;
+  // IPFS
+  ipfsPins: number;
 }
 
 const REFRESH_INTERVAL = 30000; // 30s
@@ -131,7 +148,12 @@ export const InfrastructureDashboard: React.FC = () => {
         veremarkRes, veremarkWeekRes,
         notifTodayRes, notifTotalRes,
         walletRes, vcRevRes,
-        rateLimitRes, imagesRes
+        rateLimitRes, imagesRes,
+        auth0TodayRes, auth0TotalRes,
+        logbookTotalRes, logbookActiveRes, logbookProvidersRes,
+        helioRes, paymentSplitsRes,
+        waltDidsRes, waltWalletsRes,
+        emailsRes, ipfsPinsRes,
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).gte('created_at', weekAgo),
@@ -153,9 +175,27 @@ export const InfrastructureDashboard: React.FC = () => {
         supabase.from('vc_revocation_registry').select('*', { count: 'exact', head: true }),
         supabase.from('rate_limit_buckets').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).not('profile_image_url', 'is', null),
+        // Auth0 — via activity log
+        supabase.from('user_activity_log').select('*', { count: 'exact', head: true }).gte('created_at', today).or('activity_type.ilike.%login%,activity_type.ilike.%auth%'),
+        supabase.from('user_activity_log').select('*', { count: 'exact', head: true }).or('activity_type.ilike.%login%,activity_type.ilike.%auth%'),
+        // Logbook providers
+        supabase.from('pilot_platform_connections').select('*', { count: 'exact', head: true }),
+        supabase.from('pilot_platform_connections').select('*', { count: 'exact', head: true }).eq('connection_status', 'active'),
+        supabase.from('pilot_platform_connections').select('provider_name'),
+        // Helio
+        supabase.from('ato_issued_tokens').select('*', { count: 'exact', head: true }),
+        supabase.from('payment_splits').select('*', { count: 'exact', head: true }),
+        // Walt.id
+        supabase.from('pilot_dids').select('*', { count: 'exact', head: true }),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).not('walt_wallet_id', 'is', null),
+        // Resend — via notifications table method column
+        supabase.from('notifications').select('*', { count: 'exact', head: true }),
+        // IPFS
+        supabase.from('public_ipfs_pins').select('*', { count: 'exact', head: true }),
       ]);
 
       const uniqueAIUsers = new Set((aiUsersRes.data || []).map((r: any) => r.user_id)).size;
+      const connectedProviders: string[] = [...new Set<string>((logbookProvidersRes.data || []).map((r: any) => String(r.provider_name)).filter(Boolean))];
 
       setStats({
         totalPilots: pilotsRes.count ?? 0,
@@ -180,6 +220,17 @@ export const InfrastructureDashboard: React.FC = () => {
         pilotWallets: walletRes.count ?? 0,
         vcRevocations: vcRevRes.count ?? 0,
         rateLimitBuckets: rateLimitRes.count ?? 0,
+        auth0LoginsToday: auth0TodayRes.count ?? 0,
+        auth0EventsTotal: auth0TotalRes.count ?? 0,
+        logbookConnectionsTotal: logbookTotalRes.count ?? 0,
+        logbookConnectionsActive: logbookActiveRes.count ?? 0,
+        connectedProviders,
+        helioTokensTotal: helioRes.count ?? 0,
+        paymentSplitsTotal: paymentSplitsRes.count ?? 0,
+        waltDids: waltDidsRes.count ?? 0,
+        waltWalletsActive: waltWalletsRes.count ?? 0,
+        emailsSentTotal: emailsRes.count ?? 0,
+        ipfsPins: ipfsPinsRes.count ?? 0,
       });
       setLastRefresh(new Date());
       setError(null);
@@ -388,9 +439,110 @@ export const InfrastructureDashboard: React.FC = () => {
         </div>
       </ServiceBlock>
 
+      {/* ── AUTH0 ──────────────────────────────────────────────── */}
+      <ServiceBlock title="Auth0 — Identity Provider" status="live" icon={Shield} color="#eb5424">
+        <div className="grid grid-cols-2 gap-2">
+          <StatCard icon={Users} label="Auth Events Today" value={stats.auth0LoginsToday} color="#eb5424" sub="Logged in user_activity_log" />
+          <StatCard icon={BarChart3} label="Auth Events Total" value={stats.auth0EventsTotal} color="#f97316" />
+        </div>
+        <div
+          className="mt-2 flex items-start gap-2 p-2 rounded-lg text-[9px] text-amber-300/70"
+          style={{ background: 'rgba(235,84,36,0.06)', border: '1px solid rgba(235,84,36,0.15)' }}
+        >
+          <AlertTriangle size={10} className="flex-shrink-0 mt-0.5" style={{ color: '#eb5424' }} />
+          Full Auth0 login counts, MFA events, and anomaly detection require the Auth0 Dashboard → Monitoring → Logs.
+          Counts above reflect activity logged in Supabase only.
+        </div>
+        <a href="https://manage.auth0.com" target="_blank" rel="noopener noreferrer"
+          className="inline-block mt-2 text-[9px] px-2 py-1 rounded text-white/50 hover:text-white transition-colors"
+          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+        >Auth0 Dashboard →</a>
+      </ServiceBlock>
+
+      {/* ── LOGBOOK PROVIDERS ──────────────────────────────────── */}
+      <ServiceBlock
+        title="Logbook Providers — MyFlightBook / ForeFlight / Safelog"
+        status={stats.logbookConnectionsTotal > 0 ? 'live' : 'partial'}
+        icon={Activity}
+        color="#0ea5e9"
+      >
+        <div className="grid grid-cols-2 gap-2">
+          <StatCard icon={Activity} label="Total OAuth Connections" value={stats.logbookConnectionsTotal} color="#0ea5e9" />
+          <StatCard icon={CheckCircle} label="Active Connections" value={stats.logbookConnectionsActive} color="#22c55e" />
+        </div>
+        {stats.connectedProviders.length > 0 ? (
+          <div className="mt-2 flex flex-wrap gap-1">
+            <span className="text-[9px] text-white/40 mr-1">Connected providers:</span>
+            {stats.connectedProviders.map(p => (
+              <span key={p} className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(14,165,233,0.15)', color: '#38bdf8' }}>{p}</span>
+            ))}
+          </div>
+        ) : (
+          <p className="text-[9px] text-white/30 mt-2">No pilots have connected a logbook provider yet. OAuth callback: /auth/logbook/callback</p>
+        )}
+      </ServiceBlock>
+
+      {/* ── HELIO ──────────────────────────────────────────────── */}
+      <ServiceBlock title="Helio — Crypto Payments (USDC)" status={stats.helioTokensTotal > 0 ? 'live' : 'partial'} icon={Zap} color="#a855f7">
+        <div className="grid grid-cols-2 gap-2">
+          <StatCard icon={Zap} label="ATO Tokens Issued" value={stats.helioTokensTotal} color="#a855f7" sub="Via helio-webhook" />
+          <StatCard icon={CreditCard} label="Payment Splits" value={stats.paymentSplitsTotal} color="#c084fc" sub="3-way: Veremark / ATO / Platform" />
+        </div>
+        {stats.helioTokensTotal === 0 && (
+          <p className="text-[9px] text-white/30 mt-2">No Helio payments processed yet — webhook: /helio-webhook</p>
+        )}
+      </ServiceBlock>
+
+      {/* ── WALT.ID / DID ──────────────────────────────────────── */}
+      <ServiceBlock title="Walt.id — DID / Verifiable Credential Issuer" status={stats.waltWalletsActive > 0 ? 'live' : 'partial'} icon={Lock} color="#6366f1">
+        <div className="grid grid-cols-2 gap-2">
+          <StatCard icon={Lock} label="Walt Wallets Active" value={stats.waltWalletsActive} color="#6366f1" sub="profiles with walt_wallet_id" />
+          <StatCard icon={Globe} label="DIDs Registered" value={stats.waltDids} color="#818cf8" sub="pilot_dids table" />
+        </div>
+        <p className="text-[9px] text-white/20 mt-2">
+          Issuer API: issuer.portal.walt.id &nbsp;·&nbsp; Wallet API: VITE_WALT_WALLET_API &nbsp;·&nbsp; Wallet provision edge fn: /wallet-provision
+        </p>
+      </ServiceBlock>
+
+      {/* ── RESEND ─────────────────────────────────────────────── */}
+      <ServiceBlock title="Resend — Transactional Email" status="live" icon={Mail} color="#64748b">
+        <div className="grid grid-cols-2 gap-2">
+          <StatCard icon={Mail} label="Notifications (Supabase)" value={stats.emailsSentTotal} color="#94a3b8" sub="All notification records" />
+          <StatCard icon={Mail} label="Sent Today" value={stats.notificationsToday} color="#64748b" sub="Via Resend API" />
+        </div>
+        <p className="text-[9px] text-white/20 mt-2">
+          Edge functions: send-account-created-email, send-enrollment-email, ato-notification &nbsp;·&nbsp;
+          <a href="https://resend.com/emails" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">Resend Dashboard →</a>
+        </p>
+      </ServiceBlock>
+
+      {/* ── SENTRY ─────────────────────────────────────────────── */}
+      <ServiceBlock title="Sentry — Error Monitoring" status="unknown" icon={AlertTriangle} color="#f43f5e">
+        <p className="text-[9px] text-white/40 leading-relaxed">
+          Sentry is configured via src/lib/sentry.ts. Error events are sent directly to Sentry's servers — no counts stored in Supabase.
+          Check Sentry Dashboard for error rates, performance traces, and replay sessions.
+        </p>
+        <a href="https://sentry.io" target="_blank" rel="noopener noreferrer"
+          className="inline-block mt-2 text-[9px] px-2 py-1 rounded text-white/50 hover:text-white transition-colors"
+          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+        >Sentry Dashboard →</a>
+      </ServiceBlock>
+
+      {/* ── IPFS / PINATA ──────────────────────────────────────── */}
+      <ServiceBlock title="IPFS — Public Credential Pins" status={stats.ipfsPins > 0 ? 'live' : 'partial'} icon={Globe} color="#06b6d4">
+        <div className="grid grid-cols-1 gap-2">
+          <StatCard icon={Globe} label="Public IPFS Pins" value={stats.ipfsPins} color="#06b6d4" sub="Institutional / credential CIDs" />
+        </div>
+        {stats.ipfsPins === 0 && (
+          <p className="text-[9px] text-white/30 mt-2">No IPFS pins yet — CIDs indexed in public_ipfs_pins table</p>
+        )}
+      </ServiceBlock>
+
       {/* Footer */}
       <div className="text-[9px] text-white/20 text-center pt-2 border-t border-white/5">
-        All counts query Supabase directly &nbsp;·&nbsp; Firebase, Neon, MongoDB require their own consoles &nbsp;·&nbsp; Auto-refresh every 30s
+        Supabase-queryable: Groq AI, Cloudinary, Veremark, Stripe, Logbook connections, Helio, Walt.id, IPFS
+        &nbsp;·&nbsp; External consoles needed: Auth0, Firebase, Neon, MongoDB, Sentry, Resend, Backblaze
+        &nbsp;·&nbsp; Auto-refresh every 30s
       </div>
     </div>
   );
