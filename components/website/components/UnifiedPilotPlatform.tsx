@@ -4026,7 +4026,7 @@ const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> = ({ on
 );
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
-const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null }> = ({ onLogout, getToken, profileId }) => {
+const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null; onAuth0Logout?: () => void }> = ({ onLogout, getToken, profileId, onAuth0Logout }) => {
   const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
@@ -4191,9 +4191,8 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.error || json.message || `Server error ${res.status}`);
-      localStorage.clear();
-      sessionStorage.clear();
-      onLogout();
+      // Auth0 logout clears the session and redirects — call it if available, else fall back to onLogout
+      if (onAuth0Logout) { onAuth0Logout(); } else { localStorage.clear(); sessionStorage.clear(); onLogout(); }
     } catch (err: any) {
       setDeleteError(err.message || 'Something went wrong. Please try again.');
       setDeleting(false);
@@ -4414,7 +4413,7 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
   const { currentUser, userProfile, logout } = useAuth();
-  const { user: auth0User, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
+  const { user: auth0User, getAccessTokenSilently, getIdTokenClaims, logout: auth0Logout } = useAuth0();
   const { readProfile } = useVaultProfile();
   const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -4664,7 +4663,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'logbook':       return <LogbookHub profile={profileData} onNavigate={onNavigate} />;
       case 'events':        return <EventsTab />;
       case 'newsroom':      return <NewsroomTab onNavigate={onNavigate} />;
-      case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { const claims = await getIdTokenClaims(); const t = claims?.__raw; if (t) return t; throw new Error('no id token'); } catch { const { data: { session } } = await supabase.auth.getSession(); const t = session?.access_token; if (!t) throw new Error('No auth token available — please log out and back in'); return t; } }} profileId={profileData?.id ?? null} />;
+      case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { const claims = await getIdTokenClaims(); const t = claims?.__raw; if (t) return t; throw new Error('no id token'); } catch { const { data: { session } } = await supabase.auth.getSession(); const t = session?.access_token; if (!t) throw new Error('No auth token available — please log out and back in'); return t; } }} profileId={profileData?.id ?? null} onAuth0Logout={() => { localStorage.clear(); sessionStorage.clear(); auth0Logout({ logoutParams: { returnTo: window.location.origin } }); }} />;
       default:              return null;
     }
   };
