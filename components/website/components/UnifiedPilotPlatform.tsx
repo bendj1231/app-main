@@ -13,6 +13,7 @@ import {
   Brain, FolderOpen, PlayCircle, GraduationCap
 } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { useVaultProfile } from '@/src/hooks/useVaultProfile';
 import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '@/shared/lib/supabase';
 import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
@@ -3883,6 +3884,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
   const { currentUser, userProfile, logout } = useAuth();
   const { user: auth0User } = useAuth0();
+  const { readProfile } = useVaultProfile();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabId>(() => (searchParams.get('tab') as TabId) ?? 'home');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -3950,7 +3952,15 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         .select('*, profile_image_public_id')
         .eq('auth0_id', auth0User.sub)
         .maybeSingle()
-        .then(({ data }) => { if (data) setProfileData(data); });
+        .then(async ({ data }) => {
+          if (!data) return;
+          if (data.id) {
+            const { data: decrypted } = await readProfile(data.id);
+            setProfileData(decrypted || data);
+          } else {
+            setProfileData(data);
+          }
+        });
     }
   }, [userProfile, auth0User?.sub]);
 

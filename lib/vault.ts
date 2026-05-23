@@ -277,6 +277,8 @@ export async function decryptFields<T extends Record<string, any>>(
 // ─── Sensitive field definitions ─────────────────────────────────────────────
 
 export const PROFILE_SENSITIVE_FIELDS = [
+  'display_name',
+  'full_name',
   'date_of_birth',
   'phone',
   'license_id',

@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import { indexedDB } from '../lib/indexedDB';
 import { createManagementAPI } from '../lib/supabase-management';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
-import { getVaultKey, clearVaultKey, encryptFields, PROFILE_SENSITIVE_FIELDS, PILOT_LICENSURE_SENSITIVE_FIELDS } from '../../lib/vault';
+import { getVaultKey, clearVaultKey, encryptFields, decryptFields, PROFILE_SENSITIVE_FIELDS, PILOT_LICENSURE_SENSITIVE_FIELDS } from '../../lib/vault';
 
 interface SupabaseUser {
     id: string;
@@ -67,6 +67,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setCurrentUser(user);
     };
     const [userProfile, setUserProfile] = useState<any | null>(null);
+
+    const decryptAndSetUserProfile = async (data: any, auth0Sub?: string) => {
+        if (!data) { setUserProfile(null); return; }
+        try {
+            const sub = auth0Sub || auth0User?.sub;
+            const { data: { session } } = await supabase.auth.getSession();
+            if (sub && session?.access_token) {
+                const key = await getVaultKey(sub, session.access_token);
+                const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
+                setUserProfile(decrypted);
+                return;
+            }
+        } catch (_) {}
+        setUserProfile(data);
+    };
+
     const [loading, setLoading] = useState(true);
     const [csrfToken, setCsrfToken] = useState<string | null>(null);
 
@@ -848,7 +864,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                 if (profileData && !profileError) {
                     console.log("✅ User profile fetched from profiles table:", data.user.id);
-                    setUserProfile(profileData);
+                    await decryptAndSetUserProfile(profileData);
                 } else {
                     console.log("⚠️ No user profile found in profiles table for:", data.user.id);
                     // Try pilot_licensure_experience as fallback
@@ -860,7 +876,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     
                     if (pilotData && !pilotError) {
                         console.log("✅ User profile fetched from pilot_licensure_experience table:", data.user.id);
-                        setUserProfile(pilotData);
+                        await decryptAndSetUserProfile(pilotData);
                     } else {
                         console.log("⚠️ No user profile found anywhere for:", data.user.id);
                         // Create minimal profile from auth data
@@ -965,7 +981,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             if (profileData && !error) {
                 console.log('✅ User profile refreshed successfully:', currentUser.id);
-                setUserProfile(profileData);
+                await decryptAndSetUserProfile(profileData);
                 logProfileUpdate(currentUser.id, { action: 'Profile refreshed after enrollment', timestamp: new Date().toISOString() });
             } else {
                 console.log('⚠️ No profile found during refresh, checking profiles table');
@@ -979,7 +995,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 
                 if (profilesData && !profilesError) {
                     console.log('✅ Profile refreshed from profiles table:', currentUser.id);
-                    setUserProfile(profilesData);
+                    await decryptAndSetUserProfile(profilesData);
                     logProfileUpdate(currentUser.id, { action: 'Profile refreshed from profiles table', timestamp: new Date().toISOString() });
                 } else {
                     console.log('⚠️ No profile found in any table during refresh');
@@ -1211,7 +1227,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                         if (profileData && !error) {
                             console.log("✅ Profile found for OAuth user in profiles table:", session.user.id);
-                            setUserProfile(profileData);
+                            await decryptAndSetUserProfile(profileData);
                             setOauthAccountCheck({ checking: false, hasAccount: true });
                             console.log('Set oauthAccountCheck to hasAccount: true');
                         } else {
@@ -1225,7 +1241,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                             if (pilotData && !pilotError) {
                                 console.log("✅ Profile found for OAuth user in pilot_licensure_experience table:", session.user.id);
-                                setUserProfile(pilotData);
+                                await decryptAndSetUserProfile(pilotData);
                                 setOauthAccountCheck({ checking: false, hasAccount: true });
                             } else {
                                 console.log("⚠️ No profile found anywhere for OAuth user:", session.user.id);
@@ -1354,7 +1370,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                         if (profileData && !error) {
                             console.log("✅ Supabase profile fetched for user:", session.user.id);
-                            setUserProfile(profileData);
+                            await decryptAndSetUserProfile(profileData);
                         } else {
                             console.log("⚠️ No Supabase profile found for user:", session.user.id, "Creating default profile");
                             const defaultProfile = {
@@ -1413,11 +1429,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                 
                                 if (profileData) {
                                     console.log("✅ Profile data loaded for Auth0 session");
+                                    let displayData = profileData;
+                                    try {
+                                        const { data: { session: s } } = await supabase.auth.getSession();
+                                        if (s?.access_token && auth0UserId) {
+                                            const vKey = await getVaultKey(auth0UserId, s.access_token);
+                                            displayData = await decryptFields(profileData, PROFILE_SENSITIVE_FIELDS as any, vKey);
+                                        }
+                                    } catch (_) {}
                                     setUserProfile({
-                                        ...profileData,
+                                        ...displayData,
                                         user_id: auth0UserId,
-                                        profile_image_url: profileData.profile_image_url || '',
-                                        profile_image_public_id: profileData.profile_image_public_id || '',
+                                        profile_image_url: displayData.profile_image_url || '',
+                                        profile_image_public_id: displayData.profile_image_public_id || '',
                                     });
                                 }
                             } catch (err) {
