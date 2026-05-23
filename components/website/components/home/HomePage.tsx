@@ -1173,7 +1173,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </AnimatePresence>
 
             {/* MeshGradient Background - Same as TypeRatingSearchPage */}
-            <div className="relative w-full min-h-screen">
+            <div className="relative w-full min-h-screen overflow-hidden">
                 <div className="fixed inset-0 z-0">
                     {graphicsConfig?.enableMeshGradient ? (
                         <MeshGradient
@@ -1199,12 +1199,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {deviceTier === 'low' ? (
                     // Lazy load PathwayGrid for low-end devices
                     <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading...</div>}>
-                        <div ref={pathwayGridRef} className="relative z-0">
+                        <div ref={pathwayGridRef} className="relative z-0 pt-8">
                             <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                         </div>
                     </React.Suspense>
                 ) : (
-                    <div ref={pathwayGridRef} className="relative z-0">
+                    <div ref={pathwayGridRef} className="relative z-0 pt-8">
                         <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                     </div>
                 )}
