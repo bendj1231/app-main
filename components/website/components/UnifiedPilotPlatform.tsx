@@ -4015,9 +4015,44 @@ const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> = ({ on
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
 const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
-  const [deleteConfirm, setDeleteConfirm] = React.useState(false);
+  // deleteStep: null = hidden, 'export' = step 1 export VCs, 'confirm' = step 2 final confirm
+  const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
+  const [credentials, setCredentials] = React.useState<any[]>([]);
+  const [loadingCreds, setLoadingCreds] = React.useState(false);
+  const [exported, setExported] = React.useState(false);
+
+  const fetchCredentials = async () => {
+    setLoadingCreds(true);
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user?.id) { setLoadingCreds(false); return; }
+    const { data } = await supabase
+      .from('pilot_verification_wallet')
+      .select('credential_type, credential_jwt, issued_at, status')
+      .eq('profile_id', session.user.id);
+    setCredentials(data ?? []);
+    setLoadingCreds(false);
+  };
+
+  const handleOpenExport = async () => {
+    setDeleteStep('export');
+    setDeleteError('');
+    setExported(false);
+    await fetchCredentials();
+  };
+
+  const handleExportAll = () => {
+    if (credentials.length === 0) return;
+    const blob = new Blob([JSON.stringify(credentials, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `pilot-credentials-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setExported(true);
+  };
 
   const handleDeleteAccount = async () => {
     setDeleting(true);
@@ -4025,17 +4060,16 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-account`, {
+      const res = await fetch(`${(import.meta as any).env?.VITE_SUPABASE_URL}/functions/v1/delete-account`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+          'apikey': (import.meta as any).env?.VITE_SUPABASE_ANON_KEY,
         },
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Deletion failed');
-      // Clear all local state and log out
       localStorage.clear();
       sessionStorage.clear();
       onLogout();
@@ -4045,12 +4079,15 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     }
   };
 
+  const handleCancel = () => { setDeleteStep(null); setDeleteError(''); setExported(false); setCredentials([]); };
+
   const sections = [
     { title: 'Account', items: ['Edit Profile', 'Change Password', 'Email Preferences'] },
     { title: 'Consent & Privacy', items: ['Manage Vault Consent', 'Manage Veremark Consent', 'Operator Access Log', 'Download My Data'] },
     { title: 'Notifications', items: ['Pathway Alerts', 'Credential Expiry Warnings', 'News & Updates', 'Operator Interest Notifications'] },
     { title: 'Subscription', items: ['View Plan', 'Upgrade to Recognition Plus', 'Billing History'] },
   ];
+
   return (
     <div className="space-y-5 max-w-2xl">
       {sections.map(s => (
@@ -4071,9 +4108,9 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
       {/* Delete Account */}
       <SectionCard title="Danger Zone">
-        {!deleteConfirm ? (
+        {deleteStep === null && (
           <button
-            onClick={() => setDeleteConfirm(true)}
+            onClick={handleOpenExport}
             className="w-full flex items-center justify-between px-3 py-2.5 text-xs text-red-400 rounded-lg transition-all font-bold tracking-wider hover:text-red-300"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239,68,68,0.08)')}
@@ -4082,10 +4119,69 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
             DELETE ACCOUNT
             <ChevronRight size={12} className="text-red-400/50" />
           </button>
-        ) : (
+        )}
+
+        {/* Step 1 — Export credentials */}
+        {deleteStep === 'export' && (
           <div className="px-3 py-3 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full" style={{ background: 'rgba(251,191,36,0.12)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.25)' }}>STEP 1 OF 2</span>
+              <span className="text-[10px] font-black text-white/60 tracking-wider">EXPORT YOUR CREDENTIALS</span>
+            </div>
+            <p className="text-xs text-white/60 leading-relaxed">
+              Your verified credentials (VCs) will be <span className="text-red-400 font-bold">permanently deleted</span> along with your account. Export them now to keep a portable copy — you can import them into any W3C-compatible wallet later.
+            </p>
+            {loadingCreds ? (
+              <div className="flex items-center gap-2 py-2">
+                <div className="w-4 h-4 border-2 border-sky-400/30 border-t-sky-400 rounded-full animate-spin" />
+                <span className="text-[10px] text-white/40">Loading credentials…</span>
+              </div>
+            ) : credentials.length === 0 ? (
+              <p className="text-[10px] text-white/30 py-1">No issued credentials found in your wallet.</p>
+            ) : (
+              <div className="space-y-1.5">
+                {credentials.map((c, i) => (
+                  <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                    <div>
+                      <p className="text-[10px] font-black text-white/80">{c.credential_type?.replace(/_/g, ' ').toUpperCase()}</p>
+                      <p className="text-[9px] text-white/30">{c.issued_at ? new Date(c.issued_at).toLocaleDateString() : '—'} · {c.status}</p>
+                    </div>
+                    <span className="text-[9px] font-bold text-emerald-400">W3C VC</span>
+                  </div>
+                ))}
+                <button
+                  onClick={handleExportAll}
+                  className="w-full py-2 text-xs font-black tracking-wider rounded-lg transition-all mt-1"
+                  style={{ background: exported ? 'rgba(52,211,153,0.15)' : 'rgba(56,189,248,0.15)', border: `1px solid ${exported ? 'rgba(52,211,153,0.3)' : 'rgba(56,189,248,0.3)'}`, color: exported ? '#34d399' : '#38bdf8' }}
+                >
+                  {exported ? '✓ CREDENTIALS EXPORTED' : `EXPORT ${credentials.length} CREDENTIAL${credentials.length !== 1 ? 'S' : ''} AS JSON`}
+                </button>
+              </div>
+            )}
+            <div className="flex gap-2 pt-1">
+              <button
+                onClick={() => setDeleteStep('confirm')}
+                className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all"
+                style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171' }}
+              >
+                {credentials.length > 0 && !exported ? 'SKIP EXPORT & CONTINUE →' : 'CONTINUE TO DELETE →'}
+              </button>
+              <button onClick={handleCancel} className="px-4 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.4)' }}>
+                CANCEL
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 2 — Final confirm */}
+        {deleteStep === 'confirm' && (
+          <div className="px-3 py-3 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full" style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)' }}>STEP 2 OF 2</span>
+              <span className="text-[10px] font-black text-white/60 tracking-wider">FINAL CONFIRMATION</span>
+            </div>
             <p className="text-xs text-white/70 leading-relaxed">
-              This will permanently delete your profile, credentials, documents, passkeys, and all associated data. <span className="text-red-400 font-bold">This cannot be undone.</span>
+              This will permanently delete your <span className="text-white font-bold">profile, credentials, wallet, documents, passkeys, logbook data,</span> and all associated records. <span className="text-red-400 font-bold">This cannot be undone.</span>
             </p>
             {deleteError && <p className="text-xs text-red-400">{deleteError}</p>}
             <div className="flex gap-2">
@@ -4097,12 +4193,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
               >
                 {deleting ? 'DELETING...' : 'YES, DELETE EVERYTHING'}
               </button>
-              <button
-                onClick={() => { setDeleteConfirm(false); setDeleteError(''); }}
-                disabled={deleting}
-                className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all"
-                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
-              >
+              <button onClick={handleCancel} disabled={deleting} className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
                 CANCEL
               </button>
             </div>

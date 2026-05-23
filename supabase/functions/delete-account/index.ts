@@ -77,6 +77,17 @@ Deno.serve(async (req: Request) => {
     await supabase.from('pathway_card_interests').delete().eq('pilot_id', userId);
     await supabase.from('user_app_access').delete().eq('user_id', userId);
     await supabase.from('enrollments').delete().eq('user_id', userId);
+
+    // Wallet & VC data — must be revoked before deletion
+    await supabase.from('vc_revocation_registry').delete().eq('subject_id', userId);
+    await supabase.from('pilot_verification_wallet').delete().eq('profile_id', userId);
+    await supabase.from('pilot_credentials').delete().eq('user_id', userId);
+    await supabase.from('credential_requests').delete().eq('user_id', userId);
+
+    // Logbook data
+    await supabase.from('logbook_provider_sync').delete().eq('user_id', userId);
+    await supabase.from('logbook_hour_tokens').delete().eq('user_id', userId);
+
     await supabase.from('profiles').delete().eq('id', userId);
 
     // Delete the auth user
