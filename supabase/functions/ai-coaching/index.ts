@@ -91,6 +91,15 @@ Deno.serve(async (req: Request) => {
   // Log this request
   await serviceClient.from('ai_usage_log').insert({ user_id: user.id, date: today });
 
+  const usedAfterThis = (userCount ?? 0) + 1;
+  const remaining = Math.max(0, limit.perUser - usedAfterThis);
+  const quotaHeaders = {
+    'X-RateLimit-Limit': String(limit.perUser),
+    'X-RateLimit-Remaining': String(remaining),
+    'X-RateLimit-Reset': 'tomorrow',
+    'X-RateLimit-Premium': String(isPremium),
+  };
+
   try {
     const body = await req.json();
     const { type, profile, messages } = body;
@@ -137,18 +146,19 @@ Deno.serve(async (req: Request) => {
     if (type === 'coaching') {
       try {
         const parsed = JSON.parse(content);
-        return new Response(JSON.stringify({ success: true, data: parsed }), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        const responseHeaders = { ...corsHeaders, ...quotaHeaders, 'Content-Type': 'application/json' };
+        return new Response(JSON.stringify({ success: true, data: parsed, quota: { remaining, limit: limit.perUser, isPremium } }), {
+          headers: responseHeaders
         });
       } catch {
-        return new Response(JSON.stringify({ success: true, data: { raw: content } }), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        return new Response(JSON.stringify({ success: true, data: { raw: content }, quota: { remaining, limit: limit.perUser, isPremium } }), {
+          headers: { ...corsHeaders, ...quotaHeaders, 'Content-Type': 'application/json' }
         });
       }
     }
 
-    return new Response(JSON.stringify({ success: true, message: content }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    return new Response(JSON.stringify({ success: true, message: content, quota: { remaining, limit: limit.perUser, isPremium } }), {
+      headers: { ...corsHeaders, ...quotaHeaders, 'Content-Type': 'application/json' }
     });
 
   } catch (err: any) {
