@@ -506,16 +506,16 @@ const AccessPlatformCard: React.FC<{
                         ) : (
                             <>
                                 <button
-                                    onClick={() => onNavigate('become-member')}
+                                    onClick={() => onNavigate('flight-deck-login')}
                                     className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
                                 >
-                                    Get Recognition Free
+                                    Enter Flight Deck →
                                 </button>
                                 <button
-                                    onClick={onLogin}
+                                    onClick={() => onNavigate('become-member')}
                                     className="w-full py-2.5 bg-transparent border border-white/50 hover:border-white/80 hover:bg-white/5 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200"
                                 >
-                                    Sign In to Flight Deck →
+                                    Get Recognition Free →
                                 </button>
                             </>
                         )}
