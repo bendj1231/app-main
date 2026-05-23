@@ -19,6 +19,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '@/shared/lib/supabase';
 import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
 import { DigitalLogbookPage } from './pilot-recognition/DigitalLogbookPage';
+import { LogbookHub } from './pilot-recognition/LogbookHub';
 import { PilotLicensureExperiencePage } from './pilot-recognition/PilotLicensureExperiencePage';
 import TypeRatingSearchPage from '../../../pages/TypeRatingSearchPage';
 import { PortalAirlineExpectationsPage } from '../../../portal/pages/PortalAirlineExpectationsPage';
@@ -4363,7 +4364,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'airlines':      return <AirlinesTab onNavigate={onNavigate} />;
       case 'manufacturers': return <ManufacturersTab onNavigate={onNavigate} />;
       case 'atlas-cv':      return <AtlasCVTab profile={profileData} onNavigate={onNavigate} />;
-      case 'logbook':       return <LogbookTab profile={profileData} onNavigate={onNavigate} />;
+      case 'logbook':       return <LogbookHub profile={profileData} onNavigate={onNavigate} />;
       case 'events':        return <EventsTab />;
       case 'newsroom':      return <NewsroomTab onNavigate={onNavigate} />;
       case 'settings':      return <SettingsTab onLogout={handleLogout} />;
