@@ -4116,7 +4116,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
   const { currentUser, userProfile, logout } = useAuth();
-  const { user: auth0User } = useAuth0();
+  const { user: auth0User, getAccessTokenSilently } = useAuth0();
   const { readProfile } = useVaultProfile();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabId>(() => (searchParams.get('tab') as TabId) ?? 'home');
@@ -4144,8 +4144,19 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     setAvatarError('');
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      console.log('[avatar] supabase session:', session ? `uid=${session.user?.id} token=${(session as any).access_token?.slice(0,20)}…` : 'null');
-      if (!(session as any)?.access_token) throw new Error('Not authenticated');
+      let accessToken: string | null = (session as any)?.access_token ?? null;
+      console.log('[avatar] supabase session:', session ? `uid=${session.user?.id} token=${accessToken?.slice(0,20)}…` : 'null');
+
+      // Auth0-only users have no Supabase session — use Auth0 access token instead
+      if (!accessToken) {
+        try {
+          accessToken = await getAccessTokenSilently();
+          console.log('[avatar] using Auth0 access token:', accessToken?.slice(0,20) + '…');
+        } catch (err) {
+          console.warn('[avatar] getAccessTokenSilently failed:', err);
+        }
+      }
+      if (!accessToken) throw new Error('Not authenticated — no Supabase or Auth0 token available');
 
       // Delete old image from Cloudinary first (non-blocking if it fails)
       const oldPublicId = profileData?.profile_image_public_id;
@@ -4179,7 +4190,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       console.log('[avatar] base64 length:', base64.length, '| calling cloudinary-upload edge fn…');
       const uploadRes = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/cloudinary-upload', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${(session as any).access_token}`, 'Content-Type': 'application/json' },
+        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ file: base64, userId: profileData.id }),
       });
       console.log('[avatar] edge fn HTTP status:', uploadRes.status, uploadRes.statusText);
