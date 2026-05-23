@@ -4088,23 +4088,43 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL;
     const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
 
-    // 1. Get server challenge (uses passkey-generate-challenge which also returns allowCredentials)
-    const challengeRes = await fetch(`${supabaseUrl}/functions/v1/passkey-generate-challenge`, {
+    // 1. Fetch the user's registered passkey credential IDs from Supabase
+    const { data: { session } } = await supabase.auth.getSession();
+    const uid = session?.user?.id;
+    if (!uid) throw new Error('No session');
+
+    const { data: passkeys } = await supabase
+      .from('pilot_passkeys')
+      .select('credential_id')
+      .eq('user_id', uid);
+
+    if (!passkeys || passkeys.length === 0) {
+      // No passkey registered — skip gate
+      throw new Error('NO_PASSKEY');
+    }
+
+    // Use the first registered credential to get a server-signed challenge
+    const credentialId = passkeys[0].credential_id;
+
+    // 2. Get a single-use challenge from the server
+    const challengeRes = await fetch(`${supabaseUrl}/functions/v1/passkey-challenge`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'apikey': anonKey },
+      headers: { 'Content-Type': 'application/json', 'apikey': anonKey },
+      body: JSON.stringify({ credentialId }),
     });
     if (!challengeRes.ok) throw new Error('Could not generate passkey challenge');
-    const { challenge, allowCredentials } = await challengeRes.json();
+    const { challenge } = await challengeRes.json();
 
-    // 2. Trigger iCloud Keychain / Touch ID / Face ID prompt
+    // 3. Trigger iCloud Keychain / Touch ID / Face ID prompt
+    const allowCredentials = passkeys.map((p: any) => ({
+      id: b64urlDecode(p.credential_id),
+      type: 'public-key' as PublicKeyCredentialType,
+    }));
+
     const assertion = await navigator.credentials.get({
       publicKey: {
         challenge: b64urlDecode(challenge),
-        allowCredentials: (allowCredentials || []).map((c: any) => ({
-          id: b64urlDecode(c.id),
-          type: 'public-key' as PublicKeyCredentialType,
-          transports: c.transports,
-        })),
+        allowCredentials,
         userVerification: 'required',
         timeout: 60000,
       },
@@ -4113,10 +4133,10 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     if (!assertion) throw new Error('No passkey assertion returned');
     const resp = assertion.response as AuthenticatorAssertionResponse;
 
-    // 3. Verify signature server-side
+    // 4. Verify signature server-side
     const verifyRes = await fetch(`${supabaseUrl}/functions/v1/passkey-verify`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'apikey': anonKey },
+      headers: { 'Content-Type': 'application/json', 'apikey': anonKey },
       body: JSON.stringify({
         credentialId: b64urlEncode(assertion.rawId),
         authenticatorData: b64urlEncode(resp.authenticatorData),
@@ -4142,10 +4162,12 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           await verifyPasskeyForDeletion(token!);
         } catch (pkErr: any) {
           setPasskeyPending(false);
-          // If user has no passkey registered (no allowCredentials), skip gate gracefully
           if (pkErr?.name === 'NotAllowedError') throw new Error('Passkey confirmation cancelled. Deletion aborted.');
-          // Other errors (no passkey registered etc.) — allow deletion to continue
-          console.warn('[delete-account] passkey gate skipped:', pkErr?.message);
+          if (pkErr?.message === 'NO_PASSKEY') {
+            // No passkey registered on this account — skip gate, proceed
+          } else {
+            console.warn('[delete-account] passkey gate skipped:', pkErr?.message);
+          }
         }
         setPasskeyPending(false);
       }
