@@ -29,12 +29,6 @@ export const FlightDeckVerifyPage: React.FC<FlightDeckVerifyPageProps> = ({ onNa
         }
     }, [isAuthenticated, navigate]);
 
-    useEffect(() => {
-        // If passkey already registered on this device, skip straight to platform
-        if (localStorage.getItem('pr_passkey_registered') === 'true') {
-            navigate('/platform');
-        }
-    }, [navigate]);
 
     const handlePasskeySetup = async () => {
         setPasskeyLoading(true);
