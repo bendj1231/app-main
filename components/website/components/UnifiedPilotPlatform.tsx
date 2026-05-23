@@ -3011,6 +3011,113 @@ const PATHWAY_CARDS = [
   { id: 'emirates', title: 'Emirates Airlines',  subtitle: 'A380 First Officer - Dubai Hub',          image: '/images/airlines/emirates-airlines.jpg',  match: 75, matchColor: 'red',    gaps: 6, benefits: ['Tax-free benefits', 'Global opportunities'] },
 ];
 
+const SUPER_ADMIN_EMAIL = 'benjamintigerbowler@gmail.com';
+
+const AdminTokenPanel: React.FC = () => {
+  const [stats, setStats] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+        const [todayRes, yesterdayRes, totalRes, topUsersRes] = await Promise.all([
+          supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }).eq('date', today),
+          supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }).eq('date', yesterday),
+          supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }),
+          supabase.from('ai_usage_log').select('user_id, date').eq('date', today),
+        ]);
+
+        // Count unique users today
+        const uniqueToday = new Set((topUsersRes.data || []).map((r: any) => r.user_id)).size;
+
+        setStats({
+          today: todayRes.count ?? 0,
+          yesterday: yesterdayRes.count ?? 0,
+          total: totalRes.count ?? 0,
+          uniqueUsersToday: uniqueToday,
+          dailyLimit: 500,
+          remainingToday: Math.max(0, 500 - (todayRes.count ?? 0)),
+        });
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+    const interval = setInterval(load, 30000); // refresh every 30s
+    return () => clearInterval(interval);
+  }, []);
+
+  const pct = stats ? Math.min(100, Math.round((stats.today / stats.dailyLimit) * 100)) : 0;
+  const barColor = pct > 80 ? '#ef4444' : pct > 60 ? '#f59e0b' : '#22c55e';
+
+  return (
+    <div className="rounded-xl border p-5" style={{ background: 'rgba(15,23,42,0.85)', borderColor: 'rgba(239,68,68,0.3)' }}>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#ef4444' }} />
+          <span className="text-[10px] font-black uppercase tracking-widest text-red-400">Admin — Supabase Token Tollbooth</span>
+        </div>
+        <span className="text-[9px] text-white/30">Refreshes every 30s</span>
+      </div>
+
+      {loading && !stats && (
+        <div className="flex items-center gap-2 text-white/40 text-xs"><RefreshCw size={12} className="animate-spin" /> Loading usage data...</div>
+      )}
+      {error && <p className="text-xs text-red-400">Error: {error}</p>}
+
+      {stats && (
+        <>
+          {/* Daily quota bar */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] text-white/50 font-semibold">Daily AI Requests Used</span>
+              <span className="text-[10px] font-black" style={{ color: barColor }}>{stats.today} / {stats.dailyLimit}</span>
+            </div>
+            <div className="w-full h-2 rounded-full" style={{ background: 'rgba(255,255,255,0.08)' }}>
+              <div className="h-2 rounded-full transition-all" style={{ width: `${pct}%`, background: barColor }} />
+            </div>
+            <div className="flex justify-between mt-0.5">
+              <span className="text-[9px] text-white/30">{pct}% of free tier used</span>
+              <span className="text-[9px] text-white/30">{stats.remainingToday} remaining</span>
+            </div>
+          </div>
+
+          {/* Stat tiles */}
+          <div className="grid grid-cols-4 gap-2">
+            {[
+              { label: 'Today', value: stats.today, icon: Zap, color: '#3b82f6' },
+              { label: 'Yesterday', value: stats.yesterday, icon: Clock, color: '#8b5cf6' },
+              { label: 'All Time', value: stats.total, icon: BarChart3, color: '#22c55e' },
+              { label: 'Unique Users Today', value: stats.uniqueUsersToday, icon: User, color: '#f59e0b' },
+            ].map(({ label, value, icon: Icon, color }) => (
+              <div key={label} className="rounded-lg p-3 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <Icon size={14} className="mx-auto mb-1" style={{ color }} />
+                <p className="text-lg font-black text-white">{value}</p>
+                <p className="text-[9px] text-white/40 uppercase tracking-wider leading-tight">{label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Status badge */}
+          <div className="mt-3 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full" style={{ background: barColor }} />
+            <span className="text-[9px] text-white/40">
+              Groq free tier: 14,400 req/day &nbsp;·&nbsp; Platform hard limit: {stats.dailyLimit}/day &nbsp;·&nbsp; Model: llama-3.3-70b-versatile
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
 const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
   const { currentUser } = useAuth();
   const [carouselIdx, setCarouselIdx] = useState(0);
@@ -3134,6 +3241,11 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
 
       {/* Flight Instrument Dashboard */}
       <FlightInstrumentDashboard userId={currentUser.id} />
+
+      {/* Admin Token Tollbooth Panel — only visible to super admin */}
+      {(currentUser.email === SUPER_ADMIN_EMAIL || profile?.role === 'super_admin') && (
+        <AdminTokenPanel />
+      )}
 
       {/* Programs */}
       <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
