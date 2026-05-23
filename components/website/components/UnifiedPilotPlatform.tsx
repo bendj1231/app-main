@@ -4118,6 +4118,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const { currentUser, userProfile, logout } = useAuth();
   const { user: auth0User, getAccessTokenSilently } = useAuth0();
   const { readProfile } = useVaultProfile();
+  const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabId>(() => (searchParams.get('tab') as TabId) ?? 'home');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -4380,11 +4381,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
       {/* ── BACKGROUND: Portal 2 MeshGradient ── */}
       <div className="fixed inset-0 z-0">
-        {getHomepageGraphicsConfig().enableMeshGradient ? (
+        {graphicsConfig.enableMeshGradient ? (
           <MeshGradient
             className="w-full h-full"
             colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
-            speed={getHomepageGraphicsConfig().meshGradientSpeed}
+            speed={graphicsConfig.meshGradientSpeed}
           />
         ) : (
           <div className="w-full h-full" style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)' }} />

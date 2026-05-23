@@ -160,11 +160,12 @@ async function compressImage(
 // Fetches from Cloudinary once, then serves locally forever
 const IMAGE_CACHE_DB = 'pr_image_cache';
 const IMAGE_CACHE_STORE = 'cloudinary_images';
-const IMAGE_CACHE_VERSION = 1;
+const IMAGE_CACHE_VERSION = 2;
 
 interface CachedImage {
   url: string;          // Original Cloudinary URL (as key)
-  blob: Blob;           // Cached image data
+  buffer: ArrayBuffer;  // Cached image data (ArrayBuffer for Safari compat)
+  type: string;         // MIME type
   cachedAt: number;     // Timestamp
   publicId: string;     // For cache invalidation if needed
 }
@@ -193,7 +194,9 @@ async function getCachedImage(url: string): Promise<Blob | null> {
       const req = store.get(url);
       req.onsuccess = () => {
         if (req.result) {
-          resolve(req.result.blob);
+          // Reconstruct Blob from ArrayBuffer (Safari-compatible)
+          const blob = new Blob([req.result.buffer], { type: req.result.type || 'image/jpeg' });
+          resolve(blob);
         } else {
           resolve(null);
         }
@@ -208,13 +211,16 @@ async function getCachedImage(url: string): Promise<Blob | null> {
 
 async function cacheImage(url: string, blob: Blob, publicId: string): Promise<void> {
   try {
+    // Convert Blob to ArrayBuffer for Safari/WebKit IndexedDB compatibility
+    const buffer = await blob.arrayBuffer();
     const db = await openImageCache();
     const tx = db.transaction(IMAGE_CACHE_STORE, 'readwrite');
     const store = tx.objectStore(IMAGE_CACHE_STORE);
     
     const cached: CachedImage = {
       url,
-      blob,
+      buffer,
+      type: blob.type || 'image/jpeg',
       cachedAt: Date.now(),
       publicId,
     };
