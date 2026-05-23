@@ -171,6 +171,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setLoading(false);
             // Persist auth0 user ID for logbook sync VC issuance
             if (auth0User.sub) localStorage.setItem('auth0_user_id', auth0User.sub);
+            
+            // Create Supabase session so user persists after reload
+            // Store auth0 token info in localStorage for session restoration
+            localStorage.setItem('sb-auth-provider', 'auth0');
+            localStorage.setItem('sb-auth-user-id', auth0User.sub || '');
+            localStorage.setItem('sb-auth-email', auth0User.email || '');
+            localStorage.setItem('sb-auth-name', auth0User.name || '');
+            localStorage.setItem('sb-auth-expiry', (Date.now() + 7 * 24 * 60 * 60 * 1000).toString()); // 7 days
             // Initialise vault key then background re-encrypt any plaintext legacy records
             if (auth0User.sub) {
                 supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -893,6 +901,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setCurrentUser(null); // Clear current user
         setUserProfile(null); // Clear user profile
         clearVaultKey(); // Clear vault key from memory
+        
+        // Clear Auth0 session data from localStorage
+        localStorage.removeItem('sb-auth-provider');
+        localStorage.removeItem('sb-auth-user-id');
+        localStorage.removeItem('sb-auth-email');
+        localStorage.removeItem('sb-auth-name');
+        localStorage.removeItem('sb-auth-expiry');
+        localStorage.removeItem('auth0_user_id');
 
         try {
             console.log('🔴 Calling Supabase signOut...');
@@ -1362,8 +1378,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         setUserProfile(defaultProfile);
                     }
                 } else {
-                    console.log("⚠️ No valid session found");
-                    setCurrentUser(null);
+                    console.log("⚠️ No Supabase session found, checking for Auth0 session...");
+                    
+                    // Check for Auth0 session in localStorage
+                    const auth0Provider = localStorage.getItem('sb-auth-provider');
+                    const auth0UserId = localStorage.getItem('sb-auth-user-id');
+                    const auth0Email = localStorage.getItem('sb-auth-email');
+                    const auth0Name = localStorage.getItem('sb-auth-name');
+                    const auth0Expiry = localStorage.getItem('sb-auth-expiry');
+                    
+                    if (auth0Provider === 'auth0' && auth0UserId && auth0Email) {
+                        // Check if session expired
+                        if (auth0Expiry && parseInt(auth0Expiry) > Date.now()) {
+                            console.log("✅ Restoring Auth0 session:", auth0UserId);
+                            const restoredUser: SupabaseUser = {
+                                id: auth0UserId,
+                                uid: auth0UserId,
+                                email: auth0Email,
+                                email_confirmed_at: new Date().toISOString(),
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString(),
+                                display_name: auth0Name || auth0Email.split('@')[0],
+                                displayName: auth0Name || auth0Email.split('@')[0],
+                            };
+                            setCurrentUser(restoredUser);
+                        } else {
+                            console.log("⚠️ Auth0 session expired");
+                            // Clear expired session data
+                            localStorage.removeItem('sb-auth-provider');
+                            localStorage.removeItem('sb-auth-user-id');
+                            localStorage.removeItem('sb-auth-email');
+                            localStorage.removeItem('sb-auth-name');
+                            localStorage.removeItem('sb-auth-expiry');
+                            setCurrentUser(null);
+                        }
+                    } else {
+                        console.log("⚠️ No valid session found");
+                        setCurrentUser(null);
+                    }
                     setUserProfile(null);
                 }
             } catch (err) {
