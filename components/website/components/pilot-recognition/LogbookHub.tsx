@@ -19,41 +19,66 @@ interface SyncedProvider {
   metadata?: any;
 }
 
-const PROVIDER_META: Record<string, { name: string; logo: string; color: string; bg: string; url: string }> = {
-  myflight: {
-    name: 'MyFlight Logbook',
-    logo: '✈',
-    color: '#38bdf8',
-    bg: 'rgba(56,189,248,0.08)',
+const PROVIDER_META: Record<string, { name: string; logo: string; logoImg?: string; color: string; bg: string; url: string; region: string; badge?: string; method: string; methodColor: string; status: 'available' | 'coming_soon' }> = {
+  myflightbook: {
+    name: 'MyFlightBook',
+    logo: '📘',
+    logoImg: 'https://myflightbook.com/logbook/Images/mfblogonew.png',
+    color: '#00b4d8',
+    bg: 'rgba(0,180,216,0.08)',
     url: 'https://myflightbook.com',
+    region: 'Global',
+    badge: 'Free',
+    method: 'OAuth 2.0',
+    methodColor: '#00b4d8',
+    status: 'available',
   },
   foreflight: {
     name: 'ForeFlight',
-    logo: '🛩',
+    logo: '✈️',
     color: '#6366f1',
     bg: 'rgba(99,102,241,0.08)',
     url: 'https://foreflight.com',
+    region: 'Global · iOS / Web',
+    badge: 'Certified',
+    method: 'API Key',
+    methodColor: '#818cf8',
+    status: 'coming_soon',
   },
   safelog: {
     name: 'Safelog',
-    logo: '📋',
+    logo: '�',
     color: '#10b981',
     bg: 'rgba(16,185,129,0.08)',
     url: 'https://safelog.com',
+    region: 'Global · Web / Mobile',
+    badge: 'Certified',
+    method: 'Direct API',
+    methodColor: '#34d399',
+    status: 'coming_soon',
   },
   logten: {
     name: 'LogTen Pro',
-    logo: '📊',
+    logo: '�',
     color: '#f59e0b',
     bg: 'rgba(245,158,11,0.08)',
     url: 'https://coradine.com',
+    region: 'iOS / macOS',
+    badge: 'Certified',
+    method: 'CSV Import',
+    methodColor: '#fbbf24',
+    status: 'coming_soon',
   },
   manual: {
     name: 'Manual Entry',
-    logo: '✍',
+    logo: '✍️',
     color: '#94a3b8',
     bg: 'rgba(148,163,184,0.08)',
     url: '',
+    region: 'All platforms',
+    method: 'Direct',
+    methodColor: '#94a3b8',
+    status: 'available',
   },
 };
 
@@ -127,22 +152,45 @@ const ProviderCard: React.FC<{ provider: SyncedProvider; onOpenLogbook: () => vo
   );
 };
 
-const ConnectProviderCard: React.FC<{ providerKey: string; onConnect: (key: string) => void }> = ({ providerKey, onConnect }) => {
+const ConnectProviderCard: React.FC<{ providerKey: string; selected: boolean; onSelect: (key: string) => void }> = ({ providerKey, selected, onSelect }) => {
   const meta = PROVIDER_META[providerKey] ?? PROVIDER_META.manual;
+  const isComing = meta.status === 'coming_soon';
   return (
     <button
-      onClick={() => onConnect(providerKey)}
-      className="rounded-xl p-4 flex items-center gap-3 w-full text-left hover:brightness-110 transition-all group"
-      style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)' }}
+      disabled={isComing}
+      onClick={() => !isComing && onSelect(providerKey)}
+      className="relative group flex flex-row items-center gap-4 px-5 py-5 rounded-xl border text-left w-full transition-all"
+      style={{
+        background: selected ? 'rgba(255,255,255,0.95)' : isComing ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.05)',
+        border: `1px solid ${selected ? 'rgba(255,255,255,0.6)' : isComing ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.12)'}`,
+        cursor: isComing ? 'not-allowed' : 'pointer',
+        backdropFilter: 'blur(8px)',
+      }}
     >
-      <div className="w-9 h-9 rounded-lg flex items-center justify-center text-lg flex-shrink-0" style={{ background: meta.bg }}>
-        {meta.logo}
-      </div>
+      <span className="flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-lg overflow-hidden" style={{ background: selected ? 'transparent' : meta.bg }}>
+        {meta.logoImg
+          ? <img src={meta.logoImg} alt={meta.name} className="w-14 h-14 object-contain rounded" />
+          : <span className="text-3xl">{meta.logo}</span>
+        }
+      </span>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-black text-white/70 group-hover:text-white transition-colors">{meta.name}</p>
-        <p className="text-[10px] text-white/25">Click to connect</p>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className={`text-sm font-black leading-tight ${selected ? 'text-slate-800' : 'text-white'} group-hover:text-slate-800 transition-colors`}>{meta.name}</span>
+          {meta.badge && (
+            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full transition-colors ${selected ? 'bg-emerald-500/30 text-emerald-700' : 'bg-emerald-500/15 text-emerald-400'}`}>{meta.badge}</span>
+          )}
+        </div>
+        <span className={`text-[10px] transition-colors ${selected ? 'text-slate-500' : 'text-white/35 group-hover:text-slate-500'}`}>
+          {meta.region}{providerKey === 'myflightbook' ? ' · Default logbook' : ''}
+        </span>
       </div>
-      <Plus size={14} className="text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" />
+      <span className="text-[10px] font-semibold flex-shrink-0 transition-colors" style={{ color: selected ? '#64748b' : meta.methodColor }}>{meta.method}</span>
+      {isComing && (
+        <div className="absolute inset-0 rounded-xl flex items-center justify-center" style={{ background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(2px)' }}>
+          <span className="text-[10px] font-black tracking-widest text-white/50 uppercase">Coming Soon</span>
+        </div>
+      )}
+      {selected && <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#00b4d8' }} />}
     </button>
   );
 };
@@ -152,6 +200,8 @@ type SubPage = 'hub' | 'logbook' | 'sync';
 export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
   const [subPage, setSubPage] = useState<SubPage>('hub');
   const [providers, setProviders] = useState<SyncedProvider[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
+  const [connecting, setConnecting] = useState(false);
   const [totalHours, setTotalHours] = useState<number>(0);
   const [totalFlights, setTotalFlights] = useState<number>(0);
   const [recentFlights, setRecentFlights] = useState<any[]>([]);
@@ -185,13 +235,18 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
 
   const handleConnect = async (providerKey: string) => {
     if (!profile?.id) return;
-    if (providerKey === 'myflight') {
-      // MyFlight Logbook OAuth redirect (placeholder — replace with real OAuth URL)
-      window.open(`https://myflightbook.com/oauth/authorize?client_id=PILOTRECOGNITION&redirect_uri=${encodeURIComponent(window.location.origin + '/auth/myflight/callback')}&scope=readflights&state=${profile.id}`, '_blank');
-    } else if (providerKey === 'manual') {
-      setSubPage('logbook');
-    } else {
-      alert(`${PROVIDER_META[providerKey]?.name ?? providerKey} integration coming soon.`);
+    setConnecting(true);
+    try {
+      if (providerKey === 'myflightbook') {
+        const clientId = (import.meta as any).env?.VITE_MFB_CLIENT_ID || 'PilotRecognition';
+        const redirectUri = `${window.location.origin}/auth/logbook/callback`;
+        const url = `https://myflightbook.com/logbook/mvc/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=totals&state=${profile.id}`;
+        window.location.href = url;
+      } else if (providerKey === 'manual') {
+        setSubPage('logbook');
+      }
+    } finally {
+      setConnecting(false);
     }
   };
 
@@ -292,10 +347,32 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
             <div className="w-6 h-6 border-2 border-sky-400/30 border-t-sky-400 rounded-full animate-spin" />
           </div>
         ) : providers.length === 0 ? (
-          <div className="rounded-xl p-8 text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
-            <BookMarked size={28} className="text-white/15 mx-auto mb-3" />
-            <p className="text-sm font-black text-white/40">No providers connected yet</p>
-            <p className="text-[11px] text-white/25 mt-1">Connect a logbook provider below to sync your hours</p>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {Object.keys(PROVIDER_META).map(key => (
+                <ConnectProviderCard key={key} providerKey={key} selected={selectedProvider === key} onSelect={setSelectedProvider} />
+              ))}
+            </div>
+            <button
+              onClick={() => selectedProvider && handleConnect(selectedProvider)}
+              disabled={!selectedProvider || connecting}
+              className="w-full py-3 rounded-xl text-sm font-black tracking-wider transition-all"
+              style={{
+                background: selectedProvider && !connecting ? '#dc2626' : 'rgba(255,255,255,0.05)',
+                color: selectedProvider && !connecting ? '#fff' : 'rgba(255,255,255,0.25)',
+                border: `1px solid ${selectedProvider && !connecting ? 'rgba(220,38,38,0.4)' : 'rgba(255,255,255,0.08)'}`,
+                cursor: selectedProvider && !connecting ? 'pointer' : 'not-allowed',
+              }}
+            >
+              {connecting ? 'Connecting…' : selectedProvider ? `Sync with ${PROVIDER_META[selectedProvider]?.name} →` : 'Select a provider above'}
+            </button>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 justify-center">
+              <span className="text-[9px]" style={{ color: '#00b4d8' }}>● OAuth 2.0</span>
+              <span className="text-[9px] text-purple-400">● API Passkey</span>
+              <span className="text-[9px] text-green-400">● Direct API</span>
+              <span className="text-[9px] text-orange-400">● CSV Import</span>
+            </div>
+            <p className="text-center text-[10px] text-white/20">Read-only access only. We never modify your logbook data.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
@@ -306,17 +383,29 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
         )}
       </div>
 
-      {/* Available providers to connect */}
-      {availableToConnect.length > 0 && (
+      {/* Available providers to connect — only shown when some are already connected */}
+      {providers.length > 0 && availableToConnect.length > 0 && (
         <div>
           <div className="mb-3">
             <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Available Integrations</p>
-            <p className="text-sm font-black text-white">Connect a Provider</p>
+            <p className="text-sm font-black text-white">Add Another Provider</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-            {availableToConnect.map(key => (
-              <ConnectProviderCard key={key} providerKey={key} onConnect={handleConnect} />
-            ))}
+          <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {availableToConnect.map(key => (
+                <ConnectProviderCard key={key} providerKey={key} selected={selectedProvider === key} onSelect={setSelectedProvider} />
+              ))}
+            </div>
+            {selectedProvider && availableToConnect.includes(selectedProvider) && (
+              <button
+                onClick={() => handleConnect(selectedProvider)}
+                disabled={connecting}
+                className="w-full py-3 rounded-xl text-sm font-black tracking-wider transition-all"
+                style={{ background: '#dc2626', color: '#fff', border: '1px solid rgba(220,38,38,0.4)', cursor: connecting ? 'not-allowed' : 'pointer' }}
+              >
+                {connecting ? 'Connecting…' : `Sync with ${PROVIDER_META[selectedProvider]?.name} →`}
+              </button>
+            )}
           </div>
         </div>
       )}
