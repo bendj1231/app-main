@@ -10,7 +10,7 @@ interface FlightDeckLoginPageProps {
 
 export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavigate }) => {
     const navigate = useNavigate();
-    const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+    const { loginWithRedirect, isAuthenticated } = useAuth0();
     const [email, setEmail] = useState('');
     const [emailSubmitting, setEmailSubmitting] = useState(false);
     const [hasPasskey] = useState(() => localStorage.getItem('pr_passkey_registered') === 'true');
@@ -18,10 +18,10 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (!isLoading && isAuthenticated) {
+        if (isAuthenticated) {
             navigate('/platform');
         }
-    }, [isAuthenticated, isLoading, navigate]);
+    }, [isAuthenticated, navigate]);
 
     const handleEmailContinue = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -102,14 +102,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
             setPasskeyLoading(false);
         }
     };
-
-    if (isLoading) {
-        return (
-            <div style={{ minHeight: '100vh', background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: 32, height: 32, border: '3px solid #60a5fa', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-            </div>
-        );
-    }
 
     return (
         <div style={{
