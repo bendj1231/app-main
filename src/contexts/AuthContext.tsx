@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import { indexedDB } from '../lib/indexedDB';
 import { createManagementAPI } from '../lib/supabase-management';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
-import { getVaultKey, clearVaultKey, encryptFields, decryptFields, PROFILE_SENSITIVE_FIELDS, PILOT_LICENSURE_SENSITIVE_FIELDS } from '../../lib/vault';
+import { getVaultKey, getVaultKeyFromAuth0Token, clearVaultKey, encryptFields, decryptFields, PROFILE_SENSITIVE_FIELDS, PILOT_LICENSURE_SENSITIVE_FIELDS } from '../../lib/vault';
 
 interface SupabaseUser {
     id: string;
@@ -58,7 +58,7 @@ export function useAuth() {
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { isAuthenticated: auth0IsAuthenticated, user: auth0User, isLoading: auth0Loading } = useAuth0();
+    const { isAuthenticated: auth0IsAuthenticated, user: auth0User, isLoading: auth0Loading, getIdTokenClaims } = useAuth0();
     const [currentUser, setCurrentUser] = useState<SupabaseUser | null>(null);
     const currentUserRef = React.useRef<SupabaseUser | null>(null);
     const oauthModalShownRef = React.useRef(false);
@@ -72,12 +72,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!data) { setUserProfile(null); return; }
         try {
             const sub = auth0Sub || auth0User?.sub;
-            const { data: { session } } = await supabase.auth.getSession();
-            if (sub && session?.access_token) {
-                const key = await getVaultKey(sub, session.access_token);
-                const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
-                setUserProfile(decrypted);
-                return;
+            if (sub) {
+                // Prefer Auth0 ID token path — matches how data was encrypted
+                try {
+                    const claims = await getIdTokenClaims?.();
+                    const idToken = claims?.__raw;
+                    if (idToken) {
+                        const key = await getVaultKeyFromAuth0Token(sub, idToken);
+                        const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
+                        setUserProfile(decrypted);
+                        return;
+                    }
+                } catch (_) {}
+                // Fallback: server-pepper path
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session?.access_token) {
+                    const key = await getVaultKey(sub, session.access_token);
+                    const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
+                    setUserProfile(decrypted);
+                    return;
+                }
             }
         } catch (_) {}
         setUserProfile(data);

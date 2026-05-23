@@ -17,6 +17,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '../lib/supabase';
 import {
   getVaultKey,
+  getVaultKeyFromAuth0Token,
   encryptFields,
   decryptFields,
   PROFILE_SENSITIVE_FIELDS,
@@ -49,16 +50,27 @@ export function useVaultProfile() {
    * Throws if unavailable — callers must handle and surface the error.
    * Never returns null to prevent silent plaintext writes.
    */
+  const { getIdTokenClaims } = useAuth0();
+
   const getKey = useCallback(async (): Promise<CryptoKey> => {
     if (!auth0User?.sub) {
       throw new Error('[vault] No authenticated user — cannot derive vault key');
     }
+    // Prefer Auth0 ID token path — matches how data was encrypted at signup
+    try {
+      const claims = await getIdTokenClaims?.();
+      const idToken = claims?.__raw;
+      if (idToken) {
+        return getVaultKeyFromAuth0Token(auth0User.sub, idToken);
+      }
+    } catch (_) {}
+    // Fallback: server-pepper path (Supabase session required)
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.access_token) {
       throw new Error('[vault] No active session — cannot derive vault key');
     }
     return getVaultKey(auth0User.sub, session.access_token);
-  }, [auth0User?.sub]);
+  }, [auth0User?.sub, getIdTokenClaims]);
 
   /**
    * Read pilot profile from `profiles` table, decrypting sensitive fields.
