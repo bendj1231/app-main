@@ -4014,7 +4014,7 @@ const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> = ({ on
 );
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
-const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
+const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<string>; profileId: string | null }> = ({ onLogout, getToken, profileId }) => {
   const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
@@ -4028,8 +4028,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
   const loadExportData = async () => {
     setLoadingExport(true);
-    const { data: { session } } = await supabase.auth.getSession();
-    const uid = session?.user?.id;
+    const uid = profileId;
     if (!uid) { setLoadingExport(false); return; }
 
     const [vcsRes, hoursRes, resumeRes, programRes, interviewRes] = await Promise.all([
@@ -4089,8 +4088,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
 
     // 1. Fetch the user's registered passkey credential IDs from Supabase
-    const { data: { session } } = await supabase.auth.getSession();
-    const uid = session?.user?.id;
+    const uid = profileId;
     if (!uid) throw new Error('No session');
 
     const { data: passkeys } = await supabase
@@ -4152,8 +4150,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     setDeleting(true);
     setDeleteError('');
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
+      const token = await getToken();
 
       // Passkey gate — triggers iCloud Keychain / Touch ID before deletion
       if (window.PublicKeyCredential) {
@@ -4655,7 +4652,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'logbook':       return <LogbookHub profile={profileData} onNavigate={onNavigate} />;
       case 'events':        return <EventsTab />;
       case 'newsroom':      return <NewsroomTab onNavigate={onNavigate} />;
-      case 'settings':      return <SettingsTab onLogout={handleLogout} />;
+      case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { return await getAccessTokenSilently(); } catch { const { data: { session } } = await supabase.auth.getSession(); return session?.access_token ?? ''; } }} profileId={profileData?.id ?? null} />;
       default:              return null;
     }
   };
