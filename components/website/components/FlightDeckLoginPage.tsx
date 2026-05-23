@@ -28,6 +28,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         setEmailSubmitting(true);
         setError('');
         // Store email so verify page can use it before Auth0
+        localStorage.setItem('pr_last_email', email.trim());
         sessionStorage.setItem('fd_pending_email', email.trim());
         sessionStorage.setItem('fd_pending_connection', email.trim().toLowerCase().endsWith('@gmail.com') ? 'google-oauth2' : 'email');
         navigate('/flight-deck-verify');
@@ -65,11 +66,26 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
             if (!assertion) throw new Error('No credential returned');
 
-            // Passkey confirmed — proceed to Auth0 login (email pre-fill if we have it)
+            // Try to extract the user handle (email) stored in the passkey
+            let loginHint = '';
+            try {
+                const response = assertion.response as AuthenticatorAssertionResponse;
+                if (response.userHandle) {
+                    loginHint = new TextDecoder().decode(response.userHandle);
+                }
+            } catch { /* ignore — login_hint is optional */ }
+
+            // Also check localStorage for a previously stored email
+            if (!loginHint) {
+                loginHint = localStorage.getItem('pr_last_email') || '';
+            }
+
+            // Passkey confirmed — passkey IS the verification, go straight to Auth0
             localStorage.setItem('pr_passkey_registered', 'true');
             await loginWithRedirect({
                 authorizationParams: {
                     redirect_uri: `${window.location.origin}/auth/callback`,
+                    ...(loginHint ? { login_hint: loginHint } : {}),
                 },
                 appState: { returnTo: '/platform' },
             });
