@@ -189,6 +189,32 @@ const OCCUPATIONS = [
     'Other',
 ];
 
+const LockIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+);
+
+const FolderIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+    </svg>
+);
+
+const LockedUpload: React.FC<{ label: string }> = ({ label }) => (
+    <div style={{ position: 'relative', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
+        <button disabled style={{ width: '100%', padding: '10px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <FolderIcon />
+            {label}
+        </button>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', cursor: 'not-allowed', background: 'rgba(241,245,249,0.6)', backdropFilter: 'blur(1px)', borderRadius: '8px' }}>
+            <LockIcon />
+            <span style={{ fontSize: '10px', fontWeight: 600, color: '#64748b' }}>{label}</span>
+        </div>
+    </div>
+);
+
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
     const { loginWithRedirect, user, isAuthenticated, isLoading, getIdTokenClaims } = useAuth0();
@@ -925,12 +951,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         )}
                                     </div>
                                     {/* Pilot licence upload slot */}
-                                    <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-                                        <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Upload Pilot Licence</button>
-                                        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                        </div>
-                                    </div>
+                                    <LockedUpload label="Upload Pilot Licence" />
                                     {/* Issuing Authority */}
                                     <div>
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Issuing Authority / State of Issue</div>
@@ -945,12 +966,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             {['CAAP (Philippines)', 'FAA (USA)', 'EASA (Europe)', 'GCAA (UAE)', 'CASA (Australia)', 'CAA (UK)', 'DGCA (India)', 'TCCA (Canada)', 'SACAA (South Africa)', 'JCAB (Japan)', 'CAAS (Singapore)', 'CAAT (Thailand)', 'DGAC (France)', 'LBA (Germany)', 'ENAC (Italy)', 'Other'].map(a => <option key={a} value={a}>{a}</option>)}
                                         </select>
                                         {/* Medical certificate upload slot */}
-                                        <div style={{ position: 'relative', display: 'inline-block', width: '100%', marginTop: '6px' }}>
-                                            <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Upload Medical Certificate</button>
-                                            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                            </div>
-                                        </div>
+                                        <div style={{ marginTop: '6px' }}><LockedUpload label="Upload Medical Certificate" /></div>
                                     </div>
                                     {/* ── AIRCRAFT & PRIVILEGES — progressive disclosure ── */}
                                     {occupation && issuingAuthority && (
@@ -1105,12 +1121,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </select>
                                 </div>
                                 {/* ELP upload slot — Radio/NTC licence */}
-                                <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-                                    <button disabled style={{ width: '100%', padding: '8px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Upload Radio / NTC Licence</button>
-                                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed', borderRadius: '8px' }}>
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                    </div>
-                                </div>
+                                <LockedUpload label="Upload Radio / NTC Licence" />
                                 {/* Single eligibility notice */}
                                 <p style={{ fontSize: '10px', color: '#94a3b8', margin: '2px 0 0 0', textAlign: 'center' }}>Complete your free recognition profile for <strong style={{ color: '#ef4444' }}>Recognition+</strong> eligibility</p>
                                 {/* Confirm button */}
