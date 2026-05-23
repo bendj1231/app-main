@@ -4133,6 +4133,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     console.log('[avatar] file selected:', file?.name, file?.type, file?.size, '| profileData.id:', profileData?.id);
+    console.log('[avatar] existing image — url:', profileData?.profile_image_url, '| publicId:', profileData?.profile_image_public_id);
     if (!file || !profileData?.id) {
       console.warn('[avatar] aborted — no file or no profileData.id', { file: !!file, profileId: profileData?.id });
       return;
@@ -4145,6 +4146,19 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       const { data: { session } } = await supabase.auth.getSession();
       console.log('[avatar] supabase session:', session ? `uid=${session.user?.id} token=${(session as any).access_token?.slice(0,20)}…` : 'null');
       if (!(session as any)?.access_token) throw new Error('Not authenticated');
+
+      // Delete old image from Cloudinary first (non-blocking if it fails)
+      const oldPublicId = profileData?.profile_image_public_id;
+      if (oldPublicId) {
+        console.log('[avatar] deleting old image from Cloudinary:', oldPublicId);
+        const delRes = await supabase.functions.invoke('cloudinary-delete', {
+          body: { publicId: oldPublicId, type: 'profile' },
+        });
+        console.log('[avatar] delete result:', delRes.data, delRes.error);
+      } else {
+        console.log('[avatar] no existing image to delete');
+      }
+
       const canvas = document.createElement('canvas');
       const imgEl = document.createElement('img') as HTMLImageElement;
       await new Promise<void>((res, rej) => {
@@ -4176,9 +4190,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         profile_image_url: result.url,
         profile_image_public_id: result.publicId,
       }).eq('id', profileData.id);
-      console.log('[avatar] supabase update error:', updateError, '| url:', result.url);
+      console.log('[avatar] supabase update error:', updateError, '| new url:', result.url, '| new publicId:', result.publicId);
       setProfileData((prev: any) => ({ ...prev, profile_image_url: result.url, profile_image_public_id: result.publicId }));
-      console.log('[avatar] profileData updated in state');
+      console.log('[avatar] profileData updated in state ✓');
     } catch (err: any) {
       console.error('[avatar] upload error:', err);
       setAvatarError(err.message || 'Upload failed');
@@ -4239,9 +4253,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   // Keep profileData in sync — prefer Supabase userProfile, fall back to auth0_id then email lookup
   useEffect(() => {
     if (userProfile) {
+      console.log('[profile] loaded from AuthContext userProfile — image_url:', userProfile?.profile_image_url, '| publicId:', userProfile?.profile_image_public_id);
       setProfileData(userProfile);
     } else if (auth0User?.sub) {
       const email = auth0User?.email || currentUser?.email;
+      console.log('[profile] Auth0 user detected, querying Supabase by auth0_id:', auth0User.sub);
       supabase
         .from('profiles')
         .select('*, profile_image_public_id')
@@ -4249,18 +4265,18 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         .maybeSingle()
         .then(async ({ data }) => {
           if (data) {
-            // Found by auth0_id
+            console.log('[profile] found by auth0_id — image_url:', data.profile_image_url, '| publicId:', data.profile_image_public_id);
             const { data: decrypted } = await readProfile(data.id);
             setProfileData(decrypted || data);
           } else if (email) {
-            // Fallback: look up by email (covers accounts where auth0_id not yet linked)
+            console.log('[profile] not found by auth0_id, falling back to email:', email);
             const { data: emailData } = await supabase
               .from('profiles')
               .select('*, profile_image_public_id')
               .eq('email', email)
               .maybeSingle();
             if (emailData) {
-              // Link auth0_id for future lookups
+              console.log('[profile] found by email — image_url:', emailData.profile_image_url, '| publicId:', emailData.profile_image_public_id);
               supabase
                 .from('profiles')
                 .update({ auth0_id: auth0User.sub })
@@ -4268,6 +4284,8 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 .then(() => {});
               const { data: decrypted } = await readProfile(emailData.id);
               setProfileData(decrypted || emailData);
+            } else {
+              console.warn('[profile] no profile found by auth0_id or email');
             }
           }
         });
