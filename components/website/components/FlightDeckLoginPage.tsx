@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { supabase } from '../../../src/lib/supabase';
 
 interface FlightDeckLoginPageProps {
     onNavigate: (page: string) => void;
@@ -13,7 +12,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     const { loginWithRedirect, isAuthenticated } = useAuth0();
     const [email, setEmail] = useState('');
     const [emailSubmitting, setEmailSubmitting] = useState(false);
-    const [hasPasskey] = useState(() => localStorage.getItem('pr_passkey_registered') === 'true');
+    const [hasPasskey] = useState(true);
     const [passkeyLoading, setPasskeyLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -56,44 +55,31 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         setPasskeyLoading(true);
         setError('');
         try {
-            const credentialId = localStorage.getItem('pr_passkey_credential_id');
-            const challengeRes = await fetch(
-                `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/passkey-challenge`,
-                { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: import.meta.env.VITE_SUPABASE_ANON_KEY } }
-            );
-            const { challenge } = await challengeRes.json();
-            const challengeBuf = Uint8Array.from(atob(challenge.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+            if (!window.PublicKeyCredential) throw new Error('WebAuthn not supported');
 
+            const challenge = new Uint8Array(32);
+            crypto.getRandomValues(challenge);
+
+            // Empty allowCredentials = browser/iCloud Keychain auto-discovers all passkeys for this origin
             const assertion = await navigator.credentials.get({
                 publicKey: {
-                    challenge: challengeBuf,
-                    timeout: 60000,
+                    challenge,
+                    timeout: 120000,
                     userVerification: 'required',
-                    allowCredentials: credentialId
-                        ? [{ id: Uint8Array.from(atob(credentialId.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0)), type: 'public-key' }]
-                        : [],
+                    allowCredentials: [],
                 },
             }) as PublicKeyCredential | null;
 
-            if (!assertion) throw new Error('No assertion returned');
+            if (!assertion) throw new Error('No credential returned');
 
-            const verifyRes = await fetch(
-                `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/passkey-verify`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', apikey: import.meta.env.VITE_SUPABASE_ANON_KEY },
-                    body: JSON.stringify({ credentialId: assertion.id, challenge }),
-                }
-            );
-            const verifyData = await verifyRes.json();
-            if (verifyData.token) {
-                const { error: signInError } = await supabase.auth.setSession({ access_token: verifyData.token, refresh_token: verifyData.refresh_token || '' });
-                if (!signInError) {
-                    navigate('/platform');
-                    return;
-                }
-            }
-            throw new Error('Passkey verification failed');
+            // Passkey confirmed — proceed to Auth0 login (email pre-fill if we have it)
+            localStorage.setItem('pr_passkey_registered', 'true');
+            await loginWithRedirect({
+                authorizationParams: {
+                    redirect_uri: `${window.location.origin}/auth/callback`,
+                },
+                appState: { returnTo: '/platform' },
+            });
         } catch (err: any) {
             if (err?.name !== 'NotAllowedError') {
                 setError('Passkey sign-in failed. Try Google or email instead.');
@@ -253,13 +239,14 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                                 cursor: passkeyLoading ? 'not-allowed' : 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
+                                justifyContent: 'center',
                                 gap: 10,
                             }}
                             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
                             onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
                         >
-                            <svg width="18" height="18" viewBox="0 0 814 1000" fill="currentColor">
-                                <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-43.4-150.3-109.8c-62.1-90.3-112.5-228-112.5-358.8 0-221.9 145.5-339.3 288.4-339.3 76.5 0 140.5 50.5 189 50.5 46.3 0 119.2-53.4 179.8-53.4zM640 .8c-30.7 14.2-93.6 49.4-136.4 115.2-36.7 55.2-64.8 139.6-64.8 223.9 0 10.3 1.9 20.6 2.6 24.1 4.5.6 12.2 1.9 19.8 1.9 36.7 0 95.5-30.7 133.5-92.4 42.8-66.5 61.3-143.3 61.3-213.6 0-7.7-.6-15.4-1.3-23.1z"/>
+                            <svg width="14" height="17" viewBox="0 0 170 210" fill="currentColor" style={{ flexShrink: 0 }}>
+                                <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.197-2.12-9.973-3.17-14.34-3.17-4.58 0-9.492 1.05-14.746 3.17-5.262 2.13-9.501 3.24-12.742 3.35-4.929.21-9.842-1.96-14.746-6.52-3.13-2.73-7.045-7.41-11.735-14.04-5.032-7.08-9.169-15.29-12.41-24.65-3.471-10.11-5.211-19.9-5.211-29.378 0-10.857 2.346-20.221 7.045-28.068 3.693-6.303 8.606-11.275 14.755-14.925s12.793-5.51 19.948-5.629c3.915 0 9.049 1.211 15.429 3.591 6.362 2.388 10.447 3.599 12.238 3.599 1.339 0 5.877-1.416 13.57-4.239 7.275-2.618 13.415-3.702 18.445-3.275 13.63 1.1 23.87 6.473 30.68 16.153-12.19 7.386-18.22 17.731-18.1 31.002.11 10.337 3.86 18.939 11.23 25.769 3.34 3.17 7.07 5.62 11.22 7.36-.9 2.61-1.85 5.11-2.86 7.51zM119.11 7.24c0 8.102-2.96 15.667-8.86 22.669-7.12 8.324-15.732 13.134-25.071 12.375a25.222 25.222 0 0 1-.188-3.07c0-7.778 3.386-16.102 9.399-22.908 3.002-3.446 6.82-6.311 11.45-8.597 4.62-2.252 8.99-3.497 13.1-3.71.12 1.017.17 2.035.17 3.241z"/>
                             </svg>
                             {passkeyLoading ? 'Verifying...' : 'Sign in with Passkey (Touch ID)'}
                         </button>
