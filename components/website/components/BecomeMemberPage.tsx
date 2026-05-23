@@ -1123,7 +1123,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {/* ELP upload slot — Radio/NTC licence */}
                                 <LockedUpload label="Upload Radio / NTC Licence" />
                                 {/* Single eligibility notice */}
-                                <p style={{ fontSize: '10px', color: '#94a3b8', margin: '2px 0 0 0', textAlign: 'center' }}>Complete your free recognition profile for <strong style={{ color: '#ef4444' }}>Recognition+</strong> eligibility</p>
+                                <div style={{ padding: '10px 12px', background: '#fafafa', border: '1px solid #f1f5f9', borderRadius: '8px', textAlign: 'center' }}>
+                                    <p style={{ fontSize: '11px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0' }}>Unlock document verification with <span style={{ color: '#ef4444' }}>Recognition+</span></p>
+                                    <p style={{ fontSize: '10px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
+                                        Complete your free profile first — then upgrade to <strong style={{ color: '#0f172a' }}>Recognition+</strong> to upload your licence documents for verification. Operators and airlines will see a <strong style={{ color: '#16a34a' }}>✓ Verified</strong> badge on your profile, confirming your credentials are current and authentic.
+                                    </p>
+                                </div>
                                 {/* Confirm button */}
                                 {(() => {
                                     const ok = !!occupation && !!issuingAuthority;
