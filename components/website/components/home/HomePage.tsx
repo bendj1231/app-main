@@ -996,7 +996,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     100% { transform: translateX(-50%); }
                 }
             `}</style>
-            <div className="relative font-sans bg-black overflow-x-hidden flex flex-col min-h-screen">
+            <div className="relative font-sans bg-black overflow-x-hidden flex flex-col min-h-screen pt-16">
             {/* Navigation Bar */}
             <TopNavbar
                 onNavigate={onNavigate}
