@@ -4132,13 +4132,18 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !profileData?.id) return;
+    console.log('[avatar] file selected:', file?.name, file?.type, file?.size, '| profileData.id:', profileData?.id);
+    if (!file || !profileData?.id) {
+      console.warn('[avatar] aborted — no file or no profileData.id', { file: !!file, profileId: profileData?.id });
+      return;
+    }
     if (!file.type.startsWith('image/')) { setAvatarError('Must be an image file'); return; }
     if (file.size > 5 * 1024 * 1024) { setAvatarError('Image must be under 5MB'); return; }
     setAvatarUploading(true);
     setAvatarError('');
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('[avatar] supabase session:', session ? `uid=${session.user?.id} token=${(session as any).access_token?.slice(0,20)}…` : 'null');
       if (!(session as any)?.access_token) throw new Error('Not authenticated');
       const canvas = document.createElement('canvas');
       const imgEl = document.createElement('img') as HTMLImageElement;
@@ -4150,25 +4155,32 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           else if (h > max) { w = w * max / h; h = max; }
           canvas.width = w; canvas.height = h;
           canvas.getContext('2d')!.drawImage(imgEl, 0, 0, w, h);
+          console.log('[avatar] compressed to', w, 'x', h);
           res();
         };
-        imgEl.onerror = rej;
+        imgEl.onerror = (err) => { console.error('[avatar] image load error:', err); rej(err); };
         imgEl.src = URL.createObjectURL(file);
       });
       const base64 = canvas.toDataURL('image/jpeg', 0.8);
+      console.log('[avatar] base64 length:', base64.length, '| calling cloudinary-upload edge fn…');
       const uploadRes = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/cloudinary-upload', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${(session as any).access_token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ file: base64, userId: profileData.id }),
       });
+      console.log('[avatar] edge fn HTTP status:', uploadRes.status, uploadRes.statusText);
       const result = await uploadRes.json();
+      console.log('[avatar] edge fn response:', result);
       if (!result.success) throw new Error(result.error || 'Upload failed');
-      await supabase.from('profiles').update({
+      const { error: updateError } = await supabase.from('profiles').update({
         profile_image_url: result.url,
         profile_image_public_id: result.publicId,
       }).eq('id', profileData.id);
+      console.log('[avatar] supabase update error:', updateError, '| url:', result.url);
       setProfileData((prev: any) => ({ ...prev, profile_image_url: result.url, profile_image_public_id: result.publicId }));
+      console.log('[avatar] profileData updated in state');
     } catch (err: any) {
+      console.error('[avatar] upload error:', err);
       setAvatarError(err.message || 'Upload failed');
     } finally {
       setAvatarUploading(false);
