@@ -1258,6 +1258,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY },
                                                 body: JSON.stringify({
                                                     auth0Id,
+                                                    email: user?.email || '',
                                                     ...encryptedPayload,
                                                     totalHours: hrs,
                                                     aircraftTypes,
