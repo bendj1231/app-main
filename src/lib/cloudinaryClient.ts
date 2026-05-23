@@ -244,22 +244,27 @@ export async function getCachedProfileImage(
   cloudinaryUrl: string,
   publicId: string
 ): Promise<string> {
+  console.log('[cloudinaryClient] getCachedProfileImage — url:', cloudinaryUrl, '| publicId:', publicId);
   // Step 1: Check cache
   const cached = await getCachedImage(cloudinaryUrl);
   if (cached) {
-    // Create object URL from cached blob
+    console.log('[cloudinaryClient] cache HIT \u2713 — serving from IndexedDB, blob size:', cached.size);
     return URL.createObjectURL(cached);
   }
+  console.log('[cloudinaryClient] cache MISS — fetching from Cloudinary…');
   
   // Step 2: Fetch from Cloudinary
   try {
     const response = await fetch(cloudinaryUrl);
-    if (!response.ok) throw new Error('Failed to fetch image');
+    console.log('[cloudinaryClient] fetch response:', response.status, response.statusText, '| content-type:', response.headers.get('content-type'));
+    if (!response.ok) throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
     
     const blob = await response.blob();
+    console.log('[cloudinaryClient] fetched blob size:', blob.size, 'type:', blob.type);
     
     // Step 3: Cache for next time
     await cacheImage(cloudinaryUrl, blob, publicId);
+    console.log('[cloudinaryClient] cached in IndexedDB \u2713');
     
     // Return object URL
     return URL.createObjectURL(blob);
