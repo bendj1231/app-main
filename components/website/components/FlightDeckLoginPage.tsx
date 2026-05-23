@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { MeshGradient } from '@paper-design/shaders-react';
 import { supabase } from '../../../src/lib/supabase';
 
 interface FlightDeckLoginPageProps {
@@ -104,8 +105,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
     if (isLoading) {
         return (
-            <div style={{ minHeight: '100vh', background: '#f5f0e8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: 32, height: 32, border: '3px solid #0f172a', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+            <div style={{ minHeight: '100vh', background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: 32, height: 32, border: '3px solid #60a5fa', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
             </div>
         );
     }
@@ -113,7 +114,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     return (
         <div style={{
             minHeight: '100vh',
-            background: '#f5f0e8',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -122,34 +122,39 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
             position: 'relative',
             overflow: 'hidden',
         }}>
-            {/* Subtle grid lines background like img 1 */}
-            <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.25 }} xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
-                        <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#4ade80" strokeWidth="0.5" />
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
+            {/* Same MeshGradient shader as platform */}
+            <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+                <MeshGradient
+                    className="w-full h-full"
+                    colors={["#dbeafe","#94a3b8","#64748b","#475569","#334155","#1e3a5f","#1e3a8a","#0f172a"]}
+                    speed={0.4}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(100,116,139,0.2), rgba(15,23,42,0.35), rgba(2,6,23,0.6))' }} />
+                <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
+            </div>
 
             {/* Logo + title */}
             <div style={{ textAlign: 'center', marginBottom: 32, position: 'relative', zIndex: 1 }}>
                 <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6 }}>
-                    <span style={{ color: '#0f172a' }}>pilot</span>
-                    <span style={{ color: '#dc2626' }}>recognition</span>
-                    <span style={{ color: '#0f172a' }}>.com</span>
+                    <span style={{ color: '#ffffff' }}>pilot</span>
+                    <span style={{ color: '#ef4444' }}>recognition</span>
+                    <span style={{ color: '#ffffff' }}>.com</span>
                 </div>
-                <p style={{ color: '#64748b', fontSize: 14, margin: 0 }}>Flight Deck</p>
+                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14, margin: 0, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }}>Flight Deck</p>
             </div>
 
-            {/* Card */}
+            {/* Glassy card */}
             <div style={{
-                background: '#ffffff',
-                borderRadius: 12,
+                background: 'rgba(255,255,255,0.07)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                borderRadius: 16,
                 padding: '32px 28px',
                 width: '100%',
                 maxWidth: 420,
-                boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                boxShadow: '0 8px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
                 position: 'relative',
                 zIndex: 1,
             }}>
@@ -161,7 +166,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
                 {/* Email form */}
                 <form onSubmit={handleEmailContinue} style={{ marginBottom: 20 }}>
-                    <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
+                    <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.85)', marginBottom: 6 }}>
                         Email
                     </label>
                     <input
@@ -172,10 +177,11 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                         style={{
                             width: '100%',
                             padding: '10px 12px',
-                            border: '1px solid #d1d5db',
+                            border: '1px solid rgba(255,255,255,0.2)',
                             borderRadius: 6,
                             fontSize: 14,
-                            color: '#111827',
+                            color: '#ffffff',
+                            background: 'rgba(255,255,255,0.08)',
                             outline: 'none',
                             boxSizing: 'border-box',
                             marginBottom: 12,
@@ -203,9 +209,9 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
                 {/* Divider */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                    <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
-                    <span style={{ fontSize: 12, color: '#9ca3af' }}>or</span>
-                    <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
+                    <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.15)' }} />
+                    <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>or</span>
+                    <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.15)' }} />
                 </div>
 
                 {/* OAuth buttons */}
@@ -215,20 +221,20 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                         style={{
                             width: '100%',
                             padding: '10px 14px',
-                            background: '#fff',
-                            border: '1px solid #d1d5db',
+                            background: 'rgba(255,255,255,0.08)',
+                            border: '1px solid rgba(255,255,255,0.18)',
                             borderRadius: 6,
                             fontSize: 14,
                             fontWeight: 500,
-                            color: '#374151',
+                            color: 'rgba(255,255,255,0.9)',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             gap: 10,
                             transition: 'border-color 0.15s, background 0.15s',
                         }}
-                        onMouseEnter={e => (e.currentTarget.style.background = '#f9fafb')}
-                        onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+                        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
+                        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
                     >
                         <svg width="18" height="18" viewBox="0 0 18 18">
                             <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"/>
@@ -246,19 +252,19 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                             style={{
                                 width: '100%',
                                 padding: '10px 14px',
-                                background: '#fff',
-                                border: '1px solid #d1d5db',
+                                background: 'rgba(255,255,255,0.08)',
+                                border: '1px solid rgba(255,255,255,0.18)',
                                 borderRadius: 6,
                                 fontSize: 14,
                                 fontWeight: 500,
-                                color: '#374151',
+                                color: 'rgba(255,255,255,0.9)',
                                 cursor: passkeyLoading ? 'not-allowed' : 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: 10,
                             }}
-                            onMouseEnter={e => (e.currentTarget.style.background = '#f9fafb')}
-                            onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+                            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
+                            onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
                         >
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
@@ -271,11 +277,11 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                 </div>
 
                 {/* Sign up link */}
-                <p style={{ textAlign: 'center', fontSize: 13, color: '#6b7280', marginTop: 20, marginBottom: 0 }}>
+                <p style={{ textAlign: 'center', fontSize: 13, color: 'rgba(255,255,255,0.45)', marginTop: 20, marginBottom: 0 }}>
                     Don't have an account?{' '}
                     <button
                         onClick={() => onNavigate('become-member')}
-                        style={{ background: 'none', border: 'none', color: '#10b981', fontWeight: 600, cursor: 'pointer', padding: 0, fontSize: 13 }}
+                        style={{ background: 'none', border: 'none', color: '#34d399', fontWeight: 600, cursor: 'pointer', padding: 0, fontSize: 13 }}
                     >
                         Sign up
                     </button>
@@ -285,7 +291,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
             {/* Back link */}
             <button
                 onClick={() => navigate('/')}
-                style={{ marginTop: 24, background: 'none', border: 'none', color: '#64748b', fontSize: 13, cursor: 'pointer', zIndex: 1, position: 'relative' }}
+                style={{ marginTop: 24, background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', zIndex: 1, position: 'relative' }}
             >
                 ← Back to Home
             </button>
