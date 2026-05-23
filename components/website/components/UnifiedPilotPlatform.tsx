@@ -4015,43 +4015,58 @@ const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> = ({ on
 
 // ─── TAB: SETTINGS ─────────────────────────────────────────────────────────
 const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
-  // deleteStep: null = hidden, 'export' = step 1 export VCs, 'confirm' = step 2 final confirm
   const [deleteStep, setDeleteStep] = React.useState<null | 'export' | 'confirm'>(null);
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
-  const [credentials, setCredentials] = React.useState<any[]>([]);
-  const [loadingCreds, setLoadingCreds] = React.useState(false);
-  const [exported, setExported] = React.useState(false);
+  const [loadingExport, setLoadingExport] = React.useState(false);
+  const [exportData, setExportData] = React.useState<{
+    vcs: any[]; hourTokens: any[]; resume: any | null;
+    program: any | null; interview: any | null;
+  }>({ vcs: [], hourTokens: [], resume: null, program: null, interview: null });
+  const [downloaded, setDownloaded] = React.useState<Record<string, boolean>>({});
 
-  const fetchCredentials = async () => {
-    setLoadingCreds(true);
+  const loadExportData = async () => {
+    setLoadingExport(true);
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user?.id) { setLoadingCreds(false); return; }
-    const { data } = await supabase
-      .from('pilot_verification_wallet')
-      .select('credential_type, credential_jwt, issued_at, status')
-      .eq('profile_id', session.user.id);
-    setCredentials(data ?? []);
-    setLoadingCreds(false);
+    const uid = session?.user?.id;
+    if (!uid) { setLoadingExport(false); return; }
+
+    const [vcsRes, hoursRes, resumeRes, programRes, interviewRes] = await Promise.all([
+      supabase.from('pilot_verification_wallet').select('credential_type,credential_jwt,issued_at,status').eq('profile_id', uid),
+      supabase.from('logbook_hour_tokens').select('issuer_name,total_hours,pic_hours,aircraft_type,period_from,period_to,verification_level,attestation_token,status').eq('pilot_id', uid),
+      supabase.from('atlas_resumes').select('*').eq('user_id', uid).maybeSingle(),
+      supabase.from('program_progress').select('program_type,completion_percentage,modules_completed,total_modules,status,start_date').eq('user_id', uid),
+      supabase.from('interview_assessments').select('overall_score,overall_grade,technical_knowledge_score,communication_score,decision_making_score,strengths,areas_for_improvement,detailed_feedback,recommendation').eq('interviewer_id', uid).maybeSingle(),
+    ]);
+
+    setExportData({
+      vcs: vcsRes.data ?? [],
+      hourTokens: hoursRes.data ?? [],
+      resume: resumeRes.data ?? null,
+      program: (programRes.data && programRes.data.length > 0) ? programRes.data : null,
+      interview: interviewRes.data ?? null,
+    });
+    setLoadingExport(false);
   };
 
   const handleOpenExport = async () => {
     setDeleteStep('export');
     setDeleteError('');
-    setExported(false);
-    await fetchCredentials();
+    setDownloaded({});
+    await loadExportData();
   };
 
-  const handleExportAll = () => {
-    if (credentials.length === 0) return;
-    const blob = new Blob([JSON.stringify(credentials, null, 2)], { type: 'application/json' });
+  const triggerDownload = (filename: string, data: any) => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `pilot-credentials-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
+    a.href = url; a.download = filename; a.click();
     URL.revokeObjectURL(url);
-    setExported(true);
+  };
+
+  const exportItem = (key: string, filename: string, data: any) => {
+    triggerDownload(filename, data);
+    setDownloaded(d => ({ ...d, [key]: true }));
   };
 
   const handleDeleteAccount = async () => {
@@ -4079,7 +4094,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     }
   };
 
-  const handleCancel = () => { setDeleteStep(null); setDeleteError(''); setExported(false); setCredentials([]); };
+  const handleCancel = () => { setDeleteStep(null); setDeleteError(''); setDownloaded({}); };
 
   const sections = [
     { title: 'Account', items: ['Edit Profile', 'Change Password', 'Email Preferences'] },
@@ -4121,50 +4136,128 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           </button>
         )}
 
-        {/* Step 1 — Export credentials */}
+        {/* Step 1 — Export documents */}
         {deleteStep === 'export' && (
-          <div className="px-3 py-3 space-y-3">
+          <div className="px-3 py-3 space-y-4">
             <div className="flex items-center gap-2">
               <span className="text-[9px] font-black tracking-widest px-2 py-0.5 rounded-full" style={{ background: 'rgba(251,191,36,0.12)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.25)' }}>STEP 1 OF 2</span>
-              <span className="text-[10px] font-black text-white/60 tracking-wider">EXPORT YOUR CREDENTIALS</span>
+              <span className="text-[10px] font-black text-white/60 tracking-wider">EXPORT YOUR DATA</span>
             </div>
-            <p className="text-xs text-white/60 leading-relaxed">
-              Your verified credentials (VCs) will be <span className="text-red-400 font-bold">permanently deleted</span> along with your account. Export them now to keep a portable copy — you can import them into any W3C-compatible wallet later.
+            <p className="text-xs text-white/55 leading-relaxed">
+              Everything below will be <span className="text-red-400 font-bold">permanently deleted</span>. Download what you need before continuing — all exports are portable JSON.
             </p>
-            {loadingCreds ? (
-              <div className="flex items-center gap-2 py-2">
+
+            {loadingExport ? (
+              <div className="flex items-center gap-2 py-3">
                 <div className="w-4 h-4 border-2 border-sky-400/30 border-t-sky-400 rounded-full animate-spin" />
-                <span className="text-[10px] text-white/40">Loading credentials…</span>
+                <span className="text-[10px] text-white/40">Loading your data…</span>
               </div>
-            ) : credentials.length === 0 ? (
-              <p className="text-[10px] text-white/30 py-1">No issued credentials found in your wallet.</p>
             ) : (
-              <div className="space-y-1.5">
-                {credentials.map((c, i) => (
-                  <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div className="space-y-2">
+
+                {/* Verified Credentials (W3C VCs) */}
+                <div className="rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center justify-between px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.04)' }}>
                     <div>
-                      <p className="text-[10px] font-black text-white/80">{c.credential_type?.replace(/_/g, ' ').toUpperCase()}</p>
-                      <p className="text-[9px] text-white/30">{c.issued_at ? new Date(c.issued_at).toLocaleDateString() : '—'} · {c.status}</p>
+                      <p className="text-[10px] font-black text-white/80">VERIFIED CREDENTIALS</p>
+                      <p className="text-[9px] text-white/35">{exportData.vcs.length} W3C VC{exportData.vcs.length !== 1 ? 's' : ''} · Wallet tokens · Attestations</p>
                     </div>
-                    <span className="text-[9px] font-bold text-emerald-400">W3C VC</span>
+                    {exportData.vcs.length > 0 ? (
+                      <button onClick={() => exportItem('vcs', `pilot-vcs-${new Date().toISOString().slice(0,10)}.json`, exportData.vcs)}
+                        className="px-3 py-1.5 text-[9px] font-black rounded-lg tracking-wider transition-all"
+                        style={{ background: downloaded.vcs ? 'rgba(52,211,153,0.15)' : 'rgba(56,189,248,0.15)', border: `1px solid ${downloaded.vcs ? 'rgba(52,211,153,0.3)' : 'rgba(56,189,248,0.3)'}`, color: downloaded.vcs ? '#34d399' : '#38bdf8' }}>
+                        {downloaded.vcs ? '✓ SAVED' : 'EXPORT'}
+                      </button>
+                    ) : <span className="text-[9px] text-white/20">None</span>}
                   </div>
-                ))}
-                <button
-                  onClick={handleExportAll}
-                  className="w-full py-2 text-xs font-black tracking-wider rounded-lg transition-all mt-1"
-                  style={{ background: exported ? 'rgba(52,211,153,0.15)' : 'rgba(56,189,248,0.15)', border: `1px solid ${exported ? 'rgba(52,211,153,0.3)' : 'rgba(56,189,248,0.3)'}`, color: exported ? '#34d399' : '#38bdf8' }}
-                >
-                  {exported ? '✓ CREDENTIALS EXPORTED' : `EXPORT ${credentials.length} CREDENTIAL${credentials.length !== 1 ? 'S' : ''} AS JSON`}
-                </button>
+                </div>
+
+                {/* Verified Flight Hour Tokens */}
+                <div className="rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center justify-between px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                    <div>
+                      <p className="text-[10px] font-black text-white/80">VERIFIED FLIGHT HOURS</p>
+                      <p className="text-[9px] text-white/35">{exportData.hourTokens.length} logbook token{exportData.hourTokens.length !== 1 ? 's' : ''} · Attestation records</p>
+                    </div>
+                    {exportData.hourTokens.length > 0 ? (
+                      <button onClick={() => exportItem('hours', `pilot-flight-hours-${new Date().toISOString().slice(0,10)}.json`, exportData.hourTokens)}
+                        className="px-3 py-1.5 text-[9px] font-black rounded-lg tracking-wider transition-all"
+                        style={{ background: downloaded.hours ? 'rgba(52,211,153,0.15)' : 'rgba(56,189,248,0.15)', border: `1px solid ${downloaded.hours ? 'rgba(52,211,153,0.3)' : 'rgba(56,189,248,0.3)'}`, color: downloaded.hours ? '#34d399' : '#38bdf8' }}>
+                        {downloaded.hours ? '✓ SAVED' : 'EXPORT'}
+                      </button>
+                    ) : <span className="text-[9px] text-white/20">None</span>}
+                  </div>
+                </div>
+
+                {/* ATLAS Resume */}
+                <div className="rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center justify-between px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                    <div>
+                      <p className="text-[10px] font-black text-white/80">ATLAS PILOT RESUME</p>
+                      <p className="text-[9px] text-white/35">{exportData.resume ? `${exportData.resume.target_role || 'Aviation'} · ${exportData.resume.is_certified ? 'Certified' : 'Draft'}` : 'No resume generated'}</p>
+                    </div>
+                    {exportData.resume ? (
+                      <button onClick={() => exportItem('resume', `atlas-resume-${new Date().toISOString().slice(0,10)}.json`, exportData.resume)}
+                        className="px-3 py-1.5 text-[9px] font-black rounded-lg tracking-wider transition-all"
+                        style={{ background: downloaded.resume ? 'rgba(52,211,153,0.15)' : 'rgba(56,189,248,0.15)', border: `1px solid ${downloaded.resume ? 'rgba(52,211,153,0.3)' : 'rgba(56,189,248,0.3)'}`, color: downloaded.resume ? '#34d399' : '#38bdf8' }}>
+                        {downloaded.resume ? '✓ SAVED' : 'EXPORT'}
+                      </button>
+                    ) : <span className="text-[9px] text-white/20">None</span>}
+                  </div>
+                </div>
+
+                {/* Foundation Program Certificate */}
+                <div className="rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center justify-between px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                    <div>
+                      <p className="text-[10px] font-black text-white/80">PROGRAM COMPLETION RECORDS</p>
+                      <p className="text-[9px] text-white/35">
+                        {exportData.program
+                          ? exportData.program.map((p: any) => `${p.program_type} — ${p.completion_percentage}%`).join(' · ')
+                          : 'No programs enrolled'}
+                      </p>
+                    </div>
+                    {exportData.program ? (
+                      <button onClick={() => exportItem('program', `program-certificate-${new Date().toISOString().slice(0,10)}.json`, exportData.program)}
+                        className="px-3 py-1.5 text-[9px] font-black rounded-lg tracking-wider transition-all"
+                        style={{ background: downloaded.program ? 'rgba(52,211,153,0.15)' : 'rgba(56,189,248,0.15)', border: `1px solid ${downloaded.program ? 'rgba(52,211,153,0.3)' : 'rgba(56,189,248,0.3)'}`, color: downloaded.program ? '#34d399' : '#38bdf8' }}>
+                        {downloaded.program ? '✓ SAVED' : 'EXPORT'}
+                      </button>
+                    ) : <span className="text-[9px] text-white/20">None</span>}
+                  </div>
+                </div>
+
+                {/* EBT Interview Assessment */}
+                <div className="rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center justify-between px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                    <div>
+                      <p className="text-[10px] font-black text-white/80">EBT INTERVIEW ASSESSMENT</p>
+                      <p className="text-[9px] text-white/35">
+                        {exportData.interview
+                          ? `Grade ${exportData.interview.overall_grade || '—'} · Score ${exportData.interview.overall_score ?? '—'} · ${exportData.interview.recommendation || ''}`
+                          : 'No interview assessment on record'}
+                      </p>
+                    </div>
+                    {exportData.interview ? (
+                      <button onClick={() => exportItem('interview', `ebt-interview-assessment-${new Date().toISOString().slice(0,10)}.json`, exportData.interview)}
+                        className="px-3 py-1.5 text-[9px] font-black rounded-lg tracking-wider transition-all"
+                        style={{ background: downloaded.interview ? 'rgba(52,211,153,0.15)' : 'rgba(56,189,248,0.15)', border: `1px solid ${downloaded.interview ? 'rgba(52,211,153,0.3)' : 'rgba(56,189,248,0.3)'}`, color: downloaded.interview ? '#34d399' : '#38bdf8' }}>
+                        {downloaded.interview ? '✓ SAVED' : 'EXPORT'}
+                      </button>
+                    ) : <span className="text-[9px] text-white/20">None</span>}
+                  </div>
+                </div>
+
               </div>
             )}
+
             <div className="flex gap-2 pt-1">
               <button
                 onClick={() => setDeleteStep('confirm')}
                 className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all"
                 style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171' }}
               >
-                {credentials.length > 0 && !exported ? 'SKIP EXPORT & CONTINUE →' : 'CONTINUE TO DELETE →'}
+                CONTINUE TO DELETE →
               </button>
               <button onClick={handleCancel} className="px-4 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.4)' }}>
                 CANCEL

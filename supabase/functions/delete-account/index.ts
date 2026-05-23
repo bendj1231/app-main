@@ -86,7 +86,18 @@ Deno.serve(async (req: Request) => {
 
     // Logbook data
     await supabase.from('logbook_provider_sync').delete().eq('user_id', userId);
-    await supabase.from('logbook_hour_tokens').delete().eq('user_id', userId);
+    await supabase.from('logbook_hour_tokens').delete().eq('pilot_id', userId);
+    await supabase.from('pilot_flight_logs').delete().eq('user_id', userId);
+
+    // Program & resume data
+    await supabase.from('atlas_resumes').delete().eq('user_id', userId);
+    await supabase.from('program_progress').delete().eq('user_id', userId);
+    await supabase.from('completion_tracking').delete().eq('user_id', userId);
+
+    // Interview data
+    await supabase.from('interview_assessments').delete().eq('interviewer_id', userId);
+    await supabase.from('interview_feedback').delete().eq('reviewer_id', userId);
+    await supabase.from('interviews').delete().eq('pilot_profile_id', userId);
 
     await supabase.from('profiles').delete().eq('id', userId);
 
