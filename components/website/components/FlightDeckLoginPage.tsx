@@ -173,7 +173,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                         type="email"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
-                        placeholder="you@example.com"
+                        placeholder="Pilot@pilotrecognition.com"
                         style={{
                             width: '100%',
                             padding: '10px 12px',
@@ -193,7 +193,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                         style={{
                             width: '100%',
                             padding: '11px',
-                            background: emailSubmitting || !email.trim() ? '#a7f3d0' : '#10b981',
+                            background: emailSubmitting || !email.trim() ? '#fca5a5' : '#dc2626',
                             color: '#fff',
                             border: 'none',
                             borderRadius: 6,
@@ -281,7 +281,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                     Don't have an account?{' '}
                     <button
                         onClick={() => onNavigate('become-member')}
-                        style={{ background: 'none', border: 'none', color: '#34d399', fontWeight: 600, cursor: 'pointer', padding: 0, fontSize: 13 }}
+                        style={{ background: 'none', border: 'none', color: '#ef4444', fontWeight: 600, cursor: 'pointer', padding: 0, fontSize: 13 }}
                     >
                         Sign up
                     </button>
