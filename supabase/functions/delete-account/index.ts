@@ -20,21 +20,48 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    // Verify the requesting user via JWT — prevents deleting other users' accounts
-    const authClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_ANON_KEY')!, {
-      global: { headers: { Authorization: req.headers.get('Authorization')! } },
-    });
+    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-    const { data: { user }, error: authError } = await authClient.auth.getUser();
-    if (authError || !user) {
+    // Decode the JWT to extract sub — works for both Supabase JWTs and Auth0 JWTs
+    const authHeader = req.headers.get('Authorization') || '';
+    const jwt = authHeader.replace(/^Bearer\s+/i, '');
+    if (!jwt) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const userId = user.id;
-    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+    let sub: string | null = null;
+    try {
+      const payload = JSON.parse(atob(jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      sub = payload.sub as string;
+    } catch {
+      return new Response(JSON.stringify({ error: 'Invalid token' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (!sub) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Look up the profile — sub may be a Supabase UUID or an Auth0 id (google-oauth2|...)
+    const isAuth0 = sub.includes('|');
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq(isAuth0 ? 'auth0_id' : 'id', sub)
+      .maybeSingle();
+
+    if (!profile?.id) {
+      return new Response(JSON.stringify({ error: 'Profile not found' }), {
+        status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const userId = profile.id;
 
     // Delete pilot documents from storage
     const { data: docs } = await supabase
