@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, ArrowRight, Eye, EyeOff, Fingerprint } from 'lucide-react';
+import { X, ArrowRight, Fingerprint } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useToast } from '@/src/components/ui/toast';
-import { validateEmail, validateSimplePassword } from '@/src/lib/validation';
+import { validateEmail } from '@/src/lib/validation';
 
 // Google SVG icon
 const GoogleIcon = () => (
@@ -17,9 +17,8 @@ const GoogleIcon = () => (
 
 // Apple SVG icon
 const AppleIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.72 8.65c-.13 0-.26 0-.39.03-.65.17-1.28.6-1.73.95-.45.36-1.15.66-1.83.58-.1-.01-.21-.03-.31-.07-.6-.24-1.3-.37-2.04-.35-.95.02-1.86.28-2.56.74-.03.02-.05.04-.08.06-.03.02-.06.04-.09.07-.2.17-.38.35-.54.55-.14.18-.27.37-.39.57-.58.97-.87 2.12-.81 3.32.04.75.24 1.49.58 2.16.3.59.7 1.12 1.18 1.56.46.42 1 .75 1.58.97.58.22 1.2.33 1.82.32.39-.01.78-.08 1.15-.21.46-.16.93-.24 1.41-.24.48 0 .95.08 1.41.24.37.13.76.2 1.15.21.62.01 1.24-.1 1.82-.32.58-.22 1.12-.55 1.58-.97.48-.44.88-.97 1.18-1.56.34-.67.54-1.41.58-2.16.05-.88-.1-1.75-.42-2.55-.33-.82-.84-1.54-1.48-2.11-.66-.59-1.47-.98-2.33-1.12z" fill="currentColor"/>
-        <path d="M14.57 6.33c.73-.88 1.18-2 1.18-3.22 0-.16-.01-.32-.04-.48-.78.04-1.52.31-2.13.77-.63.48-1.1 1.13-1.35 1.88-.25.74-.32 1.54-.19 2.31.23-.02.46-.07.68-.15.56-.18 1.06-.5 1.47-.9.38-.37.68-.81.88-1.29.15-.36.26-.74.33-1.13-.01.4-.09.79-.24 1.16-.18.44-.44.84-.78 1.17-.33.32-.72.57-1.15.73-.43.16-.88.24-1.34.23-.1 0-.2-.01-.3-.03.59-.36 1.05-.9 1.3-1.53.25-.63.28-1.33.08-1.98-.1-.33-.25-.64-.45-.92-.2-.27-.45-.51-.73-.7.66.21 1.25.6 1.69 1.11.45.52.76 1.15.89 1.82z" fill="currentColor" opacity="0"/>
+    <svg width="20" height="20" viewBox="0 0 814 1000" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-42.3-150.3-109.7C55 556.8 17 429.7 17 309.2c0-190.5 123.3-291.5 245.5-291.5 63.2 0 115.9 41.7 155.5 41.7 38.3 0 98.1-44.2 170.7-44.2 26.9 0 109.1 2.6 168.4 87.3zm-180.3-141.9c30.7-36.4 52.4-86.7 52.4-136.7 0-6.8-.6-13.7-1.9-19.2-49.1 1.9-106.9 32.7-141.2 74.1-27.5 31.3-52.4 81.6-52.4 132.3 0 7.4 1.3 14.8 1.9 17.1 3.2.6 8.4 1.3 13.6 1.3 44.2 0 96.2-29.4 127.6-68.9z"/>
     </svg>
 );
 
@@ -54,9 +53,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     onNavigate
 }) => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [passkeyLoading, setPasskeyLoading] = useState(false);
@@ -232,17 +228,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             return;
         }
 
-        // Validate password
-        const passwordValidation = validateSimplePassword(password);
-        if (!passwordValidation.isValid) {
-            setError(passwordValidation.error || 'Invalid password');
-            addToast('error', 'Invalid Password', passwordValidation.error || 'Please enter a valid password');
-            return;
-        }
-
         setLoading(true);
         try {
-            await login(email, password);
+            await login(email, '');
 
             const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot';
             addToast('success', `Welcome back, ${userName}!`);
@@ -274,38 +262,30 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 aria-hidden="true"
             />
             
-            {/* Modal Container - Modern Centered Design */}
+            {/* Modal Container - Pilot Deck Dark Glassmorphism */}
             <div 
                 ref={modalRef}
-                className="relative z-10 w-full max-w-[420px] mx-4 bg-white rounded-2xl shadow-2xl animate-fadeInUp"
+                className="relative z-10 w-full max-w-[420px] mx-4 bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-2xl animate-fadeInUp border border-white/15"
                 role="document"
             >
                 {/* Close Button - Top Right */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-20 p-2 text-slate-400 hover:text-slate-600 rounded-full transition-all duration-300"
+                    className="absolute top-4 right-4 z-20 p-2 text-slate-400 hover:text-white rounded-full transition-all duration-300"
                     aria-label="Close login modal"
                 >
                     <X className="w-5 h-5" />
                 </button>
 
                 <div className="p-8 md:p-10">
-                    {/* Logo */}
-                    <div className="flex justify-center mb-8">
-                        <h1 className="text-xl font-bold tracking-tight">
-                            <span className="text-slate-900">PILOT</span>
-                            <span className="text-red-500">RECOGNITION</span>
-                        </h1>
-                    </div>
 
-                    {/* Header */}
-                    <div className="text-center mb-8">
-                        <h2 id="login-modal-title" className="text-2xl font-semibold text-slate-900 mb-2">
-                            Welcome back
-                        </h2>
-                        <p id="login-modal-description" className="text-slate-500 text-sm">
-                            Sign in to access your pilot profile
-                        </p>
+                    {/* Logo + Title */}
+                    <div className="flex flex-col items-center mb-6">
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="text-2xl font-bold text-white tracking-tight">Pilot</span>
+                            <span className="text-2xl font-bold text-red-400 tracking-tight">Recognition</span>
+                        </div>
+                        <p className="text-sm text-slate-400">Sign in to your account</p>
                     </div>
 
                         {/* Error Message */}
@@ -319,7 +299,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                         {/* Email Input */}
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-1.5">
                                 Email
                             </label>
                             <input
@@ -328,8 +308,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="name@example.com"
-                                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
+                                placeholder="Pilot@pilotrecognition.com"
+                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500/50 transition-all text-base"
                                 aria-label="Email address"
                                 aria-required="true"
                                 autoComplete="email"
@@ -339,92 +319,38 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                             />
                         </div>
 
-                        {/* Password Input */}
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
-                                Password
-                            </label>
-                            <div className="relative">
-                                <input
-                                    id="password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder="Enter your password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-base"
-                                    required
-                                    aria-label="Password"
-                                    aria-invalid={!!error}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
-                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                >
-                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Forgot Password */}
-                        <div className="flex justify-end">
-                            <button
-                                type="button"
-                                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                                aria-label="Reset password"
-                            >
-                                Forgot password?
-                            </button>
-                        </div>
-
-                        {/* Login Button */}
+                        {/* Continue Button */}
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-semibold text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full py-3 bg-red-400 hover:bg-red-500 text-white rounded-lg font-semibold text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             aria-busy={loading}
                         >
-                            {loading ? 'Signing in...' : 'Sign in'}
+                            {loading ? 'Signing in...' : 'Continue'}
+                            <ArrowRight className="w-4 h-4" />
                         </button>
-
-                        {/* Remember Me */}
-                        <div className="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                id="remember"
-                                checked={rememberMe}
-                                onChange={(e) => setRememberMe(e.target.checked)}
-                                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                            />
-                            <label htmlFor="remember" className="text-sm text-slate-600">
-                                Remember me
-                            </label>
-                        </div>
                     </form>
 
                     {/* Divider */}
                     <div className="relative my-6">
                         <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-slate-200"></div>
+                            <div className="w-full border-t border-white/20"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white text-slate-500">Or continue with</span>
+                            <span className="px-4 bg-slate-900/0 text-slate-400">or</span>
                         </div>
                     </div>
 
-                    {/* Passkey Sign In — shown only when registered on this device */}
-                    {hasPasskey && (
-                        <button
-                            type="button"
-                            onClick={handlePasskeyLogin}
-                            disabled={passkeyLoading}
-                            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-3 mb-3"
-                        >
-                            <Fingerprint className="w-5 h-5" />
-                            {passkeyLoading ? 'Verifying...' : 'Sign in with Passkey'}
-                        </button>
-                    )}
+                    {/* Passkey Sign In */}
+                    <button
+                        type="button"
+                        onClick={handlePasskeyLogin}
+                        disabled={passkeyLoading}
+                        className="w-full py-3 px-4 bg-white/10 hover:bg-white/20 border border-white/20 disabled:opacity-50 text-white rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-3 mb-3"
+                    >
+                        <AppleIcon />
+                        {passkeyLoading ? 'Verifying...' : 'Sign in with Passkey (Touch ID)'}
+                    </button>
 
                     {/* Google Sign In */}
                     <button
@@ -432,7 +358,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                         onClick={() => loginWithRedirect({
                             authorizationParams: { connection: 'google-oauth2' }
                         })}
-                        className="w-full py-3 px-4 bg-white border border-slate-300 rounded-lg font-medium text-slate-700 hover:bg-slate-50 transition-all duration-200 flex items-center justify-center gap-3 mb-3"
+                        className="w-full py-3 px-4 bg-white/10 border border-white/20 rounded-lg font-medium text-white hover:bg-white/20 transition-all duration-200 flex items-center justify-center gap-3 mb-3"
                     >
                         <GoogleIcon />
                         Continue with Google
@@ -452,14 +378,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
                     {/* Footer */}
                     <div className="mt-6 text-center">
-                        <p className="text-sm text-slate-500">
+                        <p className="text-sm text-slate-400">
                             Don't have an account?{' '}
                             <button
                                 onClick={() => {
                                     onNavigate('become-member');
                                     onClose();
                                 }}
-                                className="text-blue-600 hover:text-blue-700 font-semibold"
+                                className="text-red-400 hover:text-red-300 font-semibold"
                                 aria-label="Create a new account"
                             >
                                 Sign up
