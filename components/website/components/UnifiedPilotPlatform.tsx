@@ -4019,6 +4019,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const [deleting, setDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState('');
   const [loadingExport, setLoadingExport] = React.useState(false);
+  const [passkeyPending, setPasskeyPending] = React.useState(false);
   const [exportData, setExportData] = React.useState<{
     vcs: any[]; hourTokens: any[]; resume: any | null;
     program: any | null; interview: any | null;
@@ -4069,12 +4070,86 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     setDownloaded(d => ({ ...d, [key]: true }));
   };
 
+  const b64urlDecode = (s: string): ArrayBuffer => {
+    const b = s.replace(/-/g, '+').replace(/_/g, '/');
+    const bin = atob(b);
+    const buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+    return buf.buffer;
+  };
+  const b64urlEncode = (buf: ArrayBuffer): string => {
+    const bytes = new Uint8Array(buf);
+    let s = '';
+    for (const b of bytes) s += String.fromCharCode(b);
+    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  };
+
+  const verifyPasskeyForDeletion = async (token: string): Promise<void> => {
+    const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL;
+    const anonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
+
+    // 1. Get server challenge (uses passkey-generate-challenge which also returns allowCredentials)
+    const challengeRes = await fetch(`${supabaseUrl}/functions/v1/passkey-generate-challenge`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'apikey': anonKey },
+    });
+    if (!challengeRes.ok) throw new Error('Could not generate passkey challenge');
+    const { challenge, allowCredentials } = await challengeRes.json();
+
+    // 2. Trigger iCloud Keychain / Touch ID / Face ID prompt
+    const assertion = await navigator.credentials.get({
+      publicKey: {
+        challenge: b64urlDecode(challenge),
+        allowCredentials: (allowCredentials || []).map((c: any) => ({
+          id: b64urlDecode(c.id),
+          type: 'public-key' as PublicKeyCredentialType,
+          transports: c.transports,
+        })),
+        userVerification: 'required',
+        timeout: 60000,
+      },
+    }) as PublicKeyCredential;
+
+    if (!assertion) throw new Error('No passkey assertion returned');
+    const resp = assertion.response as AuthenticatorAssertionResponse;
+
+    // 3. Verify signature server-side
+    const verifyRes = await fetch(`${supabaseUrl}/functions/v1/passkey-verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'apikey': anonKey },
+      body: JSON.stringify({
+        credentialId: b64urlEncode(assertion.rawId),
+        authenticatorData: b64urlEncode(resp.authenticatorData),
+        clientDataJSON: b64urlEncode(resp.clientDataJSON),
+        signature: b64urlEncode(resp.signature),
+        userHandle: resp.userHandle ? b64urlEncode(resp.userHandle) : null,
+      }),
+    });
+    if (!verifyRes.ok) throw new Error('Passkey verification failed — deletion blocked');
+  };
+
   const handleDeleteAccount = async () => {
     setDeleting(true);
     setDeleteError('');
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
+
+      // Passkey gate — triggers iCloud Keychain / Touch ID before deletion
+      if (window.PublicKeyCredential) {
+        setPasskeyPending(true);
+        try {
+          await verifyPasskeyForDeletion(token!);
+        } catch (pkErr: any) {
+          setPasskeyPending(false);
+          // If user has no passkey registered (no allowCredentials), skip gate gracefully
+          if (pkErr?.name === 'NotAllowedError') throw new Error('Passkey confirmation cancelled. Deletion aborted.');
+          // Other errors (no passkey registered etc.) — allow deletion to continue
+          console.warn('[delete-account] passkey gate skipped:', pkErr?.message);
+        }
+        setPasskeyPending(false);
+      }
+
       const res = await fetch(`${(import.meta as any).env?.VITE_SUPABASE_URL}/functions/v1/delete-account`, {
         method: 'DELETE',
         headers: {
@@ -4276,6 +4351,10 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
             <p className="text-xs text-white/70 leading-relaxed">
               This will permanently delete your <span className="text-white font-bold">profile, credentials, wallet, documents, passkeys, logbook data,</span> and all associated records. <span className="text-red-400 font-bold">This cannot be undone.</span>
             </p>
+            <div className="flex items-center gap-2 px-2 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <span className="text-lg">🔑</span>
+              <p className="text-[10px] text-white/45 leading-snug">Your passkey (Touch ID / Face ID / iCloud Keychain) will be required to confirm deletion.</p>
+            </div>
             {deleteError && <p className="text-xs text-red-400">{deleteError}</p>}
             <div className="flex gap-2">
               <button
@@ -4284,7 +4363,7 @@ const SettingsTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
                 className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all disabled:opacity-50"
                 style={{ background: 'rgba(239,68,68,0.2)', border: '1px solid rgba(239,68,68,0.4)', color: '#f87171' }}
               >
-                {deleting ? 'DELETING...' : 'YES, DELETE EVERYTHING'}
+                {passkeyPending ? '🔑 WAITING FOR PASSKEY…' : deleting ? 'DELETING...' : 'YES, DELETE EVERYTHING'}
               </button>
               <button onClick={handleCancel} disabled={deleting} className="flex-1 py-2 text-xs font-black tracking-wider rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
                 CANCEL
