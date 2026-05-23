@@ -4103,10 +4103,12 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
     const uid = profileId;
     if (!uid) throw new Error('No session');
 
-    const { data: passkeys } = await supabase
-      .from('pilot_passkeys')
-      .select('credential_id')
-      .eq('user_id', uid);
+    // Use authenticated fetch so RLS passes for Auth0 users (supabase client has no session)
+    const passkeysRes = await fetch(
+      `${supabaseUrl}/rest/v1/pilot_passkeys?select=credential_id&user_id=eq.${uid}`,
+      { headers: { 'apikey': anonKey, 'Authorization': `Bearer ${token}` } }
+    );
+    const passkeys: { credential_id: string }[] = passkeysRes.ok ? await passkeysRes.json() : [];
 
     if (!passkeys || passkeys.length === 0) {
       // No passkey registered — skip gate
