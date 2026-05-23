@@ -874,9 +874,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     Your first step to getting{' '}
                                     <span style={{ color: '#ef4444', fontWeight: 700 }}>free recognition</span>
                                 </p>
-                                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: 0 }}>
+                                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 16px 0' }}>
                                     Enter your name and callsign to begin.
                                 </p>
+                                <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '10px', padding: '12px 14px' }}>
+                                    <p style={{ fontSize: '10px', fontWeight: 800, color: '#ef4444', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 5px 0' }}>⬆ Recognition+</p>
+                                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, margin: 0 }}>
+                                        Upgrade to <strong style={{ color: 'rgba(255,255,255,0.8)' }}>Recognition+</strong> for a detailed profile build — document uploads, license verification, medical status, and full credential issuance for airline visibility.
+                                    </p>
+                                </div>
                             </div>
                             </div>
                             <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
