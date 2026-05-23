@@ -4416,7 +4416,7 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
 // ─── MAIN SHELL ────────────────────────────────────────────────────────────
 export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNavigate }) => {
   const { currentUser, userProfile, logout } = useAuth();
-  const { user: auth0User, getAccessTokenSilently } = useAuth0();
+  const { user: auth0User, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
   const { readProfile } = useVaultProfile();
   const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -4666,7 +4666,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'logbook':       return <LogbookHub profile={profileData} onNavigate={onNavigate} />;
       case 'events':        return <EventsTab />;
       case 'newsroom':      return <NewsroomTab onNavigate={onNavigate} />;
-      case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { const t = await getAccessTokenSilently(); console.log('[getToken] Auth0 token ok, length:', t?.length); return t; } catch (e: any) { console.warn('[getToken] Auth0 failed:', e?.message, '— trying Supabase session'); const { data: { session } } = await supabase.auth.getSession(); const t = session?.access_token; console.log('[getToken] Supabase session token:', t ? `length ${t.length}` : 'NONE'); if (!t) throw new Error('No auth token available — please log out and back in'); return t; } }} profileId={profileData?.id ?? null} />;
+      case 'settings':      return <SettingsTab onLogout={handleLogout} getToken={async () => { try { const claims = await getIdTokenClaims(); const t = claims?.__raw; console.log('[getToken] Auth0 ID token ok, length:', t?.length, '| starts with:', t?.substring(0,20)); if (t) return t; throw new Error('no id token'); } catch (e: any) { console.warn('[getToken] Auth0 ID token failed:', e?.message, '— trying Supabase session'); const { data: { session } } = await supabase.auth.getSession(); const t = session?.access_token; console.log('[getToken] Supabase session token:', t ? `length ${t.length}` : 'NONE'); if (!t) throw new Error('No auth token available — please log out and back in'); return t; } }} profileId={profileData?.id ?? null} />;
       default:              return null;
     }
   };
