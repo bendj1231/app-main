@@ -20,6 +20,7 @@ import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-sco
 import { uploadProfileImage } from '../../../../src/lib/cloudinaryClient';
 import ProfileImage from '../../../../src/components/ProfileImage';
 import { getProfileImageUrl } from '../../../../src/lib/cloudinaryConfig';
+import { cleanupOldProfileImage } from '../../../../src/lib/cloudinaryDelete';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '../../../../src/contexts/AuthContext';
 
@@ -482,6 +483,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
         setUploadingImage(true);
         try {
+            // Store old public_id for deletion after successful upload
+            const oldPublicId = profileData?.profile_image_public_id;
+
             // Upload directly to Cloudinary (no edge function!)
             const result = await uploadProfileImage(file, profileData.user_id);
 
@@ -500,7 +504,19 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
             if (updateError) throw updateError;
 
+            // Update local state immediately so new image displays
+            setProfileData(prev => prev ? {
+                ...prev,
+                profile_image_url: result.url,
+                profile_image_public_id: result.publicId,
+            } : null);
+
             console.log('✅ Profile image uploaded to Cloudinary:', result.publicId);
+
+            // Delete old image from Cloudinary (non-blocking)
+            if (oldPublicId && oldPublicId !== result.publicId) {
+                await cleanupOldProfileImage(oldPublicId);
+            }
         } catch (err: any) {
             console.error('❌ Error uploading image:', err);
             alert('Failed to upload image: ' + err.message);
