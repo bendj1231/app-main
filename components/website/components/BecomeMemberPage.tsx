@@ -246,6 +246,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [walletCreating, setWalletCreating] = useState<'idle' | 'generating' | 'syncing' | 'active'>('idle');
     const [consentChecked, setConsentChecked] = useState(false);
     const [showBiometricNotice, setShowBiometricNotice] = useState(false);
+    const [passkeyContext, setPasskeyContext] = useState<{ userId: string; email: string; name: string } | null>(null);
     const passkeyRegistrationRef = React.useRef<(() => Promise<void>) | null>(null);
 
     const CREDENTIAL_WALLETS = [
@@ -1278,49 +1279,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setSelectedWallet('walt.id Wallet');
                                             setWalletConnected(true);
                                             setSaving(false);
-
-                                            // Register passkey directly — still within the button click user gesture
-                                            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                                            console.log('🔵 [Passkey] Starting | PublicKeyCredential:', !!window.PublicKeyCredential, '| isSecureContext:', window.isSecureContext, '| isLocalhost:', isLocalhost);
-                                            if (window.PublicKeyCredential && (window.isSecureContext || isLocalhost)) {
-                                                try {
-                                                    const { data: { session: sbSess } } = await supabase.auth.getSession();
-                                                    const pkUserId = sbSess?.user?.id || auth0Id || 'pilot-user';
-                                                    const pkEmail = sbSess?.user?.email || user?.email || pkUserId;
-                                                    const pkDisplay = cleanName || pkEmail;
-                                                    const rpId = isLocalhost ? 'localhost' : window.location.hostname.replace('www.', '');
-                                                    console.log('🔵 [Passkey] credentials.create, rpId:', rpId, '| userId:', pkUserId);
-                                                    const cb = new Uint8Array(32);
-                                                    crypto.getRandomValues(cb);
-                                                    await navigator.credentials.create({
-                                                        publicKey: {
-                                                            challenge: cb.buffer,
-                                                            rp: { name: 'PilotRecognition Wallet', id: rpId },
-                                                            user: { id: new TextEncoder().encode(pkUserId).buffer, name: pkEmail, displayName: pkDisplay },
-                                                            pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
-                                                            authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
-                                                            timeout: 60000,
-                                                        },
-                                                    });
-                                                    console.log('✅ [Passkey] credentials.create succeeded');
-                                                } catch (pe: any) {
-                                                    console.error('🔴 [Passkey] credentials.create error:', pe?.name, pe?.message);
-                                                    if (pe?.name === 'NotAllowedError') {
-                                                        const recoveryBytes = new Uint8Array(24);
-                                                        crypto.getRandomValues(recoveryBytes);
-                                                        const key = Array.from(recoveryBytes)
-                                                            .map(b => b.toString(16).padStart(2, '0').toUpperCase())
-                                                            .join('').match(/.{1,6}/g)!.join('-');
-                                                        sessionStorage.setItem('passkey_recovery_key', key);
-                                                        sessionStorage.setItem('passkey_recovery_email', user?.email || '');
-                                                        onNavigate('passkey-recovery');
-                                                        return;
-                                                    }
-                                                }
-                                            } else {
-                                                console.warn('🟡 [Passkey] Skipped — not supported or not secure context');
-                                            }
-                                            setTimeout(() => onNavigate('platform'), 500);
+                                            // Stash context for passkey modal — must be triggered by direct user click
+                                            const { data: { session: pkSess } } = await supabase.auth.getSession();
+                                            const pkCtxId = pkSess?.user?.id || user?.sub || sessionStorage.getItem('mfb_auth0_id') || 'pilot-user';
+                                            const pkCtxEmail = pkSess?.user?.email || user?.email || pkCtxId;
+                                            const pkCtxName = displayName.trim().slice(0, 80) || pkCtxEmail;
+                                            setPasskeyContext({ userId: pkCtxId, email: pkCtxEmail, name: pkCtxName });
+                                            setShowBiometricNotice(true);
                                         } catch (e) {
                                             console.error('Wallet creation error:', e);
                                             setWalletCreating('idle');
@@ -1808,15 +1773,49 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             </p>
                         </div>
                         <button
-                            onClick={() => {
+                            onClick={async () => {
                                 setShowBiometricNotice(false);
-                                // Call credentials.create directly from this user gesture to satisfy browser security policy
-                                if (passkeyRegistrationRef.current) {
-                                    passkeyRegistrationRef.current();
-                                    passkeyRegistrationRef.current = null;
-                                } else {
-                                    setTimeout(() => onNavigate('platform'), 500);
+                                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                                if (window.PublicKeyCredential && (window.isSecureContext || isLocalhost)) {
+                                    try {
+                                        const pkUserId = passkeyContext?.userId || 'pilot-user';
+                                        const pkEmail = passkeyContext?.email || pkUserId;
+                                        const pkDisplay = passkeyContext?.name || pkEmail;
+                                        const rpId = isLocalhost ? 'localhost' : window.location.hostname.replace('www.', '');
+                                        const cb = new Uint8Array(32);
+                                        crypto.getRandomValues(cb);
+                                        const result = await navigator.credentials.create({
+                                            publicKey: {
+                                                challenge: cb.buffer,
+                                                rp: { name: 'PilotRecognition Wallet', id: rpId },
+                                                user: { id: new TextEncoder().encode(pkUserId).buffer, name: pkEmail, displayName: pkDisplay },
+                                                pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+                                                authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
+                                                timeout: 60000,
+                                            },
+                                        }) as PublicKeyCredential | null;
+                                        if (result) {
+                                            localStorage.setItem('pr_passkey_registered', 'true');
+                                            localStorage.setItem('pr_passkey_credential_id', result.id);
+                                            const attestation = result.response as AuthenticatorAttestationResponse;
+                                            const pubKeyBuf = attestation.getPublicKey?.();
+                                            const ua = navigator.userAgent;
+                                            const deviceName = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Unknown';
+                                            await supabase.from('pilot_passkeys').upsert({
+                                                user_id: pkUserId,
+                                                credential_id: result.id,
+                                                public_key: pubKeyBuf ? Array.from(new Uint8Array(pubKeyBuf)) : [],
+                                                sign_count: 0,
+                                                device_name: deviceName,
+                                                transports: (result as any).response?.getTransports?.() ?? [],
+                                            }, { onConflict: 'credential_id' });
+                                            console.log('✅ [Passkey] registered and saved:', result.id);
+                                        }
+                                    } catch (pe: any) {
+                                        console.warn('⚠️ [Passkey] skipped:', pe?.name, pe?.message);
+                                    }
                                 }
+                                setTimeout(() => onNavigate('platform'), 300);
                             }}
                             style={{ width: '100%', padding: '12px', borderRadius: '10px', border: 'none', background: '#0f172a', color: '#fff', fontSize: '14px', fontWeight: 700, cursor: 'pointer' }}
                         >
