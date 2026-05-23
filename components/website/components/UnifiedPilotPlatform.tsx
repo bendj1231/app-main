@@ -4163,6 +4163,7 @@ const SettingsTab: React.FC<{ onLogout: () => void; getToken: () => Promise<stri
     setDeleteError('');
     try {
       const token = await getToken();
+      console.log('[delete-account] token length:', token?.length, '| starts with:', token?.substring(0, 20));
 
       // Passkey gate — triggers iCloud Keychain / Touch ID before deletion
       if (window.PublicKeyCredential) {

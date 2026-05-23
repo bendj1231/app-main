@@ -33,9 +33,16 @@ Deno.serve(async (req: Request) => {
 
     let sub: string | null = null;
     try {
-      const payload = JSON.parse(atob(jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      const parts = jwt.split('.');
+      if (parts.length !== 3) throw new Error('bad jwt structure');
+      // Restore standard base64 from base64url, then pad to multiple of 4
+      let b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4 !== 0) b64 += '=';
+      const payload = JSON.parse(atob(b64));
       sub = payload.sub as string;
-    } catch {
+      console.log('[delete-account] decoded sub:', sub);
+    } catch (e: any) {
+      console.error('[delete-account] JWT decode error:', e.message, '| jwt prefix:', jwt.substring(0, 30));
       return new Response(JSON.stringify({ error: 'Invalid token' }), {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
