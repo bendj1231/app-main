@@ -2541,7 +2541,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                         {/* Recommended Pathways Carousel — hidden when section='pathways' (rendered standalone in DashboardTab) */}
                         {!section && (
-                        <div>
                         <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
                             <div>
                                 <h2 style={{ 
@@ -2561,7 +2560,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     Discover cadet programs, airline relationships, and career progression opportunities tailored to your experience level
                                 </p>
                             </div>
-                        </div>
 
                         {/* Swipe instruction text and Overall Profile Score */}
                         <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', marginTop: '0.5rem' }}>
@@ -3202,7 +3200,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     )}
                                 </div>
                             </div>
-                    </div>
                     </div>
                     )}
                 </section>
