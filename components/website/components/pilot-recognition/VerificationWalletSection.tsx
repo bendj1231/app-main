@@ -185,7 +185,7 @@ export function VerificationWalletSection({ profileData, isPremium, onNavigate }
       )}
 
       {/* Quick Links */}
-      <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', marginLeft: 2 }}>
         <button
           onClick={() => onNavigate('ato-attestation')}
           style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: '#94a3b8', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '../../../../src/contexts/AuthContext';
 import { Send, Clock, CheckCircle2, XCircle, AlertCircle, Loader2, School, Calendar, MessageSquare, TrendingUp, ShieldCheck } from 'lucide-react';
@@ -39,6 +39,8 @@ export function ATOVerificationRequestSection() {
   const [atos, setAtos] = useState<ATOInstitution[]>([]);
   const [requests, setRequests] = useState<VerificationRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadTimedOut, setLoadTimedOut] = useState(false);
+  const loadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -54,6 +56,8 @@ export function ATOVerificationRequestSection() {
   const load = async () => {
     if (!currentUser?.id) return;
     setLoading(true);
+    setLoadTimedOut(false);
+    loadTimer.current = setTimeout(() => setLoadTimedOut(true), 2500);
     try {
       // Fetch active ATOs
       const { data: atoData } = await supabase
@@ -71,6 +75,7 @@ export function ATOVerificationRequestSection() {
         .order('created_at', { ascending: false });
       setRequests(reqData ?? []);
     } finally {
+      if (loadTimer.current) clearTimeout(loadTimer.current);
       setLoading(false);
     }
   };
@@ -167,8 +172,9 @@ export function ATOVerificationRequestSection() {
           <button
             onClick={() => setShowModal(true)}
             style={{
-              padding: '0.65rem 1.25rem', borderRadius: '10px', border: 'none',
-              background: '#0ea5e9', color: '#fff', fontWeight: 700, fontSize: '0.82rem',
+              padding: '0.65rem 1.25rem', borderRadius: '10px',
+              background: 'rgba(255,255,255,0.04)', color: '#cbd5e1', fontWeight: 600, fontSize: '0.82rem',
+              border: '1px solid rgba(148,163,184,0.3)',
               cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem',
               flexShrink: 0,
             }}
@@ -179,17 +185,17 @@ export function ATOVerificationRequestSection() {
       </div>
 
       {/* Requests list */}
-      {loading ? (
+      {loading && !loadTimedOut ? (
         <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
           <Loader2 size={20} style={{ animation: 'spin 1s linear infinite', margin: '0 auto' }} />
           <p style={{ marginTop: '0.5rem', fontSize: '0.8rem' }}>Loading verification requests…</p>
         </div>
-      ) : requests.length === 0 ? (
+      ) : (loading && loadTimedOut) || requests.length === 0 ? (
         <div style={{ ...cardStyle, textAlign: 'center', padding: '2.5rem' }}>
-          <ShieldCheck size={28} color="#334155" style={{ margin: '0 auto 0.75rem' }} />
-          <p style={{ margin: 0, color: '#475569', fontSize: '0.9rem' }}>No verification requests yet.</p>
-          <p style={{ margin: '0.5rem 0 0', color: '#334155', fontSize: '0.8rem' }}>
-            Request your ATO to verify your hours — it takes 30 seconds and strengthens your profile.
+          <ShieldCheck size={28} color="#475569" style={{ margin: '0 auto 0.75rem' }} />
+          <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.9rem' }}>No active verification requests found.</p>
+          <p style={{ margin: '0.5rem 0 0', color: '#64748b', fontSize: '0.8rem' }}>
+            Click &apos;Request Verification&apos; above to have your flight school attest your training hours.
           </p>
         </div>
       ) : (
