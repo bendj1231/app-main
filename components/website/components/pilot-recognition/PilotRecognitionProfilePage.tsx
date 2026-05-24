@@ -603,7 +603,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             // Fetch profile image and basic user data from profiles table (with vault decryption)
             const { data: profileImage, error: imageError } = await supabase
                 .from('profiles')
-                .select('profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, license_issuing_authority, ratings, license_types, current_occupation, profile_token, profile_token_generated_at, auth0_id')
+                .select('profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, license_issuing_authority, ratings, license_types, current_occupation, profile_token, profile_token_generated_at, auth0_id, elp_level')
                 .eq('id', user.id)
                 .maybeSingle();
             
@@ -685,7 +685,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     license_authority: sourceProfile.license_issuing_authority || sourceProfile.country_of_license || '',
                     license_id: sourceProfile.license_id || '',
                     country_of_license: sourceProfile.country_of_license || '',
-                    type_ratings: sourceProfile.ratings || []
+                    type_ratings: sourceProfile.ratings || [],
+                    english_proficiency_level: sourceProfile.elp_level || ''
                 } : {})
             };
             
@@ -1435,7 +1436,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 { label: 'License Number', value: profileData?.license_id || '' },
                                                 { label: 'License Authority', value: profileData?.license_authority || profileData?.country_of_license || '' },
                                                 { label: 'License Status', value: profileData?.license_status || '' },
-                                                { label: 'English Level', value: profileData?.english_proficiency_level || '' },
+                                                { label: 'English Level', value: profileData?.english_proficiency_level || profileData?.elp_level || '' },
                                                 { label: 'Career Stage', value: profileData?.career_stage || '' }
                                             ];
                                         })().map(tile => (
