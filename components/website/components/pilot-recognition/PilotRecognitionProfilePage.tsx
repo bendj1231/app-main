@@ -1433,17 +1433,22 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                                             return [
                                                 { label: 'License Type', value: highestLicense },
-                                                { label: 'License Number', value: profileData?.license_id || '' },
+                                                { label: 'License Number', value: profileData?.license_id || '', locked: !profileData?.license_id },
                                                 { label: 'License Authority', value: profileData?.license_authority || profileData?.country_of_license || '' },
-                                                { label: 'License Status', value: profileData?.license_status || '' },
+                                                { label: 'License Status', value: profileData?.license_status || '', locked: !profileData?.license_status },
                                                 { label: 'English Level', value: profileData?.english_proficiency_level || profileData?.elp_level || '' },
                                                 { label: 'Career Stage', value: profileData?.career_stage || '' }
-                                            ];
+                                            ] as { label: string; value: string; locked?: boolean }[];
                                         })().map(tile => (
-                                            <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center' }}>
-                                                <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>{tile.label}</p>
+                                            <div key={tile.label} style={{ background: tile.locked ? 'rgba(239,68,68,0.06)' : 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: tile.locked ? '1px solid rgba(239,68,68,0.25)' : '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center', position: 'relative' }}>
+                                                <p style={{ margin: 0, fontSize: '0.65rem', color: tile.locked ? '#f87171' : '#94a3b8', letterSpacing: '0.1em' }}>{tile.label}</p>
                                                 {tile.value ? (
                                                     <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
+                                                ) : tile.locked ? (
+                                                    <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                                        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#ef4444', letterSpacing: '0.05em' }}>Recognition+</span>
+                                                    </div>
                                                 ) : (
                                                     <button
                                                         onClick={() => onNavigate('pilot-licensure-experience')}
