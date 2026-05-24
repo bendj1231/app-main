@@ -1315,8 +1315,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </div>
                 </div>
 
-                {/* ── View switcher ── */}
-                <div style={{ padding: '0 clamp(1.5rem, 4vw, 3.5rem)', marginBottom: '-0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                {/* ── View switcher — only shown on standalone route, not when embedded in platform ── */}
+                <div style={{ display: embedded ? 'none' : 'flex', padding: '0 clamp(1.5rem, 4vw, 3.5rem)', marginBottom: '-0.5rem', alignItems: 'center', gap: '0.25rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
                     {([
                         { id: 'dashboard' as const, label: '⚡ Recognition Board', sub: 'Score · Expiry · Verification · Pathways' },
                         { id: 'profile'   as const, label: '👤 Pilot Profile',          sub: 'Identity · Credentials · Biography · Resume' },
