@@ -2136,8 +2136,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             />
                         </CategorySection>}
 
-                        {/* ATO Hour Verification — Dashboard only */}
-                        {activeView === 'dashboard' && <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
+                        {/* ATO Hour Verification — Profile only */}
+                        {activeView === 'profile' && <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
                             <ATOVerificationRequestSection />
                         </CategorySection>}
 
