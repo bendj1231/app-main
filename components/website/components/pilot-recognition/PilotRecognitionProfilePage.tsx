@@ -1186,8 +1186,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         overflow: 'hidden',
                         boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
                     }}>
-                        {/* Top bar — gold for free, red for premium */}
-                        <div style={{ height: 4, background: isPremium ? '#dc2626' : 'linear-gradient(90deg,#d4af37,#f3e5ab)' }} />
+                        {/* Top bar — ruby red always */}
+                        <div style={{ height: 4, background: 'linear-gradient(90deg,#e53e3e,#c53030)' }} />
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.25rem 1.5rem', flexWrap: 'wrap' }}>
                             {/* Icon */}
@@ -1204,7 +1204,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 </p>
                                 <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
                                     {isPremium ? 'Access Your Wallet' : 'Unlock Secure Document Storage'}
-                                    {!isPremium && <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 20, fontSize: 10, fontWeight: 700, color: '#ef4444', letterSpacing: '0.05em' }}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Recognition+</span>}
+                                    {!isPremium && <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', border: 'none', borderRadius: 20, fontSize: 10, fontWeight: 700, color: '#fff', letterSpacing: '0.05em', boxShadow: '0 0 10px rgba(229,62,62,0.25)' }}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Recognition+</span>}
                                 </p>
                                 <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>
                                     {isPremium ? 'Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.' : 'Securely store PDFs of your FAA/CASA licences and medical certificates with zero-knowledge encryption — exclusive to Recognition+.'}
@@ -1411,9 +1411,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 {tile.unverified && (
                                                     <button
                                                         onClick={() => setShowWalletGate(true)}
-                                                        style={{ marginTop: '0.4rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', background: 'linear-gradient(90deg,rgba(212,175,55,0.15),rgba(243,229,171,0.1))', border: '1px solid rgba(212,175,55,0.4)', borderRadius: 20, color: '#d4af37', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                                                        style={{ marginTop: '0.4rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em', cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(229,62,62,0.3)' }}
                                                     >
-                                                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#d4af37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                                                         Sync Logbook
                                                     </button>
                                                 )}
@@ -1490,20 +1490,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <>
                                             {/* Merged Recognition+ tile for License Number + Status */}
                                             {!tileData.licenseVerified ? (
-                                                <div style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg,#121824,#1a2332)', borderRadius: '12px', padding: '0.85rem 0.85rem 1rem', border: '1px dashed rgba(212,175,55,0.35)', textAlign: 'center', position: 'relative' }}>
+                                                <div style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg,#2d0a0a,#1a1f2c)', borderRadius: '12px', padding: '0.85rem 0.85rem 1rem', border: '1px solid rgba(229,62,62,0.25)', textAlign: 'center', position: 'relative', boxShadow: 'inset 0 0 12px rgba(229,62,62,0.04)' }}>
                                                     {/* Gold R+ badge top-right */}
-                                                    <span style={{ position: 'absolute', top: 10, right: 10, background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', color: '#000', fontSize: '0.55rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, letterSpacing: '0.1em' }}>RECOGNITION+</span>
+                                                    <span style={{ position: 'absolute', top: 10, right: 10, background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', color: '#fff', fontSize: '0.55rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, letterSpacing: '0.1em', boxShadow: '0 0 10px rgba(229,62,62,0.2)' }}>RECOGNITION+</span>
                                                     <p style={{ margin: '0 0 8px 0', fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
                                                     {/* Blurred teaser rows */}
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
                                                         {['License No.', 'Issue Date', 'Status'].map(lbl => (
                                                             <div key={lbl} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 8px', background: 'rgba(255,255,255,0.03)', borderRadius: 6 }}>
                                                                 <span style={{ fontSize: '0.62rem', color: '#64748b' }}>{lbl}</span>
-                                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#94a3b8', filter: 'blur(4px)', userSelect: 'none', letterSpacing: 2 }}>●●●●-●●●●-●●●●</span>
+                                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ff8181', filter: 'blur(4px)', userSelect: 'none', letterSpacing: 2, background: 'rgba(229,62,62,0.12)', border: '1px solid rgba(229,62,62,0.18)', padding: '1px 6px', borderRadius: 4 }}>●●●●-●●●●-●●●●</span>
                                                             </div>
                                                         ))}
                                                     </div>
-                                                    <button onClick={() => setShowWalletGate(true)} style={{ padding: '5px 16px', background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', border: 'none', borderRadius: 6, color: '#0f172a', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer' }}>Unlock Verification →</button>
+                                                    <button onClick={() => setShowWalletGate(true)} style={{ padding: '5px 16px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#fff', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '0 4px 15px rgba(229,62,62,0.3)' }}>Unlock Verification →</button>
                                                 </div>
                                             ) : (
                                                 <>
@@ -1572,7 +1572,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Compliance Monitor</p>
                                             <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Expiration Timeline</h3>
                                         </div>
-                                        <span style={{ background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', color: '#000', fontSize: '0.55rem', fontWeight: 800, padding: '2px 7px', borderRadius: 4, letterSpacing: '0.1em', flexShrink: 0, marginTop: 2 }}>RECOGNITION+</span>
+                                        <span style={{ background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', color: '#fff', fontSize: '0.55rem', fontWeight: 800, padding: '2px 7px', borderRadius: 4, letterSpacing: '0.1em', flexShrink: 0, marginTop: 2, boxShadow: '0 0 10px rgba(229,62,62,0.2)' }}>RECOGNITION+</span>
                                     </div>
 
                                     {/* Teaser rows — always visible, values blurred */}
@@ -1591,10 +1591,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 </div>
                                                 <span style={{
                                                     fontSize: '0.72rem', fontWeight: 700,
-                                                    color: row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e',
+                                                    color: isPremium ? (row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e') : '#ff8181',
                                                     filter: isPremium ? 'none' : 'blur(5px)',
                                                     userSelect: isPremium ? 'auto' : 'none',
-                                                    background: isPremium ? 'none' : 'rgba(255,255,255,0.06)',
+                                                    background: isPremium ? 'none' : 'rgba(229,62,62,0.12)',
+                                                    border: isPremium ? 'none' : '1px solid rgba(229,62,62,0.2)',
                                                     padding: isPremium ? 0 : '1px 6px',
                                                     borderRadius: 4,
                                                     minWidth: 60,
@@ -1610,7 +1611,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <p style={{ margin: '0 0 10px', fontSize: '0.72rem', color: '#94a3b8', lineHeight: 1.5 }}>Track currency windows & regulatory deadlines.<br/>Never bust a medical or rating currency again.</p>
                                             <button
                                                 onClick={() => setShowWalletGate(true)}
-                                                style={{ padding: '7px 20px', background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', border: 'none', borderRadius: 7, color: '#0b0f19', fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer' }}
+                                                style={{ padding: '7px 20px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, color: '#fff', fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '0 4px 15px rgba(229,62,62,0.35)' }}
                                             >
                                                 Unlock Expiration Alerts →
                                             </button>
