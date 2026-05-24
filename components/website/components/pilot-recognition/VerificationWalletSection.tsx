@@ -194,37 +194,37 @@ export function VerificationWalletSection({ profileData, isPremium, onNavigate }
         </button>
         <button
           onClick={() => onNavigate('logbook-upload')}
-          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(14,165,233,0.25)', background: 'transparent', color: '#38bdf8', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#94a3b8', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
           📋 Import Logbook
         </button>
         <button
           onClick={() => onNavigate('efb-upload')}
-          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(16,185,129,0.25)', background: 'transparent', color: '#34d399', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#94a3b8', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
           🗺 Log EFB Data
         </button>
         <button
           onClick={() => onNavigate('sim-session')}
-          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(167,139,250,0.25)', background: 'transparent', color: '#c4b5fd', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#94a3b8', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
           🖥 Log Sim Session
         </button>
         <button
           onClick={() => onNavigate('verification-conflicts')}
-          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(239,68,68,0.25)', background: 'transparent', color: '#f87171', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(245,158,11,0.35)', background: 'rgba(245,158,11,0.06)', color: '#f59e0b', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
           ⚠ Conflict Resolution
         </button>
         <button
           onClick={() => onNavigate('military-transition')}
-          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(251,191,36,0.25)', background: 'transparent', color: '#fbbf24', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#94a3b8', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
           ✈ Military Record
         </button>
         <button
           onClick={() => onNavigate('medical-certificate')}
-          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(244,114,182,0.25)', background: 'transparent', color: '#f472b6', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ padding: '0.55rem 1rem', borderRadius: '999px', border: '1px solid rgba(52,211,153,0.25)', background: 'rgba(52,211,153,0.04)', color: '#6ee7b7', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
         >
           ♥ Medical Certificate
         </button>
@@ -248,10 +248,10 @@ export function VerificationWalletSection({ profileData, isPremium, onNavigate }
               return 'Risk Profile Pending';
             })()}
           </h3>
-          <p style={{ margin: '0.5rem 0 0', fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>
+          <p style={{ margin: '0.5rem 0 0', fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5 }}>
             {isPreCleared
               ? 'Verified wallet active. Operators and underwriters can evaluate your risk profile based on confirmed credentials.'
-              : 'Complete verification to unlock your insurance risk profile for airline and operator applications.'}
+              : 'Self-declared data only — unverified fallback placement. Complete cryptographic validation to clear risk flags and unlock lower fleet insurance profile rates.'}
           </p>
         </div>
 
@@ -283,7 +283,8 @@ export function VerificationWalletSection({ profileData, isPremium, onNavigate }
                   padding: '0.7rem 1.4rem',
                   borderRadius: '999px',
                   border: 'none',
-                  background: isVerified ? '#334155' : '#0ea5e9',
+                  background: isVerified ? '#334155' : 'linear-gradient(135deg,#e53e3e,#9b1c1c)',
+                  boxShadow: isVerified ? 'none' : '0 4px 15px rgba(229,62,62,0.35)',
                   color: '#fff',
                   fontWeight: 600,
                   fontSize: '0.82rem',

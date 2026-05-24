@@ -2044,7 +2044,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     }}>
                                         <div>
                                             <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>{card.title}</h3>
-                                            <p style={{ margin: 0, color: '#475569', fontSize: '0.95rem', lineHeight: 1.5 }}>{card.description}</p>
+                                            <p style={{ margin: 0, color: '#a0aec0', fontSize: '0.95rem', lineHeight: 1.5 }}>{card.description}</p>
                                         </div>
                                         <button
                                             style={{
