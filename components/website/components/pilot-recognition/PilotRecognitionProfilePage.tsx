@@ -85,6 +85,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [isPremium, setIsPremium] = useState(false);
     const [showWalletGate, setShowWalletGate] = useState(false);
     const [showWalletView, setShowWalletView] = useState(false);
+    const [editingTile, setEditingTile] = useState<string | null>(null);
+    const [tileEditValue, setTileEditValue] = useState('');
     const { currentUser } = useAuth();
 
     // Check subscription status using auth context user (avoids lock race)
@@ -523,6 +525,35 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         } finally {
             setUploadingImage(false);
         }
+    };
+
+    const TILE_FIELD_MAP: Record<string, string> = {
+        'License Type': 'current_occupation',
+        'License Authority': 'license_issuing_authority',
+        'English Level': 'elp_level',
+        'Pilot Status': 'current_occupation',
+    };
+
+    const saveTileEdit = async (label: string, value: string) => {
+        const field = TILE_FIELD_MAP[label];
+        if (!field) return;
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+            await supabase.from('profiles').update({ [field]: value }).eq('id', user.id);
+            setProfileData((prev: any) => ({
+                ...prev,
+                english_proficiency_level: label === 'English Level' ? value : prev?.english_proficiency_level,
+                elp_level: label === 'English Level' ? value : prev?.elp_level,
+                license_authority: label === 'License Authority' ? value : prev?.license_authority,
+                license_issuing_authority: label === 'License Authority' ? value : prev?.license_issuing_authority,
+                current_occupation: label === 'Pilot Status' || label === 'License Type' ? value : prev?.current_occupation,
+                career_stage: label === 'Pilot Status' ? value : prev?.career_stage,
+            }));
+        } catch (e) {
+            console.error('[TILE EDIT] Save failed:', e);
+        }
+        setEditingTile(null);
     };
 
     const fetchProfileData = async () => {
@@ -1466,12 +1497,35 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 </>
                                             )}
                                             {tileData.tiles.map(tile => (
-                                            <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center' }}>
-                                                <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>{tile.label}</p>
-                                                {tile.value ? (
+                                            <div
+                                                key={tile.label}
+                                                onClick={() => { if (editingTile !== tile.label) { setEditingTile(tile.label); setTileEditValue(tile.value || ''); } }}
+                                                style={{ background: editingTile === tile.label ? 'rgba(30,41,59,0.9)' : 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: editingTile === tile.label ? '1px solid rgba(99,102,241,0.6)' : '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center', cursor: editingTile === tile.label ? 'default' : 'pointer', transition: 'all 0.15s' }}
+                                                onMouseEnter={e => { if (editingTile !== tile.label) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; }}
+                                                onMouseLeave={e => { if (editingTile !== tile.label) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                                            >
+                                                <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                                                    {tile.label}
+                                                    {editingTile !== tile.label && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>}
+                                                </p>
+                                                {editingTile === tile.label ? (
+                                                    <div style={{ marginTop: '0.4rem' }} onClick={e => e.stopPropagation()}>
+                                                        <input
+                                                            autoFocus
+                                                            value={tileEditValue}
+                                                            onChange={e => setTileEditValue(e.target.value)}
+                                                            onKeyDown={e => { if (e.key === 'Enter') saveTileEdit(tile.label, tileEditValue); if (e.key === 'Escape') setEditingTile(null); }}
+                                                            style={{ width: '100%', padding: '4px 8px', background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(99,102,241,0.5)', borderRadius: '6px', color: '#fff', fontSize: '0.82rem', fontWeight: 600, textAlign: 'center', outline: 'none', boxSizing: 'border-box' }}
+                                                        />
+                                                        <div style={{ display: 'flex', gap: '4px', marginTop: '6px', justifyContent: 'center' }}>
+                                                            <button onClick={() => saveTileEdit(tile.label, tileEditValue)} style={{ padding: '3px 10px', background: '#6366f1', border: 'none', borderRadius: '5px', color: '#fff', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer' }}>Save</button>
+                                                            <button onClick={() => setEditingTile(null)} style={{ padding: '3px 10px', background: 'rgba(255,255,255,0.07)', border: 'none', borderRadius: '5px', color: '#94a3b8', fontSize: '0.7rem', cursor: 'pointer' }}>Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                ) : tile.value ? (
                                                     <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
                                                 ) : (
-                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>N/A</p>
+                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', fontWeight: 500, color: '#475569' }}>N/A — click to edit</p>
                                                 )}
                                             </div>
                                             ))}
