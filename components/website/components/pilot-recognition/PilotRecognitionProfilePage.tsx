@@ -92,6 +92,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [editingTile, setEditingTile] = useState<string | null>(null);
     const [tileEditValue, setTileEditValue] = useState('');
+    const [selectedSpecializations, setSelectedSpecializations] = useState<Set<string>>(new Set());
     const { currentUser } = useAuth();
 
     // Check subscription status using auth context user (avoids lock race)
@@ -2169,29 +2170,121 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         )}
                                     </div>
 
-                                    {/* Other Skills — modular tag-style */}
-                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
-                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Other Skills</div>
-                                        {profileData?.other_skills ? (
-                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{profileData.other_skills}</div>
-                                        ) : (
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                                {['Flight Instructor', 'CRM Trained', 'Fluent in Spanish'].map(s => (
-                                                    <button key={s} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
-                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
-                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
-                                                    >+ {s}</button>
-                                                ))}
-                                                <button
-                                                    onClick={() => onNavigate('pilot-licensure-experience')}
-                                                    style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
-                                                >+ Add Skills</button>
-                                            </div>
-                                        )}
+                                    {/* General other skills note */}
+                                    <div style={{ borderRadius: '14px', padding: '0.75rem 0.85rem', border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(15,23,42,0.4)' }}>
+                                        <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569', lineHeight: 1.5 }}>Aviation specializations & secondary roles are logged in the dedicated section below — visible to airline recruiters on your ATLAS Resume.</p>
                                     </div>
                                 </div>
                             </div>
                         </CategorySection>}
+
+                        {/* Aviation Specializations — Profile only */}
+                        {activeView === 'profile' && (() => {
+                            const SPEC_GROUPS = [
+                                {
+                                    icon: '📡',
+                                    group: 'ATC & Dispatch',
+                                    skills: [
+                                        { id: 'atc-tower', label: 'Tower / Radar Ops', sub: 'Terminal radio & ATC comms' },
+                                        { id: 'dispatch', label: 'Flight Dispatch & Planning', sub: 'Jeppesen, Lido, route optimization' },
+                                        { id: 'crm', label: 'CRM / TEM Trained', sub: 'Threat & error management' },
+                                    ]
+                                },
+                                {
+                                    icon: '🏗️',
+                                    group: 'Ground Operations',
+                                    skills: [
+                                        { id: 'ramp', label: 'Ramp & Gate Logistics', sub: 'Turnaround, fuel, W&B ops' },
+                                        { id: 'marshalling', label: 'Marshalling & Pushback', sub: 'GSE & ramp safety' },
+                                        { id: 'cargo-handling', label: 'Cargo Handling', sub: 'Dangerous goods awareness' },
+                                    ]
+                                },
+                                {
+                                    icon: '📈',
+                                    group: 'Corporate & Fleet',
+                                    skills: [
+                                        { id: 'sms', label: 'Aviation SMS', sub: 'Safety management systems' },
+                                        { id: 'fleet-coord', label: 'Fleet Maintenance Coord.', sub: 'MEL, downtime, parts logistics' },
+                                        { id: 'crew-sched', label: 'Crew Scheduling', sub: 'FDP limits, crew tracking' },
+                                        { id: 'flight-ops-mgmt', label: 'Flight Ops Management', sub: 'SOPs, ops specs, oversight' },
+                                    ]
+                                },
+                                {
+                                    icon: '🎓',
+                                    group: 'Training & Instruction',
+                                    skills: [
+                                        { id: 'cfi', label: 'Flight Instructor (CFI)', sub: 'Dual instruction hours' },
+                                        { id: 'sim-instructor', label: 'Simulator Instructor', sub: 'FFS / FTD qualified' },
+                                        { id: 'check-airman', label: 'Check Airman', sub: 'Line checks & proficiency rides' },
+                                    ]
+                                },
+                            ];
+                            const toggleSpec = (id: string) => setSelectedSpecializations(prev => {
+                                const next = new Set(prev);
+                                next.has(id) ? next.delete(id) : next.add(id);
+                                return next;
+                            });
+                            return (
+                                <CategorySection title="Aviation Specializations" description="Secondary roles & cross-disciplinary skills — searchable by airline recruiters">
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                        {SPEC_GROUPS.map(group => (
+                                            <div key={group.group} style={{ borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(15,23,42,0.5)', overflow: 'hidden' }}>
+                                                <div style={{ padding: '0.65rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                    <span style={{ fontSize: '0.9rem' }}>{group.icon}</span>
+                                                    <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' as const, color: '#94a3b8' }}>{group.group}</span>
+                                                </div>
+                                                <div style={{ padding: '0.75rem 1rem', display: 'flex', flexWrap: 'wrap' as const, gap: '0.5rem' }}>
+                                                    {group.skills.map(skill => {
+                                                        const active = selectedSpecializations.has(skill.id);
+                                                        return (
+                                                            <button
+                                                                key={skill.id}
+                                                                onClick={() => toggleSpec(skill.id)}
+                                                                title={skill.sub}
+                                                                style={{
+                                                                    padding: '0.35rem 0.85rem',
+                                                                    borderRadius: '999px',
+                                                                    fontSize: '0.75rem',
+                                                                    fontWeight: active ? 700 : 500,
+                                                                    cursor: 'pointer',
+                                                                    transition: 'all 0.15s ease',
+                                                                    border: active ? '1px solid rgba(229,62,62,0.6)' : '1px solid rgba(255,255,255,0.12)',
+                                                                    background: active ? 'rgba(229,62,62,0.12)' : 'rgba(255,255,255,0.03)',
+                                                                    color: active ? '#ff8181' : '#64748b',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: '0.35rem',
+                                                                }}
+                                                            >
+                                                                {active && <span style={{ fontSize: '0.65rem' }}>✓</span>}
+                                                                {skill.label}
+                                                                {!isPremium && active && <span style={{ fontSize: '0.6rem', color: '#f59e0b', fontWeight: 600 }}>· Self-Declared</span>}
+                                                                {isPremium && active && <span style={{ fontSize: '0.6rem', color: '#e53e3e', fontWeight: 700 }}>· Verified</span>}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {selectedSpecializations.size > 0 && (
+                                            <div style={{ padding: '0.75rem 1rem', borderRadius: '12px', background: 'rgba(229,62,62,0.06)', border: '1px solid rgba(229,62,62,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: '0.5rem' }}>
+                                                <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+                                                    <strong style={{ color: '#ff8181' }}>{selectedSpecializations.size}</strong> specialization{selectedSpecializations.size > 1 ? 's' : ''} selected — visible on your ATLAS Resume
+                                                </span>
+                                                {!isPremium && (
+                                                    <button
+                                                        onClick={() => setShowUpgradeModal(true)}
+                                                        style={{ padding: '0.3rem 0.85rem', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer', background: 'rgba(229,62,62,0.15)', border: '1px solid rgba(229,62,62,0.4)', color: '#e53e3e' }}
+                                                    >
+                                                        🛡️ Upgrade to Verify Skills
+                                                    </button>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </CategorySection>
+                            );
+                        })()}
 
                         {/* ATLAS Resume — Profile only */}
                         {activeView === 'profile' && <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
