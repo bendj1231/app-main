@@ -85,6 +85,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [isPremium, setIsPremium] = useState(false);
     const [showWalletGate, setShowWalletGate] = useState(false);
     const [showWalletView, setShowWalletView] = useState(false);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [editingTile, setEditingTile] = useState<string | null>(null);
     const [tileEditValue, setTileEditValue] = useState('');
     const { currentUser } = useAuth();
@@ -1160,6 +1161,61 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         ) : null}
                 </div>
 
+                {/* ── UPGRADE MODAL (free tier) ── */}
+                {showUpgradeModal && (
+                    <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }} onClick={() => setShowUpgradeModal(false)}>
+                        <div style={{ background: 'linear-gradient(160deg,#1a0a0a,#0f172a)', border: '1px solid rgba(229,62,62,0.35)', borderRadius: 16, padding: '2rem', maxWidth: 460, width: '90%', boxShadow: '0 0 60px rgba(229,62,62,0.15)', position: 'relative' }} onClick={e => e.stopPropagation()}>
+                            {/* Close */}
+                            <button onClick={() => setShowUpgradeModal(false)} style={{ position: 'absolute', top: 14, right: 14, background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: 18, lineHeight: 1 }}>✕</button>
+
+                            {/* Header */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '1.25rem' }}>
+                                <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(229,62,62,0.12)', border: '1px solid rgba(229,62,62,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div>
+                                    <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.2em', color: '#e53e3e', fontWeight: 700, textTransform: 'uppercase' }}>Recognition+ Network</p>
+                                    <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>Elevate Your Professional Pilot Identity</h3>
+                                </div>
+                            </div>
+
+                            {/* Problem hook */}
+                            <div style={{ background: 'rgba(229,62,62,0.07)', border: '1px solid rgba(229,62,62,0.2)', borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem' }}>
+                                <p style={{ margin: 0, fontSize: '0.78rem', color: '#fca5a5', lineHeight: 1.6 }}>Airlines reject thousands of <strong style={{ color: '#ff8181' }}>unverified resumes</strong> every month. Prove you are a serious, hireable asset with cryptographically audited credentials.</p>
+                            </div>
+
+                            {/* Feature list */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: '1.5rem' }}>
+                                {[
+                                    { icon: '📒', title: 'Anti-Tamper Logbook Sync', desc: 'Cryptographic hash of every flight — any edit triggers a mismatch alert.' },
+                                    { icon: '🏛️', title: 'Authority Node Verification', desc: 'FAA, CAAP, EASA & CASA licence checks via live civil aviation registries.' },
+                                    { icon: '⏱️', title: 'Compliance & Expiration Monitor', desc: 'Never bust a medical, type rating, or currency window again.' },
+                                    { icon: '🛡️', title: 'Verified Professional Badge', desc: 'Replace ⚠️ Self-Declared with a crimson 🛡️ PilotRecognition Network seal.' },
+                                ].map(f => (
+                                    <div key={f.title} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                                        <span style={{ fontSize: '1rem', lineHeight: 1, marginTop: 2, flexShrink: 0 }}>{f.icon}</span>
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.78rem', fontWeight: 700, color: '#f1f5f9' }}>{f.title}</p>
+                                            <p style={{ margin: '2px 0 0', fontSize: '0.7rem', color: '#94a3b8', lineHeight: 1.4 }}>{f.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* CTA */}
+                            <button
+                                onClick={() => { setShowUpgradeModal(false); setShowWalletGate(true); }}
+                                style={{ width: '100%', padding: '12px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: '#fff', fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 4px 20px rgba(229,62,62,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                            >
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Upgrade to Recognition+
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                            <p style={{ margin: '0.65rem 0 0', fontSize: '0.65rem', color: '#475569', textAlign: 'center' }}>$99 / year &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; Pilot-owned data</p>
+                        </div>
+                    </div>
+                )}
+
                 {/* ── WALLET GATE OVERLAY ── */}
                 {showWalletGate && (
                     <WalletLoadingScreen
@@ -1410,7 +1466,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 <p style={{ margin: '0.35rem 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
                                                 {tile.unverified && (
                                                     <button
-                                                        onClick={() => setShowWalletGate(true)}
+                                                        onClick={() => isPremium ? setShowWalletGate(true) : setShowUpgradeModal(true)}
                                                         style={{ marginTop: '0.4rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em', cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(229,62,62,0.3)' }}
                                                     >
                                                         <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -1503,7 +1559,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                             </div>
                                                         ))}
                                                     </div>
-                                                    <button onClick={() => setShowWalletGate(true)} style={{ padding: '5px 16px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#fff', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '0 4px 15px rgba(229,62,62,0.3)' }}>Unlock Verification →</button>
+                                                    <button onClick={() => setShowUpgradeModal(true)} style={{ padding: '5px 16px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#fff', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '0 4px 15px rgba(229,62,62,0.3)' }}>Unlock Verification →</button>
                                                 </div>
                                             ) : (
                                                 <>
@@ -1610,7 +1666,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.98) 60%, transparent)', padding: '2rem 1.25rem 1.25rem', textAlign: 'center' }}>
                                             <p style={{ margin: '0 0 10px', fontSize: '0.72rem', color: '#94a3b8', lineHeight: 1.5 }}>Track currency windows & regulatory deadlines.<br/>Never bust a medical or rating currency again.</p>
                                             <button
-                                                onClick={() => setShowWalletGate(true)}
+                                                onClick={() => setShowUpgradeModal(true)}
                                                 style={{ padding: '7px 20px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, color: '#fff', fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '0 4px 15px rgba(229,62,62,0.35)' }}
                                             >
                                                 Unlock Expiration Alerts →
@@ -1644,7 +1700,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
 
                                         {/* Recognition */}
-                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your dynamic score'} onClick={() => !isPremium && setShowWalletGate(true)}>
+                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your dynamic score'} onClick={() => !isPremium && setShowUpgradeModal(true)}>
                                             <span style={{
                                                 position: 'absolute', top: '20%', right: 0,
                                                 width: '1px', height: '60%',
@@ -1663,7 +1719,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
 
                                         {/* Recency Examination Score */}
-                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your recency score'} onClick={() => !isPremium && setShowWalletGate(true)}>
+                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your recency score'} onClick={() => !isPremium && setShowUpgradeModal(true)}>
                                             <span style={{
                                                 position: 'absolute', top: '20%', right: 0,
                                                 width: '1px', height: '60%',
