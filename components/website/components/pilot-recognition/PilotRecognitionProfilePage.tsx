@@ -2559,6 +2559,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     Discover cadet programs, airline relationships, and career progression opportunities tailored to your experience level
                                 </p>
                             </div>
+                        </div>
 
                         {/* Swipe instruction text and Overall Profile Score */}
                         <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', marginTop: '0.5rem' }}>
