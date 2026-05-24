@@ -1311,7 +1311,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </div>
                 </div>
 
-                <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem' }}>
+                <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                         <CategorySection title="Pilot Data" description="Identity, credentials, flight activity, and core hour summaries">
                             <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
@@ -2097,29 +2097,47 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             <div style={{ ...baseCardStyle }}>
                                 <div style={{ marginBottom: '0.75rem' }}>
                                     <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Personal Details</p>
-                                    <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>About You</h3>
+                                    <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontWeight: 600, letterSpacing: '-0.01em' }}>About You</h3>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                                    {[
-                                        { label: 'Why You Want to Become a Pilot', value: profileData?.why_become_pilot || '' },
-                                        { label: 'Other Skills', value: profileData?.other_skills || '' }
-                                    ].map(item => (
-                                        <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
-                                            <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.35rem' }}>{item.label}</div>
-                                            {item.value ? (
-                                                <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{item.value}</div>
-                                            ) : (
+                                    {/* Why You Want to Become a Pilot — long-form statement */}
+                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
+                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Why You Want to Become a Pilot</div>
+                                        {profileData?.why_become_pilot ? (
+                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.6 }}>{profileData.why_become_pilot}</div>
+                                        ) : (
+                                            <button
+                                                onClick={() => onNavigate('pilot-licensure-experience')}
+                                                style={{ width: '100%', padding: '0.85rem 1rem', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '10px', color: '#64748b', fontSize: '0.82rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s ease', textAlign: 'left' as const }}
+                                                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                            >
+                                                <Plus size={14} />
+                                                <span><strong style={{ fontWeight: 700 }}>+ Add Personal Statement</strong> &nbsp;—&nbsp; Share your career vision for airline recruiters.</span>
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* Other Skills — modular tag-style */}
+                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
+                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Other Skills</div>
+                                        {profileData?.other_skills ? (
+                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{profileData.other_skills}</div>
+                                        ) : (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {['Flight Instructor', 'CRM Trained', 'Fluent in Spanish'].map(s => (
+                                                    <button key={s} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >+ {s}</button>
+                                                ))}
                                                 <button
                                                     onClick={() => onNavigate('pilot-licensure-experience')}
-                                                    style={{ padding: '0.3rem 0.75rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '8px', color: '#64748b', fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', transition: 'all 0.2s ease' }}
-                                                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
-                                                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
-                                                >
-                                                    <Plus size={14} /> Add Info
-                                                </button>
-                                            )}
-                                        </div>
-                                    ))}
+                                                    style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                                                >+ Add Skills</button>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </CategorySection>
