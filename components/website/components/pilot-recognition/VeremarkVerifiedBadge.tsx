@@ -306,7 +306,7 @@ export const VeremarkVerifiedBadge: React.FC<VeremarkVerifiedBadgeProps> = ({
             {isVerified ? (
               <Award className="w-8 h-8 text-emerald-400" />
             ) : (
-              <span className="text-xs text-amber-400 bg-amber-500/10 px-2 py-1 rounded">
+              <span className="text-xs text-white px-2 py-1 rounded font-bold tracking-wide" style={{ background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', boxShadow: '0 0 8px rgba(229,62,62,0.3)' }}>
                 Action Required
               </span>
             )}

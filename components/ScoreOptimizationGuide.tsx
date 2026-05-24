@@ -321,8 +321,11 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
           <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">Current Score</p>
-          <p className="text-2xl font-bold text-white">{currentScoreValue}</p>
-          <p className="text-xs text-slate-500 mt-1">out of 100</p>
+          <p className="text-2xl font-bold text-white flex items-center gap-2">
+            {currentScoreValue} <span className="text-slate-500 text-lg font-normal">/ 100</span>
+            {currentScoreValue === 0 && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
+          </p>
+          <p className="text-xs text-slate-500 mt-1">{currentScoreValue === 0 ? 'Calculated on credential verification' : 'out of 100'}</p>
         </div>
         <div className="bg-emerald-900/30 rounded-lg p-4 border border-emerald-700">
           <p className="text-xs text-emerald-400 uppercase tracking-wide mb-1">Projected Score</p>
@@ -334,10 +337,10 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           <p className="text-2xl font-bold text-white">+{totalPotentialGain}</p>
           <p className="text-xs text-slate-500 mt-1">If all tips completed</p>
         </div>
-        <div className={`${trendColor === 'green' ? 'bg-emerald-900/30 border-emerald-700' : 'bg-red-900/30 border-red-700'} rounded-lg p-4 border`}>
-          <p className={`text-xs ${trendColor === 'green' ? 'text-emerald-400' : 'text-red-400'} uppercase tracking-wide mb-1`}>Current Progression</p>
-          <p className={`text-2xl font-bold ${trendColor === 'green' ? 'text-emerald-400' : 'text-red-400'}`}>{trendSign}{changePercent}%</p>
-          <p className={`text-xs ${trendColor === 'green' ? 'text-emerald-500' : 'text-red-500'} mt-1`}>{trend === 'up' ? 'Trending up' : trend === 'down' ? 'Trending down' : 'Stable'}</p>
+        <div className={`${trendColor === 'green' ? 'bg-emerald-900/30 border-emerald-700' : 'bg-slate-700/50 border-slate-600'} rounded-lg p-4 border`}>
+          <p className={`text-xs ${trendColor === 'green' ? 'text-emerald-400' : 'text-slate-400'} uppercase tracking-wide mb-1`}>Current Progression</p>
+          <p className={`text-2xl font-bold ${trendColor === 'green' ? 'text-emerald-400' : 'text-white'}`}>{trendSign}{changePercent}%</p>
+          <p className={`text-xs ${trendColor === 'green' ? 'text-emerald-500' : 'text-slate-400'} mt-1`}>{trend === 'up' ? 'Trending up' : changePercent === 0 ? 'Complete profile verification to begin tracking' : 'Trending down'}</p>
         </div>
       </div>
 
@@ -357,9 +360,10 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           onClick={() => setSelectedCategory('all')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedCategory === 'all'
-              ? 'bg-blue-600 text-white'
+              ? 'text-white'
               : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
+          style={selectedCategory === 'all' ? { background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)' } : {}}
         >
           All ({tips.length})
         </button>
@@ -367,9 +371,10 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
           onClick={() => setSelectedCategory('hours')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             selectedCategory === 'hours'
-              ? 'bg-blue-600 text-white'
+              ? 'text-white'
               : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
           }`}
+          style={selectedCategory === 'hours' ? { background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)' } : {}}
         >
           Hours ({tips.filter((t) => t.category === 'hours').length})
         </button>
@@ -457,7 +462,8 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
                           onClick={() => {
                             console.log('Apply changes for:', displayTips[currentIndex].title);
                           }}
-                          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors w-full"
+                          className="mt-4 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full"
+                          style={{ background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', boxShadow: '0 2px 10px rgba(229,62,62,0.3)' }}
                         >
                           Get Started
                         </button>
@@ -477,17 +483,18 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
             
             {/* Upgrade Overlay for Non-Members */}
             {!isPremium && (
-              <div className="absolute inset-0 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm rounded-lg">
+              <div className="absolute inset-0 flex items-center justify-center rounded-lg" style={{ background: 'rgba(15,22,36,0.88)', backdropFilter: 'blur(6px)' }}>
                 <div className="text-center p-6 max-w-md">
                   <h3 className="text-xl font-bold text-white mb-2">Unlock Career Progression Metrics & Priority Recognition</h3>
                   <p className="text-sm text-slate-300 mb-4">
                     Subscribe to Recognition + to unlock advanced career progression analytics, personalized optimization strategies, and get priority placement when airlines demand pilots with your profile.
                   </p>
                   <button
-                    className="bg-gradient-to-r from-blue-600 to-purple-700 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-800 transition-all"
+                    className="text-white px-6 py-3 rounded-lg font-bold transition-all"
+                    style={{ background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', boxShadow: '0 4px 15px rgba(229,62,62,0.35)', letterSpacing: '0.04em' }}
                     onClick={() => console.log('Navigate to membership upgrade')}
                   >
-                    Subscribe to Recognition +
+                    Upgrade to Recognition+
                   </button>
                 </div>
               </div>
@@ -516,7 +523,10 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
       {limit && filteredTips.length > limit && onViewAll && (
         <button
           onClick={onViewAll}
-          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+          className="w-full text-white px-6 py-3 rounded-lg text-sm font-medium transition-colors"
+          style={{ background: '#1e293b', border: '1px solid rgba(229,62,62,0.4)', letterSpacing: '0.04em' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(229,62,62,0.7)'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(229,62,62,0.4)'; }}
         >
           View All {filteredTips.length} Optimization Tips
         </button>
