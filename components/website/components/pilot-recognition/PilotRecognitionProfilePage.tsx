@@ -1493,13 +1493,17 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 <div style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg,#121824,#1a2332)', borderRadius: '12px', padding: '0.85rem 0.85rem 1rem', border: '1px dashed rgba(212,175,55,0.35)', textAlign: 'center', position: 'relative' }}>
                                                     {/* Gold R+ badge top-right */}
                                                     <span style={{ position: 'absolute', top: 10, right: 10, background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', color: '#000', fontSize: '0.55rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, letterSpacing: '0.1em' }}>RECOGNITION+</span>
-                                                    <p style={{ margin: '0 0 6px 0', fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
-                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff', letterSpacing: '0.02em' }}>Upgrade to verify your paper licence</span>
-                                                        <span style={{ fontSize: '0.65rem', color: '#94a3b8' }}>Cryptographic validation for airline trust</span>
-                                                        <button onClick={() => setShowWalletGate(true)} style={{ marginTop: 6, padding: '5px 16px', background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', border: 'none', borderRadius: 6, color: '#0f172a', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer' }}>Upgrade Now →</button>
+                                                    <p style={{ margin: '0 0 8px 0', fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
+                                                    {/* Blurred teaser rows */}
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
+                                                        {['License No.', 'Issue Date', 'Status'].map(lbl => (
+                                                            <div key={lbl} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 8px', background: 'rgba(255,255,255,0.03)', borderRadius: 6 }}>
+                                                                <span style={{ fontSize: '0.62rem', color: '#64748b' }}>{lbl}</span>
+                                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#94a3b8', filter: 'blur(4px)', userSelect: 'none', letterSpacing: 2 }}>●●●●-●●●●-●●●●</span>
+                                                            </div>
+                                                        ))}
                                                     </div>
+                                                    <button onClick={() => setShowWalletGate(true)} style={{ padding: '5px 16px', background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', border: 'none', borderRadius: 6, color: '#0f172a', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer' }}>Unlock Verification →</button>
                                                 </div>
                                             ) : (
                                                 <>
@@ -1561,55 +1565,57 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 </div>
 
-                                {/* Readiness Card */}
-                                <div style={{ ...baseCardStyle, minHeight: '100%' }}>
-                                    <div style={{ marginBottom: '0.75rem' }}>
-                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Readiness Snapshot</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Resource & Availability</h3>
-                                        <button
-                                            onClick={() => onNavigate('pilot-licensure-experience')}
-                                            style={{
-                                                marginTop: '0.5rem',
-                                                padding: '0',
-                                                background: 'none',
-                                                border: 'none',
-                                                color: '#2563eb',
-                                                fontSize: '0.75rem',
-                                                fontWeight: 500,
-                                                cursor: 'pointer',
-                                                textDecoration: 'none',
-                                                textAlign: 'left',
-                                                transition: 'all 0.2s ease'
-                                            }}
-                                            onMouseEnter={(e) => { e.currentTarget.style.color = '#60a5fa'; e.currentTarget.style.textDecoration = 'underline'; }}
-                                            onMouseLeave={(e) => { e.currentTarget.style.color = '#2563eb'; e.currentTarget.style.textDecoration = 'none'; }}
-                                        >
-                                            view details on readiness →
-                                        </button>
+                                {/* Compliance & Expiration Timeline */}
+                                <div style={{ ...baseCardStyle, minHeight: '100%', position: 'relative', overflow: 'hidden' }}>
+                                    <div style={{ marginBottom: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Compliance Monitor</p>
+                                            <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Expiration Timeline</h3>
+                                        </div>
+                                        <span style={{ background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', color: '#000', fontSize: '0.55rem', fontWeight: 800, padding: '2px 7px', borderRadius: 4, letterSpacing: '0.1em', flexShrink: 0, marginTop: 2 }}>RECOGNITION+</span>
                                     </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+
+                                    {/* Teaser rows — always visible, values blurred */}
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', filter: isPremium ? 'none' : 'none' }}>
                                         {[
-                                            { label: 'Last Flown', value: profileData?.last_flown || '' },
-                                            { label: 'Countries Visited', value: profileData?.countries_visited || '' },
-                                            { label: 'Favorite Aircraft', value: profileData?.favorite_aircraft || '' }
-                                        ].map(item => (
-                                            <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
-                                                {item.value ? (
-                                                    <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
-                                                ) : (
-                                                    <button
-                                                        onClick={() => onNavigate('pilot-licensure-experience')}
-                                                        style={{ padding: '0.25rem 0.6rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '6px', color: '#64748b', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s ease' }}
-                                                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
-                                                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
-                                                    >
-                                                        <Plus size={12} /> Add Info
-                                                    </button>
-                                                )}
+                                            { label: 'Class 1 Medical Certificate', status: 'warning', days: '14 days' },
+                                            { label: 'Instrument Proficiency Check', status: 'safe', days: '180 days' },
+                                            { label: 'Type Rating Recency', status: 'danger', days: 'EXPIRED' },
+                                            { label: 'Passport (International)', status: 'safe', days: '312 days' },
+                                            { label: 'NTC Radio Licence', status: 'warning', days: '42 days' },
+                                        ].map(row => (
+                                            <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 10px', background: 'rgba(255,255,255,0.025)', borderRadius: 8, border: `1px solid ${ row.status === 'danger' ? 'rgba(239,68,68,0.2)' : row.status === 'warning' ? 'rgba(245,158,11,0.2)' : 'rgba(34,197,94,0.15)' }` }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                                                    <span style={{ width: 7, height: 7, borderRadius: '50%', flexShrink: 0, background: row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e' }} />
+                                                    <span style={{ fontSize: '0.7rem', color: '#cbd5e1', fontWeight: 500 }}>{row.label}</span>
+                                                </div>
+                                                <span style={{
+                                                    fontSize: '0.72rem', fontWeight: 700,
+                                                    color: row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e',
+                                                    filter: isPremium ? 'none' : 'blur(5px)',
+                                                    userSelect: isPremium ? 'auto' : 'none',
+                                                    background: isPremium ? 'none' : 'rgba(255,255,255,0.06)',
+                                                    padding: isPremium ? 0 : '1px 6px',
+                                                    borderRadius: 4,
+                                                    minWidth: 60,
+                                                    textAlign: 'right',
+                                                }}>{row.days}</span>
                                             </div>
                                         ))}
                                     </div>
+
+                                    {/* Upgrade overlay CTA for free users */}
+                                    {!isPremium && (
+                                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.98) 60%, transparent)', padding: '2rem 1.25rem 1.25rem', textAlign: 'center' }}>
+                                            <p style={{ margin: '0 0 10px', fontSize: '0.72rem', color: '#94a3b8', lineHeight: 1.5 }}>Track currency windows & regulatory deadlines.<br/>Never bust a medical or rating currency again.</p>
+                                            <button
+                                                onClick={() => setShowWalletGate(true)}
+                                                style={{ padding: '7px 20px', background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', border: 'none', borderRadius: 7, color: '#0b0f19', fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer' }}
+                                            >
+                                                Unlock Expiration Alerts →
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Quick Stats Card */}
