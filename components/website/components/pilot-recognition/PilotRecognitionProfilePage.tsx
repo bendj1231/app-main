@@ -2540,7 +2540,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         </CategorySection>
 
                         {/* Recommended Pathways Carousel — hidden when section='pathways' (rendered standalone in DashboardTab) */}
-                        {!section && <><div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
+                        {!section && (
+                        <>
+                        <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
                             <div>
                                 <h2 style={{ 
                                     margin: 0, 
@@ -3202,7 +3204,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             </div>
                     </div>
                     </>
-                    }
+                    )}
                 </section>
             </main>
             
