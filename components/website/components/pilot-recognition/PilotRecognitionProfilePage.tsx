@@ -1452,14 +1452,17 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 if (!licenseDisplay) {
                                                     const occ = profileData?.current_occupation || '';
                                                     if (occ) return `${occ} — Self-Declared`;
-                                                    return 'No Licenses';
+                                                    return 'License: Pending Verification';
                                                 }
                                                 return licenseDisplay;
                                             })()}
                                         </p>
-                                        <p style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                                            {profileData?.email || 'No email provided'}
-                                        </p>
+                                        {(profileData?.email) && (
+                                            <p style={{ fontSize: '0.8rem', color: '#64748b' }}>{profileData.email}</p>
+                                        )}
+                                        {!profileData?.email && currentUser?.id && (
+                                            <p style={{ fontSize: '0.72rem', color: '#475569', fontFamily: 'monospace', letterSpacing: '0.02em', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 220 }}>did:key:{currentUser.id.slice(0,16)}…</p>
+                                        )}
                                     </div>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.75rem', width: '100%' }}>
                                         {[
@@ -1551,16 +1554,18 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <>
                                             {/* Merged Recognition+ tile for License Number + Status */}
                                             {!tileData.licenseVerified ? (
-                                                <div style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg,#2d0a0a,#1a1f2c)', borderRadius: '12px', padding: '0.85rem 0.85rem 1rem', border: '1px solid rgba(229,62,62,0.25)', textAlign: 'center', position: 'relative', boxShadow: 'inset 0 0 12px rgba(229,62,62,0.04)' }}>
-                                                    {/* Gold R+ badge top-right */}
-                                                    <span style={{ position: 'absolute', top: 10, right: 10, background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', color: '#fff', fontSize: '0.55rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, letterSpacing: '0.1em', boxShadow: '0 0 10px rgba(229,62,62,0.2)' }}>RECOGNITION+</span>
-                                                    <p style={{ margin: '0 0 8px 0', fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
+                                                <div style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg,#2d0a0a,#1a1f2c)', borderRadius: '12px', padding: '0.85rem 0.85rem 1rem', border: '1px solid rgba(229,62,62,0.25)', boxShadow: 'inset 0 0 12px rgba(229,62,62,0.04)', textAlign: 'center' }}>
+                                                    {/* Flex header — label left, badge right, no overlap */}
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 10 }}>
+                                                        <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
+                                                        <span style={{ background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', color: '#fff', fontSize: '0.55rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, letterSpacing: '0.1em', boxShadow: '0 0 10px rgba(229,62,62,0.2)', flexShrink: 0 }}>RECOGNITION+</span>
+                                                    </div>
                                                     {/* Blurred teaser rows */}
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
                                                         {['License No.', 'Issue Date', 'Status'].map(lbl => (
                                                             <div key={lbl} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 8px', background: 'rgba(255,255,255,0.03)', borderRadius: 6 }}>
                                                                 <span style={{ fontSize: '0.62rem', color: '#64748b' }}>{lbl}</span>
-                                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ff8181', filter: 'blur(4px)', userSelect: 'none', letterSpacing: 2, background: 'rgba(229,62,62,0.12)', border: '1px solid rgba(229,62,62,0.18)', padding: '1px 6px', borderRadius: 4 }}>●●●●-●●●●-●●●●</span>
+                                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ff8181', filter: 'blur(4px)', userSelect: 'none', letterSpacing: 4, background: 'rgba(229,62,62,0.18)', border: '1px solid rgba(229,62,62,0.25)', padding: '2px 8px', borderRadius: 4 }}>●●●●-●●●●-●●●●</span>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -1655,11 +1660,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     color: isPremium ? (row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e') : '#ff8181',
                                                     filter: isPremium ? 'none' : 'blur(5px)',
                                                     userSelect: isPremium ? 'auto' : 'none',
-                                                    background: isPremium ? 'none' : 'rgba(229,62,62,0.12)',
-                                                    border: isPremium ? 'none' : '1px solid rgba(229,62,62,0.2)',
-                                                    padding: isPremium ? 0 : '1px 6px',
+                                                    background: isPremium ? 'none' : 'rgba(229,62,62,0.18)',
+                                                    border: isPremium ? 'none' : '1px solid rgba(229,62,62,0.28)',
+                                                    padding: isPremium ? 0 : '2px 8px',
+                                                    letterSpacing: isPremium ? 'normal' : '0.12em',
                                                     borderRadius: 4,
-                                                    minWidth: 60,
+                                                    minWidth: 64,
                                                     textAlign: 'right',
                                                 }}>{row.days}</span>
                                             </div>
