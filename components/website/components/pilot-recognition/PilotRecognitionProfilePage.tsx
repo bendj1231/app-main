@@ -30,6 +30,7 @@ interface PilotRecognitionProfilePageProps {
     embedded?: boolean;
     injectedProfile?: any;
     injectedWalletData?: { did: string | null; credentials: any[] };
+    initialView?: 'dashboard' | 'profile';
 }
 
 interface RecognitionScore {
@@ -53,6 +54,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     embedded = false,
     injectedProfile,
     injectedWalletData,
+    initialView = 'dashboard',
 }) => {
     const [profileData, setProfileData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -77,7 +79,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
     const [urlCopied, setUrlCopied] = useState(false);
-    const [activeView, setActiveView] = useState<'dashboard' | 'profile'>('dashboard');
+    const [activeView, setActiveView] = useState<'dashboard' | 'profile'>(initialView);
     const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
