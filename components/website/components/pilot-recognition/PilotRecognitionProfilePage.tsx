@@ -1435,7 +1435,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 { label: 'License Type', value: highestLicense },
                                                 { label: 'License Authority', value: profileData?.license_authority || profileData?.country_of_license || '' },
                                                 { label: 'English Level', value: profileData?.english_proficiency_level || profileData?.elp_level || '' },
-                                                { label: 'Career Stage', value: profileData?.career_stage || '' }
+                                                { label: 'Pilot Status', value: profileData?.career_stage || profileData?.current_occupation || '' }
                                             ] as { label: string; value: string }[];
                                             const licenseVerified = !!(profileData?.license_id || profileData?.license_status);
                                             return { tiles, licenseVerified, licenseId: profileData?.license_id || '', licenseStatus: profileData?.license_status || '' };
