@@ -77,6 +77,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
     const [urlCopied, setUrlCopied] = useState(false);
+    const [activeView, setActiveView] = useState<'dashboard' | 'profile'>('dashboard');
     const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
@@ -1312,8 +1313,53 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </div>
                 </div>
 
+                {/* ── View switcher ── */}
+                <div style={{ padding: '0 clamp(1.5rem, 4vw, 3.5rem)', marginBottom: '-0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                    {([
+                        { id: 'dashboard' as const, label: '⚡ Operational Dashboard', sub: 'Score · Expiry · Verification · Insurance' },
+                        { id: 'profile'   as const, label: '👤 Pilot Profile',          sub: 'Identity · Credentials · Biography · Resume' },
+                    ] as { id: 'dashboard' | 'profile'; label: string; sub: string }[]).map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveView(tab.id)}
+                            style={{
+                                padding: '0.85rem 1.25rem',
+                                background: 'none',
+                                border: 'none',
+                                borderBottom: activeView === tab.id ? '2px solid #e53e3e' : '2px solid transparent',
+                                color: activeView === tab.id ? '#ffffff' : '#64748b',
+                                cursor: 'pointer',
+                                fontSize: '0.8rem',
+                                fontWeight: activeView === tab.id ? 700 : 500,
+                                display: 'flex',
+                                flexDirection: 'column' as const,
+                                alignItems: 'flex-start',
+                                gap: '0.1rem',
+                                transition: 'all 0.15s ease',
+                                lineHeight: 1.2,
+                                marginBottom: '-1px',
+                            }}
+                        >
+                            <span>{tab.label}</span>
+                            <span style={{ fontSize: '0.65rem', color: activeView === tab.id ? '#94a3b8' : '#475569', fontWeight: 400 }}>{tab.sub}</span>
+                        </button>
+                    ))}
+                </div>
+
                 <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+
+                        {/* ── Dashboard: upgrade CTA banner for free users ── */}
+                        {activeView === 'dashboard' && !isPremium && (
+                            <div style={{ background: 'linear-gradient(135deg, rgba(229,62,62,0.12), rgba(155,28,28,0.08))', border: '1px solid rgba(229,62,62,0.25)', borderRadius: '14px', padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+                                <div>
+                                    <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>⚡ Upgrade to Recognition+ to unlock live expiry alerts, score optimization, and full verification tracking</p>
+                                    <p style={{ margin: '0.2rem 0 0', fontSize: '0.68rem', color: '#94a3b8' }}>Medical expiry · Type rating currency · Logbook sync · Insurance risk profile — all in one operational view</p>
+                                </div>
+                                <button onClick={() => setShowUpgradeModal(true)} style={{ padding: '0.55rem 1.25rem', background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', border: 'none', borderRadius: '999px', color: '#fff', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 4px 15px rgba(229,62,62,0.3)' }}>Upgrade to Recognition+ →</button>
+                            </div>
+                        )}
+
                         <CategorySection title="Pilot Data" description="Identity, credentials, flight activity, and core hour summaries">
                             <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
                                 {/* Profile Card */}
@@ -1794,8 +1840,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             </div>
                         </CategorySection>
 
-                        {/* Score Optimization Guide */}
-                        <div>
+                        {/* Score Optimization Guide — Dashboard only */}
+                        {activeView === 'dashboard' && <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Recognition+</h2>
                                 <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Premium Score Optimization</span>
@@ -1921,9 +1967,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     />
                                 </div>
                             )}
-                        </div>
+                        </div>}
 
-                        <CategorySection title="Professional Interests" description="Professional information and pathway preferences">
+                        {/* Professional Interests — Profile only */}
+                        {activeView === 'profile' && <CategorySection title="Professional Interests" description="Professional information and pathway preferences">
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
                                 <div style={{ ...baseCardStyle }}>
                                     <div style={{ marginBottom: '0.75rem' }}>
@@ -2002,10 +2049,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 </div>
                             </div>
-                        </CategorySection>
+                        </CategorySection>}
 
-                        {/* Official Documentation Section */}
-                        <CategorySection title="Official Documentation" description="Verification & Resumes">
+                        {/* Official Documentation — Profile only */}
+                        {activeView === 'profile' && <CategorySection title="Official Documentation" description="Verification & Resumes">
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {[
                                     {
@@ -2078,23 +2125,24 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 ))}
                             </div>
-                        </CategorySection>
+                        </CategorySection>}
 
-                        {/* PILLAR 11: Verification & Background Checks */}
-                        <CategorySection title="Verification & Background Checks" description="Pillar 11 — Portable credential wallet, pre-cleared status, and insurance risk profile">
+                        {/* Verification & Background Checks — Dashboard only */}
+                        {activeView === 'dashboard' && <CategorySection title="Verification & Background Checks" description="Pillar 11 — Portable credential wallet, pre-cleared status, and insurance risk profile">
                             <VerificationWalletSection
                                 profileData={profileData}
                                 isPremium={isPremium}
                                 onNavigate={onNavigate}
                             />
-                        </CategorySection>
+                        </CategorySection>}
 
-                        {/* PILLAR 5: ATO Hour Verification */}
-                        <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
+                        {/* ATO Hour Verification — Dashboard only */}
+                        {activeView === 'dashboard' && <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
                             <ATOVerificationRequestSection />
-                        </CategorySection>
+                        </CategorySection>}
 
-                        <CategorySection title="Additional Information" description="Personal details and aspirations">
+                        {/* Additional Information — Profile only */}
+                        {activeView === 'profile' && <CategorySection title="Additional Information" description="Personal details and aspirations">
                             <div style={{ ...baseCardStyle }}>
                                 <div style={{ marginBottom: '0.75rem' }}>
                                     <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Personal Details</p>
@@ -2141,10 +2189,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 </div>
                             </div>
-                        </CategorySection>
+                        </CategorySection>}
 
-                        {/* ATLAS Resume Section */}
-                        <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
+                        {/* ATLAS Resume — Profile only */}
+                        {activeView === 'profile' && <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
                             <div style={{ maxWidth: '80rem', margin: '0 auto', background: 'rgba(30, 41, 59, 0.8)', borderRadius: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)', overflow: 'hidden' }}>
                                 {/* Header Card - Aviation Burgundy for professional authority */}
                                 <div style={{ background: '#7f1d1d', padding: '1.25rem 1.5rem', borderBottom: '1px solid #991b1b' }}>
@@ -2368,7 +2416,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </p>
                                 </div>
                             </div>
-                        </CategorySection>
+                        </CategorySection>}
 
                         {/* Recommended Pathways Carousel */}
                         <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
