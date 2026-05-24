@@ -2418,7 +2418,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             </div>
                         </CategorySection>}
 
-                        {/* Recommended Pathways Carousel */}
+                        {/* Recommended Pathways — Dashboard only */}
+                        {activeView === 'dashboard' && <>
                         <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
                             <div>
                                 <h2 style={{ 
@@ -3079,6 +3080,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     )}
                                 </div>
                             </div>
+                        </>
+                        }
                     </div>
                 </section>
             </main>
