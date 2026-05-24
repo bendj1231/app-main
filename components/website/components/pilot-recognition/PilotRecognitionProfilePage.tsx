@@ -1381,6 +1381,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             style={{ display: 'none' }}
                                         />
                                         <h2 style={{ fontSize: '1.4rem', color: '#ffffff', marginBottom: '0.25rem', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>{pilotName}</h2>
+                                        {!isPremium && (
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 9px', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.35)', borderRadius: 20, fontSize: '0.62rem', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.04em', marginBottom: '0.25rem' }}>
+                                                ⚠️ Unverified Account — Self-Declared Data
+                                            </span>
+                                        )}
                                         <p style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 600, letterSpacing: '0.18em', marginBottom: '0.2rem' }}>
                                             {(() => {
                                                 const license = profileData?.license_type || '';
@@ -1694,9 +1699,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             }} />
                                             <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Total Hours</p>
                                             <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.total_hours || 0}</p>
-                                            <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Logged Hours</p>
-                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#f59e0b', fontWeight: 500 }}>(unverified)</p>
-                                            <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: 0, fontSize: '0.65rem', fontWeight: 500, transition: 'color 0.2s ease' }} onMouseEnter={(e) => e.currentTarget.style.color = '#60a5fa'} onMouseLeave={(e) => e.currentTarget.style.color = '#2563eb'}>verify your flight hours</button>
+                                            {!isPremium ? (
+                                                <>
+                                                    <p style={{ margin: '0.15rem 0 0', fontSize: '0.6rem', color: '#f59e0b', fontWeight: 700, letterSpacing: '0.04em' }}>⚠️ Self-Declared (Unverified)</p>
+                                                    <button
+                                                        onClick={() => setShowUpgradeModal(true)}
+                                                        style={{ marginTop: '0.3rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.6rem', fontWeight: 700, cursor: 'pointer', letterSpacing: '0.03em', boxShadow: '0 2px 8px rgba(229,62,62,0.3)' }}
+                                                    >
+                                                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                                        Connect Live Logbook
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Logged Hours</p>
+                                            )}
                                         </div>
 
                                         {/* Recognition */}
@@ -1710,9 +1726,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             {isPremium ? (
                                                 <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
                                             ) : (
-                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                                                    <p style={{ margin: 0, fontSize: '1.85rem', fontWeight: 700, color: '#475569', filter: 'blur(4px)', userSelect: 'none' }}>00</p>
-                                                    <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 700, letterSpacing: '0.05em' }}>Recognition+</span>
+                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                                    <span style={{ fontSize: '0.58rem', color: '#94a3b8', lineHeight: 1.4, maxWidth: 80, textAlign: 'center' }}>Calculated on cryptographic validation</span>
                                                 </div>
                                             )}
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Verified Score</p>
@@ -1729,9 +1745,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             {isPremium ? (
                                                 <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.recency_examination_score || 0}</p>
                                             ) : (
-                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                                                    <p style={{ margin: 0, fontSize: '1.85rem', fontWeight: 700, color: '#475569', filter: 'blur(4px)', userSelect: 'none' }}>00</p>
-                                                    <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 700, letterSpacing: '0.05em' }}>Recognition+</span>
+                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                                    <span style={{ fontSize: '0.58rem', color: '#94a3b8', lineHeight: 1.4, maxWidth: 80, textAlign: 'center' }}>Unlock Premium Tier Rating</span>
                                                 </div>
                                             )}
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Recency Score</p>
