@@ -1414,6 +1414,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.75rem' }}>
                                         {(() => {
+                                            const tileData = (() => {
                                             const license = profileData?.license_type || '';
                                             const licenseLower = license.toLowerCase();
                                             let highestLicense = 'None';
@@ -1439,8 +1440,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             ] as { label: string; value: string }[];
                                             const licenseVerified = !!(profileData?.license_id || profileData?.license_status);
                                             return { tiles, licenseVerified, licenseId: profileData?.license_id || '', licenseStatus: profileData?.license_status || '' };
-                                        })();
-                                        return (
+                                            })();
+                                            return (
                                             <>
                                             {/* Merged Recognition+ tile for License Number + Status */}
                                             {!tileData.licenseVerified ? (
@@ -1475,6 +1476,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             </div>
                                             ))}
                                             </>
+                                            );
+                                        })()}
                                     </div>
                                 </div>
 
