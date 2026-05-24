@@ -1586,13 +1586,12 @@ const ScoreTab: React.FC<{ profile: any; setTab: (t: TabId) => void }> = ({ prof
 };
 
 // ─── TAB: PROFILE ──────────────────────────────────────────────────────────
-const ProfileTab: React.FC<{ onNavigate: (p: string) => void; profile: any; walletChecks: any[]; initialView?: 'dashboard' | 'profile' }> = ({ onNavigate, profile, walletChecks, initialView = 'profile' }) => (
+const ProfileTab: React.FC<{ onNavigate: (p: string) => void; profile: any; walletChecks: any[] }> = ({ onNavigate, profile, walletChecks }) => (
   <PilotRecognitionProfilePage
     onNavigate={onNavigate}
     embedded={true}
     injectedProfile={profile || undefined}
     injectedWalletData={profile ? { did: profile.wallet_did || null, credentials: walletChecks } : undefined}
-    initialView={initialView}
   />
 );
 
@@ -3300,11 +3299,6 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
 
   return (
     <div className="space-y-8">
-      <div className="relative">
-        <h2 className="text-3xl font-serif text-white tracking-wide mb-2">DASHBOARD</h2>
-        <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
-      </div>
-
       {/* Flight Instrument Dashboard */}
       <FlightInstrumentDashboard userId={currentUser.id} />
 
@@ -3312,6 +3306,14 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
       {(currentUser.email === SUPER_ADMIN_EMAIL || profile?.role === 'super_admin') && (
         <InfrastructureDashboard />
       )}
+
+      {/* Recommended Pathways — from Profile tab */}
+      <PilotRecognitionProfilePage
+        onNavigate={onNavigate}
+        embedded={true}
+        injectedProfile={profile || undefined}
+        section="pathways"
+      />
 
       {/* Programs */}
       <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
@@ -4652,12 +4654,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const renderContent = () => {
     switch (activeTab) {
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} avatarInputRef={avatarInputRef} avatarUploading={avatarUploading} avatarError={avatarError} handleAvatarUpload={handleAvatarUpload} />;
-      case 'profile':       return <ProfileTab key="profile-tab" onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} initialView='profile' />;
+      case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
       case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} hasActiveSession={!!(auth0User?.sub || currentUser?.id)} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
-      case 'dashboard':     return <ProfileTab key="dashboard-tab" onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} initialView='dashboard' />;
+      case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
       case 'market-intel':    return <CareerIntelligenceDashboard profile={profileData} />;
       case 'data-provenance': return <DataProvenancePage onNavigate={onNavigate} />;
       case 'airlines':      return <AirlinesTab onNavigate={onNavigate} />;

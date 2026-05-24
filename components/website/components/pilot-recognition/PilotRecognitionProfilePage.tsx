@@ -30,7 +30,7 @@ interface PilotRecognitionProfilePageProps {
     embedded?: boolean;
     injectedProfile?: any;
     injectedWalletData?: { did: string | null; credentials: any[] };
-    initialView?: 'dashboard' | 'profile';
+    section?: 'pathways';
 }
 
 interface RecognitionScore {
@@ -54,7 +54,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     embedded = false,
     injectedProfile,
     injectedWalletData,
-    initialView = 'dashboard',
+    section,
 }) => {
     const [profileData, setProfileData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -79,7 +79,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
     const [urlCopied, setUrlCopied] = useState(false);
-    const [activeView, setActiveView] = useState<'dashboard' | 'profile'>(initialView);
     const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
@@ -92,7 +91,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [editingTile, setEditingTile] = useState<string | null>(null);
     const [tileEditValue, setTileEditValue] = useState('');
-    const [selectedSpecializations, setSelectedSpecializations] = useState<Set<string>>(new Set());
     const { currentUser } = useAuth();
 
     // Check subscription status using auth context user (avoids lock race)
@@ -832,6 +830,173 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const pilotName = profileData?.full_name || 'Pilot Profile';
     const initials = pilotName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
+    if (section === 'pathways') {
+        return (
+            <div style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem)', position: 'relative' }}>
+                {/* Recommended Pathways Carousel */}
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
+                    <div>
+                        <h2 style={{ margin: 0, fontSize: '3rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#ffffff', letterSpacing: '-0.02em' }}>
+                            Recommended Pathways
+                        </h2>
+                        <p style={{ margin: '0.5rem 0 0', color: '#475569', fontSize: '1rem' }}>
+                            Explore career pathways matched to your profile
+                        </p>
+                        <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.875rem' }}>
+                            Discover cadet programs, airline relationships, and career progression opportunities tailored to your experience level
+                        </p>
+                    </div>
+                </div>
+
+                {/* Swipe instruction text and Overall Profile Score */}
+                <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', marginTop: '0.5rem' }}>
+                    {/* Recognition Match Categories */}
+                    <div style={{ position: 'absolute', left: '1.5rem', display: 'flex', flexDirection: 'row', gap: '1rem' }}>
+                        {([
+                            { key: 'low',    color: '#ef4444', label: 'Low Match' },
+                            { key: 'middle', color: '#f59e0b', label: 'Middle Match' },
+                            { key: 'high',   color: '#22c55e', label: 'High Match' },
+                            { key: 'all',    color: '#94a3b8', label: 'All' },
+                        ] as { key: 'low'|'middle'|'high'|'all'; color: string; label: string }[]).map(({ key, color, label }) => (
+                            <div key={key}
+                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '0.5rem', background: selectedScoreCategory === key ? `${color}26` : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: selectedScoreCategory === key ? `1px solid ${color}4d` : '1px solid rgba(255,255,255,0.2)', transition: 'all 0.3s ease' }}
+                                onClick={() => setSelectedScoreCategory(key)}
+                            >
+                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: color, boxShadow: `0 0 8px ${color}80` }}></div>
+                                <span style={{ fontSize: '0.7rem', color: selectedScoreCategory === key ? color : '#000000', fontWeight: selectedScoreCategory === key ? 600 : 500 }}>{label}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <p style={{ fontSize: '0.875rem', color: '#94a3b8', fontStyle: 'italic', margin: 0 }}>
+                        Swipe left and right or click to select a card
+                    </p>
+
+                    {/* Overall Profile Score */}
+                    <div style={{ position: 'absolute', right: '1.5rem' }} onMouseEnter={() => setShowScoreTooltip(true)} onMouseLeave={() => setShowScoreTooltip(false)}>
+                        <div style={{ textAlign: 'right', padding: '0.75rem 1rem', background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(241,245,249,0.8))', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 12px rgba(15,23,42,0.1)', cursor: 'help', minWidth: '220px' }}>
+                            {loading || recommendedPathways.length === 0 ? (
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.5rem 0' }}>
+                                    <div style={{ width: '16px', height: '16px', border: '2px solid #e2e8f0', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                                    <span style={{ fontSize: '0.6rem', color: '#64748b', fontStyle: 'italic' }}>Pulling recommendations...</span>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem' }}>
+                                    <div style={{ textAlign: 'left', flex: 1 }}>
+                                        <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.125rem' }}>Overall Profile Score</p>
+                                        <div style={{ fontSize: '0.6rem', color: '#64748b' }}>
+                                            <div>Flight Hours: {profileData?.total_hours || 0} <span style={{ color: '#f59e0b' }}>(unverified)</span></div>
+                                            <div>Recency: {profileData?.recent_flight_experience || 'N/A'}</div>
+                                            <div>Recognition: {profileData?.recognition_score || profileData?.overall_recognition_score || 0}</div>
+                                        </div>
+                                    </div>
+                                    <h3 style={{ margin: 0, fontSize: '2rem', fontWeight: 'normal', fontFamily: 'Georgia, serif', color: '#ffffff', lineHeight: 1 }}>
+                                        {profileData?.overall_recognition_score || 0}
+                                    </h3>
+                                </div>
+                            )}
+                        </div>
+                        {showScoreTooltip && (
+                            <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', width: '350px', padding: '1rem', background: 'rgba(30,41,59,0.95)', borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 10px 25px rgba(0,0,0,0.4)', zIndex: 1000, textAlign: 'left' }}>
+                                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.875rem', fontWeight: 600, color: '#ffffff' }}>About Your Profile Score</h4>
+                                <ul style={{ margin: 0, paddingLeft: '1rem', fontSize: '0.75rem', color: '#64748b', lineHeight: 1.6 }}>
+                                    <li><strong>Flight Hours:</strong> Total accumulated flight experience</li>
+                                    <li><strong>Recency:</strong> Recent flight activity and currency</li>
+                                    <li><strong>Recognition:</strong> Professional achievements and certifications</li>
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Carousel */}
+                <div style={{ position: 'relative', width: '100vw', marginLeft: 'calc(-50vw + 50%)', marginTop: '0.5rem' }}>
+                    <style>{`.scrollbar-hide::-webkit-scrollbar{display:none}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}.snap-scroll{scroll-snap-type:x mandatory}.snap-scroll>div{scroll-snap-align:center;scroll-snap-stop:always}`}</style>
+                    <div ref={carouselRef} onScroll={handleScroll} className="snap-scroll" style={{ display: 'flex', gap: '1.5rem', overflowX: 'scroll', overflowY: 'hidden', paddingBottom: '1rem', scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch', width: '100%' }}>
+                        {filteredPathways.length === 0 ? (
+                            <div style={{ width: '100%', padding: '4rem 2rem', textAlign: 'center', background: 'rgba(255,255,255,0.5)', borderRadius: '1rem', border: '2px dashed rgba(148,163,184,0.3)' }}>
+                                <p style={{ margin: 0, fontSize: '1.25rem', color: '#64748b', fontWeight: 500 }}>No pathways match this filter</p>
+                                <p style={{ margin: '0.5rem 0 0', fontSize: '0.875rem', color: '#94a3b8' }}>Try selecting a different filter or "All"</p>
+                            </div>
+                        ) : filteredPathways.map((pathway) => (
+                            <div key={pathway.id} style={{ flexShrink: 0, width: pathway.id === 'wingmentor-intro' ? '450px' : '600px', cursor: pathway.id === 'wingmentor-intro' ? 'default' : 'pointer', border: selectedPathway?.id === pathway.id ? '3px solid #0ea5e9' : '3px solid transparent', borderRadius: '1rem', padding: '3px', transition: 'all 0.2s ease' }} onClick={() => pathway.id !== 'wingmentor-intro' && setSelectedPathway(pathway)}>
+                                <div style={{ borderRadius: '0.75rem', overflow: 'hidden' }}>
+                                    <div style={{ position: 'relative', height: '300px', borderRadius: '0.75rem', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: pathway.id === 'wingmentor-intro' ? 'white' : 'transparent' }}>
+                                        <img src={pathway.image} alt={pathway.title} style={{ width: pathway.id === 'wingmentor-intro' ? '120px' : '100%', height: pathway.id === 'wingmentor-intro' ? '120px' : '100%', objectFit: pathway.id === 'wingmentor-intro' ? 'contain' : 'cover', margin: pathway.id === 'wingmentor-intro' ? 'auto' : undefined, transition: 'transform 0.5s ease' }} onMouseEnter={(e) => { if (pathway.id !== 'wingmentor-intro') e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseLeave={(e) => { if (pathway.id !== 'wingmentor-intro') e.currentTarget.style.transform = 'scale(1)'; }} />
+                                        {pathway.id !== 'wingmentor-intro' && <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.9), transparent 40%)' }} />}
+                                        {pathway.id !== 'wingmentor-intro' && (
+                                            <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', display: 'flex', gap: '0.5rem' }}>
+                                                <div style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', background: 'rgba(16,185,129,0.9)', color: 'white', fontSize: '0.75rem', fontWeight: 600 }}>{pathway.matchPercentage}% Match</div>
+                                                <div style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', background: 'rgba(14,165,233,0.9)', color: 'white', fontSize: '0.75rem', fontWeight: 600 }}>PR: {profileData?.overall_recognition_score || 0}</div>
+                                            </div>
+                                        )}
+                                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1rem', background: pathway.id === 'wingmentor-intro' ? 'transparent' : 'linear-gradient(to top, rgba(15,23,42,0.95), transparent)', textAlign: 'center' }}>
+                                            <h4 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 'normal', color: pathway.id === 'wingmentor-intro' ? '#0f172a' : 'white', fontFamily: 'Georgia, serif' }}>{pathway.title}</h4>
+                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: pathway.id === 'wingmentor-intro' ? '#64748b' : 'rgba(255,255,255,0.8)' }}>{pathway.subtitle}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Arrow nav + selected pathway detail */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
+                    <button onClick={() => scrollCarousel('left')} style={{ padding: '0.75rem', borderRadius: '50%', border: '1px solid #e2e8f0', background: 'white', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} onMouseEnter={(e) => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.color = '#0f172a'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = '#64748b'; }}>
+                        <ChevronLeft size={20} />
+                    </button>
+                    {selectedPathway && (
+                        <div style={{ textAlign: 'center', maxWidth: '600px' }}>
+                            <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem' }}>Selected Pathway</p>
+                            <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '0.5rem', fontFamily: 'Georgia, serif' }}>{selectedPathway.title}</h3>
+                            <p style={{ margin: '0 0 0.5rem', fontSize: '0.875rem', color: '#64748b' }}>{selectedPathway.subtitle}</p>
+                            <div style={{ background: 'rgba(14,165,233,0.05)', borderRadius: '0.5rem', padding: '0.75rem 1rem', marginBottom: '0.5rem', border: '1px solid rgba(14,165,233,0.1)' }}>
+                                <p style={{ margin: '0 0 0.25rem', fontSize: '0.8rem', color: '#0ea5e9', fontWeight: 600 }}>Why this pathway is recommended to you</p>
+                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#475569', lineHeight: 1.5 }}>Based on your profile, this pathway has a <strong>{selectedPathway.matchPercentage}% match</strong> with your interests in <strong>{selectedPathway.interests.join(', ')}</strong>. Your recognition score of <strong>{profileData?.overall_recognition_score || 0}</strong> indicates strong alignment with this program's requirements.</p>
+                            </div>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#475569', lineHeight: 1.6 }}>{selectedPathway.description}</p>
+                        </div>
+                    )}
+                    <button onClick={() => scrollCarousel('right')} style={{ padding: '0.75rem', borderRadius: '50%', border: '1px solid #e2e8f0', background: 'white', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} onMouseEnter={(e) => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.color = '#0f172a'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = '#64748b'; }}>
+                        <ChevronRight size={20} />
+                    </button>
+                </div>
+
+                {/* Requirements detail card */}
+                {selectedPathway && selectedPathway.requirements && (
+                    <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(30,41,59,0.8)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 45px rgba(0,0,0,0.3)' }}>
+                        <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(239,68,68,0.2)' }}>
+                            <p style={{ margin: '0 0 0.75rem', fontSize: '0.875rem', letterSpacing: '0.1em', color: '#dc2626', fontWeight: 700, textTransform: 'uppercase' }}>Requirements &amp; Profile Alignment</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', fontSize: '0.75rem', color: '#64748b' }}>
+                                <div><span style={{ fontWeight: 600 }}>Updated:</span> {new Date().toLocaleDateString()}</div>
+                                <div><span style={{ fontWeight: 600 }}>Source:</span> {selectedPathway.source || 'Job Board'}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.75rem', background: 'rgba(14,165,233,1)', borderRadius: '0.25rem' }}><span style={{ color: 'white', fontWeight: 600 }}>Airline Verified</span></div>
+                            </div>
+                        </div>
+                        {Object.entries(groupRequirementsByCategory(checkRequirements(selectedPathway))).map(([category, reqs]) => (
+                            reqs.length > 0 && (
+                                <div key={category} style={{ marginBottom: '1.5rem' }}>
+                                    <p style={{ margin: '0 0 0.5rem', fontSize: '0.875rem', color: '#ffffff', fontWeight: 700, textTransform: 'uppercase' }}>{category}</p>
+                                    <p style={{ margin: '0 0 0.75rem', fontSize: '0.8rem', color: '#64748b', fontStyle: 'italic' }}>{getCategoryAccountComparison(category, reqs)}</p>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+                                        <thead><tr style={{ borderBottom: '2px solid rgba(203,213,225,0.5)' }}><th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: '#64748b', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>Requirement</th><th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: '#64748b', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>Status</th><th style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: '#64748b', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>Details</th></tr></thead>
+                                        <tbody>{reqs.map((req) => (<tr key={req.id} style={{ borderBottom: '1px solid rgba(203,213,225,0.2)' }}><td style={{ padding: '0.75rem', color: '#ffffff', fontWeight: 500 }}>{req.label}</td><td style={{ padding: '0.75rem' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.75rem', borderRadius: '0.25rem', fontSize: '0.75rem', fontWeight: 600, background: req.isPreferred ? 'rgba(14,165,233,0.1)' : req.met ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)', color: req.isPreferred ? '#0ea5e9' : req.met ? '#15803d' : '#dc2626' }}>{req.isPreferred ? 'Optional' : req.met ? '✓ Met' : '✗ Not Met'}</span></td><td style={{ padding: '0.75rem', color: '#64748b', fontSize: '0.8rem' }}>{req.reason}</td></tr>))}</tbody>
+                                    </table>
+                                </div>
+                            )
+                        ))}
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                            <button style={{ padding: '0.75rem 2rem', borderRadius: '0.5rem', border: 'none', background: 'linear-gradient(135deg,#0ea5e9,#0284c7)', color: 'white', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(14,165,233,0.3)' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                                Discover {selectedPathway.title} →
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     return (
         <div 
             style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : 'hidden' }}
@@ -1316,53 +1481,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </div>
                 </div>
 
-                {/* ── View switcher — only shown on standalone route, not when embedded in platform ── */}
-                <div style={{ display: embedded ? 'none' : 'flex', padding: '0 clamp(1.5rem, 4vw, 3.5rem)', marginBottom: '-0.5rem', alignItems: 'center', gap: '0.25rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                    {([
-                        { id: 'dashboard' as const, label: '⚡ Recognition Board', sub: 'Score · Expiry · Verification · Pathways' },
-                        { id: 'profile'   as const, label: '👤 Pilot Profile',          sub: 'Identity · Credentials · Biography · Resume' },
-                    ] as { id: 'dashboard' | 'profile'; label: string; sub: string }[]).map(tab => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveView(tab.id)}
-                            style={{
-                                padding: '0.85rem 1.25rem',
-                                background: 'none',
-                                border: 'none',
-                                borderBottom: activeView === tab.id ? '2px solid #e53e3e' : '2px solid transparent',
-                                color: activeView === tab.id ? '#ffffff' : '#64748b',
-                                cursor: 'pointer',
-                                fontSize: '0.8rem',
-                                fontWeight: activeView === tab.id ? 700 : 500,
-                                display: 'flex',
-                                flexDirection: 'column' as const,
-                                alignItems: 'flex-start',
-                                gap: '0.1rem',
-                                transition: 'all 0.15s ease',
-                                lineHeight: 1.2,
-                                marginBottom: '-1px',
-                            }}
-                        >
-                            <span>{tab.label}</span>
-                            <span style={{ fontSize: '0.65rem', color: activeView === tab.id ? '#94a3b8' : '#475569', fontWeight: 400 }}>{tab.sub}</span>
-                        </button>
-                    ))}
-                </div>
-
                 <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-
-                        {/* ── Dashboard: upgrade CTA banner for free users ── */}
-                        {activeView === 'dashboard' && !isPremium && (
-                            <div style={{ background: 'linear-gradient(135deg, rgba(229,62,62,0.12), rgba(155,28,28,0.08))', border: '1px solid rgba(229,62,62,0.25)', borderRadius: '14px', padding: '1rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
-                                <div>
-                                    <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>⚡ Upgrade to Recognition+ to unlock live expiry alerts, score optimization, and full verification tracking</p>
-                                    <p style={{ margin: '0.2rem 0 0', fontSize: '0.68rem', color: '#94a3b8' }}>Medical expiry · Type rating currency · Logbook sync · Insurance risk profile — all in one operational view</p>
-                                </div>
-                                <button onClick={() => setShowUpgradeModal(true)} style={{ padding: '0.55rem 1.25rem', background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', border: 'none', borderRadius: '999px', color: '#fff', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 4px 15px rgba(229,62,62,0.3)' }}>Upgrade to Recognition+ →</button>
-                            </div>
-                        )}
-
                         <CategorySection title="Pilot Data" description="Identity, credentials, flight activity, and core hour summaries">
                             <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
                                 {/* Profile Card */}
@@ -1843,8 +1963,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             </div>
                         </CategorySection>
 
-                        {/* Score Optimization Guide — Dashboard only */}
-                        {activeView === 'dashboard' && <div>
+                        {/* Score Optimization Guide */}
+                        <div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Recognition+</h2>
                                 <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Premium Score Optimization</span>
@@ -1970,10 +2090,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     />
                                 </div>
                             )}
-                        </div>}
+                        </div>
 
-                        {/* Professional Interests — Profile only */}
-                        {activeView === 'profile' && <CategorySection title="Professional Interests" description="Professional information and pathway preferences">
+                        <CategorySection title="Professional Interests" description="Professional information and pathway preferences">
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
                                 <div style={{ ...baseCardStyle }}>
                                     <div style={{ marginBottom: '0.75rem' }}>
@@ -2052,10 +2171,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 </div>
                             </div>
-                        </CategorySection>}
+                        </CategorySection>
 
-                        {/* Official Documentation — Profile only */}
-                        {activeView === 'profile' && <CategorySection title="Official Documentation" description="Verification & Resumes">
+                        {/* Official Documentation Section */}
+                        <CategorySection title="Official Documentation" description="Verification & Resumes">
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {[
                                     {
@@ -2128,24 +2247,23 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </div>
                                 ))}
                             </div>
-                        </CategorySection>}
+                        </CategorySection>
 
-                        {/* Verification & Background Checks — Dashboard only */}
-                        {activeView === 'dashboard' && <CategorySection title="Verification & Background Checks" description="Pillar 11 — Portable credential wallet, pre-cleared status, and insurance risk profile">
+                        {/* PILLAR 11: Verification & Background Checks */}
+                        <CategorySection title="Verification & Background Checks" description="Pillar 11 — Portable credential wallet, pre-cleared status, and insurance risk profile">
                             <VerificationWalletSection
                                 profileData={profileData}
                                 isPremium={isPremium}
                                 onNavigate={onNavigate}
                             />
-                        </CategorySection>}
+                        </CategorySection>
 
-                        {/* ATO Hour Verification — Profile only */}
-                        {activeView === 'profile' && <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
+                        {/* PILLAR 5: ATO Hour Verification */}
+                        <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
                             <ATOVerificationRequestSection />
-                        </CategorySection>}
+                        </CategorySection>
 
-                        {/* Additional Information — Profile only */}
-                        {activeView === 'profile' && <CategorySection title="Additional Information" description="Personal details and aspirations">
+                        <CategorySection title="Additional Information" description="Personal details and aspirations">
                             <div style={{ ...baseCardStyle }}>
                                 <div style={{ marginBottom: '0.75rem' }}>
                                     <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Personal Details</p>
@@ -2170,124 +2288,32 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         )}
                                     </div>
 
-                                    {/* General other skills note */}
-                                    <div style={{ borderRadius: '14px', padding: '0.75rem 0.85rem', border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(15,23,42,0.4)' }}>
-                                        <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569', lineHeight: 1.5 }}>Aviation specializations & secondary roles are logged in the dedicated section below — visible to airline recruiters on your ATLAS Resume.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </CategorySection>}
-
-                        {/* Aviation Specializations — Profile only */}
-                        {activeView === 'profile' && (() => {
-                            const SPEC_GROUPS = [
-                                {
-                                    icon: '📡',
-                                    group: 'ATC & Dispatch',
-                                    skills: [
-                                        { id: 'atc-tower', label: 'Tower / Radar Ops', sub: 'Terminal radio & ATC comms' },
-                                        { id: 'dispatch', label: 'Flight Dispatch & Planning', sub: 'Jeppesen, Lido, route optimization' },
-                                        { id: 'crm', label: 'CRM / TEM Trained', sub: 'Threat & error management' },
-                                    ]
-                                },
-                                {
-                                    icon: '🏗️',
-                                    group: 'Ground Operations',
-                                    skills: [
-                                        { id: 'ramp', label: 'Ramp & Gate Logistics', sub: 'Turnaround, fuel, W&B ops' },
-                                        { id: 'marshalling', label: 'Marshalling & Pushback', sub: 'GSE & ramp safety' },
-                                        { id: 'cargo-handling', label: 'Cargo Handling', sub: 'Dangerous goods awareness' },
-                                    ]
-                                },
-                                {
-                                    icon: '📈',
-                                    group: 'Corporate & Fleet',
-                                    skills: [
-                                        { id: 'sms', label: 'Aviation SMS', sub: 'Safety management systems' },
-                                        { id: 'fleet-coord', label: 'Fleet Maintenance Coord.', sub: 'MEL, downtime, parts logistics' },
-                                        { id: 'crew-sched', label: 'Crew Scheduling', sub: 'FDP limits, crew tracking' },
-                                        { id: 'flight-ops-mgmt', label: 'Flight Ops Management', sub: 'SOPs, ops specs, oversight' },
-                                    ]
-                                },
-                                {
-                                    icon: '🎓',
-                                    group: 'Training & Instruction',
-                                    skills: [
-                                        { id: 'cfi', label: 'Flight Instructor (CFI)', sub: 'Dual instruction hours' },
-                                        { id: 'sim-instructor', label: 'Simulator Instructor', sub: 'FFS / FTD qualified' },
-                                        { id: 'check-airman', label: 'Check Airman', sub: 'Line checks & proficiency rides' },
-                                    ]
-                                },
-                            ];
-                            const toggleSpec = (id: string) => setSelectedSpecializations(prev => {
-                                const next = new Set(prev);
-                                next.has(id) ? next.delete(id) : next.add(id);
-                                return next;
-                            });
-                            return (
-                                <CategorySection title="Aviation Specializations" description="Secondary roles & cross-disciplinary skills — searchable by airline recruiters">
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                        {SPEC_GROUPS.map(group => (
-                                            <div key={group.group} style={{ borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(15,23,42,0.5)', overflow: 'hidden' }}>
-                                                <div style={{ padding: '0.65rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                    <span style={{ fontSize: '0.9rem' }}>{group.icon}</span>
-                                                    <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' as const, color: '#94a3b8' }}>{group.group}</span>
-                                                </div>
-                                                <div style={{ padding: '0.75rem 1rem', display: 'flex', flexWrap: 'wrap' as const, gap: '0.5rem' }}>
-                                                    {group.skills.map(skill => {
-                                                        const active = selectedSpecializations.has(skill.id);
-                                                        return (
-                                                            <button
-                                                                key={skill.id}
-                                                                onClick={() => toggleSpec(skill.id)}
-                                                                title={skill.sub}
-                                                                style={{
-                                                                    padding: '0.35rem 0.85rem',
-                                                                    borderRadius: '999px',
-                                                                    fontSize: '0.75rem',
-                                                                    fontWeight: active ? 700 : 500,
-                                                                    cursor: 'pointer',
-                                                                    transition: 'all 0.15s ease',
-                                                                    border: active ? '1px solid rgba(229,62,62,0.6)' : '1px solid rgba(255,255,255,0.12)',
-                                                                    background: active ? 'rgba(229,62,62,0.12)' : 'rgba(255,255,255,0.03)',
-                                                                    color: active ? '#ff8181' : '#64748b',
-                                                                    display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    gap: '0.35rem',
-                                                                }}
-                                                            >
-                                                                {active && <span style={{ fontSize: '0.65rem' }}>✓</span>}
-                                                                {skill.label}
-                                                                {!isPremium && active && <span style={{ fontSize: '0.6rem', color: '#f59e0b', fontWeight: 600 }}>· Self-Declared</span>}
-                                                                {isPremium && active && <span style={{ fontSize: '0.6rem', color: '#e53e3e', fontWeight: 700 }}>· Verified</span>}
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {selectedSpecializations.size > 0 && (
-                                            <div style={{ padding: '0.75rem 1rem', borderRadius: '12px', background: 'rgba(229,62,62,0.06)', border: '1px solid rgba(229,62,62,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: '0.5rem' }}>
-                                                <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-                                                    <strong style={{ color: '#ff8181' }}>{selectedSpecializations.size}</strong> specialization{selectedSpecializations.size > 1 ? 's' : ''} selected — visible on your ATLAS Resume
-                                                </span>
-                                                {!isPremium && (
-                                                    <button
-                                                        onClick={() => setShowUpgradeModal(true)}
-                                                        style={{ padding: '0.3rem 0.85rem', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer', background: 'rgba(229,62,62,0.15)', border: '1px solid rgba(229,62,62,0.4)', color: '#e53e3e' }}
-                                                    >
-                                                        🛡️ Upgrade to Verify Skills
-                                                    </button>
-                                                )}
+                                    {/* Other Skills — modular tag-style */}
+                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
+                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Other Skills</div>
+                                        {profileData?.other_skills ? (
+                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{profileData.other_skills}</div>
+                                        ) : (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {['Flight Instructor', 'CRM Trained', 'Fluent in Spanish'].map(s => (
+                                                    <button key={s} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >+ {s}</button>
+                                                ))}
+                                                <button
+                                                    onClick={() => onNavigate('pilot-licensure-experience')}
+                                                    style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                                                >+ Add Skills</button>
                                             </div>
                                         )}
                                     </div>
-                                </CategorySection>
-                            );
-                        })()}
+                                </div>
+                            </div>
+                        </CategorySection>
 
-                        {/* ATLAS Resume — Profile only */}
-                        {activeView === 'profile' && <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
+                        {/* ATLAS Resume Section */}
+                        <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
                             <div style={{ maxWidth: '80rem', margin: '0 auto', background: 'rgba(30, 41, 59, 0.8)', borderRadius: '1rem', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)', overflow: 'hidden' }}>
                                 {/* Header Card - Aviation Burgundy for professional authority */}
                                 <div style={{ background: '#7f1d1d', padding: '1.25rem 1.5rem', borderBottom: '1px solid #991b1b' }}>
@@ -2511,10 +2537,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     </p>
                                 </div>
                             </div>
-                        </CategorySection>}
+                        </CategorySection>
 
-                        {/* Recommended Pathways — Dashboard only */}
-                        {activeView === 'dashboard' && <>
+                        {section === 'pathways' ? null : null}{/* Recommended Pathways — also rendered standalone via section='pathways' */}
+                        {section !== 'pathways' && <>
+                        {/* Recommended Pathways Carousel */}
                         <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
                             <div>
                                 <h2 style={{ 
@@ -3175,9 +3202,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     )}
                                 </div>
                             </div>
-                        </>
-                        }
                     </div>
+                    </> }
                 </section>
             </main>
             
