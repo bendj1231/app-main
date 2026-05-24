@@ -1431,36 +1431,50 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 highestLicense = license;
                                             }
 
-                                            return [
+                                            const tiles = [
                                                 { label: 'License Type', value: highestLicense },
-                                                { label: 'License Number', value: profileData?.license_id || '', locked: !profileData?.license_id },
                                                 { label: 'License Authority', value: profileData?.license_authority || profileData?.country_of_license || '' },
-                                                { label: 'License Status', value: profileData?.license_status || '', locked: !profileData?.license_status },
                                                 { label: 'English Level', value: profileData?.english_proficiency_level || profileData?.elp_level || '' },
                                                 { label: 'Career Stage', value: profileData?.career_stage || '' }
-                                            ] as { label: string; value: string; locked?: boolean }[];
-                                        })().map(tile => (
-                                            <div key={tile.label} style={{ background: tile.locked ? 'rgba(239,68,68,0.06)' : 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: tile.locked ? '1px solid rgba(239,68,68,0.25)' : '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center', position: 'relative' }}>
-                                                <p style={{ margin: 0, fontSize: '0.65rem', color: tile.locked ? '#f87171' : '#94a3b8', letterSpacing: '0.1em' }}>{tile.label}</p>
+                                            ] as { label: string; value: string }[];
+                                            const licenseVerified = !!(profileData?.license_id || profileData?.license_status);
+                                            return { tiles, licenseVerified, licenseId: profileData?.license_id || '', licenseStatus: profileData?.license_status || '' };
+                                        })();
+                                        return (
+                                            <>
+                                            {/* Merged Recognition+ tile for License Number + Status */}
+                                            {!tileData.licenseVerified ? (
+                                                <div style={{ gridColumn: '1 / -1', background: 'rgba(239,68,68,0.06)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(239,68,68,0.25)', textAlign: 'center' }}>
+                                                    <p style={{ margin: '0 0 4px 0', fontSize: '0.65rem', color: '#f87171', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px' }}>
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#ef4444', letterSpacing: '0.05em' }}>Recognition+</span>
+                                                        <span style={{ fontSize: '0.6rem', color: 'rgba(239,68,68,0.6)' }}>Upgrade to verify &amp; display your licence details</span>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                <div style={{ background: 'rgba(30,41,59,0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                                                    <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER</p>
+                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tileData.licenseId || 'N/A'}</p>
+                                                </div>
+                                                <div style={{ background: 'rgba(30,41,59,0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                                                    <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE STATUS</p>
+                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tileData.licenseStatus || 'N/A'}</p>
+                                                </div>
+                                                </>
+                                            )}
+                                            {tileData.tiles.map(tile => (
+                                            <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center' }}>
+                                                <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>{tile.label}</p>
                                                 {tile.value ? (
                                                     <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
-                                                ) : tile.locked ? (
-                                                    <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
-                                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#ef4444', letterSpacing: '0.05em' }}>Recognition+</span>
-                                                    </div>
                                                 ) : (
-                                                    <button
-                                                        onClick={() => onNavigate('pilot-licensure-experience')}
-                                                        style={{ margin: '0.35rem 0 0', padding: '0.25rem 0.6rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '6px', color: '#64748b', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s ease' }}
-                                                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
-                                                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
-                                                    >
-                                                        <Plus size={12} /> Add
-                                                    </button>
+                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>N/A</p>
                                                 )}
                                             </div>
-                                        ))}
+                                            ))}
+                                            </>
                                     </div>
                                 </div>
 
