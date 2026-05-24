@@ -1963,7 +1963,17 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
                                                 {interest}
                                             </span>
-                                        )) || <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>No interests specified</p>}
+                                        )) || (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {['Commercial Aviation', 'Type Rating', 'Long-Haul Ops'].map(suggestion => (
+                                                    <button key={suggestion} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >+ {suggestion}</button>
+                                                ))}
+                                                <button style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>+ Add Goals</button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -1977,7 +1987,17 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
                                                 {interest}
                                             </span>
-                                        )) || <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>No insights interests specified</p>}
+                                        )) || (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {['ATPL Theory', 'CRM & Safety', 'Aviation Regulations'].map(suggestion => (
+                                                    <button key={suggestion} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >+ {suggestion}</button>
+                                                ))}
+                                                <button style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>+ Select Topics</button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -2030,11 +2050,13 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             style={{
                                                 padding: '0.65rem 1.75rem',
                                                 borderRadius: '999px',
-                                                border: card.filled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
-                                                background: card.filled ? '#0ea5e9' : 'transparent',
-                                                color: card.filled ? '#fff' : '#94a3b8',
+                                                border: '1px solid rgba(148,163,184,0.25)',
+                                                background: 'rgba(255,255,255,0.03)',
+                                                color: '#94a3b8',
                                                 fontWeight: 600,
-                                                cursor: 'pointer'
+                                                fontSize: '0.85rem',
+                                                cursor: 'pointer',
+                                                whiteSpace: 'nowrap' as const
                                             }}
                                             onClick={() => {
                                                 if (card.title === 'Examination Results') {

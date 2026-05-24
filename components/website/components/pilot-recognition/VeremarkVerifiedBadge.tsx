@@ -320,7 +320,7 @@ export const VeremarkVerifiedBadge: React.FC<VeremarkVerifiedBadgeProps> = ({
             <span className="text-slate-400">Wallet Completeness</span>
             <span className="text-emerald-400 font-medium">{Math.round(progressPercent)}%</span>
           </div>
-          <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+          <div className="h-2 rounded-full overflow-hidden" style={{ background: '#1D2636', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div
               className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
