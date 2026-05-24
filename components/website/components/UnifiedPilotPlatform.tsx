@@ -18,6 +18,11 @@ import { useVaultProfile } from '@/src/hooks/useVaultProfile';
 import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '@/shared/lib/supabase';
 import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
+import { ScoreOptimizationGuide } from '../../ScoreOptimizationGuide';
+import { VeremarkVerifiedBadge } from './pilot-recognition/VeremarkVerifiedBadge';
+import { RecognitionPlusNotifications } from './pilot-recognition/RecognitionPlusNotifications';
+import { calculateRecognitionScore } from '../../../lib/pilot-recognition-score';
+import { useRecognitionScore } from '../../../src/hooks/useRecognitionScore';
 import { DigitalLogbookPage } from './pilot-recognition/DigitalLogbookPage';
 import { LogbookHub } from './pilot-recognition/LogbookHub';
 import { PilotLicensureExperiencePage } from './pilot-recognition/PilotLicensureExperiencePage';
@@ -30,10 +35,6 @@ import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import ProfileImage from '../../../src/components/ProfileImage';
-import { ScoreOptimizationGuide } from '../../ScoreOptimizationGuide';
-import { VeremarkVerifiedBadge } from './pilot-recognition/VeremarkVerifiedBadge';
-import { useRecognitionScore } from '../../../src/hooks/useRecognitionScore';
-import { calculateRecognitionScore } from '../../../lib/pilot-recognition-score';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -42,7 +43,8 @@ interface UnifiedPilotPlatformProps {
 type TabId =
   | 'home' | 'profile' | 'wallet' | 'pathways' | 'programs'
   | 'airlines' | 'manufacturers' | 'atlas-cv' | 'logbook'
-  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel' | 'data-provenance';
+  | 'events' | 'newsroom' | 'settings' | 'score' | 'dashboard' | 'market-intel' | 'data-provenance'
+  | 'cockpit';
 
 interface NavItem {
   id: TabId;
@@ -1775,6 +1777,138 @@ const CredentialRequestCard: React.FC<{ request: any; onRespond: (approved: bool
   );
 };
 
+// ─── TAB: COCKPIT ─────────────────────────────────────────────────────────
+const CockpitTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
+  useRecognitionScore();
+  const isPremium = profile?.subscription_tier === 'premium' || profile?.is_premium || false;
+
+  const scoreInput = calculateRecognitionScore({
+    stats: {
+      totalHours: profile?.total_hours || profile?.current_flight_hours || 0,
+      picHours: profile?.pic_hours || 0,
+      ifrHours: profile?.ifr_hours || 0,
+      nightHours: profile?.night_hours || 0,
+    },
+    experience: {
+      years: profile?.experience_years || 0,
+      achievements: profile?.certifications?.length || 0,
+      licenses: profile?.type_ratings?.length || 0,
+    },
+    assessments: {
+      programCompletion: 0,
+      performanceScore: profile?.overall_recognition_score || 0,
+    },
+    mentorship: { hours: 0, observations: 0, cases: 0 },
+  });
+
+  const walletCompleteness = (() => {
+    let checks = 0;
+    const total = 9;
+    if (profile?.license_type && profile?.license_type !== 'None') checks++;
+    if (profile?.medical_status && profile?.medical_status !== 'None') checks++;
+    if (profile?.total_hours && profile?.total_hours > 0) checks++;
+    if (profile?.certifications?.length > 0) checks++;
+    if (profile?.current_employer) checks++;
+    if (profile?.country_of_license) checks++;
+    if (profile?.veremark_verified) checks += 3;
+    return Math.min(100, Math.round((checks / total) * 100));
+  })();
+
+  const riskTier = (() => {
+    const medical = profile?.medical_status?.toLowerCase() || '';
+    const hours = profile?.total_hours || 0;
+    const license = profile?.license_status?.toLowerCase() || '';
+    const incidents = profile?.incident_count || 0;
+    const suspensions = profile?.license_suspension_count || 0;
+    if (incidents >= 2 || suspensions >= 1 || medical.includes('special')) return 'high' as const;
+    if (incidents === 1 || hours < 250 || !medical.includes('valid')) return 'moderate' as const;
+    if (license.includes('valid') && medical.includes('valid') && hours >= 500) return 'low' as const;
+    return 'unknown' as const;
+  })();
+
+  const vItems: import('./pilot-recognition/VeremarkVerifiedBadge').VerificationItem[] = [];
+  if (profile?.license_type && profile?.license_type !== 'None') {
+    vItems.push({ id: 'lic', category: 'license', label: 'License Validation', status: profile?.license_status?.toLowerCase().includes('valid') ? 'verified' : 'pending' });
+  }
+  if (profile?.medical_status && profile?.medical_status !== 'None') {
+    vItems.push({ id: 'med', category: 'medical', label: 'Medical Certificate', status: profile?.medical_status?.toLowerCase().includes('valid') ? 'verified' : 'pending' });
+  }
+  if (profile?.total_hours && profile?.total_hours > 0) {
+    vItems.push({ id: 'hrs', category: 'identity', label: 'Flight Hours Log', status: 'verified' });
+  }
+  if (profile?.certifications?.length > 0) {
+    vItems.push({ id: 'edu', category: 'education', label: 'Education & Credentials', status: 'verified' });
+  }
+  if (profile?.current_employer) {
+    vItems.push({ id: 'emp', category: 'employment', label: 'Employment History', status: 'verified' });
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <p className="text-[10px] font-black tracking-[0.2em] text-white/30 uppercase mb-0.5">Recognition+</p>
+          <h1 className="text-2xl font-black text-white tracking-tight">Cockpit</h1>
+          <p className="text-sm text-white/40 mt-0.5">Your score, verification status and career readiness — in one place.</p>
+        </div>
+      </div>
+
+      {/* Score Optimization Guide */}
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Recognition+</h2>
+          <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Premium Score Optimization</span>
+        </div>
+        <ScoreOptimizationGuide
+          currentScore={scoreInput}
+          isPremium={isPremium}
+          userId={profile?.user_id || profile?.id}
+          limit={3}
+          onViewAll={() => onNavigate('score-optimization')}
+          onNavigate={onNavigate}
+        />
+      </div>
+
+      {/* Veremark Verified Badge */}
+      <div style={{ marginTop: '0.5rem' }}>
+        <VeremarkVerifiedBadge
+          isVerified={profile?.veremark_verified || false}
+          isPreCleared={profile?.veremark_verified && profile?.verification_completeness === 100}
+          verificationDate={profile?.veremark_verified_at ? new Date(profile.veremark_verified_at) : undefined}
+          expiryDate={profile?.veremark_expires_at ? new Date(profile.veremark_expires_at) : undefined}
+          verificationId={profile?.veremark_verification_id || undefined}
+          riskTier={riskTier}
+          countryCode={profile?.country_of_license}
+          isPremium={isPremium}
+          walletCompletenessPercent={walletCompleteness}
+          items={vItems}
+          onRequestVerification={() => onNavigate('veremark-verification')}
+          onViewDetails={() => onNavigate('verification-details')}
+        />
+      </div>
+
+      {/* Premium: Currency & Compliance Notifications */}
+      {isPremium && (
+        <div style={{ marginTop: '0.5rem' }}>
+          <RecognitionPlusNotifications
+            lastFlownDate={profile?.last_flight_date ? new Date(profile.last_flight_date) : null}
+            medicalExpiry={profile?.medical_expiry ? new Date(profile.medical_expiry) : null}
+            licenseExpiry={profile?.license_expiry ? new Date(profile.license_expiry) : null}
+            totalHours={profile?.total_hours || 0}
+            onAction={(action) => {
+              if (action === 'Schedule Flight') onNavigate('digital-logbook');
+              if (action === 'Schedule Medical') onNavigate('medical-certificate');
+              if (action === 'View Requirements') onNavigate('license-requirements');
+              if (action === 'Update Logbook') onNavigate('digital-logbook');
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ─── TAB: WALLET (Credentials + Verification) ──────────────────────────────
 const ATO_LIST = [
   'Philippine Airlines Training Centre', 'CAE Oxford Aviation Academy', 'Emirates Flight Training Academy',
@@ -3187,8 +3321,7 @@ const AdminTokenPanel: React.FC = () => {
   );
 };
 
-const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void; isPremium?: boolean; setTab: (t: TabId) => void }> = ({ profile, onNavigate, isPremium = false, setTab }) => {
-  const { score: recognitionScoreData } = useRecognitionScore();
+const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
   const { currentUser } = useAuth();
   const [carouselIdx, setCarouselIdx] = useState(0);
   const paused = React.useRef(false);
@@ -3304,43 +3437,6 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void; is
 
   return (
     <div className="space-y-8">
-
-      {/* ── RECOGNITION SCORE & VERIFICATION BADGE ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '680px', margin: '0 auto', width: '100%' }}>
-        {recognitionScoreData && (
-          <ScoreOptimizationGuide
-            currentScore={calculateRecognitionScore({
-              stats: {
-                totalHours: profile?.total_hours || 0,
-                picHours: profile?.pic_hours || 0,
-                ifrHours: profile?.ifr_hours || 0,
-                nightHours: profile?.night_hours || 0,
-              },
-              experience: {
-                years: profile?.experience_years || 0,
-                achievements: profile?.certifications?.length || 0,
-                licenses: profile?.type_ratings?.length || 0,
-              },
-              assessments: {
-                programCompletion: 0,
-                performanceScore: profile?.overall_recognition_score || 0,
-              },
-              mentorship: { hours: 0, observations: 0, cases: 0 },
-            })}
-            isPremium={isPremium}
-            userId={profile?.id || profile?.user_id}
-            limit={3}
-            onViewAll={() => onNavigate('score-optimization')}
-            onNavigate={onNavigate}
-          />
-        )}
-        <VeremarkVerifiedBadge
-          isPremium={isPremium}
-          walletCompletenessPercent={profile?.wallet_completeness || 33}
-          onRequestVerification={() => setTab('wallet')}
-        />
-      </div>
-
       <div className="relative">
         <h2 className="text-3xl font-serif text-white tracking-wide mb-2">DASHBOARD</h2>
         <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
@@ -4475,10 +4571,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [profileDropOpen, setProfileDropOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
-  const isPremium = useMemo(() =>
-    profileData?.account_tier === 'recognition_plus' || profileData?.account_tier === 'enterprise',
-  [profileData?.account_tier]);
-
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     console.log('[avatar] file selected:', file?.name, file?.type, file?.size, '| profileData.id:', profileData?.id);
@@ -4699,10 +4791,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} avatarInputRef={avatarInputRef} avatarUploading={avatarUploading} avatarError={avatarError} handleAvatarUpload={handleAvatarUpload} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
+      case 'cockpit':       return <CockpitTab profile={profileData} onNavigate={onNavigate} />;
       case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} hasActiveSession={!!(auth0User?.sub || currentUser?.id)} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
-      case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} isPremium={isPremium} setTab={setTab} />;
+      case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
       case 'market-intel':    return <CareerIntelligenceDashboard profile={profileData} />;
       case 'data-provenance': return <DataProvenancePage onNavigate={onNavigate} />;
       case 'airlines':      return <AirlinesTab onNavigate={onNavigate} />;
@@ -4942,6 +5035,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   { id: 'home',      label: 'Home',             icon: Home,       premium: false },
                   { id: 'profile',   label: 'My Profile',       icon: User,       premium: false },
                   { id: 'wallet',    label: 'Pilot Credentials', icon: Shield,     premium: false },
+                  { id: 'cockpit',      label: 'Cockpit',             icon: Activity,    premium: false },
                   { id: 'logbook',       label: 'Digital Logbook',     icon: BookMarked,  premium: false },
                   { id: 'market-intel',  label: 'Market Intelligence', icon: TrendingUp,   premium: false },
                 ],
