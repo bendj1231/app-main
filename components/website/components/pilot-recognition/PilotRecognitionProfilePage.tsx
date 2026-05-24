@@ -3201,6 +3201,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 </div>
                             </div>
                     </div>
+                        </div>
                     )}
                 </section>
             </main>
