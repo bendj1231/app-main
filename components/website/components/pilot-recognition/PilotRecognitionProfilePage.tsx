@@ -1186,8 +1186,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         overflow: 'hidden',
                         boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
                     }}>
-                        {/* Red top bar */}
-                        <div style={{ height: 4, background: '#dc2626' }} />
+                        {/* Top bar — gold for free, red for premium */}
+                        <div style={{ height: 4, background: isPremium ? '#dc2626' : 'linear-gradient(90deg,#d4af37,#f3e5ab)' }} />
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.25rem 1.5rem', flexWrap: 'wrap' }}>
                             {/* Icon */}
@@ -1388,7 +1388,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     licenseDisplay = additionalInfo.join(' • ');
                                                 }
 
-                                                return licenseDisplay || 'No Licenses';
+                                                if (!licenseDisplay) {
+                                                    const occ = profileData?.current_occupation || '';
+                                                    if (occ) return `${occ} — Self-Declared`;
+                                                    return 'No Licenses';
+                                                }
+                                                return licenseDisplay;
                                             })()}
                                         </p>
                                         <p style={{ fontSize: '0.8rem', color: '#64748b' }}>
@@ -1403,8 +1408,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                                 <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.12em', color: '#94a3b8', textTransform: 'uppercase' }}>{tile.label}</p>
                                                 <p style={{ margin: '0.35rem 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
-                                                {tile.unverified && <p style={{ margin: '0.25rem 0 0', fontSize: '0.7rem', fontWeight: 500, color: '#f59e0b' }}>(unverified)</p>}
-                                                {tile.unverified && <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: '0.25rem 0 0 0', fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>}
+                                                {tile.unverified && (
+                                                    <button
+                                                        onClick={() => setShowWalletGate(true)}
+                                                        style={{ marginTop: '0.4rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', background: 'linear-gradient(90deg,rgba(212,175,55,0.15),rgba(243,229,171,0.1))', border: '1px solid rgba(212,175,55,0.4)', borderRadius: 20, color: '#d4af37', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                                                    >
+                                                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#d4af37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                        Sync Logbook
+                                                    </button>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -1478,12 +1490,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <>
                                             {/* Merged Recognition+ tile for License Number + Status */}
                                             {!tileData.licenseVerified ? (
-                                                <div style={{ gridColumn: '1 / -1', background: 'rgba(239,68,68,0.06)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(239,68,68,0.25)', textAlign: 'center' }}>
-                                                    <p style={{ margin: '0 0 4px 0', fontSize: '0.65rem', color: '#f87171', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
-                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px' }}>
-                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#ef4444', letterSpacing: '0.05em' }}>Recognition+</span>
-                                                        <span style={{ fontSize: '0.6rem', color: 'rgba(239,68,68,0.6)' }}>Upgrade to verify &amp; display your licence details</span>
+                                                <div style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg,#121824,#1a2332)', borderRadius: '12px', padding: '0.85rem 0.85rem 1rem', border: '1px dashed rgba(212,175,55,0.35)', textAlign: 'center', position: 'relative' }}>
+                                                    {/* Gold R+ badge top-right */}
+                                                    <span style={{ position: 'absolute', top: 10, right: 10, background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', color: '#000', fontSize: '0.55rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, letterSpacing: '0.1em' }}>RECOGNITION+</span>
+                                                    <p style={{ margin: '0 0 6px 0', fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                                        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff', letterSpacing: '0.02em' }}>Upgrade to verify your paper licence</span>
+                                                        <span style={{ fontSize: '0.65rem', color: '#94a3b8' }}>Cryptographic validation for airline trust</span>
+                                                        <button onClick={() => setShowWalletGate(true)} style={{ marginTop: 6, padding: '5px 16px', background: 'linear-gradient(90deg,#d4af37,#f3e5ab)', border: 'none', borderRadius: 6, color: '#0f172a', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer' }}>Upgrade Now →</button>
                                                     </div>
                                                 </div>
                                             ) : (
