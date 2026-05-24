@@ -76,6 +76,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [uploadingImage, setUploadingImage] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [advancedMetricsOpen, setAdvancedMetricsOpen] = useState<'B' | 'L' | 'S' | null>(null);
+    const [urlCopied, setUrlCopied] = useState(false);
     const [recognitionScore, setRecognitionScore] = useState<RecognitionScore | null>(null);
     const [loadingScore, setLoadingScore] = useState(false);
     const [scoreError, setScoreError] = useState<string | null>(null);
@@ -2155,8 +2156,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
                                             <p style={{ margin: 0, fontSize: '0.625rem', color: '#fecaca', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem' }}>SHARE LINK</p>
-                                            <button style={{ padding: '0.5rem 1rem', background: 'white', border: '1px solid #fca5a5', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: 500, color: '#b91c1c', cursor: 'pointer', transition: 'all 0.2s ease' }}>
-                                                Copy shareable resume URL
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(window.location.href);
+                                                    setUrlCopied(true);
+                                                    setTimeout(() => setUrlCopied(false), 2000);
+                                                }}
+                                                style={{ padding: '0.5rem 1rem', background: urlCopied ? '#e6fffa' : 'white', border: '1px solid #fca5a5', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: 500, color: urlCopied ? '#234e52' : '#b91c1c', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                                            >
+                                                {urlCopied ? '✓ URL Copied!' : 'Copy shareable resume URL'}
                                             </button>
                                         </div>
                                     </div>
@@ -2175,7 +2183,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Total Hours</p>
                                                     <p style={{ margin: 0, fontSize: '1.125rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.total_hours || 0}</p>
                                                     <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#f59e0b', fontWeight: 500 }}>(unverified)</p>
-                                                    <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '0.25rem', background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', textDecoration: 'underline', padding: 0, margin: '0.25rem 0 0 0', fontSize: '0.65rem', fontWeight: 500 }}>verify your flight hours</button>
+                                                    <button onClick={() => setCurrentDocumentationPage('logbook')} style={{ marginTop: '8px', background: 'none', border: '1px solid rgba(37,99,235,0.3)', borderRadius: '6px', color: '#60a5fa', cursor: 'pointer', padding: '2px 8px', fontSize: '0.62rem', fontWeight: 600, display: 'block', width: '100%' }}>Sync Logbook →</button>
                                                 </div>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
                                                     <p style={{ margin: 0, fontSize: '0.625rem', color: '#64748b', marginBottom: '0.25rem' }}>Mentorship</p>
@@ -2220,10 +2228,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', marginBottom: '0.75rem' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Status</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span>
-                                                        {profileData?.license_status || 'Verified'}
-                                                    </span>
+                                                    {(() => {
+                                                        const hasVerifiedHours = isPremium && (profileData?.total_hours || 0) > 0;
+                                                        return (
+                                                            <span style={{ fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.25rem', color: hasVerifiedHours ? '#10b981' : '#f59e0b' }}>
+                                                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: hasVerifiedHours ? '#10b981' : '#f59e0b' }}></span>
+                                                                {hasVerifiedHours ? 'Verified' : 'Self-Declared Profile'}
+                                                            </span>
+                                                        );
+                                                    })()}
                                                 </div>
                                             </div>
 
@@ -2238,7 +2251,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b', flexShrink: 0 }}>License</span>
-                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', justifyContent: 'flex-end' }}>
+                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'flex-end' }}>
                                                         {['ppl', 'cpl', 'ir', 'multi_engine', 'student'].map((license) => (
                                                             <span key={license} style={{ 
                                                                 fontSize: '0.65rem', 
@@ -2248,7 +2261,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                                 padding: '0.15rem 0.4rem',
                                                                 borderRadius: '0.25rem',
                                                                 border: '1px solid rgba(59, 130, 246, 0.4)',
-                                                                textTransform: 'uppercase'
+                                                                textTransform: 'uppercase',
+                                                                whiteSpace: 'nowrap'
                                                             }}>
                                                                 {license.replace('_', ' ').toUpperCase()}
                                                             </span>
@@ -2285,10 +2299,21 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Medical Certificate</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span>
-                                                        Valid Until Aug 2026
-                                                    </span>
+                                                    {(() => {
+                                                        const expiry = profileData?.medical_expiry ? new Date(profileData.medical_expiry) : null;
+                                                        const now = new Date();
+                                                        const daysOut = expiry ? Math.ceil((expiry.getTime() - now.getTime()) / 86400000) : null;
+                                                        const isExpired = daysOut !== null && daysOut <= 0;
+                                                        const isUrgent = daysOut !== null && daysOut > 0 && daysOut <= 30;
+                                                        const color = isExpired ? '#ef4444' : isUrgent ? '#f59e0b' : '#10b981';
+                                                        const label = isExpired ? 'Expired' : isUrgent ? `Expires in ${daysOut}d` : expiry ? `Valid Until ${expiry.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}` : 'Class 1 Valid';
+                                                        return (
+                                                            <span style={{ fontSize: '0.72rem', fontWeight: 700, color, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: color }}></span>
+                                                                {label}
+                                                            </span>
+                                                        );
+                                                    })()}
                                                 </div>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Last Flown</span>
@@ -2296,7 +2321,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 </div>
                                                 <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '0.5rem', padding: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Recognition Score</span>
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}/100</span>
+                                                    <span title={!profileData?.overall_recognition_score ? 'Score populates automatically upon logbook and license verification.' : undefined} style={{ fontSize: '1.25rem', fontWeight: 700, color: profileData?.overall_recognition_score ? '#ffffff' : '#64748b', cursor: !profileData?.overall_recognition_score ? 'help' : 'default' }}>
+                                                        {profileData?.overall_recognition_score ? `${profileData.overall_recognition_score}/100` : '— / 100'}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -2321,7 +2348,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 <span style={{ fontSize: '0.75rem', color: '#e2e8f0', fontWeight: 600 }}>Jan 2024 - Present</span>
                                             </div>
                                             <p style={{ margin: 0, fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.6 }}>
-                                                {profileData?.why_become_pilot || 'Providing flight instruction for PPL and CPL students. Specializing in instrument training and multi-engine operations.'}
+                                                {profileData?.why_become_pilot || (
+                                                    (profileData?.current_occupation || '').toLowerCase().includes('student')
+                                                        ? 'Completing foundational flight maneuvers, cross-country navigation, and instrument training hours toward CPL requirements.'
+                                                        : 'Providing flight instruction for PPL and CPL students. Specializing in instrument training and multi-engine operations.'
+                                                )}
                                             </p>
                                         </div>
                                         
