@@ -1202,11 +1202,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 4 }}>
                                     Pilot Credential Vault
                                 </p>
-                                <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4 }}>
-                                    Access Your Wallet
+                                <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    {isPremium ? 'Access Your Wallet' : 'Unlock Secure Document Storage'}
+                                    {!isPremium && <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 20, fontSize: 10, fontWeight: 700, color: '#ef4444', letterSpacing: '0.05em' }}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Recognition+</span>}
                                 </p>
                                 <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>
-                                    Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.
+                                    {isPremium ? 'Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.' : 'Securely store PDFs of your FAA/CASA licences and medical certificates with zero-knowledge encryption — exclusive to Recognition+.'}
                                 </p>
                             </div>
 
@@ -1246,7 +1247,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#b91c1c'; }}
                                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
                             >
-                                Open Wallet
+                                {!isPremium && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
+                                {isPremium ? 'Open Wallet' : 'Upgrade to Unlock'}
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                             </button>
                         </div>
@@ -1464,11 +1466,11 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             }
 
                                             const tiles = [
-                                                { label: 'License Type', value: highestLicense },
+                                                { label: 'License Type', value: highestLicense, unverified: !isPremium },
                                                 { label: 'License Authority', value: profileData?.license_authority || profileData?.country_of_license || '' },
                                                 { label: 'English Level', value: profileData?.english_proficiency_level || profileData?.elp_level || '' },
                                                 { label: 'Pilot Status', value: profileData?.career_stage || profileData?.current_occupation || '' }
-                                            ] as { label: string; value: string }[];
+                                            ] as { label: string; value: string; unverified?: boolean }[];
                                             const licenseVerified = !!(profileData?.license_id || profileData?.license_status);
                                             return { tiles, licenseVerified, licenseId: profileData?.license_id || '', licenseStatus: profileData?.license_status || '' };
                                             })();
@@ -1508,6 +1510,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     {tile.label}
                                                     {editingTile !== tile.label && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>}
                                                 </p>
+                                                {tile.unverified && editingTile !== tile.label && (
+                                                    <span
+                                                        title="Want airlines to trust your data? Upgrade to upload your physical credentials for cryptographic validation."
+                                                        style={{ display: 'inline-flex', alignItems: 'center', gap: 3, marginTop: 4, padding: '2px 7px', background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 20, fontSize: '0.58rem', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.05em', cursor: 'help' }}
+                                                    >
+                                                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                                        Unverified Profile
+                                                    </span>
+                                                )}
                                                 {editingTile === tile.label ? (
                                                     <div style={{ marginTop: '0.4rem' }} onClick={e => e.stopPropagation()}>
                                                         <input
@@ -1611,26 +1622,40 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
 
                                         {/* Recognition */}
-                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your dynamic score'} onClick={() => !isPremium && setShowWalletGate(true)}>
                                             <span style={{
                                                 position: 'absolute', top: '20%', right: 0,
                                                 width: '1px', height: '60%',
                                                 background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
                                             }} />
                                             <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recognition</p>
-                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
+                                            {isPremium ? (
+                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
+                                            ) : (
+                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                                                    <p style={{ margin: 0, fontSize: '1.85rem', fontWeight: 700, color: '#475569', filter: 'blur(4px)', userSelect: 'none' }}>00</p>
+                                                    <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 700, letterSpacing: '0.05em' }}>Recognition+</span>
+                                                </div>
+                                            )}
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Verified Score</p>
                                         </div>
 
                                         {/* Recency Examination Score */}
-                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your recency score'} onClick={() => !isPremium && setShowWalletGate(true)}>
                                             <span style={{
                                                 position: 'absolute', top: '20%', right: 0,
                                                 width: '1px', height: '60%',
                                                 background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
                                             }} />
                                             <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recency Exam</p>
-                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.recency_examination_score || 0}</p>
+                                            {isPremium ? (
+                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.recency_examination_score || 0}</p>
+                                            ) : (
+                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                                                    <p style={{ margin: 0, fontSize: '1.85rem', fontWeight: 700, color: '#475569', filter: 'blur(4px)', userSelect: 'none' }}>00</p>
+                                                    <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 700, letterSpacing: '0.05em' }}>Recognition+</span>
+                                                </div>
+                                            )}
                                             <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Recency Score</p>
                                         </div>
 
