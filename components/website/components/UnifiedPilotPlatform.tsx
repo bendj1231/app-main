@@ -30,6 +30,10 @@ import { PasskeyPrompt, useShouldShowPasskeyPrompt } from './PasskeyPrompt';
 import { CareerIntelligenceDashboard } from './CareerIntelligenceDashboard';
 import { DataProvenancePage } from '../pages/DataProvenancePage';
 import ProfileImage from '../../../src/components/ProfileImage';
+import { ScoreOptimizationGuide } from '../../ScoreOptimizationGuide';
+import { VeremarkVerifiedBadge } from './pilot-recognition/VeremarkVerifiedBadge';
+import { useRecognitionScore } from '../../../src/hooks/useRecognitionScore';
+import { calculateRecognitionScore } from '../../../lib/pilot-recognition-score';
 
 interface UnifiedPilotPlatformProps {
   onNavigate: (page: string) => void;
@@ -3183,7 +3187,8 @@ const AdminTokenPanel: React.FC = () => {
   );
 };
 
-const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> = ({ profile, onNavigate }) => {
+const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void; isPremium?: boolean; setTab: (t: TabId) => void }> = ({ profile, onNavigate, isPremium = false, setTab }) => {
+  const { score: recognitionScoreData } = useRecognitionScore();
   const { currentUser } = useAuth();
   const [carouselIdx, setCarouselIdx] = useState(0);
   const paused = React.useRef(false);
@@ -3299,6 +3304,48 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
 
   return (
     <div className="space-y-8">
+
+      {/* ── RECOGNITION SCORE & VERIFICATION BADGE ── */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '680px', margin: '0 auto', width: '100%' }}>
+        {recognitionScoreData && (
+          <ScoreOptimizationGuide
+            currentScore={calculateRecognitionScore({
+              stats: {
+                totalHours: profile?.total_hours || 0,
+                picHours: profile?.pic_hours || 0,
+                ifrHours: profile?.ifr_hours || 0,
+                nightHours: profile?.night_hours || 0,
+              },
+              experience: {
+                years: profile?.experience_years || 0,
+                achievements: profile?.certifications?.length || 0,
+                licenses: profile?.type_ratings?.length || 0,
+              },
+              assessments: {
+                programCompletion: 0,
+                performanceScore: profile?.overall_recognition_score || 0,
+              },
+              mentorship: { hours: 0, observations: 0, cases: 0 },
+            })}
+            isPremium={isPremium}
+            userId={profile?.id || profile?.user_id}
+            limit={3}
+            onViewAll={() => onNavigate('score-optimization')}
+            onNavigate={onNavigate}
+          />
+        )}
+        <VeremarkVerifiedBadge
+          isPremium={isPremium}
+          walletCompletenessPercent={profile?.wallet_completeness || 33}
+          onRequestVerification={() => setTab('wallet')}
+        />
+      </div>
+
+      <div className="relative">
+        <h2 className="text-3xl font-serif text-white tracking-wide mb-2">DASHBOARD</h2>
+        <div className="h-1 bg-gradient-to-r from-teal-500 to-blue-500 w-32" />
+      </div>
+
       {/* Flight Instrument Dashboard */}
       <FlightInstrumentDashboard userId={currentUser.id} />
 
@@ -3306,14 +3353,6 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
       {(currentUser.email === SUPER_ADMIN_EMAIL || profile?.role === 'super_admin') && (
         <InfrastructureDashboard />
       )}
-
-      {/* Recommended Pathways — from Profile tab */}
-      <PilotRecognitionProfilePage
-        onNavigate={onNavigate}
-        embedded={true}
-        injectedProfile={profile || undefined}
-        section="pathways"
-      />
 
       {/* Programs */}
       <div className="backdrop-blur-2xl border border-white/20 p-6 shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}>
@@ -4436,6 +4475,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [profileDropOpen, setProfileDropOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
+  const isPremium = useMemo(() =>
+    profileData?.account_tier === 'recognition_plus' || profileData?.account_tier === 'enterprise',
+  [profileData?.account_tier]);
+
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     console.log('[avatar] file selected:', file?.name, file?.type, file?.size, '| profileData.id:', profileData?.id);
@@ -4659,7 +4702,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} hasActiveSession={!!(auth0User?.sub || currentUser?.id)} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
-      case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
+      case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} isPremium={isPremium} setTab={setTab} />;
       case 'market-intel':    return <CareerIntelligenceDashboard profile={profileData} />;
       case 'data-provenance': return <DataProvenancePage onNavigate={onNavigate} />;
       case 'airlines':      return <AirlinesTab onNavigate={onNavigate} />;
