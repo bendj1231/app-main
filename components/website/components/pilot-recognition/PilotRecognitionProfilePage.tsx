@@ -1958,7 +1958,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Pathway Interests</p>
                                         <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Career Goals</h3>
                                     </div>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', overflow: 'hidden' }}>
                                         {profileData?.pathway_interests?.map((interest: string, index: number) => (
                                             <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
                                                 {interest}
@@ -1982,7 +1982,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Insight Interests</p>
                                         <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Learning Goals</h3>
                                     </div>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', overflow: 'hidden' }}>
                                         {profileData?.insight_interests?.map((interest: string, index: number) => (
                                             <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
                                                 {interest}
@@ -2048,7 +2048,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </div>
                                         <button
                                             style={{
-                                                padding: '0.65rem 1.75rem',
+                                                padding: '8px 16px',
+                                                minWidth: 180,
                                                 borderRadius: '999px',
                                                 border: '1px solid rgba(148,163,184,0.25)',
                                                 background: 'rgba(255,255,255,0.03)',
@@ -2056,7 +2057,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 fontWeight: 600,
                                                 fontSize: '0.85rem',
                                                 cursor: 'pointer',
-                                                whiteSpace: 'nowrap' as const
+                                                whiteSpace: 'nowrap' as const,
+                                                textAlign: 'center' as const
                                             }}
                                             onClick={() => {
                                                 if (card.title === 'Examination Results') {
