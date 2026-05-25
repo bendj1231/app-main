@@ -176,7 +176,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             id: 'pathways',
             image: '/pathway4.png',
             title: 'Discover Pathways',
-            subtitle: 'Verified credentials placed in direct hiring directories searched daily by flight schools, manufacturers, and mainline operators.',
+            subtitle: 'Hiring and career opportunities posted by operators — flight schools, manufacturers, and mainline airlines — searched daily by verified pilots.',
             icon: ShoppingBag,
             badge: 'NEW',
             accentColor: 'from-rose-500/80 to-pink-400/80',
@@ -1842,7 +1842,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             <div className="flex items-center gap-1.5 mb-1">
                                 <span className={`text-xs md:text-sm font-bold ${card.isLightMode ? 'text-slate-700' : isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
                                 <h3 className={`text-xs md:text-sm font-bold uppercase tracking-wider ${card.isLightMode ? 'text-slate-900' : 'text-white'} ${card.id === 'credentials' ? 'text-black' : ''}`}>
-                                    {card.id === 'pilot-recognition' ? (<>Get <span className="text-red-600">Recognition+</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Pathways</span></>) : finalDisplayTitle}
+                                    {card.id === 'pilot-recognition' ? (<>Get <span className="text-red-600">Recognition+</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Pathways</span></>) : card.id === 'programs' ? (<>Explore <span className="text-red-500">Programs</span></>) : finalDisplayTitle}
                                 </h3>
                             </div>
                             {/* Accent underline - gray for light mode, blue for dark */}
