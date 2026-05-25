@@ -6,6 +6,7 @@ import { supabase } from '../../../../shared/lib/supabase';
 
 interface WalletLoadingScreenProps {
   onComplete: () => void;
+  embedded?: boolean; // When true, render inline instead of fixed overlay
 }
 
 // Steps before the passkey gate (indices 0-2)
@@ -43,7 +44,7 @@ const bufferToBase64url = (buffer: ArrayBuffer): string => {
 
 type AuthStage = 'pre' | 'gate' | 'verifying' | 'post' | 'error';
 
-export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComplete }) => {
+export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComplete, embedded = false }) => {
   const [stepIndex, setStepIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [authStage, setAuthStage] = useState<AuthStage>('pre');
@@ -302,9 +303,12 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
 
   const content = (
     <div style={{
-      position: 'fixed', inset: 0, background: '#f8fafc',
+      position: embedded ? 'relative' : 'fixed',
+      inset: embedded ? 'auto' : 0,
+      minHeight: embedded ? '500px' : 'auto',
+      background: embedded ? 'transparent' : '#f8fafc',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      zIndex: 9999, opacity: fading ? 0 : 1, transition: 'opacity 0.5s ease', padding: 24,
+      zIndex: embedded ? 'auto' : 9999, opacity: fading ? 0 : 1, transition: 'opacity 0.5s ease', padding: 24,
     }}>
       <style>{`
         @keyframes walletSpin { to { transform: rotate(360deg); } }
@@ -313,7 +317,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       `}</style>
 
       {/* Back to platform button */}
-      <button
+      {!embedded && <button
         onClick={() => onComplete()}
         style={{
           position: 'absolute', top: 20, left: 20,
@@ -330,8 +334,10 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           <path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/>
         </svg>
         Back to Platform
-      </button>
+      </button>}
 
+      {/* Loading content - hide when embedded passkey gate is open */}
+      {!(embedded && (authStage === 'gate' || authStage === 'verifying')) && <>
       {/* Ambient glow */}
       <div style={{
         position: 'absolute', width: 600, height: 600, borderRadius: '50%', pointerEvents: 'none',
@@ -360,13 +366,13 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.25em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 8, display: 'none' }}>
         PIC Wallet
       </p>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.03em', marginBottom: 8, textAlign: 'center' }}>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: embedded ? '#ffffff' : '#0f172a', letterSpacing: '-0.03em', marginBottom: 8, textAlign: 'center' }}>
         {authStage === 'gate' || authStage === 'verifying'
           ? <>Identity verification<br />required</>
           : <>Decrypting your decentralised<br />pilot identity wallet</>
         }
       </h1>
-      <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 28, letterSpacing: '0.02em', textAlign: 'center' }}>
+      <p style={{ fontSize: 12, color: embedded ? 'rgba(255,255,255,0.7)' : '#94a3b8', marginBottom: 28, letterSpacing: '0.02em', textAlign: 'center' }}>
         Supabase · Walt.id · Zero-knowledge · AES-256-GCM
       </p>
 
@@ -380,7 +386,7 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           }} />
         </div>
         {authStage === 'gate' && (
-          <p style={{ fontSize: 9, color: '#dc2626', marginTop: 5, textAlign: 'right', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700 }}>
+          <p style={{ fontSize: 9, color: embedded ? '#fca5a5' : '#dc2626', marginTop: 5, textAlign: 'right', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700 }}>
             Paused — awaiting identity confirmation
           </p>
         )}
@@ -411,9 +417,10 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           </div>
         ))}
       </div>
+      </>}{/* End loading content */}
 
       {/* ── PASSKEY GATE (mid-loading overlay) ── */}
-      {(authStage === 'gate' || authStage === 'verifying') && ReactDOM.createPortal(
+      {(authStage === 'gate' || authStage === 'verifying') && !embedded && ReactDOM.createPortal(
         <div style={{
           position: 'fixed', inset: 0, zIndex: 10000,
           background: 'rgba(15,23,42,0.45)',
@@ -539,8 +546,140 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
         document.body
       )}
 
-      {/* Bottom watermark */}
-      <div style={{ position: 'absolute', bottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
+      {/* ── EMBEDDED PASSKEY GATE (fullscreen portal) ── */}
+      {embedded && (authStage === 'gate' || authStage === 'verifying') && ReactDOM.createPortal(
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9998,
+          background: 'rgba(15,23,42,0.92)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 24,
+          animation: 'gateSlide 0.25s ease',
+        }}>
+        {/* Cancel Button - Glassy pill top left */}
+        <button
+          onClick={() => onComplete()}
+          style={{
+            position: 'fixed', top: 20, left: 340,
+            display: 'flex', alignItems: 'center', gap: 6,
+            background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
+            borderRadius: 999, padding: '8px 16px', cursor: 'pointer',
+            color: 'rgba(255,255,255,0.9)', fontSize: 12, fontWeight: 600,
+            letterSpacing: '0.02em', transition: 'all 0.2s ease',
+            backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
+            zIndex: 9999,
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.2)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.4)'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.2)'; }}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Cancel
+        </button>
+        <div style={{
+          width: '100%', maxWidth: 380,
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: 20, padding: '28px',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)',
+          maxHeight: '90vh', overflowY: 'auto',
+          position: 'relative',
+          zIndex: 9999,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: '#fef2f2', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <p style={{ fontSize: 12, fontWeight: 800, color: '#0f172a', letterSpacing: '0.02em', textTransform: 'uppercase', margin: 0 }}>Confirm identity to continue</p>
+          </div>
+          <p style={{ fontSize: 11, color: '#64748b', marginBottom: 14, lineHeight: 1.5 }}>
+            {hasSession
+              ? 'Save a passkey to this device so Touch ID unlocks your wallet every time.'
+              : 'Your credential bundle is AES-256-GCM encrypted. Confirm with your passkey to release the decryption key.'
+            }
+          </p>
+
+          {authError && (
+            <p style={{ fontSize: 11, color: '#fca5a5', marginBottom: 12, fontWeight: 600 }}>⚠ {authError}</p>
+          )}
+
+          {/* ── QR code ── */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginBottom: 14 }}>
+            <div style={{ border: '1px solid #e2e8f0', borderRadius: 10, background: '#ffffff', padding: 10, display: 'inline-flex' }}>
+              <QRCodeSVG
+                value={`https://wallet.pilotrecognition.com${sessionUser?.id ? `?uid=${sessionUser.id}` : ''}`}
+                size={180}
+                bgColor="#ffffff"
+                fgColor="#0f172a"
+                level="M"
+                includeMargin={false}
+              />
+            </div>
+            <p style={{ fontSize: 9, color: '#0ea5e9', margin: 0, textAlign: 'center', fontWeight: 600, letterSpacing: '0.03em' }}>
+              Scan with your DID Wallet app to open
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <button
+              onClick={handleGoogle}
+              disabled={authStage === 'verifying'}
+              style={{
+                width: '100%', padding: '10px 0', borderRadius: 10,
+                background: '#f8fafc', border: '1px solid #e2e8f0',
+                color: '#475569', fontSize: 11, fontWeight: 600,
+                cursor: authStage === 'verifying' ? 'not-allowed' : 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              {authStage === 'verifying' ? 'Verifying…' : 'Continue with Google'}
+            </button>
+
+            {/* ── Manual passkey text input ── */}
+            <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 5 }}>
+              <label style={{ fontSize: 10, fontWeight: 700, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Or type / paste passkey
+              </label>
+              <input
+                type="password"
+                value={manualPasskey}
+                onChange={e => { setManualPasskey(e.target.value); setManualError(''); }}
+                onKeyDown={e => { if (e.key === 'Enter' && manualPasskey.trim()) runPostAuth(); }}
+                placeholder="Type or paste your passkey…"
+                autoComplete="current-password webauthn"
+                style={{
+                  width: '100%', padding: '10px 12px',
+                  border: `1px solid ${manualError ? '#fecaca' : '#e2e8f0'}`,
+                  borderRadius: 8, fontSize: 12, color: '#0f172a',
+                  background: '#ffffff', outline: 'none', boxSizing: 'border-box',
+                  fontFamily: 'monospace',
+                }}
+              />
+              {manualError && <p style={{ fontSize: 10, color: '#dc2626', margin: 0 }}>⚠ {manualError}</p>}
+              <p style={{ fontSize: 9, color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>
+                Saved in Notes, iCloud Keychain, or any password manager — press Enter to unlock
+              </p>
+            </div>
+          </div>
+
+          <p style={{ fontSize: 9, color: '#94a3b8', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
+            Private key never leaves your device · Google Password Manager
+          </p>
+        </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Bottom watermark - hide when gate is open */}
+      {!(embedded && (authStage === 'gate' || authStage === 'verifying')) && <div style={{ position: 'absolute', bottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -555,9 +694,9 @@ export const WalletLoadingScreen: React.FC<WalletLoadingScreenProps> = ({ onComp
           <span style={{ fontSize: 9, fontWeight: 800, color: '#dc2626', letterSpacing: '0.05em' }}>walt.id</span>
           <span style={{ fontSize: 8, fontWeight: 700, color: '#1e293b', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: 3, padding: '1px 4px', letterSpacing: '0.05em' }}>wallet</span>
         </div>
-      </div>
+      </div>}
     </div>
   );
 
-  return ReactDOM.createPortal(content, document.body);
+  return embedded ? content : ReactDOM.createPortal(content, document.body);
 };

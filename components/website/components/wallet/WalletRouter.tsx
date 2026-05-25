@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { WalletPublicCard } from './WalletPublicCard';
 import { PasskeyGate } from './PasskeyGate';
 import { WalletLoadingScreen } from './WalletLoadingScreen';
-import { WalletViewPage } from './WalletViewPage';
+import { WalletPageWithSidebar } from './WalletPageWithSidebar';
 import { supabase } from '../../../../shared/lib/supabase';
 
 type View = 'loading' | 'public' | 'gate' | 'manage' | 'no-token';
@@ -100,9 +100,9 @@ export const WalletRouter: React.FC = () => {
 
   if (view === 'manage') {
     return (
-      <WalletViewPage
+      <WalletPageWithSidebar
         userId={authedUserId}
-        onBack={() => {
+        onNavigate={() => {
           if (token) setView('public');
           else window.location.href = 'https://pilotrecognition.com/platform?tab=wallet';
         }}

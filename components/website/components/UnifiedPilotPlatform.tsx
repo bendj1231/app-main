@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { getHomepageGraphicsConfig } from '@/src/lib/device-detection';
 import {
@@ -11,13 +11,14 @@ import {
   BarChart3, Building2, Zap, Globe, Menu, X, Filter, Download,
   Upload, Edit3, Camera, ExternalLink, RefreshCw, Lock, Eye,
   Brain, FolderOpen, PlayCircle, GraduationCap, Activity, Image,
-  CreditCard, Mail, Server, Database, Cloud
+  CreditCard, Mail, Server, Database, Cloud, MessageSquare, Users
 } from 'lucide-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useVaultProfile } from '@/src/hooks/useVaultProfile';
 import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '@/shared/lib/supabase';
 import { PilotRecognitionProfilePage } from './pilot-recognition/PilotRecognitionProfilePage';
+import { WalletPageWithSidebar } from './wallet/WalletPageWithSidebar';
 import { ScoreOptimizationGuide } from '../../ScoreOptimizationGuide';
 import { VeremarkVerifiedBadge } from './pilot-recognition/VeremarkVerifiedBadge';
 import { RecognitionPlusNotifications } from './pilot-recognition/RecognitionPlusNotifications';
@@ -278,455 +279,414 @@ const HomeTab: React.FC<{
     { id: 'programs', title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS', image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png', onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program') },
   ];
 
+  // MSFS 2024 Style Tiles Data
+  const msfsTiles = [
+    {
+      id: 'my-pathways',
+      title: 'MY PATHWAYS',
+      subtitle: 'Complete your profile to reach 100% eligibility',
+      image: '/images/airline-operations.png',
+      size: 'large', // spans 2 cols
+      onClick: () => setTab('pathways'),
+      badge: `${matchPct}% Match`,
+      badgeColor: matchPct >= 80 ? 'rgba(16,185,129,0.85)' : matchPct >= 40 ? 'rgba(234,179,8,0.85)' : 'rgba(239,68,68,0.8)'
+    },
+    {
+      id: 'programs',
+      title: enrolledInFoundation ? 'ACCESS PROGRAMS' : 'MY PROGRAMS',
+      subtitle: 'Foundation & Transition Programs',
+      image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
+      size: 'medium',
+      onClick: () => onNavigate(enrolledInFoundation ? 'foundational-platform' : 'foundational-program')
+    },
+    {
+      id: 'logbook',
+      title: 'DIGITAL LOGBOOK',
+      subtitle: hours > 0 ? `${hours} hrs logged` : 'Log your first flight',
+      image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80',
+      size: 'medium',
+      onClick: () => onNavigate('digital-logbook'),
+      icon: BookMarked
+    },
+    {
+      id: 'credentials',
+      title: 'PILOT CREDENTIALS',
+      subtitle: walletChecks.some(c => c.status === 'verified') 
+        ? `${walletChecks.filter(c => c.status === 'verified').length} verified` 
+        : 'Verify your credentials',
+      image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
+      size: 'medium',
+      onClick: () => setTab('wallet'),
+      icon: Shield,
+      status: walletChecks.some(c => c.status === 'verified') ? 'verified' : 'pending'
+    },
+    {
+      id: 'type-rating',
+      title: 'TYPE RATING SEARCH',
+      subtitle: 'Find training providers worldwide',
+      image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+      size: 'medium',
+      onClick: () => window.location.href = '/type-rating-search'
+    },
+    {
+      id: 'airlines',
+      title: 'AIRLINE EXPECTATIONS',
+      subtitle: 'Operator requirements & pathways',
+      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+      size: 'medium',
+      onClick: () => setTab('pathways')
+    },
+    {
+      id: 'recognition-plus',
+      title: 'RECOGNITION+',
+      subtitle: 'Upgrade for premium features',
+      image: 'https://images.unsplash.com/photo-1542296332-2e44a24e5e8c?w=800&q=80',
+      size: 'small',
+      onClick: () => setTab('settings'),
+      highlight: true
+    },
+    {
+      id: 'events',
+      title: 'EVENTS',
+      subtitle: 'Aviation events & career fairs',
+      image: 'https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=800&q=80',
+      size: 'small',
+      onClick: () => onNavigate('events')
+    },
+    {
+      id: 'newsroom',
+      title: 'NEWSROOM',
+      subtitle: 'Industry updates & announcements',
+      image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80',
+      size: 'small',
+      onClick: () => onNavigate('newsroom')
+    }
+  ];
+
+  const [selectedTile, setSelectedTile] = React.useState(msfsTiles[0].id);
+  const activeTile = msfsTiles.find(t => t.id === selectedTile) ?? msfsTiles[0];
+
+  const tileRequirements: Record<string, { label: string; met: boolean; value?: string }[]> = {
+    'my-pathways': [
+      { label: 'Profile Complete', met: !!profile },
+      { label: 'Flight Hours Logged', met: hours > 0, value: hours > 0 ? `${hours} hrs` : undefined },
+      { label: `Match Score`, met: matchPct >= 40, value: `${matchPct}%` },
+    ],
+    'programs': [
+      { label: 'Account Active', met: !!profile },
+      { label: 'Foundation Program', met: enrolledInFoundation },
+    ],
+    'logbook': [
+      { label: 'Account Active', met: !!profile },
+      { label: 'First Flight Logged', met: hours > 0 },
+    ],
+    'credentials': [
+      { label: 'Account Active', met: !!profile },
+      { label: 'License Verified', met: walletChecks.some(c => c.status === 'verified') },
+      { label: 'Medical Verified', met: walletChecks.filter(c => c.status === 'verified').length >= 2 },
+    ],
+    'type-rating': [
+      { label: 'Open to All Pilots', met: true },
+    ],
+    'airlines': [
+      { label: 'Account Active', met: !!profile },
+      { label: 'Recognition Score', met: score > 0, value: score > 0 ? `${score}/100` : undefined },
+    ],
+    'recognition-plus': [
+      { label: 'Account Active', met: !!profile },
+      { label: 'Subscription Active', met: false },
+    ],
+    'events': [{ label: 'Open to All Pilots', met: true }],
+    'newsroom': [{ label: 'Open to All Pilots', met: true }],
+  };
+
+  const tileCompatible: Record<string, { label: string; sub: string; icon: React.ComponentType<{ className?: string; size?: number }> }[]> = {
+    'my-pathways': [
+      { label: 'Commercial Airlines', sub: `${airlines.length}+ operators`, icon: Plane },
+      { label: 'Cargo Operations', sub: 'Freight & logistics', icon: Globe },
+      { label: 'Private Aviation', sub: 'Charter & VIP', icon: Star },
+    ],
+    'programs': [
+      { label: 'Foundation Program', sub: '$49 · Pilot development', icon: BookOpen },
+      { label: 'Transition Program', sub: '$299 · Airline-ready', icon: GraduationCap },
+    ],
+    'logbook': [
+      { label: 'ForeFlight', sub: 'Import via API key', icon: BookMarked },
+      { label: 'Safelog', sub: 'CSV import', icon: BookMarked },
+      { label: 'Manual Entry', sub: 'Direct log entry', icon: Edit3 },
+    ],
+    'credentials': [
+      { label: 'CAAP License', sub: 'Philippines CAA', icon: Shield },
+      { label: 'Class 1 Medical', sub: 'ICAO standard', icon: CheckCircle },
+      { label: 'ELP Certificate', sub: 'ICAO Level 4–6', icon: Globe },
+    ],
+    'type-rating': [
+      { label: 'Airbus A320', sub: 'Type rating centres worldwide', icon: Plane },
+      { label: 'Boeing 737', sub: '200+ approved centres', icon: Plane },
+    ],
+    'airlines': [
+      { label: 'Emirates', sub: 'AUH · Min 1500 hrs', icon: Plane },
+      { label: 'Cebu Pacific', sub: 'MNL · Cadet pathway', icon: Plane },
+      { label: 'Etihad Airways', sub: 'AUH · Type rating required', icon: Plane },
+    ],
+    'recognition-plus': [
+      { label: 'Veremark Background Check', sub: 'Automated · APAC/EU', icon: Shield },
+      { label: 'Priority Pathway Listing', sub: 'Airlines see you first', icon: Star },
+      { label: 'ATO Logbook Validation', sub: 'Expedited pipeline', icon: CheckCircle },
+    ],
+    'events': [
+      { label: 'Aviation Career Fairs', sub: 'Global events calendar', icon: Calendar },
+    ],
+    'newsroom': [
+      { label: 'Industry Updates', sub: 'Aviation news & alerts', icon: Newspaper },
+    ],
+  };
+
   return (
     <motion.div
-      className="flex gap-5 w-full" style={{ minHeight: 'calc(100vh - 108px)' }}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+      className="flex gap-4 px-4 pt-12 pb-4 items-stretch mx-auto" style={{ height: 'fit-content', maxWidth: '1500px' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
     >
-      {/* ── LEFT: Profile Card ── */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-64 flex-shrink-0 flex flex-col self-start"
-        style={{ background: 'rgba(30,41,59,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
-      >
-        {!profile ? (
-          /* ── GUEST ONBOARDING GATEWAY ── */
-          <>
-            <div className="p-6 flex flex-col gap-4">
-              {/* Globe guest icon + header */}
-              <div className="flex flex-col items-center gap-2 mb-1">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.15)' }}>
-                  <Globe size={28} className="text-white/50" />
-                </div>
-                <h2 className="text-base font-black text-white tracking-wide text-center">Welcome Aboard</h2>
-                <p className="text-[10px] text-white/40 text-center leading-snug">Authenticate your profile to activate your digital flight deck.</p>
-              </div>
+      {/* ── LEFT COLUMN ── */}
+      <div className="flex-1 flex flex-col gap-4 min-w-0">
 
-              {/* Primary: Get Recognition Free */}
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
-                className="w-full py-3 text-sm font-black tracking-wide text-white rounded-lg transition-all hover:brightness-110"
-                style={{ background: '#dc2626' }}
-              >
-                Get Recognition Free
-              </button>
-
-              {/* Secondary: Pilot Sign In */}
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
-                className="w-full py-3 text-sm font-black tracking-wide text-white rounded-lg transition-all hover:brightness-110"
-                style={{ background: '#1e3a5f' }}
-              >
-                Pilot Sign In
-              </button>
-            </div>
-
-            {/* Recognition+ compliance vault */}
-            <div
-              className="px-5 py-4 flex flex-col gap-2"
-              style={{ background: 'linear-gradient(135deg, rgba(234,179,8,0.18), rgba(251,146,60,0.12))', borderTop: '1px solid rgba(234,179,8,0.35)' }}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <Star size={13} className="text-yellow-400 flex-shrink-0" />
-                <span className="text-xs font-black text-yellow-300 tracking-wider">RECOGNITION+ COMPLIANCE</span>
-              </div>
-              <ul className="flex flex-col gap-1">
-                {[
-                  'Automated Veremark Background Checks',
-                  'Live Fleet & Operator Requirements Audit',
-                  'Expedited ATO Logbook Validation Pipeline',
-                ].map(perk => (
-                  <li key={perk} className="flex items-start gap-1.5">
-                    <span className="text-yellow-400 text-[10px] mt-0.5 flex-shrink-0">☑</span>
-                    <span className="text-[10px] text-yellow-500/70 leading-snug">{perk}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => window.location.href = '/become-member'}
-                className="mt-1 w-full py-2 text-center text-[11px] font-black tracking-widest text-slate-900 rounded transition-all hover:brightness-110"
-                style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}
-              >
-                UPGRADE NOW — $99/YR
-              </button>
-            </div>
-          </>
-        ) : (
-          /* ── AUTHENTICATED PROFILE CARD ── */
-          <>
-            <div className="p-6 flex-1">
-              {expiredChecks.length > 0 && (
-                <button onClick={() => setTab('wallet')} className="w-full mb-4 flex items-center gap-2 px-3 py-2 text-xs text-red-300 font-semibold" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
-                  <AlertTriangle size={12} className="flex-shrink-0" />
-                  {expiredChecks.length} credential{expiredChecks.length > 1 ? 's' : ''} expired
-                </button>
-              )}
-
-              {/* Hidden file input */}
-              <input
-                ref={avatarInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarUpload}
-              />
-
-              {/* Avatar - clickable to upload */}
-              <div
-                className="relative w-24 h-24 mx-auto mb-1 cursor-pointer group"
-                onClick={() => !avatarUploading && avatarInputRef?.current?.click()}
-                title="Click to change photo"
-              >
-                <ProfileImage
-                  url={profile?.profile_image_url}
-                  publicId={profile?.profile_image_public_id}
-                  name={name}
-                  size={96}
-                  className="rounded-full border-2 border-white/30"
-                  fallbackClassName="rounded-full bg-blue-500 text-white text-xl"
-                />
-                {/* Camera overlay on hover */}
-                <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {avatarUploading
-                    ? <div className="w-5 h-5 border-2 border-white/60 border-t-white rounded-full animate-spin" />
-                    : <Camera size={20} className="text-white" />}
-                </div>
-              </div>
-              {avatarError && <p className="text-red-400 text-[10px] text-center mb-2">{avatarError}</p>}
-              {!avatarError && <p className="text-white/30 text-[10px] text-center mb-3">Tap to change photo</p>}
-
-              <h2 className="text-base font-bold text-white text-center mb-1 tracking-wider">{name}</h2>
-              <p className="text-center text-orange-400 text-xs font-semibold mb-4 uppercase tracking-wider">{level}</p>
-
-              {/* 2×2 stats */}
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  {hours > 0
-                    ? <p className="text-lg font-bold text-white">{hours}</p>
-                    : <p className="text-[10px] font-semibold text-white/40 leading-tight">Log your first<br/>flight hour</p>}
-                  <p className="text-xs text-white/60 uppercase mt-0.5">HOURS</p>
-                </div>
-                <div className="text-center p-2 cursor-pointer hover:ring-1 hover:ring-sky-400/50 transition-all" style={{ background: 'rgba(255,255,255,0.05)' }} onClick={() => setTab('score' as TabId)}>
-                  {score > 0
-                    ? <p className="text-lg font-bold text-sky-300">{score}</p>
-                    : <p className="text-[10px] font-semibold text-white/40 leading-tight">Build your<br/>profile first</p>}
-                  <p className="text-xs text-white/60 uppercase mt-0.5">SCORE</p>
-                </div>
-                <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  {certCount > 0
-                    ? <p className="text-lg font-bold text-white">{certCount}</p>
-                    : <p className="text-[10px] font-semibold text-white/40 leading-tight">Add your<br/>credentials</p>}
-                  <p className="text-xs text-white/60 uppercase mt-0.5">CERTS</p>
-                </div>
-                <div className="text-center p-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <p className="text-lg font-bold text-orange-400">{Math.max(hoursForNext - hours, 0)}</p>
-                  <p className="text-xs text-white/60 uppercase mt-0.5">TO NEXT</p>
-                </div>
-              </div>
-
-              {/* Progress bar */}
-              <div className="mb-2">
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-white/60 uppercase tracking-wider text-[10px]">LEVEL PROGRESS</span>
-                  <span className={`font-bold text-[10px] ${progressPct > 0 ? 'text-orange-400' : 'text-white/30'}`}>{Math.round(progressPct)}%</span>
-                </div>
-                <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{ width: `${Math.max(progressPct, progressPct > 0 ? 4 : 0)}%`, background: progressPct > 0 ? 'linear-gradient(90deg, #f97316, #ef4444)' : 'transparent' }}
-                  />
-                </div>
-                {progressPct === 0 && <p className="text-[9px] text-white/25 mt-2">Log hours to level up →</p>}
-              </div>
-
-              {/* Pilot Wallet Credentials */}
-              <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-[9px] font-black tracking-[0.18em] text-white/30 uppercase">Pilot Wallet</p>
-                  {/* System status pulse */}
-                  <div className="flex items-center gap-1">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-                    </span>
-                    <span className="text-[8px] font-bold text-emerald-400/70 tracking-wider uppercase">Encrypted</span>
-                  </div>
-                </div>
-                {/* Encrypted server status strip */}
-                <div className="flex items-center gap-1.5 px-2 py-1.5 rounded mb-2" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(16,185,129,0.15)' }}>
-                  <Lock size={8} className="text-emerald-400/60 flex-shrink-0" />
-                  <p className="text-[8px] font-mono text-emerald-400/50 tracking-wide truncate">AES-256-GCM · Zero-knowledge · Pilot-owned</p>
-                </div>
-                {profile?.wallet_did ? (
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center gap-2 px-2.5 py-2 rounded-lg" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)' }}>
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[9px] font-black text-emerald-400 uppercase tracking-wider">DID Active</p>
-                        <p className="text-[8px] text-white/30 font-mono truncate">{profile.wallet_did.slice(0, 24)}…</p>
-                      </div>
-                    </div>
-                    {walletChecks.length > 0 ? (
-                      <div className="flex items-center gap-2 px-2.5 py-2 rounded-lg" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)' }}>
-                        <Shield size={10} className="text-blue-400 flex-shrink-0" />
-                        <p className="text-[9px] font-bold text-blue-300">{walletChecks.length} Credential{walletChecks.length > 1 ? 's' : ''} Issued</p>
-                      </div>
-                    ) : (
-                      <button onClick={() => setTab('wallet' as TabId)} className="flex items-center gap-2 px-2.5 py-2 rounded-lg w-full text-left transition-all hover:brightness-110" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        <Shield size={10} className="text-white/30 flex-shrink-0" />
-                        <p className="text-[9px] font-bold text-white/40">Issue Credentials →</p>
-                      </button>
-                    )}
-                  </div>
-                ) : (
-                  <button onClick={() => onNavigate('become-member')} className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg transition-all hover:brightness-110" style={{ background: 'rgba(249,115,22,0.1)', border: '1px solid rgba(249,115,22,0.25)' }}>
-                    <Shield size={10} className="text-orange-400 flex-shrink-0" />
-                    <p className="text-[9px] font-black text-orange-400">Activate Wallet →</p>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* PILOT PROFILE link */}
-            <button
-              onClick={() => onNavigate('pilot-recognition-profile')}
-              className="w-full flex items-center gap-3 px-6 py-4 transition-colors hover:bg-white/5"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
-            >
-              <ChevronRight size={18} className="text-white/70" />
-              <span className="text-sm font-bold text-white tracking-wider">PILOT PROFILE</span>
-            </button>
-
-          </>
-        )}
-      </motion.div>
-
-      {/* ── RIGHT: Get Started (top) + alerts + bento cards ── */}
-      <div className="flex-1 flex flex-col gap-4 relative">
-
-        {/* ── WELCOME BAR — dismissible, first-visit only ── */}
-        {!welcomeDismissed && profile && (
-          <div
-            className="flex items-center gap-3 px-4 py-2.5"
-            style={{ background: 'linear-gradient(90deg, rgba(59,130,246,0.18), rgba(99,102,241,0.14))', border: '1px solid rgba(99,102,241,0.3)' }}
-          >
-            <span className="text-sm">✈️</span>
-            <p className="flex-1 text-xs font-semibold text-white/90 leading-snug">
-              Welcome aboard, Captain <span className="text-sky-300 font-black">{name}</span>! Let's set up your profile to unlock industry pathways.
-            </p>
-            <button
-              onClick={dismissWelcome}
-              className="text-white/30 hover:text-white/80 transition-colors flex-shrink-0 ml-2"
-              aria-label="Dismiss"
-            >
-              <X size={14} />
-            </button>
-          </div>
-        )}
-
-        {/* ── ACCOUNT ACTIVATION STRIP — compact single row ── */}
+        {/* ── DISCOVER PATHWAYS (wide banner) ── */}
         <div
-          className="flex items-center gap-4 px-5 py-3"
-          style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}
+          className="relative w-full overflow-hidden rounded-none cursor-pointer group"
+          style={{ height: '500px', flexShrink: 0, borderRadius: 0 }}
+          onClick={() => setTab('pathways')}
         >
-          {/* Left: context */}
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-black tracking-wide leading-none"><span className="text-white">Pilot Credentials</span> <span className="text-red-500">Verification</span> <span className="text-white/30">→</span> <span style={{ color: '#fbbf24' }}>Exclusive Pathways & Priority Listings</span></p>
-            <p className="text-[10px] text-white mt-0.5 leading-snug">Get your credentials verified — licences, logbook & ratings — against international aviation standards <span style={{ color: '#fbbf24', fontWeight: 700 }}>worldwide</span></p>
-          </div>
-          {/* Center: progress bar */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="h-1.5 w-24 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
-              <div
-                className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-700"
-                style={{ width: `${(completedCount / steps.length) * 100}%` }}
-              />
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&q=90')" }}
+          />
+          {/* Dark gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/70 to-slate-800/30" />
+          
+          {/* Glassmorphism panel */}
+          <div className="absolute inset-0 flex items-stretch">
+            <div className="relative w-[60%] h-full flex flex-col justify-center px-8 py-8">
+              {/* Backdrop blur */}
+              <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-xl" />
+              
+              {/* Faux-specular border */}
+              <div className="absolute inset-0 border-r border-white/20" />
+              <div className="absolute inset-0 border border-white/10 pointer-events-none" />
+              
+              {/* Content */}
+              <div className="relative z-10">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <span className="text-cyan-400 text-xs">&#8811;</span>
+                  <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Pilot Platform</p>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-tight leading-tight mb-3">
+                  Discover Pathways
+                </h2>
+                <div className="w-8 h-[2px] bg-cyan-400 mb-4" />
+                <p className="text-sm text-slate-300 max-w-sm leading-relaxed mb-6">
+                  Browse airline, cargo, and private aviation operator requirements. Match your profile against live pathway eligibility.
+                </p>
+                
+                {/* CTAs */}
+                <div className="flex items-center gap-3">
+                  <button className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25">
+                    Explore Operators
+                  </button>
+                  <span className="text-xs text-slate-400">{airlines.length}+ Airlines</span>
+                </div>
+              </div>
             </div>
-            <span className="text-[10px] font-bold text-white/40 tabular-nums">{completedCount}/{steps.length}</span>
           </div>
-          {/* Right: Recognition+ CTA */}
-          <button
-            onClick={() => setTab('settings' as TabId)}
-            className="flex-shrink-0 flex items-center px-5 py-2 text-[11px] font-black tracking-widest text-white transition-all hover:brightness-110"
-            style={{ background: '#dc2626', border: 'none', borderRadius: '999px', boxShadow: '0 4px 20px rgba(220,38,38,0.4)' }}
-          >
-            RECOGNITION+ — $99/YR
-          </button>
+          
+          {/* Top accent line */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-400 to-blue-600 z-20" />
+          
+          {/* Open button */}
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white transition-all group-hover:brightness-110 border border-white/30 hover:border-white/50 hover:bg-white/5" style={{ borderRadius: 0 }}>
+            Open <ArrowRight size={12} />
+          </div>
         </div>
 
-        {/* Expired credential alert */}
-        {expiredChecks.length > 0 && (
-          <button
-            onClick={() => setTab('wallet')}
-            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:brightness-110"
-            style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.4)' }}
+        {/* ── THREE CARDS ROW ── */}
+        <div className="grid grid-cols-3 gap-4" style={{ height: '160px' }}>
+
+          {/* TYPE RATING SEARCH */}
+          <div
+            className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            onClick={() => window.location.href = '/type-rating-search'}
           >
-            <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center flex-shrink-0">
-              <AlertTriangle size={15} className="text-red-300" />
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')" }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: '#6366f1' }} />
+            <div className="absolute bottom-0 left-0 right-0 px-4 py-4">
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(165,180,252,0.7)' }}>Training</p>
+              <h3 className="text-base font-black text-white tracking-tight leading-tight">TYPE RATING<br/>SEARCH</h3>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-red-300 leading-none mb-0.5">
-                {expiredChecks.length} Credential{expiredChecks.length > 1 ? 's' : ''} Expired — Pre-Cleared Status Inactive
-              </p>
-              <p className="text-xs text-red-400/70">Renew in Credential Wallet to restore verified status for airline operators.</p>
+            <div className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(99,102,241,0.3)', border: '1px solid rgba(165,180,252,0.3)' }}>
+              <Plane size={12} className="text-indigo-300" />
             </div>
-            <ChevronRight size={16} className="text-red-400 flex-shrink-0" />
-          </button>
+          </div>
+
+          {/* DISCOVER EXPECTATIONS */}
+          <div
+            className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            onClick={() => setTab('pathways')}
+          >
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80')" }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: '#06b6d4' }} />
+            <div className="absolute bottom-0 left-0 right-0 px-4 py-4">
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(103,232,249,0.7)' }}>Airlines</p>
+              <h3 className="text-base font-black text-white tracking-tight leading-tight">DISCOVER<br/>EXPECTATIONS</h3>
+            </div>
+            <div className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(6,182,212,0.3)', border: '1px solid rgba(103,232,249,0.3)' }}>
+              <Globe size={12} className="text-cyan-300" />
+            </div>
+          </div>
+
+          {/* RECOGNITION + VERIFIED */}
+          <div
+            className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
+            onClick={() => setTab('wallet')}
+          >
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80')" }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: '#10b981' }} />
+            <div className="absolute bottom-0 left-0 right-0 px-4 py-4">
+              <p className="text-[8px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: 'rgba(52,211,153,0.7)' }}>Credentials</p>
+              <h3 className="text-base font-black text-white tracking-tight leading-tight">RECOGNITION+<br/>VERIFIED</h3>
+            </div>
+            <div className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.3)', border: '1px solid rgba(52,211,153,0.3)' }}>
+              <Shield size={12} className="text-emerald-300" />
+            </div>
+            {walletChecks.some(c => c.status === 'verified') && (
+              <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ background: 'rgba(16,185,129,0.85)' }}>
+                <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                <span className="text-[8px] font-black text-white">VERIFIED</span>
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+
+      {/* ── RIGHT PROFILE CARD ── */}
+      <div className="w-80 flex-shrink-0 flex flex-col rounded-none overflow-hidden border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]" style={{ background: 'rgba(15,22,35,0.97)', height: '676px' }}>
+        {/* ── PROFILE CARD HEADER ── */}
+        <div className="relative px-5 pt-5 pb-4 flex-shrink-0 border-b border-white/10">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="text-[#00b4d8] text-xs font-bold">&#8811;</span>
+            <p className="text-[10px] text-[#00b4d8] font-bold uppercase tracking-[0.15em]">Pilot Platform</p>
+          </div>
+          <h2 className="text-base font-black text-white tracking-tight">Profile Card</h2>
+        </div>
+
+        {profile ? (
+          <div className="flex flex-col flex-1 overflow-y-auto">
+            {/* Avatar + name */}
+            <div className="flex flex-col items-center px-5 pt-6 pb-4">
+              <div className="relative cursor-pointer group mb-3" onClick={() => !avatarUploading && avatarInputRef?.current?.click()}>
+                <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+                <ProfileImage url={profile?.profile_image_url} publicId={profile?.profile_image_public_id} name={name} size={72} className="rounded-full border-2 border-white/20" fallbackClassName="rounded-full bg-blue-500 text-white text-xl" />
+                <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {avatarUploading ? <div className="w-4 h-4 border-2 border-white/60 border-t-white rounded-full animate-spin" /> : <Camera size={14} className="text-white" />}
+                </div>
+              </div>
+              <p className="text-sm font-black text-white text-center truncate w-full">{name}</p>
+              <p className="text-[10px] font-semibold uppercase tracking-wide mt-0.5" style={{ color: '#f97316' }}>{level}</p>
+            </div>
+
+            {/* Stats grid */}
+            <div className="grid grid-cols-2 gap-2 px-4 mb-4">
+              {[
+                { label: 'HOURS', value: hours || '—', color: 'text-white', onClick: undefined },
+                { label: 'SCORE', value: score || '—', color: 'text-sky-300', onClick: () => setTab('score' as TabId) },
+                { label: 'CREDS', value: walletChecks.filter(c => c.status === 'verified').length || '—', color: 'text-emerald-400', onClick: () => setTab('wallet') },
+                { label: 'PATHS', value: `${airlines.length}+`, color: 'text-blue-300', onClick: () => setTab('pathways') },
+              ].map(s => (
+                <div key={s.label} className="text-center py-2.5 rounded-xl cursor-pointer transition-all hover:brightness-125" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }} onClick={s.onClick}>
+                  <p className={`text-base font-black ${s.color}`}>{s.value}</p>
+                  <p className="text-[8px] text-white/35 uppercase tracking-widest">{s.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Profile readiness bar */}
+            <div className="px-4 mb-4">
+              <div className="flex justify-between text-[9px] mb-1.5">
+                <span className="text-white/30 uppercase tracking-wider font-bold">Profile Readiness</span>
+                <span className="font-black" style={{ color: matchPct >= 80 ? '#10b981' : matchPct >= 40 ? '#f59e0b' : '#ef4444' }}>{matchPct}%</span>
+              </div>
+              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                <div className="h-full rounded-full transition-all duration-700" style={{ width: `${matchPct}%`, background: matchPct >= 80 ? '#10b981' : matchPct >= 40 ? '#f59e0b' : '#ef4444' }} />
+              </div>
+            </div>
+
+            {/* Expired credential alert */}
+            {expiredChecks.length > 0 && (
+              <button onClick={() => setTab('wallet')} className="mx-4 mb-4 flex items-center gap-2.5 px-3 py-2.5 text-left rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(239,68,68,0.14)', border: '1px solid rgba(239,68,68,0.35)' }}>
+                <AlertTriangle size={13} className="text-red-400 flex-shrink-0" />
+                <div>
+                  <p className="text-[10px] font-bold text-red-300">{expiredChecks.length} Credential{expiredChecks.length > 1 ? 's' : ''} Expired</p>
+                  <p className="text-[9px] text-red-400/60">Renew in Wallet →</p>
+                </div>
+              </button>
+            )}
+
+            {/* Zero-knowledge badge */}
+            <div className="mx-4 mb-4 flex items-center gap-1.5 px-3 py-2 rounded-xl" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(16,185,129,0.15)' }}>
+              <Lock size={8} className="text-emerald-400/60 flex-shrink-0" />
+              <p className="text-[8px] font-mono text-emerald-400/50 tracking-wide truncate">AES-256-GCM · Zero-knowledge</p>
+            </div>
+
+            {/* Onboarding steps */}
+            <div className="px-4 mb-4">
+              <p className="text-[9px] font-black tracking-[0.2em] uppercase text-white/25 mb-2">Getting Started</p>
+              <div className="flex flex-col gap-1.5">
+                {steps.slice(0, 5).map(s => (
+                  <button key={s.step} onClick={() => setTab(s.tab)} className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all hover:brightness-110" style={{ background: s.done ? 'rgba(16,185,129,0.1)' : s.highlight ? 'rgba(251,146,60,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${s.done ? 'rgba(16,185,129,0.2)' : s.highlight ? 'rgba(251,146,60,0.25)' : 'rgba(255,255,255,0.06)'}` }}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${s.done ? 'bg-emerald-500' : 'bg-white/10'}`}>
+                      {s.done ? <CheckCircle size={9} className="text-white" /> : <s.icon size={8} className="text-white/30" />}
+                    </div>
+                    <span className={`text-[10px] font-bold truncate flex-1 ${s.done ? 'text-emerald-300' : 'text-white/50'}`}>{s.label}</span>
+                    {s.done && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA buttons */}
+            <div className="px-4 mt-auto pb-5 flex flex-col gap-2">
+              <button onClick={() => onNavigate('pilot-recognition-profile')} className="w-full py-2.5 text-xs font-black tracking-wider text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.75)', border: '1px solid rgba(96,165,250,0.3)' }}>
+                VIEW FULL PROFILE →
+              </button>
+              <button onClick={() => setTab('settings' as TabId)} className="w-full py-2 text-[10px] font-black tracking-widest text-slate-900 rounded-xl transition-all hover:brightness-110" style={{ background: 'linear-gradient(90deg, #fbbf24, #f97316)' }}>
+                RECOGNITION+ — $99/YR
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col flex-1 items-center justify-center px-5 gap-4">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <User size={28} className="text-white/30" />
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-black text-white mb-1">Welcome Aboard</p>
+              <p className="text-[10px] text-white/30 leading-snug">Sign in to activate your pilot profile.</p>
+            </div>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: '#dc2626' }}>
+              Get Recognition Free
+            </button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.7)', border: '1px solid rgba(96,165,250,0.3)' }}>
+              Pilot Sign In
+            </button>
+          </div>
         )}
 
-        {/* Bento grid — unified overlay style on all 3 cards */}
-        <div className="grid grid-cols-2 gap-4 content-start">
-          {/* MY PATHWAYS — with live match badge */}
-          <motion.div
-            custom={0} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-            onClick={bCards[0].onClick}
-            className="col-span-2 relative group cursor-pointer overflow-hidden"
-            style={{ height: '180px', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: `url(${bCards[0].image})`, opacity: 0.75 }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent" />
-            {/* Match badge */}
-            <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wide"
-              style={{ background: matchPct >= 80 ? 'rgba(16,185,129,0.85)' : matchPct >= 40 ? 'rgba(234,179,8,0.85)' : 'rgba(239,68,68,0.8)', color: '#fff', backdropFilter: 'blur(4px)' }}
-            >
-              <TrendingUp size={10} />
-              Profile Match: {matchPct}%
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center gap-3">
-              <div className="w-9 h-9 flex items-center justify-center bg-white/10 border border-white/20">
-                <ChevronRight size={20} className="text-white" />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-white tracking-wider">{bCards[0].title}</h3>
-                {matchPct < 100 && <p className="text-[10px] text-white/50 mt-0.5">Complete your profile to reach 100% eligibility</p>}
-              </div>
-            </div>
-            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-          </motion.div>
-
-          {/* MY PROGRAMS */}
-          <motion.div
-            custom={1} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-            onClick={bCards[1].onClick}
-            className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: `url(${bCards[1].image})`, opacity: 0.85 }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-3 flex items-center gap-2">
-              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/20">
-                <ChevronRight size={16} className="text-white" />
-              </div>
-              <h3 className="text-sm font-bold text-white tracking-wider">{bCards[1].title}</h3>
-            </div>
-            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-          </motion.div>
-
-          {/* SPLIT: Digital Logbook + Pilot Credentials */}
-          <motion.div
-            custom={2} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-            className="relative overflow-hidden flex flex-col gap-0"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            {/* Top half — Digital Logbook */}
-            <button
-              onClick={() => onNavigate('digital-logbook')}
-              className="relative flex-1 group/logbook flex items-center gap-3 px-4 overflow-hidden transition-all hover:brightness-110"
-              style={{ background: 'rgba(30,41,59,0.85)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}
-            >
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.4)' }}>
-                <BookMarked size={15} className="text-sky-400" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs font-black text-white tracking-wider">DIGITAL LOGBOOK</p>
-                <p className="text-[10px] text-white/40 mt-0.5">{hours > 0 ? `${hours} hrs logged` : 'Log your first flight'}</p>
-              </div>
-              <ChevronRight size={14} className="ml-auto text-white/30 group-hover/logbook:text-white/70 transition-colors" />
-            </button>
-            {/* Bottom half — Pilot Credentials */}
-            <button
-              onClick={() => setTab('wallet')}
-              className="relative flex-1 group/creds flex items-center gap-3 px-4 overflow-hidden transition-all hover:brightness-110"
-              style={{ background: 'rgba(15,23,42,0.9)' }}
-            >
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(234,179,8,0.18)', border: '1px solid rgba(234,179,8,0.35)' }}>
-                <Shield size={15} className="text-yellow-400" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs font-black text-white tracking-wider">PILOT CREDENTIALS</p>
-                <p className="text-[10px] mt-0.5" style={{ color: walletChecks.some(c => c.status === 'verified') ? 'rgba(52,211,153,0.8)' : 'rgba(255,255,255,0.35)' }}>
-                  {walletChecks.some(c => c.status === 'verified') ? `${walletChecks.filter(c => c.status === 'verified').length} verified` : 'No credentials yet'}
-                </p>
-              </div>
-              <ChevronRight size={14} className="ml-auto text-white/30 group-hover/creds:text-white/70 transition-colors" />
-            </button>
-          </motion.div>
-          {/* ── CARD 3: Type Rating Search ── */}
-          <motion.div
-            custom={3} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-            onClick={() => window.location.href = '/type-rating-search'}
-            className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            {/* Full-bleed cockpit image */}
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')", opacity: 0.85 }} />
-            {/* Bottom-only gradient for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
-
-            {/* Single consolidated bottom bar */}
-            <div className="absolute bottom-0 left-0 right-0 px-4 py-3" style={{ background: 'rgba(5,10,20,0.82)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                  <ChevronRight size={13} className="text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[9px] font-black tracking-[0.12em] text-white/40 uppercase leading-none mb-0.5">Recommended</p>
-                  <p className="text-[10px] font-black text-white tracking-wide leading-none">Type Rating Search</p>
-                </div>
-                <span className="text-[9px] font-black tracking-widest text-white/40 uppercase flex-shrink-0">View All →</span>
-              </div>
-            </div>
-            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-          </motion.div>
-
-          {/* ── CARD 4: Operator Expectations ── */}
-          <motion.div
-            custom={4} variants={cardVariants} initial="hidden" animate={visible ? 'visible' : 'hidden'}
-            onClick={() => setTab('pathways')}
-            className="relative group cursor-pointer overflow-hidden"
-            style={{ height: '160px', border: '1px solid rgba(255,255,255,0.2)' }}
-          >
-            {/* Full-bleed airline tarmac image */}
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80')", opacity: 0.85 }} />
-            {/* Bottom-only gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
-
-            {/* Single consolidated bottom bar */}
-            <div className="absolute bottom-0 left-0 right-0 px-4 py-3" style={{ background: 'rgba(5,10,20,0.82)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-              <div className="flex items-center gap-3">
-                <div className="w-7 h-7 flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                  <ChevronRight size={13} className="text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[9px] font-black tracking-[0.12em] text-white/40 uppercase leading-none mb-0.5">Explore</p>
-                  <p className="text-[10px] font-black text-white tracking-wide leading-none">Operator Expectations</p>
-                </div>
-                <span className="text-[9px] font-black tracking-widest text-white/40 uppercase flex-shrink-0">Explore →</span>
-              </div>
-            </div>
-            <div className="absolute inset-0 border-2 border-orange-500/0 group-hover:border-orange-500/50 transition-colors duration-300 pointer-events-none" />
-          </motion.div>
-        </div>
-
-      </div>{/* end right flex col */}
+      </div>
 
       {/* ════════════════════════════════════════════════════════════
           ONBOARDING MODAL — 4-step multi-party verification flow
@@ -1595,7 +1555,7 @@ const ScoreTab: React.FC<{ profile: any; setTab: (t: TabId) => void }> = ({ prof
 const ProfileTab: React.FC<{ onNavigate: (p: string) => void; profile: any; walletChecks: any[] }> = ({ onNavigate, profile, walletChecks }) => (
   <PilotRecognitionProfilePage
     onNavigate={onNavigate}
-    embedded={true}
+    embedded={false}
     injectedProfile={profile || undefined}
     injectedWalletData={profile ? { did: profile.wallet_did || null, credentials: walletChecks } : undefined}
   />
@@ -4558,7 +4518,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const graphicsConfig = useMemo(() => getHomepageGraphicsConfig(), []);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabId>(() => (searchParams.get('tab') as TabId) ?? 'home');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [walletChecks, setWalletChecks] = useState<any[]>([]);
   const [airlines, setAirlines] = useState<any[]>([]);
   const [notifCount, setNotifCount] = useState(0);
@@ -4684,7 +4643,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   // Live unread notification count + pending credential requests
   useEffect(() => {
-    const profileId = profileData?.id || currentUser?.id;
+    // pilot_notifications.pilot_id and credential_requests.pilot_id are UUID columns.
+    // Auth0 currentUser.id is a string sub — never use it here, it causes a 400 type error.
+    const profileId = profileData?.id;
     if (!profileId) return;
     const fetchNotifs = async () => {
       const [{ count }, { data: reqs }] = await Promise.all([
@@ -4697,7 +4658,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     fetchNotifs();
     const interval = setInterval(fetchNotifs, 60000);
     return () => clearInterval(interval);
-  }, [profileData?.id, currentUser?.id]);
+  }, [profileData?.id]);
 
   // Keep profileData in sync — prefer Supabase userProfile, fall back to auth0_id then email lookup
   useEffect(() => {
@@ -4766,9 +4727,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     onNavigate('home');
   }, [logout, onNavigate]);
 
+  const prevTabRef = useRef<TabId>('home');
   const setTab = (t: TabId) => {
+    prevTabRef.current = activeTab;
     setActiveTab(t);
-    setSidebarOpen(false);
   };
 
   // Listen for tab-switch events fired from embedded child components (e.g. profile page wallet CTA)
@@ -4792,7 +4754,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
       case 'cockpit':       return <CockpitTab profile={profileData} onNavigate={onNavigate} />;
-      case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletTab walletChecks={walletChecks} profile={profileData} pendingRequests={pendingRequests} hasActiveSession={!!(auth0User?.sub || currentUser?.id)} />;
+      case 'wallet':        return !emailVerified ? <EmailVerifyGate onResend={async () => { setResendingSent(true); await supabase.auth.resend({ type: 'signup', email: currentUser?.email ?? '' }); }} sent={resendingSent} /> : <WalletPageWithSidebar userId={currentUser?.id || auth0User?.sub} onNavigate={(path) => setTab(path as TabId)} />;
       case 'pathways':      return <PathwaysTab onNavigate={onNavigate} />;
       case 'programs':      return <ProgramsTab onNavigate={onNavigate} />;
       case 'dashboard':     return <DashboardTab profile={profileData} onNavigate={onNavigate} />;
@@ -4842,12 +4804,12 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       {/* ── TOP NAV BAR ── */}
       <div
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4"
-        style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', height: '52px' }}
+        style={{ background: 'transparent', height: '68px' }}
       >
         {/* Left — wordmark */}
         <div className="flex items-center min-w-0 flex-1">
           <span
-            className="text-xl tracking-tight leading-none cursor-pointer"
+            className="text-2xl tracking-tight leading-none cursor-pointer"
             style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
             onClick={() => onNavigate('home')}
           >
@@ -4857,91 +4819,164 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           </span>
         </div>
 
-        {/* Right — auth-conditional + hamburger */}
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+        {/* Centre — primary nav links */}
+        <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          {[
+            { id: 'home',     label: 'Home' },
+            { id: 'profile',  label: 'Profile' },
+            { id: 'pathways', label: 'Pathways' },
+            { id: 'programs', label: 'Programs' },
+          ].map(({ id, label }) => (
+            <button
+              key={id}
+              onClick={() => setTab(id as TabId)}
+              className={`px-5 py-2 rounded-lg text-sm font-bold tracking-wide transition-all ${
+                activeTab === id
+                  ? 'bg-white/15 text-white'
+                  : 'text-white/60 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Right — MSFS-style square tile icon toolbar */}
+        <div className="flex items-center gap-2 flex-shrink-0">
           {currentUser ? (
             <>
-              {/* Settings */}
-              <button
-                onClick={() => setTab('settings')}
-                className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all"
-              >
-                <Settings size={15} />
-              </button>
-
-              {/* Notification bell dropdown */}
-              <div className="relative" onMouseDown={e => e.stopPropagation()}>
+              <div className="flex items-center gap-2">
+                {/* Messages tile */}
                 <button
-                  className="relative w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all"
-                  onClick={() => { setBellOpen(v => !v); setProfileDropOpen(false); setHamburgerOpen(false); }}
+                  onClick={() => setTab('notifications' as TabId)}
+                  title="Messages"
+                  className="relative group transition-all duration-150"
+                  style={{
+                    width: 44, height: 44,
+                    background: 'rgba(55,65,81,0.85)',
+                    border: '2px solid rgba(255,255,255,0.12)',
+                    borderRadius: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}
                 >
-                  <Bell size={15} />
-                  {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
-                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-amber-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                      {notifCount > 0 ? notifCount : '!'}
-                    </span>
-                  )}
+                  <MessageSquare size={20} className="text-white" strokeWidth={2} />
                 </button>
-                {bellOpen && (
-                  <div className="absolute right-0 top-10 w-80 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
-                    <div className="px-4 pt-3 pb-2 border-b border-white/5">
-                      <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Activity</p>
-                      <p className="text-sm font-black text-white">Notifications</p>
-                    </div>
-                    <NotificationsFeedPanel profileId={profileData?.id} />
-                    <button onClick={() => { setBellOpen(false); setTab('notifications' as TabId); }} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
-                      VIEW ALL NOTIFICATIONS →
-                    </button>
-                  </div>
-                )}
-              </div>
 
-              {/* Avatar dropdown */}
-              <div className="relative" onMouseDown={e => e.stopPropagation()}>
-                <button
-                  onClick={() => { setProfileDropOpen(v => !v); setBellOpen(false); setHamburgerOpen(false); }}
-                  className="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-md overflow-hidden flex-shrink-0"
-                >
-                  <ProfileImage
-                    url={profileData?.profile_image_url}
-                    publicId={profileData?.profile_image_public_id}
-                    name={displayName}
-                    size={32}
-                    className="w-full h-full"
-                    fallbackClassName="rounded-full text-sm"
-                  />
-                </button>
-                {profileDropOpen && (
-                  <div className="absolute right-0 top-10 w-64 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
-                    <div className="px-4 pt-3 pb-2 border-b border-white/5">
-                      <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Account</p>
-                      <p className="text-sm font-black text-white truncate">{displayName}</p>
-                      <p className="text-[10px] text-white/40 truncate">{profileData?.email ?? auth0User?.email}</p>
-                    </div>
-                    <div className="py-1">
-                      {[
-                        { label: 'Edit Profile', tab: 'profile' as TabId, icon: User },
-                        { label: 'My Wallet', tab: 'wallet' as TabId, icon: Shield },
-                        { label: 'Pathways', tab: 'pathways' as TabId, icon: Map },
-                        { label: 'Settings', tab: 'settings' as TabId, icon: Settings },
-                      ].map(({ label, tab, icon: Icon }) => (
-                        <button key={tab} onClick={() => { setTab(tab); setProfileDropOpen(false); }} className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors group">
-                          <div className="flex items-center gap-3">
-                            <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
-                            <span className="text-[11px] font-black text-white/70 group-hover:text-white tracking-wide transition-colors">{label.toUpperCase()}</span>
-                          </div>
-                          <ChevronRight size={12} className="text-white/20 group-hover:text-white/50 transition-colors" />
-                        </button>
-                      ))}
-                    </div>
-                    <div className="border-t border-white/5 py-1">
-                      <button onClick={() => { setProfileDropOpen(false); logout(); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
-                        <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
-                        <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
+                {/* Notification bell tile */}
+                <div className="relative" onMouseDown={e => e.stopPropagation()}>
+                  <button
+                    title="Notifications"
+                    onClick={() => { setBellOpen(v => !v); setProfileDropOpen(false); setHamburgerOpen(false); }}
+                    className="relative transition-all duration-150"
+                    style={{
+                      width: 44, height: 44,
+                      background: bellOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                      border: bellOpen ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
+                      borderRadius: 10,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                    onMouseEnter={e => { if (!bellOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
+                    onMouseLeave={e => { if (!bellOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
+                  >
+                    <Bell size={20} className="text-white" strokeWidth={2} />
+                    {(notifCount > 0 || tcUpdatePending || !emailVerified) && (
+                      <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white" style={{ background: '#f59e0b', border: '1.5px solid rgba(15,22,35,0.9)' }}>
+                        {notifCount > 0 ? (notifCount > 9 ? '9+' : notifCount) : '!'}
+                      </span>
+                    )}
+                  </button>
+                  {bellOpen && (
+                    <div className="absolute right-0 top-12 w-80 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                      <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Activity</p>
+                        <p className="text-sm font-black text-white">Notifications</p>
+                      </div>
+                      <NotificationsFeedPanel profileId={profileData?.id} />
+                      <button onClick={() => { setBellOpen(false); setTab('notifications' as TabId); }} className="w-full px-4 py-2.5 text-[10px] font-black tracking-wider text-sky-400 hover:text-sky-300 border-t border-white/5 text-center transition-colors">
+                        VIEW ALL NOTIFICATIONS →
                       </button>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+
+                {/* Settings tile */}
+                <button
+                  onClick={() => setTab('settings')}
+                  title="Settings"
+                  className="transition-all duration-150"
+                  style={{
+                    width: 44, height: 44,
+                    background: activeTab === 'settings' ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                    border: activeTab === 'settings' ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
+                    borderRadius: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                  onMouseEnter={e => { if (activeTab !== 'settings') { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
+                  onMouseLeave={e => { if (activeTab !== 'settings') { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
+                >
+                  <Settings size={20} className="text-white" strokeWidth={2} />
+                </button>
+
+                {/* Avatar tile + dropdown */}
+                <div className="relative" onMouseDown={e => e.stopPropagation()}>
+                  <button
+                    onClick={() => { setProfileDropOpen(v => !v); setBellOpen(false); setHamburgerOpen(false); }}
+                    className="transition-all duration-150 flex items-center gap-2 px-2"
+                    style={{
+                      height: 44,
+                      background: profileDropOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                      border: profileDropOpen ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
+                      borderRadius: 10,
+                    }}
+                    onMouseEnter={e => { if (!profileDropOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
+                    onMouseLeave={e => { if (!profileDropOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
+                  >
+                    <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0" style={{ border: '1.5px solid rgba(255,255,255,0.3)' }}>
+                      <ProfileImage
+                        url={profileData?.profile_image_url}
+                        publicId={profileData?.profile_image_public_id}
+                        name={displayName}
+                        size={28}
+                        className="w-full h-full"
+                        fallbackClassName="rounded-full text-[10px]"
+                      />
+                    </div>
+                    <span className="hidden sm:block text-xs font-bold text-white truncate max-w-[72px]">{displayName.split(' ')[0]}</span>
+                  </button>
+                  {profileDropOpen && (
+                    <div className="absolute right-0 top-10 w-64 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
+                      <div className="px-4 pt-3 pb-2 border-b border-white/5">
+                        <p className="text-[9px] font-black tracking-[0.2em] text-white/30 uppercase">Account</p>
+                        <p className="text-sm font-black text-white truncate">{displayName}</p>
+                        <p className="text-[10px] text-white/40 truncate">{profileData?.email ?? auth0User?.email}</p>
+                      </div>
+                      <div className="py-1">
+                        {[
+                          { label: 'Edit Profile', tab: 'profile' as TabId, icon: User },
+                          { label: 'My Wallet', tab: 'wallet' as TabId, icon: Shield },
+                          { label: 'Pathways', tab: 'pathways' as TabId, icon: Map },
+                          { label: 'Settings', tab: 'settings' as TabId, icon: Settings },
+                        ].map(({ label, tab, icon: Icon }) => (
+                          <button key={tab} onClick={() => { setTab(tab); setProfileDropOpen(false); }} className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors group">
+                            <div className="flex items-center gap-3">
+                              <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
+                              <span className="text-[11px] font-black text-white/70 group-hover:text-white tracking-wide transition-colors">{label.toUpperCase()}</span>
+                            </div>
+                            <ChevronRight size={12} className="text-white/20 group-hover:text-white/50 transition-colors" />
+                          </button>
+                        ))}
+                      </div>
+                      <div className="border-t border-white/5 py-1">
+                        <button onClick={() => { setProfileDropOpen(false); logout(); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors group">
+                          <LogOut size={13} className="text-red-400/60 group-hover:text-red-400 transition-colors" />
+                          <span className="text-[11px] font-black text-red-400/60 group-hover:text-red-400 tracking-wide transition-colors">SIGN OUT</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </>
           ) : (
@@ -4965,10 +5000,19 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           {/* Hamburger dropdown — always on the far right */}
           <div className="relative" onMouseDown={e => e.stopPropagation()}>
             <button
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-all flex-shrink-0"
               onClick={() => { setHamburgerOpen(v => !v); setBellOpen(false); setProfileDropOpen(false); }}
+              className="transition-all duration-150"
+              style={{
+                width: 44, height: 44,
+                background: hamburgerOpen ? 'rgba(75,85,99,0.95)' : 'rgba(55,65,81,0.85)',
+                border: hamburgerOpen ? '2px solid rgba(255,255,255,0.8)' : '2px solid rgba(255,255,255,0.12)',
+                borderRadius: 10,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+              onMouseEnter={e => { if (!hamburgerOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(75,85,99,0.95)'; }}}
+              onMouseLeave={e => { if (!hamburgerOpen) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.background = 'rgba(55,65,81,0.85)'; }}}
             >
-              <Menu size={18} />
+              <Menu size={20} className="text-white" strokeWidth={2} />
             </button>
             {hamburgerOpen && (
               <div className="absolute right-0 top-10 w-56 z-50 shadow-2xl" style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}>
@@ -4979,7 +5023,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                   {NAV_ITEMS.map(item => {
                     const Icon = item.icon;
                     return (
-                      <button key={item.id} onClick={() => { setTab(item.id); setHamburgerOpen(false); setSidebarOpen(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors group">
+                      <button key={item.id} onClick={() => { setTab(item.id); setHamburgerOpen(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors group">
                         <Icon size={13} className="text-white/40 group-hover:text-white/70 transition-colors" />
                         <span className="text-[11px] font-black text-white/60 group-hover:text-white tracking-wide transition-colors">{item.label.toUpperCase()}</span>
                       </button>
@@ -5000,135 +5044,26 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         </div>
       </div>
 
-      {/* ── LAYOUT: sidebar + content ── */}
-      <div className="relative z-40 flex flex-1">
-
-        {/* Mobile sidebar overlay */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
-        )}
-
-        {/* ── SIDEBAR (glass, Portal 2 style) — always fixed ── */}
-        <aside
-          className={`fixed top-0 left-0 bottom-0 z-40 flex flex-col w-60 flex-shrink-0 transition-transform duration-200 pt-[52px] ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
-          style={{ background: 'rgba(15,23,42,0.92)', backdropFilter: 'blur(12px)', borderRight: '1px solid rgba(255,255,255,0.08)' }}
-        >
-          {/* Back to Home */}
-          <div className="px-3 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <button
-              onClick={() => onNavigate('home')}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/08 transition-all text-xs font-bold tracking-wider"
-              style={{ background: 'rgba(255,255,255,0.05)' }}
+      {/* ── MAIN CONTENT (no sidebar) ── */}
+      <main className="flex-1 h-screen overflow-y-auto pt-[68px]">
+        <div className="max-w-[1400px] mx-auto p-5 lg:p-7" style={{ position: 'relative' }}>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }}
+              transition={{
+                duration: 0.28,
+                ease: [0.22, 1, 0.36, 1],
+                filter: { duration: 0.22 },
+              }}
             >
-              <ArrowRight size={13} className="rotate-180 flex-shrink-0" />
-              BACK TO HOME
-            </button>
-          </div>
-
-          {/* Nav items — grouped */}
-          <nav className="flex-1 px-2 py-2 overflow-y-auto">
-            {([
-              {
-                group: 'MY FLIGHT DECK',
-                items: [
-                  { id: 'dashboard', label: 'Recognition Board', icon: BarChart3,  premium: false },
-                  { id: 'home',      label: 'Home',             icon: Home,       premium: false },
-                  { id: 'profile',   label: 'My Profile',       icon: User,       premium: false },
-                  { id: 'wallet',    label: 'Pilot Credentials', icon: Shield,     premium: false },
-                  { id: 'cockpit',      label: 'Cockpit',             icon: Activity,    premium: false },
-                  { id: 'logbook',       label: 'Digital Logbook',     icon: BookMarked,  premium: false },
-                  { id: 'market-intel',  label: 'Market Intelligence', icon: TrendingUp,   premium: false },
-                ],
-              },
-              {
-                group: 'AVIATION NETWORK',
-                items: [
-                  { id: 'pathways',      label: 'Pathways',      icon: Map,       premium: false },
-                  { id: 'airlines',      label: 'Airlines',      icon: Plane,     premium: false },
-                  { id: 'manufacturers', label: 'Manufacturers', icon: Wrench,    premium: false },
-                  { id: 'events',        label: 'Events',        icon: Calendar,  premium: false },
-                  { id: 'newsroom',      label: 'Newsroom',      icon: Newspaper, premium: false },
-                ],
-              },
-              {
-                group: 'PROGRAMS & TOOLS',
-                items: [
-                  { id: 'programs',        label: 'Programs',         icon: BookOpen,      premium: false },
-                  { id: 'atlas-cv',        label: 'Atlas CV',         icon: FileText,      premium: true  },
-                  { id: 'score',           label: 'My Score',         icon: TrendingUp,    premium: false },
-                  { id: 'data-provenance', label: 'Data Sources',     icon: Globe,         premium: false },
-                ],
-              },
-              {
-                group: 'ACCOUNT',
-                items: [
-                  { id: 'settings', label: 'Settings', icon: Settings, premium: false },
-                ],
-              },
-            ] as { group: string; items: { id: TabId; label: string; icon: React.ComponentType<{className?: string; size?: number}>; premium: boolean }[] }[]).map(section => (
-              <div key={section.group} className="mb-3">
-                <p className="px-3 pt-2 pb-1 text-[9px] font-black tracking-[0.18em] text-white/25 uppercase">{section.group}</p>
-                <div className="space-y-0.5">
-                  {section.items.map(item => {
-                    const Icon = item.icon;
-                    const isActive = activeTab === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => setTab(item.id)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150"
-                        style={{
-                          background: isActive ? 'rgba(249,115,22,0.12)' : 'transparent',
-                          borderLeft: isActive ? '2px solid #f97316' : '2px solid transparent',
-                        }}
-                      >
-                        <Icon size={15} className={isActive ? 'text-orange-400' : 'text-white/50'} />
-                        <span className={`flex-1 text-left text-xs font-bold tracking-wider ${isActive ? 'text-orange-300' : 'text-white/55'}`}>
-                          {item.label.toUpperCase()}
-                        </span>
-                        {item.premium && (
-                          <Lock size={10} className="text-yellow-500/70 mr-1 flex-shrink-0" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </nav>
-
-          {/* Bottom user strip */}
-          <div className="px-4 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="flex items-center gap-3">
-              <ProfileImage
-                url={profileData?.profile_image_url}
-                publicId={profileData?.profile_image_public_id}
-                name={displayName}
-                size={36}
-                className="rounded-full flex-shrink-0"
-                fallbackClassName="rounded-full bg-slate-600 text-white text-xs"
-              />
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-white truncate">{displayName}</p>
-                <p className="text-[10px] text-white/40 truncate">
-                  {profileData?.pilot_id ? <span className="text-orange-400/70 font-mono font-bold mr-1">{profileData.pilot_id}</span> : null}
-                  {currentUser?.email}
-                </p>
-              </div>
-              <button onClick={handleLogout} className="text-white/30 hover:text-white/80 transition-colors flex-shrink-0">
-                <LogOut size={14} />
-              </button>
-            </div>
-          </div>
-        </aside>
-
-        {/* ── MAIN CONTENT ── */}
-        <main className="flex-1 h-screen overflow-y-auto pt-[52px] lg:ml-60">
-          <div className="max-w-[1200px] mx-auto p-5 lg:p-7">
-            {renderContent()}
-          </div>
-        </main>
-      </div>
+              {renderContent()}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </main>
 
       {/* ── POST-LOGIN PASSKEY REGISTRATION PROMPT ── */}
       {showPasskeyPrompt && (

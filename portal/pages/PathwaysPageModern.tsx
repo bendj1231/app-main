@@ -5068,28 +5068,24 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     let matchesCategory = true;
     
     if (Object.keys(hierarchySelection).length > 0 && hierarchySelection.generalCategory) {
-      // If a hierarchy selection is made, filter pathways by the selected general category
-      // Map general category to pathway category
-      const categoryMapping: Record<string, string[]> = {
-        // Pilot Training & Certification
-        'da486dd1-8832-4ec3-843b-1cbd3c9b8718': ['cadet-programme', 'private', 'type-rating', 'flight-schools'],
-        // Career Progression
-        '9c6dc768-ecac-408f-b62c-d3f72ae8e509': ['airline-pathways'],
-        // Commercial Operations
-        '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8': ['cargo', 'privateSector'],
-        // Specialized Operations
-        '9865e475-1b3a-4d16-8a2f-cdd443dd7975': ['privateSector'],
-        // Humanitarian & Aid
-        '37c42b2b-1f4c-4f64-b1a1-dd1f84623023': ['cargo', 'privateSector'],
-        // Remote & Bush Operations
-        'c5f16476-44c0-4c3e-88db-85813efb96a0': ['privateSector'],
-        // Emerging Technologies
-        'd5855477-a76d-42be-abae-e18fce201ac8': ['airtaxi-drones'],
-      };
-      
-      const allowedCategories = categoryMapping[hierarchySelection.generalCategory] || [];
-      console.log('Filtering by hierarchy:', hierarchySelection.generalCategory, 'allowed:', allowedCategories, 'pathway category:', pathway.category, 'matches:', allowedCategories.includes(pathway.category));
-      matchesCategory = allowedCategories.includes(pathway.category);
+      // categoryPathways are already pre-filtered by general_category_id — they use
+      // category:'pathway' as a sentinel. Pass them through without re-filtering.
+      if (pathway.category === 'pathway') {
+        matchesCategory = true;
+      } else {
+        // For dynamic job pathways, apply the category mapping as a secondary filter
+        const categoryMapping: Record<string, string[]> = {
+          'da486dd1-8832-4ec3-843b-1cbd3c9b8718': ['cadet-programme', 'private', 'type-rating', 'flight-schools'],
+          '9c6dc768-ecac-408f-b62c-d3f72ae8e509': ['airline-pathways'],
+          '0cc029df-b6f9-4f6d-b4e3-c7bd3d89cbe8': ['cargo', 'privateSector'],
+          '9865e475-1b3a-4d16-8a2f-cdd443dd7975': ['privateSector'],
+          '37c42b2b-1f4c-4f64-b1a1-dd1f84623023': ['cargo', 'privateSector'],
+          'c5f16476-44c0-4c3e-88db-85813efb96a0': ['privateSector'],
+          'd5855477-a76d-42be-abae-e18fce201ac8': ['airtaxi-drones'],
+        };
+        const allowedCategories = categoryMapping[hierarchySelection.generalCategory] || [];
+        matchesCategory = allowedCategories.length === 0 || allowedCategories.includes(pathway.category);
+      }
     } else {
       // Fall back to original category filtering
       matchesCategory = activeCategory === 'all' || pathway.category === activeCategory;

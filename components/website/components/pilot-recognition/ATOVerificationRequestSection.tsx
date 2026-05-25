@@ -36,6 +36,7 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
 
 export function ATOVerificationRequestSection() {
   const { currentUser } = useAuth();
+  const [supabaseProfileId, setSupabaseProfileId] = useState<string | null>(null);
   const [atos, setAtos] = useState<ATOInstitution[]>([]);
   const [requests, setRequests] = useState<VerificationRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,11 +55,23 @@ export function ATOVerificationRequestSection() {
   });
 
   const load = async () => {
-    if (!currentUser?.id) return;
+    if (!currentUser?.email) return;
     setLoading(true);
     setLoadTimedOut(false);
     loadTimer.current = setTimeout(() => setLoadTimedOut(true), 2500);
     try {
+      // Resolve Supabase UUID — Auth0 currentUser.id is not a UUID
+      let pilotId = supabaseProfileId;
+      if (!pilotId) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', currentUser.email)
+          .single();
+        pilotId = profile?.id ?? null;
+        if (pilotId) setSupabaseProfileId(pilotId);
+      }
+
       // Fetch active ATOs
       const { data: atoData } = await supabase
         .from('ato_institutions')
@@ -67,29 +80,31 @@ export function ATOVerificationRequestSection() {
         .order('institution_name');
       setAtos(atoData ?? []);
 
-      // Fetch pilot's verification requests with ATO names
-      const { data: reqData } = await supabase
-        .from('ato_verification_requests')
-        .select('*, ato:ato_id(institution_name)')
-        .eq('pilot_id', currentUser.id)
-        .order('created_at', { ascending: false });
-      setRequests(reqData ?? []);
+      if (pilotId) {
+        // Fetch pilot's verification requests with ATO names
+        const { data: reqData } = await supabase
+          .from('ato_verification_requests')
+          .select('*, ato:ato_id(institution_name)')
+          .eq('pilot_id', pilotId)
+          .order('created_at', { ascending: false });
+        setRequests(reqData ?? []);
+      }
     } finally {
       if (loadTimer.current) clearTimeout(loadTimer.current);
       setLoading(false);
     }
   };
 
-  useEffect(() => { load(); }, [currentUser?.id]);
+  useEffect(() => { load(); }, [currentUser?.email]);
 
   const canSubmit = form.ato_id && form.claimed_total_hours && parseFloat(form.claimed_total_hours) > 0;
 
   async function handleSubmit() {
-    if (!canSubmit || !currentUser?.id || submitting) return;
+    if (!canSubmit || !supabaseProfileId || submitting) return;
     setSubmitting(true);
     try {
       const { data: inserted, error } = await supabase.from('ato_verification_requests').insert({
-        pilot_id: currentUser.id,
+        pilot_id: supabaseProfileId,
         ato_id: form.ato_id,
         request_type: 'hour_verification',
         claimed_total_hours: parseFloat(form.claimed_total_hours),

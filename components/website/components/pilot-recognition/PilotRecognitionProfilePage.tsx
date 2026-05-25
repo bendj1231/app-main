@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
-import { WalletViewPage } from '../wallet/WalletViewPage';
-import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, Home, Users, User, Settings, Bell, BookOpen, LogOut, Sun, Moon, Plus } from 'lucide-react';
+import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus } from 'lucide-react';
+
+type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -10,8 +13,6 @@ import { DocumentVaultPage } from './DocumentVaultPage';
 import { RecognitionScoreDisplay } from '../../../RecognitionScoreDisplay';
 import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
-import { VeremarkVerifiedBadge } from './VeremarkVerifiedBadge';
-import { VerificationWalletSection } from './VerificationWalletSection';
 import { ATOVerificationRequestSection } from './ATOVerificationRequestSection';
 import { PathwayPriority } from './CareerPathwayPriority';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
@@ -63,14 +64,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
     
     // Navigation state
-    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-    const [isSettingsDropdownOpen, setIsSettingsDropdownOpen] = useState(false);
-    const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
-    const [notificationCount, setNotificationCount] = useState(0);
-    const [notifications, setNotifications] = useState<any[]>([]);
-    const profileDropdownRef = useRef<HTMLDivElement>(null);
-    const settingsDropdownRef = useRef<HTMLDivElement>(null);
-    const notificationDropdownRef = useRef<HTMLDivElement>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
     const [currentDocumentationPage, setCurrentDocumentationPage] = useState<'examination' | 'logbook' | 'licensure' | 'vault' | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
@@ -89,23 +82,109 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [editingTile, setEditingTile] = useState<string | null>(null);
     const [tileEditValue, setTileEditValue] = useState('');
+    const [profileReady, setProfileReady] = useState(false);
+    const [loadProgress, setLoadProgress] = useState(0);
     const { currentUser } = useAuth();
+    
+    // Admin check - only show certain features for admin users
+    const isAdmin = currentUser?.email?.includes('admin') || 
+                    currentUser?.email?.includes('benjamin') || 
+                    currentUser?.email?.includes('karl') ||
+                    currentUser?.email === 'benjamintigerbowler@gmail.com';
 
-    // Check subscription status using auth context user (avoids lock race)
+    // Derive display values from wallet (injectedWalletData.credentials = pilot_credentials rows)
+    // The wallet is the source of truth — the profile display below is a read-only mirror.
+    const walletDisplay = useMemo(() => {
+        const checks: any[] = injectedWalletData?.credentials || [];
+        const find = (type: string) => checks.find((c: any) => c.check_type === type);
+
+        const licenseCheck  = find('professional_qualification');
+        const medicalCheck  = find('education');     // 'education' = medical cert check type
+        const elpCheck      = find('language_proficiency');
+        const identityCheck = find('identity');
+
+        const calcDays = (dateStr?: string | null): string => {
+            if (!dateStr) return '';
+            const diff = Math.round((new Date(dateStr).getTime() - Date.now()) / 86400000);
+            if (diff < 0) return 'EXPIRED';
+            if (diff === 0) return 'Today';
+            return `${diff} day${diff !== 1 ? 's' : ''}`;
+        };
+
+        const toStatus = (dateStr?: string | null, isVerified?: boolean): 'safe' | 'warning' | 'danger' => {
+            if (!isVerified) return 'warning';
+            if (!dateStr) return 'warning';
+            const diff = Math.round((new Date(dateStr).getTime() - Date.now()) / 86400000);
+            if (diff < 0) return 'danger';
+            if (diff < 30) return 'warning';
+            return 'safe';
+        };
+
+        const licenseExpiry   = profileData?.license_expiry || licenseCheck?.result_data?.expiry_date || null;
+        const medicalExpiry   = profileData?.medical_expiry || medicalCheck?.result_data?.expiry_date || null;
+        const elpExpiry       = profileData?.elp_expiry || elpCheck?.result_data?.expiry_date || null;
+
+        const complianceRows = [
+            {
+                label: 'Pilot License',
+                status: toStatus(licenseExpiry, licenseCheck?.status === 'verified'),
+                days: licenseExpiry ? calcDays(licenseExpiry) : (licenseCheck ? licenseCheck.status : 'Not added'),
+            },
+            {
+                label: 'Class 1 Medical Certificate',
+                status: toStatus(medicalExpiry, medicalCheck?.status === 'verified'),
+                days: medicalExpiry ? calcDays(medicalExpiry) : (medicalCheck ? medicalCheck.status : 'Not added'),
+            },
+            {
+                label: 'ICAO Language Proficiency (ELP)',
+                status: toStatus(elpExpiry, elpCheck?.status === 'verified'),
+                days: elpExpiry ? calcDays(elpExpiry) : (elpCheck ? elpCheck.status : 'Not added'),
+            },
+            {
+                label: 'Identity / Passport',
+                status: toStatus(null, identityCheck?.status === 'verified') as 'safe' | 'warning' | 'danger',
+                days: identityCheck?.status === 'verified' ? 'Verified' : identityCheck ? identityCheck.status : 'Not added',
+            },
+        ];
+
+        return {
+            licenseNumber:    licenseCheck?.result_data?.license_number || profileData?.license_number || profileData?.license_id || '',
+            licenseStatus:    licenseCheck?.status || 'unverified',
+            licenseExpiry,
+            medicalExpiry,
+            licenseAuthority: licenseCheck?.result_data?.issuing_authority || profileData?.license_authority || profileData?.country_of_license || '',
+            elpLevel:         elpCheck?.result_data?.level || profileData?.english_proficiency_level || profileData?.elp_level || '',
+            isVerified:       checks.some((c: any) => c.status === 'verified'),
+            complianceRows,
+        };
+    }, [injectedWalletData, profileData]);
+
+    // MSFS 2024 Style Sidebar Navigation
+    const [activeSection, setActiveSection] = useState<ProfileSection>('overview');
+
+    // Check subscription status — resolve Supabase UUID from email (Auth0 sub is not a UUID)
     useEffect(() => {
-        if (!currentUser?.id) {
-            console.log('[DEBUG] No authenticated user yet, skipping subscription check');
-            return;
-        }
+        if (!currentUser?.email) return;
 
         let cancelled = false;
         const checkSubscription = async () => {
             console.log('[DEBUG] Starting subscription check for user:', currentUser.id);
             try {
+                // Auth0 currentUser.id is a string sub (e.g. google-oauth2|...), not a UUID.
+                // Look up the Supabase profile UUID by email first.
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('email', currentUser.email)
+                    .single();
+
+                if (cancelled) return;
+                if (!profile?.id) return;
+
                 const { data: subscriptions, error } = await supabase
                     .from('subscriptions')
                     .select('*')
-                    .eq('user_id', currentUser.id)
+                    .eq('user_id', profile.id)
                     .eq('status', 'active');
                 
                 if (cancelled) return;
@@ -121,13 +200,12 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 setIsPremium(hasActiveSubscription);
             } catch (error) {
                 console.error('[DEBUG] Error in checkSubscription:', error);
-                // Don't reset isPremium on error - keep previous state
             }
         };
         checkSubscription();
 
         return () => { cancelled = true; };
-    }, [currentUser?.id]);
+    }, [currentUser?.email]);
 
     // Debug isPremium changes
     useEffect(() => {
@@ -141,12 +219,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             setTheme(savedTheme);
         }
     }, []);
-
-    // Save theme to localStorage when changed
-    const toggleTheme = (newTheme: 'dark' | 'light') => {
-        setTheme(newTheme);
-        localStorage.setItem('pilot-recognition-theme', newTheme);
-    };
 
     // Filter pathways based on pathway match percentage (how well pathway matches user's profile)
     const filteredPathways = useMemo(() => {
@@ -459,26 +531,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         fetchProfileData();
     }, []);
 
-    // Handle click outside for dropdowns
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
-                setIsProfileDropdownOpen(false);
-            }
-            if (settingsDropdownRef.current && !settingsDropdownRef.current.contains(event.target as Node)) {
-                setIsSettingsDropdownOpen(false);
-            }
-            if (notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target as Node)) {
-                setIsNotificationDropdownOpen(false);
-            }
-        };
-
-        if (isProfileDropdownOpen || isSettingsDropdownOpen || isNotificationDropdownOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-            return () => document.removeEventListener('mousedown', handleClickOutside);
-        }
-    }, [isProfileDropdownOpen, isSettingsDropdownOpen, isNotificationDropdownOpen]);
-
     // Profile image upload using Cloudinary (free tier)
     // Zero edge function invocations - client-side upload directly to Cloudinary
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -534,6 +586,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         'License Authority': 'license_issuing_authority',
         'English Level': 'elp_level',
         'Pilot Status': 'current_occupation',
+        'bio': 'bio',
+        'linkedin': 'linkedin_url',
+        'instagram': 'instagram_url',
     };
 
     const saveTileEdit = async (label: string, value: string) => {
@@ -551,6 +606,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 license_issuing_authority: label === 'License Authority' ? value : prev?.license_issuing_authority,
                 current_occupation: label === 'Pilot Status' || label === 'License Type' ? value : prev?.current_occupation,
                 career_stage: label === 'Pilot Status' ? value : prev?.career_stage,
+                bio: label === 'bio' ? value : prev?.bio,
+                linkedin_url: label === 'linkedin' ? value : prev?.linkedin_url,
+                instagram_url: label === 'instagram' ? value : prev?.instagram_url,
             }));
         } catch (e) {
             console.error('[TILE EDIT] Save failed:', e);
@@ -591,6 +649,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 const injLicenseType = (decryptedProfile.license_types?.length > 0 ? decryptedProfile.license_types.join(', ') : null)
                     || decryptedProfile.current_occupation || 'None';
 
+                const isCipher = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
+                const safe = (v: any) => (v && !isCipher(v)) ? v : '';
                 const merged = {
                     ...decryptedProfile,
                     user_id: decryptedProfile.id,
@@ -599,7 +659,21 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     overall_recognition_score: decryptedProfile.recognition_score || 0,
                     recognition_score: decryptedProfile.recognition_score || 0,
                     license_type: injLicenseType,
-                    license_authority: decryptedProfile.license_issuing_authority || decryptedProfile.country_of_license || '',
+                    // Flat readable aliases for walletDisplay fallback lookups
+                    license_number:          safe(decryptedProfile.license_number || decryptedProfile.license_id),
+                    license_id:              safe(decryptedProfile.license_id || decryptedProfile.license_number),
+                    license_authority:       safe(decryptedProfile.license_issuing_authority || decryptedProfile.country_of_license),
+                    license_issuing_authority: safe(decryptedProfile.license_issuing_authority || decryptedProfile.country_of_license),
+                    country_of_license:      safe(decryptedProfile.country_of_license),
+                    elp_level:               safe(decryptedProfile.language_proficiency || decryptedProfile.elp_level),
+                    english_proficiency_level: safe(decryptedProfile.language_proficiency || decryptedProfile.elp_level),
+                    language_proficiency:    safe(decryptedProfile.language_proficiency || decryptedProfile.elp_level),
+                    license_expiry:          safe(decryptedProfile.license_expiry),
+                    medical_expiry:          safe(decryptedProfile.medical_expiry),
+                    elp_expiry:              safe(decryptedProfile.elp_expiry),
+                    license_issue_date:      safe(decryptedProfile.license_issue_date),
+                    career_stage:            safe(decryptedProfile.career_stage || decryptedProfile.current_occupation),
+                    current_occupation:      safe(decryptedProfile.current_occupation),
                     medical_status: 'None',
                     pathway_interests: decryptedProfile.pathway_interests || [],
                     certifications: decryptedProfile.certifications || [],
@@ -775,6 +849,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             setRecommendedPathways([]);
         } finally {
             setLoading(false);
+            // Small delay so loading bar completes before content materialises
+            setTimeout(() => setProfileReady(true), 120);
         }
     };
 
@@ -788,45 +864,91 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         WebkitBackdropFilter: 'blur(14px)'
     };
 
+    // Animate load progress bar while fetching
+    useEffect(() => {
+        if (!loading) { setLoadProgress(100); return; }
+        setLoadProgress(0);
+        const ticks = [10, 25, 45, 62, 78, 88, 94];
+        const timers: ReturnType<typeof setTimeout>[] = [];
+        ticks.forEach((val, i) => {
+            timers.push(setTimeout(() => setLoadProgress(val), 300 + i * 380));
+        });
+        return () => timers.forEach(clearTimeout);
+    }, [loading]);
+
     if (loading) {
         return (
-            <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
-                <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
-                    <MeshGradient
-                        className="w-full h-full"
-                        colors={[
-                            "#dbeafe",
-                            "#94a3b8",
-                            "#64748b",
-                            "#475569",
-                            "#334155",
-                            "#1e3a5f",
-                            "#1e3a8a",
-                            "#0f172a"
-                        ]}
-                        speed={0.22}
-                    />
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(100,116,139,0.2), rgba(30,41,59,0.35), rgba(15,23,42,0.6))' }} />
-                    <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
-                </div>
-                <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ 
-                            width: '48px', height: '48px', border: '3px solid rgba(255,255,255,0.2)', 
-                            borderTopColor: '#3b82f6', borderRadius: '50%', 
-                            animation: 'spin 1s linear infinite', margin: '0 auto'
-                        }}></div>
-                        <p style={{ marginTop: '1rem', color: 'rgba(255,255,255,0.7)' }}>Loading your recognition profile...</p>
-                    </div>
-                </div>
-                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-            </div>
+            <AnimatePresence>
+                <motion.div
+                    key="profile-loading"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(8,12,22,0.97)', backdropFilter: 'blur(20px)' }}
+                >
+                    {/* Wordmark */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, ease: 'easeOut' }}
+                        style={{ marginBottom: '2.5rem', textAlign: 'center' }}
+                    >
+                        <p style={{ margin: 0, fontSize: '1.75rem', fontFamily: 'Arial Black, Helvetica Neue, sans-serif', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                            <span style={{ color: '#ffffff' }}>pilot</span>
+                            <span style={{ color: '#ef4444' }}>recognition</span>
+                            <span style={{ color: '#ffffff' }}>.com</span>
+                        </p>
+                        <p style={{ margin: '0.5rem 0 0', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>Recognition Profile</p>
+                    </motion.div>
+
+                    {/* Animated avatar placeholder */}
+                    <motion.div
+                        initial={{ scale: 0.7, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.45, delay: 0.15, ease: [0.34, 1.56, 0.64, 1] }}
+                        style={{ width: 72, height: 72, borderRadius: '50%', background: 'rgba(59,130,246,0.15)', border: '2px solid rgba(59,130,246,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}
+                    >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </motion.div>
+
+                    {/* Loading bar */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25, duration: 0.4 }}
+                        style={{ width: 260, textAlign: 'center' }}
+                    >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                            <span style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', fontWeight: 700 }}>Loading profile data</span>
+                            <span style={{ fontSize: '0.6rem', color: 'rgba(96,165,250,0.6)', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{loadProgress}%</span>
+                        </div>
+                        <div style={{ height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 99, overflow: 'hidden' }}>
+                            <motion.div
+                                animate={{ width: `${loadProgress}%` }}
+                                transition={{ duration: 0.5, ease: 'easeOut' }}
+                                style={{ height: '100%', background: 'linear-gradient(90deg, #3b82f6, #60a5fa)', borderRadius: 99 }}
+                            />
+                        </div>
+                        <p style={{ marginTop: '0.75rem', fontSize: '0.65rem', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em' }}>Decrypting credentials &amp; syncing recognition score…</p>
+                    </motion.div>
+                    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                </motion.div>
+            </AnimatePresence>
         );
     }
 
     const pilotName = profileData?.full_name || 'Pilot Profile';
     const initials = pilotName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+
+    // DEBUG: Show current page state
+    console.log('[PilotRecognitionProfilePage] STATE:', { 
+        showWalletGate, 
+        showWalletView, 
+        activeSection, 
+        hasUser: !!currentUser 
+    });
 
     return (
         <div 
@@ -853,279 +975,196 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                         grid-template-columns: 1fr !important;
                     }
                 }
+                @keyframes unverified-pulse {
+                    0%   { opacity: 0.9; transform: scale(1); }
+                    50%  { opacity: 1;   transform: scale(1.02); }
+                    100% { opacity: 0.9; transform: scale(1); }
+                }
             `}</style>
-            {/* MeshGradient Background - Same as Portal 2 */}
-            {!embedded && <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
-                <MeshGradient
-                    className="w-full h-full"
-                    colors={[
-                        "#dbeafe",
-                        "#94a3b8",
-                        "#64748b",
-                        "#475569",
-                        "#334155",
-                        "#1e3a5f",
-                        "#1e3a8a",
-                        "#0f172a"
-                    ]}
-                    speed={0.22}
-                />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(100,116,139,0.2), rgba(30,41,59,0.35), rgba(15,23,42,0.6))' }} />
-                <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
-            </div>}
-            <main style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: embedded ? '100%' : '1200px', margin: embedded ? '0' : '0 auto', minHeight: embedded ? 'auto' : '100vh' }}>
-                {/* Portal 2 Navigation Bar */}
-                {!embedded && <div
-                    className="relative z-50 flex items-center justify-between px-4 py-2"
-                    style={{
-                        background: 'rgba(15, 23, 42, 0.9)',
-                        backdropFilter: 'blur(10px)',
-                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                    }}
-                >
-                    {/* Left - Navigation Items */}
-                    <div className="flex items-center">
-                        {[
-                            { id: 'welcome', label: 'WELCOME', icon: Home },
-                            { id: 'profile', label: 'PROFILE', icon: null },
-                            { id: 'pathways', label: 'PATHWAYS', icon: null },
-                            { id: 'marketplace', label: 'NEWS ROOM', icon: null },
-                            { id: 'options', label: 'OPTIONS', icon: null },
-                        ].map((item) => {
-                            const Icon = item.icon;
-                            const isActive = item.id === 'profile';
-                            return (
-                                <button
-                                    key={item.id}
-                                    onClick={() => {
-                                        if (item.id === 'welcome') {
-                                            onNavigate('home');
-                                        } else if (item.id === 'profile') {
-                                            // Stay on current page
-                                        } else if (item.id === 'pathways') {
-                                            onNavigate('access-portal-2');
-                                        } else {
-                                            onNavigate(item.id);
-                                        }
-                                    }}
-                                    className="relative px-4 py-2 flex items-center gap-2 transition-all duration-200"
-                                    style={{
-                                        background: isActive ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-                                        color: isActive ? '#0f172a' : 'rgba(255, 255, 255, 0.7)',
-                                        borderBottom: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
-                                    }}
-                                >
-                                    {Icon && <Icon className="w-4 h-4" />}
-                                    <span className="text-xs font-bold tracking-wider">{item.label}</span>
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    {/* Right - User Info */}
-                    <div className="flex items-center gap-4">
-                        {/* Profile Picture */}
-                        <div className="relative" ref={profileDropdownRef}>
-                            <button
-                                onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                                className="w-12 h-14 rounded-[50%/40%] bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all hover:scale-105 shadow-lg overflow-hidden"
-                                title="Profile"
-                                style={{ borderRadius: '45% / 50%' }}
-                            >
-                                <ProfileImage
-                                    url={profileData?.profile_image_url}
-                                    publicId={profileData?.profile_image_public_id}
-                                    name={profileData?.full_name}
-                                    size={48}
-                                    className="w-full h-full"
-                                    fallbackClassName="rounded-[45%/50%] bg-slate-100 text-slate-700 text-lg"
-                                />
-                            </button>
-
-                            {/* Profile Dropdown Menu */}
-                            {isProfileDropdownOpen && (
-                                <>
-                                    <div
-                                        className="fixed inset-0 z-40"
-                                        onClick={() => setIsProfileDropdownOpen(false)}
-                                    />
-                                    <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
-                                        <div className="p-4 border-b border-slate-200">
-                                            <h3 className="font-semibold text-slate-900">{profileData?.full_name || 'Pilot'}</h3>
-                                            <p className="text-xs text-slate-500">{profileData?.license_type || 'Student Pilot'}</p>
-                                        </div>
-                                        <div className="p-2">
-                                            <button
-                                                onClick={() => {
-                                                    setIsProfileDropdownOpen(false);
-                                                }}
-                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                            >
-                                                <User className="w-4 h-4 text-slate-600" />
-                                                <span className="text-sm text-slate-700">View Profile</span>
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    onNavigate('access-portal-2?tab=programs');
-                                                    setIsProfileDropdownOpen(false);
-                                                }}
-                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                            >
-                                                <BookOpen className="w-4 h-4 text-slate-600" />
-                                                <span className="text-sm text-slate-700">My Programs</span>
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setIsProfileDropdownOpen(false);
-                                                }}
-                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                            >
-                                                <Settings className="w-4 h-4 text-slate-600" />
-                                                <span className="text-sm text-slate-700">Settings</span>
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    // Handle logout
-                                                    setIsProfileDropdownOpen(false);
-                                                }}
-                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                            >
-                                                <LogOut className="w-4 h-4 text-slate-600" />
-                                                <span className="text-sm text-slate-700">Sign Out</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
+            {/* Transparent background - parent Portal 2 MeshGradient shows through */}
+            {!embedded && <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: 'transparent' }} />}
+            <AnimatePresence>
+            {profileReady && (
+            <motion.div
+                key="profile-content"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.35 }}
+                style={{ position: 'relative', zIndex: 10, display: 'flex', minHeight: embedded ? 'auto' : '100vh' }}
+            >
+                {/* MSFS 2024 Style Sidebar */}
+                {!embedded && (
+                    <motion.aside
+                        initial={{ opacity: 0, x: -32 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                        style={{
+                        width: '280px',
+                        flexShrink: 0,
+                        padding: '5rem 1rem 2rem 4rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.75rem',
+                        background: 'transparent',
+                        position: 'fixed',
+                        left: 0,
+                        top: 0,
+                        height: '100vh',
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                        boxSizing: 'border-box',
+                    }}>
+                        {/* Header with chevron like MSFS */}
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            marginBottom: '1.5rem',
+                            paddingLeft: '0.25rem',
+                            overflow: 'hidden',
+                            width: '100%'
+                        }}>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                            <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                                <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot profile</p>
+                                <p style={{ margin: '2px 0 0', fontSize: '1.5rem', fontWeight: 400, color: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>My Profile</p>
+                            </div>
                         </div>
 
-                        {/* Settings Dropdown */}
-                        <div className="relative" ref={settingsDropdownRef}>
-                            <button
-                                onClick={() => setIsSettingsDropdownOpen(!isSettingsDropdownOpen)}
-                                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all"
-                                title="Settings"
-                            >
-                                <Settings className="w-5 h-5" />
-                            </button>
-
-                            {/* Settings Dropdown Menu */}
-                            {isSettingsDropdownOpen && (
-                                <>
-                                    <div
-                                        className="fixed inset-0 z-40"
-                                        onClick={() => setIsSettingsDropdownOpen(false)}
-                                    />
-                                    <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50">
-                                        <div className="p-4 border-b border-slate-200">
-                                            <h3 className="font-semibold text-slate-900">Quick Settings</h3>
-                                        </div>
-                                        <div className="p-2">
-                                            <button
-                                                onClick={() => {
-                                                    onNavigate('settings');
-                                                    setIsSettingsDropdownOpen(false);
-                                                }}
-                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                            >
-                                                <Settings className="w-4 h-4 text-slate-600" />
-                                                <span className="text-sm text-slate-700">Account Settings</span>
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    onNavigate('pilot-recognition-profile');
-                                                    setIsSettingsDropdownOpen(false);
-                                                }}
-                                                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors text-left"
-                                            >
-                                                <Users className="w-4 h-4 text-slate-600" />
-                                                <span className="text-sm text-slate-700">Profile</span>
-                                            </button>
-                                            <div className="border-t border-slate-200 my-2"></div>
-                                            <div className="px-3 py-2">
-                                                <p className="text-xs text-slate-500 mb-2">Theme</p>
-                                                <div className="flex gap-2">
-                                                    <button
-                                                        onClick={() => {
-                                                            toggleTheme('light');
-                                                            setIsSettingsDropdownOpen(false);
-                                                        }}
-                                                        className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all ${theme === 'light' ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                                                    >
-                                                        <Sun className="w-4 h-4" />
-                                                        <span className="text-sm">Light</span>
-                                                    </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            toggleTheme('dark');
-                                                            setIsSettingsDropdownOpen(false);
-                                                        }}
-                                                        className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all ${theme === 'dark' ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                                                    >
-                                                        <Moon className="w-4 h-4" />
-                                                        <span className="text-sm">Dark</span>
-                                                    </button>
+                        {/* Navigation Items - MSFS 2024 Rectangular Floating Style */}
+                        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
+                            {[
+                                { id: 'overview',   label: 'Overview' },
+                                { id: 'statistics', label: 'Licensure & Currency' },
+                                { id: 'logbook',    label: 'Digital Flight Logbooks' },
+                                { id: 'photos',     label: 'Certificates & Endorsements' },
+                                { id: 'identity',   label: 'About & Experience' },
+                                { id: 'vault',      label: 'Access Vault', isVault: true },
+                            ].map((item: any) => {
+                                const isVaultItem = item.isVault;
+                                const isVaultActive = isVaultItem && (activeSection === 'vault' || showWalletGate || showWalletView);
+                                const isActive = isVaultItem ? isVaultActive : activeSection === item.id;
+                                return (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => setActiveSection(item.id as ProfileSection)}
+                                        style={{
+                                            position: 'relative',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            padding: '0.875rem 1rem',
+                                            borderRadius: '4px',
+                                            border: 'none',
+                                            background: isVaultItem
+                                                ? (isActive ? '#ffffff' : 'rgba(255,255,255,0.92)')
+                                                : isActive
+                                                ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
+                                                : 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)',
+                                        border: isVaultItem ? `2px solid ${isActive ? '#dc2626' : 'rgba(220,38,38,0.4)'}` : 'none',
+                                            color: isVaultItem ? '#111827' : '#ffffff',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s ease',
+                                            textAlign: 'left',
+                                            fontSize: '0.85rem',
+                                            fontWeight: 500,
+                                            boxShadow: isVaultItem
+                                                ? (isActive ? '0 4px 20px rgba(220,38,38,0.4)' : '0 4px 20px rgba(0,0,0,0.3)')
+                                                : isActive
+                                                ? '0 4px 15px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)'
+                                                : '0 2px 8px rgba(0,0,0,0.2)',
+                                            overflow: 'hidden',
+                                            width: '100%',
+                                            minWidth: 0
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            if (!isActive) {
+                                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(29, 78, 216, 0.2) 100%)';
+                                                e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.2)';
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (!isActive) {
+                                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)';
+                                                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                                            }
+                                        }}
+                                    >
+                                        {isVaultItem ? (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden', minWidth: 0 }}>
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                                <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                                                    <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 700, color: '#111827', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ color: '#111827' }}>Access </span><span style={{ color: '#dc2626' }}>Wallet</span></p>
+                                                    <p style={{ margin: '1px 0 0', fontSize: '0.55rem', color: '#6b7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Pilot Credential Wallet</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </div>
+                                        ) : (
+                                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', minWidth: 0 }}>{item.label}</span>
+                                        )}
+                                        {isActive && (
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isVaultItem ? '#dc2626' : 'currentColor'} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </nav>
 
-                        {/* Notification Bell */}
-                        <div className="relative" ref={notificationDropdownRef}>
-                            <button 
-                                onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
-                                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
-                                title="Notifications"
-                            >
-                                <Bell className="w-5 h-5" />
-                                {notificationCount > 0 && (
-                                    <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-red-500 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-red-500">
-                                        {notificationCount > 9 ? '9+' : notificationCount}
-                                    </span>
-                                )}
-                            </button>
+                    </motion.aside>
+                )}
 
-                            {/* Notification Dropdown */}
-                            {isNotificationDropdownOpen && (
-                                <>
-                                    <div
-                                        className="fixed inset-0 z-40"
-                                        onClick={() => setIsNotificationDropdownOpen(false)}
-                                    />
-                                    <div className="absolute right-0 top-full mt-2 w-96 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 max-h-[500px] overflow-hidden flex flex-col">
-                                        {/* Header */}
-                                        <div className="p-4 border-b border-slate-200">
-                                            <h3 className="font-semibold text-slate-900">Notifications</h3>
-                                        </div>
-                                        
-                                        {/* Notifications List */}
-                                        <div className="overflow-y-auto flex-1">
-                                            {notifications.length === 0 ? (
-                                                <div className="p-8 text-center">
-                                                    <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                                                    <p className="text-slate-500 text-sm">No notifications yet</p>
-                                                </div>
-                                            ) : (
-                                                <div className="p-2">
-                                                    {notifications.map((notification, index) => (
-                                                        <div key={index} className="p-3 hover:bg-slate-50 rounded-lg transition-colors">
-                                                            <p className="text-sm text-slate-900">{notification.message}</p>
-                                                            <p className="text-xs text-slate-500 mt-1">{notification.time}</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>}
+                <main style={{ 
+                    position: 'relative', 
+                    zIndex: 10, 
+                    flex: 1, 
+                    maxWidth: embedded ? '100%' : 'none', 
+                    margin: embedded ? '0' : '0 0 0 280px', 
+                    minHeight: embedded ? 'auto' : '100vh', 
+                    overflowY: 'auto', 
+                    paddingTop: embedded ? 0 : '1rem'
+                }}>
+
+                {/* Recognition Score Display */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '1rem 1.5rem 0', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+                        {recognitionScoreData ? (
+                            <ScoreOptimizationGuide
+                                currentScore={calculateRecognitionScore({
+                                    stats: {
+                                        totalHours: profileData?.total_hours || 0,
+                                        picHours: profileData?.pic_hours || 0,
+                                        ifrHours: profileData?.ifr_hours || 0,
+                                        nightHours: profileData?.night_hours || 0,
+                                    },
+                                    experience: {
+                                        years: profileData?.experience_years || 0,
+                                        achievements: profileData?.certifications?.length || 0,
+                                        licenses: profileData?.type_ratings?.length || 0,
+                                    },
+                                    assessments: {
+                                        programCompletion: 0,
+                                        performanceScore: profileData?.overall_recognition_score || 0,
+                                    },
+                                    mentorship: {
+                                        hours: 0,
+                                        observations: 0,
+                                        cases: 0,
+                                    },
+                                })}
+                                isPremium={isPremium}
+                                userId={profileData?.user_id}
+                                limit={3}
+                                onViewAll={() => onNavigate('score-optimization')}
+                                onNavigate={onNavigate}
+                            />
+                        ) : null}
+                </motion.div>
 
                 {/* ── UPGRADE MODAL (free tier) ── */}
                 {showUpgradeModal && (
@@ -1185,22 +1224,30 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 {/* ── WALLET GATE OVERLAY ── */}
                 {showWalletGate && (
                     <WalletLoadingScreen
+                        embedded={true}
                         onComplete={() => {
+                            // Cancel pressed - go back to overview
                             setShowWalletGate(false);
-                            setShowWalletView(true);
+                            setShowWalletView(false);
+                            setActiveSection('overview');
                         }}
                     />
                 )}
 
                 {/* ── WALLET VIEW PAGE (post-auth) ── */}
-                {showWalletView && (
-                    <WalletViewPage
-                        userId={currentUser?.id}
-                        onBack={() => setShowWalletView(false)}
-                    />
-                )}
+                {showWalletView && (() => {
+                    console.log('>>> RENDERING WalletPageWithSidebar! showWalletView=true (noSidebar mode)');
+                    return (
+                        <WalletPageWithSidebar
+                            userId={currentUser?.id}
+                            onNavigate={() => setShowWalletView(false)}
+                            noSidebar={true}
+                        />
+                    );
+                })()}
 
                 {/* ── ACCESS WALLET BANNER ── */}
+                {!showWalletGate && !showWalletView && (activeSection === 'overview' || activeSection === 'statistics') && (
                 <div style={{ padding: '1.5rem clamp(1.5rem, 4vw, 3.5rem) 0' }}>
                     <div style={{
                         background: 'white',
@@ -1213,41 +1260,25 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.25rem 1.5rem', flexWrap: 'wrap' }}>
                             {/* Icon */}
-                            <div style={{ width: 48, height: 48, borderRadius: 12, background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <div style={{ width: 48, height: 48, borderRadius: 12, background: '#fff1f1', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                    <line x1="1" y1="10" x2="23" y2="10"/>
                                 </svg>
                             </div>
 
                             {/* Text */}
                             <div style={{ flex: 1, minWidth: 200 }}>
-                                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 4 }}>
-                                    Pilot Credential Vault
+                                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 4, color: '#0f172a' }}>
+                                    Powered By <span style={{ color: '#dc2626' }}>walt.id</span>
                                 </p>
-                                <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    {isPremium ? 'Access Your Wallet' : 'Unlock Secure Document Storage'}
-                                    {!isPremium && <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', border: 'none', borderRadius: 20, fontSize: 10, fontWeight: 700, color: '#fff', letterSpacing: '0.05em', boxShadow: '0 0 10px rgba(229,62,62,0.25)' }}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Recognition+</span>}
+                                <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, margin: 0 }}>
+                                    {isPremium ? 'Access Your Wallet' : 'Pilot Identity Credentials Wallet (PIC)'}
                                 </p>
-                                <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>
-                                    {isPremium ? 'Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.' : 'Securely store PDFs of your FAA/CASA licences and medical certificates with zero-knowledge encryption — exclusive to Recognition+.'}
-                                </p>
-                            </div>
-
-                            {/* Status pills */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#94a3b8', flexShrink: 0 }} />
-                                    <span style={{ fontSize: 10, fontWeight: 600, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                                        {profileData?.verification_status || 'Unverified'}
-                                    </span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                    <span style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>AES-256-GCM</span>
-                                </div>
                             </div>
 
                             {/* CTA button */}
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
                             <button
                                 onClick={() => setShowWalletGate(true)}
                                 style={{
@@ -1270,42 +1301,62 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#dc2626'; }}
                             >
                                 {!isPremium && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
-                                {isPremium ? 'Open Wallet' : 'Upgrade to Unlock'}
+                                {isPremium ? 'Open Wallet' : 'Access Wallet'}
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                             </button>
+                            <p style={{ fontSize: 10, color: '#94a3b8', margin: '6px 0 0', textAlign: 'center', lineHeight: 1.4, flexShrink: 0 }}>Upload credentials securely<br/>and encrypted with pilot consent</p>
+                            </div>
+
+                            {/* Full-width red notice box */}
+                            <div style={{ background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.18)', borderRadius: '10px', padding: '14px 18px', backdropFilter: 'blur(4px)' }}>
+                                <p style={{ fontSize: 13, color: '#7f1d1d', lineHeight: 1.75, margin: 0, fontWeight: 500 }}>
+                                    {isPremium
+                                        ? 'Enter your credentials, upload verification documents, and build your Pre-Cleared pilot profile — zero-knowledge encrypted and fully pilot-owned.'
+                                        : 'Verify your credentials to international standards — verified flight hours via ATOs, government-compliant licence checks, medical currency monitoring, and full profile readiness for pathway submissions.'}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                )}
 
-                <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                {/* ── OVERVIEW SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'overview' && (
+                <motion.section
+                    key="overview"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                         <CategorySection title="Pilot Data" description="Identity, credentials, flight activity, and core hour summaries">
-                            <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'stretch' }}>
-                                {/* Profile Card */}
-                                <div style={{ ...baseCardStyle, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1.25rem', justifyContent: 'space-between' }}>
-                                    <div>
+                            <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', alignItems: 'stretch' }}>
+                                {/* Profile Overview Card - Image 1 Style */}
+                                <div style={{ ...baseCardStyle, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '0.85rem', justifyContent: 'flex-start', height: '100%' }}>
+                                    {/* Profile Photo */}
+                                    <div style={{ position: 'relative', margin: '0 auto' }}>
                                         <div style={{
-                                            width: '100px',
-                                            height: '100px',
+                                            width: '80px',
+                                            height: '80px',
                                             borderRadius: '50%',
                                             backgroundColor: '#0f172a',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            margin: '0 auto 1rem',
-                                            fontSize: '2rem',
+                                            fontSize: '1.6rem',
                                             fontWeight: 600,
                                             color: 'white',
-                                            boxShadow: '0 15px 35px rgba(15, 23, 42, 0.25), 0 0 0 3px rgba(37, 99, 235, 0.5)',
+                                            boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.5), 0 6px 20px rgba(15, 23, 42, 0.4)',
                                             overflow: 'hidden',
                                             position: 'relative',
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease'
                                         }}
                                         onClick={() => fileInputRef.current?.click()}
-                                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
                                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                        title="Click to upload profile image"
+                                        title="Click to upload profile photo"
                                         >
                                             {uploadingImage ? (
                                                 <div style={{ color: 'white', fontSize: '0.75rem', textAlign: 'center' }}>Uploading...</div>
@@ -1315,7 +1366,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                         url={profileData?.profile_image_url}
                                                         publicId={profileData?.profile_image_public_id}
                                                         name={profileData?.full_name}
-                                                        size={100}
+                                                        size={80}
                                                         className="w-full h-full"
                                                         fallbackClassName="rounded-full bg-slate-900 text-white text-2xl"
                                                     />
@@ -1334,135 +1385,113 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                     onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
                                                     onMouseLeave={(e) => e.currentTarget.style.opacity = '0'}
                                                     >
-                                                        Change
+                                                        Change Photo
                                                     </div>
                                                 </>
                                             )}
                                         </div>
-                                        <input
-                                            type="file"
-                                            ref={fileInputRef}
-                                            onChange={handleImageUpload}
-                                            accept="image/*"
-                                            style={{ display: 'none' }}
-                                        />
-                                        <h2 style={{ fontSize: '1.4rem', color: '#ffffff', marginBottom: '0.25rem', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>{pilotName}</h2>
-                                        {!isPremium && (
-                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 9px', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.35)', borderRadius: 20, fontSize: '0.62rem', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.04em', marginBottom: '0.25rem' }}>
-                                                ⚠️ Unverified Account — Self-Declared Data
-                                            </span>
-                                        )}
-                                        <p style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 600, letterSpacing: '0.18em', marginBottom: '0.2rem' }}>
+                                        {/* Online indicator */}
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: '3px',
+                                            right: '3px',
+                                            width: '12px',
+                                            height: '12px',
+                                            borderRadius: '50%',
+                                            background: '#22c55e',
+                                            border: '2px solid #1e293b',
+                                            boxShadow: '0 0 0 2px rgba(34, 197, 94, 0.3)'
+                                        }} />
+                                    </div>
+
+                                    <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" style={{ display: 'none' }} />
+
+                                    {/* Name & Title */}
+                                    <div>
+                                        <h2 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.2rem', fontWeight: 600 }}>{pilotName}</h2>
+                                        <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: '0 0 0.5rem' }}>
                                             {(() => {
                                                 const license = profileData?.license_type || '';
                                                 const licenseLower = license.toLowerCase();
-                                                let highestLicense = '';
-                                                let licenseNumber = '';
-
-                                                // Check in order of ranking: CPL > PPL > SPL
-                                                if (licenseLower.includes('cpl')) {
-                                                    highestLicense = 'CPL';
-                                                } else if (licenseLower.includes('ppl')) {
-                                                    highestLicense = 'PPL';
-                                                } else if (licenseLower.includes('spl')) {
-                                                    highestLicense = 'SPL';
-                                                }
-
-                                                // Build license display string
-                                                let licenseDisplay = '';
-                                                if (highestLicense) {
-                                                    licenseDisplay = highestLicense;
-                                                }
-
-                                                // Add country of license if available
-                                                if (profileData?.country_of_license) {
-                                                    licenseDisplay += ` (${profileData.country_of_license})`;
-                                                }
-
-                                                // Add expiration date if available
-                                                if (profileData?.license_expiration) {
-                                                    const expDate = new Date(profileData.license_expiration);
-                                                    const formattedDate = expDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                                                    licenseDisplay += ` • Exp: ${formattedDate}`;
-                                                }
-
-                                                // Add recurrency if available
-                                                if (profileData?.recurrency_date) {
-                                                    const recDate = new Date(profileData.recurrency_date);
-                                                    const formattedDate = recDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                                                    licenseDisplay += ` • Rec: ${formattedDate}`;
-                                                }
-
-                                                // Add CFI prof check date if CFI is mentioned
-                                                if (licenseLower.includes('cfi') && profileData?.prof_check_date) {
-                                                    const profDate = new Date(profileData.prof_check_date);
-                                                    const formattedDate = profDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                                                    licenseDisplay += ` • Prof: ${formattedDate}`;
-                                                }
-
-                                                // Add ratings and certifications
-                                                const additionalInfo = [];
-                                                if (profileData?.type_ratings?.length > 0) {
-                                                    additionalInfo.push(`${profileData.type_ratings.length} Ratings`);
-                                                }
-                                                if (profileData?.certifications?.length > 0) {
-                                                    additionalInfo.push(`${profileData.certifications.length} Certs`);
-                                                }
-
-                                                if (licenseDisplay && additionalInfo.length > 0) {
-                                                    licenseDisplay += ' • ' + additionalInfo.join(' • ');
-                                                } else if (!licenseDisplay && additionalInfo.length > 0) {
-                                                    licenseDisplay = additionalInfo.join(' • ');
-                                                }
-
-                                                if (!licenseDisplay) {
-                                                    const occ = profileData?.current_occupation || '';
-                                                    if (occ) return `${occ} — Self-Declared`;
-                                                    return 'License: Pending Verification';
-                                                }
-                                                return licenseDisplay;
+                                                if (licenseLower.includes('atpl')) return 'Airline Transport Pilot (ATPL)';
+                                                if (licenseLower.includes('cpl')) return 'Commercial Pilot (CPL)';
+                                                if (licenseLower.includes('ppl')) return 'Private Pilot (PPL)';
+                                                if (licenseLower.includes('spl')) return 'Student Pilot (SPL)';
+                                                return 'Pilot — Verification Pending';
                                             })()}
                                         </p>
-                                        {(profileData?.email) && (
-                                            <p style={{ fontSize: '0.8rem', color: '#64748b' }}>{profileData.email}</p>
-                                        )}
-                                        {!profileData?.email && currentUser?.id && (
-                                            <p style={{ fontSize: '0.72rem', color: '#475569', fontFamily: 'monospace', letterSpacing: '0.02em', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 220 }}>did:key:{currentUser.id.slice(0,16)}…</p>
+                                        {/* License Number */}
+                                        {profileData?.license_number && (
+                                            <p style={{ fontSize: '0.75rem', color: '#64748b', margin: 0, fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+                                                #{profileData.license_number} • {profileData?.license_status || 'Current'}
+                                            </p>
                                         )}
                                     </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.75rem', width: '100%' }}>
-                                        {[
-                                            { label: 'Flight Hours', value: profileData?.total_hours || 0, unverified: true },
-                                            { label: 'Recognition Score', value: profileData?.overall_recognition_score || 0 }
-                                        ].map(tile => (
-                                            <div key={tile.label} style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                                                <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.12em', color: '#94a3b8', textTransform: 'uppercase' }}>{tile.label}</p>
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
-                                                {tile.unverified && (
-                                                    <button
-                                                        onClick={() => isPremium ? setShowWalletGate(true) : setShowUpgradeModal(true)}
-                                                        style={{ marginTop: '0.4rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em', cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(229,62,62,0.3)' }}
-                                                    >
-                                                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                                        Sync Logbook
-                                                    </button>
-                                                )}
+
+                                    {/* Bio Section */}
+                                    <div style={{ textAlign: 'left', width: '100%' }}>
+                                        <p style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 0.5rem' }}>Bio</p>
+                                        <button
+                                            onClick={() => setActiveSection('identity')}
+                                            style={{ width: '100%', cursor: 'pointer', padding: '12px 16px', background: 'rgba(30,41,59,0.5)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', transition: 'all 0.18s', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}
+                                            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(99,102,241,0.45)'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(99,102,241,0.12)'; }}
+                                            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(30,41,59,0.5)'; }}
+                                        >
+                                            <span style={{ fontSize: '0.82rem', fontWeight: 500, color: '#cbd5e1', letterSpacing: '0.01em' }}>View About &amp; Experience</span>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                                        </button>
+                                    </div>
+
+                                    {/* Social Links — side by side, icon + label below */}
+                                    <div style={{ display: 'flex', gap: '0.6rem', justifyContent: 'center' }}>
+                                        {/* LinkedIn */}
+                                        <a
+                                            href={profileData?.linkedin_url || '#'}
+                                            onClick={e => { if (!profileData?.linkedin_url) { e.preventDefault(); setEditingTile('linkedin'); setTileEditValue(''); } }}
+                                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: '8px 14px', background: profileData?.linkedin_url ? 'rgba(10,102,194,0.15)' : 'rgba(30,41,59,0.6)', border: `1px solid ${profileData?.linkedin_url ? 'rgba(10,102,194,0.4)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '8px', color: profileData?.linkedin_url ? '#0a66c2' : '#64748b', fontSize: '0.65rem', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s', minWidth: 54 }}
+                                            target="_blank" rel="noopener noreferrer"
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                            {profileData?.linkedin_url ? 'LinkedIn' : 'Add'}
+                                        </a>
+                                        {/* Instagram */}
+                                        <a
+                                            href={profileData?.instagram_url || '#'}
+                                            onClick={e => { if (!profileData?.instagram_url) { e.preventDefault(); setEditingTile('instagram'); setTileEditValue(''); } }}
+                                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: '8px 14px', background: profileData?.instagram_url ? 'rgba(225,48,108,0.15)' : 'rgba(30,41,59,0.6)', border: `1px solid ${profileData?.instagram_url ? 'rgba(225,48,108,0.4)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '8px', color: profileData?.instagram_url ? '#e1306c' : '#64748b', fontSize: '0.65rem', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s', minWidth: 54 }}
+                                            target="_blank" rel="noopener noreferrer"
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                                            {profileData?.instagram_url ? 'Instagram' : 'Add'}
+                                        </a>
+                                    </div>
+
+                                    {/* Social Link Editing Panel */}
+                                    {(editingTile === 'linkedin' || editingTile === 'instagram') && (
+                                        <div style={{ padding: '12px', background: 'rgba(30,41,59,0.8)', borderRadius: '8px', border: '1px solid rgba(99,102,241,0.3)', marginTop: '0.5rem' }}>
+                                            <p style={{ margin: '0 0 8px', fontSize: '0.75rem', color: '#94a3b8' }}>
+                                                {editingTile === 'linkedin' ? 'Enter your LinkedIn profile URL' : 'Enter your Instagram profile URL'}
+                                            </p>
+                                            <input
+                                                autoFocus
+                                                type="url"
+                                                value={tileEditValue}
+                                                onChange={e => setTileEditValue(e.target.value)}
+                                                onKeyDown={e => { if (e.key === 'Enter') saveTileEdit(editingTile === 'linkedin' ? 'linkedin' : 'instagram', tileEditValue); if (e.key === 'Escape') setEditingTile(null); }}
+                                                placeholder={editingTile === 'linkedin' ? 'https://linkedin.com/in/yourprofile' : 'https://instagram.com/yourhandle'}
+                                                style={{ width: '100%', padding: '8px 12px', background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(99,102,241,0.5)', borderRadius: '6px', color: '#fff', fontSize: '0.8rem', outline: 'none', boxSizing: 'border-box', marginBottom: '8px' }}
+                                            />
+                                            <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                                                <button onClick={() => saveTileEdit(editingTile === 'linkedin' ? 'linkedin' : 'instagram', tileEditValue)} style={{ padding: '4px 12px', background: '#6366f1', border: 'none', borderRadius: '6px', color: '#fff', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Save</button>
+                                                <button onClick={() => setEditingTile(null)} style={{ padding: '4px 12px', background: 'rgba(255,255,255,0.07)', border: 'none', borderRadius: '6px', color: '#94a3b8', fontSize: '0.75rem', cursor: 'pointer' }}>Cancel</button>
                                             </div>
-                                        ))}
-                                    </div>
-                                    <div style={{ textAlign: 'center', marginTop: '0.75rem' }}>
-                                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                                            {profileData?.enrolled_programs?.includes('Foundational') && (
-                                                <span style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 500, padding: '0.25rem 0.75rem', background: 'rgba(37, 99, 235, 0.1)', borderRadius: '999px' }}>
-                                                    Foundation Program
-                                                </span>
-                                            )}
                                         </div>
-                                    </div>
+                                    )}
+
                                 </div>
 
                                 {/* Credentials Card */}
-                                <div style={{ ...baseCardStyle, display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+                                <div style={{ ...baseCardStyle, display: 'flex', flexDirection: 'column', gap: '0.75rem', height: '100%' }}>
                                     <div>
                                         <h3 style={{ margin: 0, fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Pilot Credentials</h3>
                                         <p style={{ margin: '0.35rem 0 0', color: '#64748b', fontSize: '0.85rem' }}>Licensing, hours, and access pass</p>
@@ -1487,373 +1516,161 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             view details on licensure →
                                         </button>
                                     </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.75rem' }}>
+                                    {/* Credential rows — license name left, ID/number right */}
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
                                         {(() => {
-                                            const tileData = (() => {
-                                            const license = profileData?.license_type || '';
-                                            const licenseLower = license.toLowerCase();
-                                            let highestLicense = 'None';
-                                            
-                                            // Check in order of ranking: ATPL > CPL > PPL > SPL
-                                            if (licenseLower.includes('atpl') || licenseLower.includes('airline')) {
-                                                highestLicense = 'ATPL';
-                                            } else if (licenseLower.includes('cpl') || licenseLower.includes('commercial')) {
-                                                highestLicense = 'CPL';
-                                            } else if (licenseLower.includes('ppl') || licenseLower.includes('private')) {
-                                                highestLicense = 'PPL';
-                                            } else if (licenseLower.includes('spl') || licenseLower.includes('student')) {
-                                                highestLicense = 'SPL';
-                                            } else if (license && license !== 'None') {
-                                                highestLicense = license;
-                                            }
-
-                                            const tiles = [
-                                                { label: 'License Type', value: highestLicense, unverified: !isPremium },
-                                                { label: 'License Authority', value: profileData?.license_authority || profileData?.country_of_license || '' },
-                                                { label: 'English Level', value: profileData?.english_proficiency_level || profileData?.elp_level || '' },
-                                                { label: 'Pilot Status', value: profileData?.career_stage || profileData?.current_occupation || '' }
-                                            ] as { label: string; value: string; unverified?: boolean }[];
-                                            const licenseVerified = !!(profileData?.license_id || profileData?.license_status);
-                                            return { tiles, licenseVerified, licenseId: profileData?.license_id || '', licenseStatus: profileData?.license_status || '' };
-                                            })();
-                                            return (
-                                            <>
-                                            {/* Merged Recognition+ tile for License Number + Status */}
-                                            {!tileData.licenseVerified ? (
-                                                <div style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg,#2d0a0a,#1a1f2c)', borderRadius: '12px', padding: '0.85rem 0.85rem 1rem', border: '1px solid rgba(229,62,62,0.25)', boxShadow: 'inset 0 0 12px rgba(229,62,62,0.04)', textAlign: 'center' }}>
-                                                    {/* Flex header — label left, badge right, no overlap */}
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 10 }}>
-                                                        <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER &amp; STATUS</p>
-                                                        <span style={{ background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', color: '#fff', fontSize: '0.55rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, letterSpacing: '0.1em', boxShadow: '0 0 10px rgba(229,62,62,0.2)', flexShrink: 0 }}>RECOGNITION+</span>
-                                                    </div>
-                                                    {/* Blurred teaser rows */}
-                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
-                                                        {['License No.', 'Issue Date', 'Status'].map(lbl => (
-                                                            <div key={lbl} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 8px', background: 'rgba(255,255,255,0.03)', borderRadius: 6 }}>
-                                                                <span style={{ fontSize: '0.62rem', color: '#64748b' }}>{lbl}</span>
-                                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#ff8181', filter: 'blur(4px)', userSelect: 'none', letterSpacing: 4, background: 'rgba(229,62,62,0.18)', border: '1px solid rgba(229,62,62,0.25)', padding: '2px 8px', borderRadius: 4 }}>●●●●-●●●●-●●●●</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    <button onClick={() => setShowUpgradeModal(true)} style={{ padding: '5px 16px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#fff', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '0 4px 15px rgba(229,62,62,0.3)' }}>Unlock Verification →</button>
+                                            const licType = (() => { const l = (profileData?.license_type || '').toLowerCase(); if (l.includes('atpl') || l.includes('airline')) return 'ATPL'; if (l.includes('cpl') || l.includes('commercial')) return 'CPL'; if (l.includes('ppl') || l.includes('private')) return 'PPL'; if (l.includes('spl') || l.includes('student')) return 'SPL'; return profileData?.license_type || 'CPL'; })();
+                                            const rows = [
+                                                { license: `Pilot License — ${licType}`,           id: walletDisplay.licenseNumber || profileData?.license_id || 'Not added' },
+                                                { license: 'Class 1 Medical Certificate',           id: profileData?.medical_control_number || 'Not added' },
+                                                { license: 'ICAO ELP — English',                    id: walletDisplay.elpLevel ? `Level ${walletDisplay.elpLevel}` : (profileData?.elp_level ? `Level ${profileData.elp_level}` : 'Not added') },
+                                                { license: 'Radio / NTC License',                   id: profileData?.ntc_license_number || 'Not added' },
+                                                { license: 'Issuing Authority',                     id: walletDisplay.licenseAuthority || profileData?.license_authority || 'Not added' },
+                                                { license: 'Issue Date',                            id: profileData?.license_issue_date || 'Not added' },
+                                            ];
+                                            return rows.map(r => (
+                                                <div key={r.license} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '7px 10px', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, gap: 12 }}>
+                                                    <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 500, minWidth: 0 }}>{r.license}</span>
+                                                    <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', fontWeight: 700, color: '#e2e8f0', flexShrink: 0, letterSpacing: '0.03em' }}>{r.id}</span>
                                                 </div>
-                                            ) : (
-                                                <>
-                                                <div style={{ background: 'rgba(30,41,59,0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
-                                                    <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE NUMBER</p>
-                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tileData.licenseId || 'N/A'}</p>
-                                                </div>
-                                                <div style={{ background: 'rgba(30,41,59,0.6)', borderRadius: '12px', padding: '0.85rem', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
-                                                    <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em' }}>LICENSE STATUS</p>
-                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tileData.licenseStatus || 'N/A'}</p>
-                                                </div>
-                                                </>
-                                            )}
-                                            {tileData.tiles.map(tile => (
-                                            <div
-                                                key={tile.label}
-                                                onClick={() => { if (editingTile !== tile.label) { setEditingTile(tile.label); setTileEditValue(tile.value || ''); } }}
-                                                style={{ background: editingTile === tile.label ? 'rgba(30,41,59,0.9)' : 'rgba(30, 41, 59, 0.6)', borderRadius: '12px', padding: '0.85rem', border: editingTile === tile.label ? '1px solid rgba(99,102,241,0.6)' : '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center', cursor: editingTile === tile.label ? 'default' : 'pointer', transition: 'all 0.15s' }}
-                                                onMouseEnter={e => { if (editingTile !== tile.label) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; }}
-                                                onMouseLeave={e => { if (editingTile !== tile.label) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
-                                            >
-                                                <p style={{ margin: 0, fontSize: '0.65rem', color: '#94a3b8', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-                                                    {tile.label}
-                                                    {editingTile !== tile.label && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>}
-                                                </p>
-                                                {tile.unverified && editingTile !== tile.label && (
-                                                    <span
-                                                        title="Want airlines to trust your data? Upgrade to upload your physical credentials for cryptographic validation."
-                                                        style={{ display: 'inline-flex', alignItems: 'center', gap: 3, marginTop: 4, padding: '2px 7px', background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 20, fontSize: '0.58rem', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.05em', cursor: 'help' }}
-                                                    >
-                                                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                                        Unverified Profile
-                                                    </span>
-                                                )}
-                                                {editingTile === tile.label ? (
-                                                    <div style={{ marginTop: '0.4rem' }} onClick={e => e.stopPropagation()}>
-                                                        <input
-                                                            autoFocus
-                                                            value={tileEditValue}
-                                                            onChange={e => setTileEditValue(e.target.value)}
-                                                            onKeyDown={e => { if (e.key === 'Enter') saveTileEdit(tile.label, tileEditValue); if (e.key === 'Escape') setEditingTile(null); }}
-                                                            style={{ width: '100%', padding: '4px 8px', background: 'rgba(15,23,42,0.8)', border: '1px solid rgba(99,102,241,0.5)', borderRadius: '6px', color: '#fff', fontSize: '0.82rem', fontWeight: 600, textAlign: 'center', outline: 'none', boxSizing: 'border-box' }}
-                                                        />
-                                                        <div style={{ display: 'flex', gap: '4px', marginTop: '6px', justifyContent: 'center' }}>
-                                                            <button onClick={() => saveTileEdit(tile.label, tileEditValue)} style={{ padding: '3px 10px', background: '#6366f1', border: 'none', borderRadius: '5px', color: '#fff', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer' }}>Save</button>
-                                                            <button onClick={() => setEditingTile(null)} style={{ padding: '3px 10px', background: 'rgba(255,255,255,0.07)', border: 'none', borderRadius: '5px', color: '#94a3b8', fontSize: '0.7rem', cursor: 'pointer' }}>Cancel</button>
-                                                        </div>
-                                                    </div>
-                                                ) : tile.value ? (
-                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>{tile.value}</p>
-                                                ) : (
-                                                    <p style={{ margin: '0.35rem 0 0', fontSize: '0.82rem', fontWeight: 500, color: '#475569' }}>N/A — click to edit</p>
-                                                )}
-                                            </div>
-                                            ))}
-                                            </>
-                                            );
+                                            ));
                                         })()}
                                     </div>
-                                </div>
-
-                                {/* Compliance & Expiration Timeline */}
-                                <div style={{ ...baseCardStyle, minHeight: '100%', position: 'relative', overflow: 'hidden' }}>
-                                    <div style={{ marginBottom: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                        <div>
-                                            <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Compliance Monitor</p>
-                                            <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Expiration Timeline</h3>
-                                        </div>
-                                        <span style={{ background: 'linear-gradient(90deg,#e53e3e,#9b1c1c)', color: '#fff', fontSize: '0.55rem', fontWeight: 800, padding: '2px 7px', borderRadius: 4, letterSpacing: '0.1em', flexShrink: 0, marginTop: 2, boxShadow: '0 0 10px rgba(229,62,62,0.2)' }}>RECOGNITION+</span>
-                                    </div>
-
-                                    {/* Teaser rows — always visible, values blurred */}
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', filter: isPremium ? 'none' : 'none' }}>
-                                        {[
-                                            { label: 'Class 1 Medical Certificate', status: 'warning', days: '14 days' },
-                                            { label: 'Instrument Proficiency Check', status: 'safe', days: '180 days' },
-                                            { label: 'Type Rating Recency', status: 'danger', days: 'EXPIRED' },
-                                            { label: 'Passport (International)', status: 'safe', days: '312 days' },
-                                            { label: 'NTC Radio Licence', status: 'warning', days: '42 days' },
-                                        ].map(row => (
-                                            <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 10px', background: 'rgba(255,255,255,0.025)', borderRadius: 8, border: `1px solid ${ row.status === 'danger' ? 'rgba(239,68,68,0.2)' : row.status === 'warning' ? 'rgba(245,158,11,0.2)' : 'rgba(34,197,94,0.15)' }` }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-                                                    <span style={{ width: 7, height: 7, borderRadius: '50%', flexShrink: 0, background: row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e' }} />
-                                                    <span style={{ fontSize: '0.7rem', color: '#cbd5e1', fontWeight: 500 }}>{row.label}</span>
-                                                </div>
-                                                <span style={{
-                                                    fontSize: '0.72rem', fontWeight: 700,
-                                                    color: isPremium ? (row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e') : '#ff8181',
-                                                    filter: isPremium ? 'none' : 'blur(5px)',
-                                                    userSelect: isPremium ? 'auto' : 'none',
-                                                    background: isPremium ? 'none' : 'rgba(229,62,62,0.18)',
-                                                    border: isPremium ? 'none' : '1px solid rgba(229,62,62,0.28)',
-                                                    padding: isPremium ? 0 : '2px 8px',
-                                                    letterSpacing: isPremium ? 'normal' : '0.12em',
-                                                    borderRadius: 4,
-                                                    minWidth: 64,
-                                                    textAlign: 'right',
-                                                }}>{row.days}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Upgrade overlay CTA for free users */}
-                                    {!isPremium && (
-                                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.98) 60%, transparent)', padding: '2rem 1.25rem 1.25rem', textAlign: 'center' }}>
-                                            <p style={{ margin: '0 0 10px', fontSize: '0.72rem', color: '#94a3b8', lineHeight: 1.5 }}>Track currency windows & regulatory deadlines.<br/>Never bust a medical or rating currency again.</p>
-                                            <button
-                                                onClick={() => setShowUpgradeModal(true)}
-                                                style={{ padding: '7px 20px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, color: '#fff', fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '0 4px 15px rgba(229,62,62,0.35)' }}
-                                            >
-                                                Unlock Expiration Alerts →
-                                            </button>
-                                        </div>
+                                    {isPremium && walletDisplay.isVerified && (
+                                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'rgba(34,197,94,0.15)', color: '#22c55e', fontSize: '0.6rem', fontWeight: 800, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.04em', border: '1px solid rgba(34,197,94,0.3)', alignSelf: 'flex-start' }}>
+                                            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                            Cryptographically Verified
+                                        </span>
                                     )}
                                 </div>
 
-                                {/* Quick Stats Card */}
+                                {/* Compliance & Expiration Timeline */}
+                                <div style={{ ...baseCardStyle, position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                    <div style={{ marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Compliance Monitor</p>
+                                            <h3 style={{ margin: '0.25rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Expiration Timeline</h3>
+                                        </div>
+                                    </div>
+
+                                    {/* Compliance rows — fully visible for all tiers, open date inputs */}
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                                        {walletDisplay.complianceRows.map((row, index) => (
+                                            <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: '#ffffff', borderRadius: 7, border: `1px solid ${ row.status === 'danger' ? 'rgba(239,68,68,0.3)' : row.status === 'warning' ? 'rgba(245,158,11,0.3)' : 'rgba(34,197,94,0.3)' }` }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                                                    <span style={{ width: 7, height: 7, borderRadius: '50%', flexShrink: 0, background: row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e' }} />
+                                                    <span style={{ fontSize: '0.75rem', color: '#1e293b', fontWeight: 500 }}>{row.label}</span>
+                                                </div>
+                                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: row.days === 'Not added' ? '#dc2626' : (row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e'), minWidth: 64, textAlign: 'right' }}>{row.days || 'Enter date'}</span>
+                                            </div>
+                                        ))}
+                                        {/* Recognition+ Note */}
+                                        <div style={{ marginTop: '0.75rem', padding: '12px', background: '#ffffff', borderRadius: 8, border: '1px solid rgba(0, 0, 0, 0.1)' }}>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', fontWeight: 700, color: '#dc2626', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Recognition+ Access & Benefits</p>
+                                            <p style={{ margin: 0, fontSize: '0.65rem', color: '#1e293b', lineHeight: 1.5 }}>
+                                                We contact your ATO through <strong style={{ color: '#dc2626' }}>verified verification providers</strong> to ensure your profile is up-to-date. Verified profiles gain <strong style={{ color: '#dc2626' }}>exclusive access</strong> to pathways held by charter and confidential operators.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                {/* Quick Stats Card - Logbook Sync & Live */}
                                 <div style={{
                                     gridColumn: '1 / -1',
-                                    background: 'rgba(30, 41, 59, 0.8)',
-                                    borderRadius: '26px',
-                                    padding: '1.5rem',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                                    boxShadow: '0 20px 45px rgba(0,0,0,0.3)'
+                                    background: 'rgba(30, 41, 59, 0.9)',
+                                    borderRadius: '20px',
+                                    padding: '1.25rem 1.5rem',
+                                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                                    boxShadow: '0 12px 40px rgba(0,0,0,0.35)'
                                 }}>
-                                    <div className="quick-stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0', alignItems: 'center' }}>
-                                        {/* Total Hours */}
-                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative' }}>
-                                            <span style={{
-                                                position: 'absolute', top: '20%', right: 0,
-                                                width: '1px', height: '60%',
-                                                background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
-                                            }} />
-                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Total Hours</p>
-                                            <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.total_hours || 0}</p>
-                                            {!isPremium ? (
-                                                <>
-                                                    <p style={{ margin: '0.15rem 0 0', fontSize: '0.6rem', color: '#f59e0b', fontWeight: 700, letterSpacing: '0.04em' }}>⚠️ Self-Declared (Unverified)</p>
-                                                    <button
-                                                        onClick={() => setShowUpgradeModal(true)}
-                                                        style={{ marginTop: '0.3rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.6rem', fontWeight: 700, cursor: 'pointer', letterSpacing: '0.03em', boxShadow: '0 2px 8px rgba(229,62,62,0.3)' }}
-                                                    >
-                                                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                                                        Connect Live Logbook
-                                                    </button>
-                                                </>
-                                            ) : (
-                                                <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Logged Hours</p>
-                                            )}
-                                        </div>
-
-                                        {/* Recognition */}
-                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your dynamic score'} onClick={() => !isPremium && setShowUpgradeModal(true)}>
-                                            <span style={{
-                                                position: 'absolute', top: '20%', right: 0,
-                                                width: '1px', height: '60%',
-                                                background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
-                                            }} />
-                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recognition</p>
-                                            {isPremium ? (
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
-                                            ) : (
-                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                    <span style={{ fontSize: '0.58rem', color: '#94a3b8', lineHeight: 1.4, maxWidth: 80, textAlign: 'center' }}>Calculated on cryptographic validation</span>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1.5fr', gap: '1.5rem', alignItems: 'stretch' }}>
+                                        {/* Left: Logbook Sync & Live Status */}
+                                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingRight: '1rem', borderRight: '1px solid rgba(148,163,184,0.2)' }}>
+                                            <div>
+                                                <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Logbook Sync</p>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                                                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e', animation: 'pulse 2s infinite' }} />
+                                                    <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 600, color: '#22c55e' }}>& Live</p>
                                                 </div>
-                                            )}
-                                            <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Verified Score</p>
+                                            </div>
+                                            <div style={{ marginTop: '1rem' }}>
+                                                <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>Recently Flown</p>
+                                                <p style={{ margin: '0.15rem 0 0', fontSize: '0.9rem', fontWeight: 500, color: '#e2e8f0' }}>
+                                                    {profileData?.last_flight_date ? new Date(profileData.last_flight_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No recent flights'}
+                                                </p>
+                                                <p style={{ margin: '0.2rem 0 0', fontSize: '0.55rem', color: '#94a3b8' }}>
+                                                    via {profileData?.active_logbook_provider || 'Wallet'}
+                                                </p>
+                                            </div>
                                         </div>
 
-                                        {/* Recency Examination Score */}
-                                        <div style={{ padding: '0.6rem 0.75rem', textAlign: 'center', position: 'relative', filter: isPremium ? 'none' : 'grayscale(0.5)', cursor: isPremium ? 'default' : 'pointer' }} title={isPremium ? '' : 'Upgrade to Recognition+ to unlock your recency score'} onClick={() => !isPremium && setShowUpgradeModal(true)}>
-                                            <span style={{
-                                                position: 'absolute', top: '20%', right: 0,
-                                                width: '1px', height: '60%',
-                                                background: 'linear-gradient(180deg, transparent, rgba(148,163,184,0.5), transparent)'
-                                            }} />
-                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.18em', color: '#94a3b8', textTransform: 'uppercase' }}>Recency Exam</p>
-                                            {isPremium ? (
-                                                <p style={{ margin: '0.35rem 0 0', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.recency_examination_score || 0}</p>
-                                            ) : (
-                                                <div style={{ margin: '0.35rem 0 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                    <span style={{ fontSize: '0.58rem', color: '#94a3b8', lineHeight: 1.4, maxWidth: 80, textAlign: 'center' }}>Unlock Premium Tier Rating</span>
-                                                </div>
-                                            )}
-                                            <p style={{ margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>Recency Score</p>
-                                        </div>
-
-                                        {/* Nested Card for Examination and Mentor Hours */}
-                                        <div style={{
-                                            background: 'rgba(248,250,252,0.85)',
-                                            borderRadius: '16px',
-                                            padding: '0.75rem',
-                                            border: '1px solid rgba(226,232,240,0.8)',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            gap: '0.5rem'
-                                        }}>
-                                            {/* Title */}
-                                            <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.15em', color: '#475569', textTransform: 'uppercase', fontWeight: 600, textAlign: 'center' }}>Foundation Program</p>
-                                            
-                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem' }}>
-                                                {/* Examination */}
+                                        {/* Center: Recent Flight Details */}
+                                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 1rem' }}>
+                                            {profileData?.recent_flight ? (
                                                 <div style={{ textAlign: 'center' }}>
-                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase' }}>Examination</p>
-                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.examination_score || 0}</p>
-                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#475569' }}>Knowledge Test</p>
+                                                    <p style={{ margin: 0, fontSize: '0.65rem', letterSpacing: '0.1em', color: '#94a3b8', textTransform: 'uppercase' }}>Aircraft Tail Number</p>
+                                                    <p style={{ margin: '0.3rem 0 0', fontSize: '1.4rem', fontWeight: 700, color: '#ffffff', fontFamily: 'monospace', letterSpacing: '0.05em' }}>{profileData.recent_flight.tail_number || '—'}</p>
+                                                    <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '2px' }}>
+                                                        <p style={{ margin: 0, fontSize: '0.6rem', color: '#94a3b8' }}>Duration</p>
+                                                        <span style={{ fontSize: '1.6rem', fontWeight: 700, color: '#ffffff', fontFamily: 'monospace' }}>
+                                                            {(() => {
+                                                                const hours = Math.floor((profileData.recent_flight.duration_minutes || 0) / 60);
+                                                                const mins = (profileData.recent_flight.duration_minutes || 0) % 60;
+                                                                return `${hours}<span style="color:#dc2626">+</span>${mins.toString().padStart(2, '0')}`;
+                                                            })()}
+                                                        </span>
+                                                    </div>
                                                 </div>
+                                            ) : (
+                                                <div style={{ textAlign: 'center', opacity: 0.6 }}>
+                                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="1.5" style={{ margin: '0 auto' }}><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                                    <p style={{ margin: '0.5rem 0 0', fontSize: '0.75rem', color: '#64748b' }}>No flight data available</p>
+                                                    {!isPremium && (
+                                                        <button
+                                                            onClick={() => setShowUpgradeModal(true)}
+                                                            style={{ marginTop: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '5px 10px', background: 'linear-gradient(135deg,#dc2626,#991b1b)', border: 'none', borderRadius: '16px', color: '#fff', fontSize: '0.6rem', fontWeight: 600, cursor: 'pointer' }}
+                                                        >
+                                                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                                            Connect Live Logbook
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
 
-                                                {/* Mentor Hours */}
-                                                <div style={{ textAlign: 'center' }}>
-                                                    <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase' }}>Mentor Hours</p>
-                                                    <p style={{ margin: '0.25rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>{profileData?.mentorship_hours || 0}</p>
-                                                    <p style={{ margin: '0.05rem 0 0', fontSize: '0.65rem', color: '#475569' }}>Engagement</p>
+                                        {/* Right: Total Verified Hours */}
+                                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingLeft: '1rem', borderLeft: '1px solid rgba(148,163,184,0.2)' }}>
+                                            <div style={{ textAlign: 'right' }}>
+                                                <p style={{ margin: 0, fontSize: '0.55rem', letterSpacing: '0.12em', color: '#94a3b8', textTransform: 'uppercase' }}>Total Time</p>
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '6px', marginTop: '2px' }}>
+                                                    <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', fontFamily: 'monospace' }}>{(profileData?.verified_hours || profileData?.total_hours || 0).toLocaleString()}</p>
+                                                    <span style={{ padding: '2px 6px', background: 'linear-gradient(135deg,#dc2626,#991b1b)', borderRadius: '10px', fontSize: '0.55rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Recognition+</span>
                                                 </div>
+                                                <p style={{ margin: '0.2rem 0 0', fontSize: '0.6rem', color: '#64748b' }}>Verified Hours</p>
+                                            </div>
+                                            <div style={{ textAlign: 'right', marginTop: '0.75rem' }}>
+                                                <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#475569', textTransform: 'uppercase' }}>TTL Countdown</p>
+                                                <p style={{ margin: '0.15rem 0 0', fontSize: '0.8rem', fontWeight: 600, color: '#f59e0b' }}>
+                                                    {profileData?.next_verification_due ? 
+                                                        `${Math.ceil((new Date(profileData.next_verification_due).getTime() - Date.now()) / (1000 * 60 * 60 * 24))}d` : 
+                                                        'N/A'}
+                                                </p>
+                                                <p style={{ margin: '0.1rem 0 0', fontSize: '0.5rem', color: '#64748b' }}>until re-verification</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Recognition+ Ad Banner */}
+                            <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.15) 0%, rgba(153, 27, 27, 0.1) 100%)', borderRadius: '12px', border: '1px solid rgba(220, 38, 38, 0.3)', textAlign: 'center' }}>
+                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#e2e8f0', lineHeight: 1.6, fontWeight: 500 }}>
+                                    <span style={{ color: '#dc2626', fontWeight: 700 }}>Get verified. Get recognition.</span> Unlock exclusive pathways. Submit interests and get international recognition worldwide. Connect with existing ATOs, flight schools, type rating centers, airlines, operators and manufacturers to learn how to align your profile with their expectations and their requirements.{' '}
+                                    <span style={{ color: '#dc2626', fontWeight: 700 }}>Start flight planning your pilot career with Recognition+</span>
+                                </p>
+                            </div>
                         </CategorySection>
-
-                        {/* Score Optimization Guide */}
-                        <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>Recognition+</h2>
-                                <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Premium Score Optimization</span>
-                            </div>
-                            <ScoreOptimizationGuide
-                                currentScore={calculateRecognitionScore({
-                                    stats: {
-                                        totalHours: profileData?.total_hours || 0,
-                                        picHours: 0,
-                                        ifrHours: 0,
-                                        nightHours: 0,
-                                    },
-                                    experience: {
-                                        years: 0,
-                                        achievements: 0,
-                                        licenses: 0,
-                                    },
-                                    assessments: {
-                                        programCompletion: 0,
-                                        performanceScore: profileData?.overall_recognition_score || 0,
-                                    },
-                                    mentorship: {
-                                        hours: 0,
-                                        observations: 0,
-                                        cases: 0,
-                                    },
-                                })}
-                                isPremium={isPremium}
-                                userId={profileData?.user_id}
-                                limit={3}
-                                onViewAll={() => onNavigate('score-optimization')}
-                                onNavigate={onNavigate}
-                            />
-
-                            {/* Veremark Verified Badge — visible to ALL pilots */}
-                            <div style={{ marginTop: '1.5rem' }}>
-                                <VeremarkVerifiedBadge
-                                    isVerified={profileData?.veremark_verified || false}
-                                    isPreCleared={profileData?.veremark_verified && profileData?.verification_completeness === 100}
-                                    verificationDate={profileData?.veremark_verified_at ? new Date(profileData.veremark_verified_at) : undefined}
-                                    expiryDate={profileData?.veremark_expires_at ? new Date(profileData.veremark_expires_at) : undefined}
-                                    verificationId={profileData?.veremark_verification_id || undefined}
-                                    riskTier={(() => {
-                                        // Compute insurance risk tier from profile data
-                                        const medical = profileData?.medical_status?.toLowerCase() || '';
-                                        const hours = profileData?.total_hours || 0;
-                                        const license = profileData?.license_status?.toLowerCase() || '';
-                                        const incidents = profileData?.incident_count || 0;
-                                        const suspensions = profileData?.license_suspension_count || 0;
-
-                                        if (incidents >= 2 || suspensions >= 1 || medical.includes('special')) return 'high';
-                                        if (incidents === 1 || hours < 250 || !medical.includes('valid')) return 'moderate';
-                                        if (license.includes('valid') && medical.includes('valid') && hours >= 500) return 'low';
-                                        return 'unknown';
-                                    })()}
-                                    countryCode={profileData?.country_of_license}
-                                    isPremium={isPremium}
-                                    walletCompletenessPercent={(() => {
-                                        // Compute wallet completeness from available profile data
-                                        let checks = 0;
-                                        let total = 9;
-                                        if (profileData?.license_type && profileData?.license_type !== 'None') checks++;
-                                        if (profileData?.medical_status && profileData?.medical_status !== 'None') checks++;
-                                        if (profileData?.total_hours && profileData?.total_hours > 0) checks++;
-                                        if (profileData?.certifications?.length > 0) checks++;
-                                        if (profileData?.current_employer) checks++;
-                                        if (profileData?.country_of_license) checks++;
-                                        if (profileData?.veremark_verified) checks += 3;
-                                        return Math.min(100, Math.round((checks / total) * 100));
-                                    })()}
-                                    items={(() => {
-                                        const vItems: import('./VeremarkVerifiedBadge').VerificationItem[] = [];
-                                        if (profileData?.license_type && profileData?.license_type !== 'None') {
-                                            vItems.push({ id: 'lic', category: 'license', label: 'License Validation', status: profileData?.license_status?.toLowerCase().includes('valid') ? 'verified' : 'pending' });
-                                        }
-                                        if (profileData?.medical_status && profileData?.medical_status !== 'None') {
-                                            vItems.push({ id: 'med', category: 'medical', label: 'Medical Certificate', status: profileData?.medical_status?.toLowerCase().includes('valid') ? 'verified' : 'pending' });
-                                        }
-                                        if (profileData?.total_hours && profileData?.total_hours > 0) {
-                                            vItems.push({ id: 'hrs', category: 'identity', label: 'Flight Hours Log', status: 'verified' });
-                                        }
-                                        if (profileData?.certifications?.length > 0) {
-                                            vItems.push({ id: 'edu', category: 'education', label: 'Education & Credentials', status: 'verified' });
-                                        }
-                                        if (profileData?.current_employer) {
-                                            vItems.push({ id: 'emp', category: 'employment', label: 'Employment History', status: 'verified' });
-                                        }
-                                        return vItems;
-                                    })()}
-                                    onRequestVerification={() => onNavigate('veremark-verification')}
-                                    onViewDetails={() => onNavigate('verification-details')}
-                                />
-                            </div>
 
                             {/* Recognition+ Premium Features */}
                             {isPremium && (
@@ -1888,97 +1705,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             )}
                         </div>
 
-                        <CategorySection title="Professional Interests" description="Professional information and pathway preferences">
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-                                <div style={{ ...baseCardStyle }}>
-                                    <div style={{ marginBottom: '0.75rem' }}>
-                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Professional Information</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Professional Details</h3>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                                        {[
-                                            { label: 'Current Occupation', value: profileData?.current_occupation || '' },
-                                            { label: 'Current Employer', value: profileData?.current_employer || '' }
-                                        ].map(item => (
-                                            <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
-                                                {item.value ? (
-                                                    <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
-                                                ) : (
-                                                    <button
-                                                        onClick={() => onNavigate('pilot-licensure-experience')}
-                                                        style={{ padding: '0.25rem 0.6rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '6px', color: '#64748b', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s ease' }}
-                                                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
-                                                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
-                                                    >
-                                                        <Plus size={12} /> Add Info
-                                                    </button>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div style={{ ...baseCardStyle }}>
-                                    <div style={{ marginBottom: '0.75rem' }}>
-                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Pathway Interests</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Career Goals</h3>
-                                    </div>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', overflow: 'hidden' }}>
-                                        {profileData?.pathway_interests?.map((interest: string, index: number) => (
-                                            <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
-                                                {interest}
-                                            </span>
-                                        )) || (
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                                {['Commercial Aviation', 'Type Rating', 'Long-Haul Ops'].map(suggestion => (
-                                                    <button key={suggestion} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
-                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
-                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
-                                                    >+ {suggestion}</button>
-                                                ))}
-                                                <button style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>+ Add Goals</button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div style={{ ...baseCardStyle }}>
-                                    <div style={{ marginBottom: '0.75rem' }}>
-                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Insight Interests</p>
-                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Learning Goals</h3>
-                                    </div>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', overflow: 'hidden' }}>
-                                        {profileData?.insight_interests?.map((interest: string, index: number) => (
-                                            <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
-                                                {interest}
-                                            </span>
-                                        )) || (
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                                {['ATPL Theory', 'CRM & Safety', 'Aviation Regulations'].map(suggestion => (
-                                                    <button key={suggestion} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
-                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
-                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
-                                                    >+ {suggestion}</button>
-                                                ))}
-                                                <button style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>+ Select Topics</button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </CategorySection>
-
                         {/* Official Documentation Section */}
                         <CategorySection title="Official Documentation" description="Verification & Resumes">
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {[
-                                    {
-                                        title: 'Examination Results',
-                                        description: 'Dive into your latest verified exam scores and subcategory breakdowns.',
-                                        cta: 'View Examination Directory',
-                                        filled: true
-                                    },
                                     {
                                         title: 'Digital Flight Logbook',
                                         description: 'View your complete collection of licenses, flight hours, certifications, and professional milestones.',
@@ -1989,12 +1719,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         title: 'Pilot Licensure & Experience Data Entry',
                                         description: 'Access your comprehensive digital flight log with detailed flight records, aircraft types, and operational experience.',
                                         cta: 'Open Data Entry',
-                                        filled: true
-                                    },
-                                    {
-                                        title: 'Document Vault',
-                                        description: 'Upload and verify your pilot certificates, licenses, and medical documents for ATS visibility.',
-                                        cta: 'Open Vault',
                                         filled: true
                                     }
                                 ].map(card => (
@@ -2027,14 +1751,10 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 textAlign: 'center' as const
                                             }}
                                             onClick={() => {
-                                                if (card.title === 'Examination Results') {
-                                                    setCurrentDocumentationPage('examination');
-                                                } else if (card.title === 'Digital Flight Logbook') {
+                                                if (card.title === 'Digital Flight Logbook') {
                                                     setCurrentDocumentationPage('logbook');
                                                 } else if (card.title === 'Pilot Licensure & Experience Data Entry') {
                                                     setCurrentDocumentationPage('licensure');
-                                                } else if (card.title === 'Document Vault') {
-                                                    setCurrentDocumentationPage('vault');
                                                 }
                                             }}
                                         >
@@ -2042,69 +1762,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         </button>
                                     </div>
                                 ))}
-                            </div>
-                        </CategorySection>
-
-                        {/* PILLAR 11: Verification & Background Checks */}
-                        <CategorySection title="Verification & Background Checks" description="Pillar 11 — Portable credential wallet, pre-cleared status, and insurance risk profile">
-                            <VerificationWalletSection
-                                profileData={profileData}
-                                isPremium={isPremium}
-                                onNavigate={onNavigate}
-                            />
-                        </CategorySection>
-
-                        {/* PILLAR 5: ATO Hour Verification */}
-                        <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
-                            <ATOVerificationRequestSection />
-                        </CategorySection>
-
-                        <CategorySection title="Additional Information" description="Personal details and aspirations">
-                            <div style={{ ...baseCardStyle }}>
-                                <div style={{ marginBottom: '0.75rem' }}>
-                                    <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Personal Details</p>
-                                    <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontWeight: 600, letterSpacing: '-0.01em' }}>About You</h3>
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                                    {/* Why You Want to Become a Pilot — long-form statement */}
-                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
-                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Why You Want to Become a Pilot</div>
-                                        {profileData?.why_become_pilot ? (
-                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.6 }}>{profileData.why_become_pilot}</div>
-                                        ) : (
-                                            <button
-                                                onClick={() => onNavigate('pilot-licensure-experience')}
-                                                style={{ width: '100%', padding: '0.85rem 1rem', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '10px', color: '#64748b', fontSize: '0.82rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s ease', textAlign: 'left' as const }}
-                                                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
-                                                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
-                                            >
-                                                <Plus size={14} />
-                                                <span><strong style={{ fontWeight: 700 }}>+ Add Personal Statement</strong> &nbsp;—&nbsp; Share your career vision for airline recruiters.</span>
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    {/* Other Skills — modular tag-style */}
-                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
-                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Other Skills</div>
-                                        {profileData?.other_skills ? (
-                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{profileData.other_skills}</div>
-                                        ) : (
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                                {['Flight Instructor', 'CRM Trained', 'Fluent in Spanish'].map(s => (
-                                                    <button key={s} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
-                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
-                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
-                                                    >+ {s}</button>
-                                                ))}
-                                                <button
-                                                    onClick={() => onNavigate('pilot-licensure-experience')}
-                                                    style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
-                                                >+ Add Skills</button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
                             </div>
                         </CategorySection>
 
@@ -2335,7 +1992,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             </div>
                         </CategorySection>
 
-                        {/* Recommended Pathways Carousel */}
+                        {/* Recommended Pathways Carousel - ADMIN ONLY */}
+                        {isAdmin && (
+                        <>
                         <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', paddingLeft: '1.5rem', paddingRight: '1.5rem', marginTop: '1rem' }}>
                             <div>
                                 <h2 style={{ 
@@ -2996,9 +2655,760 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                     )}
                                 </div>
                             </div>
+                </>
+                )}
+                </motion.section>
+                )}
+
+                {/* ── LICENSURE & CURRENCY SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'statistics' && (
+                <motion.section
+                    key="statistics"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+
+                        {/* ── ROW 1: Pilot License Card + Verification Status ── */}
+                        <CategorySection title="Pilot Licence" description="Active licence details pulled from your credential wallet">
+                            <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
+
+                                {/* Main licence card */}
+                                <div style={{ ...baseCardStyle, background: 'linear-gradient(145deg, rgba(17,24,39,0.95) 0%, rgba(30,41,59,0.85) 100%)', border: '1px solid rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
+                                    {/* subtle grid lines */}
+                                    <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '28px 28px', pointerEvents: 'none' }} />
+                                    <div style={{ position: 'relative' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+                                            <div>
+                                                <p style={{ margin: 0, fontSize: '0.62rem', letterSpacing: '0.22em', color: '#64748b', textTransform: 'uppercase' }}>Civil Aviation Authority</p>
+                                                <h3 style={{ margin: '0.2rem 0 0', fontSize: '1.1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>{walletDisplay.licenseAuthority || 'Not added'}</h3>
+                                            </div>
+                                            <div style={{ textAlign: 'right' }}>
+                                                <p style={{ margin: 0, fontSize: '0.58rem', letterSpacing: '0.15em', color: '#64748b', textTransform: 'uppercase' }}>Licence No.</p>
+                                                <p style={{ margin: '2px 0 0', fontSize: '1rem', fontWeight: 800, color: '#ffffff', fontFamily: 'monospace', letterSpacing: '0.08em' }}>{walletDisplay.licenseNumber || '—'}</p>
+                                            </div>
+                                        </div>
+                                        {/* Licence type banner */}
+                                        <div style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.3)', borderRadius: 8, padding: '10px 14px', marginBottom: '1rem' }}>
+                                            <p style={{ margin: 0, fontSize: '0.62rem', color: '#93c5fd', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Licence Type</p>
+                                            <p style={{ margin: '3px 0 0', fontSize: '1.05rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.license_type || profileData?.current_occupation || 'Commercial Pilot Licence (CPL)'}</p>
+                                        </div>
+                                        {/* Key fields grid */}
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
+                                            {[
+                                                { label: 'Issue Date', value: profileData?.license_issue_date || '—' },
+                                                { label: 'Expiry Date', value: walletDisplay.licenseExpiry || profileData?.license_expiry || '—' },
+                                                { label: 'Status', value: walletDisplay.licenseStatus === 'verified' ? 'Verified ✓' : walletDisplay.licenseStatus === 'unverified' ? 'Self-Declared' : walletDisplay.licenseStatus || 'Active' },
+                                                { label: 'ELP Level', value: walletDisplay.elpLevel || '—' },
+                                            ].map(f => (
+                                                <div key={f.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 7, padding: '7px 10px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                                    <p style={{ margin: 0, fontSize: '0.57rem', color: '#64748b', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{f.label}</p>
+                                                    <p style={{ margin: '3px 0 0', fontSize: '0.8rem', fontWeight: 600, color: f.value === '—' ? '#475569' : '#e2e8f0', fontFamily: f.label.includes('Date') ? 'monospace' : 'inherit' }}>{f.value}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {/* Ratings row */}
+                                        {profileData?.ratings?.length > 0 && (
+                                            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                                                <p style={{ margin: '0 0 6px', fontSize: '0.58rem', color: '#64748b', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Ratings & Endorsements</p>
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                                                    {(profileData.ratings as string[]).map((r: string) => (
+                                                        <span key={r} style={{ padding: '3px 9px', background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 20, fontSize: '0.68rem', color: '#93c5fd' }}>{r}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Verification status card */}
+                                <div style={{ ...baseCardStyle, alignSelf: 'start' }}>
+                                    <p style={{ margin: '0 0 0.85rem', fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Wallet Verification Status</p>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        {(injectedWalletData?.credentials?.length
+                                            ? injectedWalletData.credentials
+                                            : [
+                                                { check_type: 'professional_qualification', status: 'pending' },
+                                                { check_type: 'education', status: 'pending' },
+                                                { check_type: 'language_proficiency', status: 'pending' },
+                                                { check_type: 'identity', status: 'pending' },
+                                            ]
+                                        ).map((c: any) => {
+                                            const labels: Record<string, string> = {
+                                                professional_qualification: 'Pilot Licence (CPL/ATPL)',
+                                                education: 'Medical Certificate',
+                                                language_proficiency: 'ICAO ELP Certificate',
+                                                identity: 'Identity / Passport',
+                                                fitness_proprietary: 'Background / NBI',
+                                                type_rating: 'Type Rating Certificate',
+                                            };
+                                            const sc = { verified: { dot: '#22c55e', text: '#22c55e', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.2)', label: 'Verified' }, pending: { dot: '#3b82f6', text: '#60a5fa', bg: 'rgba(59,130,246,0.08)', border: 'rgba(59,130,246,0.2)', label: 'Pending' }, expired: { dot: '#ef4444', text: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.2)', label: 'Expired' }, flagged: { dot: '#f59e0b', text: '#fbbf24', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.2)', label: 'Flagged' } }[c.status as string] || { dot: '#64748b', text: '#94a3b8', bg: 'rgba(255,255,255,0.03)', border: 'rgba(255,255,255,0.08)', label: c.status };
+                                            return (
+                                                <div key={c.check_type} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: sc.bg, border: `1px solid ${sc.border}`, borderRadius: 8 }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                        <span style={{ width: 7, height: 7, borderRadius: '50%', background: sc.dot, flexShrink: 0, display: 'inline-block' }} />
+                                                        <span style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500 }}>{labels[c.check_type] || c.check_type}</span>
+                                                    </div>
+                                                    <span style={{ fontSize: '0.68rem', fontWeight: 700, color: sc.text, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{sc.label}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                    {!isPremium && (
+                                        <div style={{ marginTop: '0.875rem', padding: '8px 12px', background: 'rgba(236,201,75,0.06)', borderLeft: '3px solid #ecc94b', borderRadius: '0 6px 6px 0' }}>
+                                            <p style={{ margin: '0 0 4px', fontSize: '0.63rem', color: '#94a3b8', lineHeight: 1.4 }}>Cryptographic verification requires Recognition+</p>
+                                            <button onClick={() => setShowUpgradeModal(true)} style={{ background: 'none', border: 'none', color: '#ff8181', fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', padding: 0 }}>🛡️ Upgrade to Verify</button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* ELP & Language card */}
+                                <div style={{ ...baseCardStyle, alignSelf: 'start' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Language Proficiency</p>
+                                            <h3 style={{ margin: '0.2rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>ICAO ELP Rating</h3>
+                                        </div>
+                                        <div style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)', borderRadius: 8, padding: '6px 12px', textAlign: 'center' }}>
+                                            <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: '#a78bfa', lineHeight: 1 }}>{walletDisplay.elpLevel || '—'}</p>
+                                            <p style={{ margin: '2px 0 0', fontSize: '0.55rem', color: '#7c3aed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Level</p>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        {[
+                                            { label: 'Standard', value: 'ICAO Language Proficiency Rating Scale' },
+                                            { label: 'Expiry', value: profileData?.elp_expiry || '—' },
+                                            { label: 'Certificate No.', value: profileData?.elp_certificate_no || '—' },
+                                            { label: 'Issuing Body', value: walletDisplay.licenseAuthority || '—' },
+                                        ].map(f => (
+                                            <div key={f.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                                                <span style={{ fontSize: '0.68rem', color: '#64748b', letterSpacing: '0.05em' }}>{f.label}</span>
+                                                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: f.value === '—' ? '#475569' : '#e2e8f0', fontFamily: f.label.includes('No') || f.label.includes('Expiry') ? 'monospace' : 'inherit' }}>{f.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </CategorySection>
+
+                        {/* ── ROW 2: Medical Certificate + Compliance Timeline ── */}
+                        <CategorySection title="Medical Currency" description="Class certificates and expiration tracking from your wallet">
+                            <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
+
+                                {/* Medical cert card */}
+                                <div style={{ ...baseCardStyle, position: 'relative', overflow: 'hidden' }}>
+                                    {(() => {
+                                        const medExpiry = profileData?.medical_expiry;
+                                        const isExpired = medExpiry ? new Date(medExpiry) < new Date() : false;
+                                        const daysLeft = medExpiry ? Math.ceil((new Date(medExpiry).getTime() - Date.now()) / 86400000) : null;
+                                        const accent = isExpired ? '#ef4444' : daysLeft !== null && daysLeft < 60 ? '#f59e0b' : '#22c55e';
+                                        return (
+                                            <>
+                                                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${accent}, transparent)` }} />
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                                                    <div>
+                                                        <p style={{ margin: 0, fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Medical Certificate</p>
+                                                        <h3 style={{ margin: '0.2rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>{profileData?.medical_class || 'Class 1'}</h3>
+                                                    </div>
+                                                    <div style={{ background: isExpired ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)', border: `1px solid ${isExpired ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.25)'}`, borderRadius: 8, padding: '5px 10px' }}>
+                                                        <p style={{ margin: 0, fontSize: '0.65rem', fontWeight: 700, color: accent, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{isExpired ? '⚠ EXPIRED' : daysLeft !== null ? `${daysLeft}d left` : 'Active'}</p>
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
+                                                    {[
+                                                        { label: 'Class', value: profileData?.medical_class || '—' },
+                                                        { label: 'Expiry', value: medExpiry || '—' },
+                                                        { label: 'Country', value: profileData?.medical_country || '—' },
+                                                        { label: 'Examiner', value: '—' },
+                                                    ].map(f => (
+                                                        <div key={f.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 7, padding: '7px 10px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                                            <p style={{ margin: 0, fontSize: '0.57rem', color: '#64748b', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{f.label}</p>
+                                                            <p style={{ margin: '3px 0 0', fontSize: '0.8rem', fontWeight: 600, color: f.value === '—' ? '#475569' : '#e2e8f0', fontFamily: f.label === 'Expiry' ? 'monospace' : 'inherit' }}>{f.value}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                {isExpired && (
+                                                    <div style={{ marginTop: '0.75rem', padding: '8px 12px', background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 8 }}>
+                                                        <p style={{ margin: 0, fontSize: '0.7rem', color: '#fca5a5', lineHeight: 1.4 }}>⚠️ Your Class 1 medical has expired — CPL is currently invalid for commercial operations.</p>
+                                                    </div>
+                                                )}
+                                            </>
+                                        );
+                                    })()}
+                                </div>
+
+                                {/* Full compliance timeline */}
+                                <div style={{ ...baseCardStyle, alignSelf: 'start' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.85rem' }}>
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Compliance Monitor</p>
+                                            <h3 style={{ margin: '0.2rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Expiration Timeline</h3>
+                                        </div>
+                                        {!isPremium && <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#ecc94b', color: '#1a202c', fontSize: '0.58rem', fontWeight: 800, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.04em', textTransform: 'uppercase' }}>⚠ Unverified</span>}
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                                        {walletDisplay.complianceRows.map(row => (
+                                            <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 11px', background: '#ffffff', borderRadius: 8, border: `1px solid ${row.status === 'danger' ? 'rgba(239,68,68,0.3)' : row.status === 'warning' ? 'rgba(245,158,11,0.3)' : 'rgba(34,197,94,0.3)'}` }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                    <span style={{ width: 7, height: 7, borderRadius: '50%', flexShrink: 0, background: row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e' }} />
+                                                    <span style={{ fontSize: '0.72rem', color: '#1e293b', fontWeight: 500 }}>{row.label}</span>
+                                                </div>
+                                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: row.days === 'Not added' ? '#dc2626' : (row.status === 'danger' ? '#ef4444' : row.status === 'warning' ? '#f59e0b' : '#22c55e'), minWidth: 70, textAlign: 'right' }}>{row.days || 'Not added'}</span>
+                                            </div>
+                                        ))}
+                                        {/* Recognition+ Note */}
+                                        <div style={{ marginTop: '0.75rem', padding: '12px', background: '#ffffff', borderRadius: 8, border: '1px solid rgba(0, 0, 0, 0.1)' }}>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', fontWeight: 700, color: '#dc2626', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Recognition+ Access & Benefits</p>
+                                            <p style={{ margin: 0, fontSize: '0.65rem', color: '#1e293b', lineHeight: 1.5 }}>
+                                                We contact your ATO through <strong style={{ color: '#dc2626' }}>verified verification providers</strong> to ensure your profile is up-to-date. Verified profiles gain <strong style={{ color: '#dc2626' }}>exclusive access</strong> to pathways held by charter and confidential operators.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* NTC / Radio licence card */}
+                                <div style={{ ...baseCardStyle, alignSelf: 'start' }}>
+                                    <p style={{ margin: '0 0 0.85rem', fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Radio Licence (NTC)</p>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        {[
+                                            { label: 'Registration No.', value: profileData?.ntc_license || profileData?.radio_license_number || '—' },
+                                            { label: 'Expiry', value: profileData?.radio_license_expiry || profileData?.ntc_expiry || '—' },
+                                            { label: 'Issued By', value: 'National Telecommunications Commission' },
+                                            { label: 'Privileges', value: 'Radio Telephone Operator' },
+                                        ].map(f => (
+                                            <div key={f.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                                                <span style={{ fontSize: '0.68rem', color: '#64748b', letterSpacing: '0.04em', flexShrink: 0, paddingRight: 8 }}>{f.label}</span>
+                                                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: f.value === '—' ? '#475569' : '#e2e8f0', fontFamily: f.label.includes('No') || f.label.includes('Expiry') ? 'monospace' : 'inherit', textAlign: 'right' }}>{f.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </CategorySection>
+
+                        {/* ── ROW 3: Ratings & Type Ratings ── */}
+                        <CategorySection title="Ratings & Type Ratings" description="Aircraft categories, class ratings, and type certificates held">
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
+                                <div style={{ ...baseCardStyle }}>
+                                    <p style={{ margin: '0 0 0.85rem', fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Aircraft Ratings</p>
+                                    {(profileData?.ratings?.length > 0 || profileData?.aircraft_rated_on) ? (
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                                            {(profileData?.ratings?.length > 0 ? profileData.ratings : [profileData?.aircraft_rated_on]).filter(Boolean).map((r: string) => (
+                                                <span key={r} style={{ padding: '5px 12px', background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.25)', borderRadius: 20, fontSize: '0.72rem', color: '#93c5fd', fontWeight: 500 }}>{r}</span>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                                            {['Airplane Single Engine Land', 'Instrument Rating (IR)'].map(r => (
+                                                <span key={r} style={{ padding: '5px 12px', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: 20, fontSize: '0.72rem', color: '#475569' }}>{r}</span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                <div style={{ ...baseCardStyle }}>
+                                    <p style={{ margin: '0 0 0.85rem', fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Type Ratings</p>
+                                    {profileData?.type_ratings?.length > 0 ? (
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                                            {(profileData.type_ratings as string[]).map((r: string) => (
+                                                <span key={r} style={{ padding: '5px 12px', background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: 20, fontSize: '0.72rem', color: '#34d399', fontWeight: 500 }}>{r}</span>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p style={{ color: '#475569', fontSize: '0.8rem', margin: 0 }}>No type ratings on file — add via Licensure form</p>
+                                    )}
+                                </div>
+                                <div style={{ ...baseCardStyle }}>
+                                    <p style={{ margin: '0 0 0.85rem', fontSize: '0.62rem', letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Certifications</p>
+                                    {profileData?.certifications?.length > 0 ? (
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                                            {(profileData.certifications as string[]).map((c: string) => (
+                                                <span key={c} style={{ padding: '5px 12px', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)', borderRadius: 20, fontSize: '0.72rem', color: '#fbbf24', fontWeight: 500 }}>{c}</span>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p style={{ color: '#475569', fontSize: '0.8rem', margin: 0 }}>No certifications recorded</p>
+                                    )}
+                                </div>
+                            </div>
+                        </CategorySection>
+
                     </div>
-                </section>
+                </motion.section>
+                )}
+
+                {/* ── LOGBOOK SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'logbook' && (
+                <motion.section
+                    key="logbook"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <DigitalLogbookPage
+                        embedded
+                        onBack={() => setActiveSection('overview')}
+                        userProfile={profileData ? {
+                            id: profileData.id || profileData.user_id,
+                            uid: profileData.id || profileData.user_id,
+                            firstName: profileData.full_name?.split(' ')[0] || profileData.display_name?.split(' ')[0] || '',
+                            lastName: profileData.full_name?.split(' ').slice(1).join(' ') || '',
+                            email: profileData.email || '',
+                        } : null}
+                    />
+
+                    {/* Flight Hours Summary — Moved from Overview */}
+                    <div style={{ marginTop: '2rem' }}>
+                        <CategorySection title="Flight Hours Summary" description="Your verified and self-declared flight hours">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                {/* Flight Hours & Recognition Score Tiles */}
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem', width: '100%' }}>
+                                    <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '10px', padding: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                        <p style={{ margin: 0, fontSize: '0.58rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Flight Hours</p>
+                                        <p style={{ margin: '0.3rem 0 0', fontSize: '1.4rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.total_hours || 0).toLocaleString()}</p>
+                                        {profileData?.veremark_verified ? (
+                                            <p style={{ margin: '0.25rem 0 0', fontSize: '0.65rem', color: '#22c55e' }}>✓ Verified via Veremark</p>
+                                        ) : (
+                                            <button
+                                                onClick={() => isPremium ? setShowWalletGate(true) : setShowUpgradeModal(true)}
+                                                style={{ marginTop: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: 'none', borderRadius: 20, color: '#fff', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 12px rgba(229,62,62,0.3)' }}
+                                            >
+                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                                Sync Logbook
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div style={{ background: 'rgba(30, 41, 59, 0.6)', borderRadius: '10px', padding: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                        <p style={{ margin: 0, fontSize: '0.58rem', letterSpacing: '0.15em', color: '#94a3b8', textTransform: 'uppercase' }}>Recognition Score</p>
+                                        <p style={{ margin: '0.3rem 0 0', fontSize: '1.4rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.overall_recognition_score || 0}</p>
+                                        <p style={{ margin: '0.2rem 0 0', fontSize: '0.62rem', color: isPremium ? '#f59e0b' : '#64748b' }}>
+                                            {isPremium ? 'Tier 2: Advanced' : 'Upgrade to unlock'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Logbook Hour Breakdown — DUAL XC, XC PIC, PIC LCL, DUAL LCL */}
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', width: '100%' }}>
+                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
+                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>DUAL XC</p>
+                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.dual_xc_hours || 0).toLocaleString()}</p>
+                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Dual Cross Country</p>
+                                    </div>
+                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
+                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>XC PIC</p>
+                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.xc_pic_hours || 0).toLocaleString()}</p>
+                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Cross Country PIC</p>
+                                    </div>
+                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
+                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>PIC LCL</p>
+                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.pic_local_hours || 0).toLocaleString()}</p>
+                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>PIC Local</p>
+                                    </div>
+                                    <div style={{ background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', padding: '0.6rem', border: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
+                                        <p style={{ margin: 0, fontSize: '0.5rem', letterSpacing: '0.1em', color: '#64748b', textTransform: 'uppercase' }}>DUAL LCL</p>
+                                        <p style={{ margin: '0.25rem 0 0', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{(profileData?.dual_local_hours || 0).toLocaleString()}</p>
+                                        <p style={{ margin: '0.15rem 0 0', fontSize: '0.55rem', color: '#475569' }}>Dual Local</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </CategorySection>
+                    </div>
+
+                    {/* ATO Hour Verification — Pillar 5 */}
+                    <div style={{ marginTop: '2rem' }}>
+                        <CategorySection title="ATO Hour Verification" description="Pillar 5 — Have your flight school verify your training hours for operator trust">
+                            <ATOVerificationRequestSection />
+                        </CategorySection>
+                    </div>
+                </motion.section>
+                )}
+
+                {/* ── PHOTOS SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'photos' && (
+                <motion.section
+                    key="photos"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                        <CategorySection title="Photo Album" description="Your aviation memories and achievements">
+                            <div style={{
+                                background: 'linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8))',
+                                borderRadius: '16px',
+                                padding: '3rem',
+                                border: '1px dashed rgba(255,255,255,0.2)',
+                                textAlign: 'center'
+                            }}>
+                                <ImageIcon size={48} style={{ color: '#64748b', marginBottom: '1rem' }} />
+                                <p style={{ color: '#94a3b8', fontSize: '1rem', marginBottom: '0.5rem' }}>Photo album coming soon</p>
+                                <p style={{ color: '#64748b', fontSize: '0.85rem' }}>Upload and organize your flight photos, certificates, and memories</p>
+                            </div>
+                        </CategorySection>
+
+                        <CategorySection title="Examination Results" description="Verified exam scores and subcategory breakdowns">
+                            <div style={{
+                                background: 'rgba(30, 41, 59, 0.6)',
+                                borderRadius: '24px',
+                                padding: '1.75rem',
+                                boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
+                                display: 'grid',
+                                gridTemplateColumns: '1fr auto',
+                                gap: '1.5rem',
+                                alignItems: 'center'
+                            }}>
+                                <div>
+                                    <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>Examination Results</h3>
+                                    <p style={{ margin: 0, color: '#a0aec0', fontSize: '0.95rem', lineHeight: 1.5 }}>Dive into your latest verified exam scores and subcategory breakdowns.</p>
+                                </div>
+                                <button
+                                    style={{
+                                        padding: '8px 16px',
+                                        minWidth: 180,
+                                        borderRadius: '999px',
+                                        border: '1px solid rgba(148,163,184,0.25)',
+                                        background: 'rgba(255,255,255,0.03)',
+                                        color: '#94a3b8',
+                                        fontWeight: 600,
+                                        fontSize: '0.85rem',
+                                        cursor: 'pointer',
+                                        whiteSpace: 'nowrap' as const,
+                                        textAlign: 'center' as const
+                                    }}
+                                    onClick={() => setCurrentDocumentationPage('examination')}
+                                >
+                                    View Examination Directory
+                                </button>
+                            </div>
+                        </CategorySection>
+                    </div>
+                </motion.section>
+                )}
+
+                {/* ── IDENTITY SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'identity' && (
+                <motion.section
+                    key="identity"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                        <CategorySection title="Customize Identity" description="Personalize your pilot profile and preferences">
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                                <div style={{ ...baseCardStyle }}>
+                                    <h4 style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: '#ffffff' }}>Profile Picture</h4>
+                                    <div style={{
+                                        width: '120px',
+                                        height: '120px',
+                                        borderRadius: '50%',
+                                        background: '#0f172a',
+                                        margin: '0 auto 1rem',
+                                        overflow: 'hidden',
+                                        cursor: 'pointer'
+                                    }} onClick={() => fileInputRef.current?.click()}>
+                                        <ProfileImage
+                                            url={profileData?.profile_image_url}
+                                            publicId={profileData?.profile_image_public_id}
+                                            name={profileData?.full_name}
+                                            size={120}
+                                            className="w-full h-full"
+                                            fallbackClassName="rounded-full bg-slate-900 text-white text-3xl"
+                                        />
+                                    </div>
+                                    <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" style={{ display: 'none' }} />
+                                    <button onClick={() => fileInputRef.current?.click()} style={{
+                                        padding: '0.5rem 1rem',
+                                        background: 'rgba(59,130,246,0.2)',
+                                        border: '1px solid rgba(59,130,246,0.4)',
+                                        borderRadius: '8px',
+                                        color: '#60a5fa',
+                                        fontSize: '0.8rem',
+                                        cursor: 'pointer',
+                                        width: '100%'
+                                    }}>Change Photo</button>
+                                </div>
+                                <div style={{ ...baseCardStyle }}>
+                                    <h4 style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: '#ffffff' }}>Display Name</h4>
+                                    <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>{profileData?.full_name || 'Not set'}</p>
+                                    <button style={{
+                                        padding: '0.5rem 1rem',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '8px',
+                                        color: '#94a3b8',
+                                        fontSize: '0.8rem',
+                                        cursor: 'pointer',
+                                        width: '100%'
+                                    }}>Edit in Settings</button>
+                                </div>
+                            </div>
+                        </CategorySection>
+
+                        {/* Professional Interests - About & Experience */}
+                        <CategorySection title="Professional Interests" description="Professional information and pathway preferences">
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+                                <div style={{ ...baseCardStyle }}>
+                                    <div style={{ marginBottom: '0.75rem' }}>
+                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Professional Information</p>
+                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Professional Details</h3>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                                        {[
+                                            { label: 'Current Occupation', value: profileData?.current_occupation || '' },
+                                            { label: 'Current Employer', value: profileData?.current_employer || '' }
+                                        ].map(item => (
+                                            <div key={item.label} style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600 }}>{item.label}</div>
+                                                {item.value ? (
+                                                    <div style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.85rem', textAlign: 'right' }}>{item.value}</div>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => onNavigate('pilot-licensure-experience')}
+                                                        style={{ padding: '0.25rem 0.6rem', background: 'none', border: '1px dashed rgba(148,163,184,0.4)', borderRadius: '6px', color: '#64748b', fontSize: '0.75rem', fontWeight: 500, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s ease' }}
+                                                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563eb'; e.currentTarget.style.color = '#2563eb'; }}
+                                                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.4)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >
+                                                        <Plus size={12} /> Add Info
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div style={{ ...baseCardStyle }}>
+                                    <div style={{ marginBottom: '0.75rem' }}>
+                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Pathway Interests</p>
+                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Career Goals</h3>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', overflow: 'hidden' }}>
+                                        {profileData?.pathway_interests?.map((interest: string, index: number) => (
+                                            <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
+                                                {interest}
+                                            </span>
+                                        )) || (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {['Commercial Aviation', 'Type Rating', 'Long-Haul Ops'].map(suggestion => (
+                                                    <button key={suggestion} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >+ {suggestion}</button>
+                                                ))}
+                                                <button style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>+ Add Goals</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div style={{ ...baseCardStyle }}>
+                                    <div style={{ marginBottom: '0.75rem' }}>
+                                        <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Insight Interests</p>
+                                        <h3 style={{ margin: '0.35rem 0 0', fontSize: '1rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Learning Goals</h3>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', overflow: 'hidden' }}>
+                                        {profileData?.insight_interests?.map((interest: string, index: number) => (
+                                            <span key={index} style={{ padding: '0.35rem 0.85rem', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
+                                                {interest}
+                                            </span>
+                                        )) || (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {['ATPL Theory', 'CRM & Safety', 'Aviation Regulations'].map(suggestion => (
+                                                    <button key={suggestion} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >+ {suggestion}</button>
+                                                ))}
+                                                <button style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>+ Select Topics</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </CategorySection>
+
+                        {/* About You - Personal Statement & Skills */}
+                        <CategorySection title="About You" description="Personal details and aspirations">
+                            <div style={{ ...baseCardStyle }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                                    {/* Why You Want to Become a Pilot — long-form statement */}
+                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
+                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Why You Want to Become a Pilot</div>
+                                        {profileData?.why_become_pilot ? (
+                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.6 }}>{profileData.why_become_pilot}</div>
+                                        ) : (
+                                            <button
+                                                onClick={() => onNavigate('pilot-licensure-experience')}
+                                                style={{ width: '100%', padding: '0.85rem 1rem', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '10px', color: '#64748b', fontSize: '0.82rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s ease', textAlign: 'left' as const }}
+                                                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                            >
+                                                <Plus size={14} />
+                                                <span><strong style={{ fontWeight: 700 }}>+ Add Personal Statement</strong> &nbsp;—&nbsp; Share your career vision for airline recruiters.</span>
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* Other Skills — modular tag-style */}
+                                    <div style={{ borderRadius: '14px', padding: '0.85rem', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(30, 41, 59, 0.6)' }}>
+                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Other Skills</div>
+                                        {profileData?.other_skills ? (
+                                            <div style={{ color: '#ffffff', fontSize: '0.9rem', lineHeight: 1.5 }}>{profileData.other_skills}</div>
+                                        ) : (
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                {['Flight Instructor', 'CRM Trained', 'Fluent in Spanish'].map(s => (
+                                                    <button key={s} style={{ padding: '0.3rem 0.75rem', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(148,163,184,0.3)', borderRadius: '999px', color: '#64748b', fontSize: '0.75rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(229,62,62,0.5)'; e.currentTarget.style.color = '#ff8181'; }}
+                                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(148,163,184,0.3)'; e.currentTarget.style.color = '#64748b'; }}
+                                                    >+ {s}</button>
+                                                ))}
+                                                <button
+                                                    onClick={() => onNavigate('pilot-licensure-experience')}
+                                                    style={{ padding: '0.3rem 0.75rem', background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.3)', borderRadius: '999px', color: '#e53e3e', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                                                >+ Add Skills</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </CategorySection>
+                    </div>
+                </motion.section>
+                )}
+
+                {/* ── VAULT SECTION ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'vault' && (
+                <motion.section
+                    key="vault"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                            <div>
+                                <p style={{ margin: 0, fontSize: '0.7rem', letterSpacing: '0.25em', color: '#94a3b8', textTransform: 'uppercase' }}>Operator View</p>
+                                <h2 style={{ margin: '0.3rem 0 0.5rem', fontSize: '1.5rem', color: '#ffffff', fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Access Vault</h2>
+                                <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', maxWidth: 520 }}>This is exactly what airlines and operators see when they pull your profile. Edit the fields below to control your public-facing identity.</p>
+                            </div>
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: isPremium ? 'rgba(34,197,94,0.12)' : 'rgba(236,201,75,0.1)', border: `1px solid ${isPremium ? 'rgba(34,197,94,0.3)' : 'rgba(236,201,75,0.3)'}`, borderRadius: 8, padding: '6px 14px' }}>
+                                <span style={{ width: 7, height: 7, borderRadius: '50%', background: isPremium ? '#22c55e' : '#ecc94b', flexShrink: 0, display: 'inline-block' }} />
+                                <span style={{ fontSize: '0.7rem', fontWeight: 700, color: isPremium ? '#22c55e' : '#ecc94b', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{isPremium ? 'Verified Profile' : 'Unverified — Upgrade to Recognition+'}</span>
+                            </div>
+                        </div>
+
+                        {/* Operator preview card */}
+                        <div style={{ ...baseCardStyle, border: '2px solid rgba(59,130,246,0.25)', position: 'relative' }}>
+                            <div style={{ position: 'absolute', top: 12, right: 14, display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 6, padding: '3px 10px' }}>
+                                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <span style={{ fontSize: '0.6rem', fontWeight: 700, color: '#60a5fa', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Operator View</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.25rem' }}>
+                                <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg,#1e3a5f,#2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', border: '2px solid rgba(255,255,255,0.1)' }}>
+                                    {profileData?.profile_image_url
+                                        ? <img src={profileData.profile_image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        : <span style={{ fontSize: '1.4rem', fontWeight: 700, color: '#fff' }}>{(profileData?.full_name || 'P').charAt(0).toUpperCase()}</span>
+                                    }
+                                </div>
+                                <div>
+                                    <p style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>{profileData?.full_name || profileData?.display_name || 'Pilot Name'}</p>
+                                    <p style={{ margin: '3px 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>{profileData?.license_type || profileData?.current_occupation || 'Commercial Pilot License'} · {profileData?.country_of_license || profileData?.nationality || 'Unknown Authority'}</p>
+                                    <p style={{ margin: '4px 0 0', fontSize: '0.75rem', color: '#64748b' }}>{profileData?.total_hours || 0} total hours · {profileData?.license_number || profileData?.license_id || 'License pending'}</p>
+                                </div>
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem' }}>
+                                {[
+                                    { label: 'License', value: profileData?.license_type || profileData?.current_occupation || '—' },
+                                    { label: 'Authority', value: profileData?.license_issuing_authority || profileData?.country_of_license || '—' },
+                                    { label: 'ELP', value: profileData?.language_proficiency || profileData?.elp_level || '—' },
+                                    { label: 'Hours', value: profileData?.total_hours ? `${profileData.total_hours} hrs` : '—' },
+                                    { label: 'Medical', value: profileData?.medical_class || '—' },
+                                    { label: 'Home Base', value: profileData?.domicile || profileData?.country || '—' },
+                                ].map(f => (
+                                    <div key={f.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 8, padding: '8px 12px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                        <p style={{ margin: 0, fontSize: '0.58rem', color: '#64748b', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{f.label}</p>
+                                        <p style={{ margin: '3px 0 0', fontSize: '0.82rem', fontWeight: 600, color: f.value === '—' ? '#475569' : '#e2e8f0' }}>{f.value}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            {profileData?.bio && (
+                                <p style={{ margin: '1rem 0 0', fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.6, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.75rem' }}>{profileData.bio}</p>
+                            )}
+                        </div>
+
+                        {/* Editable fields */}
+                        <div style={{ ...baseCardStyle }}>
+                            <p style={{ margin: '0 0 1rem', fontSize: '0.7rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Edit Operator-Visible Fields</p>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.875rem' }}>
+                                {[
+                                    { label: 'Professional Headline', field: 'current_occupation', placeholder: 'e.g. Commercial Pilot — CPL/IR/ME', value: profileData?.current_occupation || '' },
+                                    { label: 'Home Base / City', field: 'domicile', placeholder: 'e.g. Dubai, UAE', value: profileData?.domicile || profileData?.country || '' },
+                                    { label: 'Nationality', field: 'nationality', placeholder: 'e.g. Filipino', value: profileData?.nationality || '' },
+                                    { label: 'LinkedIn URL', field: 'linkedin_url', placeholder: 'linkedin.com/in/yourname', value: profileData?.linkedin_url || '' },
+                                ].map(f => (
+                                    <div key={f.field}>
+                                        <label style={{ display: 'block', fontSize: '0.65rem', color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 5 }}>{f.label}</label>
+                                        <input
+                                            defaultValue={f.value}
+                                            placeholder={f.placeholder}
+                                            onBlur={async (e) => {
+                                                const val = e.target.value.trim();
+                                                if (!val) return;
+                                                const { data: { user } } = await supabase.auth.getUser();
+                                                if (!user) return;
+                                                await supabase.from('profiles').update({ [f.field]: val }).eq('id', user.id);
+                                                setProfileData((prev: any) => ({ ...prev, [f.field]: val }));
+                                            }}
+                                            style={{ width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '8px 12px', color: '#e2e8f0', fontSize: '0.82rem', outline: 'none', boxSizing: 'border-box' }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Bio */}
+                            <div style={{ marginTop: '0.875rem' }}>
+                                <label style={{ display: 'block', fontSize: '0.65rem', color: '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 5 }}>Professional Bio</label>
+                                <textarea
+                                    defaultValue={profileData?.bio || ''}
+                                    placeholder="Tell airlines about your background, goals, and what makes you a great hire..."
+                                    rows={4}
+                                    onBlur={async (e) => {
+                                        const val = e.target.value.trim();
+                                        const { data: { user } } = await supabase.auth.getUser();
+                                        if (!user) return;
+                                        await supabase.from('profiles').update({ bio: val }).eq('id', user.id);
+                                        setProfileData((prev: any) => ({ ...prev, bio: val }));
+                                    }}
+                                    style={{ width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 12px', color: '#e2e8f0', fontSize: '0.82rem', outline: 'none', resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.6 }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Upgrade CTA for free users */}
+                        {!isPremium && (
+                            <div style={{ background: 'rgba(229,62,62,0.06)', border: '1px solid rgba(229,62,62,0.2)', borderRadius: 12, padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+                                <div>
+                                    <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: '#ef4444', letterSpacing: '0.06em', textTransform: 'uppercase' }}>⚠️ Operators See Unverified Warning</p>
+                                    <p style={{ margin: '4px 0 0', fontSize: '0.82rem', color: '#94a3b8' }}>Upgrade to Recognition+ to replace the ⚠️ badge with a verified seal and unlock priority placement in airline pulls.</p>
+                                </div>
+                                <button
+                                    onClick={() => setShowUpgradeModal(true)}
+                                    style={{ flexShrink: 0, padding: '8px 20px', background: 'linear-gradient(135deg,#e53e3e,#c53030)', border: 'none', borderRadius: 8, color: '#fff', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                                >🛡️ Verify Now</button>
+                            </div>
+                        )}
+                    </div>
+                </motion.section>
+                )}
             </main>
+            </motion.div>
+            )}
+            </AnimatePresence>
             
             {/* Documentation Pages Overlay */}
             {currentDocumentationPage === 'examination' && (
@@ -3057,3 +3467,4 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
         </div>
     );
 };
+

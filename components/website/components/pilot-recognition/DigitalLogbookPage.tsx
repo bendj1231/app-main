@@ -390,9 +390,10 @@ interface DigitalLogbookPageProps {
     lastName?: string;
     email?: string;
   } | null;
+  embedded?: boolean;
 }
 
-export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, userProfile }) => {
+export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, userProfile, embedded = false }) => {
   const [resolvedUserId, setResolvedUserId] = useState<string | null>(userProfile?.id ?? userProfile?.uid ?? null);
 
   useEffect(() => {
@@ -1216,8 +1217,9 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   const totalHours = flightLogs.reduce((sum, log) => sum + log.hours, 0);
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: 'hidden' }}>
       {/* MeshGradient Background - Same as Portal 2 */}
+      {!embedded && (
       <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
         <MeshGradient
           className="w-full h-full"
@@ -1237,7 +1239,8 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
         <div style={{ position: 'absolute', inset: 0, backdropFilter: 'blur(3px)', background: 'rgba(15,23,42,0.1)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
       </div>
-      <div style={{ position: 'relative', zIndex: 10, paddingBottom: '4rem' }}>
+      )}
+      <div style={{ position: 'relative', zIndex: embedded ? 'auto' : 10, paddingBottom: '4rem' }}>
       <div style={{
         position: 'relative',
         width: '100%',
@@ -1256,6 +1259,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           border: '1px solid rgba(255, 255, 255, 0.1)',
           marginBottom: '2rem'
         }}>
+          {!embedded && (
           <button
             onClick={onBack}
             style={{
@@ -1276,6 +1280,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
           >
             ← BACK TO PROFILE
           </button>
+          )}
 
           <div style={{
             position: 'absolute',

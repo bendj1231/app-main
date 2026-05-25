@@ -2,6 +2,40 @@
 
 This checklist must be completed before deploying to production. Each item should be verified and checked off.
 
+## Security Status Summary (Updated: May 24, 2026)
+
+### ✅ Completed via Supabase MCP
+- [x] Security events table created
+- [x] RLS policies fixed (permissive → restrictive)
+- [x] Function search_path vulnerabilities fixed
+- [x] RLS enabled on missing tables
+- [x] pg_net extension moved to schema with restricted access
+- [x] Security definer view fixed
+- [x] All 21 database-level security items completed
+
+### ✅ Completed Code-Level
+- [x] Rate limiting with device fingerprinting
+- [x] Input validation (Zod)
+- [x] Request size limits
+- [x] Security scanning in CI
+- [x] Per-user rate limiting
+- [x] CSRF protection
+- [x] Enhanced security headers
+- [x] Token rotation
+
+### ⏳ Remaining: 27 Manual Configuration Items
+See `/Users/bowler/Documents/apps/app-main/SECURITY_TASKS_TODO.md` for full details:
+- Supabase Dashboard: Enable leaked password protection
+- Cloudflare: WAF, DDoS, rate limiting, bot detection, geo-blocking (8 items)
+- DNS: DNSSEC, DMARC/SPF/DKIM, CAA records (4 items)
+- TLS: 1.3, PFS, cipher suites, OCSP (5 items)
+- Encryption: Key rotation, HSTS, cert pinning (4 items)
+- External: Third-party security audit
+
+**Supabase Project:** `gkbhgrozrzhalnjherfu`
+
+---
+
 ## Table of Contents
 
 1. [Security](#security)

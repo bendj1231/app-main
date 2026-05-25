@@ -95,6 +95,7 @@ interface GridCardData {
     dynamicSubtitles?: string[];
     animationIndices?: number[];
     isDirectory?: boolean;
+    isLightMode?: boolean;
 }
 
 interface ViewSet {
@@ -155,28 +156,29 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'programs',
             image: '/program1.png',
-            title: 'Discover Programs',
-            subtitle: 'Structured training pathways from flight school to airline-ready professional',
+            title: 'Explore Programs',
+            subtitle: 'Explore global pathways from flight school to airline-ready professional.',
             icon: GraduationCap,
-            badge: null,
+            badge: 'NEW',
             accentColor: 'from-amber-500/80 to-orange-400/80',
         },
         {
             id: 'pilot-recognition',
             image: '/images/pilotrecognitioncompoennt.png',
-            title: 'The Global Standard for Fraud-Free Flight Logs',
-            subtitle: 'Falsified hours are a liability airlines cannot afford. Our zero-knowledge pipeline tokenizes your licensing history — you own your data, we store only immutable hashes.',
+            title: 'Get Recognition+',
+            subtitle: 'Falsified hours are a liability airlines cannot afford. Our zero-knowledge pipeline tokenizes your licensing history.',
             icon: Compass,
-            badge: null,
+            badge: 'NEW',
             accentColor: 'from-violet-500/80 to-purple-400/80',
+            isLightMode: true,
         },
         {
             id: 'pathways',
             image: '/pathway4.png',
-            title: 'Direct Carrier Pipelines Are Open',
-            subtitle: 'Skip the recruitment queue. Your verified token is placed in live directories searched daily by flight schools, manufacturers, and mainline operators.',
+            title: 'Discover Pathways',
+            subtitle: 'Verified credentials placed in direct hiring directories searched daily by flight schools, manufacturers, and mainline operators.',
             icon: ShoppingBag,
-            badge: null,
+            badge: 'NEW',
             accentColor: 'from-rose-500/80 to-pink-400/80',
         },
     ],
@@ -465,62 +467,90 @@ const AccessPlatformCard: React.FC<{
     isLoggedIn: boolean;
 }> = ({ onLogin, onNavigate, isLoggedIn }) => {
     return (
-        <div className="relative w-full h-full overflow-hidden rounded-none border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]">
-            {/* Full-width background: pilots photo */}
-            <img
-                src="https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png"
-                alt="Pilots"
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: '70% center' }}
-            />
-            {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/95 via-[#0a1628]/60 to-[#0a1628]/10 pointer-events-none" />
-            {/* Top accent line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00b4d8] to-blue-600" />
-
-            {/* Content layout: left text + center phone card */}
-            <div className="relative h-full flex items-stretch">
-                {/* Left: text + buttons */}
-                <div className="flex flex-col justify-between px-5 py-5 md:px-7 md:py-6 w-[52%] md:w-[42%] lg:w-[38%]">
-                    <div className="flex flex-col gap-2 md:gap-3">
-                        <div className="flex items-center gap-1.5">
-                            <span className="text-[#00b4d8] text-xs font-bold">&#8811;</span>
-                            <p className="text-[10px] md:text-xs text-[#00b4d8] font-bold uppercase tracking-[0.15em]">Pilot Platform</p>
+        <div 
+            className="relative w-full h-full overflow-hidden rounded-xl"
+            style={{ 
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(24px) saturate(130%)',
+                WebkitBackdropFilter: 'blur(24px) saturate(130%)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+            }}
+        >
+            {/* Background layer - mock2.png image with refined alpha mask */}
+            <div className="absolute inset-0">
+                <img
+                    src="/123.png"
+                    alt="Flight Deck"
+                    className="w-full h-full object-cover"
+                    style={{
+                        objectPosition: 'right top',
+                        maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)',
+                        WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)'
+                    }}
+                />
+            </div>
+            
+            {/* Content layer - generous breathing room */}
+            <div className="absolute inset-0 flex items-center px-10 py-8">
+                <div className="relative w-[50%] md:w-[46%] lg:w-[44%]">
+                    <div className="relative z-10 scale-90 origin-top-left">
+                        {/* Micro-header with chevron */}
+                        <div className="flex items-center gap-1.5 mb-4">
+                            <span className="text-cyan-400 text-xs">&#8811;</span>
+                            <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Pilot Platform</p>
                         </div>
-                        <h3 className="text-white text-lg md:text-2xl lg:text-3xl font-light uppercase tracking-widest leading-tight">
-                            Access Your Digital Flight Deck
-                        </h3>
-                        <div className="w-8 h-[2px] bg-[#00b4d8]" />
-                        <p className="text-slate-300 text-[10px] md:text-xs leading-relaxed">
-                            Authenticate credentials to launch your digital flight deck, manage verified credential tokens, and audit live operator pathways.
+                        
+                        {/* Main headline */}
+                        <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-white uppercase tracking-tight leading-tight mb-4">
+                            Verifying Pilots Through <span className="text-red-600 font-extrabold uppercase tracking-tight">Recognition</span>
+                        </h1>
+                        
+                        {/* Body text */}
+                        <p className="text-xs md:text-sm text-slate-300 leading-relaxed max-w-sm mb-6">
+                            Turn your logbook into a verified credential meeting international standards from operators, manufacturers, and ATOs. Global issuance of verified flight hours, aviation industry credibility, secured training investment — and the recognition every pilot deserves.
                         </p>
-                    </div>
-                    <div className="flex flex-col gap-2 mt-3">
-                        <>
-                            <button
-                                onClick={() => onNavigate('flight-deck-login')}
-                                className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/20"
-                            >
-                                Enter Flight Deck →
-                            </button>
+                        
+                        {/* Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-3">
                             {!isLoggedIn && (
                                 <button
                                     onClick={() => onNavigate('become-member')}
-                                    className="w-full py-2.5 bg-transparent border border-white/50 hover:border-white/80 hover:bg-white/5 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-200"
+                                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25 rounded-md"
                                 >
-                                    Get Recognition Free →
+                                    Get Recognition Free
                                 </button>
                             )}
-                        </>
+                            <button
+                                onClick={() => onNavigate('flight-deck-login')}
+                                className="px-6 py-3 bg-transparent hover:bg-white/5 border border-white/30 hover:border-white/50 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
+                            >
+                                Sign In to Flight Deck
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-                {/* Center: Singapore Airlines eligibility callout */}
-                <div className="hidden md:flex flex-col items-start justify-center px-4 lg:px-8 gap-2">
-                    <p className="text-white font-bold text-xs md:text-sm uppercase tracking-wider leading-tight">
-                        Are You Eligible for<br />Singapore Airlines?<br />
-                        <span className="text-[#00b4d8] font-normal normal-case tracking-normal text-[10px]">Check Now.</span>
-                    </p>
+                
+                {/* Right side callout with blur gradient overlay */}
+                <div className="hidden md:flex flex-1 items-center justify-end h-full absolute right-0 top-0 bottom-0 w-[42%]">
+                    {/* Blur + gradient overlay */}
+                    <div
+                        className="absolute inset-0"
+                        style={{
+                            background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 30%, rgba(0,0,0,0.72) 100%)',
+                            backdropFilter: 'blur(6px)',
+                            WebkitBackdropFilter: 'blur(6px)',
+                        }}
+                    />
+                    <div className="relative z-10 text-right pr-10 pl-8">
+                        <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em] mb-2">&#8811; Pathway Discovery</p>
+                        <h2 className="text-xl lg:text-2xl font-extrabold uppercase tracking-tight leading-tight mb-3 text-white">
+                            Submit <span className="text-red-500">Pathway</span><br />Interests
+                        </h2>
+                        <p className="text-xs text-slate-300 leading-relaxed max-w-[220px] ml-auto">
+                            Align your profile with specific career paths. Discover posted expectations & requirements from manufacturers, airlines, and the wider aviation industry before submitting your interest in a pathway. <span className="text-red-500">Gain exclusive access to private and eVTOL pathways for serious pilots with Recognition+.</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1003,65 +1033,6 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             >
                 {/* Grid Content */}
 
-                {/* Minimal Compass Header - Just the revolving word */}
-                <div className="w-full max-w-[980px] xl:max-w-[1040px] mx-auto mb-4 md:mb-5">
-                    <div className="flex items-center justify-center gap-4 md:gap-8">
-                        {/* Left Preview (Previous) */}
-                        <button
-                            onClick={goToPrevious}
-                            disabled={isAnimating}
-                            className="text-right transition-all duration-300 group"
-                        >
-                            <span className="text-xs md:text-sm text-white/30 font-serif tracking-wider block">
-                                {viewSets[(currentViewIndex - 1 + viewSets.length) % viewSets.length].title}
-                            </span>
-                        </button>
-
-                        {/* Main Title - Minimal with smooth horizontal slide */}
-                        <div className="relative px-2 overflow-hidden">
-                            <AnimatePresence mode="wait" custom={direction}>
-                                <motion.h2
-                                    key={currentViewIndex}
-                                    custom={direction}
-                                    variants={{
-                                        enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
-                                        center: { opacity: 1, x: 0 },
-                                        exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 }),
-                                    }}
-                                    initial="enter"
-                                    animate="center"
-                                    exit="exit"
-                                    transition={{
-                                        x: { type: "spring", stiffness: 400, damping: 35, mass: 0.8 },
-                                        opacity: { duration: 0.2 },
-                                    }}
-                                    className="text-xl md:text-3xl lg:text-4xl font-serif text-white tracking-tight"
-                                >
-                                    {currentViewTitle}
-                                </motion.h2>
-                            </AnimatePresence>
-                            {/* Subtle underline */}
-                            <motion.div 
-                                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 ${currentAccentColor}`}
-                                initial={{ width: 0 }}
-                                animate={{ width: '60%' }}
-                                transition={{ duration: 0.3, delay: 0.1 }}
-                            />
-                        </div>
-
-                        {/* Right Preview (Next) */}
-                        <button
-                            onClick={goToNext}
-                            disabled={isAnimating}
-                            className="text-left transition-all duration-300 group"
-                        >
-                            <span className="text-xs md:text-sm text-white/30 font-serif tracking-wider block">
-                                {viewSets[(currentViewIndex + 1) % viewSets.length].title}
-                            </span>
-                        </button>
-                    </div>
-                </div>
-
                 {/* Grid Content - Dynamic layouts per view */}
                 <AnimatePresence mode="wait" custom={direction}>
                     <motion.div
@@ -1117,11 +1088,11 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                                     {!isMobileView && !isTabletView && (
                                         <>
                                             {/* Full-width panoramic hero card */}
-                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-2.5 h-[280px] lg:h-[320px] xl:h-[340px] 2xl:h-[380px]">
+                                            <motion.div key={currentCards[0].id} variants={cardVariants} className="mb-6 h-[280px] lg:h-[320px] xl:h-[340px] 2xl:h-[380px]">
                                                 <AccessPlatformCard onLogin={onLogin || (() => {})} onNavigate={onNavigate} isLoggedIn={isLoggedIn} />
                                             </motion.div>
                                             {/* Bottom 3 cards — larger than before */}
-                                            <div className="grid grid-cols-3 gap-2 md:gap-2.5 mb-2.5">
+                                            <div className="grid grid-cols-3 gap-4 md:gap-6">
                                                 {currentCards.slice(2, 5).map((card) => (
                                                     <motion.div key={card.id} variants={cardVariants} className="h-[185px] lg:h-[210px] xl:h-[225px] 2xl:h-[245px]">
                                                         <GridCard card={card} isHovered={hoveredCard === card.id} onHover={() => setHoveredCard(card.id)} onLeave={() => setHoveredCard(null)} onClick={getCardClickHandler(card)} onNavigate={onNavigate} className="w-full h-full" isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} isLargeCard={true} currentViewKey={currentViewKey} setFoundationNavTarget={setFoundationNavTarget} setShowFoundationLoading={setShowFoundationLoading} />
@@ -1655,14 +1626,16 @@ const GridCard: React.FC<GridCardProps> = ({
                     </div>
                 </div>
             ) : (
-                /* Main Card Container - MSFS Style Dark Card with Blue Accent */
+                /* Main Card Container - Unified overflow hidden to prevent bleeding */
                 <div className={`
-                    relative w-full h-full rounded-none overflow-hidden
-                    bg-black/85 border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]
+                    relative w-full h-full rounded-xl overflow-hidden
+                    ${card.isLightMode 
+                        ? 'bg-slate-50 border border-slate-200' 
+                        : 'bg-black/85 border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]'}
                     ${enableAnimations ? 'transition-transform duration-300 ease-out' : ''}
                     ${enableAnimations && isHovered ? 'scale-[1.01] brightness-110' : 'scale-100'}
                 `}>
-                    {/* Selected Card Highlight Strip (MSFS style) */}
+                    {/* Selected Card Highlight Strip */}
                     <div className={`absolute bottom-0 left-0 right-0 h-[3px] z-30 transition-opacity duration-300 ${isMsfsSelected ? 'opacity-100 bg-[#00b4d8]' : 'opacity-0 bg-transparent'}`} />
                     {/* Background Image / Video / Carousel / Animation */}
                     <div className="absolute inset-0">
@@ -1861,21 +1834,21 @@ const GridCard: React.FC<GridCardProps> = ({
 
 
 
-                {/* MSFS Style Content Area - Bottom section with blue accents (for large cards) */}
+                {/* MSFS Style Content Area - Bottom section with conditional light/dark styling */}
                 {isLargeCard && (
-                    <div className={`absolute bottom-0 left-0 right-0 p-3 md:p-4 z-20 transition-colors duration-300 ${isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'} ${card.id === 'w1000-suite' ? 'pb-12' : ''}`}>
+                    <div className={`absolute bottom-0 left-0 right-0 p-3 md:p-4 z-20 transition-colors duration-300 ${card.isLightMode ? 'bg-white border-t border-slate-200' : isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'} ${card.id === 'w1000-suite' ? 'pb-12' : ''}`}>
                         <div className="flex flex-col">
                             {/* Title row with double chevrons - MSFS style */}
                             <div className="flex items-center gap-1.5 mb-1">
-                                <span className={`text-xs md:text-sm font-bold ${isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
-                                <h3 className={`text-white text-xs md:text-sm font-bold uppercase tracking-wider ${card.id === 'credentials' ? 'text-black' : ''}`}>
-                                    {finalDisplayTitle}
+                                <span className={`text-xs md:text-sm font-bold ${card.isLightMode ? 'text-slate-700' : isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
+                                <h3 className={`text-xs md:text-sm font-bold uppercase tracking-wider ${card.isLightMode ? 'text-slate-900' : 'text-white'} ${card.id === 'credentials' ? 'text-black' : ''}`}>
+                                    {card.id === 'pilot-recognition' ? (<>Get <span className="text-red-600">Recognition+</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Pathways</span></>) : finalDisplayTitle}
                                 </h3>
                             </div>
-                            {/* Blue accent underline - MSFS style progress bar look */}
-                            <div className={`w-full max-w-[120px] h-1 mb-2 ${isMsfsSelected ? 'bg-gradient-to-r from-white to-transparent' : 'bg-gradient-to-r from-[#00b4d8] to-transparent'}`} />
-                            {/* Description - MSFS style smaller gray text */}
-                            <p className={`text-[10px] md:text-xs leading-tight line-clamp-2 ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                            {/* Accent underline - gray for light mode, blue for dark */}
+                            <div className={`w-full max-w-[120px] h-1 mb-2 ${card.isLightMode ? 'bg-gradient-to-r from-slate-400 to-transparent' : isMsfsSelected ? 'bg-gradient-to-r from-white to-transparent' : 'bg-gradient-to-r from-[#00b4d8] to-transparent'}`} />
+                            {/* Description - dark text for light mode, light text for dark */}
+                            <p className={`text-[10px] md:text-xs leading-tight line-clamp-2 ${card.isLightMode ? 'text-slate-600' : isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
                                 {finalDisplaySubtitle}
                             </p>
                             {/* Red Glassy Enroll Button - for Foundation Program Enroll card */}

@@ -32,6 +32,9 @@ import type { StorageHealthReport } from '../../../../lib/wallet/storage';
 interface WalletViewPageProps {
   userId?: string;
   onBack?: () => void;
+  initialTab?: 'overview' | 'credentials' | 'logbook' | 'vault';
+  embedded?: boolean;
+  onSectionChange?: (section: 'overview' | 'credentials' | 'logbook' | 'vault') => void;
 }
 
 const STATUS_CONFIG: Record<string, { label: string; dot: string; text: string; bg: string; border: string }> = {
@@ -65,7 +68,13 @@ interface WalletNotif {
   time: string;
 }
 
-export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }) => {
+export const WalletViewPage: React.FC<WalletViewPageProps> = ({ 
+  userId, 
+  onBack, 
+  initialTab,
+  embedded = false,
+  onSectionChange 
+}) => {
   const [profile, setProfile] = useState<any>(null);
   const [checks, setChecks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -150,7 +159,15 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     }
   };
   type TabID = 'overview' | 'credentials' | 'logbook' | 'vault';
-  const [activeTab, setActiveTab] = useState<TabID>('overview');
+  const [activeTab, setActiveTab] = useState<TabID>(initialTab || 'overview');
+
+  // Notify parent of tab changes when embedded
+  useEffect(() => {
+    if (embedded && onSectionChange && activeTab !== initialTab) {
+      onSectionChange(activeTab);
+    }
+  }, [activeTab, embedded, onSectionChange, initialTab]);
+
   // W3C VC wallet state
   const [walletState, setWalletState] = useState<WalletState | null>(null);
   const [slotStatuses, setSlotStatuses] = useState<Record<number, BitstringStatusResult>>({});
@@ -430,10 +447,48 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
   const content = (
     <div style={{
-      position: 'fixed', inset: 0, zIndex: 99999, overflowY: 'auto',
+      position: embedded ? 'relative' : 'fixed', 
+      inset: embedded ? 'auto' : 0, 
+      zIndex: embedded ? 'auto' : 99999, 
+      overflowY: 'auto',
       fontFamily: "'SF Pro Display', system-ui, -apple-system, sans-serif",
       background: '#f1f5f9',
+      minHeight: '100%',
     }}>
+      {/* DEBUG BANNER */}
+      {embedded ? (
+        <div style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          background: '#16a34a', 
+          color: 'white', 
+          padding: '2px', 
+          zIndex: 99999,
+          fontSize: '9px',
+          fontWeight: 'bold',
+          textAlign: 'center'
+        }}>
+          🔧 DEBUG: WalletViewPage (EMBEDDED) | Tab: {activeTab}
+        </div>
+      ) : (
+        <div style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          background: '#f59e0b', 
+          color: 'white', 
+          padding: '4px', 
+          zIndex: 99999,
+          fontSize: '10px',
+          fontWeight: 'bold',
+          textAlign: 'center'
+        }}>
+          🔧 DEBUG: WalletViewPage (STANDALONE) | User: {userId?.slice(0,8) || 'none'} | Tab: {activeTab}
+        </div>
+      )}
       <style>{`
         @keyframes wvFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes wvShimmer { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
@@ -448,7 +503,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       {/* clean bg — no texture noise */}
 
       {/* ── HEADER ── */}
-      <div style={{ position: 'relative', zIndex: 10, padding: '20px 28px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      {!embedded && <div style={{ position: 'relative', zIndex: 10, padding: '20px 28px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {onBack && (
             <button onClick={onBack} style={{
@@ -587,10 +642,11 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             )}
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* ── TAB BAR ── */}
-      {(() => {
+      {!embedded && 
+      ((() => {
         const tabs: { key: TabID; label: string; badge?: string }[] = [
           { key: 'overview',    label: 'Overview' },
           { key: 'credentials', label: 'Credentials (VCs)', badge: checks.filter(c => c.status === 'verified').length > 0 ? String(checks.filter(c => c.status === 'verified').length) : undefined },
@@ -635,11 +691,11 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
             </div>
           </div>
         );
-      })()}
+      })())}
 
       {/* ── TAB: OVERVIEW ── */}
       {activeTab === 'overview' && (
-      <div style={{ position: 'relative', zIndex: 10, padding: '24px 28px 0' }}>
+      <div style={{ position: 'relative', zIndex: 10, padding: embedded ? '16px 20px 0' : '24px 28px 0' }}>
 
         {/* Active Clearance State */}
         <div style={{
@@ -819,7 +875,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
       {/* ── TAB: VAULT ── */}
       {activeTab === 'vault' && (
-      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+      <div style={{ position: 'relative', zIndex: 10, padding: embedded ? '16px 20px 0' : '28px 28px 0' }}>
 
         {/* Audit ledger */}
         <div style={{ marginBottom: 16, padding: '20px 22px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12 }}>
@@ -894,7 +950,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
 
       {/* ── TAB: CREDENTIALS ── */}
       {activeTab === 'credentials' && (
-      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+      <div style={{ position: 'relative', zIndex: 10, padding: embedded ? '16px 20px 0' : '28px 28px 0' }}>
 
         {/* ── RECOGNITION+ VEREMARK PANEL ── */}
         {(() => {
@@ -1329,7 +1385,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
       {/* ── TAB: LOGBOOK ── */}
       {activeTab === 'logbook' && (
       <>
-      <div style={{ position: 'relative', zIndex: 10, padding: '28px 28px 0' }}>
+      <div style={{ position: 'relative', zIndex: 10, padding: embedded ? '16px 20px 0' : '28px 28px 0' }}>
         <div className="wv-in" style={{ animationDelay: '0.35s', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
           <div>
             <p style={{ margin: '0 0 2px', fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', color: '#94a3b8', textTransform: 'uppercase' }}>Zone 3 — Data Ingestion & Telemetry Drift Guard</p>
@@ -1835,5 +1891,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({ userId, onBack }
     </div>
   );
 
-  return ReactDOM.createPortal(content, document.body);
+  // When embedded, render normally (inside parent wrapper with sidebar)
+  // When standalone, use portal to render to body
+  return embedded ? content : ReactDOM.createPortal(content, document.body);
 };
