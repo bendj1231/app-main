@@ -26,3 +26,4 @@ export function getCorsHeaders(req: Request): Record<string, string> {
     'Vary': 'Origin',
   };
 }
+w

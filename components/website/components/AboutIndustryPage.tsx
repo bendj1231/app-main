@@ -171,97 +171,56 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
                         </RevealOnScroll>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                         <RevealOnScroll>
-                            <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                            <div className="bg-white p-8 rounded-2xl border border-slate-200 flex flex-col">
                                 <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Free</h3>
-                                <div className="text-3xl font-bold text-slate-900 mb-6">$0</div>
-                                <p className="text-sm text-slate-500 mb-4">See the quality. Upgrade when you're ready.</p>
-                                <ul className="space-y-3 text-sm text-slate-600">
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Post up to 3 pathways
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        View 20 pilot profiles/month
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Basic filtering (hours, license)
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Standard support
-                                    </li>
+                                <div className="text-4xl font-bold text-slate-900 mb-2">$0</div>
+                                <p className="text-sm text-slate-500 mb-6">List pathways. Receive pilot interest. See the quality.</p>
+                                <ul className="space-y-3 text-sm text-slate-600 flex-1">
+                                    {['Post public pathway cards', 'Pilot interest inbox', 'Basic outcome dashboard', 'Browse pilot directory'].map(f => (
+                                        <li key={f} className="flex items-start gap-2">
+                                            <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                            {f}
+                                        </li>
+                                    ))}
+                                    {['Pull API access', 'Recognition Score access', 'EBT video records'].map(f => (
+                                        <li key={f} className="flex items-start gap-2 text-slate-300">
+                                            <span className="w-4 h-4 mt-0.5 flex-shrink-0 text-center">—</span>
+                                            {f}
+                                        </li>
+                                    ))}
                                 </ul>
+                                <button onClick={() => onNavigate('contact-support')} className="mt-8 w-full py-3 rounded-xl border-2 border-slate-900 text-slate-900 font-bold text-sm hover:bg-slate-900 hover:text-white transition-colors">
+                                    Get Started Free
+                                </button>
                             </div>
                         </RevealOnScroll>
 
                         <RevealOnScroll>
-                            <div className="bg-white p-8 rounded-2xl border-2 border-blue-200 shadow-xl">
-                                <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-blue-600 mb-4">Growth</h3>
-                                <div className="text-3xl font-bold text-slate-900 mb-2">$499<span className="text-lg font-normal text-slate-500">/month</span></div>
-                                <p className="text-sm text-slate-500 mb-6">For operators hiring 2-5 pilots/year</p>
-                                <ul className="space-y-3 text-sm text-slate-600">
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Unlimited pathways
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        200 profile views/month
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Advanced competency filtering
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        EBT video assessment access
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Priority matching
-                                    </li>
+                            <div className="bg-slate-900 text-white p-8 rounded-2xl flex flex-col">
+                                <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-red-400 mb-4">Enterprise</h3>
+                                <div className="text-4xl font-bold mb-1">$1,000<span className="text-lg font-normal text-slate-400">/year</span></div>
+                                <p className="text-xs text-slate-400 mb-1">One flat rate. Every stakeholder.</p>
+                                <p className="text-xs text-slate-400 mb-6">+ $500 outcome fee per confirmed placement</p>
+                                <ul className="space-y-3 text-sm text-slate-300 flex-1">
+                                    {['Everything in Free', 'Pull API — query verified pilot database', 'Recognition Score per pilot', 'EBT video assessment access', 'Live profile feed (not static CVs)', 'Placement tracking dashboard', 'Dedicated onboarding support'].map(f => (
+                                        <li key={f} className="flex items-start gap-2">
+                                            <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                                            {f}
+                                        </li>
+                                    ))}
                                 </ul>
-                            </div>
-                        </RevealOnScroll>
-
-                        <RevealOnScroll>
-                            <div className="bg-white p-8 rounded-2xl border-2 border-blue-900 shadow-xl">
-                                <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-blue-900 mb-4">Enterprise</h3>
-                                <div className="text-3xl font-bold text-slate-900 mb-2">$1,000<span className="text-lg font-normal text-slate-500">/month</span></div>
-                                <p className="text-sm text-slate-500 mb-6">+$500 per hire. Capped at $5,000/month.</p>
-                                <ul className="space-y-3 text-sm text-slate-600">
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Unlimited everything
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Pull API access
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Dedicated account manager
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        Custom integration support
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        White-glove onboarding
-                                    </li>
-                                </ul>
+                                <button onClick={() => onNavigate('contact-support')} className="mt-8 w-full py-3 rounded-xl bg-white text-slate-900 font-bold text-sm hover:bg-slate-100 transition-colors">
+                                    Request Enterprise Access
+                                </button>
                             </div>
                         </RevealOnScroll>
                     </div>
 
                     <div className="text-center mt-8">
-                        <p className="text-sm text-slate-500 max-w-2xl mx-auto">
-                            Free tier shows you the pilot quality. Growth tier gives you volume. Enterprise gives you integration. Success fee capped at $5,000/month—predictable costs even at scale.
+                        <p className="text-sm text-slate-500 max-w-xl mx-auto">
+                            One flat rate keeps the platform neutral. Every stakeholder pays the same — airlines, ATOs, insurers, recruiters. No per-seat pricing. No surprises.
                         </p>
                     </div>
                 </div>

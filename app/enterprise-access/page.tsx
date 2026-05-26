@@ -474,8 +474,7 @@ const HeroCarousel = () => {
                 setVisible(true);
             }, 300);
         }, 5000);
-        return (
-        {/* Coded by Benjamin Bowler */}) => clearInterval(t);
+        return () => clearInterval(t);
     }, []);
 
     const item = SHUFFLE_ITEMS[idx];

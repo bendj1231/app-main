@@ -26,28 +26,28 @@ const INCLUDED = [
 
 const FAQS = [
   {
-    q: 'Why $1,000/year and not monthly?',
-    a: 'Annual commitment keeps the platform neutral. We\'re not incentivised to upsell you month-to-month. One flat fee, full access, no surprises.',
+    q: 'Do airlines have to pay to use the platform?',
+    a: 'No. Airlines, flight schools, and manufacturers can search the verified pilot directory and view profiles for free. Basic talent scouting costs nothing. Enterprise is for operators who need Pull API access, advanced filtering, EBT video records, and custom recruitment pipelines — not for casual browsing.',
   },
   {
-    q: 'Who else pays this rate?',
-    a: 'Everyone. Airlines, ATOs, insurers, banks — same $1,000/year. Neutrality is the product. No stakeholder gets preferential data because they pay more.',
+    q: 'Who pays for what?',
+    a: 'Pilots pay subscriptions to tokenize their credentials, manage their profiles, and unlock full pathway access. That is the primary revenue model — pilots invest in their own verified record. Operators who move beyond free scouting into active, high-volume recruitment pay $1,000/year for Pull API and data access. Corporate costs are for pipeline tools, not individual profile views.',
+  },
+  {
+    q: 'Why $1,000/year and not monthly?',
+    a: 'Annual commitment keeps the platform neutral. We\'re not incentivised to upsell you month-to-month. One flat fee, full access, no surprises.',
   },
   {
     q: 'What\'s the $500 outcome fee?',
     a: 'Charged only when a pilot engagement results in a confirmed placement through a pathway you listed. No outcome, no fee.',
   },
   {
-    q: 'Is there a free tier?',
-    a: 'Yes. You can list public pathway cards and receive pilot interest submissions at no cost. Enterprise unlocks the Pull API and full data access.',
-  },
-  {
     q: 'What is the Pull API?',
-    a: 'A REST API that lets you query the pilot database by criteria — hours, type ratings, recognition score, location, medical status. You pull the pilots you need rather than receiving hundreds of unsolicited applications.',
+    a: 'A REST API that lets you query the verified pilot database by criteria — hours, type ratings, recognition score, location, medical status. You pull the pilots you need rather than receiving hundreds of unsolicited applications. Free scouting uses the directory UI; the Pull API is for programmatic, high-volume, or integrated recruitment workflows.',
   },
   {
     q: 'How is this different from a job board?',
-    a: 'This is not a job board. Pilots own their profiles. You list pathway requirements, not job postings. Pilots submit interest — you pull from a pre-verified, scored pool. The direction of information flow is reversed.',
+    a: 'This is not a job board. Pilots own their profiles and pay to build and verify them. Operators list pathway requirements, not job postings. Pilots submit interest — you pull from a pre-verified, scored pool. The direction of information flow is reversed, and the data belongs to the pilot, not the platform.',
   },
 ];
 

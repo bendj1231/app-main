@@ -5,23 +5,32 @@ interface StripePaymentSectionProps {
   onNavigate: (page: string) => void;
 }
 
-const FEATURES_60 = [
-  'Live real-time profile — not a PDF. When you fly and log hours, your profile updates. Airlines always see your current status.',
-  'Recognition Score — scored on recency, hours flown, type rating & profile completeness',
-  'Recognition+ badge — airlines see your score in their ranked shortlist bulletin',
-  'Submit pathway interest — airlines pull a scored shortlist of interested pilots (no background check)',
-  'Airlines filter by: score, recency, type rating, hours flown — your profile is ranked, not just listed',
-  'Priority position in shortlist — not buried in a general pool',
-  'Unlimited profile comparisons (pathway / airline / type rating)',
-  'Direct feedback on profile gaps from match engine & score',
-  'Recognition AI — extended use, pulls from latest type rating / airline / pathway changes and tells you exactly how to align your profile',
-  'Atlas CV — upload documents (licenses, medical, ratings)',
-  'Uploaded documents visible on profile — not screened',
-  'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
-  '25% off Foundation & Transition Programs',
+const FREE_FEATURES_INCLUDED = [
+  'Basic profile',
+  '2 pathway submissions/month',
+  '3 profile comparisons/month',
+  '5 AI chats/month',
+  'General pool visibility',
 ];
 
-const FEATURES_100 = [
+const FREE_FEATURES_EXCLUDED = [
+  'Priority matching',
+  'Exclusive pathways',
+  'Verified credentials',
+];
+
+const FEATURES_ANNUAL = [
+  'Full profile comparison',
+  'Unlimited pathway submissions',
+  'Priority matching',
+  'AI career strategist',
+  'EBT CBTA Fast-Track',
+  'Exclusive pathways (Private Jet, eVTOL)',
+  'Verified flight hours & credentials',
+  '50% off Foundation & Transition',
+];
+
+const FEATURES_ANNUAL_EXTENDED = [
   'Live real-time profile — not a PDF. When you fly and log hours, your profile updates instantly. Airlines pull your current data, not a snapshot from months ago.',
   'Background screening — verified badge attached to your profile in the pulling system',
   'Recognition Score — scored on recency, hours flown, type rating, completeness & background check status',
@@ -36,17 +45,12 @@ const FEATURES_100 = [
   'Screened documents visible to airlines & operators in the pull',
   'Unlimited profile comparisons (pathway / airline / type rating)',
   'EBT CBTA interview fast-track — priority access after Foundation Program (skip the queue)',
-  '50% off Foundation & Transition Programs',
 ];
-
-const HERO_FEATURES_PREVIEW = 5;
 
 export default function StripePaymentSection({ onNavigate }: StripePaymentSectionProps) {
   const { currentUser } = useAuth();
   const [processing, setProcessing] = useState(false);
-  const [showAllHero, setShowAllHero] = useState(false);
-  const [showAll100, setShowAll100] = useState(false);
-  const [showAll60, setShowAll60] = useState(false);
+  const [showAnnualDetails, setShowAnnualDetails] = useState(false);
 
   const handleCheckout = async (priceId: string) => {
     if (!currentUser) {
@@ -73,174 +77,119 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
 
   return (
     <div className="w-full">
-      {/* ── Pricing Cards ── */}
-      <div className="px-2 mb-16">
-        <p className="text-center text-[11px] uppercase tracking-[0.25em] text-slate-400 mb-2">Choose Your Plan</p>
-        <h3 className="text-center text-2xl md:text-3xl font-bold text-white mb-8">Simple, transparent pricing</h3>
+      {/* ── Outer wrapper: pricing left + feature details right ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-2xl mb-4">
 
-        {/* Free */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4 backdrop-blur-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Free Account</p>
-              <p className="text-3xl font-bold text-white">$0 <span className="text-base font-normal text-slate-400">/ forever</span></p>
-              <p className="text-slate-400 text-sm mt-1">Recognition Score visible (no badge) · 2 pathway interests/month · enters general pool · Recognition AI (5 chats/month) · Standard Atlas CV · EBT interview 1–2 months after Foundation</p>
-            </div>
-            <button
-              onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
-              disabled={processing}
-              className="flex-shrink-0 px-8 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
-            >
-              Create Free Account
-            </button>
-          </div>
-        </div>
+        {/* LEFT — white pricing card */}
+        <div className="bg-white/95 backdrop-blur-sm px-8 py-10 flex flex-col">
+          {/* Header */}
+          <p className="text-red-600 text-xs font-bold uppercase tracking-[0.2em] mb-2">Pricing</p>
+          <h3 className="text-slate-900 text-3xl font-bold mb-3">Choose Your Plan.</h3>
+          <p className="text-slate-500 text-sm mb-8 max-w-sm">
+            Start with a free trial. Upgrade to Recognition Plus for priority matching and AI-powered career tools.
+          </p>
 
-        {/* Hero Split: Recognition+ Unlocks — moved below Free */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-8">
-          {/* Left copy */}
-          <div>
-            <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-slate-400 mb-4">Pilot Programs</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
-              <span className="text-red-500">Recognition+</span> Unlocks
-            </h2>
-            <p className="text-slate-300 text-base leading-relaxed mb-8 max-w-md">
-              Get the recognition you deserve. Background screened, prepared through programs, connected to pathways — giving your profile the edge that airlines notice.
-            </p>
-            <div className="flex flex-wrap gap-3">
+          {/* Two plan cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+            {/* Free card */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col">
+              <h4 className="text-slate-700 text-lg font-bold text-center mb-3">Free</h4>
+              <p className="text-slate-900 text-4xl font-bold text-center mb-0.5">
+                $0<span className="text-lg font-normal text-slate-500">/year</span>
+              </p>
+              <p className="text-slate-500 text-sm text-center mb-1">Basic access</p>
+              <p className="text-slate-400 text-xs text-center font-semibold mb-5">Get started today</p>
+              <ul className="space-y-2 mb-6 flex-1">
+                {FREE_FEATURES_INCLUDED.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
+                    <span className="text-slate-400 font-bold flex-shrink-0 mt-0.5">✓</span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+                {FREE_FEATURES_EXCLUDED.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm text-slate-400">
+                    <span className="font-bold flex-shrink-0 mt-0.5">—</span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
               <button
                 onClick={() => { onNavigate('become-member'); window.scrollTo(0, 0); }}
-                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 transition-all"
+                className="w-full py-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm transition-colors"
               >
-                Secure your Profile with <span className="text-red-500 font-bold">Recognition+</span>
-                <span className="w-5 h-5 rounded-full border border-slate-400 flex items-center justify-center text-xs">→</span>
+                Get Started Free
               </button>
+            </div>
+
+            {/* Recognition+ Verified card */}
+            <div className="bg-gradient-to-br from-red-600 to-red-700 rounded-2xl p-6 flex flex-col relative shadow-xl">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-bold px-4 py-1 rounded-full shadow">
+                Best Value
+              </div>
+              <h4 className="text-white text-lg font-bold text-center mt-2 mb-3">Recognition+ Verified</h4>
+              <p className="text-white text-4xl font-bold text-center mb-0.5">
+                $100<span className="text-lg font-normal text-red-200">/year</span>
+              </p>
+              <p className="text-red-200 text-sm text-center mb-1">Annual membership</p>
+              <p className="text-red-300 text-xs text-center font-semibold mb-5">✓ 3-day free trial</p>
+              <ul className="space-y-2 mb-6 flex-1">
+                {FEATURES_ANNUAL.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm text-white">
+                    <span className="text-red-200 font-bold flex-shrink-0 mt-0.5">✓</span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
               <button
                 onClick={() => onNavigate('recognition-plus')}
-                className="px-6 py-3 rounded-full bg-slate-800 border border-slate-600 text-white font-semibold text-sm hover:bg-slate-700 transition-all"
+                disabled={processing}
+                className="w-full py-3 rounded-full bg-white hover:bg-red-50 text-red-700 font-bold text-sm transition-colors disabled:opacity-50"
               >
-                Learn more about Recognition Profile
+                {processing ? 'Processing…' : 'Get Annual Plan'}
               </button>
             </div>
           </div>
 
-          {/* Right — $100/year pricing card */}
-          <div className="relative">
-            <div className="rounded-2xl border border-blue-500/40 bg-white/5 backdrop-blur-md shadow-2xl overflow-hidden">
-              {/* Top accent line */}
-              <div className="h-[3px] w-full bg-gradient-to-r from-blue-600 via-blue-400 to-transparent" />
-              <div className="p-7">
-                {/* Plan label */}
-                <p className="text-[10px] uppercase tracking-[0.25em] text-blue-400 font-semibold mb-1">Recognition Plus</p>
-                {/* Price */}
-                <div className="flex items-end gap-2 mb-1">
-                  <span className="text-6xl font-bold text-white leading-none">$100</span>
-                  <span className="text-slate-400 text-base mb-1">/ year</span>
-                </div>
-                <p className="text-slate-400 text-sm mb-1">Airlines pull you — you don't chase them. Verified, ranked first.</p>
-                <p className="text-blue-400 text-xs font-semibold mb-6">✓ 3-day free trial included</p>
-
-                {/* Feature list */}
-                <ul className="space-y-2.5 mb-3">
-                  {(showAllHero ? FEATURES_100 : FEATURES_100.slice(0, HERO_FEATURES_PREVIEW)).map((f) => (
-                    <li key={f} className="flex items-center gap-2.5 text-sm text-slate-300">
-                      <span className="w-4 h-4 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center flex-shrink-0">
-                        <span className="text-blue-400 text-[10px]">✓</span>
-                      </span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  onClick={() => setShowAllHero(v => !v)}
-                  className="text-blue-400 hover:text-blue-300 text-xs font-semibold mb-5 flex items-center gap-1 transition-colors"
-                >
-                  {showAllHero ? '↑ Show less' : `+ ${FEATURES_100.length - HERO_FEATURES_PREVIEW} more features`}
-                </button>
-
-                {/* CTA */}
-                <button
-                  onClick={() => onNavigate('recognition-plus')}
-                  className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider transition-all shadow-lg shadow-blue-900/40"
-                >
-                  Get Recognition Plus
-                </button>
-                <p className="text-center text-slate-500 text-xs mt-3">Cancel anytime · Secure checkout</p>
-              </div>
-            </div>
-            {/* Decorative glow */}
-            <div className="absolute -inset-4 rounded-3xl bg-blue-600/15 blur-2xl -z-10 pointer-events-none" />
-          </div>
+          <p className="text-slate-400 text-xs text-center mt-5">Cancel anytime. No hidden fees. Free trial included.</p>
         </div>
 
-        {/* Annual + Semi-annual side by side */}
-        <div className="grid md:grid-cols-2 gap-4 mb-8">
-          {/* Annual */}
-          <div className="relative bg-white/5 border border-blue-500/40 rounded-2xl p-6 backdrop-blur-sm overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-blue-400 to-transparent" />
-            <p className="text-[10px] uppercase tracking-widest text-blue-400 mb-1">Recognition Plus</p>
-            <p className="text-4xl font-bold text-white mb-0.5">$100 <span className="text-base font-normal text-slate-400">/ year</span></p>
-            <p className="text-slate-400 text-xs mb-1">Background verified · Preferred by airlines & operators</p>
-            <p className="text-blue-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
-            <ul className="space-y-2 mb-2">
-              {(showAll100 ? FEATURES_100 : FEATURES_100.slice(0, HERO_FEATURES_PREVIEW)).map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
-                  <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>{f}
-                </li>
-              ))}
-            </ul>
-            <button onClick={() => setShowAll100(v => !v)} className="text-blue-400 hover:text-blue-300 text-xs font-semibold mb-5 transition-colors">
-              {showAll100 ? '↑ Show less' : `+ ${FEATURES_100.length - HERO_FEATURES_PREVIEW} more features`}
-            </button>
-            <button
-              onClick={() => onNavigate('recognition-plus')}
-              disabled={processing}
-              className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
-            >
-              {processing ? 'Processing…' : 'Get Recognition Plus'}
-            </button>
-          </div>
+        {/* RIGHT — dark feature details panel */}
+        <div className="bg-slate-900/95 backdrop-blur-sm px-8 py-10 flex flex-col">
+          <p className="text-slate-400 text-xs uppercase tracking-[0.2em] font-semibold mb-1">Full Feature Details</p>
+          <h4 className="text-white text-xl font-bold mb-6">Everything that's included</h4>
 
-          {/* Semi-annual */}
-          <div className="relative bg-white/5 border border-violet-500/40 rounded-2xl p-6 backdrop-blur-sm overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-violet-600 via-violet-400 to-transparent" />
-            <div className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full bg-violet-600/80 text-white text-[10px] font-bold uppercase tracking-wider">Flexible</div>
-            <p className="text-[10px] uppercase tracking-widest text-violet-400 mb-1">Recognition Plus</p>
-            <p className="text-4xl font-bold text-white mb-0.5">$60 <span className="text-base font-normal text-slate-400">/ 6 months</span></p>
-            <p className="text-slate-400 text-xs mb-1">Full intelligence · Shortlisted as Recognition+ member</p>
-            <p className="text-violet-400 text-xs font-semibold mb-5">✓ 3-day free trial</p>
-            <ul className="space-y-2 mb-2">
-              {(showAll60 ? FEATURES_60 : FEATURES_60.slice(0, HERO_FEATURES_PREVIEW)).map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
-                  <span className="text-violet-400 mt-0.5 flex-shrink-0">✓</span>{f}
-                </li>
-              ))}
-            </ul>
-            <button onClick={() => setShowAll60(v => !v)} className="text-violet-400 hover:text-violet-300 text-xs font-semibold mb-5 transition-colors">
-              {showAll60 ? '↑ Show less' : `+ ${FEATURES_60.length - HERO_FEATURES_PREVIEW} more features`}
-            </button>
-            <button
-              onClick={() => onNavigate('recognition-plus')}
-              disabled={processing}
-              className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
-            >
-              {processing ? 'Processing…' : 'Get Recognition Plus'}
-            </button>
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-white font-bold text-base">Recognition+ Verified</span>
+            <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full font-semibold">$100/yr</span>
           </div>
-        </div>
-
-        {/* Enterprise */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 pt-2 pb-4 border-t border-white/10">
-          <p className="text-slate-400 text-sm">Are you an airline, operator, or training organization?</p>
+          <ul className="space-y-2.5 mb-4 flex-1">
+            {(showAnnualDetails ? FEATURES_ANNUAL_EXTENDED : FEATURES_ANNUAL_EXTENDED.slice(0, 6)).map((f) => (
+              <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                <span className="text-red-400 mt-0.5 flex-shrink-0">✓</span>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
           <button
-            onClick={() => window.location.href = 'https://enterprise.pilotrecognition.com'}
-            className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors"
+            onClick={() => setShowAnnualDetails(v => !v)}
+            className="text-red-400 hover:text-red-300 text-xs font-semibold transition-colors mb-6"
           >
-            Click here for enterprise access →
+            {showAnnualDetails ? '↑ Show less' : `+ ${FEATURES_ANNUAL_EXTENDED.length - 6} more features`}
           </button>
-        </div>
-      </div>
 
+          {/* Enterprise link inside the right panel */}
+          <div className="mt-auto pt-4 border-t border-white/10">
+            <p className="text-slate-400 text-xs mb-1">Are you an airline, operator, or training organization?</p>
+            <button
+              onClick={() => window.location.href = 'https://enterprise.pilotrecognition.com'}
+              className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors"
+            >
+              Click here for enterprise access →
+            </button>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

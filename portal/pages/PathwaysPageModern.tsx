@@ -42,6 +42,8 @@ import MilitaryPathwaysPage from './MilitaryPathwaysPage';
 import SpecialPathwaysPage from './SpecialPathwaysPage';
 import LicensureTypeRatingPage from './LicensureTypeRatingPage';
 import CommercialPilotPathwayPage from './CommercialPilotPathwayPage';
+import { PathwaysSidebar } from '../../components/website/components/pilot-recognition/PathwaysSidebar';
+import { PlatformNavbar } from '../../components/website/components/PlatformNavbar';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { usePathwaysIntelligence } from '../hooks/usePathwaysIntelligence';
 import { LoginModal } from '../../components/website/components/LoginModal';
@@ -451,7 +453,7 @@ import { jobApplicationListings } from './PilotJobDatabasePage';
 
 // Confirmed working Cloudinary images from AirlineExpectationsCarousel
 const CLOUDINARY_AIRLINES: Record<string, string> = {
-  'qatar': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/qatar-airways.jpg',
+  'qatar': 'https://airlinegeeks.com/wp-content/uploads/2018/10/IMG_3495-e1540774160956.jpg',
   'singapore': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/singapore-airlines.jpg',
   'cathay': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
   'emirates': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
@@ -5412,7 +5414,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   return (
     <>
-    <div className={`min-h-screen ${bgGradient} relative`} style={{ zoom: '90%' }}>
+    <div className={`min-h-screen ${bgGradient} relative`}>
       {/* MeshGradient Background */}
       <div className="fixed inset-0 z-0">
         <MeshGradient
@@ -5425,429 +5427,43 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       {/* Frosted glass blur overlay */}
       <div className="fixed inset-0 z-0 bg-white/5 backdrop-blur-md"></div>
 
+      {/* Top Navigation Bar */}
+      <PlatformNavbar
+        onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+        currentPage="pathways"
+      />
+
       {/* Content wrapper with higher z-index to sit above shader */}
-      <div className="relative z-10">
-        {/* Header with main title */}
-        <header className="bg-white border-b border-slate-200 backdrop-blur-sm sticky top-0 z-30">
-        <div className="mx-auto pr-6 py-3 w-full max-w-[1800px]">
-          {/* Main title row */}
-          <div className="flex items-center justify-between gap-4 mb-4">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                {/* Back Button */}
-                <button
-                  onClick={() => {
-                    if (onNavigate) {
-                      onNavigate('access-portal-2?tab=pathways');
-                    } else {
-                      window.location.href = '/access-portal-2?tab=pathways';
-                    }
-                  }}
-                  className={`p-2 rounded-lg ${buttonBg} ${buttonText} hover:scale-105 transition-transform`}
-                  title="Back to Home"
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                </button>
-                {/* PilotRecognition.com Logo */}
-                <div className="flex flex-col">
-                  <span style={{ fontFamily: 'Georgia, serif' }} className="text-black text-2xl font-normal">
-                    Discover <span className="text-red-600">Pathways</span>{userCountryCode && <span className="text-slate-400 text-base font-normal"> — {userCountryCode}</span>}
-                  </span>
-                  <span className="text-xs text-slate-600 font-normal">
-                    pilotrecognition.com
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation Buttons - always visible */}
-            <div className="flex items-center gap-3">
-              {[
-                { label: 'Airline Expectations', page: currentUser ? 'portal-airline-expectations' : 'airline-expectations' },
-                { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
-                { label: 'Pilot Pathways', page: 'pathways-modern' },
-                { label: 'Global Aviation Authorities', page: 'global-aviation-authorities' },
-              ].map(({ label, page }) => {
-                const isActive = page === 'pathways-modern' && mode === 'pathways';
-                return (
-                <button
-                  key={page}
-                  onClick={() => onNavigate && onNavigate(page)}
-                  className={`text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${
-                    isActive
-                      ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
-                      : 'text-slate-900'
-                  }`}
-                >
-                  {label}
-                </button>
-                );
-              })}
-            </div>
-
-            {/* Right side items */}
-            <div className="flex items-center gap-3">
-              {/* Profile section */}
-              {currentUser ? (
-                <div className="relative flex items-center gap-2" ref={dropdownRef}>
-                  <div className="flex flex-col items-end">
-                    <span className="text-xs font-semibold text-slate-900">
-                      {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
-                    </span>
-                    <span className="text-[10px] text-slate-500">Signed In</span>
-                  </div>
-                  <button
-                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform"
-                  >
-                    {userProfile?.profile_image_url ? (
-                      <img
-                        src={userProfile.profile_image_url}
-                        alt="Profile"
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    ) : (
-                      <span className="text-white font-bold text-sm">
-                        {currentUser?.email?.charAt(0) || 'U'}
-                      </span>
-                    )}
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsLoginModalOpen(true)}
-                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.1em] transition-all"
-                  >
-                    Login
-                  </button>
-                  <button
-                    onClick={() => onNavigate && onNavigate('become-member')}
-                    className="px-4 py-2 rounded-lg border-2 border-red-600 text-red-600 hover:bg-red-50 text-xs font-bold uppercase tracking-[0.1em] transition-all"
-                  >
-                    Become Member
-                  </button>
-                </div>
-              )}
-              {/* Live Score Widget - only show when logged in */}
-              {currentUser && (
-                <div className="flex items-center gap-2">
-                  <ScoreLiveWidget
-                    fullScore={intelligence.fullScore}
-                    loading={intelligence.loadingScore}
-                    isDarkMode={isDarkMode}
-                  />
-                  {intelligence.fullScore?.velocityLabel && (
-                    <ScoreVelocityBadge
-                      velocity={intelligence.fullScore.scoreVelocity}
-                      label={intelligence.fullScore.velocityLabel}
-                      isDarkMode={isDarkMode}
-                    />
-                  )}
-                </div>
-              )}
-              {/* Login prompt for logged out users */}
-              {!currentUser && (
-                <button
-                  onClick={() => onNavigate && onNavigate('login')}
-                  className={`px-4 py-2 rounded-lg ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'} text-white text-sm font-medium transition-all duration-200`}
-                >
-                  Login to Match Pathways
-                </button>
-              )}
-              <button className={`p-2 rounded-lg ${buttonBg} ${buttonText}`}>
-                <Bell className="w-5 h-5" />
-              </button>
-              <div className="relative">
-                {/* Profile Dropdown Menu */}
-                {isProfileDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
-                    {/* Profile Header */}
-                    <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30">
-                          {userProfile?.profile_image_url ? (
-                            <img 
-                              src={userProfile.profile_image_url} 
-                              alt="Profile" 
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
-                            />
-                          ) : (
-                            <User className="w-6 h-6 text-white/80" />
-                          )}
-                        </div>
-                        <div className="text-center">
-                          <h3 className="font-semibold text-lg">
-                            {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
-                          </h3>
-                          <p className="text-sm text-white/80">{currentUser?.email}</p>
-                          <div className="mt-2 flex flex-col items-center gap-1">
-                            <span className="text-sm font-bold text-white">
-                              Recognition Score: {intelligence.fullScore?.totalScore || recognitionProfile?.totalScore || 0}/100
-                            </span>
-                            {intelligence.fullScore && (
-                              <span className="text-xs text-white/70">{intelligence.fullScore.rankLabel} · {intelligence.fullScore.profileCompleteness}% complete</span>
-                            )}
-                            {intelligence.fullScore?.velocityLabel ? (
-                              <span className="text-xs text-emerald-300">{intelligence.fullScore.velocityLabel}</span>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Stats */}
-                    <div className="p-4 border-b border-slate-200">
-                      <div className="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                          <div className="text-lg font-bold text-slate-900">
-                            {userProfile?.total_flight_hours || 0}
-                          </div>
-                          <div className="text-xs text-slate-500">Flight Hours</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-slate-900">
-                            {userProfile?.mentorship_hours || 0}
-                          </div>
-                          <div className="text-xs text-slate-500">Mentorship</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-slate-900">
-                            {userProfile?.foundation_progress || 0}%
-                          </div>
-                          <div className="text-xs text-slate-500">Foundation</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Menu Items */}
-                    <div className="p-2 border-b border-slate-100">
-                      <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-left">
-                        <User className="w-4 h-4 text-slate-500" />
-                        <span className="text-sm text-slate-700">View Profile</span>
-                      </button>
-                      <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-left">
-                        <Settings className="w-4 h-4 text-slate-500" />
-                        <span className="text-sm text-slate-700">Settings</span>
-                      </button>
-                      <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors text-left">
-                        <LogOut className="w-4 h-4 text-slate-500" />
-                        <span className="text-sm text-slate-700">Logout</span>
-                      </button>
-                    </div>
-
-                    {/* Recognition Profile — Live R-Formula */}
-                    <div className="p-3 border-b border-slate-100">
-                      {intelligence.fullScore ? (
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-xs font-semibold text-slate-700 uppercase tracking-wide">R-Formula Breakdown</span>
-                            <span className="text-xs text-slate-400">PilotRecognition Formula</span>
-                          </div>
-                          <div className="flex items-center gap-3 mb-3">
-                            <RadarChart scores={intelligence.fullScore.breakdown} size={100} isDarkMode={false} animate={false} />
-                            <div className="flex-1 space-y-1.5">
-                              {([
-                                { key: 'P', label: 'Programs', val: intelligence.fullScore.breakdown.P },
-                                { key: 'ET', label: 'Experience', val: intelligence.fullScore.breakdown.ET },
-                                { key: 'B', label: 'Behavioral', val: intelligence.fullScore.breakdown.B },
-                                { key: 'L', label: 'Language', val: intelligence.fullScore.breakdown.L },
-                                { key: 'S', label: 'Skills', val: intelligence.fullScore.breakdown.S },
-                              ] as const).map(f => (
-                                <div key={f.key}>
-                                  <div className="flex justify-between text-[10px] mb-0.5">
-                                    <span className="text-slate-600">{f.label}</span>
-                                    <span className="text-slate-500">{f.val}%</span>
-                                  </div>
-                                  <div className="h-1 rounded-full bg-slate-200 overflow-hidden">
-                                    <div className={`h-full rounded-full ${f.val >= 70 ? 'bg-emerald-500' : f.val >= 45 ? 'bg-amber-500' : 'bg-red-400'}`} style={{ width: `${f.val}%` }} />
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          {intelligence.fullScore.insights.slice(0, 2).map((ins, i) => (
-                            <div key={i} className={`flex items-start gap-2 p-2 rounded-lg text-xs mb-1 ${ins.impact === 'high' ? 'bg-amber-50' : 'bg-sky-50'}`}>
-                              <span className="text-amber-500 mt-0.5">●</span>
-                              <span className="text-slate-600">{ins.message}</span>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <ProfileSummary
-                          profile={recognitionProfile || { totalScore: 77, breakdown: { programs: 82, experience: 75, behavioral: 80, language: 70, skills: 78 } }}
-                          isDarkMode={false}
-                        />
-                      )}
-                    </div>
-
-                    {/* Gap Analysis */}
-                    <div className="p-3">
-                      <GapAnalysisPanel
-                        analysis={(() => {
-                          // Calculate gap analysis from Firebase intelligence
-                          const scoredJobs = intelligence.jobMatches?.scoredJobs || [];
-                          const topJob = scoredJobs[0];
-                          const userHours = recognitionProfile.pilotData?.totalHours || 0;
-                          const userTRs = recognitionProfile.pilotData?.typeRatings || [];
-                          const userScore = intelligence.fullScore?.totalScore || 0;
-
-                          // Calculate average gap from top jobs
-                          const avgHoursGap = scoredJobs.length > 0
-                            ? Math.round(scoredJobs.reduce((sum: number, j: any) => sum + (j.hoursGap || 0), 0) / scoredJobs.length)
-                            : 0;
-
-                          // Count missing type ratings
-                          const missingTRs = scoredJobs.filter((j: any) => j.missingRating).length;
-
-                          // Calculate gap percentage based on match scores
-                          const avgMatchPct = scoredJobs.length > 0
-                            ? Math.round(scoredJobs.reduce((sum: number, j: any) => sum + (j.matchPct || 0), 0) / scoredJobs.length)
-                            : 0;
-                          const gapPercentage = 100 - avgMatchPct;
-
-                          // Generate recommendations based on gaps
-                          const recommendations: string[] = [];
-                          if (avgHoursGap > 0) {
-                            recommendations.push(`Need ${avgHoursGap} more flight hours`);
-                          }
-                          if (missingTRs > 0) {
-                            recommendations.push(`Complete type rating program for ${missingTRs} aircraft types`);
-                          }
-                          if (recognitionProfile.breakdown?.experience && recognitionProfile.breakdown.experience < 70) {
-                            recommendations.push('Improve experience score through additional flight hours');
-                          }
-                          if (recognitionProfile.breakdown?.behavioral && recognitionProfile.breakdown.behavioral < 75) {
-                            recommendations.push('Enhance behavioral/CRM skills through training');
-                          }
-                          if (recommendations.length === 0) {
-                            recommendations.push('Profile is well-aligned with pathway requirements');
-                          }
-
-                          // Estimate cost and time based on gaps
-                          const estimatedCost = avgHoursGap * 50 + missingTRs * 15000;
-                          const estimatedMonths = Math.max(1, Math.ceil(avgHoursGap / 100) + missingTRs * 3);
-
-                          return {
-                            gapPercentage,
-                            totalGaps: (avgHoursGap > 0 ? 1 : 0) + (missingTRs > 0 ? 1 : 0),
-                            highPriorityGaps: avgHoursGap > 500 ? 1 : 0,
-                            estimatedCost,
-                            estimatedTime: { days: estimatedMonths * 30, months: estimatedMonths },
-                            recommendations
-                          };
-                        })()}
-                        isDarkMode={false}
-                        isExpanded={expandedGapAnalysis}
-                        onToggle={() => setExpandedGapAnalysis(!expandedGapAnalysis)}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
-        <div className="mb-8 text-center">
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-sky-400 mb-3">Discover Pathways{userCountryCode ? ` — ${userCountryCode}` : ''}</p>
-          <h1 className={`text-4xl md:text-5xl font-serif font-normal ${headerText} mb-2`}>
-            {Object.keys(hierarchySelection).length > 0
-              ? <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
-              : <><span style={{ color: '#ffffff' }}>Pilot Recognition</span> <span style={{ color: '#dc2626' }}>Pathways</span></>
-            }
-          </h1>
-        </div>
-
-        {/* Breadcrumbs */}
-        <div className="mb-4 flex justify-start">
-          <nav className="flex items-center gap-2 text-sm">
-            <button 
-              onClick={() => onNavigate?.('access-portal-2') || (window.location.href = '/access-portal-2')}
-              className="text-white/60 hover:text-white hover:underline"
-            >
-              Home
-            </button>
-            <ChevronRight className="w-4 h-4 text-white/40" />
-            <span className="font-medium text-white">Pathways</span>
-            {hierarchySelection.generalCategory && (
-              <>
-                <ChevronRight className="w-4 h-4 text-white/40" />
-                <span className="font-medium text-white">
-                  {GENERAL_CATEGORIES.find(c => c.id === hierarchySelection.generalCategory)?.name ?? hierarchySelection.generalCategory}
-                </span>
-              </>
-            )}
-          </nav>
-        </div>
-
-        {/* Search Bar - above categories */}
+      <div className="relative z-10 flex min-h-screen" style={{ paddingTop: '80px' }}>
+        {/* MSFS 2024 Style Sidebar - Pathways Navigation */}
+        <PathwaysSidebar
+          activeSection="pilot-pathways"
+          onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+          prScore={78}
+          matchPercentage={82}
+          topPathway="Commercial Airline"
+          topAirline="Qatar Airways"
+        />
+        {/* Main content area - responsive margin for sidebar */}
+        <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '340px' }}>
+          <div className="max-w-[calc(100vw-360px)] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Search Bar */}
         <div className="mb-6 flex justify-center">
           <div className="w-full max-w-2xl relative">
             <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
           </div>
         </div>
 
-        {/* Category Selection with Clear All */}
-        {mode === 'pathways' && (
-          <div className="flex flex-col items-center gap-4 mb-8">
-            <div className="flex justify-center">
-              <CategorySelection
-                isDarkMode={isDarkMode}
-                selectedCategoryId={hierarchySelection.generalCategory || null}
-                onCategorySelect={handleCategorySelect}
-              />
-            </div>
-            
-            {/* Clear All Filters Button - Shows when any filter is active */}
-            {(searchQuery || hierarchySelection.generalCategory || matchFilter !== 'all') && (
-              <button
-                onClick={() => {
-                  setSearchQuery('');
-                  setMatchFilter('all');
-                  handleCategorySelect(null);
-                  setSortBy('match');
-                }}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 border border-slate-700"
-              >
-                <X className="w-4 h-4" />
-                Clear All Filters
-              </button>
-            )}
-          </div>
-        )}
 
-        {/* Stage 1: Discover Pathways - Show Category Cards */}
-        <div className="w-full mb-6">
-          <div className="mb-12">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="text-center md:text-left">
-                <h2
-                  className="text-3xl md:text-4xl font-normal text-white"
-                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
-                >
-                  Discover Pathways{userCountryCode ? <span className="text-white/40 text-2xl"> — {userCountryCode}</span> : ''}
-                </h2>
-                <p className={`${subText} text-xs mt-1`}>
-                  {mode === 'jobs'
-                    ? <>{filteredPathways.length} of {jobApplicationListings.length}+ jobs available</>
-                    : <>{filteredPathways.length} pathways available</>
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Results count */}
+        <div className="w-full mb-4 text-center">
+          <p className={`${subText} text-sm`}>
+            {filteredPathways.length} pathways available
+          </p>
         </div>
 
         {/* Stage 1: Pathway Cards — filtered by selected pill */}
-        <div className="relative w-full z-10">
+        <div className="relative w-full z-10 -mx-4 sm:-mx-6 lg:-mx-8">
             <style>{`
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-snap-align: center; scroll-behavior: smooth; }
@@ -5855,18 +5471,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
             `}</style>
 
-            {/* Instruction hint */}
-            <div className="text-center mb-5">
-              <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs ${isDarkMode ? 'bg-slate-800/70 text-slate-400 border border-slate-700' : 'bg-white/80 text-slate-500 border border-slate-200'} backdrop-blur-sm`}>
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                Swipe to browse · Click a card to explore
-              </span>
-            </div>
-
             {/* Stage 1 Carousel */}
             <div
               ref={carouselRef}
-              className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4"
+              className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-8"
               style={{ WebkitOverflowScrolling: 'touch', cursor: 'grab', minHeight: '300px', scrollSnapType: 'x mandatory' }}
               onMouseDown={(e) => {
                 const el = carouselRef.current;
@@ -5964,7 +5572,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       <div
                         key={rec.id}
                         className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
-                        style={{ width: '520px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
+                        style={{ width: '720px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
                         onClick={() => {
                           setStage1Index(recIdx);
                           setStage2Index(0);
@@ -6038,7 +5646,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     <div
                       key={item.id}
                       className={`flex-shrink-0 cursor-pointer rounded-xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500' : ''}`}
-                      style={{ width: '520px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
+                      style={{ width: '720px', height: '290px', scrollSnapAlign: 'center', flexShrink: 0 }}
                       onClick={() => {
                         if (discoveryKey) {
                           setStage1Index(itemIdx);
@@ -6142,7 +5750,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 if (!el) return;
                 const targetIndex = Math.max(0, Math.min(stage1Cards.length - 1, stage1Index + dir));
                 const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 540;
+                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
                 // Center the target card in the viewport
                 const scrollTarget = targetIndex * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
                 el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
@@ -6319,20 +5927,22 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               })()}
 
               {/* Stage 2: Individual Pathways for Selected Category */}
-              <div 
-                ref={stage2Ref}
-                className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4"
-                style={{
-                  WebkitOverflowScrolling: 'touch',
-                  scrollSnapType: 'x mandatory',
-                  scrollBehavior: 'smooth',
-                }}
-              >
+              <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+                <div 
+                  ref={stage2Ref}
+                  className="pathways-carousel flex gap-4 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-8"
+                  style={{
+                    WebkitOverflowScrolling: 'touch',
+                    scrollSnapType: 'x mandatory',
+                    scrollBehavior: 'smooth',
+                  }}
+                >
                 {(() => {
                   // Pull Stage 2 cards directly from DISCOVERY_PATHWAYS — bypasses the filteredPathways
                   // pipeline which breaks when a hierarchy pill is selected (allPathways uses categoryPathways then)
                   const discoveryKey = selectedPathwayCard.category;
                   let rawCards: PathwayJob[] = DISCOVERY_PATHWAYS[discoveryKey] || [];
+                  console.log('[Stage2 Debug] discoveryKey:', discoveryKey, 'rawCards from DISCOVERY_PATHWAYS:', rawCards.length);
                   // Apply type-rating filter + inject matching flight schools
                   if (discoveryKey === 'type-rating') {
                     // Inject UUID licensure sub-pathway cards (they are not in DISCOVERY_PATHWAYS)
@@ -6491,7 +6101,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                       id={`pathway-card-${pathway.id}`}
                       className={`flex-shrink-0 cursor-pointer rounded-2xl transition-all duration-300 ${isSelected ? 'ring-2 ring-sky-500 scale-[1.02]' : 'hover:scale-[1.01]'}`}
                       style={{ 
-                        width: '600px', 
+                        width: '720px', 
                         height: '340px',
                         scrollSnapAlign: 'center',
                       }}
@@ -6501,7 +6111,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         const el = stage2Ref.current;
                         if (el) {
                           const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                          const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 616;
+                          const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
                           const scrollTarget = idx * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
                           el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
                         }
@@ -6578,6 +6188,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               );
                 })()}
             </div>
+            </div>
 
             {/* Stage 2 navigation arrows */}
             {(() => {
@@ -6588,7 +6199,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 if (!el) return;
                 const targetIndex = Math.max(0, Math.min(totalCards - 1, stage2Index + dir));
                 const firstCard = el.querySelector<HTMLElement>(':scope > div');
-                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 616;
+                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
                 const scrollTarget = targetIndex * cardWidth - (el.clientWidth / 2) + (cardWidth / 2) - 8;
                 el.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
                 setStage2Index(targetIndex);
@@ -7877,7 +7488,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               const name = selectedCarouselPathway.name;
               const location = sb?.location || selectedCarouselPathway.locations?.[0] || staticFallback?.location || '';
               const price = sb?.price || staticFallback?.price || selectedCarouselPathway.description || '—';
-              const rating: number = sb?.rating ?? staticFallback?.rating ?? (selectedCarouselPathway.matchProbability * 5);
+              const rating: number = sb?.rating ?? staticFallback?.rating ?? ((selectedCarouselPathway.matchProbability || 0) * 5);
               const fleet: string[] = sb?.fleet || staticFallback?.fleet || [];
               const offerings: string[] = sb?.offerings || staticFallback?.offerings || [];
               const pilotsTrained: number | undefined = sb?.pilots_trained ?? staticFallback?.pilotsTrained;
@@ -7938,7 +7549,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <div className="flex justify-between text-xs">
                           <span className="text-white/40">Rating</span>
                           <span className="text-white flex items-center gap-1">
-                            {'★'.repeat(Math.floor(rating))}<span className="text-white/30">{'★'.repeat(5 - Math.floor(rating))}</span>
+                            {'★'.repeat(Math.max(0, Math.min(5, Math.floor(rating || 0))))}<span className="text-white/30">{'★'.repeat(Math.max(0, 5 - Math.min(5, Math.floor(rating || 0))))}</span>
                             <span className="text-white/60 ml-1">{rating.toFixed(1)}</span>
                           </span>
                         </div>
@@ -8238,7 +7849,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             </div>
           </div>
         </footer>
-      </main>
+          </div>
+        </main>
 
       {/* Match Result Modal */}
       {selectedPathwayForMatch && (

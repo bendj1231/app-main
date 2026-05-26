@@ -200,8 +200,7 @@ export default function RecognitionPlusPage() {
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', onScroll);
-        return (
-        {/* Coded by Benjamin Bowler */}) => window.removeEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
     const scrollTo = (id: string) => {
@@ -421,22 +420,26 @@ export default function RecognitionPlusPage() {
                     </div>
 
                     {/* Stat strip */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-8 border-t border-slate-200">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mt-12 pt-8 border-t border-slate-200">
                         <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">{formatPrice(pricing.symbol, pricing.annual)}</p>
-                            <p className="text-sm text-slate-500">Per year ({pricing.currency})</p>
+                            <p className="text-3xl font-bold text-red-600 mb-1">{formatPrice(pricing.symbol, pricing.annual)}</p>
+                            <p className="text-sm text-red-500">Per year ({pricing.currency})</p>
                         </div>
                         <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">AI</p>
-                            <p className="text-sm text-slate-500">Career strategist</p>
+                            <p className="text-3xl font-bold text-red-600 mb-1">AI-Matching</p>
+                            <p className="text-sm text-slate-500">AI Career Tools</p>
                         </div>
                         <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">Priority</p>
-                            <p className="text-sm text-slate-500">Airline matching</p>
+                            <p className="text-3xl font-bold text-red-600 mb-1">Priority</p>
+                            <p className="text-sm text-slate-500">All pathway listings</p>
                         </div>
                         <div>
-                            <p className="text-3xl font-bold text-slate-900 mb-1">50%</p>
-                            <p className="text-sm text-slate-500">Training discounts</p>
+                            <p className="text-3xl font-bold text-red-600 mb-1">Exclusive</p>
+                            <p className="text-sm text-slate-500">Private Jet · eVTOL pathways</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold text-red-600 mb-1">Verified</p>
+                            <p className="text-sm text-slate-500">Flight hours & credentials</p>
                         </div>
                     </div>
                 </div>
@@ -454,14 +457,10 @@ export default function RecognitionPlusPage() {
                             <table className="w-full text-xs md:text-sm">
                                 <thead>
                                     <tr>
-                                        <th className="text-left py-4 px-4 font-bold text-slate-900 bg-slate-50 border-b border-slate-200 w-2/5">Feature</th>
+                                        <th className="text-left py-4 px-4 font-bold text-slate-900 bg-slate-50 border-b border-slate-200 w-1/2">Feature</th>
                                         <th className="text-center py-4 px-4 font-bold text-slate-600 bg-slate-50 border-b border-slate-200">
                                             <div>Free</div>
                                             <div className="text-slate-400 font-normal text-[10px] mt-0.5">$0</div>
-                                        </th>
-                                        <th className="text-center py-4 px-4 font-bold text-violet-700 bg-violet-50 border-b border-violet-200">
-                                            <div>Recognition+</div>
-                                            <div className="text-violet-500 font-normal text-[10px] mt-0.5">$60 / 6 months</div>
                                         </th>
                                         <th className="text-center py-4 px-4 font-bold text-red-600 bg-red-50 border-b border-red-200">
                                             <div>Recognition+ Verified</div>
@@ -471,24 +470,23 @@ export default function RecognitionPlusPage() {
                                 </thead>
                                 <tbody>
                                     {[
-                                        { feature: 'Live real-time profile', free: '—', s60: '✓ Updates when you log hours', s100: '✓ Updates when you log hours' },
-                                        { feature: 'Recognition Score', free: 'Visible, no badge', s60: '✓ Recognition+ badge', s100: '✓ Recognition+ Verified badge' },
-                                        { feature: 'Veremark background check', free: '—', s60: '—', s100: '✓ Screened & verified' },
-                                        { feature: 'Profile in airline pulling system', free: 'General pool', s60: 'Ranked shortlist (no background check)', s100: 'Top of ranked shortlist (background checked)' },
-                                        { feature: 'Airline filters you by', free: '—', s60: 'Score, recency, type rating, hours', s100: 'Veremark status, score, recency, type rating, hours' },
-                                        { feature: 'Pathway interest submissions', free: '2 / month', s60: 'Unlimited', s100: 'Unlimited' },
-                                        { feature: 'Profile comparisons', free: '3 / month', s60: 'Unlimited', s100: 'Unlimited' },
-                                        { feature: 'Recognition AI', free: '5 chats / month (basic)', s60: '✓ Extended — live type rating, airline & pathway data', s100: '✓ Extended — live type rating, airline & pathway data' },
-                                        { feature: 'Atlas CV', free: 'Standard (no screening)', s60: 'Upload documents (not screened)', s100: 'Upload + Veremark screened, visible to airlines' },
-                                        { feature: 'EBT CBTA Interview', free: '1–2 months after Foundation', s60: '✓ Fast-track (skip the queue)', s100: '✓ Fast-track (skip the queue)' },
-                                        { feature: 'Program discounts', free: '—', s60: '25% off Foundation & Transition', s100: '50% off Foundation & Transition' },
-                                        { feature: 'Price', free: 'Free', s60: '$60 / 6 months', s100: '$100 / year', isPrice: true },
+                                        { feature: 'Live real-time profile', free: '—', verified: '✓ Updates when you log hours' },
+                                        { feature: 'Recognition Score', free: 'Visible, no badge', verified: '✓ Recognition+ Verified badge' },
+                                        { feature: 'Veremark background check', free: '—', verified: '✓ Screened & verified' },
+                                        { feature: 'Profile in airline pulling system', free: 'General pool', verified: 'Top of ranked shortlist (background checked)' },
+                                        { feature: 'Airline filters you by', free: '—', verified: 'Veremark status, score, recency, type rating, hours' },
+                                        { feature: 'Pathway interest submissions', free: '2 / month', verified: 'Unlimited' },
+                                        { feature: 'Profile comparisons', free: '3 / month', verified: 'Unlimited' },
+                                        { feature: 'Recognition AI', free: '5 chats / month (basic)', verified: '✓ Extended — live type rating, airline & pathway data' },
+                                        { feature: 'Atlas CV', free: 'Standard (no screening)', verified: 'Upload + Veremark screened, visible to airlines' },
+                                        { feature: 'EBT CBTA Interview', free: '1–2 months after Foundation', verified: '✓ Fast-track (skip the queue)' },
+                                        { feature: 'Program discounts', free: '—', verified: '50% off Foundation & Transition' },
+                                        { feature: 'Price', free: 'Free', verified: '$100 / year', isPrice: true },
                                     ].map((row, i) => (
                                         <tr key={i} className={`border-b border-slate-100 hover:bg-slate-50/60 transition-colors ${row.isPrice ? 'bg-slate-50 font-bold' : ''}`}>
                                             <td className="py-3 px-4 text-slate-800 font-semibold">{row.feature}</td>
                                             <td className="py-3 px-4 text-center text-slate-500">{row.free}</td>
-                                            <td className="py-3 px-4 text-center text-violet-700 font-medium bg-violet-50/30">{row.s60}</td>
-                                            <td className="py-3 px-4 text-center text-red-600 font-medium bg-red-50/30">{row.s100}</td>
+                                            <td className="py-3 px-4 text-center text-red-600 font-medium bg-red-50/30">{row.verified}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -511,80 +509,54 @@ export default function RecognitionPlusPage() {
                     <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Choose Your Plan.</h2>
                     <p className="text-slate-600 text-lg max-w-2xl mb-10">Start with a free trial. Upgrade to Recognition Plus for priority matching and AI-powered career tools.</p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                        {/* Monthly Plan */}
-                        <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl p-8 text-center">
-                            <h3 className="text-xl font-bold text-white mb-2">Monthly</h3>
-                            <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.monthly)}<span className="text-lg font-normal text-teal-200">/month</span></p>
-                            <p className="text-sm text-teal-200 mb-2">Cancel anytime</p>
-                            <p className="text-xs text-teal-300 mb-6 font-semibold">✓ 7-day free trial</p>
-                            <ul className="space-y-2 mb-6 text-left text-sm text-white">
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Full profile comparison</span></li>
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Pathway recommendations</span></li>
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Priority matching</span></li>
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>AI career strategist</span></li>
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>EBT CBTA Fast-Track</span></li>
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Recognition AI</span></li>
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>AI medical alerts</span></li>
-                                <li className="flex items-start gap-2"><span className="text-teal-200 font-bold">✓</span><span>Priority pipeline</span></li>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        {/* Free Tier */}
+                        <div className="bg-slate-100 rounded-xl p-8 text-center border border-slate-200">
+                            <h3 className="text-xl font-bold text-slate-700 mb-2">Free</h3>
+                            <p className="text-4xl font-bold text-slate-700 mb-1">$0<span className="text-lg font-normal text-slate-500">/year</span></p>
+                            <p className="text-sm text-slate-500 mb-2">Basic access</p>
+                            <p className="text-xs text-slate-400 mb-6 font-semibold">Get started today</p>
+                            <ul className="space-y-2 mb-6 text-left text-sm text-slate-600">
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">✓</span><span>Basic profile</span></li>
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">✓</span><span>2 pathway submissions/month</span></li>
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">✓</span><span>3 profile comparisons/month</span></li>
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">✓</span><span>5 AI chats/month</span></li>
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">✓</span><span>General pool visibility</span></li>
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">—</span><span className="text-slate-400">Priority matching</span></li>
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">—</span><span className="text-slate-400">Exclusive pathways</span></li>
+                                <li className="flex items-start gap-2"><span className="text-slate-400 font-bold">—</span><span className="text-slate-400">Verified credentials</span></li>
                             </ul>
                             <button
-                                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_MONTHLY_PRICE_ID || '', 'Recognition Plus Monthly', 7)}
-                                disabled={processing}
-                                className="w-full bg-white hover:bg-teal-50 text-teal-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                onClick={() => navigate('/become-member')}
+                                className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-full transition-colors"
                             >
-                                {processing ? 'Processing...' : 'Get Monthly Plan'}
+                                Get Started Free
                             </button>
                         </div>
 
                         {/* Annual Plan - Best Value */}
-                        <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-8 text-center transform md:scale-105 scale-100 relative">
+                        <div className="bg-gradient-to-br from-red-600 to-red-700 rounded-xl p-8 text-center relative">
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1 rounded-full">Best Value</div>
-                            <h3 className="text-xl font-bold text-white mb-2 mt-2">Annual</h3>
-                            <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.annual)}<span className="text-lg font-normal text-blue-200">/year</span></p>
-                            <p className="text-sm text-blue-200 mb-2">{pricing.annualNote}</p>
-                            <p className="text-xs text-blue-300 mb-6 font-semibold">✓ 3-day free trial</p>
+                            <h3 className="text-xl font-bold text-white mb-2 mt-2">Recognition+ Verified</h3>
+                            <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.annual)}<span className="text-lg font-normal text-red-200">/year</span></p>
+                            <p className="text-sm text-red-200 mb-2">Annual membership</p>
+                            <p className="text-xs text-red-300 mb-6 font-semibold">✓ 3-day free trial</p>
                             <ul className="space-y-2 mb-6 text-left text-sm text-white">
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Full profile comparison</span></li>
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Pathway recommendations</span></li>
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Priority matching</span></li>
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>AI career strategist</span></li>
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>EBT CBTA Fast-Track</span></li>
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Recognition AI</span></li>
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>AI medical alerts</span></li>
-                                <li className="flex items-start gap-2"><span className="text-blue-200 font-bold">✓</span><span>Priority pipeline</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>Full profile comparison</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>Unlimited pathway submissions</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>Priority matching</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>AI career strategist</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>EBT CBTA Fast-Track</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>Exclusive pathways (Private Jet, eVTOL)</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>Verified flight hours & credentials</span></li>
+                                <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>50% off Foundation & Transition</span></li>
                             </ul>
                             <button
                                 onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual', 3)}
                                 disabled={processing}
-                                className="w-full bg-white hover:bg-blue-50 text-blue-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-white hover:bg-red-50 text-red-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {processing ? 'Processing...' : 'Get Annual Plan'}
-                            </button>
-                        </div>
-
-                        {/* Semi-Annual Plan */}
-                        <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-8 text-center">
-                            <h3 className="text-xl font-bold text-white mb-2">Semi-Annual</h3>
-                            <p className="text-4xl font-bold text-white mb-1">{formatPrice(pricing.symbol, pricing.semiAnnual)}<span className="text-lg font-normal text-purple-200">/6 months</span></p>
-                            <p className="text-sm text-purple-200 mb-2">Flexible payment</p>
-                            <p className="text-xs text-purple-300 mb-6 font-semibold">✓ 3-day free trial</p>
-                            <ul className="space-y-2 mb-6 text-left text-sm text-white">
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Full profile comparison</span></li>
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Pathway recommendations</span></li>
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Priority matching</span></li>
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>AI career strategist</span></li>
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>EBT CBTA Fast-Track</span></li>
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Recognition AI</span></li>
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>AI medical alerts</span></li>
-                                <li className="flex items-start gap-2"><span className="text-purple-200 font-bold">✓</span><span>Priority pipeline</span></li>
-                            </ul>
-                            <button
-                                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_SEMI_ANNUAL_PRICE_ID || '', 'Recognition Plus Semi-Annual', 3)}
-                                disabled={processing}
-                                className="w-full bg-white hover:bg-purple-50 text-purple-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {processing ? 'Processing...' : 'Get Semi-Annual Plan'}
                             </button>
                         </div>
                     </div>

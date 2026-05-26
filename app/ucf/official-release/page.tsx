@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../src/contexts/AuthContext';
 
 const navSections = [
@@ -87,6 +87,23 @@ function scrollTo(id: string) {
 }
 
 export default function UCFOfficialReleasePage() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!location.hash) return;
+    const id = location.hash.replace('#', '');
+    const attemptScroll = (attemptsLeft: number) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      } else if (attemptsLeft > 0) {
+        setTimeout(() => attemptScroll(attemptsLeft - 1), 200);
+      }
+    };
+    setTimeout(() => attemptScroll(10), 500);
+  }, [location.hash]);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({
     hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true, prospects: true,
@@ -1989,8 +2006,8 @@ export default function UCFOfficialReleasePage() {
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                 <div className="bg-white rounded-lg p-2">
-                  <p className="text-gray-700 font-bold mb-1">Cost Efficiency — PPP Shared Time & Burden Model (Win-Win Dynamic)</p>
-                  <p className="text-gray-600"><strong>Option A (Revenue Share):</strong> 68% margin — $5 Admin Cost-Recovery to Logbook App, $5 Digital Utility Royalty to ATO/Operator, $5 Infrastructure Fee to CAAP (Landbank Link.BizPortal). <strong>Option B (Pure Public Service):</strong> 73% margin — If CAAP declines 5% due to RA 3019/6713, fee waived. Government gets zero-cost digital modernization + fraud protection + state endorsement at no budget impact. Platform profitability increases either way.</p>
+                  <p className="text-gray-700 font-bold mb-1">Cost Efficiency — Public-Private Partnership Shared Time and Burden Model</p>
+                  <p className="text-gray-600">Collaborative cost distribution across ecosystem stakeholders. Logbook application providers receive administrative cost recovery; ATOs and operators receive digital utility royalties; CAAP receives infrastructure support via Landbank Link.BizPortal. In the event CAAP elects not to participate pursuant to RA 3019/6713, associated fees are waived, enabling government digital modernization, fraud protection, and state endorsement without budgetary allocation. Platform operational sustainability is preserved under either scenario through stakeholder-aligned revenue mechanics.</p>
                 </div>
                 <div className="bg-white rounded-lg p-2">
                   <p className="text-gray-700 font-bold mb-1">Operational Efficiency</p>
@@ -2009,95 +2026,86 @@ export default function UCFOfficialReleasePage() {
               </div>
             </div>
 
-            {/* ─── DUAL-TRACK VEREMARK PRICING BREAKDOWN ─── */}
+            {/* ─── DUAL-TRACK VERIFICATION FRAMEWORK ─── */}
             <div className="bg-gray-50 border border-gray-300 rounded-lg px-6 py-5 mb-8">
               <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">
                 Dual-Track Verification: Two Checks, Two Data Sources
               </h3>
               <p className="text-gray-800 text-sm leading-relaxed mb-6 text-center">
-                <strong>Separate Pricing Engines for License vs. Hours = Legally Airtight</strong><br/>
-                Veremark routes to two distinct sources: Governing Body for legal status, ATO/Operator for operational history
+                <strong>Dual-Track Verification Architecture</strong><br/>
+                License verification routes to national aviation authorities; hours verification routes to training organizations and operators
               </p>
 
               <div className="bg-white border border-gray-300 rounded-lg p-4 mb-6">
-                <h4 className="font-bold text-gray-900 mb-3">Operational Ledger</h4>
+                <h4 className="font-bold text-gray-900 mb-3">Stakeholder Distribution Framework</h4>
                 
                 <div className="space-y-4">
                   <div className="bg-green-50 border border-green-300 rounded-lg p-3">
-                    <p className="text-green-800 font-bold text-sm">Revenue In</p>
-                    <p className="text-green-700 text-sm">Base Package (Annual Pilot Fee): <span className="font-bold">+$100.00</span></p>
-                    <p className="text-green-600 text-xs">Charged to pilot via logbook app or direct platform</p>
+                    <p className="text-green-800 font-bold text-sm">Pilot Subscription Revenue</p>
+                    <p className="text-green-700 text-sm">Annual participation fee from verified pilots</p>
+                    <p className="text-green-600 text-xs">Collected via integrated logbook applications or direct platform enrollment</p>
                   </div>
 
                   <div className="space-y-2">
-                    <p className="text-gray-800 font-bold text-sm">Verification Costs Out</p>
+                    <p className="text-gray-800 font-bold text-sm">Verification Cost Allocation</p>
                     
                     <div className="bg-blue-50 border border-blue-300 rounded-lg p-3">
-                      <p className="text-blue-800 font-bold text-sm">🔍 Veremark License Check: <span className="text-red-600 font-bold">-$13.00</span></p>
-                      <p className="text-blue-700 text-xs"><strong>Target:</strong> Governing Body Registry (CAAP, FAA, etc.)</p>
-                      <p className="text-blue-600 text-xs"><strong>Check Type:</strong> Professional Qualification (automated API query)</p>
-                      <p className="text-blue-600 text-xs"><strong>Verifies:</strong> License validity, type ratings, medical certificate, regulatory standing</p>
-                      <p className="text-blue-600 text-xs"><strong>Method:</strong> Digital API query to aviation authority database (24-48 hours)</p>
+                      <p className="text-blue-800 font-bold text-sm">🔍 License Verification Provider</p>
+                      <p className="text-blue-700 text-xs"><strong>Data Source:</strong> National aviation authority registries</p>
+                      <p className="text-blue-600 text-xs"><strong>Verification Scope:</strong> Professional qualification, license validity, type ratings, medical certification, regulatory standing</p>
+                      <p className="text-blue-600 text-xs"><strong>Method:</strong> Automated API query to official aviation authority databases</p>
                     </div>
 
                     <div className="bg-blue-50 border border-blue-300 rounded-lg p-3">
-                      <p className="text-blue-800 font-bold text-sm">📊 Veremark Hours Check: <span className="text-red-600 font-bold">-$9.00</span></p>
-                      <p className="text-blue-700 text-xs"><strong>Target:</strong> ATO/Operator (Flight School or Airline)</p>
-                      <p className="text-blue-600 text-xs"><strong>Check Type:</strong> Education Check (students) OR Employment Check (CFIs/pilots)</p>
-                      <p className="text-blue-600 text-xs"><strong>Verifies:</strong> Logbook hours match training records, flight manifests, instructor signatures</p>
-                      <p className="text-blue-600 text-xs"><strong>Method:</strong> Direct contact with ATO registrar/ops manager (3-5 business days)</p>
+                      <p className="text-blue-800 font-bold text-sm">📊 Hours Verification Provider</p>
+                      <p className="text-blue-700 text-xs"><strong>Data Source:</strong> Approved Training Organizations and aircraft operators</p>
+                      <p className="text-blue-600 text-xs"><strong>Verification Scope:</strong> Logbook hours against training records, flight manifests, and instructor attestations</p>
+                      <p className="text-blue-600 text-xs"><strong>Method:</strong> Direct coordination with ATO registrars and operations management</p>
                     </div>
 
                     <div className="bg-purple-50 border border-purple-300 rounded-lg p-3">
-                      <p className="text-purple-800 font-bold text-sm">🏛️ Government/CAAP Cut: <span className="text-red-600 font-bold">-$5.00</span></p>
-                      <p className="text-purple-700 text-xs"><strong>Purpose:</strong> Infrastructure Utilization Fee (IT modernization fund)</p>
-                      <p className="text-purple-600 text-xs"><strong>Legal:</strong> RA 11966 PPP Code compliance</p>
-                      <p className="text-purple-600 text-xs"><strong>Routing:</strong> Landbank Link.BizPortal → CAAP National Treasury</p>
+                      <p className="text-purple-800 font-bold text-sm">🏛️ Government Aviation Authority</p>
+                      <p className="text-purple-700 text-xs"><strong>Allocation:</strong> Infrastructure utilization and IT modernization support</p>
+                      <p className="text-purple-600 text-xs"><strong>Legal Framework:</strong> Public-Private Partnership Code compliance</p>
+                      <p className="text-purple-600 text-xs"><strong>Routing:</strong> Official government treasury channels</p>
                     </div>
 
                     <div className="bg-orange-50 border border-orange-300 rounded-lg p-3">
-                      <p className="text-orange-800 font-bold text-sm">📱 Logbook Provider Cut: <span className="text-red-600 font-bold">-$5.00</span></p>
-                      <p className="text-orange-700 text-xs"><strong>Purpose:</strong> API Integration & Hosting Compensation</p>
-                      <p className="text-orange-600 text-xs"><strong>For:</strong> Front-end UX, mobile platform, tracking algorithms</p>
+                      <p className="text-orange-800 font-bold text-sm">📱 Logbook Application Provider</p>
+                      <p className="text-orange-700 text-xs"><strong>Allocation:</strong> API integration and hosting infrastructure compensation</p>
+                      <p className="text-orange-600 text-xs"><strong>Services:</strong> Front-end user experience, mobile platform, flight tracking algorithms</p>
                     </div>
                   </div>
 
-                  <div className="bg-red-50 border border-red-300 rounded-lg p-3">
-                    <p className="text-red-800 font-bold text-sm">Total Third-Party & Partner Costs (Production Cost): <span className="font-bold">-$32.00</span></p>
-                    <p className="text-red-600 text-xs">Breakdown: $13.00 (License) + $9.00 (Hours) + $5.00 (Gov) + $5.00 (Logbook)</p>
-                  </div>
-
-                  <div className="bg-green-50 border border-green-300 rounded-lg p-3">
-                    <p className="text-green-800 font-bold text-sm">✨ Net Platform Profit: <span className="font-bold">+$68.00</span></p>
-                    <p className="text-green-700 text-xs"><strong>Margin:</strong> 68% Base Net Profit Margin</p>
-                    <p className="text-green-600 text-xs"><strong>Note:</strong> Adjust to 69% with volume credits or logbook fee reduction</p>
-                    <p className="text-green-600 text-xs"><strong>What We Provide:</strong> 8-Stage Framework orchestration, Zero-knowledge architecture, Triangulation & token minting, PilotRecognition display layer, API gateway & webhook management</p>
+                  <div className="bg-gray-50 border border-gray-300 rounded-lg p-3">
+                    <p className="text-gray-800 font-bold text-sm">Platform Operations Reserve</p>
+                    <p className="text-gray-600 text-xs">Framework orchestration, zero-knowledge architecture implementation, cryptographic verification layer, API gateway and webhook management infrastructure</p>
                   </div>
                 </div>
               </div>
 
               <div className="bg-white border border-gray-300 rounded-lg p-4">
-                <h4 className="font-bold text-gray-900 mb-3">Why This Structure Is Legally Airtight</h4>
+                <h4 className="font-bold text-gray-900 mb-3">Structural Legal Safeguards</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                   <div className="bg-gray-50 rounded-lg p-2">
-                    <p className="text-gray-800 font-bold mb-1">🔍 License Check ($13)</p>
-                    <p className="text-gray-600"><strong>Legal Status:</strong> Governing Body (CAAP/FAA)</p>
-                    <p className="text-gray-600"><strong>Data Source:</strong> Official State Aviation Database</p>
-                    <p className="text-gray-600"><strong>Method:</strong> Automated Database Pull</p>
-                    <p className="text-gray-600"><strong>Confirms:</strong> Right to fly, license validity, medical current</p>
+                    <p className="text-gray-800 font-bold mb-1">🔍 License Verification</p>
+                    <p className="text-gray-600"><strong>Legal Status:</strong> National aviation authority registry</p>
+                    <p className="text-gray-600"><strong>Data Source:</strong> Official state aviation database</p>
+                    <p className="text-gray-600"><strong>Method:</strong> Automated database query</p>
+                    <p className="text-gray-600"><strong>Confirms:</strong> License validity, type ratings, medical certification</p>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-2">
-                    <p className="text-gray-800 font-bold mb-1">📊 Hours Check ($9)</p>
-                    <p className="text-gray-600"><strong>Operational History:</strong> ATO/Operator</p>
-                    <p className="text-gray-600"><strong>Data Source:</strong> Physical Logbooks, Training Manifests</p>
-                    <p className="text-gray-600"><strong>Method:</strong> Direct Contact with Registrar</p>
-                    <p className="text-gray-600"><strong>Confirms:</strong> Hours flown, experience valid, no manual padding</p>
+                    <p className="text-gray-800 font-bold mb-1">📊 Hours Verification</p>
+                    <p className="text-gray-600"><strong>Operational History:</strong> Training organizations and operators</p>
+                    <p className="text-gray-600"><strong>Data Source:</strong> Training records and flight manifests</p>
+                    <p className="text-gray-600"><strong>Method:</strong> Direct coordination with registrars</p>
+                    <p className="text-gray-600"><strong>Confirms:</strong> Hours logged, experience validated</p>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-2">
                     <p className="text-gray-800 font-bold mb-1">🛡️ Legal Protection</p>
-                    <p className="text-gray-600"><strong>Separate Sources:</strong> Two independent data points</p>
-                    <p className="text-gray-600"><strong>Clear Audit Trail:</strong> Distinct pricing for each check</p>
-                    <p className="text-gray-600"><strong>Veremark Handles:</strong> All direct contact, platform stays neutral</p>
+                    <p className="text-gray-600"><strong>Separate Sources:</strong> Two independent data verification points</p>
+                    <p className="text-gray-600"><strong>Clear Audit Trail:</strong> Distinct verification pathways</p>
+                    <p className="text-gray-600"><strong>Third-Party Handling:</strong> External verification providers manage direct contact</p>
                     <p className="text-gray-600"><strong>Liability Shield:</strong> Zero-knowledge architecture</p>
                   </div>
                 </div>

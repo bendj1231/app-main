@@ -145,6 +145,7 @@ const EnterpriseVerificationDashboard = lazy(() => import('@/app/enterprise/veri
 const ATOLaunchKitPage = lazy(() => import('@/components/website/components/ato/ATOLaunchKitPage').then(m => ({ default: m.ATOLaunchKitPage })));
 const FlightDeckLoginPage = lazy(() => import('@/components/website/components/FlightDeckLoginPage').then(m => ({ default: m.FlightDeckLoginPage })));
 const FlightDeckVerifyPage = lazy(() => import('@/components/website/components/FlightDeckVerifyPage').then(m => ({ default: m.FlightDeckVerifyPage })));
+const FounderStoryPage = lazy(() => import('@/components/website/components/FounderStoryPage').then(m => ({ default: m.FounderStoryPage })));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -258,6 +259,7 @@ export const AppRoutes = () => {
 
         {/* Main website routes */}
       <Route path="/about" element={<AboutPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/founder-story" element={<FounderStoryPage onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/about-industry" element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/technical-index" element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/faq" element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
@@ -450,7 +452,11 @@ export const AppRoutes = () => {
         <Route path="/board" element={<Navigate to="/about" replace />} />
         <Route path="/committees" element={<Navigate to="/about" replace />} />
         <Route path="/governance" element={<Navigate to="/about" replace />} />
-        <Route path="/core-values" element={<Navigate to="/mission-vision" replace />} />
+        <Route path="/core-values" element={<Navigate to="/about#mission" replace />} />
+        <Route path="/mission-vision" element={<Navigate to="/about#mission" replace />} />
+        <Route path="/why-recognition" element={<Navigate to="/about#why-recognition" replace />} />
+        <Route path="/industry-stewardship" element={<Navigate to="/about#stewardship" replace />} />
+        <Route path="/pilot-shortage" element={<Navigate to="/pilot-gap-about" replace />} />
         <Route path="/recognition-profile-live" element={<Navigate to="/recognition-plus?section=live-profile" replace />} />
         <Route path="/recognition-ai" element={<Navigate to="/recognition-plus?section=ai-features" replace />} />
         <Route path="/priority-matching" element={<Navigate to="/recognition-plus?section=priority-matching" replace />} />

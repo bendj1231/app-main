@@ -13,6 +13,34 @@ const HUB_COLORS: Record<string, string> = {
   G: 'linear-gradient(135deg, #1e3a5f, #0f172a)',
 };
 
+const PILLAR_ANCHORS: Record<number, string> = {
+  1: 'pillar-1-commercial-airlines',
+  2: 'pillar-2-cargo-freight',
+  3: 'pillar-3-charter-business',
+  4: 'pillar-4-emerging-sectors',
+  5: 'pillar-recruitment',
+  6: 'pillar-5-flight-training',
+  7: 'pillar-6-type-rating',
+  8: 'pillar-7-military',
+  9: 'pillar-universities',
+  10: 'pillar-8-banking',
+  11: 'pillar-9-insurance',
+  12: 'pillar-10-regulatory',
+  13: 'pillar-credit-rating',
+  14: 'hub-b-verification',
+  15: 'pillar-12-flight-data',
+  16: 'pillar-13-aeromedical',
+  17: 'pillar-telemetry',
+  18: 'pillar-14-mentors',
+  19: 'pillar-15-manufacturers',
+  20: 'pillar-media',
+  21: 'hub-e-community',
+  22: 'pillar-events',
+  23: 'pillar-government',
+  24: 'pillar-international-orgs',
+  25: 'pillar-25-discovery',
+};
+
 const PILLARS = [
   // Hub A - Operations & Recruitment (5)
   { num: 1, hub: 'A', name: 'Commercial Airlines', desc: 'Streamlined recruitment with pre-verified pilot pools and real-time credential validation', img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=90' },
@@ -197,9 +225,18 @@ export default function UCFPage() {
         </div>
         
         <div className="divide-y divide-slate-100">
-          {PILLARS.map((pillar) => (
-            <PillarCard key={pillar.num} pillar={pillar} />
-          ))}
+          {PILLARS.map((pillar) => {
+            const anchor = PILLAR_ANCHORS[pillar.num];
+            return (
+              <Link
+                key={pillar.num}
+                to={anchor ? `/ucf/official-release#${anchor}` : '/ucf/official-release'}
+                style={{ display: 'block', textDecoration: 'none' }}
+              >
+                <PillarCard pillar={pillar} />
+              </Link>
+            );
+          })}
         </div>
       </section>
 

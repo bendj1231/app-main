@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Globe, Shield, Database, CheckCircle, Plane, FileCheck, Building2, ArrowRight } from 'lucide-react';
+import { PathwaysSidebar } from '../components/website/components/pilot-recognition/PathwaysSidebar';
+import { PlatformNavbar } from '../components/website/components/PlatformNavbar';
 
 const authorities = [
   {
@@ -85,8 +87,24 @@ const benefits = [
 export default function GlobalAviationAuthoritiesPage() {
   const navigate = useNavigate();
 
+  const handleNavigate = (page: string) => {
+    navigate(`/${page}`);
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+      {/* Top Navigation Bar */}
+      <PlatformNavbar
+        onNavigate={handleNavigate}
+        currentPage="pathways"
+      />
+
+      {/* Sidebar Navigation */}
+      <PathwaysSidebar activeSection="aviation-authorities" onNavigate={handleNavigate} />
+
+      {/* Main Content with sidebar margin */}
+      <div style={{ marginLeft: '280px', paddingTop: '2rem' }}>
+
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950/30" />
@@ -278,11 +296,12 @@ export default function GlobalAviationAuthoritiesPage() {
       {/* Footer Note */}
       <div className="max-w-7xl mx-auto px-6 py-8 border-t border-white/10">
         <p className="text-center text-xs text-slate-500">
-          PilotRecognition is actively pursuing partnerships with civil aviation authorities worldwide. 
-          Features and integrations are subject to regulatory approval and data sharing agreements. 
-          Timeline for individual authority integrations will vary based on jurisdiction.
+          PilotRecognition is actively pursuing partnerships with civil aviation authorities worldwide.
+          Features and integrations are subject to regulatory approval and data sharing agreements.
+          Timeline for individual authority integrations will vary based jurisdiction.
         </p>
       </div>
+      </div>{/* Close main content wrapper */}
     </div>
   );
 }

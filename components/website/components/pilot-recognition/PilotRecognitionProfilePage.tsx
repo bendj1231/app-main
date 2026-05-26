@@ -1705,65 +1705,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                             )}
                         </div>
 
-                        {/* Official Documentation Section */}
-                        <CategorySection title="Official Documentation" description="Verification & Resumes">
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                {[
-                                    {
-                                        title: 'Digital Flight Logbook',
-                                        description: 'View your complete collection of licenses, flight hours, certifications, and professional milestones.',
-                                        cta: 'View Logbook',
-                                        filled: false
-                                    },
-                                    {
-                                        title: 'Pilot Licensure & Experience Data Entry',
-                                        description: 'Access your comprehensive digital flight log with detailed flight records, aircraft types, and operational experience.',
-                                        cta: 'Open Data Entry',
-                                        filled: true
-                                    }
-                                ].map(card => (
-                                    <div key={card.title} style={{
-                                        background: 'rgba(30, 41, 59, 0.6)',
-                                        borderRadius: '24px',
-                                        padding: '1.75rem',
-                                        boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
-                                        display: 'grid',
-                                        gridTemplateColumns: '1fr auto',
-                                        gap: '1.5rem',
-                                        alignItems: 'center'
-                                    }}>
-                                        <div>
-                                            <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>{card.title}</h3>
-                                            <p style={{ margin: 0, color: '#a0aec0', fontSize: '0.95rem', lineHeight: 1.5 }}>{card.description}</p>
-                                        </div>
-                                        <button
-                                            style={{
-                                                padding: '8px 16px',
-                                                minWidth: 180,
-                                                borderRadius: '999px',
-                                                border: '1px solid rgba(148,163,184,0.25)',
-                                                background: 'rgba(255,255,255,0.03)',
-                                                color: '#94a3b8',
-                                                fontWeight: 600,
-                                                fontSize: '0.85rem',
-                                                cursor: 'pointer',
-                                                whiteSpace: 'nowrap' as const,
-                                                textAlign: 'center' as const
-                                            }}
-                                            onClick={() => {
-                                                if (card.title === 'Digital Flight Logbook') {
-                                                    setCurrentDocumentationPage('logbook');
-                                                } else if (card.title === 'Pilot Licensure & Experience Data Entry') {
-                                                    setCurrentDocumentationPage('licensure');
-                                                }
-                                            }}
-                                        >
-                                            {card.cta}
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </CategorySection>
 
                         {/* ATLAS Resume Section */}
                         <CategorySection title="ATLAS Resume" description="ATS-Approved ATLAS CV Formatting">
@@ -2671,6 +2612,45 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
 
+                        {/* Pilot Licensure & Experience Data Entry — Moved from Overview */}
+                        <CategorySection title="Official Documentation" description="Verification & Resumes">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{
+                                    background: 'rgba(30, 41, 59, 0.6)',
+                                    borderRadius: '24px',
+                                    padding: '1.75rem',
+                                    boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr auto',
+                                    gap: '1.5rem',
+                                    alignItems: 'center'
+                                }}>
+                                    <div>
+                                        <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>Pilot Licensure & Experience Data Entry</h3>
+                                        <p style={{ margin: 0, color: '#a0aec0', fontSize: '0.95rem', lineHeight: 1.5 }}>Access your comprehensive digital flight log with detailed flight records, aircraft types, and operational experience.</p>
+                                    </div>
+                                    <button
+                                        style={{
+                                            padding: '8px 16px',
+                                            minWidth: 180,
+                                            borderRadius: '999px',
+                                            border: '1px solid rgba(148,163,184,0.25)',
+                                            background: 'rgba(255,255,255,0.03)',
+                                            color: '#94a3b8',
+                                            fontWeight: 600,
+                                            fontSize: '0.85rem',
+                                            cursor: 'pointer',
+                                            whiteSpace: 'nowrap' as const,
+                                            textAlign: 'center' as const
+                                        }}
+                                        onClick={() => setCurrentDocumentationPage('licensure')}
+                                    >
+                                        Open Data Entry
+                                    </button>
+                                </div>
+                            </div>
+                        </CategorySection>
+
                         {/* ── ROW 1: Pilot License Card + Verification Status ── */}
                         <CategorySection title="Pilot Licence" description="Active licence details pulled from your credential wallet">
                             <div className="pilot-data-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
@@ -2947,6 +2927,48 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+
+                    {/* Official Documentation — Moved from Overview */}
+                    <div style={{ marginBottom: '2rem' }}>
+                        <CategorySection title="Official Documentation" description="Verification & Resumes">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{
+                                    background: 'rgba(30, 41, 59, 0.6)',
+                                    borderRadius: '24px',
+                                    padding: '1.75rem',
+                                    boxShadow: '0 20px 45px rgba(0,0,0,0.3)',
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr auto',
+                                    gap: '1.5rem',
+                                    alignItems: 'center'
+                                }}>
+                                    <div>
+                                        <h3 style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '1.25rem', color: '#ffffff' }}>Digital Flight Logbook</h3>
+                                        <p style={{ margin: 0, color: '#a0aec0', fontSize: '0.95rem', lineHeight: 1.5 }}>View your complete collection of licenses, flight hours, certifications, and professional milestones.</p>
+                                    </div>
+                                    <button
+                                        style={{
+                                            padding: '8px 16px',
+                                            minWidth: 180,
+                                            borderRadius: '999px',
+                                            border: '1px solid rgba(148,163,184,0.25)',
+                                            background: 'rgba(255,255,255,0.03)',
+                                            color: '#94a3b8',
+                                            fontWeight: 600,
+                                            fontSize: '0.85rem',
+                                            cursor: 'pointer',
+                                            whiteSpace: 'nowrap' as const,
+                                            textAlign: 'center' as const
+                                        }}
+                                        onClick={() => setCurrentDocumentationPage('logbook')}
+                                    >
+                                        View Logbook
+                                    </button>
+                                </div>
+                            </div>
+                        </CategorySection>
+                    </div>
+
                     <DigitalLogbookPage
                         embedded
                         onBack={() => setActiveSection('overview')}

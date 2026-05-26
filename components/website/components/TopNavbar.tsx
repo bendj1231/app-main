@@ -421,53 +421,38 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'About',
             target: '/about',
             subItems: [
-                { category: 'For Pilots', name: 'About PilotRecognition', target: '/about', bullets: ['Program Overview', 'Our Mission', 'Global Impact'] },
-                { name: 'Mission & Vision', target: '/mission-vision', bullets: ['Our Core Values', 'Vision for 2030', 'Industry Stewardship'] },
-                { name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Professional Transition', 'Industry Challenge', 'Our Solution'] },
-                { category: 'For Industry', name: 'For Airlines & Operators', target: '/about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
-                { name: 'Industry Stewardship', target: '/industry-stewardship', bullets: ['EBT Alignment', 'Pilot Advocacy', '2030 Vision'] },
-                { name: 'FAQ', target: 'faq' },
-                { name: 'Why Recognition', target: '/why-recognition', bullets: ['For Students', 'For Hobbyists', 'For Active Pilots'] },
-                { name: 'The Pilot Shortage', target: '/pilot-shortage', bullets: ['The Truth Revealed', 'Why Airlines Are Picky', 'How to Get Vetted'] },
+                { name: 'About PilotRecognition', target: '/about', bullets: ['Mission & Vision', 'Why Recognition', 'Industry Stewardship'] },
+                { name: 'For Airlines & Operators', target: '/about-industry', bullets: ['Recruitment Efficiency', 'Verified Candidates', 'Pull System Access'] },
+                { name: 'The Pilot Gap', target: '/pilot-gap-about', bullets: ['The Pilot Shortage', 'Industry Challenge', 'Our Solution'] },
+                { name: "Founder's Story", target: '/founder-story', bullets: ['$250K lost to a scam', 'Dubai gate rejection', 'How the platform was born'] },
+                { name: 'FAQ', target: '/faq' },
             ]
         },
         {
             name: 'Programs',
             target: '/programs',
             subItems: [
-                // Core Programs
                 { category: 'Core Programs', name: 'Foundational Program', target: '/foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
                 { category: 'Core Programs', name: 'Transition Program', target: '/transition-program', bullets: ['Atlas CV Optimization', 'Airline Interview Secrets', 'Broker Advantage'] },
-                { category: 'Core Programs', name: 'EBT CBTA Fast-Track', target: '/ebt-cbta', bullets: ['Competency-based training', 'Evidence-based assessment', 'Interview priority'] },
-                // Training & Development
-                { category: 'Training', name: 'Pilot Gap Training', target: '/pilot-gap-module', bullets: ['Bridge knowledge gaps', 'Industry alignment', 'Recognition readiness'] },
-                { category: 'Training', name: 'Mentorship Program', target: '/mentorship', bullets: ['Captain mentors', 'Professional guidance', '1-on-1 coaching'] },
-                { category: 'Training', name: 'Examination Portal', target: '/examination-portal', bullets: ['Skill assessments', 'Progress tracking', 'Certification prep'] },
-                // Resources
-                { category: 'Resources', name: 'Program Benefits', target: '/program-benefits', bullets: ['Member advantages', 'Professional tools', 'Network access'] },
-                { category: 'Resources', name: 'Program Pathways', target: '/programs-pathways', bullets: ['Stage progression', 'Milestone tracking', 'Next steps'] },
-                { category: 'Resources', name: 'News & Updates', target: '/news-updates', bullets: ['Latest announcements', 'Program changes', 'Industry news'] },
-                // Special Programs (highlighted)
-                { category: 'Special Programs', name: 'What is the Pilot Gap?', target: '/pilot-gap-about', bullets: ['Industry disconnect', 'Professional transition', 'Our solution'], isYellow: true },
+                { category: 'Core Programs', name: 'The Pilot Gap', target: '/pilot-gap-about', bullets: ['Industry disconnect', 'Professional transition', 'Our solution'] },
+                { category: 'Training & Development', name: 'EBT CBTA Fast-Track', target: '/ebt-cbta', bullets: ['Competency-based training', 'Evidence-based assessment', 'Interview priority'] },
+                { category: 'Training & Development', name: 'Mentorship Program', target: '/mentorship', bullets: ['Captain mentors', 'Professional guidance', '1-on-1 coaching'] },
+                { category: 'Training & Development', name: 'Examination Portal', target: '/examination-portal', bullets: ['Skill assessments', 'Progress tracking', 'Certification prep'] },
             ]
         },
         {
             name: 'Pathways',
             target: '/pathways-modern',
             subItems: [
-                // For Pilots - Career Pathways to View & Access
                 { category: 'For Pilots', name: 'Airlines & Operators', target: '/pathways-modern?section=airlines', bullets: ['Commercial carriers', 'Regional airlines', 'Flagship operators'] },
                 { category: 'For Pilots', name: 'Private Jet & Charter', target: '/pathways-modern?section=private-jet', bullets: ['Corporate aviation', 'VIP charter', 'Fractional ownership'] },
                 { category: 'For Pilots', name: 'Air Taxi & eVTOL', target: '/pathways-modern?section=evtol', bullets: ['Urban air mobility', 'Electric aircraft', 'Next-gen aviation'] },
                 { category: 'For Pilots', name: 'Cargo & Logistics', target: '/pathways-modern?section=cargo', bullets: ['Freight operators', 'Express delivery', 'Long-haul cargo'] },
                 { category: 'For Pilots', name: 'Military & Defence', target: '/pathways-modern?section=military', bullets: ['Armed forces', 'Defence contractors', 'Government aviation'] },
-                { category: 'For Pilots', name: 'Flight Schools & ATOs', target: '/pathways-modern?section=flight-schools', bullets: ['Instructor pathways', 'Examiner routes', 'Training pathways'] },
                 { category: 'For Pilots', name: 'Type Rating Search', target: '/type-rating-search', bullets: ['Aircraft manufacturers', 'Training centers', 'Licensing requirements'] },
                 { category: 'For Pilots', name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry requirements', 'Operator standards', 'Expectation insights'] },
                 { category: 'For Pilots', name: 'Global Aviation Authorities', target: '/global-aviation-authorities', bullets: ['FAA database', 'CAAP compliance', 'EASA integration', 'Regulatory sync'], isYellow: true },
-                // For Industry - Enterprise Access & Services
                 { category: 'For Industry', name: 'Enterprise Access', target: 'https://enterprise.pilotrecognition.com', bullets: ['Pull-based recruitment', 'Verified candidates', 'Pathway publishing'] },
-                { category: 'For Industry', name: 'Aviation Discovery', target: 'https://enterprise.pilotrecognition.com#recruitment', bullets: ['Agency partnerships', 'Talent pipeline', 'Recognition brokers'] },
                 { category: 'For Industry', name: 'Simulator Training', target: 'https://enterprise.pilotrecognition.com#simulator', bullets: ['Type rating centers', 'Training partnerships', 'Facility network'] },
                 { category: 'For Industry', name: 'MRO & Maintenance', target: 'https://enterprise.pilotrecognition.com#maintenance', bullets: ['Engineering tracks', 'Maintenance ops', 'Technical services'] },
                 { category: 'For Industry', name: 'RPAS & Drone Ops', target: 'https://enterprise.pilotrecognition.com#drone', bullets: ['UAV training', 'Commercial drones', 'Remote pilot programs'] },
@@ -478,60 +463,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             name: 'Pilot Recognition',
             target: pilotRecognitionTarget,
             subItems: [
-                // Learn About - Educational content (BLUE headers)
                 { category: 'Learn About', name: 'What is Pilot Recognition?', target: '/learn-about?section=what-is-recognition', bullets: ['Platform overview', 'How it works', 'Why pilots need it'] },
-                { category: 'Learn About', name: 'Recognition Score Explained', target: '/learn-about?section=recognition-score-guide', bullets: ['What is your score', 'How it is calculated', 'Why airlines care'] },
                 { category: 'Learn About', name: 'The Pulling System', target: '/learn-about?section=pulling-system', bullets: ['No more applications', 'How airlines find you', 'Live profile benefits'] },
+                { category: 'Learn About', name: 'Recognition Score Explained', target: '/learn-about?section=recognition-score-guide', bullets: ['What is your score', 'How it is calculated', 'Why airlines care'] },
                 { category: 'Learn About', name: 'Recognition vs Traditional', target: '/learn-about?section=recognition-vs-traditional', bullets: ['CVs vs Live profiles', 'Apply vs Get pulled', 'Static vs Verified data'] },
-                { category: 'Learn About', name: 'Why Resumes Are Dead Data', target: '/learn-about?section=dead-data-resumes', bullets: ['Static PDFs are outdated', 'Live profiles update auto', 'Verified vs claimed data'] },
                 { category: 'Learn About', name: 'For Airlines & Operators', target: '/learn-about?section=for-airlines', bullets: ['Verified candidates', 'Ranked shortlists', 'Compliance ready'] },
-                // Recognition+ Premium Features (RED header)
-                { category: 'Recognition+', name: 'Recognition Plus Membership', target: '/recognition-plus', bullets: ['Priority Pipeline Access', 'Recognition+ Badge', 'AI Recognition Strategist'], isYellow: true },
-                { category: 'Recognition+', name: 'Live Real-Time Profile', target: '/recognition-plus?section=live-profile', bullets: ['Auto-updates on hours logged', 'Airline pulling system', 'Ranked shortlist placement'] },
-                { category: 'Recognition+', name: 'Recognition AI', target: '/recognition-plus?section=ai-features', bullets: ['Extended AI access', 'Live type rating data', 'Airline & pathway insights'] },
-                { category: 'Recognition+', name: 'Priority Matching', target: '/recognition-plus?section=priority-matching', bullets: ['Unlimited pathway submissions', 'Unlimited profile comparisons', 'Pathway surge priority'] },
-                { category: 'Recognition+', name: 'EBT CBTA Fast-Track', target: '/recognition-plus?section=ebt-cbta', bullets: ['Skip the queue', 'Foundation Program', 'Interview priority'] },
-                { category: 'Recognition+', name: 'ATLAS Formatted CV', target: '/atlas-cv', bullets: ['AI data extraction', 'Global standards', 'Airline visibility'] },
-                { category: 'Recognition+', name: 'AI Medical Alerts', target: '/recognition-plus?section=medical-alerts', bullets: ['60-day expiry warnings', 'Zero-Fail compliance', 'Auto-reminders'] },
-                { category: 'Recognition+', name: 'Program Discounts', target: '/recognition-plus?section=program-discounts', bullets: ['25-50% off Foundation', '25-50% off Transition', 'Member-only rates'] },
-                // General - Core platform features (BLUE headers)
-                { category: 'General', name: 'Free Tier Access', target: '/general?section=free-tier', bullets: ['Create basic profile', '3 pathways per month', 'Public registry listing'] },
-                { category: 'General', name: 'Priority Listings', target: '/general?section=priority-listings', bullets: ['How ranking works', 'Visibility tiers', 'Airline filters'] },
-                { category: 'General', name: 'Verification Levels', target: '/general?section=verification-levels', bullets: ['Basic profile', 'Recognition+', 'Recognition+ Verified'] },
-                { category: 'General', name: 'Professional Pathway Access', target: '/general?section=career-pathway-access', bullets: ['View public pathways', 'Submit interest', 'Match with operators'] },
-                { category: 'General', name: 'Membership Benefits', target: '/general?section=membership-benefits', bullets: ['Free forever tier', 'Upgrade anytime', 'Cancel anytime'] },
-                // Recognition Profiling (BLUE headers)
-                { category: 'Recognition Profiling', name: 'Digital Logbook', target: '/professional-profile?section=digital-logbook', bullets: ['Flight records', 'Verified hours', 'Professional milestones'] },
-                { category: 'Recognition Profiling', name: 'Flight Hours Verification', target: '/professional-profile?section=flight-hours-verification', bullets: ['Airline system integration', 'Third-party badges', 'PIC/SIC breakdown'] },
-                { category: 'Recognition Profiling', name: 'Examination Results', target: '/professional-profile?section=examination-results', bullets: ['Verified scores', 'Mentorship assessments', 'Knowledge recency'] },
-                { category: 'Recognition Profiling', name: 'Pilot Recognition Profile', target: '/professional-profile?section=pilot-recognition-profile', bullets: ['Digital identity', 'Verified credentials', 'Public registry'] },
-                { category: 'Recognition Profiling', name: 'Type Ratings & Endorsements', target: '/professional-profile?section=type-ratings', bullets: ['Complete inventory', 'Expiration tracking', 'Recency monitoring'] },
-                { category: 'Recognition Profiling', name: 'Training Records', target: '/professional-profile?section=training-records', bullets: ['Complete history', 'Provider sync', 'Check ride docs'] },
-                { category: 'Recognition Profiling', name: 'Professional Timeline', target: '/professional-profile?section=career-timeline', bullets: ['Visual journey', 'Milestone tracking', 'Command upgrades'] },
-                { category: 'Recognition Profiling', name: 'Document Vault', target: '/professional-profile?section=document-vault', bullets: ['Secure storage', 'Instant access', 'License archive'] },
-                { category: 'Recognition Profiling', name: 'Skills & Competencies', target: '/professional-profile?section=skills-competencies', bullets: ['Skill breakdown', 'Instructor validation', 'Proficiency ratings'] },
-                // Background & Compliance (BLUE headers) - includes Medical
-                { category: 'Background Check', name: 'Background Checking', target: '/background-check?section=background-checking', bullets: ['Criminal record check', 'Employment verification', 'Reference validation'] },
-                { category: 'Background Check', name: 'Medical Certificates', target: '/background-check?section=medical-certificates', bullets: ['Class 1 Medical', 'Class 2 Medical', 'Exam locations'] },
-                { category: 'Background Check', name: 'Health Resources', target: '/background-check?section=health-resources', bullets: ['Mental health support', 'Fitness for duty', 'Wellness programs'] },
-                { category: 'Background Check', name: 'Air Law & Legal Protection', target: '/background-check?section=air-law-legal', bullets: ['Insurance disputes', 'Contract review', 'License defense'] },
-                // Pilot Insurance (BLUE headers)
-                { category: 'Pilot Insurance', name: 'Loss of License Cover', target: '/pilot-insurance?section=loss-of-license', bullets: ['Income protection', 'Medical grounding', 'Career transition'] },
-                { category: 'Pilot Insurance', name: 'Life Insurance', target: '/pilot-insurance?section=life-insurance', bullets: ['Term life', 'Family protection', 'Pilot-specific rates'] },
-                { category: 'Pilot Insurance', name: 'Disability Coverage', target: '/pilot-insurance?section=disability-coverage', bullets: ['Short-term disability', 'Long-term protection', 'Occupational coverage'] },
-                { category: 'Pilot Insurance', name: 'Professional Liability', target: '/pilot-insurance?section=professional-liability', bullets: ['Legal protection', 'Regulatory defense', 'Incident coverage'] },
-                { category: 'Pilot Insurance', name: 'Pilot Insurance Providers', target: '/pilot-insurance?section=insurance-providers', bullets: ['Aviation specialists', 'Member discounts', 'Verified partners'] },
-                // Career Tools now under General category
-                { category: 'General', name: 'Recognition Career Matches', target: '/career-tools?section=recognition-career-matches', bullets: ['AI-powered matching', 'Career pathways', 'Match percentage'] },
-                { category: 'General', name: 'ATLAS CV Builder', target: '/career-tools?section=atlas-cv-builder', bullets: ['ATS optimization', 'Auto-import profile', 'Airline templates'] },
-                { category: 'General', name: 'Interview Preparation', target: '/career-tools?section=interview-preparation', bullets: ['Airline question banks', 'Video practice', 'Simulator prep'] },
-                { category: 'General', name: 'Career Pathway Planner', target: '/career-tools?section=career-pathway-planner', bullets: ['Visual roadmaps', 'Hour requirements', 'Stage-by-stage guide'] },
-                { category: 'General', name: 'Type Rating Advisor', target: '/career-tools?section=type-rating-advisor', bullets: ['Market demand analysis', 'ROI calculator', 'Provider comparisons'] },
-                // Banking & Finance (BLUE headers)
-                { category: 'Banking & Finance', name: 'Pilot Loans', target: '/banking-finance?section=pilot-loans', bullets: ['Type rating financing', 'Career-based lending', 'Lower rates for high scorers'] },
-                { category: 'Banking & Finance', name: 'Mortgage Services', target: '/banking-finance?section=mortgage-services', bullets: ['Airline staff rates', 'Expat mortgages', 'Relocation loans'] },
-                { category: 'Banking & Finance', name: 'Credit & Cards', target: '/banking-finance?section=credit-cards', bullets: ['Air miles programs', 'Travel benefits', 'Pilot perks'] },
-                { category: 'Banking & Finance', name: 'Investment Planning', target: '/banking-finance?section=investment-planning', bullets: ['Retirement planning', 'Wealth management', 'Tax optimization'] },
+                { category: 'Your Profile', name: 'Recognition+ Membership', target: '/recognition-plus', bullets: ['Priority pipeline access', 'Recognition+ badge', 'AI career strategist'], isYellow: true },
+                { category: 'Your Profile', name: 'Recognition Profile', target: '/professional-profile?section=pilot-recognition-profile', bullets: ['Digital identity', 'Verified credentials', 'Public registry'] },
+                { category: 'Your Profile', name: 'Digital Logbook', target: '/professional-profile?section=digital-logbook', bullets: ['Flight records', 'Verified hours', 'Professional milestones'] },
+                { category: 'Your Profile', name: 'Background Check', target: '/background-check?section=background-checking', bullets: ['Criminal record check', 'Employment verification', 'Reference validation'] },
+                { category: 'Your Profile', name: 'Pilot Insurance', target: '/pilot-insurance?section=loss-of-license', bullets: ['Loss of license cover', 'Life insurance', 'Disability coverage'] },
             ]
         },
         { name: 'Contact', target: 'contact-support' },
@@ -822,7 +763,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {!currentUser && (
                                     <button
                                         onClick={() => onNavigate('flight-deck-login')}
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-1.5"
+                                        className="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-1.5 border border-slate-600"
                                     >
                                         Login
                                     </button>

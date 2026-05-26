@@ -4,6 +4,8 @@ import { useAuth } from '../../src/contexts/AuthContext';
 import { PilotAptitudeTest } from '../../components/PilotAptitudeTest';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { QuickStats } from '../components/QuickStats';
+import { PathwaysSidebar } from '../../components/website/components/pilot-recognition/PathwaysSidebar';
+import { PlatformNavbar } from '../../components/website/components/PlatformNavbar';
 
 type Region = 'All' | 'Asia' | 'Europe' | 'Americas' | 'Oceania' | 'Africa' | 'Middle East';
 
@@ -531,111 +533,17 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
       </div>
       <div className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-0" />
 
-      {/* Header Nav */}
-      <div className="sticky top-0 z-30 bg-white border-b border-slate-200 backdrop-blur-sm">
-        <div className="mx-auto pr-6 py-4 w-full max-w-[1800px]">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                {/* Back Button */}
-                <button
-                  onClick={() => {
-                    if (onNavigate) {
-                      onNavigate('access-portal-2?tab=pathways');
-                    } else {
-                      window.location.href = '/access-portal-2?tab=pathways';
-                    }
-                  }}
-                  className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-transform hover:scale-105"
-                  title="Back to Home"
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                </button>
-                {/* Logo */}
-                <div className="flex flex-col">
-                  <span style={{ fontFamily: 'Georgia, serif' }} className="text-black text-2xl font-normal">
-                    Discover <span className="text-red-600">Expectations</span>
-                  </span>
-                  <span className="text-xs text-slate-600 font-normal">
-                    pilotrecognition.com
-                  </span>
-                </div>
-              </div>
-            </div>
+      {/* Top Navigation Bar */}
+      <PlatformNavbar
+        onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+        currentPage="pathways"
+      />
 
-            {/* Navigation Buttons */}
-            <div className="flex items-center gap-3">
-              {[
-                { label: 'Airline Expectations', page: 'portal-airline-expectations' },
-                { label: 'Aircraft Type-Ratings', page: 'type-rating-search' },
-                { label: 'Pilot Pathways', page: 'pathways-modern' },
-                { label: 'Job Listings', page: 'job-listings' },
-              ].map(({ label, page }) => {
-                const isActive = page === 'portal-airline-expectations';
-                return (
-                <button
-                  key={page}
-                  onClick={() => onNavigate && onNavigate(page)}
-                  className="text-[0.6rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap"
-                  style={{
-                    color: isActive ? '#2563eb' : '#0f172a',
-                    borderBottom: isActive ? '2px solid #2563eb' : '2px solid transparent',
-                    paddingBottom: '4px'
-                  }}
-                >
-                  {label}
-                </button>
-                );
-              })}
-            </div>
+      {/* Sidebar Navigation */}
+      <PathwaysSidebar activeSection="airline-expectations" onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)} />
 
-            {/* Right side items */}
-            <div className="flex items-center gap-3">
-              {/* Profile section */}
-              {currentUser ? (
-                <div className="flex items-center gap-2">
-                  <div className="flex flex-col items-end">
-                    <span className="text-xs font-semibold text-slate-900">
-                      {userProfile?.pilot_id || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot'}
-                    </span>
-                    <span className="text-[10px] text-slate-500">Signed In</span>
-                  </div>
-                  <button
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform"
-                  >
-                    {userProfile?.profile_image_url ? (
-                      <img
-                        src={userProfile.profile_image_url}
-                        alt="Profile"
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    ) : (
-                      <span className="text-white font-bold text-sm">
-                        {currentUser?.email?.charAt(0) || 'U'}
-                      </span>
-                    )}
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => onNavigate && onNavigate('login')}
-                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.1em] transition-all"
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    onClick={() => onNavigate && onNavigate('become-member')}
-                    className="px-4 py-2 rounded-lg border-2 border-red-600 text-red-600 hover:bg-red-50 text-xs font-bold uppercase tracking-[0.1em] transition-all"
-                  >
-                    Become Member
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Main Content with sidebar margin */}
+      <div style={{ marginLeft: '280px', paddingTop: '2rem' }}>
 
       {/* Hero */}
       <div className="relative overflow-hidden pt-16 pb-12 px-6 z-10">
@@ -749,13 +657,25 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
       {/* Hero Section - Unified component for both default and airline-specific content */}
       <div className="relative overflow-hidden mb-12 z-10 min-h-[600px]">
-        {/* Background - maroon for Qatar Airways, blue for others */}
-        <div className={`absolute inset-0 z-0 ${
-          selectedAirline?.id === 'qatar-airways'
-            ? 'bg-gradient-to-br from-rose-950 via-rose-900 to-slate-900'
-            : 'bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900'
-        }`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+        {/* Background - cockpit image for Qatar Airways, blue gradient for others */}
+        {selectedAirline?.id === 'qatar-airways' ? (
+          <>
+            <div
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: 'url(https://airlinegeeks.com/wp-content/uploads/2018/10/IMG_3495-e1540774160956.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+          </>
+        )}
         
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
           {!selectedAirline ? (
@@ -2389,6 +2309,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
           </div>
       )}
 
+      </div>{/* Close main content wrapper */}
     </div>
   );
 };

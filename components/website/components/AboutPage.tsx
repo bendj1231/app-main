@@ -35,125 +35,87 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                         Programs · Recognition · Pathways
                     </span>
                     
-                    {/* NOT A JOB BOARD Banner */}
-                    <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 mb-8 max-w-2xl mx-auto">
-                        <p className="text-amber-800 font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            NOT A JOB BOARD — A RECOGNITION & INFORMATION PLATFORM
-                        </p>
-                        <p className="text-amber-700 text-sm mt-2">
-                            We don't post jobs or accept applications. Pilots get verified and discover pathway information. 
-                            No hiring promises. Just recognition and discovery.
-                        </p>
-                    </div>
+                    <p className="text-slate-900 font-black text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+                        Not a job board. Not a recruitment agency. A recognition platform — pilots get verified, operators see real proof, and every engagement requires your consent.
+                    </p>
 
                     <div className="max-w-3xl mx-auto text-base text-slate-700 leading-relaxed text-left space-y-6">
                         <p>
-                            PilotRecognition is an aviation competency platform operated by WM Pilot Group. The system provides competency-based profiling and experience programs aligned with EBT CBTA standards. Profiles are maintained in ATLAS Aviation CV format, with competency assessment integrated within the Transition Program.
+                            Aviation's first pilot-owned career platform. The industry has never given pilots the infrastructure to prove who they are — only the paperwork to survive audits. PilotRecognition fixes that. You sync your logbook, verify your license, medical, and credentials through international verification providers, and build a recognition profile that reflects what you've actually done — not just what you claim. Your credentials are issued as sovereign W3C Verified Credential tokens to your own cryptographic wallet. The platform never retains your documents after verification. We receive the confirmation — not the paper.
                         </p>
                         <p>
-                            Pathways are structured career routes — cadet programs, type ratings, license progression, business aviation, eVTOL, and specialized operations. Each pathway lists operator requirements and identifies competency gaps against the pilot's profile. The platform does not operate as a job board. Pathways are available to all users; free tier sees 3 per month, Plus tier sees unlimited. Pilots indicate interest in a pathway; when operators join, they can pull verified profiles based on competency scores, flight hours, and EBT assessment data. The profile updates as you log hours, certifications, and mentorship completion. Examination results are verified and recorded. The competency score improves your matching priority with operators.
+                            It is not a job board. Job boards are push-based — you send a CV into a void and compete with everyone else who sent the same thing. PilotRecognition is a pulling system. Operators post pathway cards showing exactly what they need: hours, ratings, nationality requirements, type rating preferences, experience level. You align your profile against those requirements and submit interest. If an operator wants to move forward, they send you a consent message — free. They may include a confidential offer document that self-destructs within 5 days of inactivity. You read it, negotiate if needed, and decide. The only time an operator pays is when they are ready to formally progress a candidate — a $500 recognition fee that covers employment-grade verification checks. Pilots never pay for pre-employment checks. That cost belongs to the employer.
                         </p>
                         <p>
-                            Two programs build the verified competencies that improve your matching priority with operators. The Foundation Program establishes baseline competency across the nine EBT CBTA core areas through structured coursework, examination, and 50 hours of evidence-based mentorship. Foundation graduates unlock the Transition Program at graduate pricing ($99, a $50 discount from $149). The Transition Program is currently under development and will advance to full EBT CBTA assessment, ATLAS Aviation CV formatting, EBT video evaluation, and internship placement with pathway providers. Program completion generates verified competency data that feeds directly into the pilot profile and improves operator matching.
+The Foundation Program builds the verified competency record operators look for. It covers 50 hours of logged mentorship, EBT CBTA-aligned industry education, type rating investment risk management, and a practical mentorship interview. Free to enter. Certification is $49 at completion. Everything you complete is appended to your profile and made available to operators with your consent.
                         </p>
 
-                        {/* Programs */}
-                        <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                            <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Programs</h3>
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <p className="font-semibold text-slate-900 mb-2">Foundation Program — <span className="text-slate-700">Free to Enter</span></p>
-                                    <ul className="text-sm text-slate-600 space-y-1.5">
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>Competency development across 9 EBT CBTA core areas</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>50 hours evidence-based mentorship</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>Scholarship seats for verified low-income applicants</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p className="font-semibold text-slate-900 mb-2">
-                                        Transition Program — <span className="text-slate-700">$149</span> 
-                                        <span className="text-slate-500 font-normal text-sm"> ($99 for Foundation graduates)</span>
-                                        <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded ml-2 align-middle">Under Development</span>
-                                    </p>
-                                    <ul className="text-sm text-slate-600 space-y-1.5">
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>Full EBT CBTA assessment</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>EBT CBTA competency video assessment</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>ATLAS Aviation CV formatting</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>EBT video assessment</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>Internship placement with pathway providers</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-slate-400 mt-1">•</span>
-                                            <span>Competency verification</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        {/* Pricing Section */}
+                        <div className="mt-4">
+                            <p className="text-red-500 text-[0.65rem] font-black uppercase tracking-[0.3em] mb-2">Pricing</p>
+                            <h3 className="text-2xl font-black text-slate-900 mb-1">Choose Your Plan.</h3>
+                            <p className="text-sm text-slate-500 mb-8">Start with a free trial. Upgrade to Recognition Plus for priority matching and AI-powered career tools.</p>
 
-                        {/* Recognition Profile & Pathways */}
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                                <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Recognition Profile</h3>
-                                <div className="space-y-3 text-sm">
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-slate-900 font-medium">Free</span>
-                                        <span className="text-slate-600">Platform access, basic matching, 3 pathways/month</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-slate-900 font-medium">Plus</span>
-                                        <span className="text-slate-600">$99/year — full comparison, unlimited pathways, priority matching</span>
-                                    </div>
+                            <div className="grid md:grid-cols-2 gap-6 mb-8">
+                                {/* Free Plan */}
+                                <div className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col">
+                                    <p className="text-slate-500 text-sm font-medium mb-1">Free</p>
+                                    <p className="text-5xl font-black text-slate-900 mb-1">$0<span className="text-lg font-medium text-slate-400">/year</span></p>
+                                    <p className="text-xs text-slate-400 mb-6">Basic access</p>
+                                    <p className="text-xs font-semibold text-green-600 mb-6">Get started today</p>
+                                    <ul className="space-y-2 text-sm text-slate-600 mb-8 flex-1">
+                                        {['Basic profile', '2 pathway submissions/month', '3 profile comparisons/month', '5 AI chats/month', 'General pool visibility'].map(f => (
+                                            <li key={f} className="flex items-center gap-2"><span className="text-slate-400">✓</span>{f}</li>
+                                        ))}
+                                        {['Priority matching', 'Exclusive pathways', 'Verified credentials'].map(f => (
+                                            <li key={f} className="flex items-center gap-2 text-slate-300"><span>—</span>{f}</li>
+                                        ))}
+                                    </ul>
+                                    <button onClick={() => onLogin()} className="w-full py-3 rounded-xl border-2 border-slate-900 text-slate-900 font-bold text-sm hover:bg-slate-900 hover:text-white transition-colors">Get Started Free</button>
                                 </div>
-                            </div>
-                            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                                <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Pathways</h3>
-                                <div className="space-y-3 text-sm">
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-slate-900 font-medium">Free</span>
-                                        <span className="text-slate-600">Public pathway access</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-slate-900 font-medium">Plus</span>
-                                        <span className="text-slate-600">Full insights via Recognition Plus</span>
-                                    </div>
-                                    <div className="flex items-start gap-2">
-                                        <span className="text-slate-900 font-medium">Premium</span>
-                                        <span className="text-slate-600">$49 each — private sector and specialized pathways</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <p className="text-sm text-slate-500">
-                            Profiles are matched to operator requirements through competency scoring. Higher competency scores improve your matching priority. Pathways are available to all users regardless of program enrollment.
-                        </p>
+                                {/* Recognition+ Verified Plan */}
+                                <div className="bg-red-600 rounded-2xl p-8 flex flex-col relative">
+                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full">Best Value</div>
+                                    <p className="text-red-200 text-sm font-medium mb-1">Recognition+ Verified</p>
+                                    <p className="text-5xl font-black text-white mb-1">$100<span className="text-lg font-medium text-red-300">/year</span></p>
+                                    <p className="text-xs text-red-300 mb-1">Annual membership</p>
+                                    <p className="text-xs font-semibold text-red-200 mb-6">✓ 3-day free trial</p>
+                                    <ul className="space-y-2 text-sm text-white mb-8 flex-1">
+                                        {['Full profile comparison', 'Unlimited pathway submissions', 'Priority matching', 'AI career strategist', 'EBT CBTA Fast-Track', 'Exclusive pathways (Private Jet, eVTOL)', 'Verified flight hours & credentials', '50% off Foundation & Transition'].map(f => (
+                                            <li key={f} className="flex items-center gap-2"><span className="text-red-300">✓</span>{f}</li>
+                                        ))}
+                                    </ul>
+                                    <button onClick={() => onLogin()} className="w-full py-3 rounded-xl bg-white text-red-600 font-bold text-sm hover:bg-red-50 transition-colors">Get Annual Plan</button>
+                                </div>
+                            </div>
+
+                            {/* Full Feature Details */}
+                            <div className="bg-slate-900 rounded-2xl p-8">
+                                <p className="text-slate-400 text-[0.65rem] font-black uppercase tracking-[0.3em] mb-1">Full Feature Details</p>
+                                <h4 className="text-white text-xl font-black mb-1">Everything that's included</h4>
+                                <p className="text-slate-400 text-sm mb-6">Recognition+ Verified <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full ml-1">$100/yr</span></p>
+                                <ul className="space-y-3 text-sm text-slate-300">
+                                    {[
+                                        'Live real-time profile — not a PDF. When you fly and log hours, your profile updates instantly. Airlines pull your current data, not a snapshot from months ago.',
+                                        'Background screening — verified badge attached to your profile in the pulling system',
+                                        'Recognition Score — scored on recency, hours flown, type rating, completeness & background check status',
+                                        'Recognition+ Verified badge — airlines filter for this first: background checked, preferred tier',
+                                        "Submit pathway interest — your profile enters the airline's ranked bulletin with background check attached",
+                                        "Airlines don't get random CVs — they pull a scored shortlist of interested pilots. You rank highest.",
+                                    ].map(f => (
+                                        <li key={f} className="flex items-start gap-3"><span className="text-red-400 mt-0.5 shrink-0">✓</span><span>{f}</span></li>
+                                    ))}
+                                </ul>
+                                <p className="text-slate-500 text-xs mt-6">+ 8 more features</p>
+                                <div className="mt-6 pt-6 border-t border-slate-700">
+                                    <p className="text-slate-400 text-sm">Are you an airline, operator, or training organization?</p>
+                                    <button onClick={() => onNavigate('enterprise')} className="text-blue-400 text-sm font-semibold hover:text-blue-300 transition-colors mt-1">Click here for enterprise access →</button>
+                                </div>
+                            </div>
+
+                            <p className="text-xs text-slate-400 text-center mt-4">Cancel anytime. No hidden fees. Free trial included.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -393,6 +355,79 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                             <span>•</span>
                             <button onClick={() => onNavigate('recognition-career-matches')} className="hover:text-blue-700 transition-colors">Discover Pathways</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Mission & Vision */}
+            <div id="mission" className="py-16 px-6 bg-slate-50">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-10">
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">Our Purpose & Direction</p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">Mission & Vision</h2>
+                        <p className="text-base text-slate-700 leading-relaxed max-w-3xl mx-auto">
+                            We provide verified competency assessment through EBT CBTA aligned programs. Pilots demonstrate capabilities through 50 hours of mentorship and behavioral assessment. When operators join the platform, they can pull verified profiles based on competency scores — not just hours. Recognition improves your matching priority with operators.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="bg-white rounded-2xl p-8 border border-slate-200">
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-3">Our Mission</p>
+                            <h3 className="text-2xl font-serif text-slate-900 mb-4">Bridge the Pilot Gap Through Recognition</h3>
+                            <p className="text-slate-700 text-sm leading-relaxed">We deliver verified competency assessment through EBT CBTA aligned programs and 50 hours of evidence-based mentorship. Pilots demonstrate actual capabilities — not just credentials. Operators access a pulling system built on real proof.</p>
+                        </div>
+                        <div className="bg-white rounded-2xl p-8 border border-slate-200">
+                            <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-3">Our Vision</p>
+                            <h3 className="text-2xl font-serif text-slate-900 mb-4">Recognition as the Industry Standard</h3>
+                            <p className="text-slate-700 text-sm leading-relaxed">A world where pilots own sovereign, portable proof of their competencies — and operators can access verified talent without wading through stale CVs. Recognition Score becomes the industry currency. Static resumes become obsolete.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Why Recognition */}
+            <div id="why-recognition" className="py-16 px-6 bg-white">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-10">
+                        <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">Why It Matters</p>
+                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">Why Recognition</h2>
+                        <p className="text-base text-slate-700 leading-relaxed max-w-2xl mx-auto">
+                            Recognition isn't a word. It's an infrastructure problem the industry has never solved.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {[
+                            { label: 'For Students', text: 'You spent $50K training. A recognition profile means operators see verified proof of what you can do before you apply — not after 6 months of silence.' },
+                            { label: 'For Instructors', text: '15 years building other pilots\' careers. The platform gives you the infrastructure to document instructional expertise as a pathway asset, not just a time-filler.' },
+                            { label: 'For Active Pilots', text: 'Your credentials are sovereign. Operators request access. You consent. No one holds your career data hostage — and your Recognition Score travels with you when you change operators.' },
+                        ].map(({ label, text }) => (
+                            <div key={label} className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                                <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.25em] mb-2">{label}</p>
+                                <p className="text-slate-700 text-sm leading-relaxed">{text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Industry Stewardship */}
+            <div id="stewardship" className="py-16 px-6 bg-slate-900 text-white">
+                <div className="max-w-4xl mx-auto text-center">
+                    <p className="text-xs font-bold text-blue-400 uppercase tracking-[0.3em] mb-2">Industry Stewardship</p>
+                    <h2 className="text-3xl md:text-4xl font-serif mb-6">How We Operate</h2>
+                    <p className="text-slate-300 text-base leading-relaxed max-w-2xl mx-auto mb-10">
+                        PilotRecognition is pilot-owned infrastructure. We don't sell data. We don't push applications. We built a consent-based system where the pilot controls every engagement.
+                    </p>
+                    <div className="grid md:grid-cols-3 gap-6 text-left">
+                        {[
+                            { title: 'EBT Alignment', body: 'Our competency framework is aligned with ICAO Evidence-Based Training standards and Airbus HINFACT methodology. Assessments are documented, not self-reported.' },
+                            { title: 'Pilot Advocacy', body: 'Pre-employment verification costs belong to the employer, not the pilot. The $500 recognition fee is paid by operators. Pilots on the free tier are never charged for checks that benefit the hiring party.' },
+                            { title: '2030 Vision', body: 'By 2030, PilotRecognition aims to be the global clearinghouse for verified pilot data — replacing static CVs with live credential chains that meet ICAO, FAA, EASA, and CAAP standards.' },
+                        ].map(({ title, body }) => (
+                            <div key={title} className="bg-white/10 rounded-xl p-6 border border-white/10">
+                                <h3 className="font-bold text-white mb-2">{title}</h3>
+                                <p className="text-slate-300 text-sm leading-relaxed">{body}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

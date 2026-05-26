@@ -199,16 +199,31 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             {/* Selected Airline Hero Section - Netflix-style */}
             {selectedAirline && (
                 <div className="relative h-[70vh] min-h-[500px]">
-                    {/* Background Image */}
+                    {/* Background Image - cockpit for Qatar Airways, exterior for others */}
                     <div className="absolute inset-0">
-                        <img
-                            src={selectedAirline.image}
-                            alt={selectedAirline.name}
-                            className="w-full h-full object-cover"
-                        />
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+                        {selectedAirline.id === 'qatar' ? (
+                            <>
+                                <div
+                                    className="w-full h-full"
+                                    style={{
+                                        backgroundImage: 'url(https://airlinegeeks.com/wp-content/uploads/2018/10/IMG_3495-e1540774160956.jpg)',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                    }}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+                            </>
+                        ) : (
+                            <>
+                                <img
+                                    src={selectedAirline.image}
+                                    alt={selectedAirline.name}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+                            </>
+                        )}
                     </div>
 
                     {/* Content Overlay */}

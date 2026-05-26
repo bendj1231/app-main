@@ -533,11 +533,11 @@ const AccessPlatformCard: React.FC<{
                 
                 {/* Right side callout with blur gradient overlay */}
                 <div className="hidden md:flex flex-1 items-center justify-end h-full absolute right-0 top-0 bottom-0 w-[42%]">
-                    {/* Blur + gradient overlay */}
+                    {/* Blur + gradient overlay - dark navy to match left side */}
                     <div
                         className="absolute inset-0"
                         style={{
-                            background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 30%, rgba(0,0,0,0.72) 100%)',
+                            background: 'linear-gradient(to right, rgba(15,23,42,0) 0%, rgba(20,30,60,0.65) 30%, rgba(25,35,70,0.85) 100%)',
                             backdropFilter: 'blur(6px)',
                             WebkitBackdropFilter: 'blur(6px)',
                         }}

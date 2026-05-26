@@ -12,10 +12,10 @@ export const REGIONAL_PRICING: Record<string, RegionalPrice> = {
   PH: {
     currency: 'PHP',
     symbol: '₱',
-    annual: 10000,
-    monthly: 950,
-    semiAnnual: 5500,
-    annualNote: 'Save ₱1,400/yr vs monthly',
+    annual: 6500,
+    monthly: 650,
+    semiAnnual: 3500,
+    annualNote: 'Save ₱1,300/yr vs monthly',
     locale: 'fil-PH',
   },
   AE: {
