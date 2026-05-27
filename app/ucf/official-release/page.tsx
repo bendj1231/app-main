@@ -7455,7 +7455,7 @@ export default function UCFOfficialReleasePage() {
               </ul>
               <p><strong>Flight Logbook Platforms for Pilots = Hertz / Europcar / Enterprise</strong></p>
               <p>Established brands with their own infrastructure, their own apps, their own user bases. They don't need us to build their logbook — they already have a premium product. What they need is <strong>infrastructure integration</strong>:</p>
-              <ul class="list-disc list-inside ml-4 space-y-1">
+              <ul className="list-disc list-inside ml-4 space-y-1">
                 <li>Access to our 25-pillar verification network</li>
                 <li>API hooks into airline data feeds (workforce management systems/airline systems)</li>
                 <li>The "Recognition Score" integration that makes their users discoverable</li>

@@ -10,6 +10,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { PathwayGrid } from './PathwayGrid';
 import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
+import { HomePageSchema } from '../seo/HomePageSchema';
 import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier, getHomepageGraphicsConfig, setGraphicsOverride, type HomepageGraphicsConfig } from '@/src/lib/device-detection';
 import StripePaymentSection from './StripePaymentSection';
 import { NewsroomModal } from '../NewsroomModal';
@@ -987,6 +988,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
     return (
         <>
+            <HomePageSchema />
             <BreadcrumbSchema items={[
                 { name: 'Home', url: '/' }
             ]} />
