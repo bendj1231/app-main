@@ -215,12 +215,13 @@ export default function RecognitionPlusPage() {
     const handleCheckout = async (priceId: string, planName: string, trialPeriodDays?: number) => {
         setProcessing(true);
         try {
-            const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+            const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
             const response = await fetch(`${supabaseUrl}/functions/v1/stripe-checkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY`
+                    'Authorization': `Bearer ${supabaseAnonKey}`
                 },
                 body: JSON.stringify({
                     priceId,
@@ -552,11 +553,10 @@ export default function RecognitionPlusPage() {
                                 <li className="flex items-start gap-2"><span className="text-red-200 font-bold">✓</span><span>50% off Foundation & Transition</span></li>
                             </ul>
                             <button
-                                onClick={() => handleCheckout(import.meta.env.VITE_STRIPE_RECOGNITION_PLUS_ANNUAL_PRICE_ID || '', 'Recognition Plus Annual', 3)}
-                                disabled={processing}
-                                className="w-full bg-white hover:bg-red-50 text-red-700 font-bold py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                onClick={() => navigate('/become-member')}
+                                className="w-full bg-white hover:bg-red-50 text-red-700 font-bold py-3 rounded-full transition-colors"
                             >
-                                {processing ? 'Processing...' : 'Get Annual Plan'}
+                                Get Annual Plan
                             </button>
                         </div>
                     </div>

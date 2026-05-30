@@ -1,5 +1,7 @@
 import { HomePage } from '@/components/website/components/home/HomePage';
+import ShortageLanding from '@/components/domains/shortage/ShortageLanding';
 import { Metadata } from 'next';
+import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
   title: 'Pilotrecognition.com | Aviation Industry\'s First Pilot Recognition-Based Platform - WM Pilot Group',
@@ -37,13 +39,23 @@ export const metadata: Metadata = {
 };
 
 export default function MainPage() {
+  // Domain-based brand detection
+  const headersList = headers();
+  const domain = headersList.get('host') || '';
+  const isShortage = domain.includes('pilotshortage.org');
+  
+  // Show Philippines-specific landing for pilotshortage.org
+  if (isShortage) {
+    return <ShortageLanding />;
+  }
+  
+  // Default: existing pilotrecognition.com home page
   return (
     <HomePage 
-      onJoinUs={() =>
-        {/* Coded by Benjamin Bowler */} console.log('Join Us clicked')}
+      onJoinUs={() => console.log('Join Us clicked')}
       onLogin={() => console.log('Login clicked')}
-      onNavigate={(page) => console.log('Navigate to:', page)}
-      onGoToProgramDetail={(slide) => console.log('Go to program detail:', slide)}
+      onNavigate={(page: string) => console.log('Navigate to:', page)}
+      onGoToProgramDetail={(slide: string) => console.log('Go to program detail:', slide)}
       isLoggedIn={false}
       onLoginModalOpen={() => console.log('Login modal opened')}
     />

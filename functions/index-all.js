@@ -7210,20 +7210,27 @@ exports.postPathwayCard = onRequest(async (req, res) => {
 // Project: pilotrecognition-airline
 // ============================================================
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
-};
+const ENTERPRISE_ALLOWED_ORIGINS = [
+  'https://pilotrecognition.com',
+  'https://www.pilotrecognition.com',
+  'https://wallet.pilotrecognition.com',
+];
 
-function setCORS(res) {
-  Object.entries(CORS_HEADERS).forEach(([k, v]) => res.set(k, v));
+function setCORS(req, res) {
+  const origin = req.headers.origin || '';
+  const allowed = ENTERPRISE_ALLOWED_ORIGINS.includes(origin) ||
+    origin.startsWith('http://localhost:') ||
+    origin.startsWith('http://127.0.0.1:');
+  res.set('Access-Control-Allow-Origin', allowed ? origin : ENTERPRISE_ALLOWED_ORIGINS[0]);
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
+  res.set('Vary', 'Origin');
 }
 
 // Grant enterprise access to a profile (admin only)
 exports.grantEnterpriseAccess = onRequest(async (req, res) => {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -7254,7 +7261,7 @@ exports.grantEnterpriseAccess = onRequest(async (req, res) => {
 // Create or update enterprise account (airline profile)
 exports.upsertEnterpriseAccount = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (!['POST', 'PUT'].includes(req.method)) return res.status(405).json({ error: 'Method not allowed' });
 
@@ -7288,7 +7295,7 @@ exports.upsertEnterpriseAccount = onRequest(async (req, res) => {
 // Get enterprise account for a user
 exports.getEnterpriseAccount = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -7313,7 +7320,7 @@ exports.getEnterpriseAccount = onRequest(async (req, res) => {
 // Post a full enterprise pathway card with all components
 exports.postEnterprisePathwayCard = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -7380,7 +7387,7 @@ exports.postEnterprisePathwayCard = onRequest(async (req, res) => {
 // Post a job listing to job_opportunities table
 exports.postEnterpriseJobListing = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -7452,7 +7459,7 @@ exports.postEnterpriseJobListing = onRequest(async (req, res) => {
 // Get enterprise pathway cards (published ones for the pathways page)
 exports.getEnterprisePathwayCards = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 

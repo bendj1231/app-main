@@ -106,16 +106,23 @@ export function isIOS(): boolean {
  * Determines the performance tier of the current device
  * Based on hardware concurrency, memory, device type, and specific legacy device detection
  * Respects manual override from graphics settings modal
+ * Cached to prevent WebGL context exhaustion from repeated calls
  */
+let cachedPerformanceTier: PerformanceTier | null = null;
 export function getDevicePerformanceTier(): PerformanceTier {
+  if (cachedPerformanceTier !== null) {
+    return cachedPerformanceTier;
+  }
   // Check for manual override from graphics settings
   const manualOverride = localStorage.getItem('graphicsQuality') as PerformanceTier | 'auto' | null;
   if (manualOverride && manualOverride !== 'auto') {
+    cachedPerformanceTier = manualOverride;
     return manualOverride;
   }
 
   // Legacy iOS devices get lowest performance settings
   if (isLegacyIOSDevice()) {
+    cachedPerformanceTier = 'low';
     return 'low';
   }
 
@@ -127,9 +134,11 @@ export function getDevicePerformanceTier(): PerformanceTier {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (prefersReducedMotion) {
+    cachedPerformanceTier = 'low';
     return 'low';
   }
   if (isMobile) {
+    cachedPerformanceTier = 'low';
     return 'low';
   }
 
@@ -149,6 +158,7 @@ export function getDevicePerformanceTier(): PerformanceTier {
         if (loseCtx) loseCtx.loseContext();
         c.remove();
         if (renderer.includes('apple') || renderer.includes('metal')) {
+          cachedPerformanceTier = 'high';
           return 'high'; // M1/M2/M3/M4 Apple GPU
         }
       } else {
@@ -160,13 +170,16 @@ export function getDevicePerformanceTier(): PerformanceTier {
   // Score-based fallback for Intel Macs, Windows, Linux
   // Low: < 4 cores or < 4GB — truly old hardware (2-core i5, 4GB school PCs)
   if (hardwareConcurrency < 4 || deviceMemory < 4) {
+    cachedPerformanceTier = 'low';
     return 'low';
   }
   // Medium: < 6 cores or < 8GB — 2019 MBA class hardware
   if (hardwareConcurrency < 6 || deviceMemory < 8) {
+    cachedPerformanceTier = 'medium';
     return 'medium';
   }
 
+  cachedPerformanceTier = 'high';
   return 'high';
 }
 

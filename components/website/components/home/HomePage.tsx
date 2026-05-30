@@ -367,7 +367,7 @@ const newsroomHighlights = [
             'Gap analysis shows exactly which hours, ratings, and EBT scores you need to close',
             'Pull system — operators invite matched pilots directly, no applications, no waiting in line'
         ],
-        ctaTarget: 'pathways-modern',
+        ctaTarget: 'discover-pathways',
         category: 'pathways' as const
     },
     {
@@ -403,7 +403,7 @@ const newsroomHighlights = [
             'Real-time competency verification for EBT CBTA standards',
             'Streamlined pathway matching for Airbus operator requirements'
         ],
-        ctaTarget: 'pathways-modern',
+        ctaTarget: 'discover-pathways',
         category: 'industry' as const
     },
     {
@@ -421,7 +421,7 @@ const newsroomHighlights = [
             'Elimination of application black holes — operators pull qualified pilots',
             'Real-time pathway matching with airline-specific requirements'
         ],
-        ctaTarget: 'pathways-modern',
+        ctaTarget: 'discover-pathways',
         category: 'airlines' as const
     }
 ];
@@ -1478,7 +1478,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                         {/* Card 3 - Pilot Career Pathways */}
                         <div
-                            onClick={() => onNavigate?.('pathways-modern')}
+                            onClick={() => onNavigate?.('discover-pathways')}
                             className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
@@ -1848,7 +1848,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="max-w-7xl mx-auto">
                     {/* Section Header - Centered */}
                     <div className="mb-6 text-center">
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-red-500">Programs</span></h2>
+                        <h2
+                            className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 cursor-pointer hover:text-red-600 transition-colors inline-block"
+                            onClick={() => onNavigate('discover-programs')}
+                        >
+                            Discover <span className="text-red-500">Programs</span>
+                        </h2>
                         <p className="text-slate-600 text-sm md:text-base">Structured training pathways from flight school to airline-ready professional</p>
                     </div>
                     {/* Foundation Program Showcase */}
@@ -1885,12 +1890,20 @@ export const HomePage: React.FC<HomePageProps> = ({
                                         <span className="text-sm text-slate-600">Direct pathway access to airline placements</span>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => onNavigate('foundation-program')}
-                                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition-all hover:scale-105 w-fit mb-3"
-                                >
-                                    Enroll Now
-                                </button>
+                                <div className="flex flex-wrap gap-3 mb-3">
+                                    <button
+                                        onClick={() => onNavigate('foundation-program')}
+                                        className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
+                                    >
+                                        Enroll Now
+                                    </button>
+                                    <button
+                                        onClick={() => onNavigate('discover-programs')}
+                                        className="px-6 py-3 border border-slate-300 hover:border-slate-500 text-slate-700 hover:text-slate-900 rounded-lg text-sm font-bold transition-all"
+                                    >
+                                        Explore All Programs
+                                    </button>
+                                </div>
                                 <p className="text-[10px] text-slate-400 italic">
                                     Certification of completion and verification charges apply
                                 </p>

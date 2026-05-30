@@ -4,7 +4,7 @@ import { WalletLoadingScreen } from '../wallet/WalletLoadingScreen';
 import { WalletPageWithSidebar } from '../wallet/WalletPageWithSidebar';
 import { ArrowLeft, ChevronLeft, ChevronRight, Loader2, LayoutDashboard, BarChart3, BookMarked, Image as ImageIcon, Fingerprint, Plus } from 'lucide-react';
 
-type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault';
+type ProfileSection = 'overview' | 'statistics' | 'logbook' | 'photos' | 'identity' | 'vault' | 'admin_dashboard';
 import { supabase } from '../../../../src/lib/supabase';
 import ExaminationResultsPage from './ExaminationResultsPage';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -15,6 +15,7 @@ import { ScoreOptimizationGuide } from '../../../ScoreOptimizationGuide';
 import { RecognitionPlusNotifications } from './RecognitionPlusNotifications';
 import { ATOVerificationRequestSection } from './ATOVerificationRequestSection';
 import { PathwayPriority } from './CareerPathwayPriority';
+import { AdminDashboardPanel } from './AdminDashboardPanel';
 import { useRecognitionScore } from '../../../../src/hooks/useRecognitionScore';
 import { useVaultProfile } from '../../../../src/hooks/useVaultProfile';
 import { calculateRecognitionScore } from '../../../../lib/pilot-recognition-score';
@@ -1042,7 +1043,9 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                 { id: 'photos',     label: 'Certificates & Endorsements' },
                                 { id: 'identity',   label: 'About & Experience' },
                                 { id: 'vault',      label: 'Access Vault', isVault: true },
+                                ...(isAdmin ? [{ id: 'admin_dashboard', label: 'Admin Dashboard', isAdmin: true }] : []),
                             ].map((item: any) => {
+                                const isAdminItem = item.isAdmin;
                                 const isVaultItem = item.isVault;
                                 const isVaultActive = isVaultItem && (activeSection === 'vault' || showWalletGate || showWalletView);
                                 const isActive = isVaultItem ? isVaultActive : activeSection === item.id;
@@ -1058,13 +1061,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             padding: '0.875rem 1rem',
                                             borderRadius: '4px',
                                             border: 'none',
-                                            background: isVaultItem
+                                            background: isAdminItem
+                                                ? (isActive ? 'rgba(239,68,68,0.18)' : 'rgba(239,68,68,0.08)')
+                                                : isVaultItem
                                                 ? (isActive ? '#ffffff' : 'rgba(255,255,255,0.92)')
                                                 : isActive
                                                 ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
                                                 : 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)',
-                                        border: isVaultItem ? `2px solid ${isActive ? '#dc2626' : 'rgba(220,38,38,0.4)'}` : 'none',
-                                            color: isVaultItem ? '#111827' : '#ffffff',
+                                        border: isAdminItem ? `1px solid ${isActive ? 'rgba(239,68,68,0.6)' : 'rgba(239,68,68,0.25)'}` : isVaultItem ? `2px solid ${isActive ? '#dc2626' : 'rgba(220,38,38,0.4)'}` : 'none',
+                                            color: isAdminItem ? '#f87171' : isVaultItem ? '#111827' : '#ffffff',
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease',
                                             textAlign: 'left',
@@ -1092,7 +1097,15 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             }
                                         }}
                                     >
-                                        {isVaultItem ? (
+                                        {isAdminItem ? (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                                <div>
+                                                    <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 700, color: '#f87171', lineHeight: 1.2 }}>Admin Dashboard</p>
+                                                    <p style={{ margin: '1px 0 0', fontSize: '0.55rem', color: '#ef4444', fontWeight: 500 }}>Super Admin Only</p>
+                                                </div>
+                                            </div>
+                                        ) : isVaultItem ? (
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden', minWidth: 0 }}>
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
                                                 <div style={{ overflow: 'hidden', minWidth: 0 }}>
@@ -3427,6 +3440,20 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     </div>
                 </motion.section>
                 )}
+
+                {/* ── ADMIN DASHBOARD SECTION — Super Admin Only ── */}
+                {!showWalletGate && !showWalletView && activeSection === 'admin_dashboard' && isAdmin && (
+                <motion.section
+                    key="admin_dashboard"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem', paddingBottom: '80px' }}>
+                    <AdminDashboardPanel />
+                </motion.section>
+                )}
+
             </main>
             </motion.div>
             )}

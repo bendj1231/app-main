@@ -4337,6 +4337,7 @@ export interface PathwaysPageModernProps {
   onNavigateToPathway?: (pathwayId: string) => void;
   onNavigateToMainApp?: (page: string) => void;
   mode?: 'pathways' | 'jobs';
+  embedded?: boolean;
 }
 
 export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
@@ -4346,7 +4347,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   onNavigate,
   onNavigateToPathway,
   onNavigateToMainApp,
-  mode = 'pathways'
+  mode = 'pathways',
+  embedded = false
 }) => {
   const [expandedPathway, setExpandedPathway] = useState<string | null>(selectedPathwayId || null);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -5428,10 +5430,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       <div className="fixed inset-0 z-0 bg-white/5 backdrop-blur-md"></div>
 
       {/* Top Navigation Bar */}
-      <PlatformNavbar
-        onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
-        currentPage="pathways"
-      />
+      {!embedded && (
+        <PlatformNavbar
+          onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+          currentPage="pathways"
+        />
+      )}
 
       {/* Content wrapper with higher z-index to sit above shader */}
       <div className="relative z-10 flex min-h-screen" style={{ paddingTop: '80px' }}>

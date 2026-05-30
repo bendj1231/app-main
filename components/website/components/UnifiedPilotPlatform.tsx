@@ -3531,7 +3531,7 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
 // ─── TAB: PATHWAYS ─────────────────────────────────────────────────────────
 const PathwaysTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate }) => (
   <div className="-mx-5 lg:-mx-7 -mt-5 lg:-mt-7">
-    <PathwaysPageModern isDarkMode={true} onNavigate={onNavigate} onNavigateToPathway={(id) => onNavigate(`pathways-detail/${id}`)} />
+    <PathwaysPageModern isDarkMode={true} embedded={true} onNavigate={onNavigate} onNavigateToPathway={(id) => onNavigate(`pathways-detail/${id}`)} />
   </div>
 );
 

@@ -1,7 +1,23 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
-// Helper function to get Supabase client
+const ALLOWED_ORIGINS = [
+  'https://pilotrecognition.com',
+  'https://www.pilotrecognition.com',
+  'https://wallet.pilotrecognition.com',
+];
+
+function setCORS(req, res) {
+  const origin = req.headers.origin || '';
+  const allowed = ALLOWED_ORIGINS.includes(origin) ||
+    origin.startsWith('http://localhost:') ||
+    origin.startsWith('http://127.0.0.1:');
+  res.set('Access-Control-Allow-Origin', allowed ? origin : ALLOWED_ORIGINS[0]);
+  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.set('Vary', 'Origin');
+}
+
 const getSupabase = () => {
   return createClient(
     process.env.SUPABASE_URL,
@@ -29,10 +45,7 @@ async function checkRecognitionPlusAccess(userId, supabase) {
  * Get all airlines with their aircraft fleets
  */
 exports.getAirlines = onRequest(async (req, res) => {
-  // Handle CORS
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
-  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  setCORS(req, res);
 
   if (req.method === 'OPTIONS') {
     return res.status(204).send('');
@@ -59,10 +72,7 @@ exports.getAirlines = onRequest(async (req, res) => {
  * Get airline by ID with their aircraft fleet
  */
 exports.getAirlineById = onRequest(async (req, res) => {
-  // Handle CORS
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
-  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  setCORS(req, res);
 
   if (req.method === 'OPTIONS') {
     return res.status(204).send('');

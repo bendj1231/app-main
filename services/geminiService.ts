@@ -5,7 +5,7 @@ export const askWingman = async (prompt: string, history: string[] = []): Promis
   // For production with GCP, use GOOGLE_APPLICATION_CREDENTIALS environment variable
   // or service account authentication
   
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   
   if (!apiKey) {
     console.error("Gemini API key not configured");

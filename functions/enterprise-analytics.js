@@ -1,10 +1,21 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { createClient } = require('@supabase/supabase-js');
 
-function setCORS(res) {
-  res.set('Access-Control-Allow-Origin', '*');
+const ALLOWED_ORIGINS = [
+  'https://pilotrecognition.com',
+  'https://www.pilotrecognition.com',
+  'https://wallet.pilotrecognition.com',
+];
+
+function setCORS(req, res) {
+  const origin = req.headers.origin || '';
+  const allowed = ALLOWED_ORIGINS.includes(origin) ||
+    origin.startsWith('http://localhost:') ||
+    origin.startsWith('http://127.0.0.1:');
+  res.set('Access-Control-Allow-Origin', allowed ? origin : ALLOWED_ORIGINS[0]);
   res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.set('Vary', 'Origin');
 }
 
 // Helper function to check if user has enterprise account access
@@ -26,7 +37,7 @@ async function checkEnterpriseAccess(userId, enterpriseAccountId, supabase) {
 // ─── View Count Tracking ────────────────────────────────────────────────────
 exports.trackCardView = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -51,7 +62,7 @@ exports.trackCardView = onRequest(async (req, res) => {
 // ─── Application Submission ───────────────────────────────────────────────────
 exports.submitApplication = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -139,7 +150,7 @@ exports.submitApplication = onRequest(async (req, res) => {
 // ─── Get Card Analytics ─────────────────────────────────────────────────────
 exports.getCardAnalytics = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -186,7 +197,7 @@ exports.getCardAnalytics = onRequest(async (req, res) => {
 // ─── Get Applications for Enterprise ───────────────────────────────────────
 exports.getEnterpriseApplications = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -229,7 +240,7 @@ exports.getEnterpriseApplications = onRequest(async (req, res) => {
 // ─── Update Application Status ────────────────────────────────────────────
 exports.updateApplicationStatus = onRequest(async (req, res) => {
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-  setCORS(res);
+  setCORS(req, res);
   if (req.method === 'OPTIONS') return res.status(204).send('');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 

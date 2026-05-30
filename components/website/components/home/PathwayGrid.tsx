@@ -461,11 +461,137 @@ const dummyCards = [
     },
 ];
 
+interface HeroSlide {
+    id: number;
+    microHeader: string;
+    microHeaderColor: string;
+    title: string;
+    titleHighlight: string;
+    titleSuffix: string;
+    description: string;
+    primaryButtonText: string;
+    primaryButtonAction: string;
+    rightMicroHeader: string;
+    rightTitle: string;
+    rightTitleHighlight: string;
+    rightDescription: string;
+    rightHighlightText: string;
+    bgImage: string;
+}
+
+const heroSlides: HeroSlide[] = [
+    {
+        id: 0,
+        microHeader: "Pilot Platform",
+        microHeaderColor: "text-cyan-400",
+        title: "Verifying Pilots Through ",
+        titleHighlight: "Recognition",
+        titleSuffix: "+",
+        description: "Turn your logbook into a verified credential meeting international standards from operators, manufacturers, and ATOs. Global issuance of verified flight hours, aviation industry credibility, secured training investment — and the recognition every pilot deserves.",
+        primaryButtonText: "Create Free Account — Upgrade to Recognition+ $99/yr",
+        primaryButtonAction: "become-member",
+        rightMicroHeader: "Pathway Discovery",
+        rightTitle: "Submit ",
+        rightTitleHighlight: "Pathway",
+        rightDescription: "Align your profile with specific career paths. Discover posted expectations & requirements from manufacturers, airlines, and the wider aviation industry before submitting your interest in a pathway.",
+        rightHighlightText: "Gain exclusive access to private and eVTOL pathways for serious pilots with Recognition+.",
+        bgImage: "/123.png"
+    },
+    {
+        id: 1,
+        microHeader: "Verified Credentials",
+        microHeaderColor: "text-emerald-400",
+        title: "Your Flight Hours ",
+        titleHighlight: "Tokenized",
+        titleSuffix: "",
+        description: "Transform raw flight time into cryptographically verifiable credentials. Airlines, operators, and ATOs can instantly validate your experience against international standards — no paperwork, no delays, no doubt.",
+        primaryButtonText: "Verify Your Hours Now",
+        primaryButtonAction: "verification-service",
+        rightMicroHeader: "Enterprise Trust",
+        rightTitle: "Trusted By ",
+        rightTitleHighlight: "Industry",
+        rightDescription: "Leading carriers and training organizations rely on our verification pipeline to eliminate credential fraud and accelerate pilot onboarding.",
+        rightHighlightText: "Join 200+ operators using Recognition+ for instant pilot verification.",
+        bgImage: "/images/airline-operations.png"
+    },
+    {
+        id: 2,
+        microHeader: "Career Acceleration",
+        microHeaderColor: "text-amber-400",
+        title: "From Cadet to ",
+        titleHighlight: "Captain",
+        titleSuffix: "",
+        description: "Our pathway matching engine connects your verified profile with operator requirements in real-time. See exactly where you stand and what gaps to close — before you ever submit an application.",
+        primaryButtonText: "Explore Pathways",
+        primaryButtonAction: "pathways",
+        rightMicroHeader: "Live Matching",
+        rightTitle: "Profile ",
+        rightTitleHighlight: "Matched",
+        rightDescription: "Stop sending CVs into black holes. When operators search for pilots, your verified profile appears with competency scores, hours, and ratings — all cryptographically signed.",
+        rightHighlightText: "88% match accuracy for pilots with complete Recognition+ profiles.",
+        bgImage: "/pathway4.png"
+    },
+    {
+        id: 3,
+        microHeader: "Global Standard",
+        microHeaderColor: "text-violet-400",
+        title: "Built for ",
+        titleHighlight: "Aviation",
+        titleSuffix: "",
+        description: "EASA, FAA, and ICAO aligned. Our verification pipeline follows the strictest international standards, giving you a portable credential that travels across jurisdictions and operators.",
+        primaryButtonText: "View Compliance Standards",
+        primaryButtonAction: "framework",
+        rightMicroHeader: "International",
+        rightTitle: "Cross-Border ",
+        rightTitleHighlight: "Verified",
+        rightDescription: "Whether you're applying to Emirates in Dubai, Cathay in Hong Kong, or Ryanair in Dublin — your Recognition+ credentials are instantly readable and verifiable.",
+        rightHighlightText: "One verification. Global mobility.",
+        bgImage: "/images/pilotrecognitioncompoennt.png"
+    }
+];
+
 const AccessPlatformCard: React.FC<{
     onLogin: () => void;
     onNavigate: (page: string) => void;
     isLoggedIn: boolean;
 }> = ({ onLogin, onNavigate, isLoggedIn }) => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [direction, setDirection] = useState(0);
+
+    // Auto-cycle slides every 5 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDirection(1);
+            setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const goToSlide = (index: number) => {
+        setDirection(index > currentSlide ? 1 : -1);
+        setCurrentSlide(index);
+    };
+
+    const slide = heroSlides[currentSlide];
+
+    const slideVariants = {
+        enter: (direction: number) => ({
+            x: direction > 0 ? 60 : -60,
+            opacity: 0,
+            scale: 0.98
+        }),
+        center: {
+            x: 0,
+            opacity: 1,
+            scale: 1
+        },
+        exit: (direction: number) => ({
+            x: direction < 0 ? 60 : -60,
+            opacity: 0,
+            scale: 0.98
+        })
+    };
+
     return (
         <div 
             className="relative w-full h-full overflow-hidden rounded-xl"
@@ -477,58 +603,78 @@ const AccessPlatformCard: React.FC<{
                 boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
             }}
         >
-            {/* Background layer - mock2.png image with refined alpha mask */}
-            <div className="absolute inset-0">
-                <img
-                    src="/123.png"
-                    alt="Flight Deck"
-                    className="w-full h-full object-cover"
-                    style={{
-                        objectPosition: 'right top',
-                        maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)',
-                        WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)'
-                    }}
-                />
-            </div>
+            {/* Background layer with crossfade */}
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={slide.id}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <img
+                        src={slide.bgImage}
+                        alt="Flight Deck"
+                        className="w-full h-full object-cover"
+                        style={{
+                            objectPosition: 'right top',
+                            maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)',
+                            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)'
+                        }}
+                    />
+                </motion.div>
+            </AnimatePresence>
             
-            {/* Content layer - generous breathing room */}
+            {/* Content layer with shuffle animation */}
             <div className="absolute inset-0 flex items-center px-10 py-8">
-                <div className="relative w-[50%] md:w-[46%] lg:w-[44%]">
-                    <div className="relative z-10 scale-90 origin-top-left">
-                        {/* Micro-header with chevron */}
-                        <div className="flex items-center gap-1.5 mb-4">
-                            <span className="text-cyan-400 text-xs">&#8811;</span>
-                            <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Pilot Platform</p>
-                        </div>
-                        
-                        {/* Main headline */}
-                        <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-white uppercase tracking-tight leading-tight mb-4">
-                            Verifying Pilots Through <span className="text-red-600 font-extrabold uppercase tracking-tight">Recognition</span>
-                        </h1>
-                        
-                        {/* Body text */}
-                        <p className="text-xs md:text-sm text-slate-300 leading-relaxed max-w-sm mb-6">
-                            Turn your logbook into a verified credential meeting international standards from operators, manufacturers, and ATOs. Global issuance of verified flight hours, aviation industry credibility, secured training investment — and the recognition every pilot deserves.
-                        </p>
-                        
-                        {/* Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            {!isLoggedIn && (
+                <div className="relative w-[50%] md:w-[46%] lg:w-[44%] overflow-hidden">
+                    <AnimatePresence mode="wait" custom={direction}>
+                        <motion.div
+                            key={slide.id}
+                            custom={direction}
+                            variants={slideVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            className="relative z-10 scale-90 origin-top-left"
+                        >
+                            {/* Micro-header with chevron */}
+                            <div className="flex items-center gap-1.5 mb-4">
+                                <span className={`${slide.microHeaderColor} text-xs`}>&#8811;</span>
+                                <p className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em]`}>{slide.microHeader}</p>
+                            </div>
+                            
+                            {/* Main headline */}
+                            <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-white uppercase tracking-tight leading-tight mb-4">
+                                {slide.title}<span className="text-red-600 font-extrabold uppercase tracking-tight">{slide.titleHighlight}</span><span className="text-white">{slide.titleSuffix}</span>
+                            </h1>
+                            
+                            {/* Body text */}
+                            <p className="text-xs md:text-sm text-slate-300 leading-relaxed max-w-sm mb-6">
+                                {slide.description}
+                            </p>
+                            
+                            {/* Buttons */}
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                {!isLoggedIn && (
+                                    <button
+                                        onClick={() => onNavigate(slide.primaryButtonAction)}
+                                        className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25 rounded-md"
+                                    >
+                                        {slide.primaryButtonText}
+                                    </button>
+                                )}
                                 <button
-                                    onClick={() => onNavigate('become-member')}
-                                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25 rounded-md"
+                                    onClick={() => onNavigate('flight-deck-login')}
+                                    className="px-6 py-3 bg-transparent hover:bg-white/5 border border-white/30 hover:border-white/50 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
                                 >
-                                    Get Recognition Free
+                                    Sign In to Platform
                                 </button>
-                            )}
-                            <button
-                                onClick={() => onNavigate('flight-deck-login')}
-                                className="px-6 py-3 bg-transparent hover:bg-white/5 border border-white/30 hover:border-white/50 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 rounded-md"
-                            >
-                                Sign In to Flight Deck
-                            </button>
-                        </div>
-                    </div>
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
                 
                 {/* Right side callout with blur gradient overlay */}
@@ -542,17 +688,58 @@ const AccessPlatformCard: React.FC<{
                             WebkitBackdropFilter: 'blur(6px)',
                         }}
                     />
-                    <div className="relative z-10 text-right pr-10 pl-8">
-                        <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em] mb-2">&#8811; Pathway Discovery</p>
-                        <h2 className="text-xl lg:text-2xl font-extrabold uppercase tracking-tight leading-tight mb-3 text-white">
-                            Submit <span className="text-red-500">Pathway</span><br />Interests
-                        </h2>
-                        <p className="text-xs text-slate-300 leading-relaxed max-w-[220px] ml-auto">
-                            Align your profile with specific career paths. Discover posted expectations & requirements from manufacturers, airlines, and the wider aviation industry before submitting your interest in a pathway. <span className="text-red-500">Gain exclusive access to private and eVTOL pathways for serious pilots with Recognition+.</span>
-                        </p>
+                    <div className="relative z-10 text-right pr-10 pl-8 overflow-hidden">
+                        <AnimatePresence mode="wait" custom={direction}>
+                            <motion.div
+                                key={slide.id}
+                                custom={direction}
+                                variants={slideVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
+                            >
+                                <p className={`text-[10px] ${slide.microHeaderColor} font-bold uppercase tracking-[0.2em] mb-2`}>&#8811; {slide.rightMicroHeader}</p>
+                                <h2 className="text-xl lg:text-2xl font-extrabold uppercase tracking-tight leading-tight mb-3 text-white">
+                                    {slide.rightTitle}<span className="text-red-500">{slide.rightTitleHighlight}</span>
+                                </h2>
+                                <p className="text-xs text-slate-300 leading-relaxed max-w-[220px] ml-auto">
+                                    {slide.rightDescription} <span className="text-red-500">{slide.rightHighlightText}</span>
+                                </p>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
                 </div>
             </div>
+
+            {/* Slide indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                {heroSlides.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => goToSlide(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                            index === currentSlide 
+                                ? 'bg-red-500 w-6' 
+                                : 'bg-white/30 hover:bg-white/50'
+                        }`}
+                    />
+                ))}
+            </div>
+
+            {/* Navigation arrows */}
+            <button
+                onClick={() => goToSlide((currentSlide - 1 + heroSlides.length) % heroSlides.length)}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 z-20"
+            >
+                <ChevronLeft className="w-5 h-5 text-white" />
+            </button>
+            <button
+                onClick={() => goToSlide((currentSlide + 1) % heroSlides.length)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 z-20"
+            >
+                <ChevronRight className="w-5 h-5 text-white" />
+            </button>
         </div>
     );
 };
@@ -949,10 +1136,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         return () => {
             // debug: Card clicked
             
-            // When on Home view, clicking Pilot Recognition navigates to profile page when logged in
-            if (currentViewKey === 'home' && card.id === 'pilot-recognition' && isLoggedIn) {
-                // debug: Navigating to pilot-recognition-profile page
-                onNavigate('pilot-recognition-profile');
+            // When on Home view, clicking Pilot Recognition navigates to recognition-plus page
+            if (currentViewKey === 'home' && card.id === 'pilot-recognition') {
+                onNavigate('recognition-plus');
                 return;
             }
             // Note: Removed the condition that switches to internal view for 'programs' and 'pathways' cards
@@ -968,9 +1154,9 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 'type-rating-search': 'platform?tab=pathways',
                 'airline-expectations': 'platform?tab=airlines',
                 'recognition-pathways': 'platform?tab=profile',
-                'programs': 'platform?tab=programs',
-                'pilot-recognition': 'platform?tab=profile',
-                'pathways': 'platform?tab=pathways',
+                'programs': 'discover-programs',
+                'pilot-recognition': 'recognition-plus',
+                'pathways': 'discover-pathways',
                 'foundation': 'become-member',
                 'benefits': 'platform?tab=home',
                 'news': 'platform?tab=newsroom',

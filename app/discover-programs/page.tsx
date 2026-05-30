@@ -4,115 +4,120 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TopNavbar } from '@/components/website/components/TopNavbar';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { Search, ChevronRight, Plane, Globe, GraduationCap, Package, Briefcase, Zap, Star, Shield, Users, MapPin, TrendingUp } from 'lucide-react';
+import { Search, ChevronRight, GraduationCap, Target, Award, FileText, LayoutGrid, Plane, Star, Users, MapPin, TrendingUp, Globe } from 'lucide-react';
 
-
-const CATEGORY_CARDS = [
+const PROGRAM_CARDS = [
   {
-    id: 'commercial',
-    label: 'COMMERCIAL AIRLINES',
+    id: 'foundation',
+    label: 'FOUNDATION PROGRAM',
     color: '#ef4444',
-    icon: Plane,
-    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-    desc: 'Mainline and regional airline first officer and captain positions worldwide. Global operator networks.',
-    rating: 4.7,
-    reviews: '1k+',
-    networkSize: '120+',
-    avgSalary: '$100k+',
-    href: '/pathways-modern',
-    badge: 'NEW',
-  },
-  {
-    id: 'cadet',
-    label: 'CADET PROGRAMS',
-    color: '#06b6d4',
     icon: GraduationCap,
-    image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-    desc: 'Airline-sponsored pipelines from zero hours to first officer. Comprehensive training and job placement.',
-    rating: 4.8,
-    reviews: '800+',
-    networkSize: '40+',
-    avgSalary: '$65k+',
-    href: '/cadet-pathways',
-    badge: 'NEW',
+    image: '/program1.png',
+    desc: 'Start your pilot journey with 50 hours of verified mentorship and EBT CBTA-aligned competency assessment. The bridge from licensed to airline-ready.',
+    rating: 4.9,
+    reviews: '1.2k+',
+    duration: '50 hrs',
+    price: '$49',
+    href: '/foundational-program',
+    badge: 'START HERE',
   },
   {
-    id: 'cargo',
-    label: 'CARGO OPERATIONS',
-    color: '#8b5cf6',
-    icon: Package,
-    image: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80',
-    desc: 'Express and heavy cargo operations globally. FedEx, UPS, DHL networks.',
+    id: 'transition',
+    label: 'TRANSITION PROGRAM',
+    color: '#3b82f6',
+    icon: Target,
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
+    desc: 'Designed for instructors and low-timers seeking multi-crew and jet environments. Airbus-aligned EBT CBTA framework with verified credentials.',
     rating: 4.8,
     reviews: '900+',
-    networkSize: '35+',
-    avgSalary: '$95k+',
-    href: '/cargo-transportation',
+    duration: 'Self-paced',
+    price: '$299',
+    href: '/transition-program',
+    badge: 'NEW',
   },
   {
-    id: 'charter',
-    label: 'PRIVATE CHARTER',
-    color: '#f59e0b',
-    icon: Briefcase,
-    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-    desc: 'VIP, corporate, and on-demand charter operations. Large network of operators.',
+    id: 'ebt-cbta',
+    label: 'EBT & CBTA PROGRAMS',
+    color: '#8b5cf6',
+    icon: LayoutGrid,
+    image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+    desc: 'Evidence-Based Training familiarization using integrated Airbus and Hinfact analytics. Industry-standard competency evaluation.',
     rating: 4.7,
-    reviews: '700+',
-    networkSize: '55+',
-    avgSalary: '$110k+',
-    href: '/private-charter-pathways',
+    reviews: '600+',
+    duration: 'Modular',
+    price: 'Bundled',
+    href: '/ebt-cbta',
     badge: 'NEW',
   },
   {
-    id: 'airtaxi',
-    label: 'AIR TAXI & eVTOL',
+    id: 'benefits',
+    label: 'PROGRAM BENEFITS',
     color: '#10b981',
-    icon: Zap,
-    image: 'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&q=80',
-    desc: 'Next-generation urban air mobility. eVTOL operator training and career paths.',
-    rating: 4.9,
+    icon: Award,
+    image: '/New Note.jpeg',
+    desc: 'Discover certification advantages, career pathways, exclusive member perks, and the recognition score boost that comes with program completion.',
+    rating: 4.6,
+    reviews: '800+',
+    duration: 'Ongoing',
+    price: 'Included',
+    href: '/benefits',
+    badge: null,
+  },
+  {
+    id: 'atlas-cv',
+    label: 'ATLAS CV SYSTEMS',
+    color: '#f59e0b',
+    icon: FileText,
+    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
+    desc: 'Modernizing pilot profiles to meet manufacturer and recruiter data-driven standards. ATS-compatible formatting that gets noticed.',
+    rating: 4.8,
     reviews: '1k+',
-    networkSize: '20+',
-    avgSalary: '$85k+',
-    href: '/air-taxi-pathways',
+    duration: 'Instant',
+    price: 'Included',
+    href: '/atlas-cv',
     badge: 'NEW',
   },
   {
-    id: 'military',
-    label: 'MILITARY TRANSITION',
-    color: '#9ca3af',
-    icon: Shield,
-    image: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800&q=80',
-    desc: 'Transition programs for military aviators. Credits and career paths to commercial roles.',
+    id: 'news',
+    label: 'NEWS & UPDATES',
+    color: '#06b6d4',
+    icon: Plane,
+    image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800',
+    desc: 'Latest industry insights, program announcements, Airbus advisory guidance, and aviation trends from the PilotRecognition network.',
     rating: 4.5,
     reviews: '500+',
-    networkSize: '15+',
-    avgSalary: '$120k+',
-    href: '/military-transition',
+    duration: 'Weekly',
+    price: 'Free',
+    href: '/news-updates',
+    badge: null,
   },
 ];
 
-const FEATURED_AIRCRAFT = {
-  id: 'a320neo',
-  name: 'A320neo commercial e-Airliner',
-  image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+const FEATURED_PROGRAM = {
+  id: 'foundation',
+  name: 'Foundation Program — Verified Mentorship',
+  image: '/program1.png',
   rating: 5,
-  cost: '$120k+',
-  costLabel: 'Ops',
-  networkSize: '150+ Airlines',
-  networkLabel: 'Operator Network Size',
+  price: '$49',
+  priceLabel: 'Entry',
+  duration: '50 hrs',
+  durationLabel: 'Verified Mentorship',
 };
 
 const STATS = [
-  { value: '200+', label: 'Active Pathways', icon: TrendingUp },
-  { value: '80+', label: 'Operators Listed', icon: Globe },
-  { value: '12K+', label: 'Pilots Matched', icon: Users },
-  { value: '40+', label: 'Countries', icon: MapPin },
+  { value: '6+', label: 'Active Programs', icon: TrendingUp },
+  { value: '50hrs', label: 'Verified Mentorship', icon: Globe },
+  { value: '2K+', label: 'Pilots Enrolled', icon: Users },
+  { value: '12+', label: 'Industry Advisors', icon: MapPin },
 ];
 
-export default function DiscoverPathwaysPage() {
+export default function DiscoverProgramsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+
+  const filtered = PROGRAM_CARDS.filter(c =>
+    !searchQuery || c.label.toLowerCase().includes(searchQuery.toLowerCase()) || c.desc.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-[#050a14] to-[#0d1f3c] relative">
@@ -128,28 +133,28 @@ export default function DiscoverPathwaysPage() {
       {/* Frosted glass blur overlay */}
       <div className="fixed inset-0 z-0 bg-white/5 backdrop-blur-md" />
 
-      {/* ── TOP NAV BAR ── */}
+      {/* TOP NAV BAR */}
       <TopNavbar
         onNavigate={(page) => navigate(`/${page}`)}
         onLogin={() => window.dispatchEvent(new CustomEvent('open-login-modal'))}
-        currentPage="pathways"
+        currentPage="programs"
       />
 
       <div className="relative z-10">
         {/* Spacer for fixed navbar */}
         <div className="h-20" />
 
-        {/* ── STATS BAR ── */}
+        {/* STATS BAR */}
         <section className="px-6 pb-8">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {STATS.map(({ value, label, icon: Icon }) => (
-                <div 
-                  key={label} 
+                <div
+                  key={label}
                   className="flex items-center gap-3 p-4 rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
                 >
-                  <Icon size={18} className="text-cyan-400 flex-shrink-0" />
+                  <Icon size={18} className="text-amber-400 flex-shrink-0" />
                   <div>
                     <div className="text-xl font-black text-white">{value}</div>
                     <div className="text-xs text-white/40">{label}</div>
@@ -160,27 +165,25 @@ export default function DiscoverPathwaysPage() {
           </div>
         </section>
 
-        {/* ── MAIN HERO + AIRCRAFT CARD ── */}
+        {/* MAIN HERO + FEATURED CARD */}
         <section className="px-6 pb-10">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Left: Hero Content - Floating, no background */}
-              <div className="relative p-2 flex flex-col justify-center" 
-                style={{ minHeight: '360px' }}
-              >
+              {/* Left: Hero Content */}
+              <div className="relative p-2 flex flex-col justify-center" style={{ minHeight: '360px' }}>
                 {/* NEW Badge */}
-                <div className="absolute top-0 right-0 px-3 py-1.5 rounded-md text-xs font-black text-white" 
+                <div className="absolute top-0 right-0 px-3 py-1.5 rounded-md text-xs font-black text-white"
                   style={{ background: '#f59e0b' }}>
                   NEW
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight mb-4">
-                  DISCOVER<br />
-                  <span className="text-red-500">PATHWAYS</span>
+                  EXPLORE<br />
+                  <span className="text-red-500">PROGRAMS</span>
                 </h1>
                 <p className="text-white/50 text-base leading-relaxed mb-6 max-w-md">
-                  A complete platform for pilot hiring and verified recognition.
-                  All pathways, matched and verified to your profile.
+                  Structured training pathways from flight school to airline-ready professional.
+                  Verified mentorship, industry-aligned curriculum, and recognition that travels.
                 </p>
 
                 {/* Search Bar */}
@@ -188,7 +191,7 @@ export default function DiscoverPathwaysPage() {
                   <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
                   <input
                     type="text"
-                    placeholder="Search categories, regions, or aircraft types"
+                    placeholder="Search programs, training types, or topics"
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                     className="w-full pl-12 pr-4 py-3.5 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none"
@@ -199,57 +202,53 @@ export default function DiscoverPathwaysPage() {
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-3">
                   <a
-                    href="/pathways-modern"
+                    href="/foundational-program"
                     className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90"
                     style={{ background: '#dc2626' }}
                   >
-                    Browse All Pathways
+                    Start Foundation Program
                   </a>
                   <a
-                    href="/platform?tab=pathways"
+                    href="/programs"
                     className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white/80 transition-all hover:text-white"
                     style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}
                   >
-                    Platform Login
+                    Browse All Programs
                   </a>
                 </div>
               </div>
 
-              {/* Right: Featured Aircraft Card */}
-              <div className="relative overflow-hidden rounded-2xl" 
+              {/* Right: Featured Program Card */}
+              <div className="relative overflow-hidden rounded-2xl"
                 style={{ minHeight: '360px', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <img
-                  src={FEATURED_AIRCRAFT.image}
-                  alt={FEATURED_AIRCRAFT.name}
+                  src={FEATURED_PROGRAM.image}
+                  alt={FEATURED_PROGRAM.name}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                {/* Gradient overlay for text readability */}
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%)' }} />
-                
-                {/* Content overlay */}
+
                 <div className="relative z-10 p-6 h-full flex flex-col justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-white mb-2">{FEATURED_AIRCRAFT.name}</h3>
-                    {/* Star rating */}
+                    <h3 className="text-lg font-bold text-white mb-2">{FEATURED_PROGRAM.name}</h3>
                     <div className="flex items-center gap-0.5">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={14} className={i < FEATURED_AIRCRAFT.rating ? "text-yellow-400 fill-yellow-400" : "text-white/30"} />
+                        <Star key={i} size={14} className={i < FEATURED_PROGRAM.rating ? "text-yellow-400 fill-yellow-400" : "text-white/30"} />
                       ))}
                     </div>
                   </div>
-                  
-                  {/* Bottom info pills */}
+
                   <div className="flex flex-wrap gap-3">
-                    <div className="px-4 py-2 rounded-lg text-xs" 
+                    <div className="px-4 py-2 rounded-lg text-xs"
                       style={{ background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                      <span className="text-white/50">COST: </span>
-                      <span className="text-white font-semibold">{FEATURED_AIRCRAFT.cost}</span>
-                      <span className="text-white/50"> {FEATURED_AIRCRAFT.costLabel}</span>
+                      <span className="text-white/50">PRICE: </span>
+                      <span className="text-white font-semibold">{FEATURED_PROGRAM.price}</span>
+                      <span className="text-white/50"> {FEATURED_PROGRAM.priceLabel}</span>
                     </div>
-                    <div className="px-4 py-2 rounded-lg text-xs" 
+                    <div className="px-4 py-2 rounded-lg text-xs"
                       style={{ background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                      <span className="text-white/50">{FEATURED_AIRCRAFT.networkLabel}: </span>
-                      <span className="text-white font-semibold">{FEATURED_AIRCRAFT.networkSize}</span>
+                      <span className="text-white/50">{FEATURED_PROGRAM.durationLabel}: </span>
+                      <span className="text-white font-semibold">{FEATURED_PROGRAM.duration}</span>
                     </div>
                   </div>
                 </div>
@@ -258,23 +257,22 @@ export default function DiscoverPathwaysPage() {
           </div>
         </section>
 
-        {/* ── CATEGORY CARDS ── */}
+        {/* PROGRAM CARDS GRID */}
         <section className="px-6 pb-16">
           <div className="max-w-7xl mx-auto">
-            {/* Section Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="text-[10px] font-black tracking-[0.25em] text-white/30 uppercase">Browse by Category</p>
-                <h2 className="text-xl font-black text-white mt-1">PATHWAY CATEGORIES</h2>
+                <p className="text-[10px] font-black tracking-[0.25em] text-white/30 uppercase">Browse by Program</p>
+                <h2 className="text-xl font-black text-white mt-1">PROGRAM CATEGORIES</h2>
               </div>
-              <a href="/pathways-modern" className="flex items-center gap-1 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+              <a href="/programs" className="flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors">
                 View all <ChevronRight size={14} />
               </a>
             </div>
 
             {/* 3x2 Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {CATEGORY_CARDS.map(card => {
+              {filtered.map(card => {
                 const Icon = card.icon;
                 return (
                   <a
@@ -291,57 +289,48 @@ export default function DiscoverPathwaysPage() {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(15,23,42,0.85) 100%)' }} />
-                      
-                      {/* Badge */}
+
                       {card.badge && (
-                        <div className="absolute top-3 right-3 px-3 py-1.5 rounded-md text-[10px] font-black text-white" 
+                        <div className="absolute top-3 right-3 px-3 py-1.5 rounded-md text-[10px] font-black text-white"
                           style={{ background: '#f59e0b' }}>
                           {card.badge}
                         </div>
                       )}
-
                     </div>
 
                     {/* Content */}
                     <div className="px-4 py-3" style={{ background: 'rgba(15,23,42,0.97)' }}>
-                      {/* Title with arrow */}
                       <div className="flex items-center gap-1.5 mb-1.5">
                         <span className="text-[10px] font-black" style={{ color: '#ffffff' }}>›</span>
                         <h3 className="text-[10px] font-black uppercase tracking-wide" style={{ color: '#ffffff' }}>
                           {card.label}
                         </h3>
                       </div>
-                      
-                      {/* Description */}
+
                       <p className="text-white/50 text-[10px] leading-relaxed mb-2">{card.desc}</p>
-                      
-                      {/* Stats row + Button - compact inline layout */}
+
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2 text-[9px] text-white/40 overflow-hidden">
-                          {/* Rating */}
                           <span className="flex items-center gap-0.5 flex-shrink-0">
                             <span className="text-yellow-400">★</span>
                             <span className="text-white/60">{card.rating}</span>
                             <span className="text-white/30">({card.reviews})</span>
                           </span>
-                          {/* Network */}
                           <span className="flex-shrink-0">
-                            <span className="text-white/30">Network: </span>
-                            <span className="text-white/50">{card.networkSize}</span>
+                            <span className="text-white/30">Duration: </span>
+                            <span className="text-white/50">{card.duration}</span>
                           </span>
-                          {/* Salary */}
                           <span className="flex-shrink-0">
-                            <span className="text-white/30">Salary: </span>
-                            <span className="text-white/50">{card.avgSalary}</span>
+                            <span className="text-white/30">Price: </span>
+                            <span className="text-white/50">{card.price}</span>
                           </span>
                         </div>
-                        
-                        {/* Explore button - right aligned */}
-                        <button 
+
+                        <button
                           className="flex-shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-white transition-all hover:bg-white/20"
                           style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}
                         >
-                          Discover Pathway
+                          Explore Program
                         </button>
                       </div>
                     </div>
@@ -352,11 +341,11 @@ export default function DiscoverPathwaysPage() {
           </div>
         </section>
 
-        {/* ── FOOTER ── */}
+        {/* FOOTER */}
         <footer className="px-6 pb-10 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="max-w-6xl mx-auto pt-8">
             <p className="text-white/20 text-xs">
-              © 2026 PilotRecognition.com — Discover Pathways
+              © 2026 PilotRecognition.com — Explore Programs
             </p>
           </div>
         </footer>
