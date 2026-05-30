@@ -147,6 +147,8 @@ const ATOLaunchKitPage = lazy(() => import('@/components/website/components/ato/
 const FlightDeckLoginPage = lazy(() => import('@/components/website/components/FlightDeckLoginPage').then(m => ({ default: m.FlightDeckLoginPage })));
 const FlightDeckVerifyPage = lazy(() => import('@/components/website/components/FlightDeckVerifyPage').then(m => ({ default: m.FlightDeckVerifyPage })));
 const FounderStoryPage = lazy(() => import('@/components/website/components/FounderStoryPage').then(m => ({ default: m.FounderStoryPage })));
+const ShortageApp = lazy(() => import('@/components/domains/shortage/ShortageApp').then(m => ({ default: m.default })));
+const CareerPathwaysApp = lazy(() => import('@/components/career-pathways/CareerPathwaysApp').then(m => ({ default: m.CareerPathwaysApp })));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -240,6 +242,37 @@ export const AppRoutes = () => {
     console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes');
   }
 
+  // Domain routing for pilotshortage.org - standalone app experience
+  const isShortageDomain = window.location.hostname === 'pilotshortage.org' ||
+    window.location.hostname === 'www.pilotshortage.org';
+  const isShortageLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    && new URLSearchParams(window.location.search).get('shortage') === '1';
+
+  if (isShortageDomain || isShortageLocalDev) {
+    console.log('[DEBUG AppRoutes] PilotShortage domain detected - rendering standalone app');
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <ShortageApp />
+      </Suspense>
+    );
+  }
+
+  // Domain routing for careerpathways.pilotrecognition.com or pilotcareerpathways.com
+  const isCareerPathwaysDomain = window.location.hostname === 'careerpathways.pilotrecognition.com' ||
+    window.location.hostname === 'pilotcareerpathways.com' ||
+    window.location.hostname === 'www.pilotcareerpathways.com';
+  const isCareerPathwaysLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    && new URLSearchParams(window.location.search).get('product') === 'careerpathways';
+
+  if (isCareerPathwaysDomain || isCareerPathwaysLocalDev) {
+    console.log('[DEBUG AppRoutes] CareerPathways domain detected - rendering standalone app');
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <CareerPathwaysApp onLogin={() => setIsLoginModalOpen(true)} />
+      </Suspense>
+    );
+  }
+
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
@@ -265,6 +298,7 @@ export const AppRoutes = () => {
       <Route path="/technical-index" element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/faq" element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/pilot-shortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/pilotshortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/why-recognition" element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/mission-vision" element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />

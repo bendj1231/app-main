@@ -1,10 +1,10 @@
-import { headers } from 'next/headers';
-
 export type DomainBrand = 'shortage' | 'recognition';
 
+// Client-side domain detection for Vite/React Router
 export function getDomainBrand(): DomainBrand {
-  const headersList = headers();
-  const domain = headersList.get('host') || '';
+  if (typeof window === 'undefined') return 'recognition';
+  
+  const domain = window.location.hostname;
   
   if (domain.includes('pilotshortage.org')) {
     return 'shortage';

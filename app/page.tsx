@@ -1,5 +1,6 @@
 import { HomePage } from '@/components/website/components/home/HomePage';
 import ShortageLanding from '@/components/domains/shortage/ShortageLanding';
+import PilotShortageUCF from './pilotshortage/page';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 
@@ -43,15 +44,21 @@ export default function MainPage() {
   const headersList = headers();
   const domain = headersList.get('host') || '';
   const isShortage = domain.includes('pilotshortage.org');
-  
-  // Show Philippines-specific landing for pilotshortage.org
+  const isPathways = domain.includes('pilotcareerpathways.com');
+
+  // Show UCF documentation for pilotshortage.org
   if (isShortage) {
-    return <ShortageLanding />;
+    return <PilotShortageUCF />;
   }
-  
+
+  // Show pathways landing for pilotcareerpathways.com
+  if (isPathways) {
+    return <PilotShortageUCF />;
+  }
+
   // Default: existing pilotrecognition.com home page
   return (
-    <HomePage 
+    <HomePage
       onJoinUs={() => console.log('Join Us clicked')}
       onLogin={() => console.log('Login clicked')}
       onNavigate={(page: string) => console.log('Navigate to:', page)}

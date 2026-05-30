@@ -77,6 +77,22 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [notifications, setNotifications] = useState<any[]>([]);
     const notificationDropdownRef = useRef<HTMLDivElement>(null);
     const [countryCode, setCountryCode] = useState<string>('');
+    const [domainBrand, setDomainBrand] = useState<'recognition' | 'shortage'>('recognition');
+
+    // Detect domain brand for navbar styling
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const domain = window.location.hostname;
+            if (domain.includes('pilotshortage.org')) {
+                setDomainBrand('shortage');
+            }
+            // Check for localStorage override
+            const override = localStorage.getItem('brand_override');
+            if (override === 'shortage' || override === 'recognition') {
+                setDomainBrand(override);
+            }
+        }
+    }, []);
 
     // Fetch pilot_id and profile data from Supabase profile
     // Detect user country code via IP geolocation (free tier)
@@ -653,22 +669,50 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     } text-2xl tracking-tight leading-none`}
                                 style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                             >
-                                <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilot</span>
-                                <span className="text-red-600">recognition</span>
-                                <span className={`relative ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>
-                                    .com
-                                    {countryCode && (
-                                        <sup className={`absolute top-0 -right-2 text-[8px] font-bold leading-none ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-slate-400' : 'text-white/50'}`}>
-                                            {countryCode}
-                                        </sup>
-                                    )}
-                                </span>
+                                {domainBrand === 'shortage' ? (
+                                    // pilotshortage.org branding
+                                    <>
+                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilot</span>
+                                        <span className="text-blue-600">shortage</span>
+                                        <span className={`relative ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>
+                                            .org
+                                            <span className="ml-2 text-xs text-yellow-400 font-normal">🇵🇭 Philippines</span>
+                                        </span>
+                                    </>
+                                ) : (
+                                    // pilotrecognition.com branding
+                                    <>
+                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilot</span>
+                                        <span className="text-red-600">recognition</span>
+                                        <span className={`relative ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>
+                                            .com
+                                            {countryCode && (
+                                                <sup className={`absolute top-0 -right-2 text-[8px] font-bold leading-none ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-slate-400' : 'text-white/50'}`}>
+                                                    {countryCode}
+                                                </sup>
+                                            )}
+                                        </span>
+                                    </>
+                                )}
                             </span>
                         </div>
                     </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center gap-3">
+                        {/* Domain Switcher - pilotshortage.org link */}
+                        <a
+                            href="https://pilotshortage.org"
+                            className={`text-[0.7rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${
+                                isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
+                                    ? 'text-slate-900'
+                                    : 'text-white/80'
+                            }`}
+                            title="Visit Pilot Shortage Association (Philippines)"
+                        >
+                            🇵🇭 pilotshortage.org
+                        </a>
+
                         {visibleNavItems.map((item) => (
                             <div
                                 key={item.name}
