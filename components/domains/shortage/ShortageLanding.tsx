@@ -18,6 +18,7 @@ import FlightInstructorDignity from './FlightInstructorDignity';
 import AviationFootprint from './AviationFootprint';
 import PSAFooter from './PSAFooter';
 import HowWeWork from './HowWeWork';
+import PSADocumentRelease from './PSADocumentRelease';
 
 export default function ShortageLanding() {
   return (
@@ -60,6 +61,9 @@ export default function ShortageLanding() {
 
       {/* HOW WE WORK - Anonymous stories, verification, pathways */}
       <HowWeWork />
+
+      {/* PSA UCF DOCUMENTS - 26 Pillars + 100 Steps Framework */}
+      <PSADocumentRelease />
 
       {/* SHARE YOUR STORY - Verified testimony form */}
       <ShareYourStory />
