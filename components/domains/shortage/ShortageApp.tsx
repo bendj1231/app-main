@@ -12,13 +12,13 @@ type Region = {
 };
 
 const regions: Region[] = [
-  { code: 'en-ph', name: 'Philippines', flag: '🇵🇭', currency: 'PHP', price: '₱1,500' },
-  { code: 'en-us', name: 'United States', flag: '🇺🇸', currency: 'USD', price: '$99' },
-  { code: 'en-gb', name: 'United Kingdom', flag: '🇬🇧', currency: 'GBP', price: '£79' },
-  { code: 'en-au', name: 'Australia', flag: '🇦🇺', currency: 'AUD', price: '$149' },
-  { code: 'en-ca', name: 'Canada', flag: '🇨🇦', currency: 'CAD', price: '$129' },
-  { code: 'en-sg', name: 'Singapore', flag: '🇸🇬', currency: 'SGD', price: '$149' },
-  { code: 'en-ae', name: 'UAE', flag: '🇦🇪', currency: 'AED', price: '₵450' },
+  { code: 'en-ph', name: 'Philippines', flag: '🇵🇭', currency: 'PHP', price: 'Free' },
+  { code: 'en-us', name: 'United States', flag: '🇺🇸', currency: 'USD', price: 'Free' },
+  { code: 'en-gb', name: 'United Kingdom', flag: '🇬🇧', currency: 'GBP', price: 'Free' },
+  { code: 'en-au', name: 'Australia', flag: '🇦🇺', currency: 'AUD', price: 'Free' },
+  { code: 'en-ca', name: 'Canada', flag: '🇨🇦', currency: 'CAD', price: 'Free' },
+  { code: 'en-sg', name: 'Singapore', flag: '🇸🇬', currency: 'SGD', price: 'Free' },
+  { code: 'en-ae', name: 'UAE', flag: '🇦🇪', currency: 'AED', price: 'Free' },
 ];
 
 // Loading screen specific to pilotshortage.org
@@ -80,38 +80,46 @@ const ShortageNavbar = ({ onNavigate, currentRegion, onRegionChange }: {
   currentRegion: Region;
   onRegionChange: (region: Region) => void;
 }) => (
-  <nav className="bg-white text-black border-b border-gray-200">
+  <nav className="bg-white text-black border-b border-gray-200 sticky top-0 z-50">
     <div className="container mx-auto px-4 py-4">
-      {/* Top row - Region Picker */}
-      <div className="flex justify-end mb-2">
-        <RegionPicker currentRegion={currentRegion} onRegionChange={onRegionChange} />
-      </div>
-      
-      {/* Main navbar row */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="text-2xl font-bold tracking-tight">
-            <span className="text-black">pilot</span>
-            <span className="text-red-500">shortage</span>
-            <span className="text-gray-500">.org</span>
-          </div>
+        {/* Logo - Text Only, pilotshortage.org style */}
+        <div className="text-2xl font-bold tracking-tight">
+          <span className="text-black">pilot</span>
+          <span className="text-red-500">shortage</span>
+          <span className="text-black">.org</span>
         </div>
         
-        <div className="hidden md:flex items-center gap-6 text-sm">
-          <button onClick={() => onNavigate('about')} className="hover:text-red-500 transition-colors text-gray-700">About</button>
-          <button onClick={() => onNavigate('membership')} className="hover:text-red-500 transition-colors text-gray-700">Membership</button>
-          <button onClick={() => onNavigate('pathways')} className="hover:text-red-500 transition-colors text-gray-700">Pathways</button>
-          <button onClick={() => onNavigate('contact')} className="hover:text-red-500 transition-colors text-gray-700">Contact</button>
+        <div className="hidden md:flex items-center gap-8">
+          <button onClick={() => onNavigate('about')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
+            About PSA
+          </button>
+          <button onClick={() => onNavigate('benefits')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
+            Member Benefits
+          </button>
+          <button onClick={() => onNavigate('advocacy')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
+            Advocacy
+          </button>
+          <button 
+            onClick={() => document.getElementById('psa-ucf')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors"
+          >
+            UCF
+          </button>
+          <button onClick={() => onNavigate('news')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
+            News
+          </button>
+          <RegionPicker currentRegion={currentRegion} onRegionChange={onRegionChange} />
           <button 
             onClick={() => onNavigate('join')}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors"
+            className="bg-red-500 hover:bg-red-600 text-white px-6 py-2.5 rounded font-bold text-sm uppercase tracking-wide transition-colors"
           >
-            Join Now
+            Join PSA
           </button>
         </div>
         
         {/* Mobile menu button */}
-        <button className="md:hidden p-2 hover:text-red-500 text-gray-700">
+        <button className="md:hidden p-2 text-black">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -173,29 +181,60 @@ export default function ShortageApp() {
       
       <Suspense fallback={<ShortageLoadingScreen />}>
         <main>
-          <ShortageLanding region={currentRegion} />
+          <ShortageLanding />
         </main>
       </Suspense>
       
       {/* Footer specific to pilotshortage.org */}
-      <footer className="bg-gray-50 text-gray-600 py-8 border-t border-gray-200">
+      <footer className="bg-[#1e3a5f] text-white py-12 border-t border-white/10">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-6 text-sm">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h4 className="font-semibold text-black mb-2">
-                <span className="text-black">pilot</span>
+              <h4 className="font-bold text-lg mb-4">
+                <span className="text-white">pilot</span>
                 <span className="text-red-500">shortage</span>
-                <span className="text-gray-500">.org</span>
+                <span className="text-gray-400">.org</span>
               </h4>
-              <p className="text-gray-600">Solving the global pilot shortage through verified connections.</p>
+              <p className="text-gray-400 text-sm">
+                Professional representation for aviation professionals worldwide.
+              </p>
             </div>
+            
             <div>
-              <h4 className="font-semibold text-black mb-2">Contact</h4>
-              <p className="text-gray-600">info@pilotshortage.org</p>
+              <h4 className="font-bold mb-4 text-sm uppercase tracking-wider">About</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white">Our Mission</a></li>
+                <li><a href="#" className="hover:text-white">Leadership</a></li>
+                <li><a href="#" className="hover:text-white">Contact</a></li>
+              </ul>
             </div>
+            
             <div>
-              <h4 className="font-semibold text-black mb-2">Legal</h4>
-              <p className="text-gray-600">&copy; 2026 pilotshortage.org. All rights reserved.</p>
+              <h4 className="font-bold mb-4 text-sm uppercase tracking-wider">Members</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white">Join PSA</a></li>
+                <li><a href="#" className="hover:text-white">Member Benefits</a></li>
+                <li><a href="#" className="hover:text-white">Career Resources</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-bold mb-4 text-sm uppercase tracking-wider">Industry</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="#" className="hover:text-white">News & Updates</a></li>
+                <li><a href="#" className="hover:text-white">Advocacy</a></li>
+                <li><a href="#" className="hover:text-white">Airline Partners</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-gray-400 text-sm">
+              © 2026 pilotshortage.org. All rights reserved.
+            </p>
+            <div className="flex gap-6 text-sm text-gray-400">
+              <a href="#" className="hover:text-white">Privacy Policy</a>
+              <a href="#" className="hover:text-white">Terms of Use</a>
             </div>
           </div>
         </div>

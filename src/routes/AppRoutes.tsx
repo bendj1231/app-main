@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
 import { LogbookCallback } from '@/src/components/LogbookCallback';
@@ -156,9 +155,61 @@ const LoadingFallback = () => (
   </div>
 );
 
+const CareerPathwaysLoadingFallback = () => (
+  <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
+    <div className="text-center mb-8">
+      <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+        pilotcareer<span className="text-red-500">pathways</span>.com
+      </h1>
+      <p className="mt-4 text-sm md:text-base text-slate-500 max-w-md mx-auto">
+        Connecting pilots to the industry direction and profile alignment never had before
+      </p>
+    </div>
+    <div className="w-64">
+      <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
+        <div className="h-full bg-gradient-to-r from-red-500 via-red-600 to-red-500 rounded-full animate-pulse w-2/3" />
+      </div>
+      <div className="mt-3 flex justify-between text-xs text-slate-400">
+        <span>Loading</span>
+        <span>...</span>
+      </div>
+    </div>
+  </div>
+);
+
 export const AppRoutes = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [careerPathwaysMode, setCareerPathwaysMode] = useState(() => {
+    // Check on initial render
+    const isDomain = window.location.hostname === 'careerpathways.pilotrecognition.com' ||
+      window.location.hostname === 'pilotcareerpathways.com' ||
+      window.location.hostname === 'www.pilotcareerpathways.com';
+    const isLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      && new URLSearchParams(window.location.search).get('product') === 'careerpathways';
+    const fromStorage = localStorage.getItem('careerpathways_mode') === 'true';
+    return isDomain || isLocalDev || fromStorage;
+  });
+
+  // Re-check domain when location changes
+  useEffect(() => {
+    console.log('[DEBUG AppRoutes] Location changed:', window.location.href);
+    const isDomain = window.location.hostname === 'careerpathways.pilotrecognition.com' ||
+      window.location.hostname === 'pilotcareerpathways.com' ||
+      window.location.hostname === 'www.pilotcareerpathways.com';
+    const isLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      && new URLSearchParams(window.location.search).get('product') === 'careerpathways';
+
+    console.log('[DEBUG AppRoutes] hostname:', window.location.hostname);
+    console.log('[DEBUG AppRoutes] isDomain:', isDomain);
+    console.log('[DEBUG AppRoutes] isLocalDev:', isLocalDev);
+
+    if (isDomain || isLocalDev) {
+      localStorage.setItem('careerpathways_mode', 'true');
+      setCareerPathwaysMode(true);
+    }
+  }, [location]);
 
   // Listen for custom login modal events
   useEffect(() => {
@@ -258,16 +309,15 @@ export const AppRoutes = () => {
   }
 
   // Domain routing for careerpathways.pilotrecognition.com or pilotcareerpathways.com
-  const isCareerPathwaysDomain = window.location.hostname === 'careerpathways.pilotrecognition.com' ||
-    window.location.hostname === 'pilotcareerpathways.com' ||
-    window.location.hostname === 'www.pilotcareerpathways.com';
-  const isCareerPathwaysLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    && new URLSearchParams(window.location.search).get('product') === 'careerpathways';
+  // NOTE: Using careerPathwaysMode state which is updated by useEffect on location change
+  console.log('[DEBUG AppRoutes] hostname:', window.location.hostname);
+  console.log('[DEBUG AppRoutes] href:', window.location.href);
+  console.log('[DEBUG AppRoutes] careerPathwaysMode state:', careerPathwaysMode);
 
-  if (isCareerPathwaysDomain || isCareerPathwaysLocalDev) {
-    console.log('[DEBUG AppRoutes] CareerPathways domain detected - rendering standalone app');
+  if (careerPathwaysMode) {
+    console.log('[DEBUG AppRoutes] RENDERING CareerPathwaysApp');
     return (
-      <Suspense fallback={<LoadingFallback />}>
+      <Suspense fallback={<CareerPathwaysLoadingFallback />}>
         <CareerPathwaysApp onLogin={() => setIsLoginModalOpen(true)} />
       </Suspense>
     );

@@ -4554,23 +4554,15 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     }
   }, []);
 
-  // Auto-set region/country filter to user's location when flight-schools Stage 2 opens
+  // Default to showing all regions in Stage 2 (user can manually filter if desired)
   useEffect(() => {
-    if (selectedPathwayCard?.category === 'flight-schools' && userCountryCode) {
-      const match = COUNTRY_TO_REGION[userCountryCode];
-      if (match) {
-        setStage2RegionFilter(match.region);
-        // Only set country sub-filter if that country actually has schools listed
-        const LISTED_COUNTRIES = ['Philippines', 'Singapore', 'Germany', 'USA', 'Australia', 'UAE', 'South Africa'];
-        if (LISTED_COUNTRIES.includes(match.country)) {
-          setStage2CountryFilter(match.country);
-        } else {
-          setStage2CountryFilter('All'); // show all schools in that region
-        }
-        setStage2Index(0);
-      }
+    // Reset to "All" when flight-schools category is selected
+    if (selectedPathwayCard?.category === 'flight-schools') {
+      setStage2RegionFilter('All');
+      setStage2CountryFilter('All');
+      setStage2Index(0);
     }
-  }, [selectedPathwayCard?.category, userCountryCode]);
+  }, [selectedPathwayCard?.category]);
 
   // Submit Interest handler — writes to pathway_card_interests table
   const handleSubmitInterest = async (pathway: PathwayData) => {

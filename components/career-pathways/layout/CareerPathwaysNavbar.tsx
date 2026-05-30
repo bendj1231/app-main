@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
-  Route, 
-  Compass, 
-  Plane, 
-  BookOpen, 
+  Target,
   User, 
   Menu, 
-  X,
-  ChevronDown,
-  ArrowRight,
-  Target
+  X
 } from 'lucide-react';
 
 interface CareerPathwaysNavbarProps {
@@ -28,7 +22,10 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isProgramsOpen, setIsProgramsOpen] = useState(false);
+
+  useEffect(() => {
+    console.log('[DEBUG CareerPathwaysNavbar] Current location:', location.pathname);
+  }, [location]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,37 +35,39 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Sidebar navigation items moved to top navbar - cleaner single-bar design
   const navLinks = [
     { 
-      label: 'Explore', 
+      label: 'Discover', 
       path: '/',
-      icon: Route,
-      description: 'Browse all pathways'
+      description: 'Find your path'
     },
     { 
-      label: 'Programs', 
-      path: '/programs',
-      icon: BookOpen,
-      hasDropdown: true,
-      dropdownItems: [
-        { label: 'Foundation Program', path: '/programs/foundation', desc: 'Build core skills' },
-        { label: 'Transition Program', path: '/programs/transition', desc: 'Airline readiness' },
-        { label: 'Certification Prep', path: '/programs/certification', desc: 'Exam preparation' },
-      ]
+      label: 'Airline Expectations', 
+      path: '/airline-expectations',
+      description: 'What airlines want'
     },
     { 
-      label: 'Discovery', 
-      path: '/discover',
-      icon: Compass,
-      description: 'AI-powered matching'
+      label: 'Type-Ratings', 
+      path: '/type-ratings',
+      description: 'Aircraft certifications'
     },
     { 
-      label: 'For Airlines', 
-      path: '/airlines',
-      icon: Plane,
-      description: 'Enterprise solutions'
+      label: 'Pathways', 
+      path: '/pathways',
+      description: 'Career routes'
+    },
+    { 
+      label: 'Global Authorities', 
+      path: '/authorities',
+      description: 'Regulatory bodies'
     },
   ];
+
+  const handleNavClick = (path: string) => {
+    console.log('[DEBUG CareerPathwaysNavbar] Navigating to:', path);
+    navigate(path);
+  };
 
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
@@ -80,88 +79,33 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-0 sm:px-2 lg:px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {/* Logo - flush to left edge */}
           <div 
-            className="flex items-center gap-2.5 cursor-pointer group"
+            className="flex items-center cursor-pointer group pl-4 sm:pl-6 lg:pl-8"
             onClick={() => navigate('/')}
           >
-            <div className="relative">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all">
-                <Route className="w-5 h-5 text-white" />
-              </div>
-              <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-slate-950" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-bold text-white tracking-tight leading-none">
-                Career<span className="text-indigo-400">Pathways</span>
-              </h1>
-              <p className="text-[10px] text-slate-400 tracking-wider uppercase">by PilotRecognition</p>
-            </div>
+            <h1 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none group-hover:opacity-90 transition-opacity">
+              pilotcareer<span className="text-red-500">pathways</span>.com
+            </h1>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Clean single-row design */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <div key={link.path} className="relative">
-                {link.hasDropdown ? (
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setIsProgramsOpen(true)}
-                    onMouseLeave={() => setIsProgramsOpen(false)}
-                  >
-                    <button
-                      className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        isActive(link.path)
-                          ? 'text-indigo-400 bg-indigo-500/10'
-                          : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
-                      }`}
-                    >
-                      <link.icon className="w-4 h-4" />
-                      <span>{link.label}</span>
-                      <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isProgramsOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    
-                    {/* Dropdown */}
-                    {isProgramsOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-64 bg-slate-900 border border-slate-800 rounded-xl shadow-xl shadow-black/30 overflow-hidden">
-                        {link.dropdownItems?.map((item, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => {
-                              navigate(item.path);
-                              setIsProgramsOpen(false);
-                            }}
-                            className="w-full px-4 py-3 text-left hover:bg-slate-800/50 transition-colors group"
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-medium text-slate-200 group-hover:text-white">
-                                {item.label}
-                              </span>
-                              <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-indigo-400 transition-colors" />
-                            </div>
-                            <p className="text-xs text-slate-500 mt-0.5">{item.desc}</p>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => navigate(link.path)}
-                    className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      isActive(link.path)
-                        ? 'text-indigo-400 bg-indigo-500/10'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
-                    }`}
-                    title={link.description}
-                  >
-                    <link.icon className="w-4 h-4" />
-                    <span>{link.label}</span>
-                  </button>
-                )}
-              </div>
+              <button
+                key={link.path}
+                onClick={() => handleNavClick(link.path)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  isActive(link.path)
+                    ? 'text-indigo-400 bg-indigo-500/10'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                }`}
+                title={link.description}
+              >
+                {link.label}
+              </button>
             ))}
           </nav>
 
@@ -212,24 +156,19 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
         <div className="lg:hidden absolute top-full left-0 right-0 bg-slate-950/98 backdrop-blur-lg border-b border-slate-800/50 shadow-xl">
           <div className="px-4 py-4 space-y-1">
             {navLinks.map((link) => (
-              <button
+              <Link
                 key={link.path}
-                onClick={() => {
-                  navigate(link.path);
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                to={link.path}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all block ${
                   isActive(link.path)
                     ? 'text-indigo-400 bg-indigo-500/10'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
                 }`}
               >
-                <link.icon className="w-5 h-5" />
-                <div className="text-left">
-                  <div>{link.label}</div>
-                  <div className="text-xs text-slate-500">{link.description}</div>
-                </div>
-              </button>
+                <div>{link.label}</div>
+                <div className="text-xs text-slate-500">{link.description}</div>
+              </Link>
             ))}
             
             <div className="pt-3 border-t border-slate-800/50 mt-3">

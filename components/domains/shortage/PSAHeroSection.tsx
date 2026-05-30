@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plane, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function PSAHeroSection() {
   const [expandedFloor, setExpandedFloor] = useState<number | null>(null);
@@ -95,35 +95,6 @@ export default function PSAHeroSection() {
               <span className="text-white font-bold">stuck</span>.
             </p>
 
-            {/* The 4,000 Mile Visual */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-white/20">
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <div className="flex items-center gap-3">
-                  <MapPin className="w-6 h-6 text-[#c41e3a]" />
-                  <div className="text-left">
-                    <div className="text-white font-bold">Philippines</div>
-                    <div className="text-gray-400 text-sm">200-hour CPL</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 text-gray-400">
-                  <div className="h-px w-12 bg-gray-400"></div>
-                  <Plane className="w-5 h-5" />
-                  <div className="h-px w-12 bg-gray-400"></div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <MapPin className="w-6 h-6 text-[#c41e3a]" />
-                  <div className="text-left">
-                    <div className="text-white font-bold">Dubai</div>
-                    <div className="text-gray-400 text-sm">4,000 miles</div>
-                  </div>
-                </div>
-
-                <div className="text-[#c41e3a] font-bold text-sm">→ "Scan the code"</div>
-              </div>
-            </div>
-
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a
@@ -185,19 +156,28 @@ export default function PSAHeroSection() {
               </div>
             </div>
 
-            {/* How We Work */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8 text-left">
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4 border-b border-white/20 pb-2">
-                How We Work
-              </h2>
-              <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
+          </div>
+        </div>
+      </div>
+
+      {/* How We Work - Full Width */}
+      <div className="bg-[#1e3a5f] border-t border-white/10 py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center border-b border-white/20 pb-4">
+              How We Work
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6 text-gray-300 text-sm leading-relaxed">
+              <div>
+                <h3 className="text-white font-bold mb-2">Anonymous Stories, Protected Voices</h3>
                 <p>
-                  <strong className="text-white">Anonymous Stories, Protected Voices.</strong>
                   We welcome pilots telling their story — career shifts, training investment,
                   placement struggles, survival. All anonymous for safety against whistleblowing.
                 </p>
+              </div>
+              <div>
+                <h3 className="text-white font-bold mb-2">Verified For Credibility</h3>
                 <p>
-                  <strong className="text-white">Verified For Credibility.</strong>
                   Support from{' '}
                   <a
                     href="https://pilotrecognition.com"
@@ -210,8 +190,10 @@ export default function PSAHeroSection() {
                   — verify logbooks, flight hours, licenses. An extra layer of credibility for the
                   industry.
                 </p>
+              </div>
+              <div>
+                <h3 className="text-white font-bold mb-2">Career Trajectory — A First For Aviation</h3>
                 <p>
-                  <strong className="text-white">Career Trajectory — A First For Aviation.</strong>
                   Collaboration with{' '}
                   <a
                     href="https://pilotcareerpathways.com"
@@ -222,13 +204,12 @@ export default function PSAHeroSection() {
                     pilotcareerpathways.com
                   </a>{' '}
                   — up-to-date airline requirements, expectations before applying, profile matching.
-                  See what you're missing and how to get there.
-                </p>
-                <p className="text-white font-bold text-center pt-3 border-t border-white/20 mt-3">
-                  We are pilotshortage.org — welcome to other associations fighting the cause.
                 </p>
               </div>
             </div>
+            <p className="text-white font-bold text-center pt-6 border-t border-white/20 mt-6">
+              We are pilotshortage.org — welcome to other associations fighting the cause.
+            </p>
           </div>
         </div>
       </div>

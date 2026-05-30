@@ -46,6 +46,16 @@
       "destination": "/index.html"
     },
     {
+      "has": [{ "type": "host", "value": "pilotcareerpathways.com" }],
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "has": [{ "type": "host", "value": "www.pilotcareerpathways.com" }],
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },

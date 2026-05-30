@@ -197,3 +197,42 @@ html {
   .fluid-rounded-lg { border-radius: clamp(1rem, 2vw, 1.5rem); }
   .fluid-rounded-xl { border-radius: clamp(1.5rem, 3vw, 2rem); }
 }
+
+/* CareerPathways Mode - Hide PlatformNavbar and PathwaysSidebar */
+.career-pathways-mode {
+  position: relative;
+}
+
+/* Hide first header (PlatformNavbar) - it's typically the first fixed header element */
+.career-pathways-mode > div > header,
+.career-pathways-mode > div > div > header {
+  display: none !important;
+}
+
+/* Hide sidebar - typically the first fixed left-side div */
+.career-pathways-mode > div > div > div:first-of-type,
+.career-pathways-mode [style*="340px"],
+.career-pathways-mode [style*="width: 340px"] {
+  display: none !important;
+}
+
+/* Remove left margin from main content when sidebar is hidden */
+.career-pathways-mode main,
+.career-pathways-mode [style*="margin-left: 340px"] {
+  margin-left: 0 !important;
+  max-width: 100vw !important;
+}
+
+/* Make content full width */
+.career-pathways-mode main {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Force the flex container to be full width without sidebar */
+.career-pathways-mode > div > div > div:last-child,
+.career-pathways-mode .flex-1 {
+  margin-left: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
