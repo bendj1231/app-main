@@ -56,7 +56,7 @@ const slides = [
     id: 3,
     bgImage: '/recognition-unlock.png',
     tagline: 'Pilot Satisfaction Survey',
-    headline: 'Are You Satisfied as a Pilot',
+    headline: 'Are You Satisfied Pilot',
     headlineAccent: 'With What Aviation Offers Today?',
     description: 'For 100 years, pilots built aviation into what it is. Today, the same industry chokes its own — 200-hour graduates left stranded, instructor queues stretching years, and $50,000 investments rotting on the ground. The sky was promised. The chokehold was delivered. Tell us your truth.',
     ctaPrimary: { text: 'Submit Your Answer', href: '/pilotshortage/advocacy' },
