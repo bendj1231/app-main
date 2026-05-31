@@ -54,7 +54,7 @@ const slides = [
   },
   {
     id: 3,
-    bgImage: '/box.png',
+    bgImage: '/box2.png',
     tagline: 'Pilot Satisfaction Survey',
     headline: 'Are You Satisfied',
     headlineAccent: 'With What Aviation Offers Today?',
