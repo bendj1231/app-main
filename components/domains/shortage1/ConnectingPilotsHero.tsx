@@ -97,6 +97,21 @@ const slides = [
       { icon: Award, value: '$50K', label: 'Avg Training Cost' },
     ],
   },
+  {
+    id: 6,
+    bgImage: '/hourglass.png',
+    tagline: 'The Broken Promise',
+    headline: 'Graduate With a CPL,',
+    headlineAccent: 'Left With a Debt.',
+    description: 'Flight schools promised airline placements. Airlines promised careers. The reality? 200-hour CPL holders stranded for years, instructor queues backed up, and a $50,000 investment rotting on the ground. The promise was broken before the ink dried.',
+    ctaPrimary: { text: 'Share Your Story', href: '/pilotshortage/advocacy' },
+    ctaSecondary: { text: 'See The Data', href: '/pilotshortage/news' },
+    stats: [
+      { icon: Users, value: '15,000+', label: 'Stranded Grads' },
+      { icon: Globe, value: '2–4', label: 'Years Waiting' },
+      { icon: Award, value: '$50K', label: 'Broken Promise' },
+    ],
+  },
 ];
 
 export default function ConnectingPilotsHero() {
