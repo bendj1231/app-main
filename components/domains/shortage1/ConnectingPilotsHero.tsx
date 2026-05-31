@@ -163,14 +163,14 @@ export default function ConnectingPilotsHero() {
           {slides.map((s, idx) => (
             <div
               key={s.id}
-              className={`absolute top-0 bottom-0 right-0 w-full lg:w-[50%] transition-opacity duration-700 ease-out ${
+              className={`absolute top-0 bottom-0 right-0 w-full lg:w-[35%] transition-opacity duration-700 ease-out ${
                 idx === activeSlide ? 'opacity-100' : 'opacity-0'
               }`}
             >
               <img
                 src={s.bgImage}
                 alt=""
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-contain object-center px-4 py-8"
               />
             </div>
           ))}
