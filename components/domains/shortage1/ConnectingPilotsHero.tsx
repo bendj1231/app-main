@@ -101,7 +101,7 @@ const slides = [
     id: 6,
     bgImage: '/fallen.png',
     tagline: 'The Broken Promise',
-    headline: 'Fallen Graduates.',
+    headline: 'Fallen Commercial Pilot Graduates.',
     headlineAccent: 'Stuck with No Direction.',
     description: 'Fallen graduates — promised an aviation career the day they enrolled. Walked out with a CPL, 200 hours, and a bill for $50,000. The instructor line stretches years. The airline calls never came. Their wings are real. The system is not.',
     ctaPrimary: { text: 'Share Your Story', href: '/pilotshortage/advocacy' },
