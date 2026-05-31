@@ -163,14 +163,14 @@ export default function ConnectingPilotsHero() {
           {slides.map((s, idx) => (
             <div
               key={s.id}
-              className={`absolute top-0 bottom-0 right-0 w-full lg:w-[35%] transition-opacity duration-700 ease-out ${
+              className={`absolute top-0 bottom-0 right-0 w-full lg:w-[50%] transition-opacity duration-700 ease-out ${
                 idx === activeSlide ? 'opacity-100' : 'opacity-0'
               }`}
             >
               <img
                 src={s.bgImage}
                 alt=""
-                className="w-full h-full object-contain object-center px-4 py-8"
+                className="w-full h-full object-cover object-center"
               />
             </div>
           ))}
@@ -193,33 +193,33 @@ export default function ConnectingPilotsHero() {
               {/* Text Content */}
               <div className="max-w-2xl">
                 {/* Tagline */}
-                <p className="text-sm md:text-base text-red-500 font-semibold uppercase tracking-wider mb-4">
+                <p className="text-xs md:text-sm text-red-500 font-semibold uppercase tracking-wider mb-3">
                   {slide.tagline}
                 </p>
 
                 {/* Headline */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6 max-w-4xl">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-snug mb-4 max-w-xl">
                   {slide.headline}
                   <span className="block text-red-500">{slide.headlineAccent}</span>
                 </h1>
 
                 {/* Description */}
-                <p className="text-lg md:text-xl text-gray-600 max-w-2xl mb-8 leading-relaxed">
+                <p className="text-sm md:text-base text-gray-600 max-w-lg mb-6 leading-relaxed">
                   {slide.description}
                 </p>
 
                 {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-12">
+                <div className="flex flex-col sm:flex-row gap-3 mb-8">
                   <a
                     href={slide.ctaPrimary.href}
-                    className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-lg transition-all transform hover:scale-105"
+                    className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 text-sm"
                   >
                     {slide.ctaPrimary.text}
                     <ArrowRight className="w-5 h-5" />
                   </a>
                   <a
                     href={slide.ctaSecondary.href}
-                    className="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-4 px-8 rounded-lg border border-gray-300 transition-all"
+                    className="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg border border-gray-300 transition-all text-sm"
                   >
                     {slide.ctaSecondary.text}
                   </a>
@@ -232,8 +232,8 @@ export default function ConnectingPilotsHero() {
                       <div className="flex justify-center mb-2">
                         <stat.icon className="w-6 h-6 text-red-500" />
                       </div>
-                      <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-                      <div className="text-xs text-gray-500">{stat.label}</div>
+                      <div className="text-xl font-bold text-gray-900">{stat.value}</div>
+                      <div className="text-[10px] text-gray-500">{stat.label}</div>
                     </div>
                   ))}
                 </div>
