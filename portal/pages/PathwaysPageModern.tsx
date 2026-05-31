@@ -5723,7 +5723,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 if (!card || !card.discoveryKey) return;
                 setSelectedStage1PathwayId(card.id);
                 setStage2Index(0);
-                setStage2ViewFilter('All' as 'All');
+                setStage2ViewFilter('All' as const);
                 setStage2TypeRatingFilter('All');
                 setSelectedPathwayCard({
                   id: card.id,

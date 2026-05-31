@@ -117,11 +117,11 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
         const el = contextMenu.target as HTMLElement;
         // eslint-disable-next-line react-hooks/immutability
         el.contentEditable = 'true';
-        // eslint-disable-next-line react-hooks/immutability
+         
         el.style.outline = '2px solid #2563eb';
-        // eslint-disable-next-line react-hooks/immutability
+         
         el.style.borderRadius = '4px';
-        // eslint-disable-next-line react-hooks/immutability
+         
         el.style.backgroundColor = 'rgba(219,234,254,0.25)';
         el.focus();
         // Move caret to end

@@ -16,7 +16,7 @@ if (!connectionString) {
 let pool: Pool;
 
 declare global {
-  // eslint-disable-next-line no-var
+   
   var _neonPool: Pool | undefined;
 }
 

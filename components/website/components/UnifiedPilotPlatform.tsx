@@ -266,7 +266,7 @@ const HomeTab: React.FC<{
 
   const matchPct = Math.min(
     Math.round(
-      (!!profile ? 20 : 0) +
+      (profile ? 20 : 0) +
       (hours > 0 ? 20 : 0) +
       (walletChecks.some(c => c.status === 'verified') ? 25 : 0) +
       (score > 0 ? 20 : 0) +

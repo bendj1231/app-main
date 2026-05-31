@@ -147,7 +147,13 @@ const FlightDeckLoginPage = lazy(() => import('@/components/website/components/F
 const FlightDeckVerifyPage = lazy(() => import('@/components/website/components/FlightDeckVerifyPage').then(m => ({ default: m.FlightDeckVerifyPage })));
 const FounderStoryPage = lazy(() => import('@/components/website/components/FounderStoryPage').then(m => ({ default: m.FounderStoryPage })));
 const ShortageApp = lazy(() => import('@/components/domains/shortage/ShortageApp').then(m => ({ default: m.default })));
+const ShortageAboutPage = lazy(() => import('@/app/pilotshortage/about/page'));
+const ShortageAdvocacyPage = lazy(() => import('@/app/pilotshortage/advocacy/page'));
+const ShortageBenefitsPage = lazy(() => import('@/app/pilotshortage/benefits/page'));
+const ShortageNewsPage = lazy(() => import('@/app/pilotshortage/news/page'));
+const ShortageJoinPage = lazy(() => import('@/app/pilotshortage/join/page'));
 const CareerPathwaysApp = lazy(() => import('@/components/career-pathways/CareerPathwaysApp').then(m => ({ default: m.CareerPathwaysApp })));
+const DevDomainSelector = lazy(() => import('@/src/components/DevDomainSelector').then(m => ({ default: m.DevDomainSelector })));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -233,11 +239,23 @@ export const AppRoutes = () => {
     navigate(fallback);
   };
 
+  // DEV MODE: Show domain selector on localhost:3000 with no query params
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const searchParams = new URLSearchParams(window.location.search);
+  const hasDomainParam = searchParams.get('product') || searchParams.get('shortage') || searchParams.get('wallet') || searchParams.get('domain');
+  
+  if (isLocalhost && !hasDomainParam && window.location.pathname === '/') {
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <DevDomainSelector />
+      </Suspense>
+    );
+  }
+
   // Subdomain routing for wallet.pilotrecognition.com
   // Also activates on localhost:3000?wallet=1 for local dev testing
   const isWalletSubdomain = window.location.hostname === 'wallet.pilotrecognition.com';
-  const isWalletLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    && new URLSearchParams(window.location.search).get('wallet') === '1';
+  const isWalletLocalDev = isLocalhost && searchParams.get('wallet') === '1';
 
   if (isWalletSubdomain || isWalletLocalDev) {
     return (
@@ -296,8 +314,8 @@ export const AppRoutes = () => {
   // Domain routing for pilotshortage.org - standalone app experience
   const isShortageDomain = window.location.hostname === 'pilotshortage.org' ||
     window.location.hostname === 'www.pilotshortage.org';
-  const isShortageLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    && new URLSearchParams(window.location.search).get('shortage') === '1';
+  const isShortageLocalDev = isLocalhost && 
+    (searchParams.get('shortage') === '1' || searchParams.get('product') === 'shortage');
 
   if (isShortageDomain || isShortageLocalDev) {
     console.log('[DEBUG AppRoutes] PilotShortage domain detected - rendering standalone app');
@@ -349,6 +367,12 @@ export const AppRoutes = () => {
       <Route path="/faq" element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/pilot-shortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/pilotshortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      {/* New pilotshortage.org sub-pages */}
+      <Route path="/pilotshortage/about" element={<ShortageAboutPage />} />
+      <Route path="/pilotshortage/advocacy" element={<ShortageAdvocacyPage />} />
+      <Route path="/pilotshortage/benefits" element={<ShortageBenefitsPage />} />
+      <Route path="/pilotshortage/news" element={<ShortageNewsPage />} />
+      <Route path="/pilotshortage/join" element={<ShortageJoinPage />} />
       <Route path="/why-recognition" element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/mission-vision" element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />

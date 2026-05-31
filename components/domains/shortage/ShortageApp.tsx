@@ -74,63 +74,203 @@ const RegionPicker = ({ currentRegion, onRegionChange }: { currentRegion: Region
   );
 };
 
+// Navigation dropdown items - now linking to dedicated pages
+const navDropdownItems = {
+  about: [
+    { label: 'Our Mission', href: '/pilotshortage/about' },
+    { label: 'The Four-Floor Tower', href: '/pilotshortage/about#four-floors' },
+    { label: 'Who We Are', href: '/pilotshortage/about#who-we-are' }
+  ],
+  benefits: [
+    { label: 'Verified Stories', href: '/pilotshortage/join' },
+    { label: 'Member Benefits', href: '/pilotshortage/benefits' },
+    { label: 'Join PSA', href: '/pilotshortage/join' }
+  ],
+  advocacy: [
+    { label: 'Policy Positions', href: '/pilotshortage/advocacy' },
+    { label: '1,500-Hour Rule', href: '/pilotshortage/advocacy#1500-rule' },
+    { label: 'Latest News', href: '/pilotshortage/news' },
+    { label: 'Submit Your Story', href: '/pilotshortage/join' }
+  ],
+  ucf: [
+    { label: 'Hub F - Foundation', href: '/pilotshortage/ucf#pillar-foundation-program' },
+    { label: 'Hub A - Operators', href: '/pilotshortage/ucf#part-ii-hub-a' },
+    { label: 'Hub D - Infrastructure', href: '/pilotshortage/ucf#hub-d-infrastructure' },
+    { label: 'Full Framework', href: '/pilotshortage/ucf#document-information' }
+  ]
+};
+
 // Custom Navbar for pilotshortage.org
-const ShortageNavbar = ({ onNavigate, currentRegion, onRegionChange }: { 
+const ShortageNavbar = ({ onNavigate, currentRegion, onRegionChange }: {
   onNavigate: (page: string) => void;
   currentRegion: Region;
   onRegionChange: (region: Region) => void;
-}) => (
-  <nav className="bg-white text-black border-b border-gray-200 sticky top-0 z-50">
-    <div className="container mx-auto px-4 py-4">
-      <div className="flex items-center justify-between">
-        {/* Logo - Text Only, pilotshortage.org style */}
-        <div className="text-2xl font-bold tracking-tight">
-          <span className="text-black">pilot</span>
-          <span className="text-red-500">shortage</span>
-          <span className="text-black">.org</span>
+}) => {
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  return (
+    <nav className="bg-white text-black border-b border-gray-200 sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo - Text Only, pilotshortage.org style */}
+          <a href="/pilotshortage" className="text-2xl font-bold tracking-tight">
+            <span className="text-black">pilot</span>
+            <span className="text-red-500">shortage</span>
+            <span className="text-black">.org</span>
+          </a>
+
+          <div className="hidden md:flex items-center gap-6">
+            {/* About PSA Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveDropdown('about')}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <a
+                href="/pilotshortage/about"
+                className="flex items-center gap-1 text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors py-2"
+              >
+                About PSA
+                <svg className={`w-4 h-4 transition-transform ${activeDropdown === 'about' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              {activeDropdown === 'about' && (
+                <div className="absolute top-full left-0 bg-white border border-gray-200 shadow-lg rounded-lg py-2 min-w-[200px]">
+                  {navDropdownItems.about.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Member Benefits Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveDropdown('benefits')}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <a
+                href="/pilotshortage/benefits"
+                className="flex items-center gap-1 text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors py-2"
+              >
+                Member Benefits
+                <svg className={`w-4 h-4 transition-transform ${activeDropdown === 'benefits' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              {activeDropdown === 'benefits' && (
+                <div className="absolute top-full left-0 bg-white border border-gray-200 shadow-lg rounded-lg py-2 min-w-[200px]">
+                  {navDropdownItems.benefits.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Advocacy Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveDropdown('advocacy')}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <a
+                href="/pilotshortage/advocacy"
+                className="flex items-center gap-1 text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors py-2"
+              >
+                Advocacy
+                <svg className={`w-4 h-4 transition-transform ${activeDropdown === 'advocacy' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              {activeDropdown === 'advocacy' && (
+                <div className="absolute top-full left-0 bg-white border border-gray-200 shadow-lg rounded-lg py-2 min-w-[220px]">
+                  {navDropdownItems.advocacy.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* UCF Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveDropdown('ucf')}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <a
+                href="/pilotshortage/ucf"
+                className="flex items-center gap-1 text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors py-2"
+              >
+                UCF
+                <svg className={`w-4 h-4 transition-transform ${activeDropdown === 'ucf' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              {activeDropdown === 'ucf' && (
+                <div className="absolute top-full left-0 bg-white border border-gray-200 shadow-lg rounded-lg py-2 min-w-[200px]">
+                  {navDropdownItems.ucf.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* News - No dropdown */}
+            <a
+              href="/pilotshortage/news"
+              className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors py-2"
+            >
+              News
+            </a>
+
+            <RegionPicker currentRegion={currentRegion} onRegionChange={onRegionChange} />
+            <a
+              href="/pilotshortage/join"
+              className="bg-red-500 hover:bg-red-600 text-white px-6 py-2.5 rounded font-bold text-sm uppercase tracking-wide transition-colors"
+            >
+              Join PSA
+            </a>
+          </div>
+
+          {/* Mobile menu button */}
+          <button className="md:hidden p-2 text-black">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
         </div>
-        
-        <div className="hidden md:flex items-center gap-8">
-          <button onClick={() => onNavigate('about')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
-            About PSA
-          </button>
-          <button onClick={() => onNavigate('benefits')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
-            Member Benefits
-          </button>
-          <button onClick={() => onNavigate('advocacy')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
-            Advocacy
-          </button>
-          <button 
-            onClick={() => document.getElementById('psa-ucf')?.scrollIntoView({ behavior: 'smooth' })}
-            className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors"
-          >
-            UCF
-          </button>
-          <button onClick={() => onNavigate('news')} className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors">
-            News
-          </button>
-          <RegionPicker currentRegion={currentRegion} onRegionChange={onRegionChange} />
-          <button 
-            onClick={() => onNavigate('join')}
-            className="bg-red-500 hover:bg-red-600 text-white px-6 py-2.5 rounded font-bold text-sm uppercase tracking-wide transition-colors"
-          >
-            Join PSA
-          </button>
-        </div>
-        
-        {/* Mobile menu button */}
-        <button className="md:hidden p-2 text-black">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
       </div>
-    </div>
-  </nav>
-);
+    </nav>
+  );
+};
 
 // Main content component
-const ShortageLanding = lazy(() => import('./ShortageLanding').then(m => ({ default: m.default })));
+const ShortageLanding = lazy(() => import('../shortage1/ConnectingPilotsHero').then(m => ({ default: m.default })));
 
 export default function ShortageApp() {
   const [isLoading, setIsLoading] = useState(true);

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { FileText, Download, ExternalLink, Shield, Clock, Users, ChevronDown, ChevronUp, CheckCircle, ArrowRight, Target } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { FileText, Download, ExternalLink, Shield, Clock, Users, ChevronDown, ChevronUp, CheckCircle, Target } from 'lucide-react';
 
 export default function PSADocumentRelease() {
   const [expandedCluster, setExpandedCluster] = useState<string | null>('cluster-a');
@@ -176,28 +177,43 @@ export default function PSADocumentRelease() {
             </div>
           </div>
 
-          {/* Document Downloads */}
+          {/* Document Cards */}
           <div className="grid md:grid-cols-2 gap-6 mb-16">
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8">
+            {/* 26 Pillars Card */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8 hover:bg-white/10 transition-colors">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-14 h-14 bg-[#c41e3a]/20 rounded-xl flex items-center justify-center flex-shrink-0">
                   <FileText className="w-7 h-7 text-[#c41e3a]" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white mb-2">PSA UCF: 26 Pillars</h3>
-                  <p className="text-gray-400 text-sm">Complete advocacy framework document</p>
+                  <p className="text-gray-400 text-sm">Complete advocacy framework with 5 clusters</p>
                 </div>
               </div>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-2 text-gray-300 text-sm">
+                  <Target className="w-4 h-4 text-[#c41e3a]" />
+                  <span>26 Operational Pillars</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300 text-sm">
+                  <Users className="w-4 h-4 text-[#c41e3a]" />
+                  <span>5 Advocacy Clusters</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300 text-sm">
+                  <Shield className="w-4 h-4 text-[#c41e3a]" />
+                  <span>Non-Profit Architecture</span>
+                </div>
+              </div>
+
               <div className="flex gap-3">
-                <a
-                  href="/docs/PSA_UCF_26_PILLARS.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/pilotshortage/ucf"
                   className="flex-1 bg-[#c41e3a] hover:bg-[#a31830] text-white font-bold py-3 px-4 rounded-lg transition-colors text-center flex items-center justify-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  View
-                </a>
+                  View Full Framework
+                </Link>
                 <a
                   href="/docs/PSA_UCF_26_PILLARS.md"
                   download
@@ -209,26 +225,41 @@ export default function PSADocumentRelease() {
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8">
+            {/* 100 Steps Card */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8 hover:bg-white/10 transition-colors">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-14 h-14 bg-[#c41e3a]/20 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Clock className="w-7 h-7 text-[#c41e3a]" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white mb-2">PSA UCF: 100 Steps</h3>
-                  <p className="text-gray-400 text-sm">Implementation roadmap document</p>
+                  <p className="text-gray-400 text-sm">Implementation roadmap to September 2026</p>
                 </div>
               </div>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-2 text-gray-300 text-sm">
+                  <Clock className="w-4 h-4 text-[#c41e3a]" />
+                  <span>4 Waves: June → September</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300 text-sm">
+                  <CheckCircle className="w-4 h-4 text-[#c41e3a]" />
+                  <span>100 Implementation Steps</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300 text-sm">
+                  <Target className="w-4 h-4 text-[#c41e3a]" />
+                  <span>Self-Destruct: Sept 30</span>
+                </div>
+              </div>
+
               <div className="flex gap-3">
-                <a
-                  href="/docs/PSA_UCF_100_STEPS.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/pilotshortage/ucf"
                   className="flex-1 bg-[#c41e3a] hover:bg-[#a31830] text-white font-bold py-3 px-4 rounded-lg transition-colors text-center flex items-center justify-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  View
-                </a>
+                  View Full Roadmap
+                </Link>
                 <a
                   href="/docs/PSA_UCF_100_STEPS.md"
                   download

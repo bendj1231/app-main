@@ -1052,7 +1052,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             y: 0,
             transition: {
                 duration: 0.5,
-                ease: 'easeOut' as 'easeOut'
+                ease: 'easeOut' as const
             }
         },
         exit: {
@@ -1505,7 +1505,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                             transition: {
                                 delay: 1.0,
                                 duration: 0.5,
-                                ease: 'easeOut' as 'easeOut'
+                                ease: 'easeOut' as const
                             }
                         }
                     }}

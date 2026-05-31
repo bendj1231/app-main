@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export type ProductDomain = 'pilotrecognition' | 'careerpathways' | 'wallet' | 'platform' | 'enterprise';
+export type ProductDomain = 'pilotrecognition' | 'careerpathways' | 'shortage' | 'wallet' | 'platform' | 'enterprise';
 
 interface DomainConfig {
   domain: ProductDomain;
@@ -32,6 +32,9 @@ function detectDomain(hostname: string): DomainConfig {
     if (productOverride === 'careerpathways') {
       return { domain: 'careerpathways', isLocalDev: true, hostname };
     }
+    if (productOverride === 'shortage') {
+      return { domain: 'shortage', isLocalDev: true, hostname };
+    }
     if (productOverride === 'wallet') {
       return { domain: 'wallet', isLocalDev: true, hostname };
     }
@@ -46,6 +49,10 @@ function detectDomain(hostname: string): DomainConfig {
   // Production domain detection
   if (hostname === 'careerpathways.pilotrecognition.com' || hostname === 'pilotcareerpathways.com' || hostname === 'www.pilotcareerpathways.com') {
     return { domain: 'careerpathways', isLocalDev, hostname };
+  }
+
+  if (hostname === 'pilotshortage.org' || hostname === 'www.pilotshortage.org') {
+    return { domain: 'shortage', isLocalDev, hostname };
   }
 
   if (hostname === 'wallet.pilotrecognition.com') {

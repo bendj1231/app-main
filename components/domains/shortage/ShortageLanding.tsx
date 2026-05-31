@@ -3,6 +3,8 @@
 // PSA - Pilot Shortage Association
 // Built from lived experience. Not corporate. Not bullshit.
 
+import MissionManifesto from './MissionManifesto';
+import { ShortageGridHero } from './ShortageGridHero';
 import PSAHeroSection from './PSAHeroSection';
 import The2013Law from './The2013Law';
 import TheTriad from './TheTriad';
@@ -23,11 +25,21 @@ import PSADocumentRelease from './PSADocumentRelease';
 export default function ShortageLanding() {
   return (
     <div className="min-h-screen bg-white">
+      {/* MISSION MANIFESTO - The 3-step conversion loop */}
+      <MissionManifesto />
+
+      {/* GRID HERO - Pathways-style card grid with stats */}
+      <ShortageGridHero />
+
       {/* PSA HERO - The Etihad founding story + Four-Floor Tower */}
-      <PSAHeroSection />
+      <div id="four-floors">
+        <PSAHeroSection />
+      </div>
 
       {/* THE 2013 LAW - The $520K gap */}
-      <The2013Law />
+      <div id="the-2013-law">
+        <The2013Law />
+      </div>
 
       {/* THE TRIAD - Who controls your career */}
       <TheTriad />
@@ -42,7 +54,9 @@ export default function ShortageLanding() {
       <SunkCostTrap />
 
       {/* CASE STUDY APPLICANT - The 200:10 Bloodbath */}
-      <CaseStudyApplicant />
+      <div id="case-studies">
+        <CaseStudyApplicant />
+      </div>
 
       {/* FLIGHT INSTRUCTOR DIGNITY - Recognition they deserve */}
       <FlightInstructorDignity />
@@ -60,16 +74,22 @@ export default function ShortageLanding() {
       <PilotNotFailure />
 
       {/* HOW WE WORK - Anonymous stories, verification, pathways */}
-      <HowWeWork />
+      <div id="how-we-work">
+        <HowWeWork />
+      </div>
 
       {/* PSA UCF DOCUMENTS - 26 Pillars + 100 Steps Framework */}
-      <PSADocumentRelease />
+      <div id="psa-ucf">
+        <PSADocumentRelease />
+      </div>
 
       {/* SHARE YOUR STORY - Verified testimony form */}
-      <ShareYourStory />
+      <div id="share-story">
+        <ShareYourStory />
+      </div>
 
       {/* NEWS / LATEST ADVOCACY - Association activity */}
-      <section className="py-16 bg-gray-50">
+      <section id="latest-advocacy" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-[#1e3a5f]">Latest Advocacy</h2>
