@@ -174,7 +174,7 @@ export default function ConnectingPilotsHero() {
               />
               {/* Baggage Handler Arrow Overlay — Slide 5 only */}
               {s.id === 5 && (
-                <div className="absolute left-[2%] top-[45%] z-30 pointer-events-none">
+                <div className="absolute left-[-8%] top-[45%] z-30 pointer-events-none">
                   <div className="flex flex-col items-start">
                     <span className="bg-white/90 backdrop-blur-sm text-gray-900 font-bold text-xs px-3 py-1.5 rounded shadow-lg border border-gray-200 whitespace-nowrap mb-1">
                       Commercial Pilot
