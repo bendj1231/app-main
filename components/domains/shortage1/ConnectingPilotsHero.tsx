@@ -184,9 +184,9 @@ export default function ConnectingPilotsHero() {
                 alt=""
                 className={`w-full h-full object-cover ${s.id === 7 ? 'object-right' : 'object-center'}`}
               />
-              {/* Dark left gradient for slide 7 only — ensures text readability over full-bleed image */}
+              {/* Dark overlay for slide 7 only — ensures centered text is readable over full-bleed image */}
               {s.id === 7 && (
-                <div className="absolute inset-y-0 left-0 w-full lg:w-[65%] bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/50 z-10 pointer-events-none" />
               )}
             </div>
           ))}
@@ -209,25 +209,25 @@ export default function ConnectingPilotsHero() {
               }}
             >
               {/* Text Content */}
-              <div className="max-w-2xl">
+              <div className={`max-w-2xl ${slide.id === 7 ? 'mx-auto text-center' : ''}`}>
                 {/* Tagline */}
                 <p className={`text-xs md:text-sm font-semibold uppercase tracking-wider mb-3 ${slide.id === 7 ? 'text-red-400' : 'text-red-500'}`}>
                   {slide.tagline}
                 </p>
 
                 {/* Headline */}
-                <h1 className={`text-2xl md:text-3xl lg:text-4xl font-bold leading-snug mb-4 max-w-xl ${slide.id === 7 ? 'text-white' : 'text-gray-900'}`}>
+                <h1 className={`text-2xl md:text-3xl lg:text-4xl font-bold leading-snug mb-4 max-w-xl ${slide.id === 7 ? 'text-white mx-auto' : 'text-gray-900'}`}>
                   {slide.headline}
                   <span className={`block ${slide.id === 7 ? 'text-red-400' : 'text-red-500'}`}>{slide.headlineAccent}</span>
                 </h1>
 
                 {/* Description */}
-                <p className={`text-sm md:text-base max-w-lg mb-6 leading-relaxed ${slide.id === 7 ? 'text-gray-200' : 'text-gray-600'}`}>
+                <p className={`text-sm md:text-base max-w-lg mb-6 leading-relaxed ${slide.id === 7 ? 'text-gray-200 mx-auto' : 'text-gray-600'}`}>
                   {slide.description}
                 </p>
 
                 {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                <div className={`flex flex-col sm:flex-row gap-3 mb-8 ${slide.id === 7 ? 'justify-center' : ''}`}>
                   <a
                     href={slide.ctaPrimary.href}
                     className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 text-sm"
@@ -244,7 +244,7 @@ export default function ConnectingPilotsHero() {
                 </div>
 
                 {/* Stats */}
-                <div className="grid grid-cols-3 gap-6 max-w-md">
+                <div className={`grid grid-cols-3 gap-6 max-w-md ${slide.id === 7 ? 'mx-auto' : ''}`}>
                   {slide.stats.map((stat, idx) => (
                     <div key={idx} className="text-center">
                       <div className="flex justify-center mb-2">
