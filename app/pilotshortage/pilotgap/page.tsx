@@ -270,43 +270,69 @@ export default function PilotGapPage() {
         </div>
       </section>
 
-      {/* What PSA Is Doing */}
+      {/* Who We Work With */}
       <section className="py-16 bg-[#1e3a5f]">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-white mb-6">What PSA Is Doing About It</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">A Coalition to Close the Gap</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              The Pilot Shortage Association does not accept the gap as inevitable. 
-              We are building the infrastructure to bridge it — transparency, verification, and pressure.
+              The Pilot Shortage Association works with every stakeholder in the aviation pipeline. 
+              We do not blame — we build bridges. ATOs, airlines, regulators, and pilots all have a seat at the table.
             </p>
             <div className="grid md:grid-cols-3 gap-6 mb-10 text-left">
               <div className="bg-[#0a1628] rounded-xl border border-white/10 p-6">
-                <TrendingUp className="w-8 h-8 text-red-400 mb-3" />
-                <h3 className="font-bold text-white mb-2">Pathway Transparency</h3>
+                <GraduationCap className="w-8 h-8 text-red-400 mb-3" />
+                <h3 className="font-bold text-white mb-2">ATO Partnerships</h3>
                 <p className="text-sm text-gray-400">
-                  Before you apply, know exactly what an airline wants. No more guessing. No more wasted applications.
+                  Flight schools join PSA to publish transparent hiring data, align curricula with airline reality, and give graduates a real shot.
+                </p>
+              </div>
+              <div className="bg-[#0a1628] rounded-xl border border-white/10 p-6">
+                <Plane className="w-8 h-8 text-red-400 mb-3" />
+                <h3 className="font-bold text-white mb-2">Airline Collaboration</h3>
+                <p className="text-sm text-gray-400">
+                  Airlines partner with PSA to access a pre-verified pilot pool, reduce recruitment costs, and hire pilots who already meet their standards.
                 </p>
               </div>
               <div className="bg-[#0a1628] rounded-xl border border-white/10 p-6">
                 <Users className="w-8 h-8 text-red-400 mb-3" />
-                <h3 className="font-bold text-white mb-2">Verified Stories</h3>
+                <h3 className="font-bold text-white mb-2">Pilot Advocacy</h3>
                 <p className="text-sm text-gray-400">
-                  Pilots share their real experiences — anonymously or verified. The data becomes undeniable.
-                </p>
-              </div>
-              <div className="bg-[#0a1628] rounded-xl border border-white/10 p-6">
-                <Building className="w-8 h-8 text-red-400 mb-3" />
-                <h3 className="font-bold text-white mb-2">Industry Pressure</h3>
-                <p className="text-sm text-gray-400">
-                  We name the airlines, expose the numbers, and demand accountability. The gap is not a secret anymore.
+                  Pilots share their journeys — verified and anonymous — to build the data that drives real industry change.
                 </p>
               </div>
             </div>
+
+            {/* Targeted callouts */}
+            <div className="bg-[#0a1628] rounded-2xl border border-white/10 p-8 md:p-10 mb-10 text-left">
+              <h3 className="text-xl font-bold text-white mb-6 text-center">How We Work Together</h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h4 className="font-bold text-red-400 mb-2">For ATOs & Flight Schools</h4>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li>• Publish real airline hiring requirements to your students</li>
+                    <li>• Align training programs with verified pathway data</li>
+                    <li>• Access a network of airlines actively recruiting your graduates</li>
+                    <li>• Reduce dropout rates by setting honest expectations</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-bold text-red-400 mb-2">For Airlines & Operators</h4>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li>• Pull from a pre-verified, anonymous pilot database</li>
+                    <li>• Reduce time-to-hire with transparent pathway cards</li>
+                    <li>• Build your brand as a pilot-first employer</li>
+                    <li>• Cut recruitment costs through direct pipeline access</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
             <Link
               to="/pilotshortage/join"
               className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-xl transition-colors"
             >
-              Become a Member — Free Forever
+              Join the Coalition — Free Forever
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
