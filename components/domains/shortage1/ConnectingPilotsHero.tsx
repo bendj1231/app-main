@@ -115,10 +115,10 @@ const slides = [
   {
     id: 7,
     bgImage: '/building.png',
-    tagline: 'Systemic Collapse',
-    headline: 'Aviation Is Collapsing',
-    headlineAccent: 'at Its Base.',
-    description: 'The foundation is cracking. Flight academies churn out pilots airlines will not hire. Instructors with 6,000 hours cannot advance. The pipeline is not broken — it is inverted. And the industry pretends not to see.',
+    tagline: 'Industry Coalition',
+    headline: 'ATOs, Airlines & Pilots',
+    headlineAccent: 'Solving It Together.',
+    description: 'Flight academies train thousands of qualified pilots every year. Airlines need thousands of crew. The gap is not a talent shortage — it is a coordination failure between training, hiring, and recognition. PSA partners with ATOs, airlines, and regulators to map the real pipeline, share verified data, and build pathways that actually work.',
     ctaPrimary: { text: 'Become a Member', href: '/pilotshortage/join' },
     ctaSecondary: { text: 'Read more about the pilot gap', href: '/pilotshortage/pilotgap' },
     stats: [
