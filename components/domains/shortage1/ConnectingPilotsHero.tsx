@@ -187,6 +187,10 @@ export default function ConnectingPilotsHero() {
                 alt=""
                 className={`w-full h-full object-cover ${s.id === 7 ? 'object-right' : 'object-center'}`}
               />
+              {/* White fade gradient for slide 7 only — blends image into left white panel */}
+              {s.id === 7 && (
+                <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white via-white/60 to-transparent z-10 pointer-events-none" />
+              )}
             </div>
           ))}
         </div>
