@@ -178,21 +178,21 @@ export default function ConnectingPilotsHero() {
           {slides.map((s, idx) => (
             <div
               key={s.id}
-              className={`absolute top-0 bottom-0 ${s.bgImage === '/building.png' ? 'left-0' : 'right-0'} w-full lg:w-[50%] transition-opacity duration-700 ease-out ${
+              className={`absolute top-0 bottom-0 right-0 w-full lg:w-[50%] transition-opacity duration-700 ease-out ${
                 idx === activeSlide ? 'opacity-100' : 'opacity-0'
               }`}
             >
               <img
                 src={s.bgImage}
                 alt=""
-                className={`w-full h-full object-cover ${s.bgImage === '/building.png' ? 'object-left' : 'object-center'}`}
+                className={`w-full h-full object-cover ${s.id === 7 ? 'object-right' : 'object-center'}`}
               />
             </div>
           ))}
         </div>
 
         {/* White background panel behind text area */}
-        <div className={`absolute top-0 bottom-0 ${slide.bgImage === '/building.png' ? 'right-0' : 'left-0'} w-full lg:w-[50%] bg-white z-10`} />
+        <div className="absolute top-0 bottom-0 left-0 w-full lg:w-[50%] bg-white z-10" />
 
         {/* Slide Content */}
         <div className="container mx-auto px-4 py-12 relative z-20">
@@ -200,7 +200,7 @@ export default function ConnectingPilotsHero() {
           <div className="relative min-h-[60vh] flex items-center">
             <div
               key={slide.id}
-              className={`w-full transition-all duration-700 ease-out ${slide.bgImage === '/building.png' ? 'flex justify-end' : ''}`}
+              className="w-full transition-all duration-700 ease-out"
               style={{
                 animation: 'fadeSlideIn 0.7s ease-out',
               }}
