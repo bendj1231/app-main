@@ -120,7 +120,7 @@ const slides = [
     headlineAccent: 'at Its Base.',
     description: 'The foundation is cracking. Flight academies churn out pilots airlines will not hire. Instructors with 6,000 hours cannot advance. The pipeline is not broken — it is inverted. And the industry pretends not to see.',
     ctaPrimary: { text: 'Become a Member', href: '/pilotshortage/join' },
-    ctaSecondary: { text: 'Read more about the pilot gap', href: '/pilotshortage/ucf' },
+    ctaSecondary: { text: 'Read more about the pilot gap', href: '/pilotshortage/pilotgap' },
     stats: [
       { icon: Users, value: '80%', label: 'Pipeline Failure' },
       { icon: Globe, value: '6K+', label: 'Stuck Instructors' },
