@@ -1,6 +1,6 @@
 import { HomePage } from '@/components/website/components/home/HomePage';
-import ShortageLanding from '@/components/domains/shortage/ShortageLanding';
 import PilotShortageUCF from './pilotshortage/page';
+import BrandSwitchWrapper from '@/components/domains/BrandSwitchWrapper';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 
@@ -45,26 +45,35 @@ export default function MainPage() {
   const domain = headersList.get('host') || '';
   const isShortage = domain.includes('pilotshortage.org');
   const isPathways = domain.includes('pilotcareerpathways.com');
+  const isTerminal = domain.includes('pilotterminal.com');
 
-  // Show UCF documentation for pilotshortage.org
+  // Server-rendered domain detection
   if (isShortage) {
     return <PilotShortageUCF />;
   }
 
-  // Show pathways landing for pilotcareerpathways.com
   if (isPathways) {
     return <PilotShortageUCF />;
   }
 
-  // Default: existing pilotrecognition.com home page
+  if (isTerminal) {
+    return <BrandSwitchWrapper />;
+  }
+
+  // For localhost:3000 with brand_override, render client-side switcher component
+  // The DomainSwitcher component handles localStorage-based switching
   return (
-    <HomePage
-      onJoinUs={() => console.log('Join Us clicked')}
-      onLogin={() => console.log('Login clicked')}
-      onNavigate={(page: string) => console.log('Navigate to:', page)}
-      onGoToProgramDetail={(slide: string) => console.log('Go to program detail:', slide)}
-      isLoggedIn={false}
-      onLoginModalOpen={() => console.log('Login modal opened')}
-    />
+    <>
+      <HomePage
+        onJoinUs={() => console.log('Join Us clicked')}
+        onLogin={() => console.log('Login clicked')}
+        onNavigate={(page: string) => console.log('Navigate to:', page)}
+        onGoToProgramDetail={(slide: string) => console.log('Go to program detail:', slide)}
+        isLoggedIn={false}
+        onLoginModalOpen={() => console.log('Login modal opened')}
+      />
+      {/* Client component for dev domain switching */}
+      <BrandSwitchWrapper />
+    </>
   );
 }

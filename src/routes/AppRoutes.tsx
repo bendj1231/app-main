@@ -156,6 +156,7 @@ const ShortagePilotGapPage = lazy(() => import('@/app/pilotshortage/pilotgap/pag
 const ShortageCoalitionPage = lazy(() => import('@/app/pilotshortage/coalition/page'));
 const CareerPathwaysApp = lazy(() => import('@/components/career-pathways/CareerPathwaysApp').then(m => ({ default: m.CareerPathwaysApp })));
 const DevDomainSelector = lazy(() => import('@/src/components/DevDomainSelector').then(m => ({ default: m.DevDomainSelector })));
+const PilotTerminalHome = lazy(() => import('@/components/domains/pilotterminal/PilotTerminalHome').then(m => ({ default: m.default })));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
@@ -324,6 +325,20 @@ export const AppRoutes = () => {
     return (
       <Suspense fallback={<LoadingFallback />}>
         <ShortageApp />
+      </Suspense>
+    );
+  }
+
+  // Domain routing for pilotterminal.com - community forum
+  const isPilotTerminalDomain = window.location.hostname === 'pilotterminal.com' ||
+    window.location.hostname === 'www.pilotterminal.com';
+  const isPilotTerminalLocalDev = isLocalhost && searchParams.get('product') === 'pilotterminal';
+
+  if (isPilotTerminalDomain || isPilotTerminalLocalDev) {
+    console.log('[DEBUG AppRoutes] PilotTerminal domain detected - rendering community forum');
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <PilotTerminalHome />
       </Suspense>
     );
   }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export const DevDomainSelector: React.FC = () => {
   const navigate = useNavigate();
 
-  const selectDomain = (domain: 'main' | 'careerpathways' | 'shortage') => {
+  const selectDomain = (domain: 'main' | 'careerpathways' | 'shortage' | 'pilotterminal') => {
     // Clear any stored mode
     localStorage.removeItem('careerpathways_mode');
     
@@ -14,6 +14,8 @@ export const DevDomainSelector: React.FC = () => {
       navigate('/?product=careerpathways');
     } else if (domain === 'shortage') {
       navigate('/?shortage=1');
+    } else if (domain === 'pilotterminal') {
+      navigate('/?product=pilotterminal');
     }
     window.location.reload();
   };
@@ -43,6 +45,14 @@ export const DevDomainSelector: React.FC = () => {
       color: 'from-blue-500 to-cyan-600',
       icon: '🏛️',
     },
+    {
+      id: 'pilotterminal' as const,
+      name: 'pilotterminal.com',
+      subtitle: 'Community Forum',
+      description: 'Pilot-to-pilot chat, forums, and community discussions',
+      color: 'from-yellow-500 to-amber-500',
+      icon: '💬',
+    },
   ];
 
   return (
@@ -63,7 +73,7 @@ export const DevDomainSelector: React.FC = () => {
         </div>
 
         {/* Domain Cards */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {domains.map((domain) => (
             <button
               key={domain.id}
@@ -109,7 +119,7 @@ export const DevDomainSelector: React.FC = () => {
               ?shortage=1
             </code>
             <code className="px-3 py-1.5 bg-slate-800 rounded-lg text-slate-300">
-              ?wallet=1
+              ?product=pilotterminal
             </code>
           </div>
         </div>

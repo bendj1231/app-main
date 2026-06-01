@@ -1,4 +1,4 @@
-export type DomainBrand = 'shortage' | 'recognition';
+export type DomainBrand = 'shortage' | 'recognition' | 'pilotterminal' | 'careerpathways';
 
 // Client-side domain detection for Vite/React Router
 export function getDomainBrand(): DomainBrand {
@@ -9,7 +9,15 @@ export function getDomainBrand(): DomainBrand {
   if (domain.includes('pilotshortage.org')) {
     return 'shortage';
   }
-  
+
+  if (domain.includes('pilotterminal.com') || domain.includes('pilot-terminal.com')) {
+    return 'pilotterminal';
+  }
+
+  if (domain.includes('pilotcareerpathways.com') || domain.includes('careerpathways.pilotrecognition.com')) {
+    return 'careerpathways';
+  }
+
   return 'recognition';
 }
 
@@ -43,8 +51,36 @@ export function getBrandConfig(brand: DomainBrand) {
       contactMethods: ['Credit Card', 'PayPal'],
       showCommunity: false,
     },
+    pilotterminal: {
+      name: 'Pilot Terminal',
+      tagline: 'Community Forum for Pilots',
+      primaryColor: 'emerald',
+      accentColor: 'slate',
+      currency: 'USD',
+      price: 'Free',
+      priceSubtext: '',
+      ctaText: 'Join Discussion',
+      foundingMembers: false,
+      region: 'Global',
+      contactMethods: ['Free'],
+      showCommunity: true,
+    },
+    careerpathways: {
+      name: 'Pilot Career Pathways',
+      tagline: 'Structured Aviation Career Progression',
+      primaryColor: 'blue',
+      accentColor: 'indigo',
+      currency: 'USD',
+      price: '$149',
+      priceSubtext: '/year',
+      ctaText: 'Explore Pathways',
+      foundingMembers: false,
+      region: 'Global',
+      contactMethods: ['Credit Card', 'PayPal'],
+      showCommunity: true,
+    },
   };
-  
+
   return configs[brand];
 }
 
