@@ -45,6 +45,9 @@ export const OAuthCallback = () => {
           }
         }
 
+        // Determine redirect based on domain
+        const isPilotTerminal = window.location.hostname.includes('pilotterminal');
+        
         if (!existing) {
           console.log('[DEBUG][OAuthCallback] No existing profile — checking Supabase session before attempting upsert');
           const { data: { session } } = await supabase.auth.getSession();
@@ -74,14 +77,16 @@ export const OAuthCallback = () => {
           }
 
           setProfileCreated(true);
-          navigate('/become-member?setup=1');
+          // Redirect to terminal for pilotterminal.com, otherwise to become-member
+          navigate(isPilotTerminal ? '/' : '/become-member?setup=1');
         } else if (!existing.display_name) {
           // Profile exists but setup not completed
           setProfileCreated(true);
-          navigate('/become-member?setup=1');
+          navigate(isPilotTerminal ? '/' : '/become-member?setup=1');
         } else {
           setProfileCreated(true);
-          navigate('/platform');
+          // Redirect to terminal for pilotterminal.com, otherwise to platform
+          navigate(isPilotTerminal ? '/' : '/platform');
         }
       } catch (err) {
         console.error('Profile creation error:', err);
