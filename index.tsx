@@ -22,22 +22,13 @@ import './index.css';
 const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   
-  // Separate Auth0 Application for pilotterminal.com
-  const isPilotTerminal = window.location.hostname.includes('pilotterminal');
-  
-  const auth0Config = isPilotTerminal
-    ? {
-        // PilotTerminal.com Auth0 Application (separate from pilotrecognition.com)
-        domain: 'dev-ir828tguibp1dh5f.eu.auth0.com',
-        clientId: '7EUIbNxrUo4X2fBRNpCiuFNI2OgRqJmK',
-        audience: 'https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/'
-      }
-    : {
-        // PilotRecognition.com Auth0 Application
-        domain: import.meta.env.VITE_AUTH0_DOMAIN || 'dev-ir828tguibp1dh5f.eu.auth0.com',
-        clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || 'FSW7zJxyBNJRvZGxN2xGH2bAQxwzHVmb',
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE || 'https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/'
-      };
+  // Single Auth0 Application for ALL domains
+  // pilotrecognition.com manages pilot profiles across all properties
+  const auth0Config = {
+    domain: 'dev-ir828tguibp1dh5f.eu.auth0.com',
+    clientId: 'FSW7zJxyBNJRvZGxN2xGH2bAQxwzHVmb', // PilotRecognition Application
+    audience: 'https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/'
+  };
   
   return (
     <Auth0Provider
