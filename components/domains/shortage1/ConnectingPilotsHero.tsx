@@ -235,14 +235,14 @@ export default function ConnectingPilotsHero() {
                     <div className="flex flex-col sm:flex-row gap-3 mb-8 justify-center">
                       <a
                         href={slide.ctaPrimary.href}
-                        className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 text-sm"
+                        className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 text-sm"
                       >
                         {slide.ctaPrimary.text}
                         <ArrowRight className="w-5 h-5" />
                       </a>
                       <a
                         href={slide.ctaSecondary.href}
-                        className="inline-flex items-center justify-center gap-2 font-bold py-3 px-6 rounded-lg border transition-all text-sm bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm"
+                        className="inline-flex items-center justify-center gap-2 font-bold py-3 px-6 rounded-2xl border transition-all text-sm bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm"
                       >
                         {slide.ctaSecondary.text}
                       </a>
