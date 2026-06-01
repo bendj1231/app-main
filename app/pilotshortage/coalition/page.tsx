@@ -154,14 +154,15 @@ export default function CoalitionPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-6">
-              Every Institution Optimizes for Its Own Survival.
-              <span className="block text-red-500">No One Optimizes for the Whole Journey.</span>
+              Every Institution Contributes to the Industry.
+              <span className="block text-red-500">No One Connects the Contributions.</span>
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
-              The aviation industry is a delicate pipeline managed in fragments. Flight schools optimize 
-              for enrollment. Airlines optimize for hiring. Labor representatives optimize for contracts. 
-              Regulators optimize for safety standards. Each does its job well — but the spaces between 
-              them are where pilots get lost.
+              The aviation industry is a delicate pipeline managed in fragments. Flight schools contribute 
+              trained graduates. Airlines contribute hiring opportunities. Labor representatives contribute 
+              contract protections. Regulators contribute safety standards. Each plays an essential role — 
+              but the spaces between them are where pilots get lost, and where the industry loses talent it 
+              cannot afford to lose.
             </p>
           </div>
 
