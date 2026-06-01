@@ -112,7 +112,7 @@ Labor unions speak for dues-paying members. Trade associations speak for busines
 - **The Regulator Roundtable** — quarterly virtual summits with FAA, EASA, CAAP representatives, ATO owners, airline HR directors, and pilot advocates. Not a lobbying session. A listening session.
 - **The Table** — a permanent advisory council with voting seats for: CFIs, recent graduates, regional FOs, mainline Captains, ATO owners, airline recruiters, and regulators. No veto power. No seniority hierarchy. Just data, testimony, and publication.
 
-**Why this matters:** The pipeline is broken because it is managed in fragments. Flight schools optimize for enrollment. Airlines optimize for hiring. Unions optimize for contracts. No one optimizes for the whole journey. A coalition is the only structure that can.
+**Why this matters:** The pipeline is broken because it is managed in fragments. Flight schools contribute trained graduates. Airlines contribute hiring opportunities. Unions contribute contract protections. No one connects these contributions across the whole journey. A coalition is the only structure that can.
 
 ---
 
@@ -182,7 +182,7 @@ No association publishes the 50 other aviation careers. No association tells the
 
 ## The Strategic Conclusion
 
-These ten gaps are not ALPA's failures. They are not the FAA's oversights. They are not flight schools' deceptions. They are the natural consequence of an industry where every institution optimizes for its own survival, and no institution optimizes for the whole journey.
+These ten gaps are not ALPA's failures. They are not the FAA's oversights. They are not flight schools' deceptions. They are the natural consequence of an industry where every institution contributes within its own mandate, and no institution connects those contributions across the whole journey.
 
 The Pilot Shortage Association does not claim to fix all ten gaps. We claim to name them, measure them, and build what no one else will build.
 
