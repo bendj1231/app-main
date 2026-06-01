@@ -248,6 +248,14 @@ const ShortageNavbar = ({ onNavigate, currentRegion, onRegionChange }: {
               News
             </a>
 
+            {/* Coalition - No dropdown */}
+            <a
+              href="/pilotshortage/coalition"
+              className="text-gray-700 hover:text-red-500 text-sm font-medium uppercase tracking-wide transition-colors py-2"
+            >
+              Coalition
+            </a>
+
             <RegionPicker currentRegion={currentRegion} onRegionChange={onRegionChange} />
             <a
               href="/pilotshortage/join"
