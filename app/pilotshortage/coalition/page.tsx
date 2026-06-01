@@ -383,10 +383,17 @@ export default function CoalitionPage() {
               The Frontier Is Not Inside the Gate.
               <span className="block text-red-400">It Is the 95% Outside It.</span>
             </h2>
+            <p className="text-gray-300 text-lg leading-relaxed mb-4">
+              This is not any single organization's fault. It is not a union's failure, a regulator's oversight, 
+              or a flight school's deception. It is a gap in the industry that no one addressed — because no single 
+              institution was designed to see the whole journey.
+            </p>
             <p className="text-gray-300 text-lg leading-relaxed mb-8">
-              We are not a union. We are not a trade association. We are not a regulatory body. 
-              We are the organization that looks at the pipeline and says: <em>"This is what it actually costs. 
-              This is who it actually leaves behind. And this is what we are going to do about it — together."</em>
+              We are not here to blame. We are here to build. Airlines win when the pipeline is healthy. 
+              Flight schools win when placement is transparent. Manufacturers win when their customers can crew their aircraft. 
+              And pilots win when the path to the flight deck is mapped, measured, and fair. 
+              We are the organization that says: <em>"This is what it actually costs. This is who it actually leaves behind. 
+              And this is what we are going to do about it — together."</em>
             </p>
             <Link
               to="/pilotshortage/join"
