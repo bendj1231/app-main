@@ -340,8 +340,12 @@ export default function CoalitionPage() {
                 The non-profit advocacy arm that names the gaps, measures the pipeline, and convenes the stakeholders. 
                 No profit motive. No membership dues required to access data.
               </p>
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3">
                 We advise pilots, flight schools, and airlines toward verified credentialing and transparent pathways.
+              </p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Verified through <span className="font-semibold">pilotrecognition.com</span>? 
+                PSA issues a public coalition badge — proof of verified status, trusted by airlines and ATOs.
               </p>
             </div>
 
@@ -369,10 +373,11 @@ export default function CoalitionPage() {
               <p className="text-xs font-semibold uppercase tracking-wider text-red-500 mb-3">Live Pathways & Outcomes</p>
               <p className="text-gray-600 text-sm leading-relaxed mb-4">
                 Publishes real-time airline, operator, and manufacturer requirements — not stale social media posts 
-                that have not been updated in two years.
+                that have not been updated in two years. Tracks fleet demand shifts, regulatory changes like Airbus HINFACT requirements, 
+                and airline expectation updates as they happen.
               </p>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Verified pilots from pilotrecognition.com see exactly where they stand. Unverified pilots see what they are missing. 
+                Verified pilots see exactly where they stand and how to align their career. Unverified pilots see what they are missing. 
                 Airlines and ATOs publish live expectations, not historical myths.
               </p>
             </div>
@@ -446,6 +451,63 @@ export default function CoalitionPage() {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission: Close Ourselves */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-6">
+              Our Mission Is to Close the Shortage.
+              <span className="block text-red-500">And Then Close Ourselves.</span>
+            </h2>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              The Pilot Shortage Association is not designed to be a permanent institution. We are a bridge — 
+              built to provide the necessary infrastructure for all stakeholders to close the gaps themselves.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 text-center">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ClipboardList className="w-6 h-6 text-red-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Publish the Data</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Once the pipeline is measured, the data belongs to the industry. 
+                We are the first source. We will not be the only source.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 text-center">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Handshake className="w-6 h-6 text-red-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Convene the Coalition</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Once the table is built, it belongs to the stakeholders. 
+                Our role is to set it up. Their role is to keep it running.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 text-center">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ShieldCheck className="w-6 h-6 text-red-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Verify the Pipeline</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Once verification is standard, it belongs to the platforms. 
+                pilotrecognition.com and pilotcareerpathways.com carry the torch.
+              </p>
+            </div>
+          </div>
+
+          <div className="max-w-3xl mx-auto p-6 bg-red-50 rounded-xl border border-red-100">
+            <p className="text-gray-700 text-sm leading-relaxed text-center">
+              When the pilot shortage is closed — when airlines have transparent hiring, flight schools have accountable placement rates, 
+              and every CFI earns a living wage — the coalition will have succeeded. And the Pilot Shortage Association 
+              will have fulfilled its purpose. <strong>We exist to make ourselves unnecessary.</strong>
+            </p>
           </div>
         </div>
       </section>
