@@ -212,22 +212,24 @@ export default function ConnectingPilotsHero() {
               <div className={`max-w-2xl ${slide.id === 7 ? 'mx-auto text-center' : ''}`}>
                 {/* Glass card wrapper for slide 7 */}
                 {slide.id === 7 ? (
-                  <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-8 md:p-10 shadow-2xl">
-                    {/* Tagline */}
-                    <p className="text-xs md:text-sm font-semibold uppercase tracking-wider mb-3 text-red-400">
-                      {slide.tagline}
-                    </p>
+                  <>
+                    <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-8 md:p-10 shadow-2xl mb-8">
+                      {/* Tagline */}
+                      <p className="text-xs md:text-sm font-semibold uppercase tracking-wider mb-3 text-red-400">
+                        {slide.tagline}
+                      </p>
 
-                    {/* Headline */}
-                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-snug mb-4 max-w-xl mx-auto text-white">
-                      {slide.headline}
-                      <span className="block text-red-400">{slide.headlineAccent}</span>
-                    </h1>
+                      {/* Headline */}
+                      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-snug mb-4 max-w-xl mx-auto text-white">
+                        {slide.headline}
+                        <span className="block text-red-400">{slide.headlineAccent}</span>
+                      </h1>
 
-                    {/* Description */}
-                    <p className="text-sm md:text-base max-w-lg mb-6 leading-relaxed mx-auto text-gray-200">
-                      {slide.description}
-                    </p>
+                      {/* Description */}
+                      <p className="text-sm md:text-base max-w-lg leading-relaxed mx-auto text-gray-200">
+                        {slide.description}
+                      </p>
+                    </div>
 
                     {/* CTAs */}
                     <div className="flex flex-col sm:flex-row gap-3 mb-8 justify-center">
@@ -258,7 +260,7 @@ export default function ConnectingPilotsHero() {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </>
                 ) : (
                   <>
                     {/* Tagline */}
