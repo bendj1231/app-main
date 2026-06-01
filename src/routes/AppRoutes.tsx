@@ -152,6 +152,7 @@ const ShortageAdvocacyPage = lazy(() => import('@/app/pilotshortage/advocacy/pag
 const ShortageBenefitsPage = lazy(() => import('@/app/pilotshortage/benefits/page'));
 const ShortageNewsPage = lazy(() => import('@/app/pilotshortage/news/page'));
 const ShortageJoinPage = lazy(() => import('@/app/pilotshortage/join/page'));
+const ShortagePilotGapPage = lazy(() => import('@/app/pilotshortage/pilotgap/page'));
 const CareerPathwaysApp = lazy(() => import('@/components/career-pathways/CareerPathwaysApp').then(m => ({ default: m.CareerPathwaysApp })));
 const DevDomainSelector = lazy(() => import('@/src/components/DevDomainSelector').then(m => ({ default: m.DevDomainSelector })));
 
@@ -373,6 +374,7 @@ export const AppRoutes = () => {
       <Route path="/pilotshortage/benefits" element={<ShortageBenefitsPage />} />
       <Route path="/pilotshortage/news" element={<ShortageNewsPage />} />
       <Route path="/pilotshortage/join" element={<ShortageJoinPage />} />
+      <Route path="/pilotshortage/pilotgap" element={<ShortagePilotGapPage />} />
       <Route path="/why-recognition" element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
       <Route path="/mission-vision" element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
