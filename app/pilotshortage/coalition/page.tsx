@@ -393,6 +393,14 @@ export default function CoalitionPage() {
               <span className="font-semibold">pilotshortage.org</span>. The loop closes. The pipeline becomes visible.
             </p>
           </div>
+
+          <div className="max-w-3xl mx-auto mt-8 text-center">
+            <p className="text-gray-500 text-sm">
+              These three platforms are the founding infrastructure of the coalition. But the coalition itself 
+              is open to <strong>every stakeholder</strong> aligned with closing the gaps: airlines, flight schools, ATOs, 
+              manufacturers, regulators, labor representatives, safety advocates, and pilot associations worldwide.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -411,7 +419,7 @@ export default function CoalitionPage() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mb-10">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                 <div className="text-center p-6">
                   <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Plane className="w-6 h-6 text-red-500" />
@@ -423,16 +431,30 @@ export default function CoalitionPage() {
                   <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <GraduationCap className="w-6 h-6 text-red-500" />
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1">Flight Schools</h3>
+                  <h3 className="font-bold text-gray-900 mb-1">Flight Schools & ATOs</h3>
                   <p className="text-gray-600 text-sm">Earn transparency badges. Publish placement rates. Align curriculum with hiring reality.</p>
                 </div>
                 <div className="text-center p-6">
                   <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Handshake className="w-6 h-6 text-red-500" />
+                    <Factory className="w-6 h-6 text-red-500" />
                   </div>
                   <h3 className="font-bold text-gray-900 mb-1">Manufacturers</h3>
                   <p className="text-gray-600 text-sm">Invest in pipeline health. Sponsor data collection. Ensure your customers can crew their aircraft.</p>
                 </div>
+                <div className="text-center p-6">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Landmark className="w-6 h-6 text-red-500" />
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-1">Regulators & Safety Advocates</h3>
+                  <p className="text-gray-600 text-sm">Contribute framework expertise. Shape transparent standards. Audit pipeline health.</p>
+                </div>
+              </div>
+
+              <div className="text-center mb-10">
+                <p className="text-gray-500 text-sm">
+                  And any other stakeholder committed to a healthier pipeline: labor representatives, corporate operators, 
+                  charter services, UAV operators, aerospace investors, and pilot associations worldwide.
+                </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
