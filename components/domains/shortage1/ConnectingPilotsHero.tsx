@@ -210,51 +210,104 @@ export default function ConnectingPilotsHero() {
             >
               {/* Text Content */}
               <div className={`max-w-2xl ${slide.id === 7 ? 'mx-auto text-center' : ''}`}>
-                {/* Tagline */}
-                <p className={`text-xs md:text-sm font-semibold uppercase tracking-wider mb-3 ${slide.id === 7 ? 'text-red-400' : 'text-red-500'}`}>
-                  {slide.tagline}
-                </p>
+                {/* Glass card wrapper for slide 7 */}
+                {slide.id === 7 ? (
+                  <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-8 md:p-10 shadow-2xl">
+                    {/* Tagline */}
+                    <p className="text-xs md:text-sm font-semibold uppercase tracking-wider mb-3 text-red-400">
+                      {slide.tagline}
+                    </p>
 
-                {/* Headline */}
-                <h1 className={`text-2xl md:text-3xl lg:text-4xl font-bold leading-snug mb-4 max-w-xl ${slide.id === 7 ? 'text-white mx-auto' : 'text-gray-900'}`}>
-                  {slide.headline}
-                  <span className={`block ${slide.id === 7 ? 'text-red-400' : 'text-red-500'}`}>{slide.headlineAccent}</span>
-                </h1>
+                    {/* Headline */}
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-snug mb-4 max-w-xl mx-auto text-white">
+                      {slide.headline}
+                      <span className="block text-red-400">{slide.headlineAccent}</span>
+                    </h1>
 
-                {/* Description */}
-                <p className={`text-sm md:text-base max-w-lg mb-6 leading-relaxed ${slide.id === 7 ? 'text-gray-200 mx-auto' : 'text-gray-600'}`}>
-                  {slide.description}
-                </p>
+                    {/* Description */}
+                    <p className="text-sm md:text-base max-w-lg mb-6 leading-relaxed mx-auto text-gray-200">
+                      {slide.description}
+                    </p>
 
-                {/* CTAs */}
-                <div className={`flex flex-col sm:flex-row gap-3 mb-8 ${slide.id === 7 ? 'justify-center' : ''}`}>
-                  <a
-                    href={slide.ctaPrimary.href}
-                    className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 text-sm"
-                  >
-                    {slide.ctaPrimary.text}
-                    <ArrowRight className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={slide.ctaSecondary.href}
-                    className={`inline-flex items-center justify-center gap-2 font-bold py-3 px-6 rounded-lg border transition-all text-sm ${slide.id === 7 ? 'bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm' : 'bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300'}`}
-                  >
-                    {slide.ctaSecondary.text}
-                  </a>
-                </div>
-
-                {/* Stats */}
-                <div className={`grid grid-cols-3 gap-6 max-w-md ${slide.id === 7 ? 'mx-auto' : ''}`}>
-                  {slide.stats.map((stat, idx) => (
-                    <div key={idx} className="text-center">
-                      <div className="flex justify-center mb-2">
-                        <stat.icon className={`w-6 h-6 ${slide.id === 7 ? 'text-red-400' : 'text-red-500'}`} />
-                      </div>
-                      <div className={`text-xl font-bold ${slide.id === 7 ? 'text-white' : 'text-gray-900'}`}>{stat.value}</div>
-                      <div className={`text-[10px] ${slide.id === 7 ? 'text-gray-300' : 'text-gray-500'}`}>{stat.label}</div>
+                    {/* CTAs */}
+                    <div className="flex flex-col sm:flex-row gap-3 mb-8 justify-center">
+                      <a
+                        href={slide.ctaPrimary.href}
+                        className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 text-sm"
+                      >
+                        {slide.ctaPrimary.text}
+                        <ArrowRight className="w-5 h-5" />
+                      </a>
+                      <a
+                        href={slide.ctaSecondary.href}
+                        className="inline-flex items-center justify-center gap-2 font-bold py-3 px-6 rounded-lg border transition-all text-sm bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm"
+                      >
+                        {slide.ctaSecondary.text}
+                      </a>
                     </div>
-                  ))}
-                </div>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-3 gap-6 max-w-md mx-auto">
+                      {slide.stats.map((stat, idx) => (
+                        <div key={idx} className="text-center">
+                          <div className="flex justify-center mb-2">
+                            <stat.icon className="w-6 h-6 text-red-400" />
+                          </div>
+                          <div className="text-xl font-bold text-white">{stat.value}</div>
+                          <div className="text-[10px] text-gray-300">{stat.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Tagline */}
+                    <p className="text-xs md:text-sm font-semibold uppercase tracking-wider mb-3 text-red-500">
+                      {slide.tagline}
+                    </p>
+
+                    {/* Headline */}
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-snug mb-4 max-w-xl">
+                      {slide.headline}
+                      <span className="block text-red-500">{slide.headlineAccent}</span>
+                    </h1>
+
+                    {/* Description */}
+                    <p className="text-sm md:text-base text-gray-600 max-w-lg mb-6 leading-relaxed">
+                      {slide.description}
+                    </p>
+
+                    {/* CTAs */}
+                    <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                      <a
+                        href={slide.ctaPrimary.href}
+                        className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 text-sm"
+                      >
+                        {slide.ctaPrimary.text}
+                        <ArrowRight className="w-5 h-5" />
+                      </a>
+                      <a
+                        href={slide.ctaSecondary.href}
+                        className="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg border border-gray-300 transition-all text-sm"
+                      >
+                        {slide.ctaSecondary.text}
+                      </a>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-3 gap-6 max-w-md">
+                      {slide.stats.map((stat, idx) => (
+                        <div key={idx} className="text-center">
+                          <div className="flex justify-center mb-2">
+                            <stat.icon className="w-6 h-6 text-red-500" />
+                          </div>
+                          <div className="text-xl font-bold text-gray-900">{stat.value}</div>
+                          <div className="text-[10px] text-gray-500">{stat.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
 
             </div>
