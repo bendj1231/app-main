@@ -316,6 +316,79 @@ export default function CoalitionPage() {
         </div>
       </section>
 
+      {/* Coalition Ecosystem */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-6">
+              Built on a Verified Ecosystem
+            </h2>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              The Coalition is powered by three interconnected platforms working together to close the gaps 
+              no single organization could close alone.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="bg-gray-50 rounded-xl p-8 border border-gray-200 hover:border-red-200 hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                <Globe className="w-6 h-6 text-red-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">pilotshortage.org</h3>
+              <p className="text-xs font-semibold uppercase tracking-wider text-red-500 mb-3">The Coalition Hub</p>
+              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                The non-profit advocacy arm that names the gaps, measures the pipeline, and convenes the stakeholders. 
+                No profit motive. No membership dues required to access data.
+              </p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                We advise pilots, flight schools, and airlines toward verified credentialing and transparent pathways.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-8 border border-gray-200 hover:border-red-200 hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                <ShieldCheck className="w-6 h-6 text-red-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">pilotrecognition.com</h3>
+              <p className="text-xs font-semibold uppercase tracking-wider text-red-500 mb-3">Verification & Trust</p>
+              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                Provides independent verification of pilot credentials, logbook hours, and training records. 
+                Reduces falsification. Creates a single source of truth for who a pilot actually is and what they have actually done.
+              </p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Airlines, operators, and manufacturers can trust what they see — because it has been verified, not self-reported.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-8 border border-gray-200 hover:border-red-200 hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                <Map className="w-6 h-6 text-red-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">pilotcareerpathways.com</h3>
+              <p className="text-xs font-semibold uppercase tracking-wider text-red-500 mb-3">Live Pathways & Outcomes</p>
+              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                Publishes real-time airline, operator, and manufacturer requirements — not stale social media posts 
+                that have not been updated in two years.
+              </p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Verified pilots see where they stand. Unverified pilots see what they are missing. 
+                Airlines and ATOs publish live expectations, not historical myths.
+              </p>
+            </div>
+          </div>
+
+          <div className="max-w-3xl mx-auto mt-12 p-6 bg-red-50 rounded-xl border border-red-100">
+            <p className="text-gray-700 text-sm leading-relaxed text-center">
+              <strong>How it works together:</strong> A pilot gets verified through{" "}
+              <span className="font-semibold">pilotrecognition.com</span>. Their verified profile is matched against 
+              live pathways on <span className="font-semibold">pilotcareerpathways.com</span>. Their outcomes — and the 
+              gaps they still face — feed back into the data published by{" "}
+              <span className="font-semibold">pilotshortage.org</span>. The loop closes. The pipeline becomes visible.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Partner With Us */}
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="container mx-auto px-4">
