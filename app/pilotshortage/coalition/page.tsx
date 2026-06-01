@@ -122,34 +122,35 @@ export default function CoalitionPage() {
               The Aviation Pipeline Coalition
             </div>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              No Single Institution
-              <span className="block text-red-400">Owns the Pipeline.</span>
+              Where Aviation Comes
+              <span className="block text-red-400">Together to Connect.</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
-              Airlines need pilots. Flight schools need students. Manufacturers need customers. 
-              Regulators need safe skies. But no one measures what happens between them — 
-              and no one claims the gaps in between.
+              Airlines contribute hiring opportunities. Flight schools contribute trained graduates. 
+              Manufacturers contribute the aircraft. Regulators contribute safety. 
+              Together, we are building the connections that ensure every graduating pilot has a mapped, 
+              transparent, and fair pathway into the profession.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/pilotshortage/join"
                 className="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105"
               >
-                Join the Coalition
+                Partner With the Coalition
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
                 href="#the-gaps"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-8 rounded-lg transition-all backdrop-blur-sm border border-white/20"
               >
-                See the Gaps
+                See What We Are Building
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* The Problem Statement */}
+      {/* The Opportunity */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
