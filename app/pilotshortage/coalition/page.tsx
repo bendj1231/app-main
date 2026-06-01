@@ -356,7 +356,8 @@ export default function CoalitionPage() {
                 Reduces falsification. Creates a single source of truth for who a pilot actually is and what they have actually done.
               </p>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Airlines, operators, and manufacturers can trust what they see — because it has been verified, not self-reported.
+                Verification here unlocks pathways on pilotcareerpathways.com automatically. 
+                One profile. Two platforms. Zero friction.
               </p>
             </div>
 
@@ -371,7 +372,7 @@ export default function CoalitionPage() {
                 that have not been updated in two years.
               </p>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Verified pilots see where they stand. Unverified pilots see what they are missing. 
+                Verified pilots from pilotrecognition.com see exactly where they stand. Unverified pilots see what they are missing. 
                 Airlines and ATOs publish live expectations, not historical myths.
               </p>
             </div>
@@ -380,9 +381,10 @@ export default function CoalitionPage() {
           <div className="max-w-3xl mx-auto mt-12 p-6 bg-red-50 rounded-xl border border-red-100">
             <p className="text-gray-700 text-sm leading-relaxed text-center">
               <strong>How it works together:</strong> A pilot gets verified through{" "}
-              <span className="font-semibold">pilotrecognition.com</span>. Their verified profile is matched against 
-              live pathways on <span className="font-semibold">pilotcareerpathways.com</span>. Their outcomes — and the 
-              gaps they still face — feed back into the data published by{" "}
+              <span className="font-semibold">pilotrecognition.com</span>. That same verified profile unlocks live pathways 
+              on <span className="font-semibold">pilotcareerpathways.com</span> — no re-entering hours, no re-uploading documents. 
+              Verified users see exactly where they stand against real airline, operator, and manufacturer requirements. 
+              Their outcomes — and the gaps they still face — feed back into the data published by{" "}
               <span className="font-semibold">pilotshortage.org</span>. The loop closes. The pipeline becomes visible.
             </p>
           </div>
