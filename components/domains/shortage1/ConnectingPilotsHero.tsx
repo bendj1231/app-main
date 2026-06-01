@@ -146,19 +146,16 @@ export default function ConnectingPilotsHero() {
   const handleNext = useCallback(() => {
     nextSlide();
     setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
   }, [nextSlide]);
 
   const handlePrev = useCallback(() => {
     prevSlide();
     setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
   }, [prevSlide]);
 
   const goToSlide = (index: number) => {
     setActiveSlide(index);
     setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
   useEffect(() => {
