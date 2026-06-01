@@ -112,6 +112,21 @@ const slides = [
       { icon: Award, value: '$50K', label: 'Broken Promise' },
     ],
   },
+  {
+    id: 7,
+    bgImage: '/building.png',
+    tagline: 'Systemic Collapse',
+    headline: 'Aviation Is Collapsing',
+    headlineAccent: 'at Its Base.',
+    description: 'The foundation is cracking. Flight academies churn out pilots airlines will not hire. Instructors with 6,000 hours cannot advance. The pipeline is not broken — it is inverted. And the industry pretends not to see.',
+    ctaPrimary: { text: 'Join the Fight', href: '/pilotshortage/join' },
+    ctaSecondary: { text: 'Read the UCF', href: '/pilotshortage/ucf' },
+    stats: [
+      { icon: Users, value: '80%', label: 'Pipeline Failure' },
+      { icon: Globe, value: '6K+', label: 'Stuck Instructors' },
+      { icon: Award, value: '0', label: 'Industry Action' },
+    ],
+  },
 ];
 
 export default function ConnectingPilotsHero() {
