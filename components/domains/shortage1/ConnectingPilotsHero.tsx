@@ -119,7 +119,7 @@ const slides = [
     headline: 'Aviation Is Collapsing',
     headlineAccent: 'at Its Base.',
     description: 'The foundation is cracking. Flight academies churn out pilots airlines will not hire. Instructors with 6,000 hours cannot advance. The pipeline is not broken — it is inverted. And the industry pretends not to see.',
-    ctaPrimary: { text: 'Join the Fight', href: '/pilotshortage/join' },
+    ctaPrimary: { text: 'Become a Member', href: '/pilotshortage/join' },
     ctaSecondary: { text: 'Read the UCF', href: '/pilotshortage/ucf' },
     stats: [
       { icon: Users, value: '80%', label: 'Pipeline Failure' },
