@@ -102,7 +102,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
   const [slotDraft, setSlotDraft] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [debugOpen, setDebugOpen] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   // Photo uploads per slot
   const [photoUploading, setPhotoUploading] = useState<Record<string, boolean>>({});
   const [photoError, setPhotoError] = useState<Record<string, string | null>>({});
@@ -455,40 +455,6 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
       background: '#f1f5f9',
       minHeight: '100%',
     }}>
-      {/* DEBUG BANNER */}
-      {embedded ? (
-        <div style={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: 0, 
-          right: 0, 
-          background: '#16a34a', 
-          color: 'white', 
-          padding: '2px', 
-          zIndex: 99999,
-          fontSize: '9px',
-          fontWeight: 'bold',
-          textAlign: 'center'
-        }}>
-          🔧 DEBUG: WalletViewPage (EMBEDDED) | Tab: {activeTab}
-        </div>
-      ) : (
-        <div style={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: 0, 
-          right: 0, 
-          background: '#f59e0b', 
-          color: 'white', 
-          padding: '4px', 
-          zIndex: 99999,
-          fontSize: '10px',
-          fontWeight: 'bold',
-          textAlign: 'center'
-        }}>
-          🔧 DEBUG: WalletViewPage (STANDALONE) | User: {userId?.slice(0,8) || 'none'} | Tab: {activeTab}
-        </div>
-      )}
       <style>{`
         @keyframes wvFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes wvShimmer { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
@@ -1805,12 +1771,12 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
         {/* How to use guide */}
         <div style={{ marginBottom: 16 }}>
           <button
-            onClick={() => setDebugOpen(o => !o)}
+            onClick={() => setShowGuide(o => !o)}
             style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}
           >
-            <span style={{ fontSize: 10, fontWeight: 700, color: '#0f172a' }}>How does this work? {debugOpen ? '▲' : '▼'}</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: '#0f172a' }}>How does this work? {showGuide ? '▲' : '▼'}</span>
           </button>
-          {debugOpen && (
+          {showGuide && (
             <div style={{ marginTop: 12 }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 12 }}>
                 {[

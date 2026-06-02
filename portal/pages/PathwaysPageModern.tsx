@@ -94,6 +94,7 @@ import {
   calcMatchProbability,
   analyzeRequirementAlignment,
 } from './pathways/components/pathwayAnalysis';
+import { GlassCard } from './pathways/components/GlassCard';
 
 // ============================================================================
 // HARDCODED CATEGORY CONSTANTS
@@ -1329,27 +1330,6 @@ const transformJobToPathway = (job: typeof jobApplicationListings[0], index: num
 // ============================================================================
 // COMPONENTS
 // ============================================================================
-
-// Glassmorphism Card - supports both light and dark modes
-const GlassCard: React.FC<{ children: React.ReactNode; className?: string; onClick?: () => void; isDarkMode?: boolean }> = ({ 
-  children, 
-  className = '', 
-  onClick,
-  isDarkMode = true 
-}) => (
-  <motion.div
-    className={`backdrop-blur-xl rounded-2xl overflow-hidden ${
-      isDarkMode 
-        ? 'bg-slate-900/40 border border-slate-700/50' 
-        : 'bg-white/70 border border-slate-200/50 shadow-lg'
-    } ${className}`}
-    onClick={onClick}
-    whileHover={{ scale: onClick ? 1.01 : 1, borderColor: isDarkMode ? 'rgba(148, 163, 184, 0.3)' : 'rgba(148, 163, 184, 0.5)' }}
-    transition={{ duration: 0.2 }}
-  >
-    {children}
-  </motion.div>
-);
 
 // Pathway Card (YouTube-style) - supports both light and dark modes
 const PathwayCard: React.FC<{ 
