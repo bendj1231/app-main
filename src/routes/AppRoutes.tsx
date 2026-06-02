@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
@@ -21,14 +22,14 @@ const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
       ];
       const isAllowed = allowedHosts.some(host => url.hostname === host || url.hostname.endsWith('.' + host));
       if (isAllowed || url.protocol === 'mailto:') {
-        window.location.href = to;
+        safeRedirect(to);
       } else {
         console.warn('Blocked external redirect to non-allowed host:', url.hostname);
-        window.location.href = '/';
+        safeRedirect('/');
       }
     } catch {
       console.warn('Invalid external redirect URL:', to);
-      window.location.href = '/';
+      safeRedirect('/');
     }
   }, [to]);
   return null;

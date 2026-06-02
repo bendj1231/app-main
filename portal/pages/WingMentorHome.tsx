@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
 import { RecognitionAchievementPage } from './RecognitionAchievementPage';
@@ -2851,7 +2852,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
                   </div>
                   <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                     <button
-                      onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com?subject=Personalized Pathway & Internship Inquiry&body=I am interested in learning more about personalized aviation pathways for my pilot career and internship opportunities with PilotRecognition.'}
+                      onClick={() => safeRedirect('mailto:contact@pilotrecognition.com?subject=Personalized Pathway & Internship Inquiry&body=I am interested in learning more about personalized aviation pathways for my pilot career and internship opportunities with PilotRecognition.')}
                       style={{
                         padding: '0.85rem 1.75rem',
                         borderRadius: '12px',
@@ -3573,7 +3574,7 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
               transition: 'all 0.2s ease',
               boxShadow: isDarkMode ? '0 8px 20px rgba(2,6,23,0.32)' : '0 1px 2px rgba(0,0,0,0.05)'
             }}
-            onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
+            onClick={() => safeRedirect('mailto:contact@pilotrecognition.com')}
           >
             ✉️ Contact Support
           </button>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { AlertCircle, X } from 'lucide-react';
 
 interface ExamTerminalProps {
@@ -61,7 +62,7 @@ const ExamTerminal: React.FC<ExamTerminalProps> = ({ isMini = false, onExit }) =
         <div className={`absolute top-0 left-0 w-full h-16 z-50 transition-opacity duration-300 ${showExit ? 'opacity-100' : 'opacity-0'} pointer-events-none`}>
             <div className="absolute top-4 left-4 pointer-events-auto">
                 <button 
-                    onClick={() => window.location.href = '/access-portal-2'} // Go back to Portal 2
+                    onClick={() => safeRedirect('/access-portal-2')} // Go back to Portal 2
                     className="bg-blue-900/80 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md border border-white/10 flex items-center gap-2 transition-all shadow-lg"
                 >
                     ← Back to Portal 2

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -106,7 +107,7 @@ export const OAuthCallback = () => {
         <div style={{ textAlign: 'center' }}>
           <h2 style={{ color: '#dc2626' }}>Authentication Error</h2>
           <p style={{ color: '#64748b' }}>{error.message}</p>
-          <button onClick={() => window.location.href = '/'} style={{ marginTop: '16px', padding: '8px 16px' }}>
+          <button onClick={() => safeRedirect('/')} style={{ marginTop: '16px', padding: '8px 16px' }}>
             Go Home
           </button>
         </div>

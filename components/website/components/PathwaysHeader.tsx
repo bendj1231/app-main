@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { ArrowLeft, Bell, User, Settings, LogOut, Building2 } from 'lucide-react';
 import { useAuth } from '../../../src/contexts/AuthContext';
 
@@ -30,13 +31,13 @@ export const PathwaysHeader: React.FC<PathwaysHeaderProps> = ({ onBack, onNaviga
     if (onBack) {
       onBack();
     } else {
-      window.location.href = '/portal';
+      safeRedirect('/portal');
     }
   };
 
   const handleLogout = async () => {
     await logout();
-    window.location.href = '/';
+    safeRedirect('/');
   };
 
   return (

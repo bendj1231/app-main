@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 
 const safeRedirect = (path: string) => {
-  window.location.href = path;
+  safeRedirect(path);
 };
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {

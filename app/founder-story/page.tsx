@@ -1,4 +1,5 @@
 import { FounderStoryPage } from '@/components/website/components/FounderStoryPage';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -39,8 +40,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <FounderStoryPage
-      onNavigate={(page) => { window.location.href = `/${page}`; }}
-      onLogin={() => { window.location.href = '/login'; }}
+      onNavigate={(page) => { safeRedirect(`/${page)}`; }}
+      onLogin={() => { safeRedirect('/login'); }}
     />
   );
 }

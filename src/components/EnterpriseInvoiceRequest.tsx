@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 
 interface EnterpriseInvoiceRequestProps {
   onSubmitted?: () => void;
@@ -50,7 +51,7 @@ export const EnterpriseInvoiceRequest: React.FC<EnterpriseInvoiceRequestProps> =
 
       // If checkout method, redirect to Stripe Checkout immediately
       if (data.paymentMethod === 'checkout' && data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
+        safeRedirect(data.checkoutUrl);
         return;
       }
 

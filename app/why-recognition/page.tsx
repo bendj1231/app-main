@@ -1,4 +1,5 @@
 import { WhyRecognitionPage } from '@/components/website/components/WhyRecognitionPage';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -43,7 +44,7 @@ export default function WhyRecognitionRoute() {
         {/* Coded by Benjamin Bowler */} window.history.back()} 
       onNavigate={(page: string) => {
         if (page.startsWith('/')) {
-          window.location.href = page;
+          safeRedirect(page);
         } else {
 // [AUDIT] Removed console.log // line 48
         }

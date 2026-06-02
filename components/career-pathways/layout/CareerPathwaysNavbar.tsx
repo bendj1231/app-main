@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { useLocation, Link } from 'react-router-dom';
 import {
   Target,
@@ -391,7 +392,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
               <button
                 onClick={() => {
                   setIsEnterpriseModalOpen(false);
-                  window.location.href = '/enterprise-login';
+                  safeRedirect('/enterprise-login');
                 }}
                 className="group flex flex-col justify-between p-8 text-left bg-blue-50 hover:bg-blue-100 transition-all"
               >

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAccountTier } from '../../../../src/hooks/useAccountTier';
 import { 
@@ -955,7 +956,7 @@ export const DocumentVaultPage: React.FC<DocumentVaultPageProps> = ({ onBack, on
                 Close
               </button>
               <button
-                onClick={() => window.location.href = '/recognition-plus'}
+                onClick={() => safeRedirect('/recognition-plus')}
                 style={{
                   padding: '0.5rem 1rem',
                   border: 'none',

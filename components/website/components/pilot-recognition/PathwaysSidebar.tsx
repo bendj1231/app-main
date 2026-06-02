@@ -1,4 +1,5 @@
 import React from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../../../src/contexts/AuthContext';
 import { Target, TrendingUp, Award, Compass, Zap, BarChart3, Route, Star } from 'lucide-react';
@@ -104,7 +105,7 @@ export const PathwaysSidebar: React.FC<PathwaysSidebarProps> = ({
                 if (onNavigate) {
                   onNavigate(item.page);
                 } else {
-                  window.location.href = `/${item.page}`;
+                  safeRedirect(`/${item.page)}`;
                 }
               }}
               style={{

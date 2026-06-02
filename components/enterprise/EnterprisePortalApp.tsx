@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Plane, Briefcase, Building2, Search,
@@ -2633,8 +2634,8 @@ export function EnterprisePortalApp() {
   const isSuperAdmin = userProfile?.role === 'super_admin';
 
   useEffect(() => {
-    if (!loading && !user) window.location.href = '/enterprise/login';
-    if (!loading && user && !user.enterprise_access) window.location.href = '/enterprise/login';
+    if (!loading && !user) safeRedirect('/enterprise/login');
+    if (!loading && user && !user.enterprise_access) safeRedirect('/enterprise/login');
   }, [user, loading]);
 
   // Check if current user is an enterprise manager
@@ -2672,7 +2673,7 @@ export function EnterprisePortalApp() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); window.location.href = '/enterprise/login'; }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} isSuperAdmin={isSuperAdmin} />
+      <Sidebar page={page} setPage={setPage} account={account} onLogout={async () => { await logout(); safeRedirect('/enterprise/login'); }} collapsed={collapsed} setCollapsed={setCollapsed} isManager={isManager} isFlightSchool={isFlightSchool} isSuperAdmin={isSuperAdmin} />
       <main className="flex-1 overflow-y-auto p-6 lg:p-8">
         {page === 'dashboard' && <OperatorIntelDashboard user={user} account={account} onNavigate={(p) => setPage(p as Page)} />}
         {page === 'pathway-cards' && <PathwayCardsPage user={user} account={account} />}

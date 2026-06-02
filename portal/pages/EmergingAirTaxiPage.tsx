@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Icons } from '../icons';
 
 interface EmergingAirTaxiPageProps {
@@ -303,7 +304,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
                                     Take the first step toward becoming an eVTOL pilot with our specialized Air Taxi Pathway program.
                                 </p>
                                 <button
-                                    onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com?subject=Air Taxi Pathway Inquiry&body=I am interested in learning more about the Emerging Air Taxi pathway through PilotRecognition.'}
+                                    onClick={() => safeRedirect('mailto:contact@pilotrecognition.com?subject=Air Taxi Pathway Inquiry&body=I am interested in learning more about the Emerging Air Taxi pathway through PilotRecognition.')}
                                     style={{
                                         padding: '1rem 2.5rem',
                                         background: '#2563eb',
@@ -366,7 +367,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
                             transition: 'all 0.2s ease',
                             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                         }}
-                        onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
+                        onClick={() => safeRedirect('mailto:contact@pilotrecognition.com')}
                     >
                         ✉️ Contact Support
                     </button>

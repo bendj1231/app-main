@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MeshGradient } from '@paper-design/shaders-react';
@@ -326,7 +327,7 @@ const HomeTab: React.FC<{
       subtitle: 'Find training providers worldwide',
       image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
       size: 'medium',
-      onClick: () => window.location.href = '/type-rating-search'
+      onClick: () => safeRedirect('/type-rating-search')
     },
     {
       id: 'airlines',
@@ -515,7 +516,7 @@ const HomeTab: React.FC<{
           {/* TYPE RATING SEARCH */}
           <div
             className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => window.location.href = '/type-rating-search'}
+            onClick={() => safeRedirect('/type-rating-search')}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80')" }} />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />
@@ -3343,7 +3344,7 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
         </div>
         <div className="flex flex-col gap-2 mt-3">
           <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2 text-sm font-black tracking-wide text-white transition-all hover:brightness-110 rounded-xl" style={{ background: '#dc2626' }}>{dashTier === 'free' ? 'Get Recognition Free' : 'Login'}</button>
-          <button onClick={() => window.location.href = '/become-member'} className="w-full py-2 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl" style={{ background: 'linear-gradient(90deg,#f59e0b,#f97316)', color: '#fff' }}>{dashTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}</button>
+          <button onClick={() => safeRedirect('/become-member')} className="w-full py-2 text-sm font-black tracking-wide transition-all hover:brightness-110 rounded-xl" style={{ background: 'linear-gradient(90deg,#f59e0b,#f97316)', color: '#fff' }}>{dashTier === 'free' ? 'Want verification? Upgrade to Recognition+ ($99/yr) →' : 'Join Recognition+ ($99/yr) →'}</button>
         </div>
         <div className="flex items-center gap-4 mt-2 pt-2 border-t border-slate-100">
           {[{ name: 'Auth0 Secured', dot: '#3b82f6' }, { name: 'Helio Payments', dot: '#a855f7' }, { name: 'Veremark Verified', dot: '#16a34a' }].map(({ name, dot }, i) => (
@@ -3455,7 +3456,7 @@ const DashboardTab: React.FC<{ profile: any; onNavigate: (p: string) => void }> 
                 <span className="flex items-center gap-1"><Award size={12} /> Industry certification</span>
                 <span className="flex items-center gap-1"><Target size={12} /> Progress tracking</span>
               </div>
-              <button onClick={() => { window.location.href = '/examination-portal'; }} className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all">
+              <button onClick={() => { safeRedirect('/examination-portal'); }} className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all">
                 <PlayCircle size={18} /> Access Examination Portal
               </button>
             </div>
@@ -3623,7 +3624,7 @@ const ProgramsTab: React.FC<{ onNavigate: (p: string) => void }> = ({ onNavigate
             {/* Examination Portal */}
             <div
               className="relative group cursor-pointer overflow-hidden flex-1 min-h-0 border border-white/20 hover:scale-[1.02] transition-transform"
-              onClick={() => { window.location.href = '/examination-portal'; }}
+              onClick={() => { safeRedirect('/examination-portal'); }}
             >
               <img src="/ep.png" alt="Examination Portal" className="absolute inset-0 w-full h-full object-cover"
                 onError={e => { e.currentTarget.style.display = 'none'; }} />
@@ -4989,7 +4990,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                 LOGIN
               </button>
               <button
-                onClick={() => { window.location.href = '/become-member'; }}
+                onClick={() => { safeRedirect('/become-member'); }}
                 className="px-4 py-1.5 text-xs font-bold tracking-wider text-white rounded-lg transition-all"
                 style={{ background: 'rgba(239,68,68,0.8)', border: '1px solid rgba(239,68,68,0.5)' }}
               >

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronRight, X } from 'lucide-react';
 import { detectRegionalPricing, formatPrice, type RegionalPrice } from '../../lib/regionalPricing';
@@ -235,7 +236,7 @@ export default function RecognitionPlusPage() {
             }
 
             const { url: checkoutUrl } = await response.json();
-            window.location.href = checkoutUrl;
+            safeRedirect(checkoutUrl);
         } catch (error: any) {
             console.error('Checkout error:', error);
             alert(`Failed to start checkout: ${error.message}`);

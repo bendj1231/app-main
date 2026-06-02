@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
@@ -2930,7 +2931,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }, {
                       id: 'informed-applicant',
                       title: 'The Informed Pilot Applicant',
-                      subtitle: 'Know Before You Apply',
+                      subtitle: 'Know Before You Submit Interest',
                       description: 'Understanding operator expectations before application saves time and demonstrates your commitment to professional preparation and industry awareness.',
                       image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop',
                       expectations: [
@@ -3063,7 +3064,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Contact Support Button */}
               <button
-                onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
+                onClick={() => safeRedirect('mailto:contact@pilotrecognition.com')}
                 style={{
                   padding: '0.75rem 2rem',
                   borderRadius: '12px',

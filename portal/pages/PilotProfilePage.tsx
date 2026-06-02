@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Icons } from '../icons';
 import { useAirlinePassport } from '../hooks/useAirlinePassport';
 import { usePilotPortfolio } from '../hooks/usePilotPortfolio';
@@ -1195,7 +1196,7 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
                               if (onViewAtlas) {
                                 onViewAtlas();
                               } else {
-                                window.location.href = '/atlas-resume';
+                                safeRedirect('/atlas-resume');
                               }
                             }}
                           >

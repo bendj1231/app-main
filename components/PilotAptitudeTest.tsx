@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Brain, CheckCircle2, XCircle, ArrowRight, TrendingUp } from 'lucide-react';
 
 interface PilotAptitudeTestProps {
@@ -394,7 +395,7 @@ export const PilotAptitudeTest: React.FC<PilotAptitudeTestProps> = ({
             Retake Test
           </button>
           <button
-            onClick={() => window.location.href = '/pathways-modern'}
+            onClick={() => safeRedirect('/pathways-modern')}
             className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-colors bg-sky-500 hover:bg-sky-600 text-white`}
           >
             View Training Resources

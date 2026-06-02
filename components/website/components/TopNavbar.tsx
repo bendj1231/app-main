@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '@/src/lib/supabase';
 import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
@@ -494,11 +495,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         }
         // External URLs: use full browser redirect
         if (target.startsWith('http://') || target.startsWith('https://')) {
-            window.location.href = target;
+            safeRedirect(target);
         }
         // Use page routing for Portal 2 URLs
         else if (target.startsWith('/access-portal-2')) {
-            window.location.href = target;
+            safeRedirect(target);
         } else {
             onNavigate(target);
         }
@@ -963,7 +964,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                                 {notification.metadata?.action_url && (
                                                                                     <button
                                                                                         onClick={() => {
-                                                                                            window.location.href = notification.metadata.action_url;
+                                                                                            safeRedirect(notification.metadata.action_url);
                                                                                             setIsNotificationDropdownOpen(false);
                                                                                         }}
                                                                                         className="text-xs font-medium text-blue-600 hover:text-blue-700"

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { TopNavbar } from './TopNavbar';
 
 interface W2000ApplicationPageProps {
@@ -23,12 +24,12 @@ export const W2000ApplicationPage: React.FC<W2000ApplicationPageProps> = ({ onBa
             } else {
 // [AUDIT] Removed console.log // line 24
                 // Method 2: Fallback to redirect
-                window.location.href = w2000Url;
+                safeRedirect(w2000Url);
             }
         } catch (error) {
             console.error('[DEBUG W2000ApplicationPage] Error opening W2000:', error);
             // Method 3: Fallback to redirect
-            window.location.href = w2000Url;
+            safeRedirect(w2000Url);
         }
         
         // Navigate back to Portal 2 programs tab after a short delay

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard, Trash2 } from 'lucide-react';
 import { StorageEngineCard } from './StorageEngineCard';
 import { supabase } from '../../../src/lib/supabase';
@@ -24,7 +25,7 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
             if (!session?.user?.id) throw new Error('Not authenticated');
             await supabase.from('profiles').delete().eq('id', session.user.id);
             await supabase.auth.signOut();
-            window.location.href = '/';
+            safeRedirect('/');
         } catch (e: any) {
             setDeleteError(e?.message || 'Failed to delete account.');
             setDeleting(false);

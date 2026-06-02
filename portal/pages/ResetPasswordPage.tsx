@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '../lib/supabase-auth';
 import { Icons } from '../icons';
 
@@ -288,7 +289,7 @@ export const ResetPasswordPage: React.FC = () => {
                         Your password has been successfully updated. You can now sign in with your new password.
                     </p>
                     <button
-                        onClick={() => window.location.href = '/'}
+                        onClick={() => safeRedirect('/')}
                         style={{
                             width: '100%',
                             padding: '1.1rem 2.75rem',

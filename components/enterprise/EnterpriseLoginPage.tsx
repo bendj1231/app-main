@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { motion } from 'framer-motion';
 import { Lock, Mail, AlertCircle, ArrowRight, Building2, ChevronRight, ChevronDown } from 'lucide-react';
 import { useEnterpriseAuth } from './hooks/useEnterpriseAuth';
@@ -67,7 +68,7 @@ export function EnterpriseLoginPage() {
     setSubmitting(true);
     const ok = await login(email, password);
     setSubmitting(false);
-    if (ok) window.location.href = '/enterprise/dashboard';
+    if (ok) safeRedirect('/enterprise/dashboard');
   };
 
   if (loading) {

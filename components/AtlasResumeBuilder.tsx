@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { getUserSubscription, checkFeatureAccess } from '@/lib/subscription-gating';
 import { 
@@ -340,7 +341,7 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
             </ul>
           </div>
           <button
-            onClick={() => window.location.href = '/subscription'}
+            onClick={() => safeRedirect('/subscription')}
             className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
           >
             Upgrade to Premium

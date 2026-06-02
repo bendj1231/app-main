@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '../../shared/lib/supabase';
 import { Upload, Check, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -242,7 +243,7 @@ export const FlightSchoolOnboarding: React.FC<FlightSchoolOnboardingProps> = ({ 
             </p>
           </div>
           <button
-            onClick={() => window.location.href = `/flight-school/${flightSchoolId}`}
+            onClick={() => safeRedirect(`/flight-school/${flightSchoolId)}`}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition"
           >
             Go to Dashboard

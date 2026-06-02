@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronRight, Home, Users, User, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle, LogOut } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -587,7 +588,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             <button
                                 onClick={() => {
 // [AUDIT] Removed console.log // line 589
-                                    window.location.href = '/become-member';
+                                    safeRedirect('/become-member');
                                 }}
                                 className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
                             >
@@ -883,7 +884,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         } catch (error) {
                                             console.error('[DEBUG Portal 2] Error in onNavigate:', error);
                                             // Fallback navigation
-                                            window.location.href = '/pilot-recognition-profile';
+                                            safeRedirect('/pilot-recognition-profile');
                                         }
                                     }}
                                     className="w-full flex items-center gap-3 px-6 py-4 group-hover:bg-white/5 transition-colors border-t border-white/10 cursor-pointer"
@@ -922,7 +923,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             <button
                                                 onClick={() => {
 // [AUDIT] Removed console.log // line 924
-                                                    window.location.href = '/become-member';
+                                                    safeRedirect('/become-member');
                                                 }}
                                                 className="w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
                                             >
@@ -1258,7 +1259,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => {
 // [AUDIT] Removed console.log // line 1260
-                                                         window.location.href = '/examination-portal';
+                                                         safeRedirect('/examination-portal');
                                                      }}>
                                                     {/* Directory Card - Image with text overlay */}
                                                     <div className={`
@@ -1433,7 +1434,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                         onClick={() => {
 // [AUDIT] Removed console.log // line 1434
                                                             // Navigate to examination portal
-                                                            window.location.href = '/examination-portal';
+                                                            safeRedirect('/examination-portal');
                                                         }}
                                                         className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-orange-500/25 flex items-center gap-2"
                                                     >
@@ -1807,7 +1808,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     <button
                                                         onClick={() => {
 // [AUDIT] Removed console.log // line 1809
-                                                            window.location.href = '/become-member';
+                                                            safeRedirect('/become-member');
                                                         }}
                                                         className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
                                                     >

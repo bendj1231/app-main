@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/src/components/ui/toast';
 import { 
@@ -76,6 +77,16 @@ import type { PathwayMatch, Pathway } from '../../lib/pathways/types';
 import type { PathwayData, GapAnalysis, RecognitionProfile, RequirementMatch } from './pathways/components/types';
 import { InterestBadge } from './pathways/components/InterestBadge';
 import { ProbabilityBadge } from './pathways/components/ProbabilityBadge';
+import {
+  CLOUDINARY_AIRLINES,
+  FALLBACK_IMAGES,
+  AIRCRAFT_IMAGES,
+  AIRLINE_LOGOS,
+  getAircraftImage,
+  getAirlineLogo,
+  extractAircraftFromTitle,
+  getAirlineImage,
+} from './pathways/components/airlineImageBank';
 
 // ============================================================================
 // HARDCODED CATEGORY CONSTANTS
@@ -459,233 +470,6 @@ import * as THREE from 'three';
 import { jobApplicationListings } from './PilotJobDatabasePage';
 
 // ============================================================================
-// AIRLINE IMAGE BANK - Confirmed Cloudinary URLs from AirlineExpectations
-// ============================================================================
-
-// Confirmed working Cloudinary images from AirlineExpectationsCarousel
-const CLOUDINARY_AIRLINES: Record<string, string> = {
-  'qatar': 'https://airlinegeeks.com/wp-content/uploads/2018/10/IMG_3495-e1540774160956.jpg',
-  'singapore': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/singapore-airlines.jpg',
-  'cathay': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
-  'emirates': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
-  'etihad': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/etihad-airways-new.jpg',
-  'lufthansa': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/lufthansa.jpg',
-  'british': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/british-airways.jpg',
-  'airfrance': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg',
-  'klm': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/klm.jpg',
-  'swiss': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/swiss.jpg',
-  'turkish': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/turkish-airlines.jpg',
-  'ana': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/ana.jpg',
-  'jal': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/japan-airlines.jpg',
-};
-
-// Reliable fallback images by category (Unsplash)
-const FALLBACK_IMAGES: Record<string, string> = {
-  'cadet-programme': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-  'cargo': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
-  'private': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-  'flight-schools': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-  'military': 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80',
-  'privateSector': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-  'airtaxi-drones': 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
-};
-
-// Aircraft-specific images
-const AIRCRAFT_IMAGES: Record<string, string> = {
-  // Airbus
-  'A320': 'https://www.etihad.com/content/dam/eag/etihadairways/etihadcom/2025/global/products/our-fleet/A320-NEO.png?imwidth=480&imdensity=2.625',
-  'A320NEO': 'https://www.etihad.com/content/dam/eag/etihadairways/etihadcom/2025/global/products/our-fleet/A320-NEO.png?imwidth=480&imdensity=2.625',
-  'A318': 'https://global.discourse-cdn.com/infiniteflight/optimized/4X/f/9/6/f966bce5d678bd7b536ac56588bc1e13ef566e4d_2_820x332.png',
-  'A319': 'https://global.discourse-cdn.com/infiniteflight/optimized/4X/f/9/6/f966bce5d678bd7b536ac56588bc1e13ef566e4d_2_820x332.png',
-  'A321': 'https://global.discourse-cdn.com/infiniteflight/optimized/4X/f/9/6/f966bce5d678bd7b536ac56588bc1e13ef566e4d_2_820x332.png',
-  'A330': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  'A350': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  'A380': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  'A220': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  // Boeing
-  'B737': 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
-  '737': 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
-  'B747': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  '747': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  'B777': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  '777': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  'B787': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  '787': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  'B757': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  '757': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  'B767': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  '767': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  // Regional
-  'ERJ': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'E170': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'E175': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'E190': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'E195': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'CRJ': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'CRJ700': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'CRJ900': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  // Business Jets
-  'Citation': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/Citation-web.png',
-  'Citation I': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/Citation-web.png',
-  'Citation ISP': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/Citation-web.png',
-  'Citation III': 'https://askjet.ru/wp-content/uploads/2025/08/cb2b78fb-994f-446f-9605-b24948035ea9.png',
-  'Citation Sovereign': 'https://w7.pngwing.com/pngs/86/879/png-transparent-aircraft-cessna-citation-sovereign-cessna-citation-x-cessna-citation-longitude-cessna-citationjet-m2-private-jet-mode-of-transport-flight-airplane.png',
-  'Citation M2': 'https://tadistributors.com/wp-content/uploads/2017/12/M2-Cutout-1.png',
-  'Citation CJ4': 'https://www.jetfinder.com/wp-content/uploads/2024/01/citation_cj4_exterior.png',
-  'CJ4': 'https://www.jetfinder.com/wp-content/uploads/2024/01/citation_cj4_exterior.png',
-  'M2': 'https://tadistributors.com/wp-content/uploads/2017/12/M2-Cutout-1.png',
-  'Sovereign': 'https://w7.pngwing.com/pngs/86/879/png-transparent-aircraft-cessna-citation-sovereign-cessna-citation-x-cessna-citation-longitude-cessna-citationjet-m2-private-jet-mode-of-transport-flight-airplane.png',
-  'Gulfstream': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-  'Challenger': 'https://res.cloudinary.com/flyblackbird/image/upload/c_scale,q_auto:eco,w_600/v1/aircraft/bombardier-challenger-300',
-  'CL-30': 'https://res.cloudinary.com/flyblackbird/image/upload/c_scale,q_auto:eco,w_600/v1/aircraft/bombardier-challenger-300',
-  'Global': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-  'Learjet': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-  'Falcon': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-  // Turboprops
-  'King Air': 'https://www.callandfly.pl/wp-content/uploads/Zrzut_ekranu_2024-07-29_o_13.07.24-removebg-preview.png',
-  'Caravan': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'Pilatus': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'PC-24': 'https://www.oriensaviation.com/wp-content/uploads/2025/02/PC-24.png',
-  'Pilatus PC-24': 'https://www.oriensaviation.com/wp-content/uploads/2025/02/PC-24.png',
-  'TBM': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'PA-31': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/N146J-exterior.jpg',
-  'Navajo': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/N146J-exterior.jpg',
-};
-
-// Airline logos
-const AIRLINE_LOGOS: Record<string, string> = {
-  'etihad': 'https://logos-world.net/wp-content/uploads/2023/01/Etihad-Airways-Logo.png',
-  'ejm': 'https://www.jsfirm.com/assets/logos/EJM_logo-2023.jpg',
-  'emirates': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/1200px-Emirates_logo.svg.png',
-  'qatar': 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Qatar_Airways_logo.svg/1200px-Qatar_Airways_logo.svg.png',
-  'singapore': 'https://upload.wikimedia.org/wikipedia/en/thumb/6/2b/Singapore_Airlines_logo.svg/1200px-Singapore_Airlines_logo.svg.png',
-  'cathay': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/15/Cathay_Pacific_logo.svg/1200px-Cathay_Pacific_logo.svg.png',
-  'lufthansa': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Lufthansa_Logo_2018.svg/1200px-Lufthansa_Logo_2018.svg.png',
-  'british airways': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/49/British_Airways_1997.svg/1200px-British_Airways_1997.svg.png',
-  'air france': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Air_France-Logo.svg/1200px-Air_France-Logo.svg.png',
-  'klm': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/KLM_Logo.svg/1200px-KLM_Logo.svg.png',
-  'turkish': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Turkish_Airlines_logo_2019.svg/1200px-Turkish_Airlines_logo_2019.svg.png',
-  'ana': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/All_Nippon_Airways_Logo.svg/1200px-All_Nippon_Airways_Logo.svg.png',
-  'jal': 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3a/Japan_Airlines_logo.svg/1200px-Japan_Airlines_logo.svg.png',
-  'delta': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780355/airline-logos/airline-logos/delta.svg',
-  'american': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780357/airline-logos/airline-logos/american.svg',
-  'united': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780360/airline-logos/airline-logos/united.svg',
-  'jetblue': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/23/JetBlue_Airways_Logo.svg/1200px-JetBlue_Airways_Logo.svg.png',
-  'southwest': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Southwest_Airlines_logo_2014.svg/1200px-Southwest_Airlines_logo_2014.svg.png',
-  'alaska': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Alaska_Airlines_logo_2014.svg/1200px-Alaska_Airlines_logo_2014.svg.png',
-};
-
-// Helper to get aircraft image
-const getAircraftImage = (aircraftType: string): string => {
-  const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-
-  // Try exact match first
-  if (AIRCRAFT_IMAGES[typeKey]) {
-    return AIRCRAFT_IMAGES[typeKey];
-  }
-
-  // Try partial matches
-  for (const [key, url] of Object.entries(AIRCRAFT_IMAGES)) {
-    if (typeKey.includes(String(key).toUpperCase()) || String(key).toUpperCase().includes(typeKey)) {
-      return url;
-    }
-  }
-
-  // Check for partial matches
-  if (String(aircraftType || '').toUpperCase().includes('KING AIR')) {
-    return AIRCRAFT_IMAGES['King Air'];
-  }
-
-  // Fallback to cadet-programme aircraft image
-  return FALLBACK_IMAGES['cadet-programme'];
-};
-
-// Helper to get airline logo
-const getAirlineLogo = (airline: string): string => {
-  if (!airline) return '';
-  const airlineLower = airline.toLowerCase();
-
-  for (const [key, url] of Object.entries(AIRLINE_LOGOS)) {
-    if (airlineLower.includes(key) || key.includes(airlineLower)) {
-      return url;
-    }
-  }
-
-  // Return null instead of empty string to avoid empty src warning
-  return null as any;
-};
-
-// Helper to extract aircraft from job title
-const extractAircraftFromTitle = (title: string): string | null => {
-  const aircraftPatterns = [
-    // Boeing
-    /B737|Boeing 737|737/i,
-    /B747|Boeing 747|747/i,
-    /B777|Boeing 777|777/i,
-    /B787|Boeing 787|787|Dreamliner/i,
-    /B757|Boeing 757|757/i,
-    /B767|Boeing 767|767/i,
-    // Airbus
-    /A320|Airbus 320/i,
-    /A330|Airbus 330/i,
-    /A350|Airbus 350/i,
-    /A380|Airbus 380/i,
-    /A319|Airbus 319/i,
-    /A321|Airbus 321/i,
-    /A318|Airbus 318/i,
-    // Business Jets - Bombardier/Challenger
-    /Challenger|CL-30|CL-60|CL-350|CL-650/i,
-    /Global|Global 5000|Global 6000|Global 7500|Global 8000/i,
-    // Gulfstream
-    /Gulfstream|G-IV|G-V|G450|G550|G650|G700|GVII|G500|G600/i,
-    // Citation
-    /Citation|CJ[0-9]+|CJ series|CJ2|CJ3|CJ4|Ultra|Latitude|Longitude|XLS| Sovereign/i,
-    // Learjet
-    /Learjet|LR-[0-9]+|LRJET|Lear/i,
-    // Falcon
-    /Falcon|F900|F2000|F7X|F8X|F6X|10X/i,
-    // Embraer
-    /ERJ|EMB-[0-9]+|E-Jet|E170|E175|E190|E195/i,
-    // CRJ
-    /CRJ|Canadair|Regional Jet/i,
-    // Turboprops
-    /King Air|KingAir|B200|B350/i,
-    /Caravan|C208|208/i,
-    /Pilatus|PC-12|PC12/i,
-    /TBM/i,
-    /Navajo|PA-31/i,
-    // Other
-    / Phenom|Embraer Phenom|300|100/i,
-    /Praetor|500|600/i,
-    /Legacy|450|500|600|650/i,
-  ];
-  
-  for (const pattern of aircraftPatterns) {
-    const match = title.match(pattern);
-    if (match) {
-      return match[0];
-    }
-  }
-  return null;
-};
-
-// Helper to get airline image with fallback
-const getAirlineImage = (company: string, category: string): string => {
-  if (!company) return FALLBACK_IMAGES[category] || FALLBACK_IMAGES['cadet-programme'];
-  const companyLower = company.toLowerCase();
-
-  // Try Cloudinary match first
-  for (const [key, image] of Object.entries(CLOUDINARY_AIRLINES)) {
-    if (companyLower.includes(key)) {
-      return image;
-    }
-  }
-
-  // Return category fallback
-  return FALLBACK_IMAGES[category] || FALLBACK_IMAGES['cadet-programme'];
-};
-
-// ============================================================================
 // TYPES
 // ============================================================================
 
@@ -1044,7 +828,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       salary: '$175,000 - $220,000/year',
       requirements: ['2,500+ hrs TT', 'Type Rating', 'Part 135 Experience'],
       tags: ['Largest Fleet', 'Home Basing', 'Premium Benefits'],
-      postedAt: 'Hiring Now',
+      postedAt: 'Active',
       image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80'
     },
     {
@@ -1085,7 +869,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       salary: '$250,000 - $350,000/year',
       requirements: ['4,000+ hrs TT', 'Heavy Jet Type', 'Part 121 Experience'],
       tags: ['Fortune 500', 'Union Benefits', 'Pension Plan'],
-      postedAt: 'Hiring Now',
+      postedAt: 'Active',
       image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
     },
     {
@@ -1111,7 +895,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       salary: '$220,000 - $300,000/year',
       requirements: ['3,000+ hrs TT', 'B747/B777 Type', 'International Exp'],
       tags: ['ACMI Leader', 'Global Network', 'Growth Opportunity'],
-      postedAt: 'Hiring Now',
+      postedAt: 'Active',
       image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80'
     },
     {
@@ -1137,7 +921,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       salary: '$200,000 - $280,000/year',
       requirements: ['3,000+ hrs TT', 'B747 Type', 'Heavy Jet Exp'],
       tags: ['B747 Fleet', 'Global Operations', 'Competitive Pay'],
-      postedAt: 'Hiring Now',
+      postedAt: 'Active',
       image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80'
     }
   ],
@@ -1297,7 +1081,7 @@ const DISCOVERY_PATHWAYS: Record<string, PathwayJob[]> = {
       salary: '$150,000 - $200,000/year',
       requirements: ['1,500+ hrs TT', 'Helicopter Rating', 'Test Pilot Exp'],
       tags: ['eVTOL Leader', 'Electric Aviation', 'Stock Options'],
-      postedAt: 'Hiring Now',
+      postedAt: 'Active',
       image: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80'
     },
     {
@@ -3101,7 +2885,7 @@ const ThreeStagePathwayFilter: React.FC<{
           'fe2d9b27-4290-463e-b88a-9bdbddd8330e': {
             image: 'https://s28477.pcdn.co/wp-content/uploads/2024/10/CAngkor_1-984x554.png',
             airline: 'Air Cambodia Cadet Programme',
-            description: 'Sponsored training with A320 type rating and guaranteed job. Monthly stipend of $2,000 during training. Located in Phnom Penh, Cambodia. Age 18-35, high school diploma, and Medical 1 required. Direct pathway to airline career with guaranteed employment.',
+            description: 'Sponsored training with A320 type rating and guaranteed pathway. Monthly stipend of $2,000 during training. Located in Phnom Penh, Cambodia. Age 18-35, high school diploma, and Medical 1 required. Direct pathway to airline career with guaranteed employment.',
           },
           // Cebu Pacific Cadet Pilot Program
           'c6ad6407-cfce-42a2-961f-4c98fabff31b': {
@@ -4588,7 +4372,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Wrapper function for Post Pathway button (without pathway data)
   const handlePostPathwayClick = () => {
-    // TODO: Add a modal or form to collect pathway data
+    addToast({
+      title: 'Enterprise Posting',
+      description: 'Pathway posting is available for Enterprise accounts. Contact support to upgrade.',
+      variant: 'default',
+    });
   };
 
   // Pathways Intelligence — Firebase R-formula powered data
@@ -4904,7 +4692,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       salary: { firstYear: item.salary || '', fifthYear: '', bonuses: '' },
       benefits: item.tags || [],
       locations: [item.location || 'Global'],
-      interestLevel: item.postedAt === 'Hiring Now' ? 'high_interest' : 'moderate' as const,
+      interestLevel: item.postedAt === 'Active' ? 'high_interest' : 'moderate' as const,
       positions: 1,
       url: undefined,
     }))
@@ -5291,10 +5079,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     profileFactors: Record<string, number>;
   } | null>(null);
 
-  // Toggle debug panel with Ctrl+Shift+E
+  // Engine debug panel — disabled in production
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+      if (process.env.NODE_ENV === 'development' && e.ctrlKey && e.shiftKey && e.key === 'E') {
         e.preventDefault();
         setShowEngineDebug(prev => !prev);
       }
@@ -5424,7 +5212,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       {/* Top Navigation Bar */}
       {!embedded && (
         <PlatformNavbar
-          onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+          onNavigate={onNavigate || ((page) => safeRedirect(`/${page}`))}
           currentPage="pathways"
         />
       )}
@@ -5435,7 +5223,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         {!embedded && (
           <PathwaysSidebar
             activeSection="pilot-pathways"
-            onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+            onNavigate={onNavigate || ((page) => safeRedirect(`/${page}`))}
             prScore={78}
             matchPercentage={82}
             topPathway="Commercial Airline"
@@ -6277,7 +6065,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                     category: discoveryKey as PathwayData['category'],
                     matchProbability: j.matchPercentage,
                     aircraftType: j.image?.startsWith('wingmentor') ? '__wingmentor__' : 'generic',
-                    interestLevel: j.postedAt === 'Hiring Now' ? 'high_interest' : j.postedAt === 'Limited Slots' ? 'limited' : 'moderate',
+                    interestLevel: j.postedAt === 'Active' ? 'high_interest' : j.postedAt === 'Selective' ? 'limited' : 'moderate',
                     locations: [j.location],
                     requirements: { totalHours: 0, typeRatings: [] },
                     claimed: (j as any).claimed ?? false,
@@ -6851,7 +6639,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                         <div>
                           <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
                             <div className="px-6 py-6">
-                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Who Can Apply</p>
+                              <p className="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-3">Who Can Submit Interest</p>
                               <div className="space-y-2.5">
                                 {(school.accessEligibility && school.accessEligibility.length > 0 ? school.accessEligibility : [
                                   { label: 'Open to Outside Applicants', value: 'Yes — not exclusive to own graduates', ok: true },
@@ -6881,7 +6669,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                                   ) : (
                                     <>
                                       <p className="text-sm text-white/85 font-semibold">Open Enrolment — Rolling Intake</p>
-                                      <p className="text-xs text-white/70 mt-1">No fixed semester cutoff. Apply any time subject to aircraft availability.</p>
+                                      <p className="text-xs text-white/70 mt-1">No fixed semester cutoff. Submit interest any time subject to aircraft availability.</p>
                                     </>
                                   )}
                                 </div>
@@ -8357,8 +8145,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       </div>
       )}
 
-      {/* Engine Debug Panel — Ctrl+Shift+E to toggle */}
-      {showEngineDebug && (
+      {/* Engine Debug Panel — development only */}
+      {process.env.NODE_ENV === 'development' && showEngineDebug && (
         <div className="fixed top-20 right-4 z-[9998] w-80 max-h-[70vh] overflow-y-auto rounded-xl shadow-2xl border border-indigo-500/30 bg-slate-900/95 backdrop-blur-sm">
           <div className="sticky top-0 bg-slate-900/95 border-b border-indigo-500/20 px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -8605,7 +8393,7 @@ const MatchResultModal: React.FC<MatchResultModalProps> = ({ pathway, userProfil
           <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
             <div className="flex items-center gap-2 text-sm text-emerald-400 font-medium mb-2">
               <Building2 className="w-4 h-4" />
-              Source: Job Board
+              Source: Pathway Directory
               <span className="mx-2">•</span>
               <span>Airline Verified</span>
             </div>

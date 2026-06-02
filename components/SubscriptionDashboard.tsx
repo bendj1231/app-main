@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '@/shared/lib/supabase';
 import { getUserSubscription, SubscriptionStatus } from '@/lib/subscription-gating';
 import { getStripe } from '@/lib/stripe-client';
@@ -32,7 +33,7 @@ export default function SubscriptionDashboard({ userId }: SubscriptionDashboardP
       });
 
       const { url: checkoutUrl } = await response.json();
-      window.location.href = checkoutUrl;
+      safeRedirect(checkoutUrl);
     } catch (error) {
       console.error('Upgrade error:', error);
     } finally {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { WalletPublicCard } from './WalletPublicCard';
 import { PasskeyGate } from './PasskeyGate';
 import { WalletLoadingScreen } from './WalletLoadingScreen';
@@ -91,7 +92,7 @@ export const WalletRouter: React.FC = () => {
           if (token) {
             setView('public');
           } else {
-            window.location.href = 'https://pilotrecognition.com/platform?tab=wallet';
+            safeRedirect('https://pilotrecognition.com/platform?tab=wallet');
           }
         }}
       />
@@ -104,7 +105,7 @@ export const WalletRouter: React.FC = () => {
         userId={authedUserId}
         onNavigate={() => {
           if (token) setView('public');
-          else window.location.href = 'https://pilotrecognition.com/platform?tab=wallet';
+          else safeRedirect('https://pilotrecognition.com/platform?tab=wallet');
         }}
       />
     );
@@ -118,7 +119,7 @@ export const WalletRouter: React.FC = () => {
         // Check if already logged in first
         supabase.auth.getSession().then(({ data: { session } }) => {
           if (session?.user?.id) {
-            window.location.href = `https://pilotrecognition.com/platform?tab=wallet`;
+            safeRedirect(`https://pilotrecognition.com/platform?tab=wallet`);
           } else {
             setView('gate');
           }

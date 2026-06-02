@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import { MessageSquare, Bell, Settings, Menu, User, Shield, Map, LogOut, ChevronRight } from 'lucide-react';
@@ -305,7 +306,7 @@ export const PlatformNavbar: React.FC<PlatformNavbarProps> = ({ onNavigate, curr
               LOGIN
             </button>
             <button
-              onClick={() => { window.location.href = '/become-member'; }}
+              onClick={() => { safeRedirect('/become-member'); }}
               className="px-4 py-1.5 text-xs font-bold tracking-wider text-white rounded-lg transition-all"
               style={{ background: 'rgba(239,68,68,0.8)', border: '1px solid rgba(239,68,68,0.5)' }}
             >

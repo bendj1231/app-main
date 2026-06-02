@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { BookMarked, Plane, RefreshCw, Plus, ChevronRight, Clock, Award, Link, CheckCircle, AlertCircle, ExternalLink, ArrowLeft } from 'lucide-react';
 import { supabase } from '../../../../src/lib/supabase';
 import { DigitalLogbookPage } from './DigitalLogbookPage';
@@ -241,7 +242,7 @@ export const LogbookHub: React.FC<LogbookHubProps> = ({ profile }) => {
         const clientId = (import.meta as any).env?.VITE_MFB_CLIENT_ID || 'PilotRecognition';
         const redirectUri = `${window.location.origin}/auth/logbook/callback`;
         const url = `https://myflightbook.com/logbook/mvc/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=totals&state=${profile.id}`;
-        window.location.href = url;
+        safeRedirect(url);
       } else if (providerKey === 'manual') {
         setSubPage('logbook');
       }

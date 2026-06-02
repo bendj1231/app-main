@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { ChevronLeft, ChevronRight, Plane, MapPin, DollarSign, Clock, Globe, Star, Cpu, Users, Brain, Shield, Target, GraduationCap, CheckCircle2, Search, Briefcase, Zap, TrendingUp, ArrowLeft, Database, Calendar, Bell } from 'lucide-react';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { PilotAptitudeTest } from '../../components/PilotAptitudeTest';
@@ -535,12 +536,12 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
       {/* Top Navigation Bar */}
       <PlatformNavbar
-        onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+        onNavigate={onNavigate || ((page) => safeRedirect(`/${page)}`)}
         currentPage="pathways"
       />
 
       {/* Sidebar Navigation */}
-      <PathwaysSidebar activeSection="airline-expectations" onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)} />
+      <PathwaysSidebar activeSection="airline-expectations" onNavigate={onNavigate || ((page) => safeRedirect(`/${page)}`)} />
 
       {/* Main Content with sidebar margin */}
       <div style={{ marginLeft: '280px', paddingTop: '2rem' }}>
@@ -1192,7 +1193,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                           if (aircraftId) {
                                             params.set('aircraft', aircraftId);
                                           }
-                                          window.location.href = `/type-rating-search?${params.toString()}`;
+                                          safeRedirect(`/type-rating-search?${params.toString())}`;
                                         }
                                       }}
                                       className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors ${
@@ -1277,7 +1278,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                         if (aircraftId) {
                                           params.set('aircraft', aircraftId);
                                         }
-                                        window.location.href = `/type-rating-search?${params.toString()}`;
+                                        safeRedirect(`/type-rating-search?${params.toString())}`;
                                       }
                                     }}
                                     className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors flex items-center justify-between ${
@@ -1546,7 +1547,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                             {selectedAirline.pilotRequirements.typeRatingRequired.map(rating => (
                               <button
                                 key={rating}
-                                onClick={() => window.location.href = '/type-ratings'}
+                                onClick={() => safeRedirect('/type-ratings')}
                                 className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
                                   isDarkMode ? 'bg-sky-500/20 text-sky-300 hover:bg-sky-500/30' : 'bg-sky-50 text-sky-700 hover:bg-sky-100'
                                 }`}
@@ -2103,7 +2104,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                 {selectedAirline.futureFleetPlans.newAircraft.map(aircraft => (
                                   <button
                                     key={aircraft}
-                                    onClick={() => window.location.href = '/type-ratings'}
+                                    onClick={() => safeRedirect('/type-ratings')}
                                     className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
                                       isDarkMode ? 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
                                     }`}
@@ -2119,7 +2120,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                 {selectedAirline.futureFleetPlans.retiringAircraft.map(aircraft => (
                                   <button
                                     key={aircraft}
-                                    onClick={() => window.location.href = '/type-ratings'}
+                                    onClick={() => safeRedirect('/type-ratings')}
                                     className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
                                       isDarkMode ? 'bg-amber-500/20 text-amber-300 hover:bg-amber-500/30' : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
                                     }`}
@@ -2183,7 +2184,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                   {selectedAirline.aircraftDemand.trendingAircraft.map(aircraft => (
                                     <button
                                       key={aircraft}
-                                      onClick={() => window.location.href = '/type-ratings'}
+                                      onClick={() => safeRedirect('/type-ratings')}
                                       className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
                                         isDarkMode ? 'bg-purple-500/20 text-purple-300 hover:bg-purple-500/30' : 'bg-purple-50 text-purple-700 hover:bg-purple-100'
                                       }`}
@@ -2235,7 +2236,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                               {selectedAirline.aircraftDemand.trendingAircraft.map(aircraft => (
                                 <button
                                   key={aircraft}
-                                  onClick={() => window.location.href = '/type-ratings'}
+                                  onClick={() => safeRedirect('/type-ratings')}
                                   className={`text-xs px-3 py-1 rounded-full font-medium transition-colors ${
                                     isDarkMode ? 'bg-purple-500/20 text-purple-300 hover:bg-purple-500/30' : 'bg-purple-50 text-purple-700 hover:bg-purple-100'
                                   }`}

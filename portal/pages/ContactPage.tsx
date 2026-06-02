@@ -1,4 +1,5 @@
 import React from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Icons } from '../icons';
 
 interface ContactPageProps {
@@ -145,7 +146,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                                                 Available for program inquiries and management support
                                             </p>
                                             <button
-                                                onClick={() => window.location.href = 'tel:+639670481890'}
+                                                onClick={() => safeRedirect('tel:+639670481890')}
                                                 style={{
                                                     background: '#2563eb',
                                                     color: 'white',
@@ -199,7 +200,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                                                 Email the PilotRecognition team for detailed inquiries
                                             </p>
                                             <button
-                                                onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
+                                                onClick={() => safeRedirect('mailto:contact@pilotrecognition.com')}
                                                 style={{
                                                     background: '#2563eb',
                                                     color: 'white',
@@ -351,7 +352,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, onLogout }) => {
                             transition: 'all 0.2s ease',
                             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                         }}
-                        onClick={() => window.location.href = 'mailto:contact@pilotrecognition.com'}
+                        onClick={() => safeRedirect('mailto:contact@pilotrecognition.com')}
                     >
                         ✉️ Contact Support
                     </button>

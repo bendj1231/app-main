@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { createPortal } from 'react-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
@@ -1585,7 +1586,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     const redirectUri = 'https://pilotrecognition.com/auth/logbook/callback';
                                     const clientId = import.meta.env.VITE_MFB_CLIENT_ID || 'PilotRecognition';
                                     const url = `https://myflightbook.com/logbook/mvc/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=totals`;
-                                    window.location.href = url;
+                                    safeRedirect(url);
                                 } else {
                                     setProviderConnected(true);
                                     setShowLogbookModal(false);

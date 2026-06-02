@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth } from '@/src/contexts/AuthContext';
 
 interface StripePaymentSectionProps {
@@ -66,7 +67,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
       });
       if (!response.ok) throw new Error('Failed to create checkout session');
       const { url: checkoutUrl } = await response.json();
-      window.location.href = checkoutUrl;
+      safeRedirect(checkoutUrl);
     } catch (error) {
       console.error('Checkout error:', error);
       alert('Failed to start checkout. Please try again.');
@@ -181,7 +182,7 @@ export default function StripePaymentSection({ onNavigate }: StripePaymentSectio
           <div className="mt-auto pt-4 border-t border-white/10">
             <p className="text-slate-400 text-xs mb-1">Are you an airline, operator, or training organization?</p>
             <button
-              onClick={() => window.location.href = 'https://enterprise.pilotrecognition.com'}
+              onClick={() => safeRedirect('https://enterprise.pilotrecognition.com')}
               className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors"
             >
               Click here for enterprise access →

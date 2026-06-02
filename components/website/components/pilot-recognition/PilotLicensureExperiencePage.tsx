@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -2027,7 +2028,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
                   Free users can still add type ratings as text above. Upgrade to upload official ATO certificates for verification.
                 </p>
                 <button
-                  onClick={() => window.location.href = '/recognition-plus'}
+                  onClick={() => safeRedirect('/recognition-plus')}
                   style={{
                     marginTop: '0.75rem',
                     padding: '0.5rem 1rem',

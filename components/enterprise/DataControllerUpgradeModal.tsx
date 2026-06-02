@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { Shield, Lock, Eye, Zap, X, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface Props {
@@ -46,7 +47,7 @@ export function DataControllerUpgradeModal({
       }
 
       if (data.url) {
-        window.location.href = data.url;
+        safeRedirect(data.url);
       } else {
         setSuccess(true);
       }

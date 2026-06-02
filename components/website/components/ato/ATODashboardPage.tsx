@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { safeRedirect } from '@/src/lib/url-validator';
 import {
   ArrowLeft, CheckCircle2, XCircle, Clock, ShieldCheck, Users,
   Award, AlertTriangle, Loader2, ChevronDown, ChevronUp, RefreshCw, Plus, CreditCard, Send
@@ -119,7 +120,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
       });
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        safeRedirect(data.url);
       } else {
         alert(data.error || 'Failed to start checkout');
       }
