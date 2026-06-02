@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
-
-const safeRedirect = (path: string) => {
-  safeRedirect(path);
-};
+import { safeRedirect } from '@/src/lib/url-validator';
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { currentUser, loading } = useAuth();

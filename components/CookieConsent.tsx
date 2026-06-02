@@ -91,11 +91,11 @@ export const CookieConsent: React.FC = () => {
 
     return (
         <>
-            {/* Backdrop */}
-            <div className="fixed inset-0 z-[199] bg-black/20" onClick={handleAccept} />
+            {/* Backdrop — dismisses without accepting on click */}
+            <div className="fixed inset-0 z-[50] bg-black/20" onClick={handleDecline} />
 
             {/* Modal card */}
-            <div className="fixed z-[200] bottom-8 right-8 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
+            <div className="fixed z-[51] bottom-4 left-4 right-4 sm:bottom-8 sm:right-8 sm:left-auto w-auto sm:w-full sm:max-w-sm bg-white rounded-2xl shadow-2xl p-6 sm:p-8">
                 {/* Close button */}
                 <button
                     onClick={handleAccept}

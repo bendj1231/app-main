@@ -14,9 +14,6 @@ export const WalletPageWithSidebar: React.FC<WalletPageWithSidebarProps> = ({ us
   const [activeSection, setActiveSection] = useState<WalletSection>('overview');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  // DEBUG
-// [AUDIT] Removed console.log // line 18
-
   // Tab definitions for internal navigation (used when noSidebar=true)
   const tabButtons = (
     <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
@@ -55,25 +52,6 @@ export const WalletPageWithSidebar: React.FC<WalletPageWithSidebarProps> = ({ us
     </div>
   );
 
-  // Visual debug - red banner at top
-  const DEBUG_BANNER = (
-    <div style={{ 
-      position: 'fixed', 
-      top: 0, 
-      left: 0, 
-      right: 0, 
-      background: '#dc2626', 
-      color: 'white', 
-      padding: '8px', 
-      zIndex: 99999,
-      fontSize: '12px',
-      fontWeight: 'bold',
-      textAlign: 'center'
-    }}>
-      🔧 DEBUG: WalletPageWithSidebar | Section: {activeSection} | User: {userId?.slice(0,8) || 'none'} | noSidebar: {noSidebar ? 'true' : 'false'}
-    </div>
-  );
-
   const sidebarItems = [
     { id: 'overview', label: 'Overview', icon: LayoutGrid, desc: 'Clearance status & summary' },
     { id: 'credentials', label: 'Credentials', icon: CreditCard, desc: 'Verified credentials (VCs)' },
@@ -85,7 +63,6 @@ export const WalletPageWithSidebar: React.FC<WalletPageWithSidebarProps> = ({ us
   if (noSidebar) {
     return (
       <>
-        {DEBUG_BANNER}
         <div style={{ padding: '1rem 0' }}>
           {tabButtons}
           <WalletViewPage 
@@ -100,7 +77,6 @@ export const WalletPageWithSidebar: React.FC<WalletPageWithSidebarProps> = ({ us
 
   return (
     <>
-      {DEBUG_BANNER}
       <div style={{ display: 'flex', minHeight: '100vh', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
       {/* MSFS 2024 Style Sidebar - Sticky */}
       <aside style={{
