@@ -73,6 +73,9 @@ import {
   type LocalPilotProfile 
 } from '../../lib/pathways/pathwayMatchingEngine';
 import type { PathwayMatch, Pathway } from '../../lib/pathways/types';
+import type { PathwayData, GapAnalysis, RecognitionProfile, RequirementMatch } from './pathways/components/types';
+import { InterestBadge } from './pathways/components/InterestBadge';
+import { ProbabilityBadge } from './pathways/components/ProbabilityBadge';
 
 // ============================================================================
 // HARDCODED CATEGORY CONSTANTS
@@ -704,71 +707,7 @@ interface PathwayJob {
   claimed?: boolean;
 }
 
-interface PathwayData {
-  id: string;
-  name: string;
-  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'type-rating' | 'airtaxi-drones' | 'flight-schools' | 'military' | 'pathway';
-  airline: string;
-  description?: string;
-  image: string;
-  matchProbability: number;
-  aircraftType: string; // X-Plane 3D model identifier
-  claimed?: boolean;
-  region?: Region;
-  requirements: {
-    totalHours: number;
-    multiEngineHours?: number;
-    turbineHours?: number;
-    typeRatings: string[];
-  };
-  salary?: {
-    firstYear: string;
-    fifthYear: string;
-    bonuses: string;
-  };
-  benefits?: string[];
-  locations: string[];
-  interestLevel: 'high_interest' | 'moderate' | 'limited' | 'paused' | 'active';
-  positions?: number;
-  url?: string; // Link to original job posting
-  isEnterprise?: boolean; // Posted by an enterprise/airline account
-  enterpriseLogoUrl?: string; // Airline logo from Cloudinary
-  pathwayId?: string; // Reference to the career hierarchy pathway
-}
-
-interface GapAnalysis {
-  gapPercentage: number;
-  totalGaps: number;
-  highPriorityGaps: number;
-  estimatedCost: number;
-  estimatedTime: { days: number; months: number };
-  recommendations: string[];
-}
-
-interface RecognitionProfile {
-  totalScore: number;
-  breakdown: {
-    programs: number;
-    experience: number;
-    behavioral: number;
-    language: number;
-    skills: number;
-  };
-  pilotData?: {
-    totalHours: number;
-    multiEngineHours: number;
-    turbineHours: number;
-    typeRatings: string[];
-  };
-}
-
-interface RequirementMatch {
-  label: string;
-  aligned: boolean;
-  score?: number;
-  status: 'under-minimums' | 'close' | 'match';
-  suggestion?: string;
-}
+// Types imported from ./pathways/components/types
 
 // ============================================================================
 // PATHWAY DATA - Discovery pathways from industry stakeholders
@@ -1862,72 +1801,6 @@ const GlassCard: React.FC<{ children: React.ReactNode; className?: string; onCli
     {children}
   </motion.div>
 );
-
-// Pathway Probability Badge
-const ProbabilityBadge: React.FC<{ probability: number; size?: 'sm' | 'md' | 'lg' }> = ({ 
-  probability, 
-  size = 'md' 
-}) => {
-  const getColor = (p: number) => {
-    if (p >= 85) return 'from-emerald-500 to-emerald-400';
-    if (p >= 70) return 'from-blue-500 to-blue-400';
-    if (p >= 50) return 'from-amber-500 to-amber-400';
-    return 'from-red-500 to-red-400';
-  };
-
-  const sizeClasses = {
-    sm: 'text-xs px-2 py-1',
-    md: 'text-sm px-3 py-1.5',
-    lg: 'text-base px-4 py-2',
-  };
-
-  return (
-    <div className={`inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r ${getColor(probability)} ${sizeClasses[size]} font-semibold text-white shadow-lg`}>
-      <Target className="w-3.5 h-3.5" />
-      {probability}% Match
-    </div>
-  );
-};
-
-// Interest Level Badge (NOT a hiring status - pathway activity indicator)
-const InterestBadge: React.FC<{ status: string; positions: number }> = ({ status, positions }) => {
-  const configs: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
-    high_interest: { 
-      color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-      icon: <Zap className="w-3.5 h-3.5" />,
-      label: 'High Interest'
-    },
-    active: { 
-      color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-      icon: <Zap className="w-3.5 h-3.5" />,
-      label: 'Active'
-    },
-    moderate: { 
-      color: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      icon: <Users className="w-3.5 h-3.5" />,
-      label: 'Moderate Interest'
-    },
-    limited: { 
-      color: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-      icon: <Clock className="w-3.5 h-3.5" />,
-      label: 'Limited'
-    },
-    paused: { 
-      color: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
-      icon: <AlertCircle className="w-3.5 h-3.5" />,
-      label: 'Paused'
-    },
-  };
-
-  const config = configs[status] || configs.moderate;
-
-  return (
-    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${config.color} text-sm`}>
-      {config.icon}
-      <span className="font-medium">{config.label}</span>
-    </div>
-  );
-};
 
 // Pathway Card (YouTube-style) - supports both light and dark modes
 const PathwayCard: React.FC<{ 

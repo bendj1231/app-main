@@ -7,9 +7,16 @@
  * Allowed domains for external redirects (if needed in future)
  * Currently only allowing relative/internal URLs for security
  */
-const ALLOWED_DOMAINS = [
-  window.location.hostname,
-  // Add other trusted domains here if needed
+const getAllowedDomains = (): string[] => [
+  typeof window !== 'undefined' ? window.location.hostname : '',
+  'pilotrecognition.com',
+  'www.pilotrecognition.com',
+  'wallet.pilotrecognition.com',
+  'platform.pilotrecognition.com',
+  'enterprise.pilotrecognition.com',
+  'pilotterminal.com',
+  'careerpathways.pilotrecognition.com',
+  'pilotshortage.org',
 ];
 
 /**
@@ -45,7 +52,7 @@ export function isValidRedirectUrl(url: string): boolean {
     const parsedUrl = new URL(url);
     
     // Check if the hostname is in the allowed list
-    if (ALLOWED_DOMAINS.includes(parsedUrl.hostname)) {
+    if (getAllowedDomains().includes(parsedUrl.hostname)) {
       return true;
     }
     

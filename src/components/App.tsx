@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/src/lib/supabase';
+import { safeRedirect } from '@/src/lib/url-validator';
 import { HomePage } from '@/routes';
 import { LoginModal } from '@/components/website/components/LoginModal';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -14,40 +15,12 @@ import { GovernmentPromotion } from '@/src/components/admin/GovernmentPromotion'
 import { VeremarkPricing } from '@/src/components/admin/VeremarkPricing';
 
 const LOGO_URL = "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png";
+const LOGO_FALLBACK_URL = "/logo.png";
 const ACCREDITATION_URL = "/images/accreditation.png";
 const ACCREDITATION_2_URL = "/images/accreditation-2.png";
 const ACCREDITATION_3_URL = "/images/accreditation-3.png";
 const ACCREDITATION_4_URL = "/images/accreditation-4.png";
 const ACCREDITATION_5_URL = "/images/accreditation-5.png";
-
-const safeRedirect = (path: string) => {
-  window.location.href = path;
-};
-
-const navigateTo = (page: string, data?: any) => {
-  setCurrentPage(page);
-  
-  // Admin routes - render admin components directly
-  if (page === 'moa-executive-summary' || page === 'investor-pitch' || 
-      page === 'government-promotion' || page === 'veremark-pricing') {
-    // These will be handled in the render section below
-    return;
-  }
-
-  if (page === 'recognition-plus') {
-    safeRedirect('/recognition-plus');
-    return;
-  }
-
-  if (page === 'pilot-recognition') {
-    safeRedirect('/pilot-recognition');
-    return;
-  }
-
-  const [basePage, hash] = String(page).includes('#') ? String(page).split('#') : [page, null];
-  window.scrollTo({ top: 0, behavior: 'instant' });
-  safeRedirect(`/${basePage}${hash ? `#${hash}` : ''}`);
-};
 
 // Initialize analytics services on app load
 initializeAnalyticsServices();
@@ -64,7 +37,8 @@ export const App = () => {
   const [foundationProgress, setFoundationProgress] = useState(0);
   const [examinationScore, setExaminationScore] = useState(0);
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
-  const { currentUser, logout, showPasskeyPrompt, dismissPasskeyPrompt } = useAuth();
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const { currentUser, logout, showPasskeyPrompt, dismissPasskeyPrompt, userProfile } = useAuth();
 
   
   // Fetch user's enrollment status from Supabase
@@ -106,11 +80,18 @@ export const App = () => {
   // Fetch user's profile data from Supabase
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (!currentUser?.uid) return;
+      if (!currentUser?.uid) {
+        setIsProfileLoading(false);
+        return;
+      }
       // Skip if uid is an Auth0 sub (not a Supabase UUID) — profile query would 400
       const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentUser.uid);
-      if (!isUUID) return;
+      if (!isUUID) {
+        setIsProfileLoading(false);
+        return;
+      }
 
+      setIsProfileLoading(true);
       try {
         const { data, error } = await supabase
           .from('profiles')
@@ -134,39 +115,67 @@ export const App = () => {
         }
       } catch (err) {
         console.error('Error fetching profile data:', err);
+      } finally {
+        setIsProfileLoading(false);
       }
     };
 
     fetchProfileData();
   }, [currentUser]);
 
-  const navigateToPortal = () => {
+  const navigateToPortal = useCallback(() => {
     safeRedirect('/portal');
-  };
+  }, []);
+
+  const navigateTo = useCallback((page: string, _data?: any) => {
+    // Admin routes - render admin components directly, update state only
+    if (page === 'moa-executive-summary' || page === 'investor-pitch' || 
+        page === 'government-promotion' || page === 'veremark-pricing') {
+      setCurrentPage(page);
+      return;
+    }
+
+    if (page === 'recognition-plus') {
+      safeRedirect('/recognition-plus');
+      return;
+    }
+
+    if (page === 'pilot-recognition') {
+      safeRedirect('/pilot-recognition');
+      return;
+    }
+
+    const [basePage, hash] = String(page).includes('#') ? String(page).split('#') : [page, null];
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    safeRedirect(`/${basePage}${hash ? `#${hash}` : ''}`);
+  }, []);
 
   return (
     <>
       {/* Global Loading Overlay */}
       <div className={`loading-overlay ${!loading ? 'hidden' : ''}`}>
         <div className="loading-content">
-          <img src={LOGO_URL} alt="Logo" className="loading-logo-main" />
-          <div className="loading-subtitle-blue">connecting pilots to the industry</div>
+          <img src={LOGO_URL} alt="PilotRecognition Logo" className="loading-logo-main" onError={(e) => { (e.target as HTMLImageElement).src = LOGO_FALLBACK_URL; }} />
+          <div className="loading-subtitle-blue">connecting pilots to recognition</div>
           <div className="loading-text">Bridging the Pilot Gap.</div>
           <div className="accreditation-box">
             <div className="accreditation-label">recognized & accredited by</div>
             <div className="accreditation-logos-row">
-              <img src={ACCREDITATION_URL} alt="Accreditation 1" className="accreditation-logo" />
-              <img src={ACCREDITATION_2_URL} alt="Accreditation 2" className="accreditation-logo" />
-              <img src={ACCREDITATION_3_URL} alt="Accreditation 3" className="accreditation-logo" />
-              <img src={ACCREDITATION_4_URL} alt="Accreditation 4" className="accreditation-logo" />
-              <img src={ACCREDITATION_5_URL} alt="Accreditation 5" className="accreditation-logo" />
+              <img src={ACCREDITATION_URL} alt="ICAO Recognized" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <img src={ACCREDITATION_2_URL} alt="CAAP Approved" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <img src={ACCREDITATION_3_URL} alt="EASA Compliant" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <img src={ACCREDITATION_4_URL} alt="FAA Registered" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <img src={ACCREDITATION_5_URL} alt="ISO 27001 Certified" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
           </div>
         </div>
       </div>
 
       {/* Admin Pages - Only show for admin users */}
-      {currentUser && (currentUser.email?.includes('admin') || currentUser.email?.includes('benjamin') || currentUser.email?.includes('karl')) && (
+      {currentUser && (
+        userProfile?.account_tier === 'enterprise_admin' ||
+        currentUser?.email === import.meta.env.VITE_ADMIN_EMAIL
+      ) && (
         <>
           {currentPage === 'moa-executive-summary' && <MoaExecutiveSummary />}
           {currentPage === 'investor-pitch' && <InvestorPitch />}
@@ -237,7 +246,7 @@ export const App = () => {
       <CookieConsent />
 
       {/* Chat Bot - Only on Home Page */}
-      {currentPage === 'home' && <ChatWidget />}
+      {currentPage === 'home' && !isProfileLoading && <ChatWidget />}
     </>
   );
 };

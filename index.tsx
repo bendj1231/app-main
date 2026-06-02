@@ -17,6 +17,7 @@ import { Styles } from '@/src/components/ui/Styles';
 import { AuthProvider } from '@/src/contexts/AuthContext';
 import { ToastProvider } from '@/src/components/ui/toast';
 import { AppRoutes } from '@/src/routes/AppRoutes';
+import { ErrorBoundary } from '@/src/components/ErrorBoundary';
 import './index.css';
 
 const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -52,12 +53,15 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
   );
 };
 
-// Suppress ResizeObserver loop warning (benign framer-motion issue)
+// Suppress specific benign ResizeObserver loop warning from framer-motion
 const resizeObserverErrorHandler = (e: ErrorEvent) => {
-  if (e.message === 'ResizeObserver loop completed with undelivered notifications.') {
+  if (
+    e.message &&
+    typeof e.message === 'string' &&
+    e.message.includes('ResizeObserver loop completed with undelivered notifications')
+  ) {
     e.stopImmediatePropagation();
     e.preventDefault();
-    e.stopPropagation();
   }
 };
 
@@ -86,7 +90,9 @@ root.render(
       <AuthProvider>
         <ToastProvider>
           <Styles />
-          <AppRoutes />
+          <ErrorBoundary>
+            <AppRoutes />
+          </ErrorBoundary>
         </ToastProvider>
       </AuthProvider>
     </Auth0ProviderWithNavigate>

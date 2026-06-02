@@ -4,10 +4,32 @@ import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
 import { LogbookCallback } from '@/src/components/LogbookCallback';
 
-// External redirect component for full URLs
+// External redirect component for full URLs — validates before navigation
 const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
   useEffect(() => {
-    window.location.href = to;
+    try {
+      const url = new URL(to);
+      const allowedHosts = [
+        'pilotrecognition.com',
+        'www.pilotrecognition.com',
+        'wallet.pilotrecognition.com',
+        'careerpathways.pilotrecognition.com',
+        'pilotshortage.org',
+        'pilotterminal.com',
+        'stripe.com',
+        'checkout.stripe.com',
+      ];
+      const isAllowed = allowedHosts.some(host => url.hostname === host || url.hostname.endsWith('.' + host));
+      if (isAllowed || url.protocol === 'mailto:') {
+        window.location.href = to;
+      } else {
+        console.warn('Blocked external redirect to non-allowed host:', url.hostname);
+        window.location.href = '/';
+      }
+    } catch {
+      console.warn('Invalid external redirect URL:', to);
+      window.location.href = '/';
+    }
   }, [to]);
   return null;
 };
