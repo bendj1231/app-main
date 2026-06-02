@@ -147,8 +147,6 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
   const [userAvatar, setUserAvatar] = useState<string>('');
 
   useEffect(() => {
-// [AUDIT] Removed console.log // line 150
-// [AUDIT] Removed console.log // line 151
     
     // Use Auth0 state
     if (isAuthenticated && user) {
@@ -168,11 +166,9 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
   const { isLoading: isAuth0Loading } = useAuth0();
   
   const handleNavigate = (path: string) => {
-// [AUDIT] Removed console.log // line 171
     navigate(path);
   };
 
-// [AUDIT] Removed console.log // line 175
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">

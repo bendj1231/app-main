@@ -38,16 +38,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     const profileImageUrl = userProfile?.profile_image_url || '';
     const profileDropdownRef = useRef<HTMLDivElement>(null);
 
-    // Debug: Log userProfile prop changes
     useEffect(() => {
-// [AUDIT] Removed console.log // line 43
-            hasUserProfile: !!userProfile,
-            userProfileEmail: userProfile?.email,
-            userProfileFirstName: userProfile?.firstName,
-            userProfileDisplayName: userProfile?.displayName,
-            userProfileProfileImage: userProfile?.profile_image_url,
-            calculatedProfileImageUrl: profileImageUrl
-        });
     }, [userProfile, profileImageUrl]);
 
     // Close dropdown when clicking outside
@@ -72,10 +63,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <span>Home</span>
                 </button>
                 <button onClick={() => {
-// [AUDIT] Removed console.log // line 75
-// [AUDIT] Removed console.log // line 76
                     onLogout?.();
-// [AUDIT] Removed console.log // line 78
                 }} className={`${styles.actionButton} ${styles.logoutButton}`}>
                     <LogOut size={18} />
                     <span>Logout</span>

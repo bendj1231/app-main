@@ -343,7 +343,7 @@ export default function DataControllerAgreementPage() {
                   by binding arbitration under the DIAC Arbitration Rules, with the administrative seat in Dubai, UAE.
                 </p>
                 <p className="text-xs text-slate-400 mt-3">
-                  Data protection enquiries: <a href="mailto:privacy@pilotrecognition.com" className="text-indigo-600 hover:underline">privacy@pilotrecognition.com</a>
+                  Data protection enquiries: <a href="mailto:privacy@pilotrecognition.com" className="text-indigo-600 hover:underline">privacy@pilotrecognition.com</a> · <a href="/dpo" className="text-indigo-600 hover:underline">DPO Portal</a>
                 </p>
               </div>
             </div>

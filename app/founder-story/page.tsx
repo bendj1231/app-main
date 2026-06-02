@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <FounderStoryPage
-      onNavigate={(page) => { safeRedirect(`/${page)}`; }}
+      onNavigate={(page) => { safeRedirect(`/${page}`); }}
       onLogin={() => { safeRedirect('/login'); }}
     />
   );

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { safeRedirect } from '../../../src/lib/url-validator';
 
 const regions = [
   { code: 'en-ph', name: 'Philippines', flag: '🇵🇭' },
@@ -35,11 +36,15 @@ export default function JoinPSAPage() {
   const [consentChecked, setConsentChecked] = useState(false);
 
   const handleGoogleSignup = () => {
-// [AUDIT] Removed console.log // line 38
+    if (!consentChecked) return;
+    // Redirect to Supabase/Google OAuth via pilotrecognition.com auth
+    safeRedirect('/api/auth/callback?provider=google');
   };
 
   const handleEmailSignup = () => {
-// [AUDIT] Removed console.log // line 42
+    if (!consentChecked) return;
+    // Redirect to email signup on main platform
+    safeRedirect('/login?signup=true&redirect=/pilotshortage');
   };
 
   return (

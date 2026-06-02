@@ -51,10 +51,10 @@ export function PathwayCard({ pathway, pilotScore, pilotProfile, onApply }: Path
     r => !pilotProfile.ratings.includes(r)
   );
   if (missingRatings.length > 0) {
-    gaps.push(`Missing ratings: ${missingRatings.join(', ')}`);
+    gaps.push(`Missing ratings: ${missingRatings.join(', '}`);
   }
   if (pathway.requirements.ratings.some(r => pilotProfile.ratings.includes(r))) {
-    meets.push(`${pathway.requirements.ratings.filter(r => pilotProfile.ratings.includes(r)).join(', ')} ✓`);
+    meets.push(`${pathway.requirements.ratings.filter(r => pilotProfile.ratings.includes(r)).join(', '} ✓`);
   }
   
   if (pilotScore < pathway.requirements.minRecognitionScore) {

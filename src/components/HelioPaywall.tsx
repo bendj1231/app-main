@@ -66,8 +66,8 @@ export const HelioPaywall: React.FC<HelioPaywallProps> = ({
         },
         customTexts: {
           title: `Unlock ${paymentType === 'enterprise_annual' ? 'Enterprise Annual' : paymentType === 'enterprise_monthly' ? 'Enterprise Monthly' : 'Recognition+'}`,
-          description: `Pay $${amount.toLocaleString()} USDC to unlock premium features. Invoice generated automatically.`,
-          payButton: `Pay $${amount.toLocaleString()} USDC`,
+          description: `Pay $${amount.toLocaleString(} USDC to unlock premium features. Invoice generated automatically.`,
+          payButton: `Pay $${amount.toLocaleString(} USDC`,
         },
         metadata: {
           user_id: userId || '',
@@ -76,7 +76,6 @@ export const HelioPaywall: React.FC<HelioPaywallProps> = ({
           platform: 'pilotrecognition.com',
         },
         onSuccess: (event: any) => {
-// [AUDIT] Removed console.log // line 79
           onSuccess?.(event.paymentId || event.transactionId);
         },
         onError: (event: any) => {

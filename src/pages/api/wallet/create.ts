@@ -106,7 +106,6 @@ export default async function handler(
     }
 
     // Step 3: Log creation for audit
-// [AUDIT] Removed console.log // line 109
       pilotId,
       walletId: walletData.walletId,
       did: walletData.did,

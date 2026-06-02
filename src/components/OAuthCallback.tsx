@@ -13,11 +13,9 @@ export const OAuthCallback = () => {
 
     const createSupabaseProfile = async () => {
       try {
-// [AUDIT] Removed console.log // line 15
         const { supabase } = await import('@/src/lib/supabase');
 
         const { data: { session: cbSession } } = await supabase.auth.getSession();
-// [AUDIT] Removed console.log // line 19
 
         // 1. Check by auth0_id first
         let { data: existing } = await supabase
@@ -25,17 +23,14 @@ export const OAuthCallback = () => {
           .select('id, auth0_id, display_name, total_flight_hours')
           .eq('auth0_id', user.sub)
           .maybeSingle();
-// [AUDIT] Removed console.log // line 27
 
         // 2. Fallback: check by email (covers users registered before Auth0)
         if (!existing && user.email) {
-// [AUDIT] Removed console.log // line 31
           const { data: byEmail } = await supabase
             .from('profiles')
             .select('id, auth0_id, display_name, total_flight_hours')
             .eq('email', user.email)
             .maybeSingle();
-// [AUDIT] Removed console.log // line 37
 
           if (byEmail) {
             await supabase
@@ -53,10 +48,8 @@ export const OAuthCallback = () => {
           (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('product') === 'careerpathways');
         
         if (!existing) {
-// [AUDIT] Removed console.log // line 55
           const { data: { session } } = await supabase.auth.getSession();
           const supabaseUid = session?.user?.id;
-// [AUDIT] Removed console.log // line 58
 
           if (supabaseUid) {
             // Has a Supabase session — safe to upsert from client (RLS: auth.uid() = id)
@@ -68,7 +61,6 @@ export const OAuthCallback = () => {
               account_tier: 'free',
               created_at: new Date().toISOString(),
             }, { onConflict: 'auth0_id' }).select('id').maybeSingle();
-// [AUDIT] Removed console.log // line 70
 
             if (newProfile?.id) {
               await supabase.functions.invoke('generate-profile-token', {
@@ -77,7 +69,6 @@ export const OAuthCallback = () => {
             }
           } else {
             // No Supabase session yet (Auth0-only flow) — profile will be created by create-wallet edge function
-// [AUDIT] Removed console.log // line 79
           }
 
           setProfileCreated(true);

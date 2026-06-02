@@ -166,10 +166,8 @@ export function useVaultProfile() {
         .maybeSingle();
 
       if (profile && hasPlaintextFields(profile, PROFILE_SENSITIVE_FIELDS as any)) {
-// [AUDIT] Removed console.log // line 169
         const encrypted = await encryptFields(profile, PROFILE_SENSITIVE_FIELDS as any, key);
         await supabase.from('profiles').update(encrypted).eq('id', userId);
-// [AUDIT] Removed console.log // line 172
       }
 
       // Check pilot_licensure_experience table
@@ -180,10 +178,8 @@ export function useVaultProfile() {
         .maybeSingle();
 
       if (licensure && hasPlaintextFields(licensure, PILOT_LICENSURE_SENSITIVE_FIELDS as any)) {
-// [AUDIT] Removed console.log // line 183
         const encrypted = await encryptFields(licensure, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
         await supabase.from('pilot_licensure_experience').update(encrypted).eq('user_id', userId);
-// [AUDIT] Removed console.log // line 186
       }
 
     } catch (err: any) {

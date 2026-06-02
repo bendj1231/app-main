@@ -132,31 +132,22 @@ const PilotGapModule2: React.FC<PilotGapModule2Props> = ({ onBack, onComplete })
 
     // ── Render Current Chapter/Topic ───────────────────────────────────────
     const renderCurrentContent = () => {
-// [AUDIT] Removed console.log // line 135
         switch (currentChapter) {
             case 1:
-// [AUDIT] Removed console.log // line 138
                 return <MentorModulesPage1 onBack={onBack} />;
             case 2:
-// [AUDIT] Removed console.log // line 141
                 return <MentorModulesPage2 onBack={onBack} />;
             case 3:
-// [AUDIT] Removed console.log // line 144
                 return <MentorModulesPage3 onBack={onBack} />;
             case 4:
-// [AUDIT] Removed console.log // line 147
                 return <MentorModulesPage4 onBack={onBack} />;
             case 5:
-// [AUDIT] Removed console.log // line 150
                 return <MentorModulesPage5 onBack={onBack} />;
             case 6:
-// [AUDIT] Removed console.log // line 153
                 return <MentorModulesPage6 onBack={onBack} />;
             case 7:
-// [AUDIT] Removed console.log // line 156
                 return <MentorModulesPage7 onBack={onBack} />;
             default:
-// [AUDIT] Removed console.log // line 159
                 return <MentorModulesPage1 onBack={onBack} />;
         }
     };
@@ -402,7 +393,6 @@ const PilotGapModule2: React.FC<PilotGapModule2Props> = ({ onBack, onComplete })
 // Helper function for inline editing
 const commitEdit = (element: HTMLElement) => {
     // In a real implementation, this would save the edited content
-// [AUDIT] Removed console.log // line 405
 };
 
 export default PilotGapModule2;

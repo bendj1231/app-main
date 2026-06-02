@@ -164,7 +164,6 @@ class PerformanceMonitor {
     // This will be connected to the analytics module
     // For now, just log to console
     if (process.env.NODE_ENV === 'development') {
-// [AUDIT] Removed console.log // line 167
     }
   }
 

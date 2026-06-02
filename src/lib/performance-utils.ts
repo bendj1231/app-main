@@ -127,7 +127,6 @@ export function measureCoreWebVitals() {
   new PerformanceObserver((list) => {
     const entries = list.getEntries();
     const lastEntry = entries[entries.length - 1];
-// [AUDIT] Removed console.log // line 130
     // Report to analytics: lastEntry.startTime
   }).observe({ entryTypes: ['largest-contentful-paint'] });
 
@@ -135,7 +134,6 @@ export function measureCoreWebVitals() {
   new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
       const fidEntry = entry as PerformanceEventTiming;
-// [AUDIT] Removed console.log // line 138
     }
   }).observe({ entryTypes: ['first-input'] });
 
@@ -147,7 +145,6 @@ export function measureCoreWebVitals() {
         clsValue += (entry as any).value;
       }
     }
-// [AUDIT] Removed console.log // line 150
   }).observe({ entryTypes: ['layout-shift'] });
 }
 

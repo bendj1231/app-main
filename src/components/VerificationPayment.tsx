@@ -83,7 +83,7 @@ export const VerificationPayment: React.FC<VerificationPaymentProps> = ({
               body: JSON.stringify({
                 pilotId,
                 amount: verificationAmount,
-                paymentId: `helio_${Date.now()}`,
+                paymentId: `helio_${Date.now(}`,
                 paymentProvider: 'helio',
               }),
             });

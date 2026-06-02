@@ -109,7 +109,6 @@ export const EnrollmentConfirmationPage: React.FC<EnrollmentConfirmationPageProp
                 if (error) {
                     console.error('❌ Failed to send enrollment confirmation email:', error);
                 } else {
-// [AUDIT] Removed console.log // line 112
                 }
             } catch (error) {
                 console.error('❌ Error sending enrollment confirmation email:', error);

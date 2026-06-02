@@ -105,7 +105,7 @@ export const PathwaysSidebar: React.FC<PathwaysSidebarProps> = ({
                 if (onNavigate) {
                   onNavigate(item.page);
                 } else {
-                  safeRedirect(`/${item.page)}`;
+                  safeRedirect(`/${item.page}`);
                 }
               }}
               style={{

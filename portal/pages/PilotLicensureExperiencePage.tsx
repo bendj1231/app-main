@@ -227,7 +227,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     const loadExistingData = async () => {
       const userId = userProfile?.id || userProfile?.uid;
       if (!userId) {
-// [AUDIT] Removed console.log // line 230
         setDataLoaded(true); // Mark as loaded so loader hides
         return;
       }
@@ -244,9 +243,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         let initialData: any = {};
         
         if (profileError) {
-// [AUDIT] Removed console.log // line 247
         } else if (profileData) {
-// [AUDIT] Removed console.log // line 249
           
           // Extract from onboarding_responses JSONB as fallback
           const onboarding = profileData.onboarding_responses || {};
@@ -310,13 +307,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           .maybeSingle();
 
         if (pilotProfileError) {
-// [AUDIT] Removed console.log // line 313
         } else if (pilotProfileData) {
-// [AUDIT] Removed console.log // line 315
         }
 
         if (error) {
-// [AUDIT] Removed console.log // line 319
           // Only use profile data as fallback if we haven't already set the values
           if (!fullLegalName) setFullLegalName(initialData.fullLegalName || '');
           if (!firstName) setFirstName(initialData.firstName || userProfile?.firstName || '');
@@ -325,7 +319,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           if (!residingCountry) setResidingCountry(initialData.residingCountry || '');
           if (!dateOfBirth) setDateOfBirth(initialData.dateOfBirth || '');
         } else if (data) {
-// [AUDIT] Removed console.log // line 328
           // Personal Info - use licensure data if available, fallback to profiles
           setFirstName(data.first_name || initialData.firstName || userProfile?.firstName || '');
           setMiddleName(data.middle_name || '');
@@ -513,7 +506,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         updated_at: new Date().toISOString()
       };
 
-// [AUDIT] Removed console.log // line 516
       
       const { error } = await supabase
         .from('pilot_licensure_experience')
@@ -551,7 +543,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           updated_at: new Date().toISOString()
         };
 
-// [AUDIT] Removed console.log // line 554
         
         const { error: profileError } = await supabase
           .from('profiles')
@@ -562,7 +553,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           console.error('Profile sync error (non-critical):', profileError);
           // Non-critical: main data is saved to pilot_licensure_experience
         } else {
-// [AUDIT] Removed console.log // line 565
         }
       }
 

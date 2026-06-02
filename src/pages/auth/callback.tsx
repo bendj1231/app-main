@@ -20,9 +20,6 @@ const OAuthCallback: React.FC = () => {
   useEffect(() => {
     const handleOAuthCallback = async () => {
       const timestamp = new Date().toISOString();
-// [AUDIT] Removed console.log // line 22
-// [AUDIT] Removed console.log // line 23
-// [AUDIT] Removed console.log // line 24
 
       try {
         // Extract authorization code from URL
@@ -31,7 +28,6 @@ const OAuthCallback: React.FC = () => {
         const errorDescription = searchParams.get('error_description');
         const state = searchParams.get('state');
 
-// [AUDIT] Removed console.log // line 33
 
         // Handle OAuth errors from Google
         if (error) {
@@ -50,28 +46,18 @@ const OAuthCallback: React.FC = () => {
           return;
         }
 
-// [AUDIT] Removed console.log // line 52
-// [AUDIT] Removed console.log // line 53
 
         // Set OAuth session flag to skip CSRF validation
         sessionStorage.setItem('oauth_session', 'true');
-// [AUDIT] Removed console.log // line 57
 
         // Call Agent 2's token exchange function
         const redirectUri = `${window.location.origin}/auth/callback`;
-// [AUDIT] Removed console.log // line 61
-// [AUDIT] Removed console.log // line 62
 
         const { data: sessionData } = await exchangeCodeForSupabaseSession(code, redirectUri);
 
-// [AUDIT] Removed console.log // line 66
-// [AUDIT] Removed console.log // line 67
-// [AUDIT] Removed console.log // line 68
-// [AUDIT] Removed console.log // line 69
 
         // Create user profile if it doesn't exist (non-critical)
         try {
-// [AUDIT] Removed console.log // line 73
             const { supabase } = await import('../../lib/supabase');
             const { data: existingProfile, error: profileCheckError } = await supabase
                 .from('profiles')
@@ -84,7 +70,6 @@ const OAuthCallback: React.FC = () => {
             }
 
             if (!existingProfile) {
-// [AUDIT] Removed console.log // line 86
                 const { error: profileCreateError } = await supabase
                     .from('profiles')
                     .insert({
@@ -101,10 +86,8 @@ const OAuthCallback: React.FC = () => {
                 if (profileCreateError) {
                     console.error(`[${timestamp}] [OAUTH CALLBACK] Profile creation error:`, profileCreateError);
                 } else {
-// [AUDIT] Removed console.log // line 103
                 }
             } else {
-// [AUDIT] Removed console.log // line 106
             }
         } catch (profileError) {
             console.error(`[${timestamp}] [OAUTH CALLBACK] Profile creation failed (non-critical):`, profileError);
@@ -113,9 +96,7 @@ const OAuthCallback: React.FC = () => {
 
         // Success - redirect to home page
         setStatus('success');
-// [AUDIT] Removed console.log // line 115
         setTimeout(() => {
-// [AUDIT] Removed console.log // line 117
           safeRedirect(window.location.origin);
         }, 500);
 
@@ -130,7 +111,6 @@ const OAuthCallback: React.FC = () => {
       }
     };
 
-// [AUDIT] Removed console.log // line 132
     handleOAuthCallback();
   }, [searchParams, navigate]);
 

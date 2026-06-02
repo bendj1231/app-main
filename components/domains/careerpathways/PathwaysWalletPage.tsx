@@ -10,6 +10,7 @@ import { supabase } from '../../../src/lib/supabase';
 import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet, getWalletCredentials } from '../../../src/lib/wallet';
 import { generateEnclaveKey, getEnclaveStatus } from '../../../lib/wallet/enclave';
 import { Wallet, Plane, Briefcase, Award, Share2, CheckCircle, AlertCircle } from 'lucide-react';
+import { CookieConsent } from '../../../components/CookieConsent';
 
 interface PathwaysWalletPageProps {
   auth0Id: string;
@@ -31,7 +32,8 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
   const [credentials, setCredentials] = useState<any[]>([]);
   const [pathways, setPathways] = useState<PathwayMatch[]>([]);
   const [showSetup, setShowSetup] = useState(false);
-  const [setupStep, setSetupStep] = useState<'license' | 'medical' | 'hours'>('license');
+  const [setupStep, setSetupStep] = useState<'license' | 'medical' | 'hours' | 'consent'>('license');
+  const [dcaConsent, setDcaConsent] = useState(false);
 
   // Form data
   const [licenseData, setLicenseData] = useState({
@@ -95,9 +97,54 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
   };
 
   const createWallet = async () => {
+    if (!dcaConsent) return;
+
+    // Log DCA consent for audit trail
+    try {
+      await supabase.from('user_activity_log').insert({
+        user_id: profileId,
+        action: 'dca_consent_accepted',
+        details: {
+          source: 'pilotcareerpathways_wallet_creation',
+          license_authority: licenseData.authority,
+          timestamp: new Date().toISOString(),
+        },
+        created_at: new Date().toISOString(),
+      });
+    } catch (logErr) {
+      console.warn('Consent log failed (non-fatal):', logErr);
+    }
+
+    // Set origin_jurisdiction via edge function if not already set
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('origin_jurisdiction')
+        .eq('id', profileId)
+        .single();
+
+      if (!profile?.origin_jurisdiction || profile.origin_jurisdiction === 'XX') {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.access_token) {
+          await fetch(
+            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/auth-signup`,
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${session.access_token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+        }
+      }
+    } catch (geoErr) {
+      console.warn('Origin jurisdiction set failed (non-fatal):', geoErr);
+    }
+
     // Generate enclave key
     await generateEnclaveKey();
-    
+
     // Create wallet
     const { did: newDid } = await getOrCreateClientWallet(profileId, auth0Id);
     setDid(newDid);
@@ -270,20 +317,56 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
                   <div className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-cyan-600 mt-0.5" />
                     <p className="text-sm text-cyan-800">
-                      Your credentials will be cryptographically signed and stored in your personal wallet. 
+                      Your credentials will be cryptographically signed and stored in your personal wallet.
                       Airlines can verify them instantly without contacting authorities.
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={createWallet}
+                    onClick={() => setSetupStep('consent')}
                     className="flex-1 bg-cyan-600 text-white font-medium py-2 rounded-lg"
+                  >
+                    Continue
+                  </button>
+                  <button
+                    onClick={() => setSetupStep('medical')}
+                    className="px-4 py-2 text-slate-600"
+                  >
+                    Back
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {setupStep === 'consent' && (
+              <div className="space-y-4">
+                <h4 className="text-sm font-bold text-slate-900">Data Controller Agreement</h4>
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={dcaConsent}
+                    onChange={e => setDcaConsent(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 accent-cyan-600 flex-shrink-0 cursor-pointer"
+                  />
+                  <span className="text-xs text-slate-600 leading-relaxed group-hover:text-slate-800 transition-colors">
+                    I agree to the{' '}
+                    <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-cyan-600 underline">Data Controller Agreement</a>,{' '}
+                    <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-cyan-600 underline">Privacy Policy</a>, and{' '}
+                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-cyan-600 underline">Terms of Service</a>.
+                    I understand my credential data will be stored encrypted and may be transferred to airline partners for verification purposes.
+                  </span>
+                </label>
+                <div className="flex gap-2">
+                  <button
+                    onClick={createWallet}
+                    disabled={!dcaConsent}
+                    className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-2 rounded-lg transition-colors"
                   >
                     Create Wallet & Issue Credentials
                   </button>
                   <button
-                    onClick={() => setSetupStep('medical')}
+                    onClick={() => setSetupStep('hours')}
                     className="px-4 py-2 text-slate-600"
                   >
                     Back
@@ -314,6 +397,24 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
           <div className="flex items-center gap-2 text-green-600 bg-green-50 px-3 py-1 rounded-full text-sm">
             <CheckCircle className="w-4 h-4" />
             <span>Verified</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Data Controls */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 className="font-semibold text-slate-900">Your Data</h3>
+            <p className="text-sm text-slate-500">Exercise your rights under GDPR Article 20 and Article 17.</p>
+          </div>
+          <div className="flex gap-3">
+            <a href="/settings" className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors">
+              Download My Data
+            </a>
+            <a href="/settings" className="px-4 py-2 border border-red-200 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors">
+              Delete Account
+            </a>
           </div>
         </div>
       </div>
@@ -402,6 +503,23 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
           )}
         </div>
       </div>
+
+      {/* Privacy Footer */}
+      <div className="border-t border-slate-200 pt-6 mt-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-sm">
+          <div className="flex flex-wrap gap-4 text-slate-500">
+            <a href="/privacy-policy" className="hover:text-cyan-600 transition-colors">Privacy Policy</a>
+            <a href="/terms-of-service" className="hover:text-cyan-600 transition-colors">Terms of Service</a>
+            <a href="/data-controller-agreement" className="hover:text-cyan-600 transition-colors">Data Controller Agreement</a>
+            <a href="/dpo" className="hover:text-cyan-600 transition-colors">DPO Contact</a>
+          </div>
+          <p className="text-xs text-slate-400">
+            pilotcareerpathways.com · Part of the WM Pilot Group
+          </p>
+        </div>
+      </div>
+
+      <CookieConsent />
     </div>
   );
 };

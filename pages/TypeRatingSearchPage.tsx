@@ -7,6 +7,7 @@ import { supabase } from '../src/lib/supabase';
 import { bookmarkService } from '../src/services/bookmarkService';
 import { PathwaysSidebar } from '../components/website/components/pilot-recognition/PathwaysSidebar';
 import { PlatformNavbar } from '../components/website/components/PlatformNavbar';
+import { safeRedirect } from '../src/lib/url-validator';
 
 // Types from Supabase schema
 interface Manufacturer {
@@ -630,12 +631,12 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
       {/* Top Navigation Bar */}
       <PlatformNavbar
-        onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+        onNavigate={onNavigate || ((page) => safeRedirect(`/${page}`))}
         currentPage="pathways"
       />
 
       {/* Sidebar Navigation */}
-      <PathwaysSidebar activeSection="type-ratings" onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)} />
+      <PathwaysSidebar activeSection="type-ratings" onNavigate={onNavigate || ((page) => safeRedirect(`/${page}`))} />
 
       {/* Main Content with sidebar margin */}
       <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '280px', paddingTop: '2rem', paddingRight: '1rem' }}>
@@ -1766,7 +1767,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {selectedManufacturer && (
         <div className="relative z-10 flex justify-center mb-8">
           <button
-            onClick={() => window.location.href = `/manufacturer/${selectedManufacturer.id}/expectations`}
+            onClick={() => safeRedirect(`/manufacturer/${selectedManufacturer.id}/expectations`)}
             className="bg-white/30 backdrop-blur-xl border border-white/50 px-6 py-3 text-white text-sm font-medium rounded-xl hover:bg-white/40 transition-all shadow-xl"
           >
             Read more about {selectedManufacturer.name} expectations

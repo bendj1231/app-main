@@ -42,10 +42,6 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
 
     setIsCheckingCooldown(true);
     
-// [AUDIT] Removed console.log // line 45
-// [AUDIT] Removed console.log // line 46
-// [AUDIT] Removed console.log // line 47
-// [AUDIT] Removed console.log // line 48
     
     try {
       // Query Firestore for existing enquiries from this user for this program
@@ -65,33 +61,27 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
       
       const querySnapshot = await getDocs(q);
       
-// [AUDIT] Removed console.log // line 68
       
       if (!querySnapshot.empty) {
         const lastEnquiry = querySnapshot.docs[0].data();
-// [AUDIT] Removed console.log // line 72
         
         const submissionTime = lastEnquiry.timestamp?.toDate()?.getTime() || Date.now();
         const currentTime = new Date().getTime();
         const timeDiff = currentTime - submissionTime;
         const hoursDiff = timeDiff / (1000 * 60 * 60);
         
-// [AUDIT] Removed console.log // line 79
         
         // If submitted within last 24 hours, show cooldown
         if (hoursDiff < 24) {
           const hoursRemaining = Math.ceil(24 - hoursDiff);
           const message = `Unable to send enquiry. Please wait ${hoursRemaining} hours before submitting another enquiry. After 24 hours, please contact support for help at +629670481890`;
           setCooldownMessage(message);
-// [AUDIT] Removed console.log // line 86
           return true;
         } else {
           setCooldownMessage('');
-// [AUDIT] Removed console.log // line 90
         }
       } else {
         setCooldownMessage('');
-// [AUDIT] Removed console.log // line 94
       }
     } catch (error) {
       // Fallback to localStorage if Firebase fails
@@ -181,7 +171,6 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
       await addDoc(notificationsRef, notificationData);
 
       // Simulate email notification (in production, this would trigger an email service)
-// [AUDIT] Removed console.log // line 184
         to: 'benjamintigerbowler@gmail.com',
         subject: `New Support Enquiry: ${formData.subject}`,
         enquiry: notificationData

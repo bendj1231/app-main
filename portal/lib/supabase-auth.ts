@@ -1,10 +1,26 @@
+import { createClient } from '@supabase/supabase-js';
 import type { UserProfile, UserRole } from '../types/user';
 import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 
-// Use shared Supabase client from main app to share session automatically
-import { supabase } from '../../src/lib/supabase';
-import { indexedDB } from '../../src/lib/indexedDB';
-export { supabase };
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ Supabase environment variables not configured:', {
+    hasUrl: !!supabaseUrl,
+    hasKey: !!supabaseKey
+  });
+}
+
+console.log('🔧 Supabase Client Initialization:', {
+  url: supabaseUrl,
+  hasServiceKey: !!supabaseKey,
+  keyLength: supabaseKey?.length || 0,
+  envUrl: import.meta.env.VITE_SUPABASE_URL,
+  envKey: supabaseKey ? '***SET***' : 'missing'
+});
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface AuthState {
   user: any | null;
@@ -15,201 +31,213 @@ export interface AuthState {
 
 export const SUPER_ADMIN_EMAIL = 'benjamintigerbowler@gmail.com';
 
-export const createUserProfile = async (user: any, role: UserRole['type'] = 'mentee'): Promise<UserProfile> => {
+// Create default app access for new users
+const defaultAppAccess = AVAILABLE_APPS.map(app => ({
+  appId: app.id,
+  appName: app.name,
+  granted: app.required,
+  restricted: false
+}));
+
+export const createUserProfile = async (user: any, role: string = 'pilot'): Promise<UserProfile> => {
+  console.log('🔧 createUserProfile called for:', user.email);
+  
+  // Add timeout to prevent hanging
+  const timeoutPromise = new Promise<UserProfile>((_, reject) => {
+    setTimeout(() => reject(new Error('Profile creation timeout')), 5000);
+  });
+  
   try {
-    // Check if profile already exists
-    const { data: existingProfile, error: checkError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .maybeSingle();
+    const profileCreationPromise = (async () => {
+      // Check if profile already exists
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
 
-    if (existingProfile) {
-      return existingProfile as UserProfile;
-    }
+      if (existingProfile) {
+        return existingProfile as UserProfile;
+      }
 
-    // Only log error if it's not a "not found" error
-    if (checkError && checkError.code !== 'PGRST116') {
-      console.error('Error checking for existing profile:', checkError);
-    }
+      const userProfile: UserProfile = {
+        id: user.id,
+        email: user.email || '',
+        displayName: user.user_metadata?.display_name || user.email?.split('@')[0] || '',
+        firstName: user.user_metadata?.display_name?.split(' ')[0] || user.email?.split('@')[0] || '',
+        lastName: user.user_metadata?.display_name?.split(' ').slice(1).join(' ') || '',
+        role: user.email === SUPER_ADMIN_EMAIL ? 'super_admin' : role,
+        totalHours: 0,
+        enrolledPrograms: [],
+        appAccess: defaultAppAccess,
+        createdAt: new Date(),
+        lastLogin: new Date(),
+        status: 'active'
+      };
 
-    // Create default app access
-    const defaultAppAccess = AVAILABLE_APPS.map(app => ({
-      appId: app.id,
-      appName: app.name,
-      granted: app.required,
-      restricted: false
-    }));
-
-    const userProfile: UserProfile = {
-      id: user.id,
-      email: user.email || '',
-      displayName: user.user_metadata?.display_name || user.email?.split('@')[0] || '',
-      firstName: user.user_metadata?.display_name?.split(' ')[0] || user.email?.split('@')[0] || '',
-      lastName: user.user_metadata?.display_name?.split(' ').slice(1).join(' ') || '',
-      role: user.email === SUPER_ADMIN_EMAIL ? 'super_admin' : role,
-      totalHours: 0,
-      enrolledPrograms: [],
-      appAccess: defaultAppAccess,
-      createdAt: new Date(),
-      lastLogin: new Date(),
-      status: 'active'
-    };
-
-    // Insert profile into Supabase
-    const { data, error } = await supabase
-      .from('profiles')
-      .insert({
+      // Insert profile into Supabase
+      console.log('🔧 Attempting to create profile with data:', {
         id: user.id,
         email: user.email,
-        display_name: userProfile.displayName,
-        role: userProfile.role,
-        status: userProfile.status,
+        displayName: userProfile.displayName
+      });
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .insert({
+          id: user.id,
+          email: user.email,
+          display_name: userProfile.displayName,
+          role: userProfile.role,
+          status: userProfile.status,
+          firebase_uid: user.user_metadata?.firebase_uid || null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        console.error('❌ Error creating profile:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint,
+          fullError: JSON.stringify(error, null, 2)
+        });
+        throw error;
+      }
+
+      console.log('✅ Profile created successfully:', data);
+
+      // Create app access records
+      const appAccessRecords = defaultAppAccess.map(app => ({
+        user_id: user.id,
+        app_id: app.appId,
+        granted: app.granted,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
-      })
-      .select()
-      .maybeSingle();
+      }));
 
-    if (error) {
-      console.error('Error creating profile:', error);
-      throw error;
-    }
+      const { error: accessError } = await supabase
+        .from('user_app_access')
+        .insert(appAccessRecords);
 
-    // Create app access records
-    const appAccessRecords = defaultAppAccess.map(app => ({
-      user_id: user.id,
-      app_id: app.appId,
-      granted: app.granted,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }));
+      if (accessError) {
+        console.error('Error creating app access:', accessError);
+      }
 
-    const { error: accessError } = await supabase
-      .from('user_app_access')
-      .insert(appAccessRecords);
-
-    if (accessError) {
-      console.error('Error creating app access:', accessError);
-    }
-
-    return userProfile;
-  } catch (error) {
+      return userProfile;
+    })();
+    
+    return await Promise.race([profileCreationPromise, timeoutPromise]);
+  } catch (error: any) {
     console.error('Error in createUserProfile:', error);
+    
+    // Return mock profile on timeout
+    if (error?.message?.includes('timeout')) {
+      console.log('⚠️ Profile creation timeout, returning mock profile');
+      return {
+        id: user.id,
+        email: user.email || '',
+        displayName: user.email?.split('@')[0] || 'User',
+        firstName: user.email?.split('@')[0] || 'User',
+        lastName: '',
+        role: user.email === SUPER_ADMIN_EMAIL ? 'super_admin' : role,
+        totalHours: 0,
+        enrolledPrograms: [],
+        appAccess: defaultAppAccess,
+        createdAt: new Date(),
+        lastLogin: new Date(),
+        status: 'active'
+      };
+    }
+    
     throw error;
   }
 };
 
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
+  console.log('🔍 getUserProfile called for:', uid);
+  
+  // Add timeout to prevent hanging
+  const timeoutPromise = new Promise<{data: any, error: any}>((_, reject) => {
+    setTimeout(() => reject(new Error('Supabase query timeout')), 5000);
+  });
+  
   try {
-// [AUDIT] Removed console.log // line 105
-    // Get profile from Supabase - removed timeout to allow natural query completion
-    const { data: profile, error: profileError } = await supabase
+    // Race between Supabase query and timeout
+    const queryPromise = supabase
       .from('profiles')
-      .select('*, profile_image_url')
+      .select('*')
       .eq('id', uid)
       .maybeSingle();
+    
+    const { data: profile, error: profileError } = await Promise.race([
+      queryPromise,
+      timeoutPromise
+    ]) as any;
 
-// [AUDIT] Removed console.log // line 113
-      hasProfile: !!profile,
-      profileError: profileError,
-      profileData: profile ? {
-        id: profile.id,
-        email: profile.email,
-        display_name: profile.display_name,
-        profile_image_url: profile.profile_image_url,
-        role: profile.role
-      } : null
-    });
+    console.log('🔍 Profile query result:', { hasProfile: !!profile, error: profileError });
 
-    if (profileError) {
-      // Only log error if it's not a "not found" error
-      if (profileError.code !== 'PGRST116') {
-// [AUDIT] Removed console.log // line 128
-      }
+    if (profileError || !profile) {
+      console.log('Profile not found:', profileError);
       return null;
     }
 
     // Use display_name from profile, or generate from email
     const displayName = profile.display_name || profile.email?.split('@')[0] || '';
-
+    
     const firstName = displayName?.split(' ')[0] || profile.email?.split('@')[0] || '';
     const lastName = displayName?.split(' ').slice(1).join(' ') || '';
 
+    console.log('🔍 About to fetch app access');
     // Get app access
-    let appAccess = [];
-    try {
-      const { data: accessData, error: accessError } = await supabase
-        .from('user_app_access')
-        .select('*')
-        .eq('user_id', uid);
+    const { data: appAccess, error: accessError } = await supabase
+      .from('user_app_access')
+      .select('*')
+      .eq('user_id', uid);
 
-      if (!accessError && accessData) {
-        appAccess = accessData.map((access: any) => ({
-          appId: access.app_id,
-          appName: access.app_name || '',
-          granted: access.granted,
-          grantedBy: access.granted_by,
-          grantedAt: access.granted_at ? new Date(access.granted_at) : undefined,
-          restricted: access.restricted || false
-        }));
-      }
-    } catch (accessErr) {
-      console.error('Error fetching app access:', accessErr);
+    console.log('🔍 App access query result:', { hasAccess: !!appAccess, error: accessError });
+
+    if (accessError) {
+      console.error('Error fetching app access:', accessError);
     }
 
-    // Check for Recognition Plus subscription
-    let isRecognitionPlusMember = false;
-    try {
-      const { data: subscription, error: subError } = await supabase
-        .from('subscriptions')
-        .select('*')
-        .eq('user_id', uid)
-        .eq('status', 'active')
-        .eq('plan', 'recognition_plus')
-        .maybeSingle();
-
-      if (!subError && subscription) {
-        isRecognitionPlusMember = true;
-// [AUDIT] Removed console.log // line 174
-      }
-    } catch (subErr) {
-      console.error('Error checking subscription:', subErr);
-    }
+    // Map app access to proper format
+    const appAccessMap = {
+      'foundational': 'Foundational Program',
+      'pilot-profile': 'Pilot Profile', 
+      'mentorship': 'Mentorship',
+      'atlas-cv': 'ATLAS CV Generator',
+      'w1000': 'W1000 Logbook'
+    };
 
     const userProfile: UserProfile = {
       id: profile.id,
-      uid: profile.firebase_uid || profile.id,
       email: profile.email,
-      firstName,
-      lastName,
-      displayName,
-      role: profile.role || 'mentee',
-      totalHours: profile.total_flight_hours || 0,
-      region: profile.region,
-      flightSchool: profile.flight_school,
+      displayName: displayName,
+      firstName: firstName,
+      lastName: lastName,
+      role: profile.role,
+      totalHours: 0, // This would come from a separate table if needed
       enrolledPrograms: profile.enrolled_programs || [],
-      appAccess,
-      createdAt: profile.created_at ? new Date(profile.created_at) : new Date(),
-      lastLogin: profile.last_login ? new Date(profile.last_login) : undefined,
-      status: profile.status || 'active',
-      isNewUser: profile.is_new_user || false,
-      profile_image_url: profile.profile_image_url,
-      isRecognitionPlusMember
+      appAccess: appAccess?.map(access => ({
+        appId: access.app_id,
+        appName: appAccessMap[access.app_id as keyof typeof appAccessMap] || access.app_id,
+        granted: access.granted,
+        restricted: !access.granted
+      })) || defaultAppAccess,
+      createdAt: new Date(profile.created_at),
+      lastLogin: new Date(profile.updated_at),
+      status: profile.status
     };
 
-// [AUDIT] Removed console.log // line 201
-      id: userProfile.id,
-      email: userProfile.email,
-      firstName: userProfile.firstName,
-      displayName: userProfile.displayName,
-      profile_image_url: userProfile.profile_image_url,
-      appAccessCount: userProfile.appAccess.length
-    });
-// [AUDIT] Removed console.log // line 209
     return userProfile;
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
+  } catch (error: any) {
+    console.error('Error getting user profile:', error);
+    
+    // Return null on timeout or lock errors (profile will be created)
     return null;
   }
 };
@@ -226,7 +254,7 @@ export const updateUserLastLogin = async (uid: string) => {
 };
 
 export const switchSystem = async (uid: string, system: 'pms' | 'wms' | 'super_admin') => {
-// [AUDIT] Removed console.log // line 229
+  console.log(`Switch system to ${system} for user ${uid}`);
   // This could be stored in a user preferences table
 };
 
@@ -252,46 +280,32 @@ export const canAccessApp = (userProfile: UserProfile | null, appId: string): bo
 };
 
 export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
-// [AUDIT] Removed console.log // line 255
-
-  // Clear expired sessions from IndexedDB before setting up listener
-  const clearExpiredSessions = async () => {
-    try {
-// [AUDIT] Removed console.log // line 260
-      const savedSession = await indexedDB.getSessionWithVerification(supabase);
-      if (!savedSession) {
-// [AUDIT] Removed console.log // line 263
-      }
-    } catch (error) {
-      console.error('❌ Error checking expired sessions:', error);
-    }
-  };
-
-  // Clear expired sessions
-  clearExpiredSessions();
-
-  // Set up auth listener
-  const subscription = supabase.auth.onAuthStateChange(async (event, session) => {
-// [AUDIT] Removed console.log // line 275
-
+  return supabase.auth.onAuthStateChange(async (event, session) => {
+    console.log('🔍 Supabase Auth State Change:', { event, session: !!session });
+    console.log('📞 About to call callback with auth state');
+    
     if (session?.user) {
-// [AUDIT] Removed console.log // line 278
-
+      console.log('👤 User logged in:', session.user.email);
+      console.log('🔍 About to load user profile for:', session.user.id);
+      
       try {
         let userProfile = await getUserProfile(session.user.id);
-
-// [AUDIT] Removed console.log // line 283
-
+        
+        console.log('📋 User profile loaded:', userProfile ? 'Success' : 'Not found');
+        
         if (!userProfile) {
-// [AUDIT] Removed console.log // line 286
+          console.log('🔧 Creating new user profile...');
           userProfile = await createUserProfile(session.user);
+          console.log('🔧 Profile creation completed');
         } else {
+          console.log('🔍 About to update last login');
           await updateUserLastLogin(session.user.id);
+          console.log('🔍 Last login updated');
         }
 
         // Ensure super admin role for the specific email
         if (session.user.email === SUPER_ADMIN_EMAIL && userProfile.role !== 'super_admin') {
-// [AUDIT] Removed console.log // line 294
+          console.log('👑 Granting super admin role...');
           userProfile.role = 'super_admin';
           try {
             await supabase
@@ -303,14 +317,14 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
           }
         }
 
-// [AUDIT] Removed console.log // line 306
+        console.log('✅ Final user profile:', {
           email: userProfile.email,
           role: userProfile.role,
           appAccessCount: userProfile.appAccess?.length || 0,
           canAccessMentorManagement: userProfile.role === 'super_admin' || userProfile.appAccess?.some(a => a.appId === 'mentor-management' && a.granted)
         });
 
-// [AUDIT] Removed console.log // line 313
+        console.log('📞 Calling callback with user profile');
         callback({
           user: session.user,
           userProfile,
@@ -319,6 +333,7 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
         });
       } catch (error: any) {
         console.error('Error loading user profile:', error);
+        console.log('📞 Calling callback with error (userProfile: null)');
         callback({
           user: session.user,
           userProfile: null,
@@ -327,7 +342,8 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
         });
       }
     } else {
-// [AUDIT] Removed console.log // line 330
+      console.log('👋 User logged out');
+      console.log('📞 Calling callback for logged out user');
       callback({
         user: null,
         userProfile: null,
@@ -336,8 +352,6 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
       });
     }
   });
-
-  return subscription;
 };
 
 export const signIn = async (email: string, password: string) => {
@@ -382,16 +396,17 @@ export const signOut = async () => {
  * Complete enrollment with onboarding data in Supabase
  */
 export const completeEnrollment = async (uid: string, onboardingData: {
+  interest: string;
   goals: string;
   agreementVersion: string;
   agreedAt: string;
 }) => {
   try {
-// [AUDIT] Removed console.log // line 390
-// [AUDIT] Removed console.log // line 391
+    console.log('🔍 Starting enrollment process for user:', uid);
+    console.log('🔍 Onboarding data:', onboardingData);
     
     // First, let's test if we can read the user's profile
-// [AUDIT] Removed console.log // line 394
+    console.log('🔍 Testing user profile access...');
     const { data: profileTest, error: profileTestError } = await supabase
       .from('profiles')
       .select('id, email, role, enrolled_programs, display_name')
@@ -403,16 +418,16 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       throw new Error(`Cannot access user profile: ${profileTestError.message}`);
     }
     
-// [AUDIT] Removed console.log // line 406
+    console.log('✅ Profile access test successful:', profileTest);
     
     // Check if user is already enrolled
     if (profileTest.enrolled_programs && profileTest.enrolled_programs.includes('Foundational')) {
-// [AUDIT] Removed console.log // line 410
+      console.log('⚠️ User is already enrolled in Foundational Program');
       throw new Error('You are already enrolled in the Foundational Program.');
     }
     
     // Check for existing enrollment record
-// [AUDIT] Removed console.log // line 415
+    console.log('🔍 Checking for existing enrollment records...');
     const { data: existingEnrollment, error: existingError } = await supabase
       .from('enrollments')
       .select('*')
@@ -425,24 +440,15 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       throw new Error(`Error checking existing enrollment: ${existingError.message}`);
     }
     
-    // Also check profiles.enrolled_programs for consistency
-    const { data: profileData } = await supabase
-      .from('profiles')
-      .select('enrolled_programs')
-      .eq('id', uid)
-      .single();
-    
-    const isEnrolledInProfile = profileData?.enrolled_programs?.includes('Foundational');
-    
-    if (existingEnrollment || isEnrolledInProfile) {
-// [AUDIT] Removed console.log // line 438
+    if (existingEnrollment) {
+      console.log('⚠️ Found existing enrollment record:', existingEnrollment);
       throw new Error('You already have an enrollment record for the Foundational Program.');
     }
     
-// [AUDIT] Removed console.log // line 442
+    console.log('✅ No existing enrollment found, proceeding...');
     
     // Update user profile with enrollment data
-// [AUDIT] Removed console.log // line 445
+    console.log('💾 Updating user profile...');
     const { data: profileUpdate, error: profileError } = await supabase
       .from('profiles')
       .update({
@@ -451,63 +457,17 @@ export const completeEnrollment = async (uid: string, onboardingData: {
         enrollment_agreement_timestamp: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })
-      .eq('id', uid)
-      .select()
-      .single();
+      .eq('id', uid);
 
     if (profileError) {
       console.error('❌ Profile update error:', profileError);
-      console.error('Error details:', JSON.stringify(profileError, null, 2));
       throw new Error(`Failed to update profile: ${profileError.message}`);
     }
 
-// [AUDIT] Removed console.log // line 464
-    
-    // Verify the update was successful
-    const { data: verifyProfile, error: verifyError } = await supabase
-      .from('profiles')
-      .select('enrolled_programs')
-      .eq('id', uid)
-      .single();
-    
-    if (verifyError) {
-      console.error('❌ Verification error:', verifyError);
-      throw new Error(`Verification error: ${verifyError.message}`);
-    }
-    
-// [AUDIT] Removed console.log // line 478
-    
-    // Additional verification: Check if enrolled_programs was actually updated
-    if (!verifyProfile?.enrolled_programs || !Array.isArray(verifyProfile.enrolled_programs)) {
-      throw new Error('Verification failed: enrolled_programs was not properly updated');
-    }
-    
-    if (!verifyProfile.enrolled_programs.includes('Foundational')) {
-      throw new Error('Verification failed: Foundational program not found in enrolled_programs');
-    }
-
-    // Update pilot_portfolio table foundation_program_status
-// [AUDIT] Removed console.log // line 490
-    const { error: portfolioError } = await supabase
-      .from('pilot_portfolio')
-      .update({
-        foundation_program_status: 'in_progress',
-        program_start_date: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      })
-      .eq('user_id', uid);
-
-    if (portfolioError) {
-      console.error('⚠️ Pilot portfolio update error:', portfolioError);
-      // Non-critical: enrollment is still successful
-    } else {
-// [AUDIT] Removed console.log // line 504
-    }
-    
-// [AUDIT] Removed console.log // line 507
+    console.log('✅ Profile updated successfully:', profileUpdate);
 
     // Insert enrollment record in separate table
-// [AUDIT] Removed console.log // line 510
+    console.log('📝 Creating enrollment record...');
     const { data: enrollmentData, error: enrollmentError } = await supabase
       .from('enrollments')
       .insert({
@@ -533,11 +493,11 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       }
     }
 
-// [AUDIT] Removed console.log // line 536
-// [AUDIT] Removed console.log // line 537
+    console.log('✅ Enrollment record created successfully:', enrollmentData);
+    console.log('🎉 Enrollment process completed successfully for user:', uid);
     
     // Send confirmation email with timeout
-// [AUDIT] Removed console.log // line 540
+    console.log('📧 Sending confirmation email...');
     try {
       const emailPromise = import('./email').then(module => 
         module.sendEnrollmentConfirmationEmail({
@@ -552,7 +512,7 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       );
       
       await Promise.race([emailPromise, timeoutPromise]);
-// [AUDIT] Removed console.log // line 555
+      console.log('✅ Email sent successfully');
     } catch (emailError) {
       console.warn('⚠️ Email sending failed, but enrollment succeeded:', emailError);
       // Don't fail enrollment if email fails
@@ -569,29 +529,11 @@ export const completeEnrollment = async (uid: string, onboardingData: {
  */
 export const getEnrollmentStatus = async (uid: string): Promise<string[]> => {
   try {
-    // First try with Supabase ID
-    let { data: profile, error } = await supabase
+    const { data: profile, error } = await supabase
       .from('profiles')
       .select('enrolled_programs')
       .eq('id', uid)
       .single();
-
-    // If that fails, try with Firebase UID
-    if (error || !profile) {
-// [AUDIT] Removed console.log // line 581
-      const { data: firebaseProfile, error: firebaseError } = await supabase
-        .from('profiles')
-        .select('enrolled_programs')
-        .eq('firebase_uid', uid)
-        .single();
-
-      if (firebaseError) {
-        console.error('Error fetching enrollment status with Firebase UID:', firebaseError);
-        return [];
-      }
-
-      return firebaseProfile?.enrolled_programs || [];
-    }
 
     if (error) {
       console.error('Error fetching enrollment status:', error);

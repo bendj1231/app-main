@@ -169,7 +169,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
         let cancelled = false;
         const checkSubscription = async () => {
-// [AUDIT] Removed console.log // line 172
             try {
                 // Auth0 currentUser.id is a string sub (e.g. google-oauth2|...), not a UUID.
                 // Look up the Supabase profile UUID by email first.
@@ -189,7 +188,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     .eq('status', 'active');
                 
                 if (cancelled) return;
-// [AUDIT] Removed console.log // line 192
                 
                 if (error) {
                     console.error('[DEBUG] Subscription query error:', error);
@@ -197,7 +195,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 }
                 
                 const hasActiveSubscription = subscriptions && subscriptions.length > 0;
-// [AUDIT] Removed console.log // line 200
                 setIsPremium(hasActiveSubscription);
             } catch (error) {
                 console.error('[DEBUG] Error in checkSubscription:', error);
@@ -210,7 +207,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     // Debug isPremium changes
     useEffect(() => {
-// [AUDIT] Removed console.log // line 213
     }, [isPremium]);
 
     // Load theme from localStorage on mount
@@ -568,7 +564,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 profile_image_public_id: result.publicId,
             } : null);
 
-// [AUDIT] Removed console.log // line 571
 
             // Delete old image from Cloudinary (non-blocking)
             if (oldPublicId && oldPublicId !== result.publicId) {
@@ -943,14 +938,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const pilotName = profileData?.full_name || 'Pilot Profile';
     const initials = pilotName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
-    // DEBUG: Show current page state
-// [AUDIT] Removed console.log // line 947
-        showWalletGate, 
-        showWalletView, 
-        activeSection, 
-        hasUser: !!currentUser 
-    });
-
     return (
         <div 
             style={{ position: 'relative', minHeight: embedded ? 'auto' : '100vh', overflow: embedded ? 'visible' : 'hidden' }}
@@ -1060,7 +1047,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                             justifyContent: 'space-between',
                                             padding: '0.875rem 1rem',
                                             borderRadius: '4px',
-                                            border: 'none',
                                             background: isAdminItem
                                                 ? (isActive ? 'rgba(239,68,68,0.18)' : 'rgba(239,68,68,0.08)')
                                                 : isVaultItem
@@ -1068,7 +1054,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                                 : isActive
                                                 ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
                                                 : 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(29, 78, 216, 0.1) 100%)',
-                                        border: isAdminItem ? `1px solid ${isActive ? 'rgba(239,68,68,0.6)' : 'rgba(239,68,68,0.25)'}` : isVaultItem ? `2px solid ${isActive ? '#dc2626' : 'rgba(220,38,38,0.4)'}` : 'none',
+                                            border: isAdminItem ? `1px solid ${isActive ? 'rgba(239,68,68,0.6)' : 'rgba(239,68,68,0.25)'}` : isVaultItem ? `2px solid ${isActive ? '#dc2626' : 'rgba(220,38,38,0.4)'}` : 'none',
                                             color: isAdminItem ? '#f87171' : isVaultItem ? '#111827' : '#ffffff',
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease',
@@ -1249,7 +1235,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                 {/* ── WALLET VIEW PAGE (post-auth) ── */}
                 {showWalletView && (() => {
-// [AUDIT] Removed console.log // line 1252
                     return (
                         <WalletPageWithSidebar
                             userId={currentUser?.id}
@@ -1709,7 +1694,6 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         currentRatings={profileData?.ratings || []}
                                         onInterestChange={(interests: string[]) => {
                                             // Update profile with new interests
-// [AUDIT] Removed console.log // line 1712
                                         }}
                                         onViewProgram={(program: string) => onNavigate(`program/${program}`)}
                                         onViewTraining={(trainingId: string) => onNavigate(`training/${trainingId}`)}

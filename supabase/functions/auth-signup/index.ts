@@ -7,6 +7,7 @@ import {
   PerformanceMonitor, 
   generateRequestId 
 } from '../_shared/security-middleware.ts'
+import { setOriginJurisdiction } from '../_shared/ip-geofencing.ts'
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -84,6 +85,16 @@ serve(async (req) => {
         400, 
         requestId
       )
+    }
+
+    // Set immutable origin_jurisdiction per ToS Section 13.3
+    if (data.user?.id) {
+      try {
+        await setOriginJurisdiction(supabase, data.user.id, req)
+        Logger.info('Origin jurisdiction set', { userId: data.user.id }, requestId)
+      } catch (jurErr) {
+        Logger.warn('Failed to set origin_jurisdiction (non-fatal)', { error: (jurErr as Error).message }, requestId)
+      }
     }
 
     const response = SecurityMiddleware.createResponse({

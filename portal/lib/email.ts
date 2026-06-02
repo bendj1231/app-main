@@ -7,12 +7,10 @@ interface EnrollmentEmailPayload {
 
 export const sendEnrollmentConfirmationEmail = async ({ email, name }: EnrollmentEmailPayload) => {
   try {
-// [AUDIT] Removed console.log // line 10
 
     const displayName = name || email.split('@')[0];
 
     // Use Edge Function with Resend API only - no fallbacks to Supabase
-// [AUDIT] Removed console.log // line 15
     const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
       body: {
         email,
@@ -24,9 +22,7 @@ export const sendEnrollmentConfirmationEmail = async ({ email, name }: Enrollmen
 
     if (error) {
       console.error('❌ Edge Function error:', error);
-// [AUDIT] Removed console.log // line 27
     } else {
-// [AUDIT] Removed console.log // line 29
       await storeEmailNotification(email, displayName, 'edge-function');
       await storeCustomEmailTemplate(email, displayName);
     }
@@ -147,7 +143,6 @@ const storeCustomEmailTemplate = async (email: string, displayName: string) => {
     if (templateError) {
       console.warn('⚠️ Could not store custom template:', templateError);
     } else {
-// [AUDIT] Removed console.log // line 150
     }
   } catch (error) {
     console.warn('⚠️ Error storing custom template:', error);
@@ -189,7 +184,6 @@ const storeEmailNotification = async (email: string, displayName: string, method
       if (notificationError) {
         console.warn('⚠️ Could not store notification:', notificationError);
       } else {
-// [AUDIT] Removed console.log // line 192
       }
     }
   } catch (error) {

@@ -174,7 +174,6 @@ export function useErrorTracking() {
     }
 
     if (process.env.NODE_ENV === 'development') {
-// [AUDIT] Removed console.log // line 177
     }
   }, []);
 

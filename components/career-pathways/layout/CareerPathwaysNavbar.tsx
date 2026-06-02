@@ -446,7 +446,6 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
         onClose={() => setIsLoginModalOpen(false)}
         onNavigate={(page: string) => {
           // Handle navigation if needed
-// [AUDIT] Removed console.log // line 448
         }}
       />
     </>

@@ -142,18 +142,14 @@ function NavSection({ section, scrollToSection }: {
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   
-// [AUDIT] Removed console.log // line 145
   
   return (
     <div className="mb-1">
       <button
         onClick={() => {
-// [AUDIT] Removed console.log // line 151
           if (section.children) {
-// [AUDIT] Removed console.log // line 153
             setIsExpanded(!isExpanded);
           } else {
-// [AUDIT] Removed console.log // line 156
             scrollToSection(section.id);
           }
         }}
@@ -175,7 +171,6 @@ function NavSection({ section, scrollToSection }: {
             <button
               key={child.id}
               onClick={() => {
-// [AUDIT] Removed console.log // line 178
                 scrollToSection(child.id);
               }}
               className="w-full text-left px-2 py-1 rounded-md text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-start gap-1.5"
@@ -253,17 +248,13 @@ export default function FullFrameworkPage() {
   }, []);
 
   const scrollToSection = (id: string) => {
-// [AUDIT] Removed console.log // line 256
     const element = document.getElementById(id);
-// [AUDIT] Removed console.log // line 258
     if (element) {
-// [AUDIT] Removed console.log // line 260
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
       console.error('❌ Element not found for id:', id);
       // Try to find all IDs in the document for debugging
       const allIds = Array.from(document.querySelectorAll('[id]')).map(el => el.id);
-// [AUDIT] Removed console.log // line 266
     }
   };
 
@@ -389,8 +380,6 @@ export default function FullFrameworkPage() {
       }
     }
 
-// [AUDIT] Removed console.log // line 392
-// [AUDIT] Removed console.log // line 393
     
     return lines.map((line, i) => {
         // IMPORTANT: Track TOC section FIRST (before any early returns)
@@ -401,17 +390,14 @@ export default function FullFrameworkPage() {
         if (hasTocText) {
           inTocSection = true;
           debugTocFound = true;
-// [AUDIT] Removed console.log // line 404
         }
         if (inTocSection && isPartHeader) {
           inTocSection = false;
           tocSectionEnd = true;
-// [AUDIT] Removed console.log // line 409
         }
         
         // Debug log
         if (i < 100 || hasTocText || isPartHeader) {
-// [AUDIT] Removed console.log // line 414
         }
         
         // Headers with IDs
@@ -437,7 +423,6 @@ export default function FullFrameworkPage() {
             counter++;
           }
           seenIds.add(id);
-// [AUDIT] Removed console.log // line 440
           return <h2 key={i} id={id} className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">{headingText}</h2>;
         }
         if (line.startsWith('### ')) {
@@ -602,7 +587,6 @@ export default function FullFrameworkPage() {
           }
           if (currentGroup) groups.push(currentGroup);
 
-// [AUDIT] Removed console.log // line 605
           groups.forEach((g, gi) => console.log(`  Group ${gi}: "${g.label.substring(0, 50)}" rows:`, g.rows.length));
 
           return (

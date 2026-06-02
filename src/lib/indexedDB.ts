@@ -39,7 +39,6 @@ export const indexedDB = {
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-// [AUDIT] Removed console.log // line 42
           resolve();
         };
 
@@ -62,10 +61,8 @@ export const indexedDB = {
         request.onsuccess = () => {
           const data = request.result as AuthSessionData | undefined;
           if (data && data.session) {
-// [AUDIT] Removed console.log // line 65
             resolve(data.session);
           } else {
-// [AUDIT] Removed console.log // line 68
             resolve(null);
           }
         };
@@ -90,7 +87,6 @@ export const indexedDB = {
           const { data: { session: currentSession }, error: sessionError } = await supabaseClient.auth.getSession();
           
           if (sessionError || !currentSession) {
-// [AUDIT] Removed console.log // line 93
             await this.clearSession();
             return null;
           }
@@ -109,14 +105,11 @@ export const indexedDB = {
               await this.clearSession();
               return null;
             }
-// [AUDIT] Removed console.log // line 112
           }
 
           if (!profile) {
-// [AUDIT] Removed console.log // line 116
             // Don't clear session - allow user to continue
           } else {
-// [AUDIT] Removed console.log // line 119
           }
         } catch (verifyError) {
           console.error('❌ Error verifying user:', verifyError);
@@ -143,7 +136,6 @@ export const indexedDB = {
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-// [AUDIT] Removed console.log // line 146
           resolve();
         };
 

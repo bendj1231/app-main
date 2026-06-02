@@ -188,10 +188,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const handleLogout = async (e?: React.MouseEvent) => {
         e?.preventDefault();
         e?.stopPropagation();
-// [AUDIT] Removed console.log // line 190
         // Prevent multiple simultaneous logout calls
         if (logoutLoading) {
-// [AUDIT] Removed console.log // line 193
             return;
         }
         if (!logout) {
@@ -200,16 +198,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         }
         try {
             setLogoutLoading(true);
-// [AUDIT] Removed console.log // line 202
             await logout();
-// [AUDIT] Removed console.log // line 204
             onNavigate('home'); // Redirect to home after logout
             setIsMenuOpen(false);
         } catch (error) {
             console.error("[LOGOUT ERROR] Failed to log out:", error);
         } finally {
             setLogoutLoading(false);
-// [AUDIT] Removed console.log // line 211
         }
     };
 

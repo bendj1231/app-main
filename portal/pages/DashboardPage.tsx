@@ -921,12 +921,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Separate useEffect for enrollment check - runs on mount and when userProfile changes
   useEffect(() => {
     const checkEnrollment = async () => {
-// [AUDIT] Removed console.log // line 923
-// [AUDIT] Removed console.log // line 924
-// [AUDIT] Removed console.log // line 925
       
       if (!userProfile?.email) {
-// [AUDIT] Removed console.log // line 928
         setIsFoundationalEnrolled(false);
         return;
       }
@@ -934,12 +930,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       // First check if enrolled_programs is already in userProfile
       if (userProfile?.enrolledPrograms && Array.isArray(userProfile.enrolledPrograms)) {
         const isEnrolled = userProfile.enrolledPrograms.includes('Foundational');
-// [AUDIT] Removed console.log // line 936
         setIsFoundationalEnrolled(isEnrolled);
         return;
       }
 
-// [AUDIT] Removed console.log // line 941
       
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
@@ -947,31 +941,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         .eq('email', userProfile.email)
         .single();
       
-// [AUDIT] Removed console.log // line 949
       
       if (profileError) {
         console.error('❌ Profile lookup error:', profileError);
         setIsFoundationalEnrolled(false);
       } else if (profileData && profileData.enrolled_programs) {
         const enrolledPrograms = profileData.enrolled_programs;
-// [AUDIT] Removed console.log // line 956
-// [AUDIT] Removed console.log // line 957
         
         if (Array.isArray(enrolledPrograms)) {
           const hasMentorship = enrolledPrograms.some((p: string) => 
             p.toLowerCase().includes('mentor') || p.toLowerCase().includes('mentorship')
           );
-// [AUDIT] Removed console.log // line 963
           
           const hasFoundational = enrolledPrograms.some((p: string) => 
             p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')
           );
-// [AUDIT] Removed console.log // line 968
-// [AUDIT] Removed console.log // line 969
           setIsFoundationalEnrolled(hasFoundational);
           
           if (hasMentorship) {
-// [AUDIT] Removed console.log // line 973
             setMentorshipEnrolled(true);
           }
         } else {
@@ -979,7 +966,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           setIsFoundationalEnrolled(false);
         }
       } else {
-// [AUDIT] Removed console.log // line 981
         setIsFoundationalEnrolled(false);
       }
     };
@@ -1650,7 +1636,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Examination Portal Access Card - Black */}
                 <div
                   onClick={() => {
-// [AUDIT] Removed console.log // line 1652
                     onViewExaminationPortal?.();
                   }}
                   style={{
@@ -1703,7 +1688,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-// [AUDIT] Removed console.log // line 1705
                       onViewExaminationPortal?.();
                     }}
                     onMouseEnter={(e) => {

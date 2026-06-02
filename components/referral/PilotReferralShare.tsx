@@ -90,7 +90,7 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
   const shareViaEmail = () => {
     const subject = encodeURIComponent('Join PilotRecognition.com - Exclusive Invitation');
     const body = encodeURIComponent(`Hi,\n\nI'm inviting you to join PilotRecognition.com, the leading platform for pilot career advancement.\n\nUse my referral link to sign up: ${referralLink}\n\nThis platform helps pilots connect with airline opportunities and advance their careers.\n\nBest regards`);
-    safeRedirect(`mailto:?subject=${subject)}&body=${body}`;
+    safeRedirect(`mailto:?subject=${subject}&body=${body}`);
   };
 
   const shareViaTwitter = () => {

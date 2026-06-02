@@ -3,6 +3,7 @@ import { manufacturers } from '@/data/aircraft-manufacturers';
 import { useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { TopNavbar } from '@/components/website/components/TopNavbar';
+import { safeRedirect } from '@/src/lib/url-validator';
 
 const ManufacturerExpectationsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -62,7 +63,7 @@ const ManufacturerExpectationsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans">
-      <TopNavbar onNavigate={(page) => window.location.href = `/${page}`} onLogin={() => {}} forceScrolled={true} isLight={true} />
+      <TopNavbar onNavigate={(page) => safeRedirect(`/${page}`)} onLogin={() => {}} forceScrolled={true} isLight={true} />
 
       {/* Header Section */}
       <div className="pt-32 pb-12 px-6">

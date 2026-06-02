@@ -42,7 +42,6 @@ export const MentorLogbookPage: React.FC<MentorLogbookPageProps> = ({ onBack, us
 
   const fetchMentorLogs = async () => {
     if (!userProfile?.uid || !db) {
-// [AUDIT] Removed console.log // line 45
       setLoading(false);
       return;
     }

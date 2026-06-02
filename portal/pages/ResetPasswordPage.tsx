@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '../lib/supabase-auth';
 import { Icons } from '../icons';
+import { safeRedirect } from '../../src/lib/url-validator';
 
 export const ResetPasswordPage: React.FC = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -14,7 +14,7 @@ export const ResetPasswordPage: React.FC = () => {
 
     useEffect(() => {
         const initializePage = async () => {
-// [AUDIT] Removed console.log // line 16
+            console.log('🔍 Reset password page - URL hash:', window.location.hash);
             
             try {
                 // Get the session from the URL hash
@@ -24,7 +24,7 @@ export const ResetPasswordPage: React.FC = () => {
                 const refreshToken = urlParams.get('refresh_token');
                 const type = urlParams.get('type');
                 
-// [AUDIT] Removed console.log // line 26
+                console.log('🔍 Parsed params:', { 
                     accessToken: accessToken?.substring(0, 20) + '...', 
                     refreshToken: refreshToken?.substring(0, 20) + '...', 
                     type,
@@ -34,7 +34,7 @@ export const ResetPasswordPage: React.FC = () => {
                 
                 // Simplified approach - just try to get current user
                 if (hash.includes('access_token') && hash.includes('type=recovery')) {
-// [AUDIT] Removed console.log // line 36
+                    console.log('� Recovery tokens detected, attempting to set session...');
                     
                     try {
                         // Try direct session setup first
@@ -43,7 +43,7 @@ export const ResetPasswordPage: React.FC = () => {
                             refresh_token: refreshToken || ''
                         });
                         
-// [AUDIT] Removed console.log // line 45
+                        console.log('🔍 Session result:', { 
                             hasData: !!sessionData, 
                             hasUser: !!sessionData?.user, 
                             userEmail: sessionData?.user?.email,
@@ -52,7 +52,7 @@ export const ResetPasswordPage: React.FC = () => {
                         
                         if (!sessionError && sessionData.user?.email) {
                             setEmail(sessionData.user.email);
-// [AUDIT] Removed console.log // line 54
+                            console.log('✅ Session setup successful for:', sessionData.user.email);
                         } else {
                             throw new Error(sessionError?.message || 'Session setup failed');
                         }
@@ -61,12 +61,12 @@ export const ResetPasswordPage: React.FC = () => {
                         
                         // Try alternative approach
                         try {
-// [AUDIT] Removed console.log // line 63
+                            console.log('🔄 Trying alternative approach...');
                             const { data: altData, error: altError } = await supabase.auth.getUser(accessToken || undefined);
                             
                             if (!altError && altData.user?.email) {
                                 setEmail(altData.user.email);
-// [AUDIT] Removed console.log // line 68
+                                console.log('✅ Alternative approach successful for:', altData.user.email);
                             } else {
                                 throw new Error(altError?.message || 'Alternative approach failed');
                             }
@@ -191,7 +191,7 @@ export const ResetPasswordPage: React.FC = () => {
                             pointerEvents: 'none'
                         }} />
                         <div style={{ marginBottom: '2rem' }}>
-                            <img src="/images/reset-password-logo.png" alt="PilotRecognition Logo" style={{ width: '240px', height: 'auto', objectFit: 'contain' }} />
+                            <img src="https://lh3.googleusercontent.com/d/1KgVuIuCv8mKxTcJ4rClCUCdaQ3fxm0x6" alt="PilotRecognition Logo" style={{ width: '240px', height: 'auto', objectFit: 'contain' }} />
                         </div>
                         <div style={{ color: '#e11d48', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                             LOADING
@@ -516,7 +516,7 @@ export const ResetPasswordPage: React.FC = () => {
                 }}>
                     <div style={{ marginBottom: '0.5rem', fontWeight: 600, color: '#475569' }}>Contact Us</div>
                     <div>Phone: <a href="tel:+1234567890" style={{ color: '#2563eb', textDecoration: 'none' }}>+1 234 567 890</a></div>
-                    <div>Email: <a href="mailto:contact@pilotrecognition.com" style={{ color: '#2563eb', textDecoration: 'none' }}>contact@pilotrecognition.com</a></div>
+                    <div>Email: <a href="mailto:wingmentorprogram@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>wingmentorprogram@gmail.com</a></div>
                 </div>
             </div>
         </div>

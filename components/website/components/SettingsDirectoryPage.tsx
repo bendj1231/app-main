@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
-import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard, Trash2 } from 'lucide-react';
+import { ChevronRight, User, Bell, Shield, Palette, Globe, HelpCircle, LogOut, Terminal, CreditCard, Trash2, Download } from 'lucide-react';
 import { StorageEngineCard } from './StorageEngineCard';
 import { supabase } from '../../../src/lib/supabase';
 
@@ -15,6 +15,47 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
     const [deleting, setDeleting] = useState(false);
     const [deleteError, setDeleteError] = useState('');
+    const [exporting, setExporting] = useState(false);
+    const [exportError, setExportError] = useState('');
+
+    const handleDownloadData = async () => {
+        setExporting(true);
+        setExportError('');
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session?.access_token) throw new Error('Not authenticated');
+
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/data-export`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${session.access_token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || `Export failed (${res.status})`);
+            }
+
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pilotrecognition-data-export-${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (e: any) {
+            setExportError(e?.message || 'Failed to export data.');
+        } finally {
+            setExporting(false);
+        }
+    };
 
     const handleDeleteAccount = async () => {
         if (deleteConfirmText !== 'DELETE') return;
@@ -22,8 +63,25 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
         setDeleteError('');
         try {
             const { data: { session } } = await supabase.auth.getSession();
-            if (!session?.user?.id) throw new Error('Not authenticated');
-            await supabase.from('profiles').delete().eq('id', session.user.id);
+            if (!session?.access_token) throw new Error('Not authenticated');
+
+            // Call the delete-account edge function for complete DCA-compliant purge
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/delete-account`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${session.access_token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || `Delete failed (${res.status})`);
+            }
+
             await supabase.auth.signOut();
             safeRedirect('/');
         } catch (e: any) {
@@ -107,6 +165,35 @@ export const SettingsDirectoryPage: React.FC<SettingsDirectoryPageProps> = ({ on
                         </div>
                     </div>
                 ))}
+
+                {/* Data Export — GDPR Art. 20 / RA 10173 */}
+                <div>
+                    <h2 className="text-lg font-semibold text-slate-900 mb-1">Data Portability</h2>
+                    <p className="text-sm text-slate-500 mb-4">Download a complete copy of all data we hold about you.</p>
+                    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                        <div className="flex items-center gap-4 p-4">
+                            <div className="p-2 bg-blue-100 rounded-lg">
+                                <Download className="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="font-semibold text-slate-900">Download My Data</h3>
+                                <p className="text-sm text-slate-500">Export all personal data as JSON (GDPR Art. 20).</p>
+                            </div>
+                            <button
+                                onClick={handleDownloadData}
+                                disabled={exporting}
+                                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-white text-sm font-bold rounded-lg transition-colors"
+                            >
+                                {exporting ? 'Preparing...' : 'Download'}
+                            </button>
+                        </div>
+                        {exportError && (
+                            <div className="px-4 pb-3">
+                                <p className="text-xs text-red-600">{exportError}</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
 
                 {/* Danger Zone — Account Deletion */}
                 <div>

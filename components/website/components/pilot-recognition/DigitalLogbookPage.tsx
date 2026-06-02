@@ -769,7 +769,6 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   const fetchFlightLogs = async () => {
     const userId = resolvedUserId;
     if (!userId) {
-// [AUDIT] Removed console.log // line 772
       setLoading(false);
       return;
     }

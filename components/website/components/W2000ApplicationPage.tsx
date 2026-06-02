@@ -9,20 +9,16 @@ interface W2000ApplicationPageProps {
 
 export const W2000ApplicationPage: React.FC<W2000ApplicationPageProps> = ({ onBack, onNavigate }) => {
     useEffect(() => {
-// [AUDIT] Removed console.log // line 11
         
         // Use the working version of W2000 (index.html is now the simple version)
         const w2000Url = '/W2000/index.html';
-// [AUDIT] Removed console.log // line 15
         
         // Method 1: Try window.open
         try {
             const newWindow = window.open(w2000Url, '_blank', 'noopener,noreferrer');
             if (newWindow) {
-// [AUDIT] Removed console.log // line 21
                 newWindow.focus();
             } else {
-// [AUDIT] Removed console.log // line 24
                 // Method 2: Fallback to redirect
                 safeRedirect(w2000Url);
             }
@@ -34,7 +30,6 @@ export const W2000ApplicationPage: React.FC<W2000ApplicationPageProps> = ({ onBa
         
         // Navigate back to Portal 2 programs tab after a short delay
         setTimeout(() => {
-// [AUDIT] Removed console.log // line 36
             onNavigate('access-portal-2?tab=programs');
         }, 500);
     }, [onBack, onNavigate]);

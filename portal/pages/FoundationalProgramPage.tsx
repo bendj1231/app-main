@@ -50,15 +50,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
     directFromHome = false
 }) => {
 
-    // Debug: Log when component receives props
     React.useEffect(() => {
-// [AUDIT] Removed console.log // line 55
-            onBack: !!onBack,
-            onLogout: !!onLogout,
-            onStartEnrollment: !!onStartEnrollment,
-            userProfile: !!userProfile,
-            userProfileEmail: userProfile?.email
-        });
     }, [onBack, onLogout, onStartEnrollment, userProfile]);
 
     // Video Player State
@@ -755,8 +747,6 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                             <button
                                 onClick={() => {
-// [AUDIT] Removed console.log // line 758
-// [AUDIT] Removed console.log // line 759
 
                                     if (!agreed) {
                                         alert('Please agree to the Terms and Conditions to complete enrollment.');
@@ -768,7 +758,6 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                                     }
 
                                     if (onStartEnrollment) {
-// [AUDIT] Removed console.log // line 771
                                         onStartEnrollment();
                                     } else {
                                         console.error('❌ onStartEnrollment is not defined');

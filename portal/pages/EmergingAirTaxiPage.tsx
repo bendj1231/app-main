@@ -16,18 +16,15 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
     ];
 
     useEffect(() => {
-// [AUDIT] Removed console.log // line 18
         
         const interval = setInterval(() => {
             setCurrentImageIndex((prevIndex) => {
                 const newIndex = (prevIndex + 1) % airTaxiImages.length;
-// [AUDIT] Removed console.log // line 23
                 return newIndex;
             });
         }, 4000); // Change every 4 seconds for smooth automatic transitions
 
         return () => {
-// [AUDIT] Removed console.log // line 29
             clearInterval(interval);
         };
     }, []); // Empty dependency array
@@ -123,7 +120,6 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
                                             transition: 'opacity 1.5s ease-in-out'
                                         }}
                                         onError={(e) => {
-// [AUDIT] Removed console.log // line 125
                                         }}
                                     />
                                 ))}

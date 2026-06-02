@@ -65,7 +65,6 @@ const FoundationalEnrollmentCheck: React.FC<{
     }
 
     const checkEnrollment = async () => {
-// [AUDIT] Removed console.log // line 67
       
       // Mark as checked
       hasCheckedEnrollment.current = true;
@@ -75,7 +74,6 @@ const FoundationalEnrollmentCheck: React.FC<{
       const firebaseUid = userProfile?.firebase_uid || userProfile?.uid || userId;
       
       if (!supabaseId && !firebaseUid) {
-// [AUDIT] Removed console.log // line 77
         onResult(false);
         setIsLoading(false);
         return;
@@ -83,9 +81,7 @@ const FoundationalEnrollmentCheck: React.FC<{
 
       // Use preloaded data if available
       if (preloadedPrograms && preloadedPrograms.length > 0) {
-// [AUDIT] Removed console.log // line 85
         const isEnrolled = preloadedPrograms.includes('Foundational');
-// [AUDIT] Removed console.log // line 87
         onResult(isEnrolled);
         setIsLoading(false);
         return;
@@ -93,26 +89,21 @@ const FoundationalEnrollmentCheck: React.FC<{
 
       // Check userProfile enrolled_programs as fallback
       if (userProfile?.enrolledPrograms && userProfile.enrolledPrograms.length > 0) {
-// [AUDIT] Removed console.log // line 95
         const isEnrolled = userProfile.enrolledPrograms.includes('Foundational');
-// [AUDIT] Removed console.log // line 97
         onResult(isEnrolled);
         setIsLoading(false);
         return;
       }
 
       if (preloadedEnrollment && Object.keys(preloadedEnrollment).length > 0) {
-// [AUDIT] Removed console.log // line 104
         const isEnrolled = preloadedEnrollment.program === 'Foundational' || 
                           preloadedEnrollment.status === 'active';
-// [AUDIT] Removed console.log // line 107
         onResult(isEnrolled);
         setIsLoading(false);
         return;
       }
 
       try {
-// [AUDIT] Removed console.log // line 114
         // Try Supabase ID first, then Firebase UID
         let enrolledPrograms = [];
         if (supabaseId) {
@@ -120,11 +111,9 @@ const FoundationalEnrollmentCheck: React.FC<{
         }
         // If no results with Supabase ID, try Firebase UID
         if (enrolledPrograms.length === 0 && firebaseUid && firebaseUid !== supabaseId) {
-// [AUDIT] Removed console.log // line 122
           enrolledPrograms = await getEnrollmentStatus(firebaseUid);
         }
         const isEnrolled = enrolledPrograms.includes('Foundational');
-// [AUDIT] Removed console.log // line 126
         onResult(isEnrolled);
       } catch (error) {
         console.error('❌ FoundationalEnrollmentCheck: Error checking enrollment status:', error);
@@ -349,12 +338,10 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
 
   // Debug: Log mainView changes
   useEffect(() => {
-// [AUDIT] Removed console.log // line 351
   }, [mainView]);
 
   // Debug: Log fullScreenView changes
   useEffect(() => {
-// [AUDIT] Removed console.log // line 356
   }, [fullScreenView]);
 
   const [sidebarScale, setSidebarScale] = useState(1);
@@ -380,7 +367,6 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
           .single();
 
         if (error || !data) {
-// [AUDIT] Removed console.log // line 382
           setProgramProgress({
             completion_percentage: 0,
             modules_completed: [],
@@ -391,7 +377,6 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
           setProgramProgress(data);
         }
       } catch (err) {
-// [AUDIT] Removed console.log // line 393
         setProgramProgress({
           completion_percentage: 0,
           modules_completed: [],
@@ -436,7 +421,6 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
   // Re-check enrollment when userProfile changes
   useEffect(() => {
     if (userProfile?.enrolledPrograms && userProfile.enrolledPrograms.includes('Foundational')) {
-// [AUDIT] Removed console.log // line 438
       // No automatic redirect - user stays on pilot-portfolio/dashboard view
     }
   }, [userProfile?.enrolledPrograms]);
@@ -3851,11 +3835,6 @@ export const PilotRecognitionHome: React.FC<PilotRecognitionHomeProps> = ({
           />
         );
       case 'enrollment-confirmation':
-// [AUDIT] Removed console.log // line 3853
-            userProfile: !!userProfile,
-            userEmail: userProfile?.email,
-            userId: userProfile?.id
-        });
         return (
           <EnrollmentConfirmationPage
             onBack={() => setMainView('programs')}

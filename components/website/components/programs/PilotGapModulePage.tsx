@@ -4535,7 +4535,6 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     onWaiting={() => console.log('Video buffering...')}
                                     onCanPlay={() => console.log('Video can play')}
                                     onLoadedData={() => {
-// [AUDIT] Removed console.log // line 4538
                                         if (heroVideoRef.current && heroVideoRef.current.paused) {
                                             heroVideoRef.current.play().catch(err => console.log('Autoplay prevented:', err));
                                         }

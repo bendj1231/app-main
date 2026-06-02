@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ArrowRight, ArrowLeft, Users, Globe, Award, ChevronDown, ChevronLeft, TrendingDown } from 'lucide-react';
+import { CookieConsent } from '../../../components/CookieConsent';
 
 const regions = [
   { code: 'en-ph', name: 'Philippines', flag: '🇵🇭' },
@@ -694,12 +695,20 @@ export default function ConnectingPilotsHero() {
           </div>
 
           <div className="border-t border-white/10 pt-8 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-3 text-sm">
+              <a href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+              <a href="/terms-of-service" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+              <a href="/data-controller-agreement" className="text-gray-400 hover:text-white transition-colors">Data Controller Agreement</a>
+              <a href="/dpo" className="text-gray-400 hover:text-white transition-colors">DPO Contact</a>
+            </div>
             <p className="text-gray-400 text-sm">
               © 2026 pilotshortage.org. All rights reserved. Run by pilots, for pilots.
             </p>
           </div>
         </div>
       </footer>
+
+      <CookieConsent />
     </div>
   );
 }

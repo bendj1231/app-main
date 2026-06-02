@@ -56,7 +56,6 @@ export async function createClientWallet(
         device_name: 'Platform Authenticator',
         transports: ['internal'],
       }, { onConflict: 'credential_id' });
-// [AUDIT] Removed console.log // line 59
     }
   } catch (passkeyErr) {
     // Non-fatal — user may have cancelled or device doesn't support passkeys

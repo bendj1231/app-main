@@ -243,7 +243,7 @@ export const FlightSchoolOnboarding: React.FC<FlightSchoolOnboardingProps> = ({ 
             </p>
           </div>
           <button
-            onClick={() => safeRedirect(`/flight-school/${flightSchoolId)}`}
+            onClick={() => safeRedirect(`/flight-school/${flightSchoolId}`)}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition"
           >
             Go to Dashboard

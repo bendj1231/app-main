@@ -26,11 +26,6 @@ export interface GoogleAuthCodeResult {
  */
 export function generateGoogleAuthUrl(params: GoogleAuthUrlParams): string {
   const timestamp = new Date().toISOString();
-// [AUDIT] Removed console.log // line 29
-// [AUDIT] Removed console.log // line 30
-// [AUDIT] Removed console.log // line 31
-// [AUDIT] Removed console.log // line 32
-// [AUDIT] Removed console.log // line 33
 
   const { clientId, authorizationEndpoint, scopes } = GOOGLE_OAUTH_CONFIG;
 
@@ -41,27 +36,21 @@ export function generateGoogleAuthUrl(params: GoogleAuthUrlParams): string {
     scope: scopes.join(' '),
   });
 
-// [AUDIT] Removed console.log // line 44
 
   // Optional parameters
   if (params.state) {
     authParams.append('state', params.state);
-// [AUDIT] Removed console.log // line 49
   }
 
   if (params.loginHint) {
     authParams.append('login_hint', params.loginHint);
-// [AUDIT] Removed console.log // line 54
   }
 
   if (params.prompt) {
     authParams.append('prompt', params.prompt);
-// [AUDIT] Removed console.log // line 59
   }
 
   const finalUrl = `${authorizationEndpoint}?${authParams.toString()}`;
-// [AUDIT] Removed console.log // line 63
-// [AUDIT] Removed console.log // line 64
 
   return finalUrl;
 }
@@ -73,9 +62,6 @@ export function generateGoogleAuthUrl(params: GoogleAuthUrlParams): string {
  */
 export function extractCodeFromUrl(url: string): GoogleAuthCodeResult {
   const timestamp = new Date().toISOString();
-// [AUDIT] Removed console.log // line 76
-// [AUDIT] Removed console.log // line 77
-// [AUDIT] Removed console.log // line 78
 
   try {
     const urlObj = new URL(url);
@@ -83,18 +69,12 @@ export function extractCodeFromUrl(url: string): GoogleAuthCodeResult {
     const error = urlObj.searchParams.get('error');
     const state = urlObj.searchParams.get('state');
 
-// [AUDIT] Removed console.log // line 86
-// [AUDIT] Removed console.log // line 87
-// [AUDIT] Removed console.log // line 88
-// [AUDIT] Removed console.log // line 89
-// [AUDIT] Removed console.log // line 90
 
     const result = {
       code,
       error,
     };
 
-// [AUDIT] Removed console.log // line 97
     return result;
   } catch (e) {
     console.error(`[${timestamp}] [GOOGLE OAUTH ERROR] Failed to parse URL`);

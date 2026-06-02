@@ -240,7 +240,6 @@ export const getRedirectPage = (userProfile: UserProfile, attemptedPage: string)
 
 export const updateUserTrack = async (userId: string, newTrack: UserTrack, reason?: string): Promise<void> => {
   // This would be implemented with Firebase
-// [AUDIT] Removed console.log // line 243
   
   // Firebase implementation would go here
   // const userRef = doc(db, 'users', userId);

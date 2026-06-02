@@ -8,8 +8,9 @@ function calculateReadingTime(content: string): number {
 }
 
 // Use Vite's import.meta.glob to load markdown files at build time
-const blogFiles = import.meta.glob('../../docs/blog/*.md', { 
-  as: 'raw',
+const blogFiles = import.meta.glob<string>('../../docs/blog/*.md', { 
+  query: '?raw',
+  import: 'default',
   eager: true 
 });
 

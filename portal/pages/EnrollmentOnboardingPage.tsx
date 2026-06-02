@@ -27,7 +27,6 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
         setLoading(true);
         setError(null); // Clear previous errors
         try {
-// [AUDIT] Removed console.log // line 30
             
             // Get authenticated user
             const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -46,7 +45,6 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
                 return;
             }
             
-// [AUDIT] Removed console.log // line 49
             
             // Show auth loading screen during Supabase enrollment authentication
             setLoading(false);
@@ -56,24 +54,20 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             await new Promise(resolve => setTimeout(resolve, 3000));
             
             // Complete enrollment in Supabase
-// [AUDIT] Removed console.log // line 59
             await completeEnrollment(user.id, {
                 goals,
                 agreementVersion: '1.0',
                 agreedAt: new Date().toISOString()
             });
-// [AUDIT] Removed console.log // line 65
             
             // Add delay to ensure Supabase commits the changes
             await new Promise(resolve => setTimeout(resolve, 1000));
             
             // Refresh profile data to ensure enrollment status is updated
             if (onRefreshProfile) {
-// [AUDIT] Removed console.log // line 72
                 await onRefreshProfile();
             }
             
-// [AUDIT] Removed console.log // line 76
             
             // Hide auth loading screen
             setAuthLoading(false);

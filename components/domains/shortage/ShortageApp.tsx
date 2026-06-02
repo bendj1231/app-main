@@ -321,7 +321,6 @@ export default function ShortageApp() {
   };
 
   const handleNavigate = (page: string) => {
-// [AUDIT] Removed console.log // line 324
     setCurrentView(page);
     // In full implementation, this would route to different views
   };

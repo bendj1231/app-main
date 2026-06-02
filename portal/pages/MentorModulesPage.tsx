@@ -29,11 +29,6 @@ const MentorModulesPage: React.FC<MentorModulesPageProps> = ({ onBack, onComplet
     ];
 
     // VERY EXPLICIT DEBUGGING
-// [AUDIT] Removed console.log // line 32
-// [AUDIT] Removed console.log // line 33
-// [AUDIT] Removed console.log // line 34
-// [AUDIT] Removed console.log // line 35
-// [AUDIT] Removed console.log // line 36
 
     const getCurrentStepIndex = () => {
         return navigationFlow.findIndex(step => step.chapter === currentChapter && step.topic === currentTopic);
@@ -139,31 +134,22 @@ const MentorModulesPage: React.FC<MentorModulesPageProps> = ({ onBack, onComplet
 
     // ── Render Current Chapter/Topic ───────────────────────────────────────
     const renderCurrentContent = () => {
-// [AUDIT] Removed console.log // line 142
         switch (currentChapter) {
             case 1:
-// [AUDIT] Removed console.log // line 145
                 return <MentorModulesPage0 onBack={onBack} />;
             case 2:
-// [AUDIT] Removed console.log // line 148
                 return <MentorModulesPage1 onBack={onBack} />;
             case 3:
-// [AUDIT] Removed console.log // line 151
                 return <MentorModulesPage2 onBack={onBack} />;
             case 4:
-// [AUDIT] Removed console.log // line 154
                 return <MentorModulesPage3 onBack={onBack} />;
             case 5:
-// [AUDIT] Removed console.log // line 157
                 return <MentorModulesPage4 onBack={onBack} />;
             case 6:
-// [AUDIT] Removed console.log // line 160
                 return <MentorModulesPage5 onBack={onBack} />;
             case 7:
-// [AUDIT] Removed console.log // line 163
                 return <MentorModulesPage6 onBack={onBack} />;
             default:
-// [AUDIT] Removed console.log // line 166
                 return <MentorModulesPage0 onBack={onBack} />;
         }
     };

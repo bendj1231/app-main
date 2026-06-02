@@ -517,7 +517,6 @@ async function handleLicenseCheckComplete(payload) {
   }
   
   // Log for audit
-// [AUDIT] Removed console.log // line 520
 }
 
 async function handleEducationCheckComplete(payload) {

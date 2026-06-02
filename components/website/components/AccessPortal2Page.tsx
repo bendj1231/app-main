@@ -112,41 +112,10 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     const hoursForNextLevel = 50;
     const progressPercent = Math.min((flightHours / hoursForNextLevel) * 100, 100);
     
-    // Debug sidebar profile data
-// [AUDIT] Removed console.log // line 115
-        profileImage,
-        initials,
-        fullName,
-        displayName,
-        flightHours,
-        recognitionScore,
-        certCount,
-        currentLevel,
-        progressPercent
-    });
-    
     // Check if enrolled in Foundational program (must be logged in)
     const isEnrolledInFoundational = Boolean(currentUser && Array.isArray(enrolledPrograms) && 
         enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')));
     
-    // Debug enrollment checking logic step by step
-// [AUDIT] Removed console.log // line 132
-        enrolledPrograms,
-        isEnrolledInFoundational,
-        hasEnrolledPrograms: Array.isArray(enrolledPrograms),
-        programCount: Array.isArray(enrolledPrograms) ? enrolledPrograms.length : 0,
-        enrollmentCheckSteps: {
-            step1_isArray: Array.isArray(enrolledPrograms),
-            step2_programCount: Array.isArray(enrolledPrograms) ? enrolledPrograms.length : 0,
-            step3_someCheck: Array.isArray(enrolledPrograms) ? enrolledPrograms.some((p: string) => {
-                const matches = p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation');
-// [AUDIT] Removed console.log // line 142
-                return matches;
-            }) : false,
-            step4_finalResult: isEnrolledInFoundational
-        }
-    });
-
     useEffect(() => {
         setIsVisible(false);
         const timer = setTimeout(() => setIsVisible(true), 100);
@@ -154,7 +123,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     }, [activeTab]);
 
     useEffect(() => {
-// [AUDIT] Removed console.log // line 156
         // Add a class to body to hide any global side panels
         document.body.classList.add('w12-fullscreen');
         return () => {
@@ -396,42 +364,30 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                         setProfileImageUrl(data.profile_image_url || '');
                         
                         // Debug enrolled programs data structure
-// [AUDIT] Removed console.log // line 398
-// [AUDIT] Removed console.log // line 399
-// [AUDIT] Removed console.log // line 400
                         
                         if (data.enrolled_programs) {
                             if (Array.isArray(data.enrolled_programs)) {
-// [AUDIT] Removed console.log // line 404
-// [AUDIT] Removed console.log // line 405
                                 setEnrolledPrograms(data.enrolled_programs);
                             } else {
-// [AUDIT] Removed console.log // line 408
                                 // Try to parse if it's a string
                                 try {
                                     const parsed = JSON.parse(data.enrolled_programs);
                                     if (Array.isArray(parsed)) {
-// [AUDIT] Removed console.log // line 413
                                         setEnrolledPrograms(parsed);
                                     } else {
-// [AUDIT] Removed console.log // line 416
                                         setEnrolledPrograms([]);
                                     }
                                 } catch (e) {
-// [AUDIT] Removed console.log // line 420
                                     setEnrolledPrograms([]);
                                 }
                             }
                         } else {
-// [AUDIT] Removed console.log // line 425
                             setEnrolledPrograms([]);
                         }
                         
-// [AUDIT] Removed console.log // line 429
                     } else {
                         setProfileImageUrl('');
                         setEnrolledPrograms([]);
-// [AUDIT] Removed console.log // line 433
                     }
                 } catch (error) {
                     console.error('Error fetching profile data:', error);
@@ -575,11 +531,9 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => {
-// [AUDIT] Removed console.log // line 577
                                     // Trigger login modal - this will need to be implemented based on your auth system
                                     const event = new CustomEvent('open-login-modal');
                                     window.dispatchEvent(event);
-// [AUDIT] Removed console.log // line 581
                                 }}
                                 className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
                             >
@@ -587,7 +541,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             </button>
                             <button
                                 onClick={() => {
-// [AUDIT] Removed console.log // line 589
                                     safeRedirect('/become-member');
                                 }}
                                 className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
@@ -646,7 +599,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 </button>
                                                 <button
                                                     onClick={() => {
-// [AUDIT] Removed console.log // line 648
                                                         setActiveTab('programs');
                                                         setIsProfileDropdownOpen(false);
                                                     }}
@@ -878,7 +830,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                 {/* Pilot Profile Button */}
                                 <div 
                                     onClick={() => {
-// [AUDIT] Removed console.log // line 880
                                         try {
                                             onNavigate('pilot-recognition-profile');
                                         } catch (error) {
@@ -910,10 +861,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             
                                             <button
                                                 onClick={() => {
-// [AUDIT] Removed console.log // line 912
                                                     const event = new CustomEvent('open-login-modal');
                                                     window.dispatchEvent(event);
-// [AUDIT] Removed console.log // line 915
                                                 }}
                                                 className="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25 mb-3"
                                             >
@@ -922,7 +871,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             
                                             <button
                                                 onClick={() => {
-// [AUDIT] Removed console.log // line 924
                                                     safeRedirect('/become-member');
                                                 }}
                                                 className="w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
@@ -1107,7 +1055,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         >
                                             <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                  onClick={() => {
-// [AUDIT] Removed console.log // line 1109
                                                      onNavigate('/w1000');
                                                  }}>
                                                 {/* Split-section design */}
@@ -1155,7 +1102,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         >
                                             <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                  onClick={() => {
-// [AUDIT] Removed console.log // line 1157
                                                      onNavigate('foundational-program');
                                                  }}>
                                                 {/* Split-section design */}
@@ -1218,7 +1164,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => {
-// [AUDIT] Removed console.log // line 1220
                                                          onNavigate('foundational-platform');
                                                      }}>
                                                     {/* Directory Card - Image with text overlay */}
@@ -1258,7 +1203,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => {
-// [AUDIT] Removed console.log // line 1260
                                                          safeRedirect('/examination-portal');
                                                      }}>
                                                     {/* Directory Card - Image with text overlay */}
@@ -1301,7 +1245,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => {
-// [AUDIT] Removed console.log // line 1303
                                                          onNavigate('official-examination-board');
                                                      }}>
                                                     {/* Directory Card - White background */}
@@ -1432,7 +1375,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     </div>
                                                     <button
                                                         onClick={() => {
-// [AUDIT] Removed console.log // line 1434
                                                             // Navigate to examination portal
                                                             safeRedirect('/examination-portal');
                                                         }}
@@ -1795,10 +1737,8 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                                     <button
                                                         onClick={() => {
-// [AUDIT] Removed console.log // line 1797
                                                             const event = new CustomEvent('open-login-modal');
                                                             window.dispatchEvent(event);
-// [AUDIT] Removed console.log // line 1800
                                                         }}
                                                         className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
                                                     >
@@ -1807,7 +1747,6 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     
                                                     <button
                                                         onClick={() => {
-// [AUDIT] Removed console.log // line 1809
                                                             safeRedirect('/become-member');
                                                         }}
                                                         className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"

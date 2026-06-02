@@ -46,7 +46,6 @@ export default function PilotShortageRoute() {
         if (page.startsWith('/')) {
           safeRedirect(page);
         } else {
-// [AUDIT] Removed console.log // line 48
         }
       }}
       onLogin={() => console.log('Login clicked')}

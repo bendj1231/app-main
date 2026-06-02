@@ -536,12 +536,12 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
 
       {/* Top Navigation Bar */}
       <PlatformNavbar
-        onNavigate={onNavigate || ((page) => safeRedirect(`/${page)}`)}
+        onNavigate={onNavigate || ((page) => safeRedirect(`/${page}`))}
         currentPage="pathways"
       />
 
       {/* Sidebar Navigation */}
-      <PathwaysSidebar activeSection="airline-expectations" onNavigate={onNavigate || ((page) => safeRedirect(`/${page)}`)} />
+      <PathwaysSidebar activeSection="airline-expectations" onNavigate={onNavigate || ((page) => safeRedirect(`/${page}`))} />
 
       {/* Main Content with sidebar margin */}
       <div style={{ marginLeft: '280px', paddingTop: '2rem' }}>
@@ -1193,7 +1193,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                           if (aircraftId) {
                                             params.set('aircraft', aircraftId);
                                           }
-                                          safeRedirect(`/type-rating-search?${params.toString())}`;
+                                          safeRedirect(`/type-rating-search?${params.toString()}`);
                                         }
                                       }}
                                       className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors ${
@@ -1278,7 +1278,7 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
                                         if (aircraftId) {
                                           params.set('aircraft', aircraftId);
                                         }
-                                        safeRedirect(`/type-rating-search?${params.toString())}`;
+                                        safeRedirect(`/type-rating-search?${params.toString()}`);
                                       }
                                     }}
                                     className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-colors flex items-center justify-between ${

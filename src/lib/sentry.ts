@@ -67,7 +67,6 @@ class SentryTracker {
     });
 
     this.initialized = true;
-// [AUDIT] Removed console.log // line 70
   }
 
   setUser(user: UserContext): void {
@@ -100,7 +99,6 @@ class SentryTracker {
 
   captureMessage(message: string, level: 'info' | 'warning' | 'error' = 'info', context?: Record<string, any>): void {
     if (!this.initialized) {
-// [AUDIT] Removed console.log // line 103
       return;
     }
 

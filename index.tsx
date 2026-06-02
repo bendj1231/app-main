@@ -26,9 +26,9 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
   // Single Auth0 Application for ALL domains
   // pilotrecognition.com manages pilot profiles across all properties
   const auth0Config = {
-    domain: 'dev-ir828tguibp1dh5f.eu.auth0.com',
-    clientId: 'FSW7zJxyBNJRvZGxN2xGH2bAQxwzHVmb', // PilotRecognition Application
-    audience: 'https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/'
+    domain: import.meta.env.VITE_AUTH0_DOMAIN || 'dev-ir828tguibp1dh5f.eu.auth0.com',
+    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || 'FSW7zJxyBNJRvZGxN2xGH2bAQxwzHVmb',
+    audience: import.meta.env.VITE_AUTH0_AUDIENCE || 'https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/'
   };
   
   return (

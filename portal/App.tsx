@@ -238,31 +238,11 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     preloadedData: {}
   });
 
-  // Debug: Log component mount
   useEffect(() => {
-// [AUDIT] Removed console.log // line 243
-// [AUDIT] Removed console.log // line 244
-      currentView,
-      directToEnrollment,
-      pendingHomeView,
-      isDarkMode
-    });
-    return () => {
-// [AUDIT] Removed console.log // line 251
-    };
+    return () => {};
   }, []);
 
-  // Debug: Log auth state changes
   useEffect(() => {
-// [AUDIT] Removed console.log // line 257
-      hasUser: !!authState.user,
-      userId: authState.user?.id,
-      hasUserProfile: !!authState.userProfile,
-      userProfileEmail: authState.userProfile?.email,
-      userProfileFirstName: authState.userProfile?.firstName,
-      userProfileProfileImage: authState.userProfile?.profile_image_url,
-      loading: authState.loading
-    });
   }, [authState]);
 
   const [isInitializing, setIsInitializing] = useState(!directToEnrollment);
@@ -319,16 +299,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
     if (typeof window === 'undefined') return;
 
-// [AUDIT] Removed console.log // line 322
+
 
     // Function to check URL parameters
     const checkUrlParams = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const w1000Launch = urlParams.get('w1000');
       const viewParam = urlParams.get('view');
-// [AUDIT] Removed console.log // line 329
+
       if (w1000Launch === 'launch' || viewParam === 'w1000') {
-// [AUDIT] Removed console.log // line 331
+
         setCurrentView('w1000');
         // Clear the URL parameter to prevent re-triggering
         const newSearch = window.location.search
@@ -336,14 +316,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
           .replace(/[?&]w1000=launch/, '')
           .replace(/^\?/, '');
         const newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '');
-// [AUDIT] Removed console.log // line 339
+
         window.history.replaceState({}, '', newUrl);
       }
       if (viewParam === 'w1000-app') {
-// [AUDIT] Removed console.log // line 343
+
         setCurrentView('w1000-app');
         // Don't clear URL parameters - let W1000 app manage its own routing
-// [AUDIT] Removed console.log // line 346
+
       }
     };
 
@@ -352,14 +332,14 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
     // Listen for URL changes (popstate event)
     const handlePopState = () => {
-// [AUDIT] Removed console.log // line 355
+
       checkUrlParams();
     };
     window.addEventListener('popstate', handlePopState);
 
     // Listen for hash changes
     const handleHashChange = () => {
-// [AUDIT] Removed console.log // line 362
+
       checkUrlParams();
     };
     window.addEventListener('hashchange', handleHashChange);
@@ -368,13 +348,13 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     const interval = setInterval(() => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('view') === 'w1000' || urlParams.get('w1000') === 'launch') {
-// [AUDIT] Removed console.log // line 371
+
         checkUrlParams();
       }
     }, 300);
 
     // Clear cache on page reload
-// [AUDIT] Removed console.log // line 377
+
     window.localStorage.removeItem('supabase.auth.token');
     window.localStorage.removeItem('supabase.auth.refreshToken');
     window.localStorage.removeItem('supabase.auth.codeVerifier');
@@ -390,7 +370,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     setIsDarkMode(savedDarkMode);
 
     return () => {
-// [AUDIT] Removed console.log // line 393
+
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('hashchange', handleHashChange);
       clearInterval(interval);
@@ -458,20 +438,20 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   }, []);
 
   const handleViewChange = (view: ViewName, initialChapter?: number) => {
-// [AUDIT] Removed console.log // line 461
-// [AUDIT] Removed console.log // line 462
-// [AUDIT] Removed console.log // line 463
+
+
+
     if (VIEW_WHITELIST.includes(view)) {
-// [AUDIT] Removed console.log // line 465
+
       setCurrentView(view);
       if (initialChapter !== undefined) {
         setInitialModuleChapter(initialChapter);
       } else {
         setInitialModuleChapter(undefined);
       }
-// [AUDIT] Removed console.log // line 472
+
     } else {
-// [AUDIT] Removed console.log // line 474
+
     }
   };
 
@@ -487,7 +467,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   // Debug: Log current view on mount and change
   useEffect(() => {
-// [AUDIT] Removed console.log // line 490
+
   }, [currentView]);
 
   const clearLoadingSequence = () => {
@@ -526,17 +506,17 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   // Set isInitializing to false when currentView changes from 'login' to prevent stuck on initializing
   useEffect(() => {
     if (currentView !== 'login' && isInitializing) {
-// [AUDIT] Removed console.log // line 529
+
       setIsInitializing(false);
     }
   }, [currentView, isInitializing]);
 
   useEffect(() => {
-// [AUDIT] Removed console.log // line 535
+
 
     // Set up auth state listener
     const { data: { subscription } } = onAuthStateChange((nextState) => {
-// [AUDIT] Removed console.log // line 539
+
       setAuthState(nextState);
       if (nextState.user?.email) {
         setLastLoginEmail(nextState.user.email);
@@ -552,16 +532,15 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       }
 
       // Auth check complete
-// [AUDIT] Removed console.log // line 555
+
       setIsInitializing(false);
 
       // No loading sequence - portal loads directly
-// [AUDIT] Removed console.log // line 559
     });
 
     // Also check for existing session immediately
     supabase.auth.getSession().then(({ data: { session } }) => {
-// [AUDIT] Removed console.log // line 564
+
       // Don't force login view here - let the auth state listener handle it
       // This allows the listener to properly detect existing sessions from the home page
     });
@@ -584,7 +563,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       setCanSkipLoading(true);
     }, 2000));
 
-// [AUDIT] Removed console.log // line 587
+
     
     // Always show dummy loading sequence - no database queries
     loadingTimers.current.push(setTimeout(() => {
@@ -602,18 +581,11 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   };
 
   useEffect(() => {
-// [AUDIT] Removed console.log // line 605
-      showLoading,
-      authStateUser: !!authState.user,
-      authStateLoading: authState.loading,
-      currentView,
-      directToEnrollment,
-      onNavigateToMainApp: !!onNavigateToMainApp
-    });
+
 
     // Don't make routing decisions while auth is still loading
     if (authState.loading) {
-// [AUDIT] Removed console.log // line 616
+
       return;
     }
 
@@ -621,7 +593,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       const timeout = setTimeout(() => setLoginBlurred(false), 500);
 
       // No authentication checks - portal is accessible without login
-// [AUDIT] Removed console.log // line 624
+
 
       return () => clearTimeout(timeout);
     }
@@ -638,7 +610,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     const accessibleViews = grantedApps
       .map(appId => accessibleViewMap[appId])
       .filter(Boolean);
-// [AUDIT] Removed console.log // line 641
+
   }, [currentView, authState.userProfile]);
 
   // Loading sequence removed - no longer needed
@@ -652,66 +624,55 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   }, [directToEnrollment, showLoading]);
 
   useEffect(() => {
-// [AUDIT] Removed console.log // line 655
-      authStateUser: !!authState.user,
-      authStateLoading: authState.loading,
-      currentView,
-      directToEnrollment,
-      onNavigateToMainApp: !!onNavigateToMainApp
-    });
+
 
     // Don't make routing decisions while auth is still loading
     if (authState.loading) {
-// [AUDIT] Removed console.log // line 665
+
       return;
     }
 
     // No authentication checks - portal is accessible without login
-// [AUDIT] Removed console.log // line 670
+
   }, [authState.user, authState.loading, currentView, directToEnrollment, onNavigateToMainApp]);
 
   const handleLogout = async () => {
     try {
-// [AUDIT] Removed console.log // line 675
-// [AUDIT] Removed console.log // line 676
-// [AUDIT] Removed console.log // line 677
-        hasUser: !!authState.user,
-        userId: authState.user?.id,
-        hasUserProfile: !!authState.userProfile,
-        loading: authState.loading
-      });
+
+
+
 
       // Clear URL hash first
-// [AUDIT] Removed console.log // line 685
+
       window.location.hash = '';
-// [AUDIT] Removed console.log // line 687
+
 
       // Clear any stored session data
-// [AUDIT] Removed console.log // line 690
+
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('supabase.auth.refreshToken');
       localStorage.removeItem('supabase.auth.codeVerifier');
       localStorage.removeItem('supabase.auth.pkceVerifier');
-// [AUDIT] Removed console.log // line 695
+
 
       // Clear IndexedDB session from main app
       try {
-// [AUDIT] Removed console.log // line 699
+
         const db = await (window as any).indexedDB.open('PilotRecognitionAuth', 1);
         const transaction = db.transaction(['authSession'], 'readwrite');
         if (transaction && transaction.objectStore) {
           const store = transaction.objectStore('authSession');
           store.delete('currentSession');
-// [AUDIT] Removed console.log // line 705
+
         } else {
-// [AUDIT] Removed console.log // line 707
+
         }
       } catch (error) {
         console.error('❌ [LOGOUT DEBUG] Error clearing IndexedDB session from portal:', error);
         // Continue with logout even if IndexedDB clearing fails
       }
 
-// [AUDIT] Removed console.log // line 714
+
       // Reset auth state
       setAuthState({
         user: null,
@@ -720,25 +681,25 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         currentSystem: 'pms',
         preloadedData: {}
       });
-// [AUDIT] Removed console.log // line 723
+
 
       // Navigate back to main app home page immediately
-// [AUDIT] Removed console.log // line 726
-// [AUDIT] Removed console.log // line 727
+
+
       if (onNavigateToMainApp) {
-// [AUDIT] Removed console.log // line 729
+
         onNavigateToMainApp('home');
       } else {
-// [AUDIT] Removed console.log // line 732
+
       }
 
-// [AUDIT] Removed console.log // line 735
+
 
       // Try to sign out from Supabase in background, don't block navigation
       signOut().then(() => {
-// [AUDIT] Removed console.log // line 739
+
         supabase.auth.setSession({ access_token: '', refresh_token: '' });
-// [AUDIT] Removed console.log // line 741
+
       }).catch((error: any) => {
         console.error('⚠️ [LOGOUT DEBUG] Supabase logout error (non-blocking):', error.message);
       });
@@ -746,7 +707,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
       console.error('❌ [LOGOUT DEBUG] Logout error:', error);
       // Still try to navigate to home even if logout fails
       if (onNavigateToMainApp) {
-// [AUDIT] Removed console.log // line 749
+
         onNavigateToMainApp('home');
       }
     }
@@ -764,13 +725,13 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         .single();
 
       if (profile) {
-// [AUDIT] Removed console.log // line 767
-// [AUDIT] Removed console.log // line 768
+
+
         setAuthState(prev => ({
           ...prev,
           userProfile: profile
         }));
-// [AUDIT] Removed console.log // line 773
+
       } else {
         console.warn('⚠️ No profile data returned from Supabase');
       }
@@ -816,7 +777,7 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
 
   // Hydrate onClickActions
   programs[0].onClickAction = () => {
-// [AUDIT] Removed console.log // line 819
+
     setCurrentView('foundational');
   };
   applications[0].onClickAction = () => setCurrentView('pilot-profile');
@@ -1031,16 +992,16 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         <PilotJobDatabasePage onBack={() => setCurrentView('hub')} onLogout={handleLogout} userProfile={authState.userProfile} />
       ) : currentView === 'w1000' ? (
         (() => {
-// [AUDIT] Removed console.log // line 1034
+
           return (
             <W1000ModulePage
               onBack={() => {
-// [AUDIT] Removed console.log // line 1038
+
                 setCurrentView('hub');
               }}
               onLogout={handleLogout}
               onLaunchW1000={() => {
-// [AUDIT] Removed console.log // line 1043
+
                 setCurrentView('w1000-app');
               }}
             />
@@ -1048,8 +1009,8 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
         })()
       ) : currentView === 'w1000-app' ? (
         (() => {
-// [AUDIT] Removed console.log // line 1051
-// [AUDIT] Removed console.log // line 1052
+
+
           try {
             return <W1000App userProfile={{
   displayName: authState.userProfile?.firstName || authState.userProfile?.email?.split('@')[0],

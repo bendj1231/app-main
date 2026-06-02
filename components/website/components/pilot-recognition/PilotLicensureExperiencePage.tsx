@@ -315,7 +315,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   // Load existing data from Supabase
   useEffect(() => {
     const loadExistingData = async () => {
-// [AUDIT] Removed console.log // line 317
       let userId = userProfile?.id || userProfile?.uid;
 
       // Auth0-only fallback: resolve Supabase profile ID via auth0_id
@@ -328,9 +327,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         if (p?.id) userId = p.id;
       }
 
-// [AUDIT] Removed console.log // line 330
       if (!userId) {
-// [AUDIT] Removed console.log // line 332
         setDataLoaded(true);
         return;
       }
@@ -343,14 +340,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         let initialData: any = {};
         
         if (profileError) {
-// [AUDIT] Removed console.log // line 345
         } else if (profileData) {
-// [AUDIT] Removed console.log // line 347
-// [AUDIT] Removed console.log // line 348
-// [AUDIT] Removed console.log // line 349
-// [AUDIT] Removed console.log // line 350
-// [AUDIT] Removed console.log // line 351
-// [AUDIT] Removed console.log // line 352
           
           // Extract from onboarding_responses JSONB as fallback
           const onboarding = profileData.onboarding_responses || {};
@@ -413,14 +403,10 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           .maybeSingle();
 
         if (pilotProfileError) {
-// [AUDIT] Removed console.log // line 415
         } else if (pilotProfileData) {
-// [AUDIT] Removed console.log // line 417
         }
 
         if (error) {
-// [AUDIT] Removed console.log // line 421
-// [AUDIT] Removed console.log // line 422
           // Only use profile data as fallback if we haven't already set the values
           if (!firstName) setFirstName(initialData.firstName || userProfile?.firstName || '');
           if (!lastName) setLastName(initialData.lastName || userProfile?.lastName || '');
@@ -428,16 +414,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           if (!residingCountry) setResidingCountry(initialData.residingCountry || '');
           if (!dateOfBirth) setDateOfBirth(initialData.dateOfBirth || '');
         } else if (data) {
-// [AUDIT] Removed console.log // line 430
-// [AUDIT] Removed console.log // line 431
-// [AUDIT] Removed console.log // line 432
-// [AUDIT] Removed console.log // line 433
-// [AUDIT] Removed console.log // line 434
-// [AUDIT] Removed console.log // line 435
-// [AUDIT] Removed console.log // line 436
-// [AUDIT] Removed console.log // line 437
-// [AUDIT] Removed console.log // line 438
-// [AUDIT] Removed console.log // line 439
           // Personal Info - use licensure data if available, fallback to profiles
           setFirstName(data.first_name || initialData.firstName || userProfile?.firstName || '');
           setMiddleName(data.middle_name || '');
@@ -486,8 +462,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         
         // Apply all profile data fallbacks if no licensure data was found
         if (!data) {
-// [AUDIT] Removed console.log // line 488
-// [AUDIT] Removed console.log // line 489
           setFirstName(initialData.firstName || '');
           setLastName(initialData.lastName || '');
           setContactNumber(initialData.contactNumber || '');
@@ -755,7 +729,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         updated_at: new Date().toISOString()
       };
 
-// [AUDIT] Removed console.log // line 757
 
       // writeLicensure encrypts sensitive fields via vault key before writing
       const { error } = await writeLicensure(userId, data);
@@ -790,7 +763,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           updated_at: new Date().toISOString()
         };
 
-// [AUDIT] Removed console.log // line 792
 
         // updateProfile encrypts sensitive fields via vault key before writing
         const { error: profileError } = await updateProfile(userId, profileUpdateData);
@@ -798,7 +770,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         if (profileError) {
           console.error('Profile sync error (non-critical):', profileError);
         } else {
-// [AUDIT] Removed console.log // line 800
         }
       }
       

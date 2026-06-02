@@ -226,16 +226,12 @@ export const AppRoutes = () => {
 
   // Re-check domain when location changes
   useEffect(() => {
-// [AUDIT] Removed console.log // line 206
     const isDomain = window.location.hostname === 'careerpathways.pilotrecognition.com' ||
       window.location.hostname === 'pilotcareerpathways.com' ||
       window.location.hostname === 'www.pilotcareerpathways.com';
     const isLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       && new URLSearchParams(window.location.search).get('product') === 'careerpathways';
 
-// [AUDIT] Removed console.log // line 213
-// [AUDIT] Removed console.log // line 214
-// [AUDIT] Removed console.log // line 215
 
     if (isDomain || isLocalDev) {
       localStorage.setItem('careerpathways_mode', 'true');
@@ -246,7 +242,6 @@ export const AppRoutes = () => {
   // Listen for custom login modal events
   useEffect(() => {
     const handleOpenLoginModal = () => {
-// [AUDIT] Removed console.log // line 226
       setIsLoginModalOpen(true);
     };
 
@@ -304,37 +299,28 @@ export const AppRoutes = () => {
   // Subdomain routing for enterprise.pilotrecognition.com
   if (window.location.hostname === 'enterprise.pilotrecognition.com') {
     const path = window.location.pathname;
-// [AUDIT] Removed console.log // line 284
 
     if (path === '/enterprise-access/airlines') {
-// [AUDIT] Removed console.log // line 287
       return <AirlinesOperatorsPage />;
     }
     if (path === '/enterprise-access/learn-more') {
-// [AUDIT] Removed console.log // line 291
         return <EnterpriseAccessLearnMorePage />;
     }
     if (path === '/enterprise-access/pricing') {
-// [AUDIT] Removed console.log // line 295
         return <EnterprisePricingPage />;
     }
     if (path === '/' || path === '/enterprise-access') {
-// [AUDIT] Removed console.log // line 299
       return <EnterpriseAccessPage />;
     }
     if (path === '/framework/full' || path === '/framework/full/index.html') {
-// [AUDIT] Removed console.log // line 303
       return <FrameworkFullPage />;
     }
     if (path === '/ucf') {
-// [AUDIT] Removed console.log // line 307
       return <UCFPage />;
     }
     if (path === '/ucf/official-release' || path.startsWith('/ucf/official-release')) {
-// [AUDIT] Removed console.log // line 311
       return <UCFOfficialReleasePage />;
     }
-// [AUDIT] Removed console.log // line 314
   }
 
   // Domain routing for pilotshortage.org - standalone app experience
@@ -344,7 +330,6 @@ export const AppRoutes = () => {
     (searchParams.get('shortage') === '1' || searchParams.get('product') === 'shortage');
 
   if (isShortageDomain || isShortageLocalDev) {
-// [AUDIT] Removed console.log // line 324
     return (
       <Suspense fallback={<LoadingFallback />}>
         <ShortageApp />
@@ -358,7 +343,6 @@ export const AppRoutes = () => {
   const isPilotTerminalLocalDev = isLocalhost && searchParams.get('product') === 'pilotterminal';
 
   if (isPilotTerminalDomain || isPilotTerminalLocalDev) {
-// [AUDIT] Removed console.log // line 338
     return (
       <Suspense fallback={<LoadingFallback />}>
         <PilotTerminalHome />
@@ -368,12 +352,8 @@ export const AppRoutes = () => {
 
   // Domain routing for careerpathways.pilotrecognition.com or pilotcareerpathways.com
   // NOTE: Using careerPathwaysMode state which is updated by useEffect on location change
-// [AUDIT] Removed console.log // line 348
-// [AUDIT] Removed console.log // line 349
-// [AUDIT] Removed console.log // line 350
 
   if (careerPathwaysMode) {
-// [AUDIT] Removed console.log // line 353
     return (
       <Suspense fallback={<CareerPathwaysLoadingFallback />}>
         <CareerPathwaysApp onLogin={() => setIsLoginModalOpen(true)} />

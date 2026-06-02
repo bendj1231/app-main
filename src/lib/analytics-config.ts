@@ -67,24 +67,19 @@ export function initializeAnalyticsServices() {
     // User has already consented, initialize analytics
     if (ANALYTICS_CONFIG.enabled) {
       initAnalytics(ANALYTICS_CONFIG);
-// [AUDIT] Removed console.log // line 70
     }
 
     if (SENTRY_CONFIG.enabled) {
       initSentry(SENTRY_CONFIG);
-// [AUDIT] Removed console.log // line 75
     }
 
     if (WEB_VITALS_CONFIG.enabled) {
       initWebVitals(WEB_VITALS_CONFIG);
-// [AUDIT] Removed console.log // line 80
     }
 
     initPerformanceMonitor();
-// [AUDIT] Removed console.log // line 84
   } else {
     // Wait for user consent
-// [AUDIT] Removed console.log // line 87
   }
 
   // Listen for consent events
@@ -95,31 +90,25 @@ export function initializeAnalyticsServices() {
 function handleConsentGranted(event: CustomEvent) {
   const preferences = event.detail;
 
-// [AUDIT] Removed console.log // line 98
 
   // Initialize Analytics if consented
   if (preferences.analytics && ANALYTICS_CONFIG.enabled) {
     initAnalytics(ANALYTICS_CONFIG);
-// [AUDIT] Removed console.log // line 103
   }
 
   // Initialize Sentry if consented (Sentry is for error tracking, not analytics)
   if (SENTRY_CONFIG.enabled) {
     initSentry(SENTRY_CONFIG);
-// [AUDIT] Removed console.log // line 109
   }
 
   // Initialize Web Vitals if consented
   if (preferences.analytics && WEB_VITALS_CONFIG.enabled) {
     initWebVitals(WEB_VITALS_CONFIG);
-// [AUDIT] Removed console.log // line 115
   }
 
   initPerformanceMonitor();
-// [AUDIT] Removed console.log // line 119
 }
 
 function handleConsentDenied() {
-// [AUDIT] Removed console.log // line 123
   // Analytics remain disabled
 }

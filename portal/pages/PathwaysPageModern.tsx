@@ -3405,335 +3405,6 @@ const ThreeStagePathwayFilter: React.FC<{
   );
 };
 
-// ============================================================================
-// X-PLANE STYLE 3D AIRCRAFT MODELS
-// ============================================================================
-
-// Sketchfab embed URLs for specific aircraft models
-const SKETCHFAB_MODELS: Record<string, string> = {
-  // Airbus A220 by BlueMesh
-  'A220': 'https://sketchfab.com/models/ce4fbb839e6b4bb989422426bfc8fd1c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A220-100': 'https://sketchfab.com/models/ce4fbb839e6b4bb989422426bfc8fd1c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A220-300': 'https://sketchfab.com/models/ce4fbb839e6b4bb989422426bfc8fd1c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // AirStudios Highly Detailed A320
-  'A320': 'https://sketchfab.com/models/ae3d357729a44f278f9ef9326977504a/embed?autostart=1&preload=1&transparent=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A320neo': 'https://sketchfab.com/models/ae3d357729a44f278f9ef9326977504a/embed?autostart=1&preload=1&transparent=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A318 by OUTPISTON
-  'A318': 'https://sketchfab.com/models/43cd2ce76c214dd6b465117426554dd6/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A319 by OUTPISTON
-  'A319': 'https://sketchfab.com/models/536400f2043a4809a0b6913cd4df2617/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A319neo': 'https://sketchfab.com/models/536400f2043a4809a0b6913cd4df2617/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A321 by OUTPISTON
-  'A321': 'https://sketchfab.com/models/561c4002ed6c44b697195cdffb60e25c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A321neo': 'https://sketchfab.com/models/561c4002ed6c44b697195cdffb60e25c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A310 by OUTPISTON
-  'A310': 'https://sketchfab.com/models/93b8d5bf59f74071a65ede1ef2e29aae/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A310-300': 'https://sketchfab.com/models/93b8d5bf59f74071a65ede1ef2e29aae/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A330-300 by SQUIR3D
-  'A330': 'https://sketchfab.com/models/745c36e5187d4352bbe7e5e94f8e5105/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A330-300': 'https://sketchfab.com/models/745c36e5187d4352bbe7e5e94f8e5105/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A330-200': 'https://sketchfab.com/models/745c36e5187d4352bbe7e5e94f8e5105/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A340 by Dave Love SketchFab
-  'A340': 'https://sketchfab.com/models/499ae6227c734f59a54c101a537ca6c7/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A340-600': 'https://sketchfab.com/models/499ae6227c734f59a54c101a537ca6c7/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A340-300': 'https://sketchfab.com/models/499ae6227c734f59a54c101a537ca6c7/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A350 by N.S STUDIOS
-  'A350': 'https://sketchfab.com/models/b36bae5dcdd9465e8789df568a9620e2/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A350-1000': 'https://sketchfab.com/models/b36bae5dcdd9465e8789df568a9620e2/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A350-900': 'https://sketchfab.com/models/b36bae5dcdd9465e8789df568a9620e2/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Airbus A380 by davidmarton1987
-  'A380': 'https://sketchfab.com/models/49687e726121405d96c7d5be03b5673a/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A380-800': 'https://sketchfab.com/models/49687e726121405d96c7d5be03b5673a/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Boeing 777 by Kanedog
-  'B777': 'https://sketchfab.com/models/f9e03987eaa84127ab999f48a32be641/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'B777-300': 'https://sketchfab.com/models/f9e03987eaa84127ab999f48a32be641/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'B777-200': 'https://sketchfab.com/models/f9e03987eaa84127ab999f48a32be641/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  '777': 'https://sketchfab.com/models/f9e03987eaa84127ab999f48a32be641/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Boeing 737-800 by OUTPISTON
-  'B737': 'https://sketchfab.com/models/fa2d273dba0e45348284a6d6cd711218/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  '737': 'https://sketchfab.com/models/fa2d273dba0e45348284a6d6cd711218/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  '737-800': 'https://sketchfab.com/models/fa2d273dba0e45348284a6d6cd711218/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Cessna Citation Latitude by artformat
-  'CESSNA': 'https://sketchfab.com/models/c5ad92e005e84f229de080f5b7279957/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'CITATION': 'https://sketchfab.com/models/c5ad92e005e84f229de080f5b7279957/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'LATITUDE': 'https://sketchfab.com/models/c5ad92e005e84f229de080f5b7279957/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Cessna Citation M2 by Exhibition 3.0
-  'CITATIONI': 'https://sketchfab.com/models/36e78f157d2643849bb89a46d5bc03ab/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'CITATION-M2': 'https://sketchfab.com/models/36e78f157d2643849bb89a46d5bc03ab/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'M2': 'https://sketchfab.com/models/36e78f157d2643849bb89a46d5bc03ab/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Cessna Citation Longitude by HQ3DMOD (for Sovereign)
-  'SOVEREIGN': 'https://sketchfab.com/models/01c140ac470a491e847c43970bfce632/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'LONGITUDE': 'https://sketchfab.com/models/01c140ac470a491e847c43970bfce632/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Gulfstream G650 by John Doe
-  'GULFSTREAM': 'https://sketchfab.com/models/67451e56d38746de86667347d7a56587/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'G650': 'https://sketchfab.com/models/67451e56d38746de86667347d7a56587/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Gulfstream G500 by bdorit20
-  'G500': 'https://sketchfab.com/models/cd0f33947f47478990505d2d34034fd6/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Bombardier Learjet 60 by OUTPISTON
-  'LEARJET': 'https://sketchfab.com/models/7573f836dd3a46bdbce8b90b5a40f104/embed?autospin=1&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'LR-45': 'https://sketchfab.com/models/7573f836dd3a46bdbce8b90b5a40f104/embed?autospin=1&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Learjet 60 by paperscan (for LR-60)
-  'LR-60': 'https://sketchfab.com/models/8e0627d4130242aaa681b39934be9e1d/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'LR60': 'https://sketchfab.com/models/8e0627d4130242aaa681b39934be9e1d/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Embraer ERJ Family by OUTPISTON
-  'ERJ': 'https://sketchfab.com/models/25fdc7d3befd41f193a0d5293e644cf6/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'EMB-135': 'https://sketchfab.com/models/25fdc7d3befd41f193a0d5293e644cf6/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'EMB-145': 'https://sketchfab.com/models/25fdc7d3befd41f193a0d5293e644cf6/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // Bombardier CRJ Series by CityJet Training
-  'CRJ': 'https://sketchfab.com/models/02c4fa44604243c2bb48db64506a39af/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'CRJ-700': 'https://sketchfab.com/models/02c4fa44604243c2bb48db64506a39af/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'CRJ-900': 'https://sketchfab.com/models/02c4fa44604243c2bb48db64506a39af/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // King Air 360 by Exhibition 3.0
-  'KINGAIR': 'https://sketchfab.com/models/666b59bb1b874d4ba4c90386c32e8e85/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'KING-AIR': 'https://sketchfab.com/models/666b59bb1b874d4ba4c90386c32e8e85/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'B200': 'https://sketchfab.com/models/666b59bb1b874d4ba4c90386c32e8e85/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'B350': 'https://sketchfab.com/models/666b59bb1b874d4ba4c90386c32e8e85/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-};
-
-// Sketchfab cockpit URLs
-const SKETCHFAB_COCKPITS: Record<string, string> = {
-  // A320 Cockpit by AirStudios (A318/A319/A321 share same cockpit)
-  'A320': 'https://sketchfab.com/models/feaa475ce5824121be0380a42987007f/embed?camera=0&preload=1&ui_theme=dark&autostart=1&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A320neo': 'https://sketchfab.com/models/feaa475ce5824121be0380a42987007f/embed?camera=0&preload=1&ui_theme=dark&autostart=1&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A318': 'https://sketchfab.com/models/feaa475ce5824121be0380a42987007f/embed?camera=0&preload=1&ui_theme=dark&autostart=1&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A319': 'https://sketchfab.com/models/feaa475ce5824121be0380a42987007f/embed?camera=0&preload=1&ui_theme=dark&autostart=1&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A319neo': 'https://sketchfab.com/models/feaa475ce5824121be0380a42987007f/embed?camera=0&preload=1&ui_theme=dark&autostart=1&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A321': 'https://sketchfab.com/models/feaa475ce5824121be0380a42987007f/embed?camera=0&preload=1&ui_theme=dark&autostart=1&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  'A321neo': 'https://sketchfab.com/models/feaa475ce5824121be0380a42987007f/embed?camera=0&preload=1&ui_theme=dark&autostart=1&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // B737 Cockpit by AirStudios
-  'B737': 'https://sketchfab.com/models/41a1ae9e252d41bda7c63cfe9fab5a02/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  '737': 'https://sketchfab.com/models/41a1ae9e252d41bda7c63cfe9fab5a02/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  // B747 Cockpit by AirStudios
-  'B747': 'https://sketchfab.com/models/9e7bfa1049ec44a2a8d8d0bdaf51533c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  '747': 'https://sketchfab.com/models/9e7bfa1049ec44a2a8d8d0bdaf51533c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-  '747-400': 'https://sketchfab.com/models/9e7bfa1049ec44a2a8d8d0bdaf51533c/embed?autospin=1&camera=0&preload=1&ui_theme=dark&ui_controls=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&settings=0',
-};
-
-// 3D Canvas Wrapper for Aircraft Models
-const Aircraft3DCanvas: React.FC<{ aircraftType: string; isDarkMode?: boolean }> = ({ aircraftType, isDarkMode = true }) => {
-  const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const sketchfabUrl = SKETCHFAB_MODELS[typeKey] || SKETCHFAB_MODELS[aircraftType] || SKETCHFAB_MODELS['A320'];
-
-  // Simplified: if we have a Sketchfab URL, use it
-  if (sketchfabUrl) {
-    return (
-      <div className="w-full h-full absolute inset-0 overflow-hidden rounded-lg flex items-center justify-center">
-        <iframe
-          title={`${aircraftType} 3D Model`}
-          src={sketchfabUrl}
-          className="w-full h-full border-0"
-          allow="autoplay; fullscreen; xr-spatial-tracking"
-          allowFullScreen
-        />
-      </div>
-    );
-  }
-  
-  return (
-    <div className="w-full h-full absolute inset-0 overflow-hidden">
-      <Canvas
-        camera={{ position: [0, 0, 3.5], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent' }}
-      >
-        <Suspense fallback={null}>
-          <ambientLight intensity={isDarkMode ? 0.6 : 0.8} />
-          <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
-          <pointLight position={[-5, -5, -5]} intensity={0.5} />
-          <Aircraft3D aircraftType={aircraftType} isDarkMode={isDarkMode} />
-          <OrbitControls 
-            enableZoom={false} 
-            enablePan={false}
-            enableRotate={true}
-            autoRotate
-            autoRotateSpeed={0.5}
-            minPolarAngle={Math.PI / 2.5}
-            maxPolarAngle={Math.PI / 1.8}
-            minAzimuthAngle={-Math.PI / 4}
-            maxAzimuthAngle={Math.PI / 4}
-          />
-        </Suspense>
-      </Canvas>
-    </div>
-  );
-};
-
-
-// 3D Cockpit Canvas Wrapper - A320 Family, B737, and B747 ONLY
-const Cockpit3DCanvas: React.FC<{ aircraftType: string; isDarkMode?: boolean }> = ({ aircraftType, isDarkMode = true }) => {
-  const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const cockpitUrl = SKETCHFAB_COCKPITS[typeKey] || SKETCHFAB_COCKPITS[aircraftType] || SKETCHFAB_COCKPITS['A320'];
-  
-  // Show cockpit for A320 Family (A318, A319, A320, A321), B737, and B747 only
-  const isA320 = typeKey.includes('A318') || typeKey.includes('A319') || typeKey.includes('A319NEO') || typeKey.includes('A320') || typeKey.includes('A320NEO') || typeKey.includes('A321') || typeKey.includes('A321NEO');
-  const isB737 = typeKey.includes('B737') || typeKey.includes('737');
-  const isB747 = typeKey.includes('B747') || typeKey.includes('747');
-  
-  if (isA320 || isB737 || isB747) {
-    return (
-      <div className="w-full h-full absolute inset-0 overflow-hidden rounded-lg">
-        <iframe
-          title={`${aircraftType} Cockpit 3D`}
-          src={cockpitUrl}
-          className="w-full h-full border-0"
-          allow="autoplay; fullscreen; xr-spatial-tracking"
-          allowFullScreen
-        />
-      </div>
-    );
-  }
-  
-  // Return empty for non-supported aircraft (no cockpit interior)
-  return null;
-};
-
-// Simplified X-Plane Style 3D Aircraft Component
-const Aircraft3D: React.FC<{ aircraftType: string; isDarkMode?: boolean }> = ({ aircraftType, isDarkMode = true }) => {
-  const meshRef = React.useRef<THREE.Group>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      // Gentle floating animation
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
-    }
-  });
-
-  // Determine aircraft category based on type
-  const typeLower = (aircraftType || '').toLowerCase();
-  let category = 'airliner';
-  if (typeLower.includes('citation') || typeLower.includes('challenger') || typeLower.includes('gulfstream') || typeLower.includes('learjet') || typeLower.includes('falcon') || typeLower.includes('global')) {
-    category = 'business';
-  } else if (typeLower.includes('caravan') || typeLower.includes('king air') || typeLower.includes('navajo')) {
-    category = 'turboprop';
-  } else if (typeLower.includes('evtol') || typeLower.includes('joby') || typeLower.includes('air taxi')) {
-    category = 'evtol';
-  } else if (typeLower.includes('crj') || typeLower.includes('erj') || typeLower.includes('e-jet')) {
-    category = 'regional';
-  }
-
-  // Colors based on theme
-  const fuselageColor = isDarkMode ? '#e2e8f0' : '#1e293b';
-  const wingColor = isDarkMode ? '#94a3b8' : '#475569';
-  const accentColor = isDarkMode ? '#60a5fa' : '#3b82f6';
-
-  return (
-    <group ref={meshRef} scale={0.6}>
-      {/* Main Fuselage */}
-      <mesh position={[0, 0, 0]}>
-        <capsuleGeometry args={[0.3, 1.5, 4, 8]} />
-        <meshStandardMaterial color={fuselageColor} metalness={0.6} roughness={0.3} />
-      </mesh>
-      
-      {/* Cockpit Window */}
-      <mesh position={[0, 0.15, 0.6]}>
-        <sphereGeometry args={[0.15, 8, 8]} />
-        <meshStandardMaterial color={isDarkMode ? '#0f172a' : '#1e293b'} metalness={0.8} roughness={0.1} />
-      </mesh>
-      
-      {/* Main Wings */}
-      <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <boxGeometry args={[2.5, 0.08, 0.4]} />
-        <meshStandardMaterial color={wingColor} metalness={0.5} roughness={0.4} />
-      </mesh>
-      
-      {/* Vertical Stabilizer (Tail) */}
-      <mesh position={[0, 0.4, -0.7]} rotation={[0.3, 0, 0]}>
-        <boxGeometry args={[0.08, 0.6, 0.35]} />
-        <meshStandardMaterial color={accentColor} metalness={0.6} roughness={0.3} />
-      </mesh>
-      
-      {/* Horizontal Stabilizers */}
-      <mesh position={[0, 0, -0.7]} rotation={[0, 0, Math.PI / 2]}>
-        <boxGeometry args={[0.8, 0.06, 0.25]} />
-        <meshStandardMaterial color={wingColor} metalness={0.5} roughness={0.4} />
-      </mesh>
-      
-      {/* Engines - Business Jets (rear mounted) */}
-      {(category === 'business' || category === 'regional') && (
-        <>
-          <mesh position={[0.5, 0, -0.3]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.12, 0.1, 0.4, 12]} />
-            <meshStandardMaterial color={wingColor} metalness={0.7} roughness={0.2} />
-          </mesh>
-          <mesh position={[-0.5, 0, -0.3]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.12, 0.1, 0.4, 12]} />
-            <meshStandardMaterial color={wingColor} metalness={0.7} roughness={0.2} />
-          </mesh>
-        </>
-      )}
-      
-      {/* Engines - Airliners (wing mounted) */}
-      {category === 'airliner' && (
-        <>
-          <mesh position={[1.1, -0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.18, 0.15, 0.5, 12]} />
-            <meshStandardMaterial color={wingColor} metalness={0.7} roughness={0.2} />
-          </mesh>
-          <mesh position={[-1.1, -0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.18, 0.15, 0.5, 12]} />
-            <meshStandardMaterial color={wingColor} metalness={0.7} roughness={0.2} />
-          </mesh>
-        </>
-      )}
-      
-      {/* Propellers - Turboprops */}
-      {category === 'turboprop' && (
-        <>
-          <mesh position={[1.1, -0.05, 0.15]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.05, 0.05, 0.3, 8]} />
-            <meshStandardMaterial color="#475569" />
-          </mesh>
-          <mesh position={[-1.1, -0.05, 0.15]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.05, 0.05, 0.3, 8]} />
-            <meshStandardMaterial color="#475569" />
-          </mesh>
-          {/* Propeller Blades */}
-          <mesh position={[1.1, -0.05, 0.35]}>
-            <boxGeometry args={[0.6, 0.02, 0.02]} />
-            <meshStandardMaterial color="#64748b" />
-          </mesh>
-          <mesh position={[-1.1, -0.05, 0.35]}>
-            <boxGeometry args={[0.6, 0.02, 0.02]} />
-            <meshStandardMaterial color="#64748b" />
-          </mesh>
-        </>
-      )}
-      
-      {/* eVTOL Rotors */}
-      {category === 'evtol' && (
-        <>
-          {[0.4, -0.4].map((x, i) => (
-            <group key={i} position={[x, 0.3, 0]}>
-              <mesh>
-                <cylinderGeometry args={[0.25, 0.25, 0.05, 8]} />
-                <meshStandardMaterial color="#64748b" transparent opacity={0.7} />
-              </mesh>
-              <mesh position={[0, 0.1, 0]}>
-                <boxGeometry args={[0.5, 0.02, 0.02]} />
-                <meshStandardMaterial color="#94a3b8" />
-              </mesh>
-            </group>
-          ))}
-        </>
-      )}
-      
-      {/* Landing Gear - Simplified */}
-      <mesh position={[0, -0.25, 0.3]}>
-        <cylinderGeometry args={[0.06, 0.04, 0.15, 6]} />
-        <meshStandardMaterial color="#334155" />
-      </mesh>
-      <mesh position={[0.3, -0.2, -0.4]}>
-        <cylinderGeometry args={[0.04, 0.03, 0.12, 6]} />
-        <meshStandardMaterial color="#334155" />
-      </mesh>
-      <mesh position={[-0.3, -0.2, -0.4]}>
-        <cylinderGeometry args={[0.04, 0.03, 0.12, 6]} />
-        <meshStandardMaterial color="#334155" />
-      </mesh>
-    </group>
-  );
-};
 
 // ============================================================================
 // MAIN PAGE COMPONENT
@@ -4154,7 +3825,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           ...cat,
           name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
         }));
-// [AUDIT] Removed console.log // line 4751
         setStage1Categories(overriddenCategories);
       }
     };
@@ -4180,7 +3850,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             ...pathway,
             name: pathway.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : pathway.name
           }));
-// [AUDIT] Removed console.log // line 4777
           setStage2Pathways(overriddenPathways);
         }
       };
@@ -4210,7 +3879,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             ...sp,
             name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
           }));
-// [AUDIT] Removed console.log // line 4807
           setStage3SubPathways(overriddenSubPathways);
         }
       };
@@ -4223,7 +3891,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Legacy useEffect for backward compatibility - fetch sub-pathways when a pathway card is selected from main carousel
   useEffect(() => {
-// [AUDIT] Removed console.log // line 4820
     if (selectedPathwayCard) {
       // Transform DISCOVERY_PATHWAYS into PathwayData format
       const discoveryPathwaysData: PathwayData[] = Object.entries(DISCOVERY_PATHWAYS).flatMap(([catKey, items]) =>
@@ -4242,12 +3909,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       );
       
       // Show all cards from the same category as the selected pathway
-// [AUDIT] Removed console.log // line 4839
       
       // Get all cards from the same category
       const categoryCards = discoveryPathwaysData.filter(card => card.category === selectedPathwayCard.category);
       
-// [AUDIT] Removed console.log // line 4844
       
       if (categoryCards.length > 0) {
         const mappedCards = categoryCards.map((card) => ({
@@ -4257,7 +3922,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           image: card.image,
           pathway_id: selectedPathwayCard.id,
         }));
-// [AUDIT] Removed console.log // line 4854
         setSubPathways(mappedCards);
       } else {
         setSubPathways([]);
@@ -4470,11 +4134,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     ...(mode === 'jobs' ? dynamicPathways : []),
   ];
 
-// [AUDIT] Removed console.log // line 5067
-// [AUDIT] Removed console.log // line 5068
-// [AUDIT] Removed console.log // line 5069
-// [AUDIT] Removed console.log // line 5070
-// [AUDIT] Removed console.log // line 5071
 
   const filteredPathways = allPathways.filter(pathway => {
     // Use hierarchy selection for filtering if available, otherwise use activeCategory
@@ -4842,7 +4501,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     
     // Guard: Only load if user is authenticated
     if (!userProfile?.id) {
-// [AUDIT] Removed console.log // line 5439
       setAlignProfileLoading(false);
       return;
     }
@@ -4926,7 +4584,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               recognition_score: localProfile.recognition_score
             }
           };
-// [AUDIT] Removed console.log // line 5523
           setEngineStats(stats);
         }
       } catch (err) {
@@ -5676,7 +5333,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   // pipeline which breaks when a hierarchy pill is selected (allPathways uses categoryPathways then)
                   const discoveryKey = selectedPathwayCard.category;
                   let rawCards: PathwayJob[] = DISCOVERY_PATHWAYS[discoveryKey] || [];
-// [AUDIT] Removed console.log // line 6273
                   // Apply type-rating filter + inject matching flight schools
                   if (discoveryKey === 'type-rating') {
                     // Inject UUID licensure sub-pathway cards (they are not in DISCOVERY_PATHWAYS)
@@ -5819,7 +5475,6 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   const enterpriseForCategory = enterprisePathwayCards.filter(p => p.category === discoveryKey);
                   const allStage2 = [...enterpriseForCategory, ...stage2Cards];
                   stage2CardsRef.current = allStage2;
-// [AUDIT] Removed console.log // line 6416
                   return allStage2.length > 0 ? (
                   allStage2.map((pathway, idx) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);

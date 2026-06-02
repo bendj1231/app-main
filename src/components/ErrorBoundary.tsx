@@ -45,10 +45,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   handleReset = () => {
-    this.setState({
-      hasError: false,
-      error: null,
-    });
+    this.setState({ hasError: false, error: null });
   };
 
   render() {

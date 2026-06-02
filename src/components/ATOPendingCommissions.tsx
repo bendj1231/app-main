@@ -147,7 +147,7 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
             </p>
           </div>
           <div className="text-right">
-            <p className={`text-2xl font-bold ${isUrgent ? 'text-red-900' : 'text-amber-900'}`}>${total.toFixed(2)}</p>
+            <p className={`text-2xl font-bold ${isUrgent ? 'text-red-900' : 'text-amber-900'}`}>${total.toFixed(2}</p>
             <p className="text-xs text-slate-500">USDC held in escrow</p>
           </div>
         </div>
@@ -186,11 +186,11 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
                 <p className="text-sm font-semibold text-slate-700">Verification Check</p>
                 <p className="text-xs text-slate-400">
                   Held {new Date(commission.held_at).toLocaleDateString()}
-                  {commissionExpired ? ' — EXPIRED' : ` — Expires ${new Date(commission.expires_at).toLocaleTimeString()}`}
+                  {commissionExpired ? ' — EXPIRED' : ` — Expires ${new Date(commission.expires_at).toLocaleTimeString(}`}
                 </p>
               </div>
               <span className={`text-sm font-bold ${commissionExpired ? 'text-slate-400 line-through' : 'text-amber-700'}`}>
-                +${commission.amount.toFixed(2)}
+                +${commission.amount.toFixed(2}
               </span>
             </div>
           );
@@ -209,7 +209,7 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
                 : 'bg-red-600 text-white hover:bg-red-700'
             }`}
           >
-            {releasing ? 'Releasing...' : isUrgent ? `CLAIM $${total.toFixed(2)} NOW — EXPIRES SOON` : `Release $${total.toFixed(2)} USDC to My Wallet`}
+            {releasing ? 'Releasing...' : isUrgent ? `CLAIM $${total.toFixed(2} NOW — EXPIRES SOON` : `Release $${total.toFixed(2} USDC to My Wallet`}
           </button>
           <p className="text-xs text-slate-400 text-center mt-2">
             {isUrgent 

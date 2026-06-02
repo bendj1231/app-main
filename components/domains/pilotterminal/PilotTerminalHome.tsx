@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react';
 import { MessageSquare, Users, Radio, Zap, Globe, Shield, ArrowRight, Play, Star, CheckCircle, Plane, Map, AlertTriangle } from 'lucide-react';
+import { CookieConsent } from '../../../components/CookieConsent';
 import PilotTerminalLanding from './PilotTerminalLanding';
 
 export default function PilotTerminalHome() {
@@ -465,6 +466,8 @@ export default function PilotTerminalHome() {
         </div>
       </section>
 
+      <CookieConsent />
+
       {/* Footer */}
       <footer className="border-t border-gray-800 py-12">
         <div className="container mx-auto px-4">
@@ -475,10 +478,10 @@ export default function PilotTerminalHome() {
               <span className="text-slate-500 text-sm">| A WM Pilot Group Project</span>
             </div>
             <div className="flex gap-6 text-sm text-slate-400">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Guidelines</a>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
+              <a href="/pilot-terminal/privacy" className="hover:text-white transition-colors">Privacy</a>
+              <a href="/pilot-terminal/terms" className="hover:text-white transition-colors">Terms</a>
+              <a href="/pilot-terminal/guidelines" className="hover:text-white transition-colors">Guidelines</a>
+              <a href="/dpo" className="hover:text-white transition-colors">DPO Contact</a>
             </div>
           </div>
         </div>

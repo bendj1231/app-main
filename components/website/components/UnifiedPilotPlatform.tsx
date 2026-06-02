@@ -4533,8 +4533,6 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-// [AUDIT] Removed console.log // line 4535
-// [AUDIT] Removed console.log // line 4536
     if (!file || !profileData?.id) {
       console.warn('[avatar] aborted — no file or no profileData.id', { file: !!file, profileId: profileData?.id });
       return;
@@ -4546,13 +4544,11 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     try {
       const { data: { session } } = await supabase.auth.getSession();
       let accessToken: string | null = (session as any)?.access_token ?? null;
-// [AUDIT] Removed console.log // line 4548
 
       // Auth0-only users have no Supabase session — use Auth0 access token instead
       if (!accessToken) {
         try {
           accessToken = await getAccessTokenSilently();
-// [AUDIT] Removed console.log // line 4554
         } catch (err) {
           console.warn('[avatar] getAccessTokenSilently failed:', err);
         }
@@ -4562,13 +4558,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       // Delete old image from Cloudinary first (non-blocking if it fails)
       const oldPublicId = profileData?.profile_image_public_id;
       if (oldPublicId) {
-// [AUDIT] Removed console.log // line 4564
         const delRes = await supabase.functions.invoke('cloudinary-delete', {
           body: { publicId: oldPublicId, type: 'profile' },
         });
-// [AUDIT] Removed console.log // line 4568
       } else {
-// [AUDIT] Removed console.log // line 4570
       }
 
       const canvas = document.createElement('canvas');
@@ -4581,27 +4574,21 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
           else if (h > max) { w = w * max / h; h = max; }
           canvas.width = w; canvas.height = h;
           canvas.getContext('2d')!.drawImage(imgEl, 0, 0, w, h);
-// [AUDIT] Removed console.log // line 4583
           res();
         };
         imgEl.onerror = (err) => { console.error('[avatar] image load error:', err); rej(err); };
         imgEl.src = URL.createObjectURL(file);
       });
       const base64 = canvas.toDataURL('image/jpeg', 0.8);
-// [AUDIT] Removed console.log // line 4590
       const uploadRes = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/cloudinary-upload', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ file: base64, userId: profileData.id }),
       });
-// [AUDIT] Removed console.log // line 4596
       const result = await uploadRes.json();
-// [AUDIT] Removed console.log // line 4598
       if (!result.success) throw new Error(result.error || 'Upload failed');
-// [AUDIT] Removed console.log // line 4600
       // Supabase profile update handled server-side in edge fn (service role, bypasses RLS)
       setProfileData((prev: any) => ({ ...prev, profile_image_url: result.url, profile_image_public_id: result.publicId }));
-// [AUDIT] Removed console.log // line 4603
     } catch (err: any) {
       console.error('[avatar] upload error:', err);
       setAvatarError(err.message || 'Upload failed');
@@ -4664,11 +4651,9 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   // Keep profileData in sync — prefer Supabase userProfile, fall back to auth0_id then email lookup
   useEffect(() => {
     if (userProfile) {
-// [AUDIT] Removed console.log // line 4666
       setProfileData(userProfile);
     } else if (auth0User?.sub) {
       const email = auth0User?.email || currentUser?.email;
-// [AUDIT] Removed console.log // line 4670
       supabase
         .from('profiles')
         .select('*, profile_image_public_id')
@@ -4676,18 +4661,15 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         .maybeSingle()
         .then(async ({ data }) => {
           if (data) {
-// [AUDIT] Removed console.log // line 4678
             const { data: decrypted } = await readProfile(data.id);
             setProfileData(decrypted || data);
           } else if (email) {
-// [AUDIT] Removed console.log // line 4682
             const { data: emailData } = await supabase
               .from('profiles')
               .select('*, profile_image_public_id')
               .eq('email', email)
               .maybeSingle();
             if (emailData) {
-// [AUDIT] Removed console.log // line 4689
               supabase
                 .from('profiles')
                 .update({ auth0_id: auth0User.sub })

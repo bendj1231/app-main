@@ -395,6 +395,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">14. Contact Us</h2>
                         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-sm space-y-2">
                             <p><strong>Data Privacy Contact:</strong> <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a></p>
+                            <p><strong>Data Protection Officer:</strong> <a href="/dpo" className="text-blue-600 hover:underline">pilotrecognition.com/dpo</a> — for privacy enquiries, data subject requests, and compliance matters.</p>
                             <p><strong>General Contact:</strong> <a href="mailto:contact@pilotrecognition.com" className="text-blue-600 hover:underline">contact@pilotrecognition.com</a></p>
                             <p><strong>Response time:</strong> Within 30 days of receipt for data subject requests; within 72 hours for breach notifications.</p>
                         </div>

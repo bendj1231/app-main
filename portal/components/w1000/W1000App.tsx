@@ -102,8 +102,6 @@ const WelcomeScreen: React.FC<{ onStart: () => void }> = ({ onStart }) => {
 
 
 const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avatarUrl?: string } }> = ({ userProfile }) => {
-// [AUDIT] Removed console.log // line 105
-// [AUDIT] Removed console.log // line 106
   
   const [hasLaunched, setHasLaunched] = useState(true);
   const [interfaceMode, setInterfaceMode] = useState<InterfaceMode>('STANDARD');
@@ -125,7 +123,6 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
       const pageParam = urlParams.get('page');
       
       if (pageParam) {
-// [AUDIT] Removed console.log // line 128
         
         // Convert string to Page enum
         const pageMap: Record<string, Page> = {
@@ -142,7 +139,6 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
         
         const targetPage = pageMap[pageParam.toLowerCase()];
         if (targetPage) {
-// [AUDIT] Removed console.log // line 145
           setActiveModule(targetPage);
           setShowWelcome(false); // Skip welcome screen when directly navigating to a page
           
@@ -155,11 +151,9 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
           }
           
           // Keep the page parameter in URL (don't clear it)
-// [AUDIT] Removed console.log // line 158
         }
       } else {
         // No page parameter, set default to dashboard
-// [AUDIT] Removed console.log // line 162
         const defaultUrl = '/portal?view=w1000-app&page=dashboard';
         window.history.replaceState({}, '', defaultUrl);
       }
@@ -170,7 +164,6 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
 
     // Listen for URL changes
     const handlePopState = () => {
-// [AUDIT] Removed console.log // line 173
       handleUrlChange();
     };
     
@@ -209,7 +202,6 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
       const pageParam = pageMap[page];
       if (pageParam) {
         const newUrl = '/portal?view=w1000-app&page=' + pageParam;
-// [AUDIT] Removed console.log // line 212
         window.history.replaceState({}, '', newUrl);
       }
 

@@ -504,10 +504,8 @@ const BookmarksView: React.FC<BookmarksViewProps> = ({ className = '', onNavigat
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
                   onClick={() => {
-// [AUDIT] Removed console.log // line 506
                     const event = new CustomEvent('open-login-modal');
                     window.dispatchEvent(event);
-// [AUDIT] Removed console.log // line 509
                   }}
                   className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
                 >
@@ -515,7 +513,6 @@ const BookmarksView: React.FC<BookmarksViewProps> = ({ className = '', onNavigat
                 </button>
                 <button
                   onClick={() => {
-// [AUDIT] Removed console.log // line 517
                     safeRedirect('/become-member');
                   }}
                   className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
