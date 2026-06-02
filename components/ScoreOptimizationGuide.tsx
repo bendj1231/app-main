@@ -39,11 +39,11 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
   onNavigate,
 }) => {
   // Debug logging
-  console.log('[ScoreOptimizationGuide] isPremium prop received:', isPremium);
+// [AUDIT] Removed console.log // line 42
   
   // Track isPremium changes
   useEffect(() => {
-    console.log('[ScoreOptimizationGuide] isPremium changed to:', isPremium);
+// [AUDIT] Removed console.log // line 46
   }, [isPremium]);
   
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -460,7 +460,7 @@ export const ScoreOptimizationGuide: React.FC<ScoreOptimizationGuideProps> = ({
                       {displayTips[currentIndex].actionable && onApplyChanges && (
                         <button
                           onClick={() => {
-                            console.log('Apply changes for:', displayTips[currentIndex].title);
+// [AUDIT] Removed console.log // line 463
                           }}
                           className="mt-4 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full"
                           style={{ background: 'linear-gradient(135deg,#e53e3e,#9b1c1c)', boxShadow: '0 2px 10px rgba(229,62,62,0.3)' }}

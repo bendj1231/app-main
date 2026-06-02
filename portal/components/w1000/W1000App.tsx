@@ -102,8 +102,8 @@ const WelcomeScreen: React.FC<{ onStart: () => void }> = ({ onStart }) => {
 
 
 const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avatarUrl?: string } }> = ({ userProfile }) => {
-  console.log('[W1000App] Received userProfile:', userProfile);
-  console.log('[W1000App] userProfile.avatarUrl:', userProfile?.avatarUrl);
+// [AUDIT] Removed console.log // line 105
+// [AUDIT] Removed console.log // line 106
   
   const [hasLaunched, setHasLaunched] = useState(true);
   const [interfaceMode, setInterfaceMode] = useState<InterfaceMode>('STANDARD');
@@ -125,7 +125,7 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
       const pageParam = urlParams.get('page');
       
       if (pageParam) {
-        console.log('[W1000App] Page parameter detected:', pageParam);
+// [AUDIT] Removed console.log // line 128
         
         // Convert string to Page enum
         const pageMap: Record<string, Page> = {
@@ -142,7 +142,7 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
         
         const targetPage = pageMap[pageParam.toLowerCase()];
         if (targetPage) {
-          console.log('[W1000App] Navigating to page:', targetPage);
+// [AUDIT] Removed console.log // line 145
           setActiveModule(targetPage);
           setShowWelcome(false); // Skip welcome screen when directly navigating to a page
           
@@ -155,11 +155,11 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
           }
           
           // Keep the page parameter in URL (don't clear it)
-          console.log('[W1000App] Keeping page parameter in URL');
+// [AUDIT] Removed console.log // line 158
         }
       } else {
         // No page parameter, set default to dashboard
-        console.log('[W1000App] No page parameter, setting default to dashboard');
+// [AUDIT] Removed console.log // line 162
         const defaultUrl = '/portal?view=w1000-app&page=dashboard';
         window.history.replaceState({}, '', defaultUrl);
       }
@@ -170,7 +170,7 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
 
     // Listen for URL changes
     const handlePopState = () => {
-      console.log('[W1000App] URL changed, checking for page parameter');
+// [AUDIT] Removed console.log // line 173
       handleUrlChange();
     };
     
@@ -209,7 +209,7 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
       const pageParam = pageMap[page];
       if (pageParam) {
         const newUrl = '/portal?view=w1000-app&page=' + pageParam;
-        console.log('[W1000App] Updating URL to:', newUrl);
+// [AUDIT] Removed console.log // line 212
         window.history.replaceState({}, '', newUrl);
       }
 

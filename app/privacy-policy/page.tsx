@@ -93,10 +93,10 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                         <h3 className="font-semibold text-slate-800 mb-2 mt-4">2c. Verifiable Credential Data</h3>
                         <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
                             <li>Cryptographic credential hashes stored in our revocation registry</li>
-                            <li>Credential offer URLs for your walt.id wallet</li>
+                            <li>Credential offer URLs for your Pilot Wallet</li>
                             <li>Credential status (active, revoked, expired)</li>
                         </ul>
-                        <p className="text-sm mb-4">The actual Verifiable Credential (VC) is stored in your personal walt.id wallet — not on our servers. We retain only a revocation status entry to allow airlines to verify your credential has not been revoked.</p>
+                        <p className="text-sm mb-4">The actual Verifiable Credential (VC) is stored in your personal Pilot Wallet — not on our servers. We retain only a revocation status entry to allow airlines to verify your credential has not been revoked.</p>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-4">2d. Usage &amp; Technical Data</h3>
                         <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
@@ -173,10 +173,10 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                                         <td className="px-4 py-3 border border-slate-200">UK / Singapore</td>
                                     </tr>
                                     <tr className="bg-slate-50">
-                                        <td className="px-4 py-3 border border-slate-200 font-medium">walt.id</td>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Pilot Wallet</td>
                                         <td className="px-4 py-3 border border-slate-200">Verifiable Credential issuance</td>
                                         <td className="px-4 py-3 border border-slate-200">Credential subject data (for VC only)</td>
-                                        <td className="px-4 py-3 border border-slate-200">EU (Austria)</td>
+                                        <td className="px-4 py-3 border border-slate-200">Mauritius / Global CDN</td>
                                     </tr>
                                     <tr>
                                         <td className="px-4 py-3 border border-slate-200 font-medium">Stripe</td>
@@ -237,7 +237,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                             <li><strong>Encryption in transit:</strong> All data transmitted between your browser and our servers uses TLS 1.2+.</li>
                             <li><strong>Row-Level Security:</strong> Database access controls ensure pilots can only query their own records.</li>
                             <li><strong>Vault key architecture:</strong> Your encryption key is derived from your Google identity and a server-side secret stored in a hardware-backed secret manager. We cannot decrypt your data without your authenticated session.</li>
-                            <li><strong>Verifiable Credentials:</strong> Your actual VCs are stored in your personal walt.id wallet. We hold only a revocation status entry.</li>
+                            <li><strong>Verifiable Credentials:</strong> Your actual VCs are stored in your personal Pilot Wallet. We hold only a revocation status entry.</li>
                             <li><strong>Passkey architecture:</strong> If you register a passkey, the private key is stored exclusively in your device hardware and synced end-to-end encrypted by Google or Apple. We store only your public key — a value that can verify your identity but cannot impersonate you. A full compromise of our database would not expose your private key.</li>
                         </ul>
                         <p className="mt-4 text-sm text-slate-500">No system is 100% secure. In the event of a breach affecting your personal data, we will notify you and the relevant supervisory authority within 72 hours of becoming aware, as required under GDPR Article 33.</p>

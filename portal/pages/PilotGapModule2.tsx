@@ -132,31 +132,31 @@ const PilotGapModule2: React.FC<PilotGapModule2Props> = ({ onBack, onComplete })
 
     // ── Render Current Chapter/Topic ───────────────────────────────────────
     const renderCurrentContent = () => {
-        console.log('Rendering Module 2 content for chapter:', currentChapter);
+// [AUDIT] Removed console.log // line 135
         switch (currentChapter) {
             case 1:
-                console.log('Rendering MentorModulesPage1');
+// [AUDIT] Removed console.log // line 138
                 return <MentorModulesPage1 onBack={onBack} />;
             case 2:
-                console.log('Rendering MentorModulesPage2');
+// [AUDIT] Removed console.log // line 141
                 return <MentorModulesPage2 onBack={onBack} />;
             case 3:
-                console.log('Rendering MentorModulesPage3');
+// [AUDIT] Removed console.log // line 144
                 return <MentorModulesPage3 onBack={onBack} />;
             case 4:
-                console.log('Rendering MentorModulesPage4');
+// [AUDIT] Removed console.log // line 147
                 return <MentorModulesPage4 onBack={onBack} />;
             case 5:
-                console.log('Rendering MentorModulesPage5');
+// [AUDIT] Removed console.log // line 150
                 return <MentorModulesPage5 onBack={onBack} />;
             case 6:
-                console.log('Rendering MentorModulesPage6');
+// [AUDIT] Removed console.log // line 153
                 return <MentorModulesPage6 onBack={onBack} />;
             case 7:
-                console.log('Rendering MentorModulesPage7');
+// [AUDIT] Removed console.log // line 156
                 return <MentorModulesPage7 onBack={onBack} />;
             default:
-                console.log('Rendering default MentorModulesPage1');
+// [AUDIT] Removed console.log // line 159
                 return <MentorModulesPage1 onBack={onBack} />;
         }
     };
@@ -402,7 +402,7 @@ const PilotGapModule2: React.FC<PilotGapModule2Props> = ({ onBack, onComplete })
 // Helper function for inline editing
 const commitEdit = (element: HTMLElement) => {
     // In a real implementation, this would save the edited content
-    console.log('Content edited:', element.textContent);
+// [AUDIT] Removed console.log // line 405
 };
 
 export default PilotGapModule2;

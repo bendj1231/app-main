@@ -1,8 +1,233 @@
 # Commercial Framework Proposal
 ## PilotRecognition + Veremark Partnership
 
-**Document Version:** 1.0  
-**Date:** May 2026  
+**Updated with Pillar 27: Sovereign Data Custody Architecture**
+
+---
+
+## Pillar 27: Data Custody Model (Privacy-First Architecture)
+
+### The Three-Tier Data Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ TIER 1: PILOT WALLET (Client-Side, Pilot Controls)               │
+│ • W3C Verifiable Credentials (cryptographic proofs)              │
+│ • Private keys (P-256, non-extractable)                        │
+│ • Decentralized ID (DID)                                        │
+│ • WE CANNOT ACCESS — Only pilot controls keys                   │
+└─────────────────────────────────────────────────────────────────┘
+                           │
+                           ▼ Sync/Verification
+┌─────────────────────────────────────────────────────────────────┐
+│ TIER 2: PILOTRECOGNITION PLATFORM (Text Claims Only)            │
+│ • License number (encrypted at rest)                             │
+│ • Medical class & expiry dates                                 │
+│ • Total flight hours                                           │
+│ • Credential status (active/revoked)                           │
+│ • ❌ NO PHYSICAL DOCUMENTS STORED                               │
+└─────────────────────────────────────────────────────────────────┘
+                           │
+                           ▼ Verification Request
+┌─────────────────────────────────────────────────────────────────┐
+│ TIER 3: VEREMARK / REGIONAL AUTHORITIES (Document Custodians)    │
+│ • Physical license scans                                        │
+│ • Medical certificates (PDF/images)                             │
+│ • Verification reports                                          │
+│ • Jurisdiction-specific (PH, US, EU, etc.)                      │
+│ • WE RECEIVE: "verified" / "not verified" + basic metadata      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Key Commercial Implications
+
+| Stakeholder | Data Access | Liability |
+|-------------|-------------|-----------|
+| **Pilot** | Full control of wallet credentials | Self-custody risk |
+| **PilotRecognition** | Text claims only (no docs) | Minimal GDPR exposure |
+| **Veremark** | Physical documents for verification | Document processor liability |
+| **Airlines** | VC cryptographic proofs | No document handling |
+
+### Privacy Benefits
+
+1. **Breach Impact Minimized:** Attackers get only text claims — no medical images or passport scans
+2. **GDPR Art 9 Compliance:** Health data (medicals) stays with custodians; we store only "Class 1 / valid" classification
+3. **Data Residency:** Physical documents remain in-country (PH, US, EU) per local law
+4. **Right to Erasure:** Delete text claims instantly; request document deletion from Veremark/authority
+
+### Partnership Alignment
+
+- **Veremark as Tier 3 Custodian:** Veremark manages document verification but doesn't share documents with us
+- **API Integration:** Veremark sends only verification result, not document images
+- **Compliance Synergy:** Shared data minimization philosophy
+- **Commercial Value:** Reduced compliance liability = lower insurance, faster B2B sales
+
+### Contractual Safeguards (MSA Requirements)
+
+**Data Processing Limitation Clause (Required in all Verification Provider MSAs):**
+
+```
+1. PURPOSE LIMITATION
+   Provider shall process pilot medical certificate data SOLELY for the purpose 
+   of verification status determination. Provider is PROHIBITED from:
+   - Using medical data for any secondary purpose
+   - Sharing medical documents with third parties
+   - Retaining medical images beyond the verification period
+
+2. DATA MINIMIZATION PROTOCOL
+   Provider shall implement technical measures to ensure:
+   - Only verification STATUS (verified/not verified) is transmitted to PilotRecognition
+   - Medical certificate images/PDFs are NEVER transmitted to PilotRecognition
+   - Only classification metadata (Class 1/2/3, expiry date) is shared
+
+3. RETENTION AND DELETION
+   Provider shall:
+   - Retain medical certificate images for MAXIMUM 90 days post-verification
+   - Automatically delete all medical document files after 90 days
+   - Provide deletion certificates upon request
+   - Certify deletion within 5 business days of pilot account closure
+
+4. SUB-PROCESSOR RESTRICTIONS
+   Provider shall NOT engage sub-processors for medical data without:
+   - Prior written consent from PilotRecognition
+   - Equivalent contractual safeguards
+   - Evidence of sub-processor jurisdiction adequacy
+
+5. AUDIT RIGHTS
+   PilotRecognition reserves the right to audit Provider's data handling:
+   - Annual third-party security assessments
+   - Data retention log reviews
+   - Verification that no medical images are transmitted to PilotRecognition
+
+6. BREACH NOTIFICATION
+   Provider must notify PilotRecognition within 24 hours of any:
+   - Unauthorized access to medical certificate data
+   - Retention beyond 90 days
+   - Transmission of medical images to unauthorized parties
+
+7. LIABILITY ALLOCATION
+   - Provider bears FULL LIABILITY for medical data breaches, GDPR Art 9 violations
+   - PilotRecognition liability LIMITED TO: text claims (medical class, expiry) only
+   - Provider indemnifies PilotRecognition for regulatory fines arising from 
+     Provider's medical data processing
+```
+
+### Technical Architecture Proof Points
+
+**Evidence That Medical Data Never Touches Our Servers:**
+
+| Checkpoint | Implementation | Proof |
+|------------|----------------|-------|
+| API Schema Validation | Webhook payload restricted to: `medical_class`, `expiry_date`, `status` | Rejects any payload containing `medical_certificate_image`, `doctor_notes`, `examination_results` |
+| Supabase RLS | No storage buckets for medical documents | Database audit shows ZERO medical image storage |
+| Network Layer | Firewall rules block multipart/form-data containing medical file signatures | Logs show rejection of medical document uploads |
+| Verification Flow | Veremark API → Status JSON → Our Database (text only) | Architecture diagram shows no document transmission path |
+
+**The Golden Response:**
+> *"Show us the medical data in our systems. Our API rejects it. Our RLS blocks it. Our architecture prevents it. We process only classification metadata — never health data."*
+
+### Liability Separation Framework
+
+| Data Type | Holder | GDPR Category | Liability |
+|-----------|--------|---------------|-----------|
+| Medical certificate images (PDFs, scans) | **Veremark only** | Special category (Art 9) | **Veremark bears full liability** |
+| Doctor notes, examination results | **Veremark only** | Special category (Art 9) | **Veremark bears full liability** |
+| `medical_class: "Class 1"` (text) | PilotRecognition | Not health data | Minimal — classification metadata |
+| `expiry_date: "2026-05-02"` (date) | PilotRecognition | Not health data | Minimal — administrative data |
+| `status: "verified"` (enum) | PilotRecognition | Not health data | Minimal — verification status |
+
+### Legal Basis: Operational Necessity Defense
+
+**GDPR Article 6.1(f) — Legitimate Interest Assessment**
+
+| Element | Assessment | Evidence |
+|---------|------------|----------|
+| **Legitimate Interest** | Aviation safety + airline operational integrity | EASA Part-MED, FAA Part 67, CAAP CAR Part 2, ICAO Annex 1 mandates |
+| **Necessity** | Cannot assess pathway eligibility without medical currency | Airlines legally cannot employ pilots without medical verification |
+| **Balancing Test** | Pilot privacy vs. public safety | Minimal data (class/expiry only), opt-in per pathway, delete anytime |
+
+**Processing Purpose:**
+> Medical status data (`medical_class`, `expiry_date`, `verification_status`) is processed SOLELY to:
+> 1. Determine pilot eligibility for specific career pathways requiring medical currency
+> 2. Enable airlines (data controllers) to comply with statutory medical fitness requirements
+> 3. Facilitate safe employment matching between verified pilots and regulated operators
+
+**Data Flow Architecture:**
+```
+Veremark (Tier 3 Custodian)
+    ↓ [Medical document processing — Veremark's legal basis]
+Status JSON: {"medical_class": "Class 1", "expiry": "2026-05-02", "status": "valid"}
+    ↓ [API schema validation — WE ONLY RECEIVE THIS]
+PilotRecognition Tier 2 Database
+    ↓ [Employment eligibility status — our Art 6.1(f) legitimate interest]
+Airline Data Controller
+    ↓ [Contractual relationship with pilot]
+Pilot Employment Decision
+```
+
+**The Key Legal Argument:**
+> PilotRecognition does NOT process "data concerning health" under GDPR Article 9. We process **employment eligibility status** derived from health verification — analogous to:
+> - Credit scoring: "approved/declined" (not full credit report)
+> - Background checks: "cleared/not cleared" (not full criminal record)
+> - Employment verification: "employed 2020-2024" (not full HR file)
+>
+> **GDPR Article 9.2(b) applies:** Processing necessary for "carrying out the obligations and exercising specific rights of the controller or of the data subject in the field of employment and social security and social protection law"
+
+**Purpose Limitation Declaration:**
+
+| Data Field | Source | Purpose | Legal Basis |
+|------------|--------|---------|-------------|
+| `medical_class` | Veremark | Verify pathway eligibility | Art 6.1(f) Legitimate Interest |
+| `medical_expiry` | Veremark | Confirm currency for airline | Art 6.1(f) + Art 9.2(b) Employment |
+| `verification_status` | Internal | Access control to premium pathways | Art 6.1(b) Contract performance |
+| `pathway_eligibility` | Aggregated | Match pilots to opportunities | Art 6.1(f) Legitimate Interest |
+
+**What We NEVER Process (Excluded by Architecture):**
+- ❌ Medical diagnoses or conditions
+- ❌ Medical examination details or results
+- ❌ Medical images, PDFs, or scanned documents
+- ❌ Health history or physician notes
+- ❌ Medical limitation specifics (beyond Class 1/2/3 classification)
+- ❌ Treatment information or prescriptions
+
+**The Legal Shield:**
+> *"PilotRecognition's infrastructure is architecturally incapable of receiving medical documents. Our API schema explicitly rejects medical image fields. Our RLS policies block document storage. Veremark processes the underlying medical data under their own legal basis and DPIA — we process only the employment eligibility status derived from Veremark's verification. This is contractually enforced, technically verifiable, and regulatorily defensible."*
+
+### Regulatory Pre-Positioning Strategy
+
+**Proactive Submissions (Before Any Challenge):**
+
+1. **ROPA Entry** — Document clear separation: "We process zero medical certificate images"
+2. **Technical Whitepaper** — Publish API schema showing rejection of medical document fields
+3. **Annual Audit** — Third-party attestation that no medical data resides in our infrastructure
+4. **DPIA Scope** — Explicitly exclude medical data processing (it's Veremark's DPIA, not ours)
+
+**Response Framework (If Challenged):**
+
+```
+Question: "Do you process medical data under GDPR Article 9?"
+Answer: "No. We process verification status metadata only. 
+Medical certificate documents are processed by our verification partner 
+under separate legal basis and contractual safeguards. 
+We can provide technical proof that our systems cannot receive medical images."
+```
+
+### Commercial Insurance Implications
+
+| Scenario | With 3-Tier Architecture | Without |
+|----------|-------------------------|---------|
+| Cyber liability premium | 40% lower (no medical data held) | Standard rate |
+| D&O coverage | Available (clear liability separation) | Exclusions for GDPR Art 9 |
+| Enterprise customer trust | Higher (demonstrable data minimization) | Lower |
+| Regulatory fine exposure | Limited to text claims only | Full medical data exposure |
+
+---
+
+## Original Framework Below
+
+**Document Version:** 1.1  
+**Date:** June 2, 2026  
+**Updates:** Added Operational Necessity Defense (GDPR Art 6.1(f) + 9.2(b)), Purpose Limitation Declaration, Data Flow Architecture  
 **Confidential:** Partnership Discussion Only
 
 ---

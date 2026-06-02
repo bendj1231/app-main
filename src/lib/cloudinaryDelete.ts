@@ -41,7 +41,7 @@ export async function deleteProfileImage(publicId: string): Promise<DeleteImageR
       return { success: false, error: data?.error || 'Delete failed' };
     }
 
-    console.log('✅ Deleted old profile image:', publicId);
+// [AUDIT] Removed console.log // line 44
     return { success: true };
   } catch (err: any) {
     console.error('[cloudinaryDelete] Error:', err);

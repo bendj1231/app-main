@@ -52,7 +52,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
 
     // Debug: Log when component receives props
     React.useEffect(() => {
-        console.log('🔍 FoundationalProgramPage props:', {
+// [AUDIT] Removed console.log // line 55
             onBack: !!onBack,
             onLogout: !!onLogout,
             onStartEnrollment: !!onStartEnrollment,
@@ -755,8 +755,8 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                             <button
                                 onClick={() => {
-                                    console.log('🔘 Enrollment button clicked');
-                                    console.log('🔘 onStartEnrollment function:', onStartEnrollment);
+// [AUDIT] Removed console.log // line 758
+// [AUDIT] Removed console.log // line 759
 
                                     if (!agreed) {
                                         alert('Please agree to the Terms and Conditions to complete enrollment.');
@@ -768,7 +768,7 @@ const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
                                     }
 
                                     if (onStartEnrollment) {
-                                        console.log('🚀 Calling onStartEnrollment...');
+// [AUDIT] Removed console.log // line 771
                                         onStartEnrollment();
                                     } else {
                                         console.error('❌ onStartEnrollment is not defined');

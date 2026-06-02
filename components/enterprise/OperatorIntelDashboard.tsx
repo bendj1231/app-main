@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import {
   Activity, AlertCircle, Plane, Briefcase, Users, FileText,
   Shield, TrendingUp, MapPin, Star, Bell, ChevronRight,
-  CheckCircle, Clock, Zap, Globe, BarChart2
+  CheckCircle, Clock, Zap, Globe, BarChart2, Lock, Unlock
 } from 'lucide-react';
 import { supabase } from './hooks/useEnterpriseAuth';
+import { DataControllerUpgradeModal } from './DataControllerUpgradeModal';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface OITProps { user: any; account: any; onNavigate?: (page: string) => void; }
@@ -40,9 +41,13 @@ function StatTile({ label, value, sub, icon: Icon, color, bg, loading }: {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) {
   const orgName = account?.airline_name || account?.company_name || 'Your Organisation';
+  const tier = account?.account_tier || 'free';
+  const isFreeTier = tier === 'free';
+  const isDataController = tier === 'data_controller' || tier === 'enterprise';
 
   const [loading, setLoading] = useState(true);
   const [alertsLoading, setAlertsLoading] = useState(true);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const [stats, setStats] = useState({ cards: 0, published: 0, drafts: 0, jobs: 0, interests: 0, applications: 0 });
   const [recentInterests, setRecentInterests] = useState<any[]>([]);
@@ -66,10 +71,10 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
         .select('id', { count: 'exact' })
         .eq('enterprise_account_id', account.id),
 
-      supabase.from('pathway_card_interests')
-        .select('id, created_at, pilot_id, card_id, enterprise_pathway_cards(title)')
+      supabase.from('enterprise_pilot_pulls')
+        .select('*')
         .eq('enterprise_account_id', account.id)
-        .order('created_at', { ascending: false })
+        .order('submitted_at', { ascending: false })
         .limit(8),
 
       supabase.from('applications')
@@ -90,16 +95,28 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
         applications: appsRes.count || 0,
       });
 
-      // Enrich interest submissions with pilot profile
+      // Use enterprise_pilot_pulls view — tier-gated data already applied at database level
       const interests = interestsRes.data || [];
-      if (interests.length > 0) {
-        const pilotIds = interests.map((i: any) => i.pilot_id).filter(Boolean);
-        const { data: pilots } = await supabase.from('profiles')
-          .select('id, display_name, full_name, profile_image_url, total_flight_hours, overall_recognition_score, availability_status')
-          .in('id', pilotIds);
-        const pilotMap = Object.fromEntries((pilots || []).map((p: any) => [p.id, p]));
-        setRecentInterests(interests.map((i: any) => ({ ...i, pilot: pilotMap[i.pilot_id] || null })));
-      }
+      setRecentInterests(interests.map((i: any) => ({
+        ...i,
+        // Construct a "pilot" object compatible with existing UI
+        pilot: {
+          display_name: i.pilot_name,
+          full_name: i.pilot_name,
+          profile_image_url: null,
+          total_flight_hours: i.total_flight_hours,
+          overall_recognition_score: isFreeTier ? null : 0, // Free tier sees null (hidden), DC sees actual
+          availability_status: 'REDACTED',
+          license_type: i.license_type,
+        },
+        // Blurred teasers for free tier
+        blurred: {
+          total_hours_blurred: i.total_hours_blurred,
+          license_type_blurred: i.license_type_blurred,
+          pilot_country_blurred: i.pilot_country_blurred,
+        },
+        isRedacted: i.pilot_name === 'PILOT-REDACTED',
+      })));
 
       // Supply forecast
       const supply = supplyRes.data || [];
@@ -215,11 +232,28 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
           <div className="flex items-center gap-2 mb-1">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">Live Intelligence</span>
+            {/* Tier badge */}
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ml-2 ${
+              isFreeTier
+                ? 'bg-slate-700 text-slate-400 border border-slate-600'
+                : 'bg-blue-600/20 text-blue-400 border border-blue-500/30'
+            }`}>
+              {isFreeTier ? 'Free Tier' : 'Data Controller'}
+            </span>
           </div>
           <h1 className="text-2xl font-bold text-white">Operator Intelligence Terminal</h1>
           <p className="text-slate-400 text-sm mt-0.5">{orgName} · Verified pilot pool · All UCF pillars</p>
         </div>
         <div className="flex items-center gap-3">
+          {isFreeTier && (
+            <button
+              onClick={() => setShowUpgradeModal(true)}
+              className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+            >
+              <Unlock className="w-3.5 h-3.5" />
+              Upgrade to Data Controller
+            </button>
+          )}
           {!loading && (
             <div className="flex gap-3">
               <div className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-center">
@@ -255,6 +289,29 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
 
       {/* ── Pulling System Inbox */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+
+        {/* Free tier FOMO banner */}
+        {isFreeTier && stats.interests > 0 && (
+          <div className="mb-4 bg-gradient-to-r from-amber-600/10 via-amber-500/5 to-transparent border border-amber-500/20 rounded-xl p-4 flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-amber-600/15 rounded-lg flex items-center justify-center shrink-0">
+                <Lock className="w-5 h-5 text-amber-400" />
+              </div>
+              <div>
+                <div className="text-amber-300 text-sm font-bold">{stats.interests} pilot{stats.interests !== 1 ? 's' : ''} interested in your pathways</div>
+                <div className="text-amber-500/70 text-xs">Details hidden · Upgrade to Data Controller to view verified profiles and contact pilots directly</div>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowUpgradeModal(true)}
+              className="bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition-colors shrink-0"
+            >
+              <Unlock className="w-3.5 h-3.5" />
+              Unlock for $1,000/yr
+            </button>
+          </div>
+        )}
+
         <div className="flex items-center justify-between mb-1 flex-wrap gap-2">
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-emerald-400" />
@@ -280,31 +337,89 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
           <div className="space-y-2">
             {recentInterests.map((item: any, i: number) => {
               const p = item.pilot;
-              const cardTitle = (item.enterprise_pathway_cards as any)?.title || 'Pathway Card';
-              const ts = item.created_at ? new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+              const cardTitle = item.card_title || 'Pathway Card';
+              const ts = item.submitted_at ? new Date(item.submitted_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+              const isRedacted = item.isRedacted;
+
               return (
                 <div key={i} className="flex items-center gap-3 bg-slate-800/50 border border-slate-700/40 rounded-xl px-4 py-3 hover:border-slate-600/60 transition-all">
                   <div className="w-9 h-9 bg-slate-700 rounded-full shrink-0 overflow-hidden flex items-center justify-center text-slate-400">
-                    {p?.profile_image_url
-                      ? <img src={p.profile_image_url} alt="" className="w-full h-full object-cover" />
-                      : <Users className="w-4 h-4" />}
+                    {isRedacted ? <Lock className="w-4 h-4" />
+                      : p?.profile_image_url
+                        ? <img src={p.profile_image_url} alt="" className="w-full h-full object-cover" />
+                        : <Users className="w-4 h-4" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-white text-sm font-semibold truncate">{p?.display_name || p?.full_name || 'Pilot'}</div>
-                    <div className="text-slate-500 text-xs truncate">→ <span className="text-slate-400">{cardTitle}</span> · {ts}</div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-white text-sm font-semibold truncate">
+                        {isRedacted ? (
+                          <span className="flex items-center gap-1.5">
+                            <Lock className="w-3 h-3 text-slate-500" />
+                            PILOT-REDACTED
+                          </span>
+                        ) : (
+                          p?.display_name || p?.full_name || 'Pilot'
+                        )}
+                      </div>
+                      {isRedacted && (
+                        <span className="text-[9px] text-slate-500 bg-slate-700/50 px-1.5 py-0.5 rounded">
+                          {item.blurred?.license_type_blurred || 'CPL'} · {item.blurred?.pilot_country_blurred || '—'}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-slate-500 text-xs truncate">
+                      → <span className="text-slate-400">{cardTitle}</span> · {ts}
+                      {isRedacted && (
+                        <span className="ml-2 text-amber-500/70 text-[10px]">
+                          {Number(item.blurred?.total_hours_blurred || 0).toLocaleString()}h logged (blurred)
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
-                    <span className="bg-slate-700 text-slate-300 text-xs px-2 py-0.5 rounded-lg">{Number(p?.total_flight_hours || 0).toLocaleString()}h</span>
-                    <span className="bg-blue-600/20 text-blue-400 border border-blue-500/20 text-xs px-2 py-0.5 rounded-lg font-semibold">
-                      Score {p?.overall_recognition_score || 0}
-                    </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-lg ${
-                      p?.availability_status === 'available' ? 'bg-emerald-500/20 text-emerald-400'
-                      : p?.availability_status === 'considering' ? 'bg-amber-500/20 text-amber-400'
-                      : 'bg-slate-600/40 text-slate-400'
-                    }`}>
-                      {p?.availability_status === 'available' ? 'Available' : p?.availability_status === 'considering' ? 'Considering' : 'Passive'}
-                    </span>
+                    {!isRedacted && (
+                      <>
+                        <span className="bg-slate-700 text-slate-300 text-xs px-2 py-0.5 rounded-lg">
+                          {p?.total_flight_hours ? `${Number(p.total_flight_hours).toLocaleString()}h` : '—'}
+                        </span>
+                        <span className="bg-blue-600/20 text-blue-400 border border-blue-500/20 text-xs px-2 py-0.5 rounded-lg font-semibold">
+                          {p?.license_type || 'CPL'}
+                        </span>
+                      </>
+                    )}
+
+                    {/* Action buttons — Data Controller only */}
+                    {isDataController && !isRedacted && (
+                      <>
+                        {item.status === 'pending_airline_consent' && (
+                          <button
+                            onClick={() => {/* Call record_airline_consent */}}
+                            className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-1 rounded-lg font-semibold hover:bg-emerald-600/30 transition-colors"
+                          >
+                            Approve
+                          </button>
+                        )}
+                        {item.status === 'both_agreed' && (
+                          <button
+                            onClick={() => {/* Call request_discharge */}}
+                            className="bg-blue-600/20 text-blue-400 border border-blue-500/30 text-xs px-2.5 py-1 rounded-lg font-semibold hover:bg-blue-600/30 transition-colors"
+                          >
+                            Unlock Contact
+                          </button>
+                        )}
+                      </>
+                    )}
+
+                    {/* Free tier: show blurred teaser + upgrade CTA */}
+                    {isFreeTier && (
+                      <button
+                        onClick={() => setShowUpgradeModal(true)}
+                        className="bg-slate-700/50 text-slate-400 border border-slate-600/50 text-xs px-2.5 py-1 rounded-lg font-semibold hover:bg-slate-700 hover:text-white transition-colors flex items-center gap-1"
+                      >
+                        <Lock className="w-3 h-3" />
+                        Unlock
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -468,6 +583,15 @@ export function OperatorIntelDashboard({ user, account, onNavigate }: OITProps) 
           </div>
         </div>
       </div>
+
+      {/* ── Upgrade Modal */}
+      <DataControllerUpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        enterpriseAccountId={account?.id}
+        currentTier={tier}
+        airlineName={orgName}
+      />
 
       {/* ── UCF Intelligence Strip */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-950/30 to-slate-900 border border-blue-900/30 rounded-2xl p-5">

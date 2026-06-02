@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { CareerPathwaysNavbar } from './layout/CareerPathwaysNavbar';
+import { OAuthCallback } from '@/src/components/OAuthCallback';
 
 // Lazy load page components - using actual platform pathways content as main page
 import type { PathwaysPageModernProps } from '../../portal/pages/PathwaysPageModern';
@@ -10,7 +12,9 @@ const ProgramsPage = lazy(() => import('./pages/ProgramsPage').then(m => ({ defa
 const ProgramDetailPage = lazy(() => import('./pages/ProgramDetailPage').then(m => ({ default: m.ProgramDetailPage })));
 const AirlinesPage = lazy(() => import('./pages/AirlinesPage').then(m => ({ default: m.AirlinesPage })));
 const GetStartedPage = lazy(() => import('./pages/GetStartedPage').then(m => ({ default: m.GetStartedPage })));
-const DashboardPage = lazy(() => import('./pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
+const PathwayDashboardPage = lazy(() => import('./pages/PathwayDashboardPage').then(m => ({ default: m.PathwayDashboardPage })));
+const EnterpriseDirectoryPage = lazy(() => import('./pages/EnterpriseDirectoryPage').then(m => ({ default: m.EnterpriseDirectoryPage })));
+const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
 
 // Unified platform pages
 const PortalAirlineExpectationsPage = lazy(() => import('../../portal/pages/PortalAirlineExpectationsPage').then(m => ({ default: m.PortalAirlineExpectationsPage })));
@@ -23,106 +27,112 @@ const PageLoader = () => (
   </div>
 );
 
-// Header component for above the search bar
-const CareerPathwaysHeader = () => (
-  <div className="text-center py-8">
-    <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-      pilotcareer<span className="text-red-500">pathways</span>.com
-    </h1>
-    <p className="text-slate-400 mt-2 text-lg">Your aviation career starts here</p>
-  </div>
-);
-
-// Wrapper component that passes embedded=true and hides PathwaysSidebar via CSS
-const PathwaysPageModernWrapper = () => {
+// CSS injector that hides unified platform navbars/sidebars when rendered inside career pathways
+const useHideUnifiedPlatformNav = () => {
   useEffect(() => {
+    // CSS injection
     const style = document.createElement('style');
-    style.id = 'career-pathways-sidebar-hide';
+    style.id = 'career-pathways-unified-hide';
     style.textContent = `
-      /* Hide PathwaysSidebar - left sidebar with 340px width */
-      div[style*="width: 340px"],
-      div[style*="width:340px"],
-      aside,
-      [class*="PathwaysSidebar"] {
+      /* Hide PlatformNavbar — it's a fixed div with height:68px + gradient bg */
+      div[style*="height: 68px"][style*="linear-gradient"] {
         display: none !important;
       }
-      /* Adjust main content margin and padding */
-      main, [style*="margin-left: 340px"] {
+      /* Hide PathwaysSidebar — aggressive targeting */
+      div[style*="width: 340px"],
+      div[style*="width:340px"],
+      div[style*="position: fixed"],
+      div[style*="position:fixed"],
+      aside,
+      [class*="sidebar"],
+      [class*="Sidebar"],
+      [id*="sidebar"],
+      [id*="Sidebar"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: -999 !important;
+      }
+      /* Extra catch-all for any element that looks like a sidebar */
+      div[style*="left: 0"][style*="top: 0"],
+      div[style*="left:0"][style*="top:0"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: -999 !important;
+      }
+      /* Remove sidebar margin from main content */
+      [style*="margin-left: 280px"],
+      [style*="margin-left:280px"] {
         margin-left: 0 !important;
-        width: 100vw !important;
-        max-width: 100vw !important;
+      }
+      [style*="margin-left: 340px"],
+      [style*="margin-left:340px"] {
+        margin-left: 0 !important;
+      }
+      /* Remove top padding since we have our own navbar */
+      [style*="padding-top: 2rem"] {
         padding-top: 0 !important;
-      }
-      /* Reduce top padding on main content wrapper */
-      main > div {
-        padding-top: 8px !important;
-      }
-      /* Move search bar up by reducing its margin */
-      main [style*="padding-top: 80px"] {
-        padding-top: 16px !important;
       }
     `;
     document.head.appendChild(style);
 
-    // Inject header into the main content area
-    const injectHeader = () => {
-      // Find the main content area
-      const mainContent = document.querySelector('main');
-      if (!mainContent) return;
-
-      // Check if header already exists
-      if (document.getElementById('cpw-header')) return;
-
-      // Create header element with high z-index to appear above shader
-      const header = document.createElement('div');
-      header.id = 'cpw-header';
-      header.style.cssText = 'position: relative; z-index: 100; background: transparent;';
-      header.innerHTML = `
-        <div style="text-align: center; padding: 48px 0 16px 0; position: relative; z-index: 100;">
-          <h1 style="font-size: 2.5rem; font-weight: 700; color: white; letter-spacing: -0.02em; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
-            pilotcareer<span style="color: #ef4444;">pathways</span>.com
-          </h1>
-          <p style="color: #e2e8f0; margin-top: 8px; font-size: 1.125rem; margin-bottom: 0; font-weight: 500;">
-            Your aviation career starts here
-          </p>
-        </div>
-      `;
-
-      // Insert before the first child of main
-      if (mainContent.firstChild) {
-        mainContent.insertBefore(header, mainContent.firstChild);
-      } else {
-        mainContent.appendChild(header);
-      }
-    };
-
-    // Also find and hide any fixed left-sidebars
-    const hideSidebars = () => {
-      document.querySelectorAll('div').forEach((el) => {
+    // JavaScript-based sidebar removal - more aggressive
+    const removeSidebars = () => {
+      const all = document.querySelectorAll('div, aside');
+      all.forEach(el => {
         const computed = window.getComputedStyle(el);
-        if (computed.position === 'fixed' && computed.left === '0px') {
-          const width = parseInt(computed.width);
-          if (width > 250 && width < 400) {
-            (el as HTMLElement).style.display = 'none';
-          }
+        const style = (el as HTMLElement).style;
+        
+        // Remove if it looks like a sidebar
+        if (
+          computed.position === 'fixed' && 
+          (computed.left === '0px' || parseInt(computed.width) >= 280) &&
+          (parseInt(computed.width) <= 400)
+        ) {
+          (el as HTMLElement).style.display = 'none';
+          (el as HTMLElement).remove();
+        }
+        
+        // Remove by inline styles
+        if (
+          style.width?.includes('340px') ||
+          style.width?.includes('280px') ||
+          (style.position === 'fixed' && style.left === '0')
+        ) {
+          (el as HTMLElement).style.display = 'none';
+          (el as HTMLElement).remove();
         }
       });
-      injectHeader();
     };
-    hideSidebars();
-    setTimeout(hideSidebars, 100);
-    setTimeout(hideSidebars, 500);
-    setTimeout(hideSidebars, 1000);
+
+    // Run immediately and multiple times to catch late-rendering elements
+    removeSidebars();
+    setTimeout(removeSidebars, 100);
+    setTimeout(removeSidebars, 500);
+    setTimeout(removeSidebars, 1000);
+    setTimeout(removeSidebars, 2000);
 
     return () => {
-      const existing = document.getElementById('career-pathways-sidebar-hide');
+      const existing = document.getElementById('career-pathways-unified-hide');
       if (existing) existing.remove();
-      const header = document.getElementById('cpw-header');
-      if (header) header.remove();
     };
   }, []);
+};
 
+// Wrapper component that passes embedded=true to hide PlatformNavbar and PathwaysSidebar
+const PathwaysPageModernWrapper = () => {
+  // PathwaysPageModern now properly handles embedded={true} to hide its own navbar and sidebar
+  // No CSS injection or DOM manipulation needed
   return <PathwaysPageModern embedded={true} />;
+};
+
+// Wrapper for unified platform pages to hide their navbars/sidebars
+const UnifiedPageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  useHideUnifiedPlatformNav();
+  return <>{children}</>;
 };
 
 interface CareerPathwaysAppProps {
@@ -131,24 +141,38 @@ interface CareerPathwaysAppProps {
 
 export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin }) => {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth0();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string>('');
+  const [userAvatar, setUserAvatar] = useState<string>('');
 
   useEffect(() => {
-    console.log('[DEBUG CareerPathwaysApp] Mounted, current path:', window.location.pathname);
-    const token = localStorage.getItem('auth_token');
-    if (token) {
+// [AUDIT] Removed console.log // line 150
+// [AUDIT] Removed console.log // line 151
+    
+    // Use Auth0 state
+    if (isAuthenticated && user) {
       setIsLoggedIn(true);
-      setUserName(localStorage.getItem('user_name') || 'Pilot');
+      setUserName(user.name || user.email?.split('@')[0] || 'Pilot');
+      setUserAvatar(user.picture || '');
+    } else {
+      // Fallback to localStorage
+      const token = localStorage.getItem('auth_token');
+      if (token) {
+        setIsLoggedIn(true);
+        setUserName(localStorage.getItem('user_name') || 'Pilot');
+      }
     }
-  }, []);
+  }, [isAuthenticated, user]);
 
+  const { isLoading: isAuth0Loading } = useAuth0();
+  
   const handleNavigate = (path: string) => {
-    console.log('[DEBUG CareerPathwaysApp] Navigating to:', path);
+// [AUDIT] Removed console.log // line 171
     navigate(path);
   };
 
-  console.log('[DEBUG CareerPathwaysApp] Rendering, pathname:', window.location.pathname);
+// [AUDIT] Removed console.log // line 175
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -156,11 +180,16 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
         onLogin={onLogin} 
         isLoggedIn={isLoggedIn}
         userName={userName}
+        userAvatar={userAvatar}
       />
       
       <main className="pt-16">
         <Suspense fallback={<PageLoader />}>
           <Routes>
+            {/* Auth callback routes */}
+            <Route path="/callback" element={<OAuthCallback />} />
+            <Route path="/auth/callback" element={<OAuthCallback />} />
+
             {/* Main pathways explorer - CSS hides PlatformNavbar and sidebar */}
             <Route 
               path="/" 
@@ -180,7 +209,7 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
             />
             <Route 
               path="/discover" 
-              element={<PathwaysPageModern />} 
+              element={<PathwaysPageModernWrapper />} 
             />
             <Route 
               path="/airlines" 
@@ -191,32 +220,61 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
               element={<GetStartedPage onNavigate={handleNavigate} onLogin={onLogin} />} 
             />
             <Route 
+              path="/become-member" 
+              element={<BecomeMemberPage onBack={() => navigate('/')} onNavigate={handleNavigate} onLogin={onLogin} />} 
+            />
+            <Route 
               path="/dashboard" 
               element={
-                isLoggedIn ? (
-                  <DashboardPage onNavigate={handleNavigate} />
+                isAuth0Loading ? (
+                  <PageLoader />
+                ) : isLoggedIn || isAuthenticated ? (
+                  <PathwayDashboardPage 
+                    onNavigate={handleNavigate} 
+                    pilotId={user?.sub || undefined}
+                  />
                 ) : (
                   <Navigate to="/get-started" replace />
                 )
               } 
             />
+            <Route 
+              path="/platform" 
+              element={<Navigate to="/dashboard" replace />} 
+            />
             
             {/* Unified Platform Pages - from pilotrecognition.com */}
             <Route 
               path="/airline-expectations" 
-              element={<PortalAirlineExpectationsPage onBack={() => navigate('/')} onNavigate={handleNavigate} />} 
+              element={
+                <UnifiedPageWrapper>
+                  <PortalAirlineExpectationsPage onBack={() => navigate('/')} onNavigate={handleNavigate} />
+                </UnifiedPageWrapper>
+              } 
             />
             <Route 
               path="/type-ratings" 
-              element={<TypeRatingSearchPage onNavigate={handleNavigate} onBack={() => navigate('/')} />} 
+              element={
+                <UnifiedPageWrapper>
+                  <TypeRatingSearchPage onNavigate={handleNavigate} onBack={() => navigate('/')} />
+                </UnifiedPageWrapper>
+              } 
             />
             <Route 
               path="/authorities" 
-              element={<GlobalAviationAuthoritiesPage />} 
+              element={
+                <UnifiedPageWrapper>
+                  <GlobalAviationAuthoritiesPage />
+                </UnifiedPageWrapper>
+              } 
+            />
+            <Route 
+              path="/enterprise" 
+              element={<EnterpriseDirectoryPage onNavigate={handleNavigate} />} 
             />
             
             {/* Redirects from old paths */}
-            <Route path="/home" element={<Navigate to="/" replace />} />
+            <Route path="/home" element={<Navigate to="/discover" replace />} />
             
             {/* 404 */}
             <Route 
@@ -226,7 +284,7 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
                   <h1 className="text-4xl font-bold text-white mb-4">404</h1>
                   <p className="text-slate-400 mb-6">Page not found</p>
                   <button 
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/discover')}
                     className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white transition-colors"
                   >
                     Go Home

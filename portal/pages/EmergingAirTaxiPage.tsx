@@ -15,18 +15,18 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
     ];
 
     useEffect(() => {
-        console.log('Air Taxi carousel - Setting up simple automatic interval');
+// [AUDIT] Removed console.log // line 18
         
         const interval = setInterval(() => {
             setCurrentImageIndex((prevIndex) => {
                 const newIndex = (prevIndex + 1) % airTaxiImages.length;
-                console.log('Air Taxi carousel - Auto-changing to image:', newIndex, airTaxiImages[newIndex]);
+// [AUDIT] Removed console.log // line 23
                 return newIndex;
             });
         }, 4000); // Change every 4 seconds for smooth automatic transitions
 
         return () => {
-            console.log('Air Taxi carousel - Cleaning up interval');
+// [AUDIT] Removed console.log // line 29
             clearInterval(interval);
         };
     }, []); // Empty dependency array
@@ -122,7 +122,7 @@ export const EmergingAirTaxiPage: React.FC<EmergingAirTaxiPageProps> = ({ onBack
                                             transition: 'opacity 1.5s ease-in-out'
                                         }}
                                         onError={(e) => {
-                                            console.log('Air Taxi carousel - Image failed to load:', image);
+// [AUDIT] Removed console.log // line 125
                                         }}
                                     />
                                 ))}

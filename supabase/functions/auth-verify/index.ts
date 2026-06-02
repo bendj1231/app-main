@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { detectIPDrift, getCountryFromEdgeHeader, getClientIP } from './_shared/ip-geofencing.ts'
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -264,13 +265,30 @@ serve(async (req) => {
       return response
     }
 
+    // IP Geofencing: Detect jurisdiction drift (ToS Section 13.3)
+    const { drift: ipDrift, currentCountry } = await detectIPDrift(supabase, data.user.id, req)
+    
+    // If drift detected, include warning in response (client should trigger re-attestation)
+    const driftWarning = ipDrift ? {
+      drift_detected: true,
+      current_jurisdiction: currentCountry,
+      requires_re_attestation: true,
+      message: 'Jurisdiction change detected. Please re-verify your profile to comply with local regulations.'
+    } : null
+
     const response = SecurityMiddleware.createResponse({
       success: true,
-      user: { id: data.user.id, email: data.user.email }
+      user: { id: data.user.id, email: data.user.email },
+      ...(driftWarning && { compliance_warning: driftWarning })
     })
     
     // Add rate limit headers
     response.headers.set('X-RateLimit-Remaining', String(rateLimitResult.remaining))
+    
+    // Add jurisdiction headers for debugging (ToS 13.3 compliance)
+    const detectedCountry = currentCountry || getCountryFromEdgeHeader(req) || 'XX'
+    response.headers.set('X-Detected-Jurisdiction', detectedCountry)
+    response.headers.set('X-IP-Drift-Status', ipDrift ? 'detected' : 'none')
 
     const duration = PerformanceMonitor.endTimer(requestId)
     Logger.info('Token verification successful', { userId: data.user.id, duration }, requestId)

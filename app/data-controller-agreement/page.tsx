@@ -10,7 +10,7 @@ export default function DataControllerAgreementPage() {
         <div className="mb-10">
           <div className="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-200 rounded-full px-4 py-1.5 text-xs font-semibold text-indigo-700 mb-4">
             <span className="w-2 h-2 rounded-full bg-indigo-500" />
-            Document Reference: PR-DCA-001 · Version 1.6
+            Document Reference: PR-DCA-001 · Version 1.7
           </div>
           <h1 className="text-3xl font-black text-slate-900 mb-2">Data Controller Agreement</h1>
           <p className="text-slate-500 text-sm mb-4">
@@ -218,7 +218,46 @@ export default function DataControllerAgreementPage() {
             <div className="flex items-start gap-4">
               <span className="text-2xl font-black text-indigo-600 leading-none">9</span>
               <div className="flex-1">
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 9 — Approved Technical Sub-Processors (GDPR Art. 28(2))</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 9 — Mauritius Data Controller Registration & Legal Basis</h2>
+                <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                  <strong className="text-slate-800">WM Pilot Group (Aviation Pathways Limited)</strong> is registered as a <strong className="text-slate-800">Data Controller</strong> with the 
+                  Data Protection Office of Mauritius under the Data Protection Act 2017 (as amended).
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                    <p className="font-bold text-green-800 text-xs mb-1">Registration Authority</p>
+                    <p className="text-xs text-slate-600">Data Protection Office, Republic of Mauritius</p>
+                  </div>
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                    <p className="font-bold text-green-800 text-xs mb-1">Annual Registration Fee</p>
+                    <p className="text-xs text-slate-600">MUR 1,000 (approximately USD 22)</p>
+                  </div>
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                    <p className="font-bold text-green-800 text-xs mb-1">Legal Entity</p>
+                    <p className="text-xs text-slate-600">Aviation Pathways Limited, Mauritius</p>
+                  </div>
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                    <p className="font-bold text-green-800 text-xs mb-1">Registration Status</p>
+                    <p className="text-xs text-slate-600">Active Data Controller — Infrastructure Services</p>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  As a registered Data Controller under Mauritian law, WM Pilot Group is lawfully entitled to 
+                  custody Verifiable Credentials (VCs) on behalf of pilots who provide explicit consent for 
+                  infrastructure custody. This registration enables the Platform to hold encrypted credential 
+                  data, route verification requests, and maintain wallet infrastructure while remaining compliant 
+                  with Mauritius Data Protection Act obligations.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* 10 */}
+          <section className="bg-white rounded-2xl border border-slate-200 p-6">
+            <div className="flex items-start gap-4">
+              <span className="text-2xl font-black text-indigo-600 leading-none">10</span>
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 10 — Approved Technical Sub-Processors (GDPR Art. 28(2))</h2>
                 <p className="text-xs text-slate-500 mb-3">
                   To maintain the core routing infrastructure, the Platform utilises the following technical sub-processors:
                 </p>
@@ -248,12 +287,12 @@ export default function DataControllerAgreementPage() {
             </div>
           </section>
 
-          {/* 10 */}
+          {/* 11 */}
           <section className="bg-white rounded-2xl border border-slate-200 p-6">
             <div className="flex items-start gap-4">
-              <span className="text-2xl font-black text-indigo-600 leading-none">10</span>
+              <span className="text-2xl font-black text-indigo-600 leading-none">11</span>
               <div className="flex-1">
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 10 — B2B Co-Marketplace Agreements</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 11 — B2B Co-Marketplace Agreements</h2>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   The Credential Custodian acknowledges that third-party digital logbook providers, flight schools, and operators may function as nodes within the platform network.
                   Commercial transaction structures, gate-activation fees, or affiliation credits exchanged between the Platform and external entities
@@ -265,12 +304,12 @@ export default function DataControllerAgreementPage() {
             </div>
           </section>
 
-          {/* 11 */}
+          {/* 12 */}
           <section className="bg-white rounded-2xl border border-slate-200 p-6">
             <div className="flex items-start gap-4">
-              <span className="text-2xl font-black text-indigo-600 leading-none">11</span>
+              <span className="text-2xl font-black text-indigo-600 leading-none">12</span>
               <div className="flex-1">
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 11 — Age & Operational Gate Restrictions</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 12 — Age & Operational Gate Restrictions</h2>
                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
                   Pursuant to international aviation standards and jurisdictional child privacy statutory rules — including GDPR Art. 8, Republic Act No. 10173 s.12 (Philippines), and UAE Federal Decree-Law No. 45/2021 Art. 6 — special operational constraints apply to legal minors (under 18 years of age) and holders of a Student Pilot License (or equivalent Student Pilot Authorization):
                 </p>
@@ -290,12 +329,12 @@ export default function DataControllerAgreementPage() {
             </div>
           </section>
 
-          {/* 12 */}
+          {/* 13 */}
           <section className="bg-white rounded-2xl border border-slate-200 p-6">
             <div className="flex items-start gap-4">
-              <span className="text-2xl font-black text-indigo-600 leading-none">12</span>
+              <span className="text-2xl font-black text-indigo-600 leading-none">13</span>
               <div className="flex-1">
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 12 — Governing Law & Dispute Resolution</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 13 — Governing Law & Dispute Resolution</h2>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   This Agreement is governed by the laws of the
                   <strong className="text-slate-800"> United Arab Emirates</strong>, with supplementary application of
@@ -315,7 +354,7 @@ export default function DataControllerAgreementPage() {
         {/* Footer */}
         <div className="mt-10 text-center">
           <p className="text-xs text-slate-400">
-            PR-DCA-001 v1.6 — 20 May 2026 — WM Pilot Group
+            PR-DCA-001 v1.7 — 02 June 2026 — WM Pilot Group
           </p>
           <p className="text-xs text-slate-400 mt-1">
             By creating an account the Registrant confirms acceptance of this instrument in its entirety.

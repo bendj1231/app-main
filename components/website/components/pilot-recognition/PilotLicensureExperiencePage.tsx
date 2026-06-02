@@ -314,7 +314,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
   // Load existing data from Supabase
   useEffect(() => {
     const loadExistingData = async () => {
-      console.log('PilotLicensureExperiencePage - userProfile:', userProfile);
+// [AUDIT] Removed console.log // line 317
       let userId = userProfile?.id || userProfile?.uid;
 
       // Auth0-only fallback: resolve Supabase profile ID via auth0_id
@@ -327,9 +327,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         if (p?.id) userId = p.id;
       }
 
-      console.log('PilotLicensureExperiencePage - userId:', userId);
+// [AUDIT] Removed console.log // line 330
       if (!userId) {
-        console.log('No userProfile id available, skipping data load');
+// [AUDIT] Removed console.log // line 332
         setDataLoaded(true);
         return;
       }
@@ -342,14 +342,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         let initialData: any = {};
         
         if (profileError) {
-          console.log('❌ No profile data found:', profileError);
+// [AUDIT] Removed console.log // line 345
         } else if (profileData) {
-          console.log('✅ Profile data loaded:', profileData);
-          console.log('✅ Profile nationality:', profileData.nationality);
-          console.log('✅ Profile country:', profileData.country);
-          console.log('✅ Profile flight_school_address:', profileData.flight_school_address);
-          console.log('✅ Profile phone:', profileData.phone);
-          console.log('✅ Profile license_id:', profileData.license_id);
+// [AUDIT] Removed console.log // line 347
+// [AUDIT] Removed console.log // line 348
+// [AUDIT] Removed console.log // line 349
+// [AUDIT] Removed console.log // line 350
+// [AUDIT] Removed console.log // line 351
+// [AUDIT] Removed console.log // line 352
           
           // Extract from onboarding_responses JSONB as fallback
           const onboarding = profileData.onboarding_responses || {};
@@ -412,14 +412,14 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           .maybeSingle();
 
         if (pilotProfileError) {
-          console.log('No pilot profile data found:', pilotProfileError);
+// [AUDIT] Removed console.log // line 415
         } else if (pilotProfileData) {
-          console.log('Pilot profile data loaded:', pilotProfileData);
+// [AUDIT] Removed console.log // line 417
         }
 
         if (error) {
-          console.log('❌ No existing licensure data found:', error);
-          console.log('⚠️ Will use profile data as fallback');
+// [AUDIT] Removed console.log // line 421
+// [AUDIT] Removed console.log // line 422
           // Only use profile data as fallback if we haven't already set the values
           if (!firstName) setFirstName(initialData.firstName || userProfile?.firstName || '');
           if (!lastName) setLastName(initialData.lastName || userProfile?.lastName || '');
@@ -427,16 +427,16 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           if (!residingCountry) setResidingCountry(initialData.residingCountry || '');
           if (!dateOfBirth) setDateOfBirth(initialData.dateOfBirth || '');
         } else if (data) {
-          console.log('✅ Licensure data loaded:', data);
-          console.log('✅ Licensure nationality:', data.nationality);
-          console.log('✅ Licensure residing_country:', data.residing_country);
-          console.log('✅ Licensure flight_school_address:', data.flight_school_address);
-          console.log('✅ Licensure contact_number:', data.contact_number);
-          console.log('✅ Licensure license_number:', data.license_number);
-          console.log('✅ Licensure aviation_pathways_interests:', data.aviation_pathways_interests);
-          console.log('✅ Licensure pilot_job_positions_interests:', data.pilot_job_positions_interests);
-          console.log('✅ Licensure program_interests:', data.program_interests);
-          console.log('✅ Licensure insight_interests:', data.insight_interests);
+// [AUDIT] Removed console.log // line 430
+// [AUDIT] Removed console.log // line 431
+// [AUDIT] Removed console.log // line 432
+// [AUDIT] Removed console.log // line 433
+// [AUDIT] Removed console.log // line 434
+// [AUDIT] Removed console.log // line 435
+// [AUDIT] Removed console.log // line 436
+// [AUDIT] Removed console.log // line 437
+// [AUDIT] Removed console.log // line 438
+// [AUDIT] Removed console.log // line 439
           // Personal Info - use licensure data if available, fallback to profiles
           setFirstName(data.first_name || initialData.firstName || userProfile?.firstName || '');
           setMiddleName(data.middle_name || '');
@@ -485,8 +485,8 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         
         // Apply all profile data fallbacks if no licensure data was found
         if (!data) {
-          console.log('⚠️ No licensure data, using profile fallbacks');
-          console.log('⚠️ initialData:', initialData);
+// [AUDIT] Removed console.log // line 488
+// [AUDIT] Removed console.log // line 489
           setFirstName(initialData.firstName || '');
           setLastName(initialData.lastName || '');
           setContactNumber(initialData.contactNumber || '');
@@ -754,7 +754,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         updated_at: new Date().toISOString()
       };
 
-      console.log('Saving data to pilot_licensure_experience (encrypted):', userId);
+// [AUDIT] Removed console.log // line 757
 
       // writeLicensure encrypts sensitive fields via vault key before writing
       const { error } = await writeLicensure(userId, data);
@@ -789,7 +789,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           updated_at: new Date().toISOString()
         };
 
-        console.log('Syncing data to profiles table (encrypted):', userId);
+// [AUDIT] Removed console.log // line 792
 
         // updateProfile encrypts sensitive fields via vault key before writing
         const { error: profileError } = await updateProfile(userId, profileUpdateData);
@@ -797,7 +797,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         if (profileError) {
           console.error('Profile sync error (non-critical):', profileError);
         } else {
-          console.log('✅ Data synced to profiles table (encrypted)');
+// [AUDIT] Removed console.log // line 800
         }
       }
       

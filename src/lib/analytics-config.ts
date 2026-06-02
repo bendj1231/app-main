@@ -67,24 +67,24 @@ export function initializeAnalyticsServices() {
     // User has already consented, initialize analytics
     if (ANALYTICS_CONFIG.enabled) {
       initAnalytics(ANALYTICS_CONFIG);
-      console.log('[Analytics] Google Analytics 4 initialized');
+// [AUDIT] Removed console.log // line 70
     }
 
     if (SENTRY_CONFIG.enabled) {
       initSentry(SENTRY_CONFIG);
-      console.log('[Analytics] Sentry initialized');
+// [AUDIT] Removed console.log // line 75
     }
 
     if (WEB_VITALS_CONFIG.enabled) {
       initWebVitals(WEB_VITALS_CONFIG);
-      console.log('[Analytics] Web Vitals initialized');
+// [AUDIT] Removed console.log // line 80
     }
 
     initPerformanceMonitor();
-    console.log('[Analytics] Performance Monitor initialized');
+// [AUDIT] Removed console.log // line 84
   } else {
     // Wait for user consent
-    console.log('[Analytics] Waiting for user consent before initializing');
+// [AUDIT] Removed console.log // line 87
   }
 
   // Listen for consent events
@@ -95,31 +95,31 @@ export function initializeAnalyticsServices() {
 function handleConsentGranted(event: CustomEvent) {
   const preferences = event.detail;
 
-  console.log('[Analytics] Consent granted:', preferences);
+// [AUDIT] Removed console.log // line 98
 
   // Initialize Analytics if consented
   if (preferences.analytics && ANALYTICS_CONFIG.enabled) {
     initAnalytics(ANALYTICS_CONFIG);
-    console.log('[Analytics] Google Analytics 4 initialized after consent');
+// [AUDIT] Removed console.log // line 103
   }
 
   // Initialize Sentry if consented (Sentry is for error tracking, not analytics)
   if (SENTRY_CONFIG.enabled) {
     initSentry(SENTRY_CONFIG);
-    console.log('[Analytics] Sentry initialized after consent');
+// [AUDIT] Removed console.log // line 109
   }
 
   // Initialize Web Vitals if consented
   if (preferences.analytics && WEB_VITALS_CONFIG.enabled) {
     initWebVitals(WEB_VITALS_CONFIG);
-    console.log('[Analytics] Web Vitals initialized after consent');
+// [AUDIT] Removed console.log // line 115
   }
 
   initPerformanceMonitor();
-  console.log('[Analytics] Performance Monitor initialized after consent');
+// [AUDIT] Removed console.log // line 119
 }
 
 function handleConsentDenied() {
-  console.log('[Analytics] Consent denied - analytics disabled');
+// [AUDIT] Removed console.log // line 123
   // Analytics remain disabled
 }

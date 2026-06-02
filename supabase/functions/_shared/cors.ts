@@ -8,6 +8,10 @@ const ALLOWED_ORIGINS = [
   'https://pilotrecognition.com',
   'https://www.pilotrecognition.com',
   'https://wallet.pilotrecognition.com',
+  'https://pilotcareerpathways.com',
+  'https://www.pilotcareerpathways.com',
+  'https://pilotshortage.org',
+  'https://www.pilotshortage.org',
 ];
 
 export function getCorsHeaders(req: Request): Record<string, string> {

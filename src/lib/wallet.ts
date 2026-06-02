@@ -1,12 +1,12 @@
 import { supabase } from './supabase';
 
-const WALT_ISSUER_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_WALT_ISSUER_URL)
-  ? (import.meta as any).env.VITE_WALT_ISSUER_URL
-  : 'https://issuer.portal.walt.id';
+const PILOT_ISSUER_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_PILOT_ISSUER_URL)
+  ? (import.meta as any).env.VITE_PILOT_ISSUER_URL
+  : 'https://issuer.pilotrecognition.com';
 
-// Walt.id Wallet API — only used when Docker/VPS is running, gracefully skipped otherwise
-const WALT_WALLET_API = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_WALT_WALLET_API)
-  ? (import.meta as any).env.VITE_WALT_WALLET_API
+// PilotRecognition Wallet API — native browser wallet, no external dependency
+const PILOT_WALLET_API = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_PILOT_WALLET_API)
+  ? (import.meta as any).env.VITE_PILOT_WALLET_API
   : 'http://localhost:7001';
 
 async function sha256(text: string): Promise<string> {
@@ -56,7 +56,7 @@ export async function createClientWallet(
         device_name: 'Platform Authenticator',
         transports: ['internal'],
       }, { onConflict: 'credential_id' });
-      console.log('✅ Passkey saved to device credential manager');
+// [AUDIT] Removed console.log // line 59
     }
   } catch (passkeyErr) {
     // Non-fatal — user may have cancelled or device doesn't support passkeys
@@ -92,8 +92,8 @@ export async function createClientWallet(
 
   // Store walletId + DID directly on profiles for easy querying
   await supabase.from('profiles').update({
-    walt_wallet_id: walletId,
-    walt_account_email: `${profileId}@wallet.pilotrecognition.com`,
+    wallet_id: walletId,
+    wallet_email: `${profileId}@wallet.pilotrecognition.com`,
     wallet_did: did,
   }).eq('id', profileId);
 
@@ -107,7 +107,7 @@ export async function getOrCreateClientWallet(
   // Check existing
   const { data: profile } = await supabase
     .from('profiles')
-    .select('walt_wallet_id')
+    .select('wallet_id')
     .eq('id', profileId)
     .single();
 
@@ -117,8 +117,8 @@ export async function getOrCreateClientWallet(
     .eq('auth0_id', auth0Id)
     .single();
 
-  if (profile?.walt_wallet_id && didData?.did) {
-    return { did: didData.did, walletId: profile.walt_wallet_id };
+  if (profile?.wallet_id && didData?.did) {
+    return { did: didData.did, walletId: profile.wallet_id };
   }
 
   // Create new client-side wallet
@@ -126,16 +126,16 @@ export async function getOrCreateClientWallet(
   return { did, walletId };
 }
 
-// ── Walt.id Wallet API helpers (requires Docker/VPS — gracefully skipped) ────
+// ── PilotRecognition Wallet API helpers (legacy compatibility) ─────────────
 
-export async function registerWaltWallet(
+export async function registerPilotWallet(
   email: string,
   password: string,
   name: string
 ): Promise<{ success: boolean; token?: string; walletId?: string; error?: string }> {
   try {
     // Step 1: Register account
-    const regRes = await fetch(`${WALT_WALLET_API}/wallet-api/auth/register`, {
+    const regRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'email', name, email, password }),
@@ -145,7 +145,7 @@ export async function registerWaltWallet(
     }
 
     // Step 2: Login to get token
-    const loginRes = await fetch(`${WALT_WALLET_API}/wallet-api/auth/login`, {
+    const loginRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'email', email, password }),
@@ -155,7 +155,7 @@ export async function registerWaltWallet(
     const token = loginData.token;
 
     // Step 3: Get wallet ID
-    const walletsRes = await fetch(`${WALT_WALLET_API}/wallet-api/wallet/accounts/wallets`, {
+    const walletsRes = await fetch(`${PILOT_WALLET_API}/wallet-api/wallet/accounts/wallets`, {
       headers: { 'Authorization': `Bearer ${token}` },
     });
     if (!walletsRes.ok) throw new Error(`Get wallets failed: ${walletsRes.status}`);
@@ -166,12 +166,12 @@ export async function registerWaltWallet(
     return { success: true, token, walletId };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error('[wallet] registerWaltWallet failed:', message);
+    console.error('[wallet] registerPilotWallet failed:', message);
     return { success: false, error: message };
   }
 }
 
-export async function getOrCreateWaltWallet(
+export async function getOrCreatePilotWallet(
   auth0Id: string,
   profileId: string,
   email: string
@@ -179,33 +179,33 @@ export async function getOrCreateWaltWallet(
   // Check if already registered in Supabase
   const { data: profile } = await supabase
     .from('profiles')
-    .select('walt_wallet_id, walt_account_email')
+    .select('wallet_id, wallet_email')
     .eq('id', profileId)
     .single();
 
-  if (profile?.walt_wallet_id) {
+  if (profile?.wallet_id) {
     // Re-login to get fresh token
     const password = `PR-${auth0Id.replace(/\|/g, '-')}`;
-    const loginRes = await fetch(`${WALT_WALLET_API}/wallet-api/auth/login`, {
+    const loginRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'email', email: profile.walt_account_email, password }),
+      body: JSON.stringify({ type: 'email', email: profile.wallet_email, password }),
     });
     if (!loginRes.ok) return null;
     const { token } = await loginRes.json();
-    return { walletId: profile.walt_wallet_id, token };
+    return { walletId: profile.wallet_id, token };
   }
 
   // Register new wallet
   const password = `PR-${auth0Id.replace(/\|/g, '-')}`;
-  const waltEmail = `${profileId}@wallet.pilotrecognition.com`;
-  const result = await registerWaltWallet(waltEmail, password, `Pilot-${profileId.slice(0, 8)}`);
+  const walletEmail = `${profileId}@wallet.pilotrecognition.com`;
+  const result = await registerPilotWallet(walletEmail, password, `Pilot-${profileId.slice(0, 8)}`);
   if (!result.success || !result.walletId || !result.token) return null;
 
   // Store wallet_id in Supabase
   await supabase.from('profiles').update({
-    walt_wallet_id: result.walletId,
-    walt_account_email: waltEmail,
+    wallet_id: result.walletId,
+    wallet_email: walletEmail,
   }).eq('id', profileId);
 
   return { walletId: result.walletId, token: result.token };
@@ -235,8 +235,8 @@ export async function issueAndStoreCredential(
     // Get or create client-side DID wallet (browser-native, $0, no Docker)
     const { did: subjectDid, walletId } = await getOrCreateClientWallet(profileId, auth0Id);
 
-    // Onboard issuer key from walt.id issuer API (signs the credential)
-    const onboardRes = await fetch(`${WALT_ISSUER_URL}/onboard/issuer`, {
+    // Onboard issuer key from legacy external issuer (deprecated, use issuer-sign)
+    const onboardRes = await fetch(`${PILOT_ISSUER_URL}/onboard/issuer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -244,11 +244,11 @@ export async function issueAndStoreCredential(
         did: { method: 'jwk' }
       })
     });
-    if (!onboardRes.ok) throw new Error('walt.id onboard failed');
+    if (!onboardRes.ok) throw new Error('External issuer onboard failed');
     const onboardData = await onboardRes.json();
 
-    // Issue credential via OID4VCI
-    const issueRes = await fetch(`${WALT_ISSUER_URL}/openid4vc/jwt/issue`, {
+    // Issue credential via OID4VCI (legacy path)
+    const issueRes = await fetch(`${PILOT_ISSUER_URL}/openid4vc/jwt/issue`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'accept': 'text/plain' },
       body: JSON.stringify({
@@ -269,7 +269,7 @@ export async function issueAndStoreCredential(
         },
       })
     });
-    if (!issueRes.ok) throw new Error(`walt.id issue failed: ${issueRes.status}`);
+    if (!issueRes.ok) throw new Error(`External issuer failed: ${issueRes.status}`);
     const credentialOfferUrl = await issueRes.text();
     const credentialJwt = credentialOfferUrl;
     const credentialHash = await sha256(credentialJwt);
@@ -284,7 +284,7 @@ export async function issueAndStoreCredential(
       credential_offer_url: credentialOfferUrl,
       credential_jwt: credentialJwt,
       credential_hash: credentialHash,
-      source_provider: 'walt.id',
+      source_provider: 'pilot.wallet',
       total_hours: totalHours,
       issued_at: issuanceDate,
       expires_at: expirationDate,
@@ -314,7 +314,7 @@ export async function issueAndStoreCredential(
   }
 }
 
-// ── Wallet API pass-through (mirrors walt.id Wallet API contract) ────────────
+// ── Wallet API pass-through ─────────────────────────────────────────────────
 
 export async function getWalletCredentials(profileId: string) {
   const { data } = await supabase
@@ -333,4 +333,88 @@ export async function getWalletDid(profileId: string) {
     .eq('profile_id', profileId)
     .single();
   return data;
+}
+
+// ── Self-Hosted Issuer (Production Signing via issuer-sign edge function) ────
+
+export async function issueAndStoreCredentialSelfHosted(
+  auth0Id: string,
+  profileId: string,
+  licenseNumber: string,
+  licenseType: string = 'Commercial Pilot License',
+  countryOfLicense: string = 'CAAP',
+  licenseExpiry: string | null = null,
+  totalHours: number = 0
+): Promise<{ success: boolean; credential?: IssuedCredential; error?: string }> {
+  try {
+    // Get or create client-side DID wallet
+    const { did: subjectDid, walletId } = await getOrCreateClientWallet(profileId, auth0Id);
+
+    // Call our self-hosted issuer (no Walt.id dependency)
+    const { data: issueData, error: issueError } = await supabase.functions.invoke('issuer-sign', {
+      body: {
+        auth0_id: auth0Id,
+        profile_id: profileId,
+        subject_did: subjectDid,
+        credential_type: 'PilotLicenseVC',
+        credential_data: {
+          licenseNumber,
+          licenseType,
+          pelNumber: licenseNumber.replace(/[^0-9]/g, ''),
+          issuingAuthority: countryOfLicense,
+          issuingCountry: countryOfLicense,
+          expiryDate: licenseExpiry,
+          totalHours,
+          verificationMethod: 'Self-Asserted (Account Creation)',
+        },
+      },
+    });
+
+    if (issueError || !issueData?.success) {
+      throw new Error(issueError?.message || issueData?.error || 'Issuer-sign failed');
+    }
+
+    // Store the issued credential in database
+    const { error: dbError } = await supabase.from('pilot_credentials').insert({
+      profile_id: profileId,
+      auth0_id: auth0Id,
+      credential_type: 'PilotLicenseVC',
+      issuer_did: issueData.issuer_did,
+      subject_did: subjectDid,
+      credential_offer_url: null, // Self-hosted doesn't use offer URLs
+      credential_jwt: JSON.stringify(issueData.signed_credential),
+      credential_hash: issueData.signed_credential.proof?.proofValue?.slice(0, 64),
+      source_provider: 'issuer-sign',
+      total_hours: totalHours,
+      issued_at: issueData.issued_at,
+      expires_at: licenseExpiry,
+      status: 'active',
+      storage_backend: 'supabase',
+      signed_credential: issueData.signed_credential,
+      proof_value: issueData.signed_credential.proof?.proofValue,
+      metadata: {
+        credential_id: issueData.credential_id,
+        issuer_did: issueData.issuer_did,
+        walletId: walletId || null,
+        self_hosted: true,
+      },
+    });
+
+    if (dbError) throw new Error(`Supabase store failed: ${dbError.message}`);
+
+    return {
+      success: true,
+      credential: {
+        credentialJwt: JSON.stringify(issueData.signed_credential),
+        credentialHash: issueData.signed_credential.proof?.proofValue?.slice(0, 64),
+        credentialOfferUrl: '', // No offer URL for self-hosted
+        subjectDid,
+        walletId: walletId || '',
+      }
+    };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('[wallet] issueAndStoreCredentialSelfHosted failed:', message);
+    return { success: false, error: message };
+  }
 }

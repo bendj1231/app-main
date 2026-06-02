@@ -210,7 +210,7 @@ export const RecognitionAchievementPage: React.FC<RecognitionAchievementPageProp
           .maybeSingle();
 
         if (error) {
-          console.log('No program progress found, using defaults');
+// [AUDIT] Removed console.log // line 213
         } else if (data) {
           // Update progress with real data from Supabase
           setProgress({

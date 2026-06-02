@@ -1,16 +1,18 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { getCorsHeaders } from '../_shared/cors.ts'
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-const WALT_WALLET_API = Deno.env.get('WALT_WALLET_API') || 'http://localhost:7001'
+const PILOT_WALLET_API = Deno.env.get('PILOT_WALLET_API')
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+if (!PILOT_WALLET_API) {
+  throw new Error('PILOT_WALLET_API environment variable is required')
 }
 
 serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req)
+  
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -41,48 +43,48 @@ serve(async (req) => {
     // Check if wallet already provisioned
     const { data: existing } = await supabase
       .from('profiles')
-      .select('walt_wallet_id')
+      .select('wallet_id')
       .eq('id', profile_id)
       .single()
 
-    if (existing?.walt_wallet_id) {
+    if (existing?.wallet_id) {
       return new Response(JSON.stringify({
         success: true,
-        walletId: existing.walt_wallet_id,
+        walletId: existing.wallet_id,
         alreadyExists: true
       }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
     }
 
     // Deterministic password from auth0_id — never stored in plain text
-    const waltPassword = `PR-${auth0_id.replace(/\|/g, '-')}-${profile_id.slice(0, 8)}`
-    const waltEmail = `${profile_id}@wallet.pilotrecognition.com`
-    const waltName = name || `Pilot-${profile_id.slice(0, 8)}`
+    const walletPassword = `PR-${auth0_id.replace(/\|/g, '-')}-${profile_id.slice(0, 8)}`
+    const walletEmail = `${profile_id}@wallet.pilotrecognition.com`
+    const walletName = name || `Pilot-${profile_id.slice(0, 8)}`
 
-    // Step 1: Register with walt.id Wallet API
-    const regRes = await fetch(`${WALT_WALLET_API}/wallet-api/auth/register`, {
+    // Step 1: Register with Pilot Wallet API
+    const regRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'email', name: waltName, email: waltEmail, password: waltPassword }),
+      body: JSON.stringify({ type: 'email', name: walletName, email: walletEmail, password: walletPassword }),
     })
 
     if (!regRes.ok && regRes.status !== 409) {
       const err = await regRes.text()
-      throw new Error(`Walt register failed: ${regRes.status} — ${err}`)
+      throw new Error(`Wallet register failed: ${regRes.status} — ${err}`)
     }
 
     // Step 2: Login to get token
-    const loginRes = await fetch(`${WALT_WALLET_API}/wallet-api/auth/login`, {
+    const loginRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'email', email: waltEmail, password: waltPassword }),
+      body: JSON.stringify({ type: 'email', email: walletEmail, password: walletPassword }),
     })
-    if (!loginRes.ok) throw new Error(`Walt login failed: ${loginRes.status}`)
+    if (!loginRes.ok) throw new Error(`Wallet login failed: ${loginRes.status}`)
     const loginData = await loginRes.json()
-    const waltToken = loginData.token
+    const walletToken = loginData.token
 
     // Step 3: Get wallet ID
-    const walletsRes = await fetch(`${WALT_WALLET_API}/wallet-api/wallet/accounts/wallets`, {
-      headers: { 'Authorization': `Bearer ${waltToken}` },
+    const walletsRes = await fetch(`${PILOT_WALLET_API}/wallet-api/wallet/accounts/wallets`, {
+      headers: { 'Authorization': `Bearer ${walletToken}` },
     })
     if (!walletsRes.ok) throw new Error(`Get wallets failed: ${walletsRes.status}`)
     const walletsData = await walletsRes.json()
@@ -93,8 +95,8 @@ serve(async (req) => {
     const { error: updateError } = await supabase
       .from('profiles')
       .update({
-        walt_wallet_id: walletId,
-        walt_account_email: waltEmail,
+        wallet_id: walletId,
+        wallet_email: walletEmail,
       })
       .eq('id', profile_id)
 
@@ -105,7 +107,7 @@ serve(async (req) => {
     return new Response(JSON.stringify({
       success: true,
       walletId,
-      waltEmail,
+      walletEmail,
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
 
   } catch (err) {

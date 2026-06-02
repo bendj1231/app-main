@@ -8,6 +8,9 @@
     "build": "npm run prebuild && vite build",
     "prebuild": "npx tsx scripts/generate-framework-html.ts",
     "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src components portal app --ext .ts,.tsx",
     "prepare": "husky"
   },
   "dependencies": {

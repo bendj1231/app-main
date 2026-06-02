@@ -1,10 +1,18 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-veremark-signature',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
+const ALLOWED_ORIGINS = [
+  'https://api.veremark.com',
+  'https://dashboard.veremark.com',
+];
+
+function getCorsHeaders(origin: string | null) {
+  const allowed = origin && ALLOWED_ORIGINS.some(o => origin.startsWith(o)) ? origin : 'null';
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-veremark-signature',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  };
+}
 
 const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -12,6 +20,8 @@ const supabaseAdmin = createClient(
 );
 
 Deno.serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req.headers.get('origin'));
+  
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
@@ -33,14 +43,22 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.text();
-    const event = JSON.parse(body);
+    let event;
+    try {
+      event = JSON.parse(body);
+    } catch {
+      return new Response(JSON.stringify({ error: 'Invalid JSON body' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
-    console.log('Veremark webhook received:', event.type, event.checkId || event.id);
-
+    // Validate required fields
     const checkId = event.checkId || event.id;
     const pilotId = event.metadata?.pilot_id || event.pilotId;
     const status = event.status || event.data?.status;
     const eventType = event.type || event.event_type;
+    
+    if (!checkId || !eventType) {
+      return new Response(JSON.stringify({ error: 'Missing required fields: checkId/id, type' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     // Log webhook for audit
     await supabaseAdmin.from('veremark_webhook_logs').insert({
@@ -99,28 +117,85 @@ Deno.serve(async (req) => {
             created_at: new Date().toISOString(),
           });
 
-          // AUTO-ISSUE VERIFIABLE CREDENTIALS if verified
+          // REVOCATION: discrepancy or failed → revoke credentials and downgrade profile (ToS Sections 11.2, 16.1)
+          if (finalStatus === 'discrepancy' || finalStatus === 'failed') {
+            const now = new Date().toISOString();
+
+            // Revoke all active credentials tied to this pilot
+            await supabaseAdmin
+              .from('pilot_credentials')
+              .update({
+                status: 'revoked',
+                updated_at: now,
+                metadata: { revocation_reason: `veremark_${finalStatus}`, veremark_check_id: checkId, revoked_at: now },
+              })
+              .eq('profile_id', pilotId)
+              .eq('status', 'verified');
+
+            // Revoke vc_revocation_registry entries
+            await supabaseAdmin
+              .from('vc_revocation_registry')
+              .update({
+                status: 'revoked',
+                revoked_at: now,
+                revocation_reason: `veremark_${finalStatus}`,
+                updated_at: now,
+              })
+              .eq('profile_id', pilotId)
+              .eq('status', 'active');
+
+            // Downgrade profile: clear verified flag and tier (Terminal 3 → Terminal 2)
+            await supabaseAdmin
+              .from('profiles')
+              .update({
+                verified_account: false,
+                account_tier: 'free',
+                updated_by: 'veremark_webhook_revocation',
+                updated_at: now,
+              })
+              .eq('id', pilotId);
+
+            // Log revocation
+            await supabaseAdmin.from('user_activity_log').insert({
+              user_id: pilotId,
+              action: 'veremark_revocation_triggered',
+              details: {
+                check_id: checkId,
+                reason: finalStatus,
+                profile_id: pilotId,
+                source: 'veremark_webhook',
+              },
+              created_at: now,
+            });
+
+            console.log(`[veremark-webhook] Revoked credentials for pilot ${pilotId} due to ${finalStatus}`);
+          }
+
+          // AUTO-ISSUE VERIFIABLE CREDENTIALS if verified (PRODUCTION SIGNING)
           if (finalStatus === 'verified') {
             try {
               const { data: profile } = await supabaseAdmin
                 .from('profiles')
-                .select('id, auth0_id, license_id, country_of_license, license_expiry, medical_class, medical_expiry, current_flight_hours')
+                .select('id, auth0_id, license_id, license_number, country_of_license, license_expiry, medical_class, medical_expiry, current_flight_hours, pel_number')
                 .eq('id', pilotId)
                 .single();
 
               if (profile?.auth0_id) {
                 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
                 const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-                const issueUrl = `${supabaseUrl}/functions/v1/pilot-terminal-issue`;
+                // Use new production issuer (self-hosted signing, no Walt.id dependency)
+                const issueUrl = `${supabaseUrl}/functions/v1/issuer-sign`;
 
+                const subjectDid = `did:web:pilotrecognition.com:pilots:${profile.auth0_id.replace('|', '-')}`;
                 const credentialsToIssue = [];
 
                 // PilotLicenseVC
-                if (profile.license_id) {
+                if (profile.license_id || profile.license_number) {
                   credentialsToIssue.push({
                     credential_type: 'PilotLicenseVC',
                     credential_data: {
-                      licenseNumber: profile.license_id,
+                      licenseNumber: profile.license_id || profile.license_number,
+                      pelNumber: profile.pel_number || (profile.license_id || profile.license_number || '').replace(/[^0-9]/g, ''),
                       issuingAuthority: profile.country_of_license || 'CAAP',
                       expiryDate: profile.license_expiry || null,
                       totalHours: profile.current_flight_hours || null,
@@ -135,6 +210,7 @@ Deno.serve(async (req) => {
                   credentialsToIssue.push({
                     credential_type: 'MedicalCertVC',
                     credential_data: {
+                      pelNumber: profile.pel_number || (profile.license_id || profile.license_number || '').replace(/[^0-9]/g, ''),
                       medicalClass: profile.medical_class,
                       medicalExpiry: profile.medical_expiry || null,
                       verificationMethod: 'Veremark + PilotRecognition Multi-Layer Attestation',
@@ -154,9 +230,9 @@ Deno.serve(async (req) => {
                       body: JSON.stringify({
                         auth0_id: profile.auth0_id,
                         profile_id: pilotId,
+                        subject_did: subjectDid,
                         credential_type: cred.credential_type,
                         credential_data: cred.credential_data,
-                        source_provider: 'Veremark',
                       }),
                     });
 
@@ -167,7 +243,7 @@ Deno.serve(async (req) => {
                         await supabaseAdmin.from('vc_revocation_registry').upsert({
                           credential_id: issued.credential_id,
                           issuer_did: issued.issuer_did || 'did:web:pilotrecognition.com',
-                          subject_did: `did:web:pilotrecognition.com:pilots:${profile.auth0_id.replace('|', '-')}`,
+                          subject_did: subjectDid,
                           credential_type: cred.credential_type,
                           profile_id: pilotId,
                           status: 'active',
@@ -176,7 +252,7 @@ Deno.serve(async (req) => {
                           metadata: { source: 'veremark_webhook', check_id: checkId },
                         }, { onConflict: 'credential_id' });
                       }
-                      console.log(`[veremark-webhook] Auto-issued ${cred.credential_type} for pilot ${pilotId}`);
+                      console.log(`[veremark-webhook] Auto-issued ${cred.credential_type} for pilot ${pilotId} with production signature`);
                     } else {
                       console.error(`[veremark-webhook] Failed to issue ${cred.credential_type}:`, await issueRes.text());
                     }

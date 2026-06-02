@@ -67,7 +67,7 @@ class SentryTracker {
     });
 
     this.initialized = true;
-    console.log('[Sentry] Error tracking initialized');
+// [AUDIT] Removed console.log // line 70
   }
 
   setUser(user: UserContext): void {
@@ -100,7 +100,7 @@ class SentryTracker {
 
   captureMessage(message: string, level: 'info' | 'warning' | 'error' = 'info', context?: Record<string, any>): void {
     if (!this.initialized) {
-      console.log(`[Sentry] Not initialized, message: ${message}`);
+// [AUDIT] Removed console.log // line 103
       return;
     }
 

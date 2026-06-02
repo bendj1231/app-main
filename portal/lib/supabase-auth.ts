@@ -102,7 +102,7 @@ export const createUserProfile = async (user: any, role: UserRole['type'] = 'men
 
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
   try {
-    console.log('🔍 [PROFILE DEBUG] Fetching profile for user ID:', uid);
+// [AUDIT] Removed console.log // line 105
     // Get profile from Supabase - removed timeout to allow natural query completion
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
@@ -110,7 +110,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       .eq('id', uid)
       .maybeSingle();
 
-    console.log('🔍 [PROFILE DEBUG] Profile query result:', {
+// [AUDIT] Removed console.log // line 113
       hasProfile: !!profile,
       profileError: profileError,
       profileData: profile ? {
@@ -125,7 +125,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
     if (profileError) {
       // Only log error if it's not a "not found" error
       if (profileError.code !== 'PGRST116') {
-        console.log('Profile error:', profileError);
+// [AUDIT] Removed console.log // line 128
       }
       return null;
     }
@@ -171,7 +171,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
 
       if (!subError && subscription) {
         isRecognitionPlusMember = true;
-        console.log('🔍 [PROFILE DEBUG] Recognition Plus subscription found for user:', uid);
+// [AUDIT] Removed console.log // line 174
       }
     } catch (subErr) {
       console.error('Error checking subscription:', subErr);
@@ -198,7 +198,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       isRecognitionPlusMember
     };
 
-    console.log('🔍 [PROFILE DEBUG] Final userProfile object:', {
+// [AUDIT] Removed console.log // line 201
       id: userProfile.id,
       email: userProfile.email,
       firstName: userProfile.firstName,
@@ -206,7 +206,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
       profile_image_url: userProfile.profile_image_url,
       appAccessCount: userProfile.appAccess.length
     });
-    console.log('📋 User profile loaded:', userProfile);
+// [AUDIT] Removed console.log // line 209
     return userProfile;
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -226,7 +226,7 @@ export const updateUserLastLogin = async (uid: string) => {
 };
 
 export const switchSystem = async (uid: string, system: 'pms' | 'wms' | 'super_admin') => {
-  console.log(`Switch system to ${system} for user ${uid}`);
+// [AUDIT] Removed console.log // line 229
   // This could be stored in a user preferences table
 };
 
@@ -252,15 +252,15 @@ export const canAccessApp = (userProfile: UserProfile | null, appId: string): bo
 };
 
 export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
-  console.log('🔌 Setting up onAuthStateChange listener');
+// [AUDIT] Removed console.log // line 255
 
   // Clear expired sessions from IndexedDB before setting up listener
   const clearExpiredSessions = async () => {
     try {
-      console.log('🔍 Checking for expired sessions in IndexedDB...');
+// [AUDIT] Removed console.log // line 260
       const savedSession = await indexedDB.getSessionWithVerification(supabase);
       if (!savedSession) {
-        console.log('🧹 Session cleared or invalid');
+// [AUDIT] Removed console.log // line 263
       }
     } catch (error) {
       console.error('❌ Error checking expired sessions:', error);
@@ -272,18 +272,18 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
 
   // Set up auth listener
   const subscription = supabase.auth.onAuthStateChange(async (event, session) => {
-    console.log('🔍 Supabase Auth State Change:', { event, session: !!session });
+// [AUDIT] Removed console.log // line 275
 
     if (session?.user) {
-      console.log('👤 User logged in:', session.user.email);
+// [AUDIT] Removed console.log // line 278
 
       try {
         let userProfile = await getUserProfile(session.user.id);
 
-        console.log('📋 User profile loaded:', userProfile ? 'Success' : 'Not found');
+// [AUDIT] Removed console.log // line 283
 
         if (!userProfile) {
-          console.log('🔧 Creating new user profile...');
+// [AUDIT] Removed console.log // line 286
           userProfile = await createUserProfile(session.user);
         } else {
           await updateUserLastLogin(session.user.id);
@@ -291,7 +291,7 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
 
         // Ensure super admin role for the specific email
         if (session.user.email === SUPER_ADMIN_EMAIL && userProfile.role !== 'super_admin') {
-          console.log('👑 Granting super admin role...');
+// [AUDIT] Removed console.log // line 294
           userProfile.role = 'super_admin';
           try {
             await supabase
@@ -303,14 +303,14 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
           }
         }
 
-        console.log('✅ Final user profile:', {
+// [AUDIT] Removed console.log // line 306
           email: userProfile.email,
           role: userProfile.role,
           appAccessCount: userProfile.appAccess?.length || 0,
           canAccessMentorManagement: userProfile.role === 'super_admin' || userProfile.appAccess?.some(a => a.appId === 'mentor-management' && a.granted)
         });
 
-        console.log('🔔 Calling auth state callback');
+// [AUDIT] Removed console.log // line 313
         callback({
           user: session.user,
           userProfile,
@@ -327,7 +327,7 @@ export const onAuthStateChange = (callback: (authState: AuthState) => void) => {
         });
       }
     } else {
-      console.log('👋 User logged out');
+// [AUDIT] Removed console.log // line 330
       callback({
         user: null,
         userProfile: null,
@@ -387,11 +387,11 @@ export const completeEnrollment = async (uid: string, onboardingData: {
   agreedAt: string;
 }) => {
   try {
-    console.log('🔍 Starting enrollment process for user:', uid);
-    console.log('🔍 Onboarding data:', onboardingData);
+// [AUDIT] Removed console.log // line 390
+// [AUDIT] Removed console.log // line 391
     
     // First, let's test if we can read the user's profile
-    console.log('🔍 Testing user profile access...');
+// [AUDIT] Removed console.log // line 394
     const { data: profileTest, error: profileTestError } = await supabase
       .from('profiles')
       .select('id, email, role, enrolled_programs, display_name')
@@ -403,16 +403,16 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       throw new Error(`Cannot access user profile: ${profileTestError.message}`);
     }
     
-    console.log('✅ Profile access test successful:', profileTest);
+// [AUDIT] Removed console.log // line 406
     
     // Check if user is already enrolled
     if (profileTest.enrolled_programs && profileTest.enrolled_programs.includes('Foundational')) {
-      console.log('⚠️ User is already enrolled in Foundational Program');
+// [AUDIT] Removed console.log // line 410
       throw new Error('You are already enrolled in the Foundational Program.');
     }
     
     // Check for existing enrollment record
-    console.log('🔍 Checking for existing enrollment records...');
+// [AUDIT] Removed console.log // line 415
     const { data: existingEnrollment, error: existingError } = await supabase
       .from('enrollments')
       .select('*')
@@ -435,14 +435,14 @@ export const completeEnrollment = async (uid: string, onboardingData: {
     const isEnrolledInProfile = profileData?.enrolled_programs?.includes('Foundational');
     
     if (existingEnrollment || isEnrolledInProfile) {
-      console.log('⚠️ Found existing enrollment record or profile enrollment:', { existingEnrollment, isEnrolledInProfile });
+// [AUDIT] Removed console.log // line 438
       throw new Error('You already have an enrollment record for the Foundational Program.');
     }
     
-    console.log('✅ No existing enrollment found, proceeding...');
+// [AUDIT] Removed console.log // line 442
     
     // Update user profile with enrollment data
-    console.log('💾 Updating user profile...');
+// [AUDIT] Removed console.log // line 445
     const { data: profileUpdate, error: profileError } = await supabase
       .from('profiles')
       .update({
@@ -461,7 +461,7 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       throw new Error(`Failed to update profile: ${profileError.message}`);
     }
 
-    console.log('✅ Profile updated successfully:', profileUpdate);
+// [AUDIT] Removed console.log // line 464
     
     // Verify the update was successful
     const { data: verifyProfile, error: verifyError } = await supabase
@@ -475,7 +475,7 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       throw new Error(`Verification error: ${verifyError.message}`);
     }
     
-    console.log('✅ Verification - enrolled_programs:', verifyProfile?.enrolled_programs);
+// [AUDIT] Removed console.log // line 478
     
     // Additional verification: Check if enrolled_programs was actually updated
     if (!verifyProfile?.enrolled_programs || !Array.isArray(verifyProfile.enrolled_programs)) {
@@ -487,7 +487,7 @@ export const completeEnrollment = async (uid: string, onboardingData: {
     }
 
     // Update pilot_portfolio table foundation_program_status
-    console.log('💾 Updating pilot_portfolio foundation_program_status...');
+// [AUDIT] Removed console.log // line 490
     const { error: portfolioError } = await supabase
       .from('pilot_portfolio')
       .update({
@@ -501,13 +501,13 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       console.error('⚠️ Pilot portfolio update error:', portfolioError);
       // Non-critical: enrollment is still successful
     } else {
-      console.log('✅ Pilot portfolio updated successfully');
+// [AUDIT] Removed console.log // line 504
     }
     
-    console.log('✅ Enrollment verification successful');
+// [AUDIT] Removed console.log // line 507
 
     // Insert enrollment record in separate table
-    console.log('📝 Creating enrollment record...');
+// [AUDIT] Removed console.log // line 510
     const { data: enrollmentData, error: enrollmentError } = await supabase
       .from('enrollments')
       .insert({
@@ -533,11 +533,11 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       }
     }
 
-    console.log('✅ Enrollment record created successfully:', enrollmentData);
-    console.log('🎉 Enrollment process completed successfully for user:', uid);
+// [AUDIT] Removed console.log // line 536
+// [AUDIT] Removed console.log // line 537
     
     // Send confirmation email with timeout
-    console.log('📧 Sending confirmation email...');
+// [AUDIT] Removed console.log // line 540
     try {
       const emailPromise = import('./email').then(module => 
         module.sendEnrollmentConfirmationEmail({
@@ -552,7 +552,7 @@ export const completeEnrollment = async (uid: string, onboardingData: {
       );
       
       await Promise.race([emailPromise, timeoutPromise]);
-      console.log('✅ Email sent successfully');
+// [AUDIT] Removed console.log // line 555
     } catch (emailError) {
       console.warn('⚠️ Email sending failed, but enrollment succeeded:', emailError);
       // Don't fail enrollment if email fails
@@ -578,7 +578,7 @@ export const getEnrollmentStatus = async (uid: string): Promise<string[]> => {
 
     // If that fails, try with Firebase UID
     if (error || !profile) {
-      console.log('⚠️ getEnrollmentStatus: No profile found with Supabase ID, trying Firebase UID');
+// [AUDIT] Removed console.log // line 581
       const { data: firebaseProfile, error: firebaseError } = await supabase
         .from('profiles')
         .select('enrolled_programs')

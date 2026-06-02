@@ -169,7 +169,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
         let cancelled = false;
         const checkSubscription = async () => {
-            console.log('[DEBUG] Starting subscription check for user:', currentUser.id);
+// [AUDIT] Removed console.log // line 172
             try {
                 // Auth0 currentUser.id is a string sub (e.g. google-oauth2|...), not a UUID.
                 // Look up the Supabase profile UUID by email first.
@@ -189,7 +189,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                     .eq('status', 'active');
                 
                 if (cancelled) return;
-                console.log('[DEBUG] Subscriptions query result:', { subscriptions, error });
+// [AUDIT] Removed console.log // line 192
                 
                 if (error) {
                     console.error('[DEBUG] Subscription query error:', error);
@@ -197,7 +197,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 }
                 
                 const hasActiveSubscription = subscriptions && subscriptions.length > 0;
-                console.log('[DEBUG] Has active subscription:', hasActiveSubscription, 'Count:', subscriptions?.length);
+// [AUDIT] Removed console.log // line 200
                 setIsPremium(hasActiveSubscription);
             } catch (error) {
                 console.error('[DEBUG] Error in checkSubscription:', error);
@@ -210,7 +210,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
     // Debug isPremium changes
     useEffect(() => {
-        console.log('[DEBUG] isPremium state changed to:', isPremium);
+// [AUDIT] Removed console.log // line 213
     }, [isPremium]);
 
     // Load theme from localStorage on mount
@@ -568,7 +568,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                 profile_image_public_id: result.publicId,
             } : null);
 
-            console.log('✅ Profile image uploaded to Cloudinary:', result.publicId);
+// [AUDIT] Removed console.log // line 571
 
             // Delete old image from Cloudinary (non-blocking)
             if (oldPublicId && oldPublicId !== result.publicId) {
@@ -944,7 +944,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
     const initials = pilotName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
     // DEBUG: Show current page state
-    console.log('[PilotRecognitionProfilePage] STATE:', { 
+// [AUDIT] Removed console.log // line 947
         showWalletGate, 
         showWalletView, 
         activeSection, 
@@ -1249,7 +1249,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
 
                 {/* ── WALLET VIEW PAGE (post-auth) ── */}
                 {showWalletView && (() => {
-                    console.log('>>> RENDERING WalletPageWithSidebar! showWalletView=true (noSidebar mode)');
+// [AUDIT] Removed console.log // line 1252
                     return (
                         <WalletPageWithSidebar
                             userId={currentUser?.id}
@@ -1709,7 +1709,7 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
                                         currentRatings={profileData?.ratings || []}
                                         onInterestChange={(interests: string[]) => {
                                             // Update profile with new interests
-                                            console.log('Pathway interests updated:', interests);
+// [AUDIT] Removed console.log // line 1712
                                         }}
                                         onViewProgram={(program: string) => onNavigate(`program/${program}`)}
                                         onViewTraining={(trainingId: string) => onNavigate(`training/${trainingId}`)}

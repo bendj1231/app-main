@@ -47,7 +47,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         <ShieldCheck className="text-red-600" size={20} />
                         <div>
                             <p className="text-slate-900 font-bold text-sm tracking-tight">Data Controller Agreement</p>
-                            <p className="text-slate-400 text-xs">You are PIC of your data — PR-DCA-001 v1.6</p>
+                            <p className="text-slate-400 text-xs">You are PIC of your data — PR-DCA-001 v1.7</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="text-slate-400 hover:text-slate-900 transition-colors">
@@ -75,7 +75,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                 >
                     <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-500 leading-relaxed">
                         <strong className="text-slate-700">Data Controller Agreement — WM Pilot Group</strong><br />
-                        Document Reference: PR-DCA-001 · Version 1.6 · Effective: 20 May 2026<br />
+                        Document Reference: PR-DCA-001 · Version 1.7 · Effective: 02 June 2026<br />
                         This instrument constitutes a binding infrastructure and data governance agreement between the Data Subject
                         (the Registrant, hereinafter the <em>Credential Custodian</em>) and WM Pilot Group (hereinafter the{' '}
                         <em>Infrastructure Controller</em> or <em>the Platform</em>), effective immediately upon account creation in Terminal 1.
@@ -228,7 +228,30 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
 
                     {/* 9 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 9 — Approved Technical Sub-Processors (GDPR Art. 28(2))</h3>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 9 — Mauritius Data Controller Registration</h3>
+                        <p className="mb-2 text-xs leading-relaxed">
+                            <strong className="text-black">WM Pilot Group (Aviation Pathways Limited)</strong> is registered as a Data Controller 
+                            with the Data Protection Office of Mauritius under the Data Protection Act 2017.
+                        </p>
+                        <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
+                            <div className="bg-green-50 border border-green-200 rounded p-2">
+                                <p className="font-bold text-green-800">Registration</p>
+                                <p className="text-slate-600">Data Protection Office, Mauritius</p>
+                            </div>
+                            <div className="bg-green-50 border border-green-200 rounded p-2">
+                                <p className="font-bold text-green-800">Annual Fee</p>
+                                <p className="text-slate-600">MUR 1,000 (~USD 22)</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                            This registration lawfully entitles the Platform to custody Verifiable Credentials (VCs) 
+                            on behalf of pilots with explicit consent for infrastructure custody.
+                        </p>
+                    </section>
+
+                    {/* 11 */}
+                    <section>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 11 — Approved Technical Sub-Processors (GDPR Art. 28(2))</h3>
                         <p className="mb-2 text-xs text-slate-400 leading-relaxed">
                             To maintain the core routing infrastructure, the Platform utilises the following technical sub-processors:
                         </p>
@@ -246,9 +269,9 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         </div>
                     </section>
 
-                    {/* 10 */}
+                    {/* 11 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 10 — B2B Co-Marketplace Agreements</h3>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 11 — B2B Co-Marketplace Agreements</h3>
                         <p className="text-xs leading-relaxed">
                             The Credential Custodian acknowledges that third-party digital logbook providers, flight schools, and operators may function as nodes within the platform network.
                             Commercial transaction structures, gate-activation fees, or affiliation credits exchanged between the Platform and external entities
@@ -258,9 +281,9 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         </p>
                     </section>
 
-                    {/* 11 */}
+                    {/* 12 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 11 — Age & Operational Gate Restrictions</h3>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 12 — Age & Operational Gate Restrictions</h3>
                         <p className="mb-2 text-xs leading-relaxed">
                             Pursuant to international aviation standards and jurisdictional child privacy statutory rules — including GDPR Art. 8, Republic Act No. 10173 s.12 (Philippines), and UAE Federal Decree-Law No. 45/2021 Art. 6 — special operational constraints apply to legal minors (under 18 years of age) and holders of a Student Pilot License (or equivalent Student Pilot Authorization):
                         </p>
@@ -278,9 +301,9 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         </ul>
                     </section>
 
-                    {/* 12 */}
+                    {/* 13 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 12 — Governing Law & Dispute Resolution</h3>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 13 — Governing Law & Dispute Resolution</h3>
                         <p className="text-xs leading-relaxed">
                             This Agreement is governed by the laws of the <strong className="text-black">United Arab Emirates</strong>,
                             with supplementary application of EU Regulation 2016/679 (GDPR) for EU/EEA residents
@@ -293,7 +316,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     </section>
 
                     <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-xs text-slate-400">
-                        <span>PR-DCA-001 v1.6 — 20 May 2026 — WM Pilot Group</span>
+                        <span>PR-DCA-001 v1.7 — 02 June 2026 — WM Pilot Group</span>
                         <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 underline transition-colors">
                             Full instrument ↗
                         </a>
@@ -316,7 +339,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                             className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-white accent-red-600 cursor-pointer"
                         />
                         <span className="text-slate-600 text-xs leading-relaxed group-hover:text-slate-900 transition-colors">
-                            I agree to the Data Controller Agreement (Ref: PR-DCA-001, v1.6). By creating an account, I acknowledge that I am the Pilot in Command (PIC) and primary Data Controller of my personal identity records, utilizing the platform's self-sovereign cryptographic architecture. I explicitly instruct WM Pilot Group, acting as my Infrastructure Controller and platform operator, to secure, host, and route my encrypted ciphertext according to the storage engine configuration (Single or Multi-Engine) and routing pathways I select.
+                            I agree to the Data Controller Agreement (Ref: PR-DCA-001, v1.7). By creating an account, I acknowledge that I am the Pilot in Command (PIC) and primary Data Controller of my personal identity records, utilizing the platform's self-sovereign cryptographic architecture. I explicitly instruct WM Pilot Group, acting as my Infrastructure Controller and platform operator, to secure, host, and route my encrypted ciphertext according to the storage engine configuration (Single or Multi-Engine) and routing pathways I select.
                         </span>
                     </label>
 

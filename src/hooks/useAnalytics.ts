@@ -174,7 +174,7 @@ export function useErrorTracking() {
     }
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[ErrorTracking] ${level}:`, message, context);
+// [AUDIT] Removed console.log // line 177
     }
   }, []);
 

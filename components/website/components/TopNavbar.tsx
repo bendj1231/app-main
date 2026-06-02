@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { supabase } from '@/src/lib/supabase';
-import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import { NavigationSchema } from './seo/NavigationSchema';
 import { GraphicsSettingsModal } from './GraphicsSettingsModal';
@@ -77,7 +77,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const [notifications, setNotifications] = useState<any[]>([]);
     const notificationDropdownRef = useRef<HTMLDivElement>(null);
     const [countryCode, setCountryCode] = useState<string>('');
-    const [domainBrand, setDomainBrand] = useState<'recognition' | 'shortage'>('recognition');
+    const [domainBrand, setDomainBrand] = useState<'recognition' | 'shortage' | 'careerpathways'>('recognition');
 
     // Detect domain brand for navbar styling
     useEffect(() => {
@@ -85,11 +85,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             const domain = window.location.hostname;
             if (domain.includes('pilotshortage.org')) {
                 setDomainBrand('shortage');
+            } else if (domain.includes('pilotcareerpathways.com')) {
+                setDomainBrand('careerpathways');
             }
             // Check for localStorage override
             const override = localStorage.getItem('brand_override');
-            if (override === 'shortage' || override === 'recognition') {
-                setDomainBrand(override);
+            if (override === 'shortage' || override === 'recognition' || override === 'careerpathways') {
+                setDomainBrand(override as 'recognition' | 'shortage' | 'careerpathways');
             }
         }
     }, []);
@@ -185,10 +187,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     const handleLogout = async (e?: React.MouseEvent) => {
         e?.preventDefault();
         e?.stopPropagation();
-        console.log('[LOGOUT CLICK] handleLogout called, logoutLoading:', logoutLoading, 'currentUser:', currentUser?.email);
+// [AUDIT] Removed console.log // line 190
         // Prevent multiple simultaneous logout calls
         if (logoutLoading) {
-            console.log('[LOGOUT BLOCKED] Already logging out');
+// [AUDIT] Removed console.log // line 193
             return;
         }
         if (!logout) {
@@ -197,16 +199,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         }
         try {
             setLogoutLoading(true);
-            console.log('[LOGOUT START] Calling auth.logout()...');
+// [AUDIT] Removed console.log // line 202
             await logout();
-            console.log('[LOGOUT SUCCESS] Redirecting to home');
+// [AUDIT] Removed console.log // line 204
             onNavigate('home'); // Redirect to home after logout
             setIsMenuOpen(false);
         } catch (error) {
             console.error("[LOGOUT ERROR] Failed to log out:", error);
         } finally {
             setLogoutLoading(false);
-            console.log('[LOGOUT END] logoutLoading reset');
+// [AUDIT] Removed console.log // line 211
         }
     };
 
@@ -426,14 +428,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             target: '/'
         },
         {
-            name: 'Blog',
-            target: '/blog'
-        },
-        {
-            name: 'Store',
-            target: '/store'
-        },
-        {
             name: 'About',
             target: '/about',
             subItems: [
@@ -454,25 +448,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Training & Development', name: 'EBT CBTA Fast-Track', target: '/ebt-cbta', bullets: ['Competency-based training', 'Evidence-based assessment', 'Interview priority'] },
                 { category: 'Training & Development', name: 'Mentorship Program', target: '/mentorship', bullets: ['Captain mentors', 'Professional guidance', '1-on-1 coaching'] },
                 { category: 'Training & Development', name: 'Examination Portal', target: '/examination-portal', bullets: ['Skill assessments', 'Progress tracking', 'Certification prep'] },
-            ]
-        },
-        {
-            name: 'Pathways',
-            target: '/pathways-modern',
-            subItems: [
-                { category: 'For Pilots', name: 'Airlines & Operators', target: '/pathways-modern?section=airlines', bullets: ['Commercial carriers', 'Regional airlines', 'Flagship operators'] },
-                { category: 'For Pilots', name: 'Private Jet & Charter', target: '/pathways-modern?section=private-jet', bullets: ['Corporate aviation', 'VIP charter', 'Fractional ownership'] },
-                { category: 'For Pilots', name: 'Air Taxi & eVTOL', target: '/pathways-modern?section=evtol', bullets: ['Urban air mobility', 'Electric aircraft', 'Next-gen aviation'] },
-                { category: 'For Pilots', name: 'Cargo & Logistics', target: '/pathways-modern?section=cargo', bullets: ['Freight operators', 'Express delivery', 'Long-haul cargo'] },
-                { category: 'For Pilots', name: 'Military & Defence', target: '/pathways-modern?section=military', bullets: ['Armed forces', 'Defence contractors', 'Government aviation'] },
-                { category: 'For Pilots', name: 'Type Rating Search', target: '/type-rating-search', bullets: ['Aircraft manufacturers', 'Training centers', 'Licensing requirements'] },
-                { category: 'For Pilots', name: 'Airline Expectations', target: '/airline-expectations', bullets: ['Entry requirements', 'Operator standards', 'Expectation insights'] },
-                { category: 'For Pilots', name: 'Global Aviation Authorities', target: '/global-aviation-authorities', bullets: ['FAA database', 'CAAP compliance', 'EASA integration', 'Regulatory sync'], isYellow: true },
-                { category: 'For Industry', name: 'Enterprise Access', target: 'https://enterprise.pilotrecognition.com', bullets: ['Pull-based recruitment', 'Verified candidates', 'Pathway publishing'] },
-                { category: 'For Industry', name: 'Simulator Training', target: 'https://enterprise.pilotrecognition.com#simulator', bullets: ['Type rating centers', 'Training partnerships', 'Facility network'] },
-                { category: 'For Industry', name: 'MRO & Maintenance', target: 'https://enterprise.pilotrecognition.com#maintenance', bullets: ['Engineering tracks', 'Maintenance ops', 'Technical services'] },
-                { category: 'For Industry', name: 'RPAS & Drone Ops', target: 'https://enterprise.pilotrecognition.com#drone', bullets: ['UAV training', 'Commercial drones', 'Remote pilot programs'] },
-                { category: 'For Industry', name: 'OEM Partnerships', target: 'https://enterprise.pilotrecognition.com#manufacturers', bullets: ['Manufacturer programs', 'Factory training', 'Technical pathways'] },
             ]
         },
         {
@@ -637,7 +612,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                     { name: 'Home', url: '/' },
                     { name: 'About', url: '/about' },
                     { name: 'Programs', url: '/programs' },
-                    { name: 'Pathways', url: '/pathways-modern' },
                     { name: 'Type Rating Search', url: '/type-rating-search' },
                     { name: 'Airline Expectations', url: '/airline-expectations' },
                     { name: 'Pilot Career Pathways', url: '/pathways-modern' },
@@ -649,8 +623,72 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 siteName="Pilot Recognition"
                 siteUrl="https://pilotrecognition.com"
             />
+            {/* Cross-domain Partner Navigation */}
+            <div className="fixed top-0 left-0 right-0 z-[205] h-10 bg-gray-900 border-b border-gray-700 flex items-center justify-center gap-8 px-4">
+                {/* PilotShortage */}
+                <div className="relative group">
+                    <a
+                        href="https://pilotshortage.org"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
+                    >
+                        Pilot<span className="text-red-500">Shortage</span>.org
+                        <ExternalLink className="w-3 h-3 text-gray-500" />
+                    </a>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
+                        <div className="p-3">
+                            <p className="text-xs text-gray-400 mb-2">Industry Partner</p>
+                            <p className="text-xs text-gray-300 leading-relaxed">
+                                Working together to address the global pilot shortage. Connecting qualified pilots with airlines worldwide.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {/* CareerPathways */}
+                <div className="relative group">
+                    <a
+                        href="https://pilotcareerpathways.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
+                    >
+                        pilotcareer<span className="text-red-500">pathways</span>.com
+                        <ExternalLink className="w-3 h-3 text-gray-500" />
+                    </a>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
+                        <div className="p-3">
+                            <p className="text-xs text-gray-400 mb-2">Align Your Profile</p>
+                            <p className="text-xs text-gray-300 leading-relaxed">
+                                Discover your optimal career pathway. Compare requirements, track your progress, and find the perfect route to your dream airline.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {/* PilotTerminal */}
+                <div className="relative group">
+                    <a
+                        href="https://pilotterminal.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-sm font-medium text-white hover:text-white transition-colors"
+                    >
+                        Pilot<span className="text-red-500">Terminal</span>.com
+                        <ExternalLink className="w-3 h-3 text-gray-500" />
+                    </a>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 bg-[#1a1a1b] border border-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 mt-1">
+                        <div className="p-3">
+                            <p className="text-xs text-gray-400 mb-2">Community Forum</p>
+                            <p className="text-xs text-gray-300 leading-relaxed">
+                                Real-time discussions with verified pilots worldwide. No bots, no recruiters — just aviators.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <nav
-                className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${isLight
+                className={`fixed top-10 left-0 right-0 z-[200] transition-all duration-500 ${isLight
                     ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
                     : isDark
                         ? '!bg-transparent backdrop-filter-none py-3 shadow-none'
@@ -660,9 +698,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 : 'bg-white border-b border-slate-200 py-3'
                             : 'bg-transparent py-6'
                     }`}>
-                <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
-                    {/* Logo Section */}
-                    <div className="flex items-center gap-4 group cursor-pointer" onClick={() => onNavigate('home')}>
+                <div className={`flex justify-between items-center ${domainBrand === 'careerpathways' ? 'w-full' : 'max-w-[1800px] mx-auto px-6'}`}>
+                    {/* Logo Section - Far Left Edge for careerpathways, centered for others */}
+                    <div className={`flex items-center gap-4 group cursor-pointer ${domainBrand === 'careerpathways' ? 'pl-0' : ''}`} onClick={() => onNavigate('home')}>
                         <div className="flex items-baseline transition-all duration-300 group-hover:scale-105">
                             <span
                                 className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'
@@ -678,6 +716,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             .org
                                             <span className="ml-2 text-xs text-yellow-400 font-normal">🇵🇭 Philippines</span>
                                         </span>
+                                    </>
+                                ) : domainBrand === 'careerpathways' ? (
+                                    // pilotcareerpathways.com branding
+                                    <>
+                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilotcareer</span>
+                                        <span className="text-red-600">pathways</span>
+                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>.com</span>
                                     </>
                                 ) : (
                                     // pilotrecognition.com branding
@@ -698,21 +743,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         </div>
                     </div>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden lg:flex items-center gap-3">
-                        {/* Domain Switcher - pilotshortage.org link */}
-                        <a
-                            href="https://pilotshortage.org"
-                            className={`text-[0.7rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${
-                                isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
-                                    ? 'text-slate-900'
-                                    : 'text-white/80'
-                            }`}
-                            title="Visit Pilot Shortage Association (Philippines)"
-                        >
-                            🇵🇭 pilotshortage.org
-                        </a>
-
+                    {/* Desktop Navigation - Right side with padding */}
+                    <div className={`hidden lg:flex items-center gap-3 ${domainBrand === 'careerpathways' ? 'pr-6' : ''}`}>
                         {visibleNavItems.map((item) => (
                             <div
                                 key={item.name}
@@ -727,7 +759,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
                                             : 'text-blue-400 border-b-2 border-blue-400 pb-1 font-black'
                                         : item.isOrange
-                                            ? 'text-orange-400 font-black'
+                                            ? 'text-red-500 font-black'
                                             : item.isBlue
                                             ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
                                                 ? 'text-blue-600 font-black'
@@ -771,14 +803,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                     </div>
                                                 </div>
                                             ))}
-                                            {/* Bottom message for dropdowns with many items */}
-                                            {item.name === 'Pathways' && (
-                                                <div className="col-span-full mt-4 pt-4 border-t border-slate-200 text-center">
-                                                    <p className="text-[0.6rem] text-slate-400 font-medium tracking-wide">
-                                                        Access the pilot portal to view more pathways
-                                                    </p>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -786,8 +810,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                         ))}
                     </div>
 
-                    {/* Actions */}
-                    <div className="hidden lg:flex items-center gap-3 ml-4">
+                    {/* Actions - Right side with padding */}
+                    <div className={`hidden lg:flex items-center gap-3 ml-4 ${domainBrand === 'careerpathways' ? 'pr-6' : ''}`}>
 
                         {isAuthRestoring || signupInProgress ? (
                             <div className="flex items-center gap-2">

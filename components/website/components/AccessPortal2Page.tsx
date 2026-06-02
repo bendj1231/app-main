@@ -112,7 +112,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     const progressPercent = Math.min((flightHours / hoursForNextLevel) * 100, 100);
     
     // Debug sidebar profile data
-    console.log('AccessPortal2 - Sidebar profile data:', {
+// [AUDIT] Removed console.log // line 115
         profileImage,
         initials,
         fullName,
@@ -129,7 +129,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         enrolledPrograms.some((p: string) => p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')));
     
     // Debug enrollment checking logic step by step
-    console.log('AccessPortal2 - Enrollment debug:', {
+// [AUDIT] Removed console.log // line 132
         enrolledPrograms,
         isEnrolledInFoundational,
         hasEnrolledPrograms: Array.isArray(enrolledPrograms),
@@ -139,7 +139,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
             step2_programCount: Array.isArray(enrolledPrograms) ? enrolledPrograms.length : 0,
             step3_someCheck: Array.isArray(enrolledPrograms) ? enrolledPrograms.some((p: string) => {
                 const matches = p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation');
-                console.log(`  - Checking program "${p}": matches foundational = ${matches}`);
+// [AUDIT] Removed console.log // line 142
                 return matches;
             }) : false,
             step4_finalResult: isEnrolledInFoundational
@@ -153,7 +153,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
     }, [activeTab]);
 
     useEffect(() => {
-        console.log('AccessPortal2Page mounted - current activeTab:', activeTab);
+// [AUDIT] Removed console.log // line 156
         // Add a class to body to hide any global side panels
         document.body.classList.add('w12-fullscreen');
         return () => {
@@ -395,42 +395,42 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                         setProfileImageUrl(data.profile_image_url || '');
                         
                         // Debug enrolled programs data structure
-                        console.log('AccessPortal2 - Raw enrolled_programs data:', data.enrolled_programs);
-                        console.log('AccessPortal2 - Type of enrolled_programs:', typeof data.enrolled_programs);
-                        console.log('AccessPortal2 - Is enrolled_programs an array:', Array.isArray(data.enrolled_programs));
+// [AUDIT] Removed console.log // line 398
+// [AUDIT] Removed console.log // line 399
+// [AUDIT] Removed console.log // line 400
                         
                         if (data.enrolled_programs) {
                             if (Array.isArray(data.enrolled_programs)) {
-                                console.log('AccessPortal2 - Enrolled programs array:', data.enrolled_programs);
-                                console.log('AccessPortal2 - Program names:', data.enrolled_programs.map(p => `"${p}"`));
+// [AUDIT] Removed console.log // line 404
+// [AUDIT] Removed console.log // line 405
                                 setEnrolledPrograms(data.enrolled_programs);
                             } else {
-                                console.log('AccessPortal2 - enrolled_programs is not an array, value:', data.enrolled_programs);
+// [AUDIT] Removed console.log // line 408
                                 // Try to parse if it's a string
                                 try {
                                     const parsed = JSON.parse(data.enrolled_programs);
                                     if (Array.isArray(parsed)) {
-                                        console.log('AccessPortal2 - Parsed enrolled programs:', parsed);
+// [AUDIT] Removed console.log // line 413
                                         setEnrolledPrograms(parsed);
                                     } else {
-                                        console.log('AccessPortal2 - Parsed value is not an array:', parsed);
+// [AUDIT] Removed console.log // line 416
                                         setEnrolledPrograms([]);
                                     }
                                 } catch (e) {
-                                    console.log('AccessPortal2 - Failed to parse enrolled_programs as JSON');
+// [AUDIT] Removed console.log // line 420
                                     setEnrolledPrograms([]);
                                 }
                             }
                         } else {
-                            console.log('AccessPortal2 - No enrolled_programs field found');
+// [AUDIT] Removed console.log // line 425
                             setEnrolledPrograms([]);
                         }
                         
-                        console.log('AccessPortal2 - Profile data fetched from Supabase:', data);
+// [AUDIT] Removed console.log // line 429
                     } else {
                         setProfileImageUrl('');
                         setEnrolledPrograms([]);
-                        console.log('AccessPortal2 - No profile data found in Supabase');
+// [AUDIT] Removed console.log // line 433
                     }
                 } catch (error) {
                     console.error('Error fetching profile data:', error);
@@ -574,11 +574,11 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => {
-                                    console.log('[DEBUG Portal 2] LOGIN button clicked - opening login modal');
+// [AUDIT] Removed console.log // line 577
                                     // Trigger login modal - this will need to be implemented based on your auth system
                                     const event = new CustomEvent('open-login-modal');
                                     window.dispatchEvent(event);
-                                    console.log('[DEBUG Portal 2] open-login-modal event dispatched');
+// [AUDIT] Removed console.log // line 581
                                 }}
                                 className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
                             >
@@ -586,7 +586,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                             </button>
                             <button
                                 onClick={() => {
-                                    console.log('[DEBUG Portal 2] BECOME A MEMBER button clicked - navigating to /become-member');
+// [AUDIT] Removed console.log // line 589
                                     window.location.href = '/become-member';
                                 }}
                                 className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
@@ -645,7 +645,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 </button>
                                                 <button
                                                     onClick={() => {
-                                                        console.log('My Programs button clicked - setting activeTab to programs');
+// [AUDIT] Removed console.log // line 648
                                                         setActiveTab('programs');
                                                         setIsProfileDropdownOpen(false);
                                                     }}
@@ -877,7 +877,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                 {/* Pilot Profile Button */}
                                 <div 
                                     onClick={() => {
-                                        console.log('[DEBUG Portal 2] Sidebar profile button clicked - navigating to pilot-recognition-profile');
+// [AUDIT] Removed console.log // line 880
                                         try {
                                             onNavigate('pilot-recognition-profile');
                                         } catch (error) {
@@ -909,10 +909,10 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             
                                             <button
                                                 onClick={() => {
-                                                    console.log('[DEBUG Profile Sidebar] SIGN IN button clicked - opening login modal');
+// [AUDIT] Removed console.log // line 912
                                                     const event = new CustomEvent('open-login-modal');
                                                     window.dispatchEvent(event);
-                                                    console.log('[DEBUG Profile Sidebar] open-login-modal event dispatched');
+// [AUDIT] Removed console.log // line 915
                                                 }}
                                                 className="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25 mb-3"
                                             >
@@ -921,7 +921,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             
                                             <button
                                                 onClick={() => {
-                                                    console.log('[DEBUG Profile Sidebar] BECOME A MEMBER button clicked - navigating to /become-member');
+// [AUDIT] Removed console.log // line 924
                                                     window.location.href = '/become-member';
                                                 }}
                                                 className="w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"
@@ -1106,7 +1106,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         >
                                             <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                  onClick={() => {
-                                                     console.log('W1000 Flight Deck card clicked - navigating to /w1000');
+// [AUDIT] Removed console.log // line 1109
                                                      onNavigate('/w1000');
                                                  }}>
                                                 {/* Split-section design */}
@@ -1154,7 +1154,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                         >
                                             <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                  onClick={() => {
-                                                     console.log('Foundation Program card clicked - navigating to foundational-program');
+// [AUDIT] Removed console.log // line 1157
                                                      onNavigate('foundational-program');
                                                  }}>
                                                 {/* Split-section design */}
@@ -1217,7 +1217,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => {
-                                                         console.log('Foundational Platform card clicked - navigating to foundational-platform');
+// [AUDIT] Removed console.log // line 1220
                                                          onNavigate('foundational-platform');
                                                      }}>
                                                     {/* Directory Card - Image with text overlay */}
@@ -1257,7 +1257,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => {
-                                                         console.log('[DEBUG Programs] Examination Portal clicked - navigating to examination portal');
+// [AUDIT] Removed console.log // line 1260
                                                          window.location.href = '/examination-portal';
                                                      }}>
                                                     {/* Directory Card - Image with text overlay */}
@@ -1300,7 +1300,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                             >
                                                 <div className="relative group cursor-pointer overflow-hidden transition-all duration-300 h-full"
                                                      onClick={() => {
-                                                         console.log('[DEBUG Programs] Official Examination Board clicked - navigating to official-examination-board');
+// [AUDIT] Removed console.log // line 1303
                                                          onNavigate('official-examination-board');
                                                      }}>
                                                     {/* Directory Card - White background */}
@@ -1431,7 +1431,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     </div>
                                                     <button
                                                         onClick={() => {
-                                                            console.log('[DEBUG Dashboard] Examination Portal button clicked - navigating to examination portal');
+// [AUDIT] Removed console.log // line 1434
                                                             // Navigate to examination portal
                                                             window.location.href = '/examination-portal';
                                                         }}
@@ -1794,10 +1794,10 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                                     <button
                                                         onClick={() => {
-                                                            console.log('[DEBUG Dashboard] SIGN IN button clicked - opening login modal');
+// [AUDIT] Removed console.log // line 1797
                                                             const event = new CustomEvent('open-login-modal');
                                                             window.dispatchEvent(event);
-                                                            console.log('[DEBUG Dashboard] open-login-modal event dispatched');
+// [AUDIT] Removed console.log // line 1800
                                                         }}
                                                         className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
                                                     >
@@ -1806,7 +1806,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
                                                     
                                                     <button
                                                         onClick={() => {
-                                                            console.log('[DEBUG Dashboard] BECOME A MEMBER button clicked - navigating to /become-member');
+// [AUDIT] Removed console.log // line 1809
                                                             window.location.href = '/become-member';
                                                         }}
                                                         className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold tracking-wider rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-500/25"

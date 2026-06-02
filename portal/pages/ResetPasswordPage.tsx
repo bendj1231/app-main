@@ -13,7 +13,7 @@ export const ResetPasswordPage: React.FC = () => {
 
     useEffect(() => {
         const initializePage = async () => {
-            console.log('🔍 Reset password page - URL hash:', window.location.hash);
+// [AUDIT] Removed console.log // line 16
             
             try {
                 // Get the session from the URL hash
@@ -23,7 +23,7 @@ export const ResetPasswordPage: React.FC = () => {
                 const refreshToken = urlParams.get('refresh_token');
                 const type = urlParams.get('type');
                 
-                console.log('🔍 Parsed params:', { 
+// [AUDIT] Removed console.log // line 26
                     accessToken: accessToken?.substring(0, 20) + '...', 
                     refreshToken: refreshToken?.substring(0, 20) + '...', 
                     type,
@@ -33,7 +33,7 @@ export const ResetPasswordPage: React.FC = () => {
                 
                 // Simplified approach - just try to get current user
                 if (hash.includes('access_token') && hash.includes('type=recovery')) {
-                    console.log('� Recovery tokens detected, attempting to set session...');
+// [AUDIT] Removed console.log // line 36
                     
                     try {
                         // Try direct session setup first
@@ -42,7 +42,7 @@ export const ResetPasswordPage: React.FC = () => {
                             refresh_token: refreshToken || ''
                         });
                         
-                        console.log('🔍 Session result:', { 
+// [AUDIT] Removed console.log // line 45
                             hasData: !!sessionData, 
                             hasUser: !!sessionData?.user, 
                             userEmail: sessionData?.user?.email,
@@ -51,7 +51,7 @@ export const ResetPasswordPage: React.FC = () => {
                         
                         if (!sessionError && sessionData.user?.email) {
                             setEmail(sessionData.user.email);
-                            console.log('✅ Session setup successful for:', sessionData.user.email);
+// [AUDIT] Removed console.log // line 54
                         } else {
                             throw new Error(sessionError?.message || 'Session setup failed');
                         }
@@ -60,12 +60,12 @@ export const ResetPasswordPage: React.FC = () => {
                         
                         // Try alternative approach
                         try {
-                            console.log('🔄 Trying alternative approach...');
+// [AUDIT] Removed console.log // line 63
                             const { data: altData, error: altError } = await supabase.auth.getUser(accessToken || undefined);
                             
                             if (!altError && altData.user?.email) {
                                 setEmail(altData.user.email);
-                                console.log('✅ Alternative approach successful for:', altData.user.email);
+// [AUDIT] Removed console.log // line 68
                             } else {
                                 throw new Error(altError?.message || 'Alternative approach failed');
                             }

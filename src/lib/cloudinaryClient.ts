@@ -250,27 +250,27 @@ export async function getCachedProfileImage(
   cloudinaryUrl: string,
   publicId: string
 ): Promise<string> {
-  console.log('[cloudinaryClient] getCachedProfileImage — url:', cloudinaryUrl, '| publicId:', publicId);
+// [AUDIT] Removed console.log // line 253
   // Step 1: Check cache
   const cached = await getCachedImage(cloudinaryUrl);
   if (cached) {
-    console.log('[cloudinaryClient] cache HIT \u2713 — serving from IndexedDB, blob size:', cached.size);
+// [AUDIT] Removed console.log // line 257
     return URL.createObjectURL(cached);
   }
-  console.log('[cloudinaryClient] cache MISS — fetching from Cloudinary…');
+// [AUDIT] Removed console.log // line 260
   
   // Step 2: Fetch from Cloudinary
   try {
     const response = await fetch(cloudinaryUrl);
-    console.log('[cloudinaryClient] fetch response:', response.status, response.statusText, '| content-type:', response.headers.get('content-type'));
+// [AUDIT] Removed console.log // line 265
     if (!response.ok) throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
     
     const blob = await response.blob();
-    console.log('[cloudinaryClient] fetched blob size:', blob.size, 'type:', blob.type);
+// [AUDIT] Removed console.log // line 269
     
     // Step 3: Cache for next time
     await cacheImage(cloudinaryUrl, blob, publicId);
-    console.log('[cloudinaryClient] cached in IndexedDB \u2713');
+// [AUDIT] Removed console.log // line 273
     
     // Return object URL
     return URL.createObjectURL(blob);
@@ -298,6 +298,6 @@ export async function deleteProfileImage(publicId: string): Promise<boolean> {
   // For deletion, you'd typically use an edge function
   // But for cost savings, you can set up a lifecycle policy in Cloudinary
   // or just leave old images (they're small and free tier is generous)
-  console.log('[cloudinaryClient] Mark for deletion:', publicId);
+// [AUDIT] Removed console.log // line 301
   return true;
 }

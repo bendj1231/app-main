@@ -14,7 +14,7 @@ export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
     useEffect(() => {
         // If Firebase is disabled (auth is null), skip auth sync
         if (!auth) {
-            console.log('Firebase disabled in AuthBridge - skipping auth sync');
+// [AUDIT] Removed console.log // line 17
             setIsSynced(true);
             return;
         }
@@ -66,7 +66,7 @@ export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
                 } else {
                     // Don't sign out from Supabase when Firebase is disabled or not in use
                     // This allows Supabase auth to work independently
-                    console.log('Firebase user null - not signing out from Supabase');
+// [AUDIT] Removed console.log // line 69
                     setIsSynced(true);
                 }
             } catch (err) {

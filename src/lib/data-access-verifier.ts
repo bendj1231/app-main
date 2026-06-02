@@ -59,7 +59,7 @@ class DataAccessVerifier {
     // Mock pilot data for Benjamin Tiger Bowler
     const mockPilotData: PilotData = {
       license: {
-        number: "155660-CPL",
+        number: "REDACTED-CPL",
         type: "Commercial Pilot License",
         issueDate: new Date("2025-10-24"),
         expiryDate: new Date("2030-10-23"),

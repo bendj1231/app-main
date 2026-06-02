@@ -55,7 +55,7 @@ export const FoundationalKnowledgeExamPage: React.FC<FoundationalKnowledgeExamPa
       if (error) {
         console.error('Error saving exam result:', error);
       } else {
-        console.log('✅ Exam result saved to Supabase');
+// [AUDIT] Removed console.log // line 58
         setExamSaved(true);
       }
     } catch (error) {

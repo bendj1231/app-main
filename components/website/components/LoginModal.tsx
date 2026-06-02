@@ -282,10 +282,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     {/* Logo + Title */}
                     <div className="flex flex-col items-center mb-6">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-2xl font-bold text-white tracking-tight">Pilot</span>
-                            <span className="text-2xl font-bold text-red-400 tracking-tight">Recognition</span>
+                            <span className="text-2xl font-bold text-white tracking-tight">pilotcareerpathways.com</span>
                         </div>
-                        <p className="text-sm text-slate-400">Sign in to your account</p>
+                        <p className="text-sm text-slate-400">
+                            Sign in to your pilot<span className="text-red-400">recognition</span> Account
+                        </p>
                     </div>
 
                         {/* Error Message */}

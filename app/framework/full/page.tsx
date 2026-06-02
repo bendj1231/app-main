@@ -142,18 +142,18 @@ function NavSection({ section, scrollToSection }: {
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   
-  console.log('NavSection rendering:', section.label, 'has children:', !!section.children, 'id:', section.id);
+// [AUDIT] Removed console.log // line 145
   
   return (
     <div className="mb-1">
       <button
         onClick={() => {
-          console.log('Sidebar CLICK:', section.label, 'id:', section.id, 'has children:', !!section.children);
+// [AUDIT] Removed console.log // line 151
           if (section.children) {
-            console.log('→ Toggling expand');
+// [AUDIT] Removed console.log // line 153
             setIsExpanded(!isExpanded);
           } else {
-            console.log('→ Scrolling to section');
+// [AUDIT] Removed console.log // line 156
             scrollToSection(section.id);
           }
         }}
@@ -175,7 +175,7 @@ function NavSection({ section, scrollToSection }: {
             <button
               key={child.id}
               onClick={() => {
-                console.log('Child CLICK:', child.label, 'id:', child.id);
+// [AUDIT] Removed console.log // line 178
                 scrollToSection(child.id);
               }}
               className="w-full text-left px-2 py-1 rounded-md text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors flex items-start gap-1.5"
@@ -253,17 +253,17 @@ export default function FullFrameworkPage() {
   }, []);
 
   const scrollToSection = (id: string) => {
-    console.log('scrollToSection called with id:', id);
+// [AUDIT] Removed console.log // line 256
     const element = document.getElementById(id);
-    console.log('Found element:', element ? 'YES' : 'NO', 'for id:', id);
+// [AUDIT] Removed console.log // line 258
     if (element) {
-      console.log('Scrolling to element:', element.tagName, element.textContent?.substring(0, 50));
+// [AUDIT] Removed console.log // line 260
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
       console.error('❌ Element not found for id:', id);
       // Try to find all IDs in the document for debugging
       const allIds = Array.from(document.querySelectorAll('[id]')).map(el => el.id);
-      console.log('Available IDs in document:', allIds.slice(0, 20), '...');
+// [AUDIT] Removed console.log // line 266
     }
   };
 
@@ -389,8 +389,8 @@ export default function FullFrameworkPage() {
       }
     }
 
-    console.log('TOC Items loaded:', tocItems.length);
-    console.log('First few TOC items:', tocItems.slice(0, 5).map(i => i.text));
+// [AUDIT] Removed console.log // line 392
+// [AUDIT] Removed console.log // line 393
     
     return lines.map((line, i) => {
         // IMPORTANT: Track TOC section FIRST (before any early returns)
@@ -401,17 +401,17 @@ export default function FullFrameworkPage() {
         if (hasTocText) {
           inTocSection = true;
           debugTocFound = true;
-          console.log(`✓ Line ${i}: Found "table of contents", SETTING inToc = true`);
+// [AUDIT] Removed console.log // line 404
         }
         if (inTocSection && isPartHeader) {
           inTocSection = false;
           tocSectionEnd = true;
-          console.log(`✓ Line ${i}: Found "# PART", SETTING inToc = false`);
+// [AUDIT] Removed console.log // line 409
         }
         
         // Debug log
         if (i < 100 || hasTocText || isPartHeader) {
-          console.log(`Line ${i}:`, line.substring(0, 60), '| inToc:', inTocSection);
+// [AUDIT] Removed console.log // line 414
         }
         
         // Headers with IDs
@@ -437,7 +437,7 @@ export default function FullFrameworkPage() {
             counter++;
           }
           seenIds.add(id);
-          console.log(`✓ H2 ID generated: "${id}" from "${headingText.substring(0, 50)}"`);
+// [AUDIT] Removed console.log // line 440
           return <h2 key={i} id={id} className="text-2xl font-bold text-slate-800 mt-8 mb-4 pb-2 border-b border-slate-300 scroll-mt-24">{headingText}</h2>;
         }
         if (line.startsWith('### ')) {
@@ -602,7 +602,7 @@ export default function FullFrameworkPage() {
           }
           if (currentGroup) groups.push(currentGroup);
 
-          console.log('TABLE DEBUG: tableLines count:', tableLines.length, 'groups:', groups.length, 'headerLine:', !!headerLine);
+// [AUDIT] Removed console.log // line 605
           groups.forEach((g, gi) => console.log(`  Group ${gi}: "${g.label.substring(0, 50)}" rows:`, g.rows.length));
 
           return (

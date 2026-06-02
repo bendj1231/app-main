@@ -8,20 +8,20 @@ interface W2000ApplicationPageProps {
 
 export const W2000ApplicationPage: React.FC<W2000ApplicationPageProps> = ({ onBack, onNavigate }) => {
     useEffect(() => {
-        console.log('[DEBUG W2000ApplicationPage] Component mounted');
+// [AUDIT] Removed console.log // line 11
         
         // Use the working version of W2000 (index.html is now the simple version)
         const w2000Url = '/W2000/index.html';
-        console.log('[DEBUG W2000ApplicationPage] Attempting to open:', w2000Url);
+// [AUDIT] Removed console.log // line 15
         
         // Method 1: Try window.open
         try {
             const newWindow = window.open(w2000Url, '_blank', 'noopener,noreferrer');
             if (newWindow) {
-                console.log('[DEBUG W2000ApplicationPage] Window opened successfully');
+// [AUDIT] Removed console.log // line 21
                 newWindow.focus();
             } else {
-                console.log('[DEBUG W2000ApplicationPage] Window.open failed, trying redirect');
+// [AUDIT] Removed console.log // line 24
                 // Method 2: Fallback to redirect
                 window.location.href = w2000Url;
             }
@@ -33,7 +33,7 @@ export const W2000ApplicationPage: React.FC<W2000ApplicationPageProps> = ({ onBa
         
         // Navigate back to Portal 2 programs tab after a short delay
         setTimeout(() => {
-            console.log('[DEBUG W2000ApplicationPage] Navigating back to Portal 2');
+// [AUDIT] Removed console.log // line 36
             onNavigate('access-portal-2?tab=programs');
         }, 500);
     }, [onBack, onNavigate]);

@@ -43,7 +43,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
 
   const fetchFlightLogs = async () => {
     if (!userProfile?.id) {
-      console.log('No user ID provided');
+// [AUDIT] Removed console.log // line 46
       setLoading(false);
       return;
     }
@@ -80,13 +80,13 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
   };
 
   const handleAddEntry = async () => {
-    console.log('=== Save Entry Debug Info ===');
-    console.log('userProfile:', userProfile);
-    console.log('userProfile type:', typeof userProfile);
-    console.log('userProfile keys:', userProfile ? Object.keys(userProfile) : 'null');
-    console.log('userProfile.id:', userProfile?.id);
-    console.log('formData:', formData);
-    console.log('============================');
+// [AUDIT] Removed console.log // line 83
+// [AUDIT] Removed console.log // line 84
+// [AUDIT] Removed console.log // line 85
+// [AUDIT] Removed console.log // line 86
+// [AUDIT] Removed console.log // line 87
+// [AUDIT] Removed console.log // line 88
+// [AUDIT] Removed console.log // line 89
     
     if (!userProfile?.id) {
       console.error('No user ID found - userProfile is:', userProfile);

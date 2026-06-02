@@ -91,10 +91,10 @@ serve(async (req) => {
         .eq('auth0_id', auth0_id)
     }
 
-    // Issue FlightHoursVC credential to walt.id wallet
+    // Issue FlightHoursVC credential to Pilot Wallet
     let credentialData = null
     try {
-      const WALT_ISSUER_URL = 'https://issuer.demo.walt.id'
+      const PILOT_ISSUER_URL = 'https://issuer.pilotrecognition.com'
       const ISSUER_DID = 'did:web:pilotrecognition.com'
       const subjectDid = auth0_id ? `did:web:pilotrecognition.com:pilots:${auth0_id.replace('|', '-')}` : null
 
@@ -103,7 +103,7 @@ serve(async (req) => {
         const expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
 
         // Onboard issuer key (dev mode)
-        const onboardRes = await fetch(`${WALT_ISSUER_URL}/onboard/issuer`, {
+        const onboardRes = await fetch(`${PILOT_ISSUER_URL}/onboard/issuer`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -134,7 +134,7 @@ serve(async (req) => {
           }
 
           // Issue credential via OID4VCI
-          const issueRes = await fetch(`${WALT_ISSUER_URL}/openid4vc/jwt/issue`, {
+          const issueRes = await fetch(`${PILOT_ISSUER_URL}/openid4vc/jwt/issue`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'accept': 'text/plain' },
             body: JSON.stringify({

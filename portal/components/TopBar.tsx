@@ -40,7 +40,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
     // Debug: Log userProfile prop changes
     useEffect(() => {
-        console.log('🔍 [TOPBAR DEBUG] userProfile prop changed:', {
+// [AUDIT] Removed console.log // line 43
             hasUserProfile: !!userProfile,
             userProfileEmail: userProfile?.email,
             userProfileFirstName: userProfile?.firstName,
@@ -72,10 +72,10 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <span>Home</span>
                 </button>
                 <button onClick={() => {
-                    console.log('🔴 [TOPBAR LOGOUT] Logout button clicked');
-                    console.log('🔴 [TOPBAR LOGOUT] Calling onLogout callback');
+// [AUDIT] Removed console.log // line 75
+// [AUDIT] Removed console.log // line 76
                     onLogout?.();
-                    console.log('🔴 [TOPBAR LOGOUT] onLogout callback called');
+// [AUDIT] Removed console.log // line 78
                 }} className={`${styles.actionButton} ${styles.logoutButton}`}>
                     <LogOut size={18} />
                     <span>Logout</span>

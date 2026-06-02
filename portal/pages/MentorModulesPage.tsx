@@ -29,11 +29,11 @@ const MentorModulesPage: React.FC<MentorModulesPageProps> = ({ onBack, onComplet
     ];
 
     // VERY EXPLICIT DEBUGGING
-    console.log('=== NAVIGATION DEBUG ===');
-    console.log('navigationFlow:', navigationFlow);
-    console.log('navigationFlow.length:', navigationFlow.length);
-    console.log('navigationFlow[7]:', navigationFlow[7]); // Check if 8th item exists
-    console.log('=== END DEBUG ===');
+// [AUDIT] Removed console.log // line 32
+// [AUDIT] Removed console.log // line 33
+// [AUDIT] Removed console.log // line 34
+// [AUDIT] Removed console.log // line 35
+// [AUDIT] Removed console.log // line 36
 
     const getCurrentStepIndex = () => {
         return navigationFlow.findIndex(step => step.chapter === currentChapter && step.topic === currentTopic);
@@ -139,31 +139,31 @@ const MentorModulesPage: React.FC<MentorModulesPageProps> = ({ onBack, onComplet
 
     // ── Render Current Chapter/Topic ───────────────────────────────────────
     const renderCurrentContent = () => {
-        console.log('Rendering content for chapter:', currentChapter);
+// [AUDIT] Removed console.log // line 142
         switch (currentChapter) {
             case 1:
-                console.log('Rendering MentorModulesPage0');
+// [AUDIT] Removed console.log // line 145
                 return <MentorModulesPage0 onBack={onBack} />;
             case 2:
-                console.log('Rendering MentorModulesPage1');
+// [AUDIT] Removed console.log // line 148
                 return <MentorModulesPage1 onBack={onBack} />;
             case 3:
-                console.log('Rendering MentorModulesPage2');
+// [AUDIT] Removed console.log // line 151
                 return <MentorModulesPage2 onBack={onBack} />;
             case 4:
-                console.log('Rendering MentorModulesPage3');
+// [AUDIT] Removed console.log // line 154
                 return <MentorModulesPage3 onBack={onBack} />;
             case 5:
-                console.log('Rendering MentorModulesPage4');
+// [AUDIT] Removed console.log // line 157
                 return <MentorModulesPage4 onBack={onBack} />;
             case 6:
-                console.log('Rendering MentorModulesPage5');
+// [AUDIT] Removed console.log // line 160
                 return <MentorModulesPage5 onBack={onBack} />;
             case 7:
-                console.log('Rendering MentorModulesPage6');
+// [AUDIT] Removed console.log // line 163
                 return <MentorModulesPage6 onBack={onBack} />;
             default:
-                console.log('Rendering default MentorModulesPage0');
+// [AUDIT] Removed console.log // line 166
                 return <MentorModulesPage0 onBack={onBack} />;
         }
     };

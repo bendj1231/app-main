@@ -17,6 +17,16 @@ export interface EnterpriseAccount {
   contact_information?: Record<string, any>;
   account_type: string;
   is_active: boolean;
+  // Tier & billing fields
+  account_tier?: 'free' | 'data_controller' | 'enterprise';
+  can_pull_verified_profiles?: boolean;
+  can_view_pilot_details?: boolean;
+  can_export_data?: boolean;
+  max_pathway_cards?: number;
+  max_interest_views_per_month?: number;
+  stripe_customer_id?: string;
+  billing_email?: string;
+  tier_expires_at?: string;
 }
 
 export interface EnterpriseUser {
@@ -46,7 +56,7 @@ export function useEnterpriseAuth() {
   const loadEnterpriseAccount = async (userId: string) => {
     const { data } = await supabase
       .from('enterprise_accounts')
-      .select('*')
+      .select('id, profile_id, airline_name, airline_iata_code, airline_logo_url, airline_website, company_description, country, base_locations, fleet_information, contact_information, account_type, is_active, account_tier, can_pull_verified_profiles, can_view_pilot_details, can_export_data, max_pathway_cards, max_interest_views_per_month, stripe_customer_id, billing_email, tier_expires_at')
       .eq('profile_id', userId)
       .single();
     return data;

@@ -65,6 +65,14 @@ import {
 } from '../components/PathwaysIntelligenceWidgets';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { supabase } from '../../src/lib/supabase';
+import { 
+  pathwayEngine, 
+  extractPilotProfile, 
+  cachePathways, 
+  getCachedPathways,
+  type LocalPilotProfile 
+} from '../../lib/pathways/pathwayMatchingEngine';
+import type { PathwayMatch, Pathway } from '../../lib/pathways/types';
 
 // ============================================================================
 // HARDCODED CATEGORY CONSTANTS
@@ -699,7 +707,7 @@ interface PathwayJob {
 interface PathwayData {
   id: string;
   name: string;
-  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'type-rating' | 'airtaxi-drones' | 'flight-schools' | 'military';
+  category: 'all' | 'airline-pathways' | 'cadet-programme' | 'private' | 'privateSector' | 'cargo' | 'type-rating' | 'airtaxi-drones' | 'flight-schools' | 'military' | 'pathway';
   airline: string;
   description?: string;
   image: string;
@@ -4353,6 +4361,9 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [expandedPathway, setExpandedPathway] = useState<string | null>(selectedPathwayId || null);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPrimaryPill, setSelectedPrimaryPill] = useState<string | null>(null);
+  const [activeSubPills, setActiveSubPills] = useState<string[]>([]);
+  const [showMorePills, setShowMorePills] = useState(false);
   const [visibleCount, setVisibleCount] = useState(1000); // Show all jobs and discovery pathways
   const [matchFilter, setMatchFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
   const [sortBy, setSortBy] = useState<'match' | 'newest' | 'alphabetical'>('match');
@@ -4737,7 +4748,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           ...cat,
           name: cat.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : cat.name
         }));
-        console.log('Stage 1 - General Categories:', overriddenCategories.length);
+// [AUDIT] Removed console.log // line 4751
         setStage1Categories(overriddenCategories);
       }
     };
@@ -4763,7 +4774,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             ...pathway,
             name: pathway.name === 'Drones & Pilotless Drones' ? 'Drones & Airtaxi Pathways' : pathway.name
           }));
-          console.log('Stage 2 - Pathways for', selectedStage1Category.name, ':', overriddenPathways.length);
+// [AUDIT] Removed console.log // line 4777
           setStage2Pathways(overriddenPathways);
         }
       };
@@ -4793,7 +4804,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             ...sp,
             name: sp.name === 'Drone pilot certification and UAV training programs' ? 'Learn More about Drones & Airtaxi Pathways' : sp.name
           }));
-          console.log('Stage 3 - Sub-pathways for', selectedStage2Pathway.name, ':', overriddenSubPathways.length);
+// [AUDIT] Removed console.log // line 4807
           setStage3SubPathways(overriddenSubPathways);
         }
       };
@@ -4806,7 +4817,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Legacy useEffect for backward compatibility - fetch sub-pathways when a pathway card is selected from main carousel
   useEffect(() => {
-    console.log('useEffect triggered - selectedPathwayCard:', selectedPathwayCard?.name);
+// [AUDIT] Removed console.log // line 4820
     if (selectedPathwayCard) {
       // Transform DISCOVERY_PATHWAYS into PathwayData format
       const discoveryPathwaysData: PathwayData[] = Object.entries(DISCOVERY_PATHWAYS).flatMap(([catKey, items]) =>
@@ -4825,12 +4836,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       );
       
       // Show all cards from the same category as the selected pathway
-      console.log('Showing all cards from category:', selectedPathwayCard.category);
+// [AUDIT] Removed console.log // line 4839
       
       // Get all cards from the same category
       const categoryCards = discoveryPathwaysData.filter(card => card.category === selectedPathwayCard.category);
       
-      console.log('Found cards from same category:', categoryCards.length);
+// [AUDIT] Removed console.log // line 4844
       
       if (categoryCards.length > 0) {
         const mappedCards = categoryCards.map((card) => ({
@@ -4840,7 +4851,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           image: card.image,
           pathway_id: selectedPathwayCard.id,
         }));
-        console.log('Setting subPathways with category cards:', mappedCards.length);
+// [AUDIT] Removed console.log // line 4854
         setSubPathways(mappedCards);
       } else {
         setSubPathways([]);
@@ -5053,11 +5064,11 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
     ...(mode === 'jobs' ? dynamicPathways : []),
   ];
 
-  console.log('[Stage1] allPathways count:', allPathways.length, '| enterprise:', enterprisePathwayCards.length, '| discovery:', discoveryPathways.length);
-  console.log('[Stage1] hierarchySelection generalCategory:', hierarchySelection.generalCategory);
-  console.log('[Stage1] activeCategory:', activeCategory);
-  console.log('[Stage1] categoryPathways count:', categoryPathways.length);
-  console.log('[Stage1] allPathways categories:', allPathways.map(p => p.category));
+// [AUDIT] Removed console.log // line 5067
+// [AUDIT] Removed console.log // line 5068
+// [AUDIT] Removed console.log // line 5069
+// [AUDIT] Removed console.log // line 5070
+// [AUDIT] Removed console.log // line 5071
 
   const filteredPathways = allPathways.filter(pathway => {
     // Use hierarchy selection for filtering if available, otherwise use activeCategory
@@ -5388,23 +5399,139 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const buttonBg = isDarkMode ? 'bg-slate-800/50 hover:bg-slate-700/50' : 'bg-slate-200/50 hover:bg-slate-300/50';
   const buttonText = isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900';
 
-  // Feedback Widget State
-  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
-  const [feedbackText, setFeedbackText] = useState('');
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  // Align Profile Tools State
+  const [isAlignProfileOpen, setIsAlignProfileOpen] = useState(false);
+  const [alignProfileMatches, setAlignProfileMatches] = useState<PathwayMatch[]>([]);
+  const [alignProfileLoading, setAlignProfileLoading] = useState(false);
+  const [profileCompletion, setProfileCompletion] = useState(65);
+  const [recognitionScore, setRecognitionScore] = useState(52);
+  const [engineProfile, setEngineProfile] = useState<LocalPilotProfile | null>(null);
 
-  const handleFeedbackSubmit = async () => {
-    // In production, send to analytics/feedback endpoint
-    console.log('Feedback submitted:', { rating: feedbackRating, text: feedbackText, page: 'pathways' });
-    setFeedbackSubmitted(true);
-    setTimeout(() => {
-      setIsFeedbackOpen(false);
-      setFeedbackSubmitted(false);
-      setFeedbackRating(null);
-      setFeedbackText('');
-    }, 2000);
-  };
+  // Engine Debug Panel State
+  const [showEngineDebug, setShowEngineDebug] = useState(false);
+  const [engineStats, setEngineStats] = useState<{
+    lastCalculationTime: number;
+    pathwaysLoaded: number;
+    matchesCalculated: number;
+    avgMatchScore: number;
+    algorithmVersion: string;
+    profileFactors: Record<string, number>;
+  } | null>(null);
+
+  // Toggle debug panel with Ctrl+Shift+E
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+        e.preventDefault();
+        setShowEngineDebug(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Load real pathway matches when Align Profile opens
+  useEffect(() => {
+    if (!isAlignProfileOpen) return;
+    
+    // Guard: Only load if user is authenticated
+    if (!userProfile?.id) {
+// [AUDIT] Removed console.log // line 5439
+      setAlignProfileLoading(false);
+      return;
+    }
+    
+    const loadAlignProfileData = async () => {
+      setAlignProfileLoading(true);
+      
+      try {
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          setAlignProfileLoading(false);
+          return;
+        }
+
+        // Load pathways (from cache or fetch)
+        let pathways: Pathway[] | null = getCachedPathways();
+        if (!pathways) {
+          const { data: pathwayData, error } = await supabase
+            .from('pathways')
+            .select('*')
+            .eq('status', 'active');
+          
+          if (!error && pathwayData) {
+            pathways = pathwayData;
+            cachePathways(pathways);
+          }
+        }
+
+        if (pathways) {
+          pathwayEngine.setPathways(pathways);
+        }
+
+        // Load user profile
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (profile) {
+          const localProfile = extractPilotProfile(profile);
+          setEngineProfile(localProfile);
+          pathwayEngine.setPilotProfile(localProfile);
+          
+          // Calculate matches
+          const startTime = performance.now();
+          const matches = pathwayEngine.recalculate();
+          const endTime = performance.now();
+          
+          setAlignProfileMatches(matches.slice(0, 3)); // Top 3 matches
+          
+          // Calculate profile completion
+          let completion = 0;
+          if (localProfile.total_flight_hours > 0) completion += 20;
+          if (localProfile.ratings.length > 0) completion += 20;
+          if (localProfile.medical_class && localProfile.medical_expiry) completion += 20;
+          if (localProfile.icao_english_level && localProfile.icao_english_level !== '0') completion += 20;
+          if (localProfile.type_ratings.length > 0) completion += 20;
+          setProfileCompletion(completion);
+          
+          // Set recognition score
+          setRecognitionScore(localProfile.recognition_score);
+          
+          // Set engine stats
+          const avgScore = matches.length > 0 
+            ? Math.round(matches.reduce((sum, m) => sum + m.match_score, 0) / matches.length)
+            : 0;
+          const stats = {
+            lastCalculationTime: Math.round(endTime - startTime),
+            pathwaysLoaded: pathwayEngine.getPathways().length,
+            matchesCalculated: matches.length,
+            avgMatchScore: avgScore,
+            algorithmVersion: 'v1.0.0-browser',
+            profileFactors: {
+              total_hours: localProfile.total_flight_hours,
+              ratings_count: localProfile.ratings.length,
+              type_ratings_count: localProfile.type_ratings.length,
+              medical_valid: localProfile.medical_class ? 1 : 0,
+              english_level: parseInt(localProfile.icao_english_level) || 0,
+              recognition_score: localProfile.recognition_score
+            }
+          };
+// [AUDIT] Removed console.log // line 5523
+          setEngineStats(stats);
+        }
+      } catch (err) {
+        console.error('Failed to load align profile data:', err);
+      } finally {
+        setAlignProfileLoading(false);
+      }
+    };
+
+    loadAlignProfileData();
+  }, [isAlignProfileOpen, userProfile?.id]); // Re-run when auth state changes
 
   return (
     <>
@@ -5430,24 +5557,213 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       )}
 
       {/* Content wrapper with higher z-index to sit above shader */}
-      <div className="relative z-10 flex min-h-screen" style={{ paddingTop: '80px' }}>
-        {/* MSFS 2024 Style Sidebar - Pathways Navigation */}
-        <PathwaysSidebar
-          activeSection="pilot-pathways"
-          onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
-          prScore={78}
-          matchPercentage={82}
-          topPathway="Commercial Airline"
-          topAirline="Qatar Airways"
-        />
-        {/* Main content area - responsive margin for sidebar */}
-        <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: '340px' }}>
+      <div className="relative z-10 flex min-h-screen" style={{ paddingTop: embedded ? '16px' : '80px' }}>
+        {/* MSFS 2024 Style Sidebar - Pathways Navigation - hidden when embedded */}
+        {!embedded && (
+          <PathwaysSidebar
+            activeSection="pilot-pathways"
+            onNavigate={onNavigate || ((page) => window.location.href = `/${page}`)}
+            prScore={78}
+            matchPercentage={82}
+            topPathway="Commercial Airline"
+            topAirline="Qatar Airways"
+          />
+        )}
+        {/* Main content area - responsive margin for sidebar (removed when embedded) */}
+        <main className="flex-1 w-full min-h-screen overflow-x-hidden" style={{ marginLeft: embedded ? '0' : '340px' }}>
           <div className="max-w-[calc(100vw-360px)] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Branding */}
+        <div className="mb-4 text-center">
+          <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+            pilotcareer<span className="text-red-500">pathways</span>.com
+          </h1>
+          <p className="text-sm text-slate-400 mt-1">
+            powered by pilot<span className="text-red-500">recognition</span>.com
+          </p>
+        </div>
+
         {/* Search Bar */}
-        <div className="mb-6 flex justify-center">
+        <div className="mb-3 flex justify-center">
           <div className="w-full max-w-2xl relative">
             <SearchBar ref={searchInputRef} onSearch={setSearchQuery} isDarkMode={false} />
           </div>
+        </div>
+
+        {/* Filter Pills - Replaceable */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 px-4">
+          {!selectedPrimaryPill ? (
+            // Primary pills
+            <>
+              {[
+                { label: 'Low Timers', filter: 'low-time', key: 'low-timers' },
+                { label: "CFI's", filter: 'cfi', key: 'cfi' },
+                { label: 'Graduates', filter: 'graduate', key: 'graduates' },
+                { label: 'PPL', filter: 'ppl', key: 'ppl' },
+                { label: 'CPL', filter: 'cpl', key: 'cpl' },
+              ].map((pill) => (
+                <button
+                  key={pill.key}
+                  onClick={() => {
+                    setSelectedPrimaryPill(pill.key);
+                    setActiveSubPills([]);
+                    setSearchQuery(pill.filter);
+                    const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+                    if (searchInput) {
+                      searchInput.value = pill.label;
+                      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                  }}
+                  className="px-4 py-2 rounded-full text-sm font-medium transition-all border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/50"
+                >
+                  {pill.label}
+                </button>
+              ))}
+              <button
+                onClick={() => setShowMorePills(!showMorePills)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
+                  showMorePills
+                    ? 'border-red-500 bg-red-500 text-white hover:bg-red-600'
+                    : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/50'
+                }`}
+              >
+                {showMorePills ? 'Show Less' : 'View More'}
+              </button>
+              {showMorePills && [
+                { label: 'Type Rating', filter: 'type-rating', key: 'type-rating' },
+                { label: 'Cargo', filter: 'cargo', key: 'cargo' },
+                { label: 'Private Sector', filter: 'private', key: 'private-sector' },
+                { label: 'Airline', filter: 'airline', key: 'airline' },
+                { label: 'Military', filter: 'military', key: 'military' },
+                { label: 'Drones / eVTOL', filter: 'drone', key: 'drones' },
+              ].map((pill) => (
+                <button
+                  key={pill.key}
+                  onClick={() => {
+                    setSelectedPrimaryPill(pill.key);
+                    setActiveSubPills([]);
+                    setSearchQuery(pill.filter);
+                    const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+                    if (searchInput) {
+                      searchInput.value = pill.label;
+                      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                  }}
+                  className="px-4 py-2 rounded-full text-sm font-medium transition-all border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/50 animate-fadeIn"
+                >
+                  {pill.label}
+                </button>
+              ))}
+            </>
+          ) : (
+            // Sub pills replacing primary
+            <>
+              <button
+                onClick={() => {
+                  setSelectedPrimaryPill(null);
+                  setActiveSubPills([]);
+                  setSearchQuery('');
+                  const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+                  if (searchInput) {
+                    searchInput.value = '';
+                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  }
+                }}
+                className="px-3 py-2 rounded-full text-sm font-medium transition-all border border-slate-500/30 bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 hover:text-slate-300"
+              >
+                ← Back
+              </button>
+              {selectedPrimaryPill === 'cpl' && ['IR', 'Multi Engine', 'Single Engine', 'Seaplane', 'ATPL'].map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => {
+                    const isActive = activeSubPills.includes(sub);
+                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
+                    setActiveSubPills(newActive);
+                    setSearchQuery(`cpl ${newActive.map(s => s.toLowerCase()).join(' ')}`.trim());
+                  }}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
+                    activeSubPills.includes(sub)
+                      ? 'border-red-500 bg-red-500 text-white'
+                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
+                  }`}
+                >
+                  {sub}
+                </button>
+              ))}
+              {selectedPrimaryPill === 'ppl' && ['Recreational', 'Night Rating', 'Tailwheel', 'Aerobatic', 'Glider Towing'].map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => {
+                    const isActive = activeSubPills.includes(sub);
+                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
+                    setActiveSubPills(newActive);
+                    setSearchQuery(`ppl ${newActive.map(s => s.toLowerCase()).join(' ')}`.trim());
+                  }}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
+                    activeSubPills.includes(sub)
+                      ? 'border-red-500 bg-red-500 text-white'
+                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
+                  }`}
+                >
+                  {sub}
+                </button>
+              ))}
+              {selectedPrimaryPill === 'low-timers' && ['0-250 hrs', 'Cadet Programs', 'Flight Schools', 'Ground Crew'].map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => {
+                    const isActive = activeSubPills.includes(sub);
+                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
+                    setActiveSubPills(newActive);
+                    setSearchQuery(newActive.map(s => s.toLowerCase()).join(' ').trim() || 'low-time');
+                  }}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
+                    activeSubPills.includes(sub)
+                      ? 'border-red-500 bg-red-500 text-white'
+                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
+                  }`}
+                >
+                  {sub}
+                </button>
+              ))}
+              {selectedPrimaryPill === 'cfi' && ['CFI-I', 'MEI', 'Check Airman', 'Part 141', 'Part 61'].map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => {
+                    const isActive = activeSubPills.includes(sub);
+                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
+                    setActiveSubPills(newActive);
+                    setSearchQuery(newActive.map(s => s.toLowerCase()).join(' ').trim() || 'cfi');
+                  }}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
+                    activeSubPills.includes(sub)
+                      ? 'border-red-500 bg-red-500 text-white'
+                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
+                  }`}
+                >
+                  {sub}
+                </button>
+              ))}
+              {selectedPrimaryPill === 'graduates' && ['First Job', 'Regional', 'Corporate', 'Cargo', 'Charter'].map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => {
+                    const isActive = activeSubPills.includes(sub);
+                    const newActive = isActive ? activeSubPills.filter(s => s !== sub) : [...activeSubPills, sub];
+                    setActiveSubPills(newActive);
+                    setSearchQuery(newActive.map(s => s.toLowerCase()).join(' ').trim() || 'graduate');
+                  }}
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all border ${
+                    activeSubPills.includes(sub)
+                      ? 'border-red-500 bg-red-500 text-white'
+                      : 'border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50'
+                  }`}
+                >
+                  {sub}
+                </button>
+              ))}
+            </>
+          )}
         </div>
 
 
@@ -5464,7 +5780,8 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               .pathways-carousel::-webkit-scrollbar { display: none; }
               .pathways-carousel { -ms-overflow-style: none; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-snap-align: center; scroll-behavior: smooth; }
               .pathways-carousel > div { scroll-snap-align: center; }
-              @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+              @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+              .animate-fadeIn { animation: fadeIn 0.2s ease-out; }
             `}</style>
 
             {/* Stage 1 Carousel */}
@@ -5755,23 +6072,38 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                 setTimeout(() => selectCardAtIndex(targetIndex), 420);
               };
 
-              return (
-                <div className="flex items-center justify-center gap-4 mt-4">
-                  <button
-                    onClick={() => navigate(-1)}
-                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => navigate(1)}
-                    className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/5 text-white/80 hover:bg-white/10 hover:text-white"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-              );
+              return null;
             })()}
+          </div>
+
+          {/* Carousel Navigation Arrows - Overlaying cards */}
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
+            <button
+              onClick={() => {
+                const el = carouselRef.current;
+                if (!el) return;
+                const firstCard = el.querySelector<HTMLElement>(':scope > div');
+                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
+                el.scrollTo({ left: Math.max(0, el.scrollLeft - cardWidth), behavior: 'smooth' });
+              }}
+              className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/10 text-white hover:bg-white/20 hover:text-white shadow-lg"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 z-20">
+            <button
+              onClick={() => {
+                const el = carouselRef.current;
+                if (!el) return;
+                const firstCard = el.querySelector<HTMLElement>(':scope > div');
+                const cardWidth = firstCard ? firstCard.offsetWidth + 16 : 736;
+                el.scrollTo({ left: el.scrollLeft + cardWidth, behavior: 'smooth' });
+              }}
+              className="p-3 rounded-full border transition-all flex-shrink-0 backdrop-blur-md border-white/10 bg-white/10 text-white hover:bg-white/20 hover:text-white shadow-lg"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
 
           {/* Stage 2: Pathways Carousel - Shows when a category is selected */}
@@ -5938,7 +6270,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   // pipeline which breaks when a hierarchy pill is selected (allPathways uses categoryPathways then)
                   const discoveryKey = selectedPathwayCard.category;
                   let rawCards: PathwayJob[] = DISCOVERY_PATHWAYS[discoveryKey] || [];
-                  console.log('[Stage2 Debug] discoveryKey:', discoveryKey, 'rawCards from DISCOVERY_PATHWAYS:', rawCards.length);
+// [AUDIT] Removed console.log // line 6273
                   // Apply type-rating filter + inject matching flight schools
                   if (discoveryKey === 'type-rating') {
                     // Inject UUID licensure sub-pathway cards (they are not in DISCOVERY_PATHWAYS)
@@ -6081,7 +6413,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
                   const enterpriseForCategory = enterprisePathwayCards.filter(p => p.category === discoveryKey);
                   const allStage2 = [...enterpriseForCategory, ...stage2Cards];
                   stage2CardsRef.current = allStage2;
-                  console.log('[Stage2] discoveryKey:', discoveryKey, 'cards:', allStage2.length);
+// [AUDIT] Removed console.log // line 6416
                   return allStage2.length > 0 ? (
                   allStage2.map((pathway, idx) => {
                   const cardAirlineLogo = getAirlineLogo(pathway.airline);
@@ -7917,104 +8249,349 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       }}
     />
 
-      {/* Feedback Widget - Floating Button */}
+      {/* Align Profile Tools - Floating Button (only when logged in) */}
+      {userProfile?.id && (
       <div className="fixed bottom-6 right-6 z-50">
-        {!isFeedbackOpen ? (
+        {!isAlignProfileOpen ? (
           <button
-            onClick={() => setIsFeedbackOpen(true)}
+            onClick={() => setIsAlignProfileOpen(true)}
             className={`flex items-center gap-2 px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 ${
               isDarkMode 
-                ? 'bg-slate-800 text-white border border-slate-700 hover:bg-slate-700' 
-                : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white border border-indigo-500 hover:from-indigo-500 hover:to-violet-500' 
+                : 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white border border-indigo-500 hover:from-indigo-500 hover:to-violet-500'
             }`}
-            aria-label="Give feedback"
+            aria-label="Align your profile"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
             </svg>
-            <span className="text-sm font-medium hidden md:inline">Feedback</span>
+            <span className="text-sm font-medium hidden md:inline">Align Profile</span>
           </button>
         ) : (
-          <div className={`w-80 rounded-2xl shadow-2xl p-5 ${isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'}`}>
-            {!feedbackSubmitted ? (
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                    Help us improve
-                  </h3>
-                  <button 
-                    onClick={() => setIsFeedbackOpen(false)}
-                    className={`p-1 rounded-full hover:bg-slate-100 ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-700' : 'text-slate-500'}`}
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+          <div className={`w-96 rounded-2xl shadow-2xl p-5 ${isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'}`}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                  </svg>
                 </div>
-                
-                <p className={`text-sm mb-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                  How was your experience finding pathways?
+                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                  Align Profile Tools
+                </h3>
+              </div>
+              <button 
+                onClick={() => setIsAlignProfileOpen(false)}
+                className={`p-1 rounded-full hover:bg-slate-100 ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-700' : 'text-slate-500'}`}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            
+            {/* Engine Stats */}
+            {engineStats ? (
+              <div className={`mb-4 p-3 rounded-lg ${isDarkMode ? 'bg-slate-900/50 border border-indigo-500/30' : 'bg-indigo-50 border border-indigo-200'}`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                    ⚡ Engine Active
+                  </span>
+                  <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                    v{engineStats.algorithmVersion}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
+                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Time</span>
+                    <span className={`font-bold ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>{engineStats.lastCalculationTime}ms</span>
+                  </div>
+                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
+                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Pathways</span>
+                    <span className="font-bold text-white">{engineStats.pathwaysLoaded}</span>
+                  </div>
+                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
+                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Matches</span>
+                    <span className="font-bold text-white">{engineStats.matchesCalculated}</span>
+                  </div>
+                  <div className={`p-2 rounded ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
+                    <span className={`block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Avg Score</span>
+                    <span className={`font-bold ${engineStats.avgMatchScore >= 60 ? 'text-emerald-400' : 'text-amber-400'}`}>{engineStats.avgMatchScore}%</span>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Profile Status */}
+            <div className={`mb-4 p-3 rounded-lg ${isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
+              <div className="flex items-center justify-between mb-2">
+                <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>Profile Completion</span>
+                <span className="text-sm font-medium text-indigo-500">{profileCompletion}%</span>
+              </div>
+              <div className={`h-2 rounded-full ${isDarkMode ? 'bg-slate-600' : 'bg-slate-200'}`}>
+                <div className="h-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-500" style={{ width: `${profileCompletion}%` }} />
+              </div>
+              {engineProfile && (
+                <div className={`mt-2 text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                  {engineProfile.total_flight_hours.toLocaleString()} hrs • {engineProfile.ratings.length} ratings • {engineProfile.type_ratings.length} type ratings
+                </div>
+              )}
+            </div>
+            
+            {/* Top Pathway Matches */}
+            {alignProfileLoading ? (
+              <div className="mb-4 flex items-center justify-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500" />
+                <span className={`ml-2 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Calculating matches...</span>
+              </div>
+            ) : alignProfileMatches.length > 0 ? (
+              <div className="mb-4">
+                <p className={`text-xs font-medium uppercase tracking-wider mb-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+                  Your Top Matches
                 </p>
-                
-                {/* Star Rating */}
-                <div className="flex gap-2 mb-4">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      onClick={() => setFeedbackRating(star)}
-                      className="focus:outline-none transition-transform hover:scale-110"
+                <div className="space-y-2">
+                  {alignProfileMatches.map((match) => (
+                    <div 
+                      key={match.id}
+                      onClick={() => {
+                        setIsAlignProfileOpen(false);
+                        onNavigate?.(`/pathways-detail/${match.pathway_id}`);
+                      }}
+                      className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                        isDarkMode 
+                          ? 'bg-slate-700/30 hover:bg-slate-700/50' 
+                          : 'bg-slate-50 hover:bg-slate-100'
+                      }`}
                     >
-                      <Star 
-                        className={`w-6 h-6 ${
-                          feedbackRating && star <= feedbackRating 
-                            ? 'text-amber-400 fill-amber-400' 
-                            : isDarkMode ? 'text-slate-600' : 'text-slate-300'
-                        }`} 
-                      />
-                    </button>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${
+                            match.match_score >= 85 ? 'bg-emerald-400' :
+                            match.match_score >= 60 ? 'bg-amber-400' : 'bg-red-400'
+                          }`} />
+                          <span className={`text-sm font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>
+                            {match.pathways?.name || 'Pathway'}
+                          </span>
+                        </div>
+                        <span className={`text-sm font-bold ${
+                          match.match_score >= 85 ? 'text-emerald-400' :
+                          match.match_score >= 60 ? 'text-amber-400' : 'text-red-400'
+                        }`}>
+                          {match.match_score}%
+                        </span>
+                      </div>
+                      {match.gaps_count > 0 && (
+                        <div className={`mt-1 text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                          {match.gaps_count} gaps to close
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
-                
-                {/* Text Feedback */}
-                <textarea
-                  value={feedbackText}
-                  onChange={(e) => setFeedbackText(e.target.value)}
-                  placeholder="What can we improve? (optional)"
-                  className={`w-full p-3 rounded-lg text-sm resize-none mb-4 ${
-                    isDarkMode 
-                      ? 'bg-slate-700/50 border-slate-600 text-white placeholder-slate-500' 
-                      : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400'
-                  } border focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
-                  rows={3}
-                />
-                
-                {/* Submit Button */}
-                <button
-                  onClick={handleFeedbackSubmit}
-                  disabled={!feedbackRating}
-                  className={`w-full py-2.5 rounded-lg font-medium text-sm transition-all ${
-                    feedbackRating 
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                  }`}
-                >
-                  Send Feedback
-                </button>
-              </>
-            ) : (
-              <div className="text-center py-6">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle2 className="w-6 h-6 text-green-600" />
-                </div>
-                <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                  Thank you!
-                </p>
-                <p className={`text-sm mt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Your feedback helps us improve.
-                </p>
               </div>
-            )}
+            ) : null}
+            
+            {/* Quick Actions */}
+            <div className="space-y-2 mb-4">
+              <p className={`text-xs font-medium uppercase tracking-wider ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+                Quick Actions
+              </p>
+              
+              <button
+                onClick={() => {
+                  setIsAlignProfileOpen(false);
+                  onNavigate?.('/dashboard');
+                }}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDarkMode 
+                    ? 'bg-slate-700/50 hover:bg-slate-700 text-slate-200' 
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
+                }`}
+              >
+                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-medium text-sm">View Dashboard</div>
+                  <div className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>See your pathway matches</div>
+                </div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  setIsAlignProfileOpen(false);
+                  onNavigate?.('/profile');
+                }}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDarkMode 
+                    ? 'bg-slate-700/50 hover:bg-slate-700 text-slate-200' 
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
+                }`}
+              >
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-medium text-sm">Update Profile</div>
+                  <div className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Add hours, ratings, certificates</div>
+                </div>
+              </button>
+              
+              <button
+                onClick={() => {
+                  setIsAlignProfileOpen(false);
+                  onNavigate?.('/discover');
+                }}
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                  isDarkMode 
+                    ? 'bg-slate-700/50 hover:bg-slate-700 text-slate-200' 
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700'
+                }`}
+              >
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-medium text-sm">Discover Pathways</div>
+                  <div className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Find matching opportunities</div>
+                </div>
+              </button>
+            </div>
+            
+            {/* Recognition Score Preview */}
+            <div className={`p-3 rounded-lg border ${isDarkMode ? 'border-slate-700 bg-slate-700/30' : 'border-slate-200 bg-slate-50'}`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                  <span className={`text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>Recognition Score</span>
+                </div>
+                <span className="text-lg font-bold text-amber-400">{recognitionScore}</span>
+              </div>
+              <div className={`mt-1 text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                {recognitionScore >= 70 ? 'Excellent standing' :
+                 recognitionScore >= 50 ? 'Good progress' :
+                 'Build your profile to increase'}
+              </div>
+            </div>
           </div>
         )}
       </div>
+      )}
+
+      {/* Engine Debug Panel — Ctrl+Shift+E to toggle */}
+      {showEngineDebug && (
+        <div className="fixed top-20 right-4 z-[9998] w-80 max-h-[70vh] overflow-y-auto rounded-xl shadow-2xl border border-indigo-500/30 bg-slate-900/95 backdrop-blur-sm">
+          <div className="sticky top-0 bg-slate-900/95 border-b border-indigo-500/20 px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-sm font-semibold text-white">Engine Debug</span>
+            </div>
+            <button 
+              onClick={() => setShowEngineDebug(false)}
+              className="text-slate-400 hover:text-white"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          
+          <div className="p-4 space-y-4">
+            {/* Engine Status */}
+            <div className="space-y-2">
+              <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Status</p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className={`p-2 rounded ${engineStats ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
+                  {engineStats ? '✓ Active' : '○ Idle'}
+                </div>
+                <div className="p-2 rounded bg-slate-700/50 text-slate-300">
+                  v1.0.0-browser
+                </div>
+              </div>
+            </div>
+
+            {/* Calculation Stats */}
+            {engineStats && (
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Last Calculation</p>
+                <div className="space-y-1 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Time:</span>
+                    <span className="text-emerald-400">{engineStats.lastCalculationTime}ms</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Pathways:</span>
+                    <span className="text-white">{engineStats.pathwaysLoaded}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Matches:</span>
+                    <span className="text-white">{engineStats.matchesCalculated}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Avg Score:</span>
+                    <span className={engineStats.avgMatchScore >= 60 ? 'text-emerald-400' : 'text-amber-400'}>
+                      {engineStats.avgMatchScore}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Profile Factors */}
+            {engineStats?.profileFactors && (
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Profile Inputs</p>
+                <div className="space-y-1 text-xs">
+                  {Object.entries(engineStats.profileFactors).map(([key, value]) => (
+                    <div key={key} className="flex justify-between">
+                      <span className="text-slate-400 capitalize">{key.replace(/_/g, ' ')}:</span>
+                      <span className="text-white font-mono">{typeof value === 'number' ? value.toLocaleString() : value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Top Matches Preview */}
+            {alignProfileMatches.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Top Matches</p>
+                <div className="space-y-1">
+                  {alignProfileMatches.map((match, i) => (
+                    <div key={match.id} className="flex items-center justify-between p-2 rounded bg-slate-700/30">
+                      <span className="text-xs text-slate-300 truncate w-32">{match.pathways?.name || `Match ${i+1}`}</span>
+                      <span className={`text-xs font-bold ${
+                        match.match_score >= 85 ? 'text-emerald-400' :
+                        match.match_score >= 60 ? 'text-amber-400' : 'text-red-400'
+                      }`}>
+                        {match.match_score}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Algorithm Weights Reference */}
+            <div className="space-y-2">
+              <p className="text-xs font-medium text-indigo-400 uppercase tracking-wider">Weights</p>
+              <div className="text-xs text-slate-400 space-y-0.5">
+                <div>Hours: 35% | Medical: 20%</div>
+                <div>Ratings: 20% | English: 15%</div>
+                <div>Recognition: 10%</div>
+              </div>
+            </div>
+
+            <p className="text-[10px] text-slate-500 text-center pt-2 border-t border-slate-700">
+              Press Ctrl+Shift+E to toggle
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Article 4 — Skybridge T2 Legal Notice Modal */}
       {skybridgePendingPathway && (

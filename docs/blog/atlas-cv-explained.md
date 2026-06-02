@@ -90,11 +90,11 @@ A320 Type Rating
 ### ATLAS CV
 ```
 Commercial Pilot License — 2,500 hours
-[✓ Verified via Veremark] [Token: pr_vc_155660_cpl_2025]
+[✓ Verified via Veremark] [Token: pr_vc_REDACTED_cpl_2025]
 CAAP Class 1 Medical — Expires 2027-05-02
-[✓ Verified] [Token: pr_vc_155660_med_2025]
+[✓ Verified] [Token: pr_vc_REDACTED_med_2025]
 A320 Type Rating — Issued 2024-03-15
-[✓ Verified] [Token: pr_vc_155660_a320_2024]
+[✓ Verified] [Token: pr_vc_REDACTED_a320_2024]
 ```
 
 *Recruiter's thought: "Pre-verified. Reference tokens available. Fast-track candidate."*

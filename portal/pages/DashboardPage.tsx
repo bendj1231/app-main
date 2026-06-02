@@ -920,12 +920,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Separate useEffect for enrollment check - runs on mount and when userProfile changes
   useEffect(() => {
     const checkEnrollment = async () => {
-      console.log('🔍 Enrollment check triggered');
-      console.log('📋 userProfile:', userProfile);
-      console.log('📋 userProfile.email:', userProfile?.email);
+// [AUDIT] Removed console.log // line 923
+// [AUDIT] Removed console.log // line 924
+// [AUDIT] Removed console.log // line 925
       
       if (!userProfile?.email) {
-        console.log('⚠️ No email in userProfile, skipping enrollment check');
+// [AUDIT] Removed console.log // line 928
         setIsFoundationalEnrolled(false);
         return;
       }
@@ -933,12 +933,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       // First check if enrolled_programs is already in userProfile
       if (userProfile?.enrolledPrograms && Array.isArray(userProfile.enrolledPrograms)) {
         const isEnrolled = userProfile.enrolledPrograms.includes('Foundational');
-        console.log('✅ Using cached enrolled_programs from userProfile:', isEnrolled);
+// [AUDIT] Removed console.log // line 936
         setIsFoundationalEnrolled(isEnrolled);
         return;
       }
 
-      console.log('🔍 Checking enrollment status for email:', userProfile.email);
+// [AUDIT] Removed console.log // line 941
       
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
@@ -946,31 +946,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         .eq('email', userProfile.email)
         .single();
       
-      console.log('📊 Profile lookup result:', { profileData, profileError });
+// [AUDIT] Removed console.log // line 949
       
       if (profileError) {
         console.error('❌ Profile lookup error:', profileError);
         setIsFoundationalEnrolled(false);
       } else if (profileData && profileData.enrolled_programs) {
         const enrolledPrograms = profileData.enrolled_programs;
-        console.log('📋 Enrolled programs found:', enrolledPrograms);
-        console.log('📋 Enrolled programs type:', typeof enrolledPrograms);
+// [AUDIT] Removed console.log // line 956
+// [AUDIT] Removed console.log // line 957
         
         if (Array.isArray(enrolledPrograms)) {
           const hasMentorship = enrolledPrograms.some((p: string) => 
             p.toLowerCase().includes('mentor') || p.toLowerCase().includes('mentorship')
           );
-          console.log('🔍 Mentorship check:', hasMentorship);
+// [AUDIT] Removed console.log // line 963
           
           const hasFoundational = enrolledPrograms.some((p: string) => 
             p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')
           );
-          console.log('🔍 Foundational check:', hasFoundational);
-          console.log('✅ Setting isFoundationalEnrolled to:', hasFoundational);
+// [AUDIT] Removed console.log // line 968
+// [AUDIT] Removed console.log // line 969
           setIsFoundationalEnrolled(hasFoundational);
           
           if (hasMentorship) {
-            console.log('✅ Setting mentorshipEnrolled to TRUE');
+// [AUDIT] Removed console.log // line 973
             setMentorshipEnrolled(true);
           }
         } else {
@@ -978,7 +978,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           setIsFoundationalEnrolled(false);
         }
       } else {
-        console.log('⚠️ No enrolled_programs data found, profileData:', profileData);
+// [AUDIT] Removed console.log // line 981
         setIsFoundationalEnrolled(false);
       }
     };
@@ -1649,7 +1649,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Examination Portal Access Card - Black */}
                 <div
                   onClick={() => {
-                    console.log('Card clicked, onViewExaminationPortal:', onViewExaminationPortal);
+// [AUDIT] Removed console.log // line 1652
                     onViewExaminationPortal?.();
                   }}
                   style={{
@@ -1702,7 +1702,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log('Access Portal clicked, onViewExaminationPortal:', onViewExaminationPortal);
+// [AUDIT] Removed console.log // line 1705
                       onViewExaminationPortal?.();
                     }}
                     onMouseEnter={(e) => {

@@ -517,7 +517,7 @@ async function handleLicenseCheckComplete(payload) {
   }
   
   // Log for audit
-  console.log(\`License check completed for pilot \${pilotId}: \${result.overall_status}\`);
+// [AUDIT] Removed console.log // line 520
 }
 
 async function handleEducationCheckComplete(payload) {

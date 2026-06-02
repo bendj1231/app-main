@@ -45,30 +45,30 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
     let mounted = true;
 
     const loadImage = async () => {
-      console.log('[ProfileImage] loadImage — url:', url, '| publicId:', publicId);
+// [AUDIT] Removed console.log // line 48
       if (!url) {
-        console.log('[ProfileImage] no url, showing initials');
+// [AUDIT] Removed console.log // line 50
         setImageUrl('');
         return;
       }
 
       // If it's already a blob URL, use it directly
       if (url.startsWith('blob:')) {
-        console.log('[ProfileImage] blob url, using directly');
+// [AUDIT] Removed console.log // line 57
         setImageUrl(url);
         return;
       }
 
       // Optimize the URL
       const optimizedUrl = getProfileImageUrl(url);
-      console.log('[ProfileImage] optimizedUrl:', optimizedUrl);
+// [AUDIT] Removed console.log // line 64
 
       // If we have a public_id, use IndexedDB caching
       if (publicId) {
         setIsLoading(true);
         try {
           const cachedUrl = await getCachedProfileImage(optimizedUrl, publicId);
-          console.log('[ProfileImage] cache result — blob/url length:', cachedUrl?.length, '| starts with blob:', cachedUrl?.startsWith('blob:'));
+// [AUDIT] Removed console.log // line 71
           if (mounted) {
             setImageUrl(cachedUrl);
           }
@@ -84,7 +84,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
         }
       } else {
         // No public_id available, use optimized URL directly
-        console.log('[ProfileImage] no publicId, using optimized URL directly');
+// [AUDIT] Removed console.log // line 87
         setImageUrl(optimizedUrl);
       }
     };

@@ -79,7 +79,7 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                 <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
                     Terms of Service and Privacy Agreement
                 </h1>
-                <p className="text-sm text-slate-500 mb-2">Last updated: May 21, 2026</p>
+                <p className="text-sm text-slate-500 mb-2">Last updated: June 2, 2026 (origin_jurisdiction implementation, Section 13.3)</p>
                 <p className="text-sm text-slate-500 mb-1">Governing Jurisdiction: Republic of Singapore</p>
                 <p className="text-sm text-slate-500 mb-1">Statutory Baseline: Personal Data Protection Act 2012 (PDPA) · Electronic Transactions Act (Cap. 88)</p>
                 {!loading && (
@@ -1243,10 +1243,19 @@ export default function TermsOfServicePage({ onBack, onNavigate, onLogin }: Term
                                 <p className="text-emerald-800 text-xs font-bold uppercase tracking-wide mb-1">Regulatory Arbitrage Prevention — Compliance Shield</p>
                                 <p className="text-emerald-900 text-xs leading-relaxed">This protocol closes the loophole where a User could register under a less restrictive jurisdiction and subsequently attempt to operate within a stricter one (e.g., Singapore PDPA zone) while still holding a compliance token issued under the original lax module. The re-attestation burden is borne exclusively by the User as Sovereign Data Controller — not the Platform Operator.</p>
                             </div>
+                            <div className="border-l-4 border-blue-500 bg-blue-50 rounded-r-xl px-4 py-3 mb-3">
+                                <p className="text-blue-800 text-xs font-bold uppercase tracking-wide mb-1">Implementation Status — ToS Section 13.3 (Effective June 2, 2026)</p>
+                                <p className="text-blue-900 text-xs leading-relaxed">
+                                    The <code className="bg-blue-100 px-1 rounded">origin_jurisdiction</code> column has been added to the profiles database schema with database-level 
+                                    immutability enforcement (PostgreSQL trigger). The IP geofencing middleware resolves jurisdiction via edge network headers 
+                                    (CF-IPCountry) or IP-to-location mapping at account creation. Compliance modules are dynamically selected based on resolved jurisdiction.
+                                </p>
+                            </div>
                             <div className="space-y-1 text-xs text-slate-600">
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Origin jurisdiction tag persisted against UUIDv4 at provisioning — immutable without re-attestation</span></div>
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>IP-origin drift triggers automated token invalidation and decentralized container re-verification sequence</span></div>
                                 <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Re-attestation event logged with timestamp — provides regulator-accessible compliance audit trail</span></div>
+                                <div className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Database-level immutability trigger prevents origin_jurisdiction modification post-provisioning</span></div>
                                 <div className="flex gap-2"><span className="text-red-500 font-bold">✗</span><span>Platform Operator does not bear re-attestation burden — responsibility transitions entirely to the User (Sovereign Controller) per Section 17.1</span></div>
                             </div>
                         </div>

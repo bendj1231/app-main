@@ -631,11 +631,21 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [activeProductTab, setActiveProductTab] = useState<'programs' | 'pathways' | 'profile'>('pathways');
     const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
     const [activeBillboardSlide, setActiveBillboardSlide] = useState(0);
+    const [platformImageIndex, setPlatformImageIndex] = useState(0);
+    const platformImages = ['/typeratingsearch.png', '/AE.png', '/DP.png'];
 
     // Auto-advance news feed carousel every 5 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setActiveBillboardSlide(prev => (prev + 1) % 5);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Auto-shuffle platform images every 5 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPlatformImageIndex(prev => (prev + 1) % platformImages.length);
         }, 5000);
         return () => clearInterval(interval);
     }, []);
@@ -1201,12 +1211,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {deviceTier === 'low' ? (
                     // Lazy load PathwayGrid for low-end devices
                     <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading...</div>}>
-                        <div ref={pathwayGridRef} className="relative z-0 pt-8">
+                        <div ref={pathwayGridRef} className="relative z-0 pt-16">
                             <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                         </div>
                     </React.Suspense>
                 ) : (
-                    <div ref={pathwayGridRef} className="relative z-0 pt-8">
+                    <div ref={pathwayGridRef} className="relative z-0 pt-16">
                         <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                     </div>
                 )}
@@ -1426,65 +1436,21 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="max-w-7xl mx-auto">
                     {/* Section Header - Centered */}
                     <div className="mb-6 text-center">
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-red-500">Pathways</span></h2>
-                        <p className="text-slate-600 text-sm md:text-base">Explore career opportunities matched to your Recognition Profile</p>
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-red-500">Connected Platforms</span></h2>
+                        <p className="text-slate-600 text-sm md:text-base">One profile across three platforms</p>
                     </div>
 
                     {/* Three Cards Grid - Portal Pathways Style */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto pb-8">
-                        {/* Card 1 - Type Rating Search */}
+                        {/* Card 1 - Pilot Terminal */}
                         <div
-                            onClick={() => onNavigate?.('type-rating-search')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
-                        >
-                            {/* Full Background Image */}
-                            <img
-                                src="/typeratingsearch.png"
-                                alt="Type Ratings Background"
-                                className="absolute inset-0 w-full h-full object-cover"
-                            />
-
-                            {/* Content */}
-                            <div className="relative z-10 flex flex-col h-full">
-                                {/* Bottom Text Bar */}
-                                <div className="mt-auto bg-black/90 px-4 py-4">
-                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Type Rating <span className="text-red-500">Search</span></h4>
-                                    <p className="text-slate-400 text-xs mt-1">Explore type ratings and certifications</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Card 2 - Airline Expectations */}
-                        <div
-                            onClick={() => onNavigate?.('airline-expectations')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
-                        >
-                            {/* Full Background Image */}
-                            <img
-                                src="/AE.png"
-                                alt="Airline Expectations Background"
-                                className="absolute inset-0 w-full h-full object-cover"
-                            />
-
-                            {/* Content */}
-                            <div className="relative z-10 flex flex-col h-full">
-                                {/* Bottom Text Bar */}
-                                <div className="mt-auto bg-black/90 px-4 py-4">
-                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Airline <span className="text-red-500">Expectations</span></h4>
-                                    <p className="text-slate-400 text-xs mt-1">Discover what airlines want</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Card 3 - Pilot Career Pathways */}
-                        <div
-                            onClick={() => onNavigate?.('discover-pathways')}
+                            onClick={() => window.open('https://pilotterminal.com', '_blank')}
                             className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
                             <img
-                                src="/DP.png"
-                                alt="Career Pathways Background"
+                                src="/terminal1.png"
+                                alt="Pilot Terminal Background"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
 
@@ -1492,8 +1458,59 @@ export const HomePage: React.FC<HomePageProps> = ({
                             <div className="relative z-10 flex flex-col h-full">
                                 {/* Bottom Text Bar */}
                                 <div className="mt-auto bg-black/90 px-4 py-4">
-                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Pilot Career <span className="text-red-500">Pathways</span></h4>
-                                    <p className="text-slate-400 text-xs mt-1">Explore all career opportunities</p>
+                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">pilot <span className="text-red-500">terminal</span></h4>
+                                    <p className="text-slate-400 text-xs mt-1">Professional pilot network and flight deck tools</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card 2 - Pilot Shortage */}
+                        <div
+                            onClick={() => window.open('https://pilotshortage.org', '_blank')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                        >
+                            {/* Full Background Image */}
+                            <img
+                                src="/shortage1.png"
+                                alt="Pilot Shortage Background"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-black/90 px-4 py-4">
+                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">pilot<span className="text-red-500">shortage</span>.org</h4>
+                                    <p className="text-slate-400 text-xs mt-1">Global pilot shortage analytics and industry insights</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card 3 - Pilot Pathways */}
+                        <div
+                            onClick={() => onNavigate?.('discover-pathways')}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                        >
+                            {/* Shuffling Background Images */}
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={platformImageIndex}
+                                    src={platformImages[platformImageIndex]}
+                                    alt="Pilot Pathways Background"
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                    initial={{ opacity: 0, scale: 1.05 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                                />
+                            </AnimatePresence>
+
+                            {/* Content */}
+                            <div className="relative z-10 flex flex-col h-full">
+                                {/* Bottom Text Bar */}
+                                <div className="mt-auto bg-black/90 px-4 py-4">
+                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">pilot <span className="text-red-500">pathways</span></h4>
+                                    <p className="text-slate-400 text-xs mt-1">Career pathways from student to captain</p>
                                 </div>
                             </div>
                         </div>

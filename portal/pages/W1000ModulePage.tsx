@@ -93,7 +93,7 @@ export const W1000ModulePage: React.FC<W1000ModulePageProps> = ({ onBack, onLogo
                                 <p className="text-sm text-slate-500 mb-6">Launch the G1000-inspired environment with full avionics suite, simulator room, and black box directory.</p>
                                 <button 
                                     onClick={() => {
-                                        console.log('[DEBUG W1000ModulePage] Launch button clicked, onLaunchW1000:', onLaunchW1000);
+// [AUDIT] Removed console.log // line 96
                                         onLaunchW1000?.();
                                     }}
                                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all"

@@ -15,7 +15,7 @@ export const WalletPageWithSidebar: React.FC<WalletPageWithSidebarProps> = ({ us
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // DEBUG
-  console.log('[WalletPageWithSidebar] RENDER:', { userId, activeSection, sidebarCollapsed, noSidebar });
+// [AUDIT] Removed console.log // line 18
 
   // Tab definitions for internal navigation (used when noSidebar=true)
   const tabButtons = (

@@ -7,12 +7,12 @@ interface EnrollmentEmailPayload {
 
 export const sendEnrollmentConfirmationEmail = async ({ email, name }: EnrollmentEmailPayload) => {
   try {
-    console.log('📧 Sending enrollment confirmation to:', email);
+// [AUDIT] Removed console.log // line 10
 
     const displayName = name || email.split('@')[0];
 
     // Use Edge Function with Resend API only - no fallbacks to Supabase
-    console.log('📧 Using Edge Function for email sending...');
+// [AUDIT] Removed console.log // line 15
     const { data, error } = await supabase.functions.invoke('send-enrollment-email', {
       body: {
         email,
@@ -24,9 +24,9 @@ export const sendEnrollmentConfirmationEmail = async ({ email, name }: Enrollmen
 
     if (error) {
       console.error('❌ Edge Function error:', error);
-      console.log('⚠️ Enrollment email failed to send via Resend');
+// [AUDIT] Removed console.log // line 27
     } else {
-      console.log('✅ Email sent via Edge Function:', data);
+// [AUDIT] Removed console.log // line 29
       await storeEmailNotification(email, displayName, 'edge-function');
       await storeCustomEmailTemplate(email, displayName);
     }
@@ -147,7 +147,7 @@ const storeCustomEmailTemplate = async (email: string, displayName: string) => {
     if (templateError) {
       console.warn('⚠️ Could not store custom template:', templateError);
     } else {
-      console.log('✅ Custom email template stored for reference');
+// [AUDIT] Removed console.log // line 150
     }
   } catch (error) {
     console.warn('⚠️ Error storing custom template:', error);
@@ -189,7 +189,7 @@ const storeEmailNotification = async (email: string, displayName: string, method
       if (notificationError) {
         console.warn('⚠️ Could not store notification:', notificationError);
       } else {
-        console.log('✅ Email notification stored in database');
+// [AUDIT] Removed console.log // line 192
       }
     }
   } catch (error) {

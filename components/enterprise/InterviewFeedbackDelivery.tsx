@@ -203,8 +203,8 @@ export function InterviewFeedbackDelivery({
       // - SendGrid API
       // - Supabase Auth email
 
-      console.log('Sending email notification to:', pilotEmail);
-      console.log('Feedback ID:', feedback.id);
+// [AUDIT] Removed console.log // line 206
+// [AUDIT] Removed console.log // line 207
 
       // Simulate email send
       await new Promise(resolve => setTimeout(resolve, 1000));

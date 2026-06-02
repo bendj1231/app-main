@@ -164,7 +164,7 @@ class PerformanceMonitor {
     // This will be connected to the analytics module
     // For now, just log to console
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[PerformanceMonitor] ${category}:`, data);
+// [AUDIT] Removed console.log // line 167
     }
   }
 

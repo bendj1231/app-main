@@ -6,6 +6,7 @@ import { useAuth } from '../../../src/contexts/AuthContext';
 
 const navSections = [
   { id: 'document-information', label: 'Document Information', group: 'doc', standalone: true },
+  { id: 'technical-architecture', label: '📋 Technical Architecture', group: 'tech', standalone: true, external: '/technical-architecture' },
 
   { id: 'pillar-foundation-program', label: 'Hub F — Foundation & Vision', group: 'hubf' },
   { id: '', label: 'Vision Layer', indent: true, group: 'hubf', subheader: true },
@@ -33,6 +34,19 @@ const navSections = [
   { id: 'pillar-ai-matching', label: 'Pillar: AI & Matching Engine', indent: true, group: 'hubd', adminOnly: true },
   { id: 'pillar-data-privacy', label: 'Pillar: Data Privacy & Consent Layer', indent: true, group: 'hubd', adminOnly: true },
   { id: 'pillar-third-party-vault', label: 'Pillar: Third-Party Data Integration Provider', indent: true, group: 'hubd', adminOnly: true },
+
+  { id: 'hub-t-technical', label: 'Hub T — Technical Architecture', group: 'hubt' },
+  { id: '', label: 'Platform Infrastructure', indent: true, group: 'hubt', subheader: true },
+  { id: 'technical-multi-domain', label: 'Multi-Domain Architecture', indent: true, group: 'hubt' },
+  { id: 'technical-domain-routing', label: 'Domain Routing & Detection', indent: true, group: 'hubt' },
+  { id: '', label: 'Digital Identity & Wallet', indent: true, group: 'hubt', subheader: true },
+  { id: 'technical-wallet-architecture', label: 'Wallet System Architecture', indent: true, group: 'hubt' },
+  { id: 'technical-credential-issuance', label: 'Credential Issuance Flow', indent: true, group: 'hubt' },
+  { id: 'technical-status-list', label: 'Credential Status Management', indent: true, group: 'hubt' },
+  { id: '', label: 'Data & Security', indent: true, group: 'hubt', subheader: true },
+  { id: 'technical-data-custody', label: 'Data Custody Model', indent: true, group: 'hubt' },
+  { id: 'technical-enclave-security', label: 'Secure Enclave Architecture', indent: true, group: 'hubt' },
+  { id: 'technical-key-management', label: 'Key Management & Rotation', indent: true, group: 'hubt' },
 
   { id: 'part-ii-hub-a', label: 'Hub A — Aviation Operators & Training', group: 'huba' },
   { id: '', label: 'Training Organizations', indent: true, group: 'huba', subheader: true },
@@ -71,6 +85,14 @@ const navSections = [
   { id: 'pillar-financial-chain', label: 'Example: Financial Chain', indent: true, group: 'hubg', adminOnly: true },
   { id: 'pillar-verification-depth', label: 'Verification Depth Indicator', indent: true, group: 'hubg', adminOnly: true },
 
+  { id: 'hub-h-revenue', label: 'Hub H — Revenue Architecture [ADMIN ONLY]', group: 'hubh', adminOnly: true },
+  { id: 'pillar-26-revenue', label: 'Pillar 26: Revenue & Monetization', indent: true, group: 'hubh', adminOnly: true },
+  { id: 'revenue-year1-projection', label: 'Year 1: $150-250K (Validation)', indent: true, group: 'hubh', adminOnly: true },
+  { id: 'revenue-year2-projection', label: 'Year 2: $600K-1.2M (Break-even)', indent: true, group: 'hubh', adminOnly: true },
+  { id: 'revenue-year3-projection', label: 'Year 3: $2-5M (Profitability)', indent: true, group: 'hubh', adminOnly: true },
+  { id: 'revenue-cost-structure', label: 'Cost Structure & 80% Margins', indent: true, group: 'hubh', adminOnly: true },
+  { id: 'revenue-gtm-strategy', label: 'Go-to-Market Strategy', indent: true, group: 'hubh', adminOnly: true },
+
   { id: 'future-prospects', label: 'Future Prospects', group: 'prospects', adminOnly: true },
   { id: 'prospect-flywire', label: 'Flywire — Cross-Border Payments', indent: true, group: 'prospects', adminOnly: true },
   { id: 'pillar-pilot-identity-infrastructure', label: 'Pillar: Shaping Pilot Digital Identity', indent: true, group: 'prospects', adminOnly: true },
@@ -106,7 +128,7 @@ export default function UCFOfficialReleasePage() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({
-    hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true, prospects: true,
+    doc: false, tech: false, hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true, prospects: true,
   });
   const toggleGroup = (group: string) => setCollapsedGroups(prev => ({ ...prev, [group]: !prev[group] }));
   const [showLoginForm, setShowLoginForm] = useState(false);
@@ -263,6 +285,23 @@ export default function UCFOfficialReleasePage() {
                 );
               }
               if (s.indent && isCollapsed) return null;
+              // Handle external links
+              if (s.external) {
+                return (
+                  <Link
+                    key={s.id}
+                    to={s.external}
+                    onClick={() => setSidebarOpen(false)}
+                    className="w-full text-left px-2 py-1.5 rounded-lg text-xs font-semibold text-slate-900 bg-slate-100 hover:bg-red-50 hover:text-red-700 transition-colors flex items-center justify-between gap-1 border border-slate-200"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-red-500 flex-shrink-0">📋</span>
+                      <span className="leading-tight">{s.label}</span>
+                    </div>
+                    <span className="text-slate-400 text-[10px] flex-shrink-0">↗</span>
+                  </Link>
+                );
+              }
               return isParent ? (
                 <button
                   key={s.id}
@@ -8511,7 +8550,7 @@ export default function UCFOfficialReleasePage() {
               },
               {
                 n: '4', title: 'Binary Proof Tokens Only — No Personal Data Strings', color: '#fbbf24',
-                body: 'Cryptographic tokens containing personal data strings (e.g. "CAAP License 155660-CPL, valid until Oct 2030") are Pseudonymised Personal Data under GDPR and RA 10173 — not anonymous. The token architecture must expose only binary proofs: is_license_valid = TRUE, is_medical_current = FALSE, training_hours_confirmed = TRUE. The underlying personal data remains exclusively with Veremark and infrastructure partners. PilotRecognition passes the proof, not the record.',
+                body: 'Cryptographic tokens containing personal data strings (e.g. "CAAP License REDACTED-CPL, valid until Oct 2030") are Pseudonymised Personal Data under GDPR and RA 10173 — not anonymous. The token architecture must expose only binary proofs: is_license_valid = TRUE, is_medical_current = FALSE, training_hours_confirmed = TRUE. The underlying personal data remains exclusively with Veremark and infrastructure partners. PilotRecognition passes the proof, not the record.',
               },
               {
                 n: '5', title: 'Token Soulbound Architecture — Non-Transferable, Non-Financial, Utility-Only', color: '#a78bfa',

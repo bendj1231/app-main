@@ -65,7 +65,7 @@ class WebVitalsTracker {
     onTTFB((metric) => this.handleMetric(metric));
 
     this.initialized = true;
-    console.log('[WebVitals] Tracker initialized');
+// [AUDIT] Removed console.log // line 68
   }
 
   private handleMetric(metric: any): void {
@@ -85,7 +85,7 @@ class WebVitalsTracker {
 
     // Log in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[WebVitals] ${metric.name}:`, {
+// [AUDIT] Removed console.log // line 88
         value: metric.value,
         rating: metric.rating,
         delta: metric.delta

@@ -61,7 +61,7 @@ export const MentorshipLogbook: React.FC = () => {
                 if (supabaseError) {
                     console.error('Supabase sync error (non-critical):', supabaseError);
                 } else {
-                    console.log('✅ Mentorship log synced to Supabase');
+// [AUDIT] Removed console.log // line 64
                 }
             }
 

@@ -160,7 +160,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const resetTimer = () => {
             if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
             idleTimerRef.current = setTimeout(() => {
-                console.log('[session] Idle timeout — auto-logout triggered');
+// [AUDIT] Removed console.log // line 163
                 clearVaultKey();
                 logoutRef.current?.();
             }, IDLE_TIMEOUT_MS);
@@ -215,7 +215,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     if (!session?.access_token) return;
                     try {
                         const key = await getVaultKey(auth0User.sub!, session.access_token);
-                        console.log('[vault] Key ready — checking for plaintext records');
+// [AUDIT] Removed console.log // line 218
 
                         const userId = session.user?.id || auth0User.sub!;
                         const VAULT_PREFIX = '{"iv":"';
@@ -229,20 +229,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         const { data: profile } = await supabase
                             .from('profiles').select('*').eq('id', userId).maybeSingle();
                         if (profile && needsReEncrypt(profile, PROFILE_SENSITIVE_FIELDS)) {
-                            console.log('[vault] Re-encrypting profile for', userId);
+// [AUDIT] Removed console.log // line 232
                             const enc = await encryptFields(profile, PROFILE_SENSITIVE_FIELDS as any, key);
                             await supabase.from('profiles').update(enc).eq('id', userId);
-                            console.log('[vault] ✅ Profile re-encrypted');
+// [AUDIT] Removed console.log // line 235
                         }
 
                         // Re-encrypt pilot_licensure_experience if any sensitive field is plaintext
                         const { data: lic } = await supabase
                             .from('pilot_licensure_experience').select('*').eq('user_id', userId).maybeSingle();
                         if (lic && needsReEncrypt(lic, PILOT_LICENSURE_SENSITIVE_FIELDS)) {
-                            console.log('[vault] Re-encrypting licensure for', userId);
+// [AUDIT] Removed console.log // line 242
                             const enc = await encryptFields(lic, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
                             await supabase.from('pilot_licensure_experience').update(enc).eq('user_id', userId);
-                            console.log('[vault] ✅ Licensure re-encrypted');
+// [AUDIT] Removed console.log // line 245
                         }
                     } catch (err: any) {
                         console.warn('[vault] Init/re-encrypt failed (non-critical):', err.message);
@@ -307,8 +307,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [signupInProgress, setSignupInProgress] = useState(false);
 
     async function signup(email: string, password: string, userData: any) {
-        console.log('🔵 Starting signup process for:', email);
-        console.log('🔵 User data:', userData);
+// [AUDIT] Removed console.log // line 310
+// [AUDIT] Removed console.log // line 311
         setSignupInProgress(true);
 
         try {
@@ -318,10 +318,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             // Skip Edge Function to avoid rate limiting (429 errors) - use direct Supabase auth
             try {
-                console.log('🔵 Skipping Edge Function, using direct Supabase auth to avoid rate limiting...');
+// [AUDIT] Removed console.log // line 321
                 throw new Error('SKIP_EDGE_FUNCTION');
             } catch (edgeFunctionError) {
-                console.log('🔵 Using direct Supabase auth as fallback...');
+// [AUDIT] Removed console.log // line 324
                 
                 // Fallback to direct Supabase auth (original logic)
                 const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
@@ -337,7 +337,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                 if (supabaseError) {
                     if (supabaseError.message.includes('already registered') || supabaseError.message === 'User already registered') {
-                        console.log('User already exists in auth, attempting to sign in...');
+// [AUDIT] Removed console.log // line 340
                         userAlreadyExisted = true;
                     
                         const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
@@ -355,10 +355,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         }
                         
                         userId = signInData.user.id;
-                        console.log('✅ Found existing auth user via sign in:', userId);
+// [AUDIT] Removed console.log // line 358
                         
                         if (!signInData.user.email_confirmed_at) {
-                            console.log('User email not confirmed, sending confirmation email...');
+// [AUDIT] Removed console.log // line 361
                             const { error: resendError } = await supabase.auth.resend({
                                 type: 'signup',
                                 email
@@ -366,7 +366,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             if (resendError) {
                                 console.warn('⚠️ Failed to resend confirmation email:', resendError);
                             } else {
-                                console.log('✅ Confirmation email sent');
+// [AUDIT] Removed console.log // line 369
                             }
                         }
                     } else {
@@ -379,11 +379,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     }
 
                     userId = supabaseData.user.id;
-                    console.log('✅ Supabase auth user created:', userId);
+// [AUDIT] Removed console.log // line 382
                 }
             }
 
-        console.log('🔵 Step 2: Creating portal profile...');
+// [AUDIT] Removed console.log // line 386
 
         // Acquire vault key for this session (non-blocking, falls back gracefully)
         let vaultKey: CryptoKey | null = null;
@@ -392,7 +392,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const sub = auth0User?.sub || userId;
             if (session?.access_token && sub) {
                 vaultKey = await getVaultKey(sub, session.access_token);
-                console.log('[vault] Key acquired for signup encryption');
+// [AUDIT] Removed console.log // line 395
             }
         } catch (vaultErr: any) {
             console.warn('[vault] Key unavailable during signup, writing plaintext:', vaultErr.message);
@@ -400,7 +400,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Step 2: Create or update portal profile in profiles table
         try {
-            console.log('🔵 Step 2: Creating portal profile...');
+// [AUDIT] Removed console.log // line 403
             
             // First check if profile already exists
             const { data: existingProfile, error: checkError } = await supabase
@@ -416,7 +416,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
             
             if (existingProfile) {
-                console.log('⚠️ Profile already exists for user, updating...');
+// [AUDIT] Removed console.log // line 419
                 // Profile exists, update
                 const rawUpdatePayload = {
                         display_name: userData.fullName || email.split('@')[0],
@@ -461,7 +461,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
             } else {
                 // Profile doesn't exist, create it
-                console.log('Creating new profile...');
+// [AUDIT] Removed console.log // line 464
                 const experienceLevel = (() => {
                     const hours = parseInt(userData.currentFlightHours || '0', 10);
                     if (hours < 500) return 'Low Timer';
@@ -469,7 +469,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     return 'High Timer';
                 })();
 
-                console.log('🔵 Experience level:', experienceLevel);
+// [AUDIT] Removed console.log // line 472
 
                 // Auto-generate PR pilot ID: PR0003, PR0004, etc.
                 let autoPilotId = userData.pilotId || null;
@@ -480,7 +480,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             .select('id', { count: 'exact', head: true });
                         const nextNum = (count ?? 2) + 1;
                         autoPilotId = `PR${String(nextNum).padStart(4, '0')}`;
-                        console.log('✅ Auto-generated pilot ID:', autoPilotId);
+// [AUDIT] Removed console.log // line 483
                     } catch {
                         console.warn('⚠️ Could not generate pilot ID');
                     }
@@ -533,9 +533,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     throw new Error(`Failed to create portal profile: ${profileError.message}`);
                 }
                 
-                console.log('✅ Portal profile created:', userId);
+// [AUDIT] Removed console.log // line 536
 
-                // Provision walt.id wallet in background (non-blocking)
+                // Provision Pilot Wallet in background (non-blocking)
                 try {
                     const { data: { session: currentSession } } = await supabase.auth.getSession();
                     if (currentSession?.access_token) {
@@ -553,9 +553,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                 name: userData.fullName || email.split('@')[0],
                             }),
                         }).then(r => r.json()).then(d => {
-                            if (d.success) console.log('✅ Walt.id wallet provisioned:', d.walletId);
-                            else console.warn('⚠️ Walt.id wallet provision skipped (wallet API offline):', d.error);
-                        }).catch(e => console.warn('⚠️ Walt.id wallet provision failed (non-critical):', e));
+                            if (d.success) console.log('✅ Pilot Wallet provisioned:', d.walletId);
+                            else console.warn('⚠️ Pilot Wallet provision skipped (wallet API offline):', d.error);
+                        }).catch(e => console.warn('⚠️ Pilot Wallet provision failed (non-critical):', e));
                     }
                 } catch (walletErr) {
                     console.warn('⚠️ Wallet provision non-critical error:', walletErr);
@@ -617,14 +617,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     }).catch(() => {});
                 } catch {}
 
-                console.log('🔵 Profile created successfully. Proceeding to next step...');
+// [AUDIT] Removed console.log // line 620
             }
         } catch (profileError) {
             console.error('❌ Failed to create profile:', profileError);
             throw profileError;
         }
 
-        console.log('🔵 Step 3: Creating app access records...');
+// [AUDIT] Removed console.log // line 627
 
         // Step 3: Create app access records (ignore if already exist)
         try {
@@ -651,14 +651,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (accessError) {
                 // If records already exist, it's not a critical error
                 if (accessError.code === '23505') {
-                    console.log('App access records already exist, skipping...');
+// [AUDIT] Removed console.log // line 654
                 } else {
                     console.error('App access creation error:', accessError);
                     throw new Error(`Failed to create app access: ${accessError.message}`);
                 }
             }
 
-            console.log('✅ App access records created/verified:', userId);
+// [AUDIT] Removed console.log // line 661
         } catch (accessError) {
             console.error('Failed to create app access:', accessError);
             throw accessError;
@@ -770,7 +770,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 throw new Error(`Failed to sync to pilot table: ${pilotTableError.message}`);
             }
 
-            console.log('✅ Pilot data synced to pilot_licensure_experience table');
+// [AUDIT] Removed console.log // line 773
         } catch (pilotTableError) {
             console.error('Failed to sync to pilot table:', pilotTableError);
             throw pilotTableError;
@@ -779,7 +779,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Step 8: Send account creation email via Resend
         try {
             const displayName = userData.fullName || email.split('@')[0];
-            console.log('📧 Attempting to send account creation email to:', email, 'with name:', displayName);
+// [AUDIT] Removed console.log // line 782
             
             const { data, error } = await supabase.functions.invoke('send-account-created-email', {
                 body: {
@@ -789,13 +789,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 headers: getAuthHeaders()
             });
             
-            console.log('📧 Email function response - data:', data, 'error:', error);
+// [AUDIT] Removed console.log // line 792
             
             if (error) {
                 console.error('❌ Account creation email error:', error);
-                console.log('⚠️ Account creation email failed to send via Resend');
+// [AUDIT] Removed console.log // line 796
             } else {
-                console.log('✅ Account creation email sent via Resend to:', email);
+// [AUDIT] Removed console.log // line 798
             }
         } catch (emailError) {
             console.error("❌ Error sending account creation email:", emailError);
@@ -811,7 +811,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     .replace(/\//g, '-')
                     .replace(/\./g, '_');
 
-                console.log('✅ Roster entry would be created:', safeId);
+// [AUDIT] Removed console.log // line 814
                 // Note: Roster entry creation removed as it was Firebase-specific
             } catch (error) {
                 console.error("Error with roster entry:", error);
@@ -819,7 +819,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
         }
 
-        console.log('🎉 Signup completed successfully for user:', userId);
+// [AUDIT] Removed console.log // line 822
         } finally {
             setSignupInProgress(false);
         }
@@ -845,7 +845,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             // Clear explicit logout flag on successful login
             setExplicitLogoutInStorage(false);
 
-            console.log("User signed in via Supabase:", data.user.id);
+// [AUDIT] Removed console.log // line 848
 
             // Log login activity
             await logLogin(data.user.id);
@@ -869,7 +869,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             // Fetch user profile from Supabase
             try {
-                console.log("Fetching user profile from Supabase for:", data.user.id);
+// [AUDIT] Removed console.log // line 872
                 const { data: profileData, error: profileError } = await supabase
                     .from('profiles')
                     .select('*')
@@ -877,10 +877,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     .maybeSingle();
 
                 if (profileData && !profileError) {
-                    console.log("✅ User profile fetched from profiles table:", data.user.id);
+// [AUDIT] Removed console.log // line 880
                     await decryptAndSetUserProfile(profileData);
                 } else {
-                    console.log("⚠️ No user profile found in profiles table for:", data.user.id);
+// [AUDIT] Removed console.log // line 883
                     // Try pilot_licensure_experience as fallback
                     const { data: pilotData, error: pilotError } = await supabase
                         .from('pilot_licensure_experience')
@@ -889,10 +889,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         .maybeSingle();
                     
                     if (pilotData && !pilotError) {
-                        console.log("✅ User profile fetched from pilot_licensure_experience table:", data.user.id);
+// [AUDIT] Removed console.log // line 892
                         await decryptAndSetUserProfile(pilotData);
                     } else {
-                        console.log("⚠️ No user profile found anywhere for:", data.user.id);
+// [AUDIT] Removed console.log // line 895
                         // Create minimal profile from auth data
                         const newProfile = {
                             id: data.user.id,
@@ -915,7 +915,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     async function logout() {
-        console.log('🔴 Logout function called');
+// [AUDIT] Removed console.log // line 918
 
         // Log logout activity (don't let this block logout)
         if (currentUser) {
@@ -941,13 +941,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.removeItem('auth0_user_id');
 
         try {
-            console.log('🔴 Calling Supabase signOut...');
+// [AUDIT] Removed console.log // line 944
             const { error } = await supabase.auth.signOut();
             if (error) {
                 console.error("Supabase signOut error:", error);
                 throw error;
             }
-            console.log('✅ Logout completed');
+// [AUDIT] Removed console.log // line 950
         } catch (error) {
             console.error("❌ Logout error:", error);
             // If Supabase API fails, clear session storage directly
@@ -961,7 +961,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
             keysToRemove.forEach(key => localStorage.removeItem(key));
             sessionStorage.clear();
-            console.log('✅ Cleared auth storage manually');
+// [AUDIT] Removed console.log // line 964
         }
     }
 
@@ -979,12 +979,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Refresh user profile from Supabase
     async function refreshUserProfile() {
         if (!currentUser) {
-            console.log('⚠️ No current user to refresh profile');
+// [AUDIT] Removed console.log // line 982
             return;
         }
 
         try {
-            console.log('🔄 Refreshing user profile for:', currentUser.id);
+// [AUDIT] Removed console.log // line 987
             
             // Fetch profile from Supabase
             const { data: profileData, error } = await supabase
@@ -994,11 +994,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .maybeSingle();
 
             if (profileData && !error) {
-                console.log('✅ User profile refreshed successfully:', currentUser.id);
+// [AUDIT] Removed console.log // line 997
                 await decryptAndSetUserProfile(profileData);
                 logProfileUpdate(currentUser.id, { action: 'Profile refreshed after enrollment', timestamp: new Date().toISOString() });
             } else {
-                console.log('⚠️ No profile found during refresh, checking profiles table');
+// [AUDIT] Removed console.log // line 1001
                 
                 // Try profiles table as fallback
                 const { data: profilesData, error: profilesError } = await supabase
@@ -1008,11 +1008,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     .maybeSingle();
                 
                 if (profilesData && !profilesError) {
-                    console.log('✅ Profile refreshed from profiles table:', currentUser.id);
+// [AUDIT] Removed console.log // line 1011
                     await decryptAndSetUserProfile(profilesData);
                     logProfileUpdate(currentUser.id, { action: 'Profile refreshed from profiles table', timestamp: new Date().toISOString() });
                 } else {
-                    console.log('⚠️ No profile found in any table during refresh');
+// [AUDIT] Removed console.log // line 1015
                 }
             }
         } catch (error) {
@@ -1163,7 +1163,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     async function deleteAccount(userId: string) {
-        console.log('🔴 deleteAccount called for user:', userId);
+// [AUDIT] Removed console.log // line 1166
         try {
             // Call the delete-account Edge Function
             const { data, error } = await supabase.functions.invoke('delete-account', {
@@ -1176,7 +1176,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 throw new Error(`Failed to delete account: ${error.message}`);
             }
 
-            console.log('✅ Account deleted successfully');
+// [AUDIT] Removed console.log // line 1179
             return data;
         } catch (error) {
             console.error('❌ Error deleting account:', error);
@@ -1187,14 +1187,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         // Listen for auth state changes from Supabase (handles OAuth redirects)
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log('Auth state changed:', event, session?.user?.id);
+// [AUDIT] Removed console.log // line 1190
             
             if (event === 'SIGNED_IN' && session?.user) {
                 // User signed in via OAuth
-                console.log('User signed in via OAuth:', session.user.id);
-                console.log('oauthModalShown flag:', oauthModalShownRef.current);
-                console.log('oauthModalShown from localStorage:', localStorage.getItem('oauthModalShown'));
-                console.log('currentUser state:', currentUserRef.current?.id);
+// [AUDIT] Removed console.log // line 1194
+// [AUDIT] Removed console.log // line 1195
+// [AUDIT] Removed console.log // line 1196
+// [AUDIT] Removed console.log // line 1197
 
                 // Only check account if:
                 // 1. We haven't already shown the modal in this session
@@ -1204,12 +1204,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 const isNewUser = !currentUserRef.current || currentUserRef.current.id !== session.user.id;
                 
                 if (!oauthModalShownRef.current && !modalShownInStorage && isNewUser) {
-                    console.log('Starting account check for new user...');
+// [AUDIT] Removed console.log // line 1207
                     setOauthModalShown(true);
 
                     // Start account check
                     setOauthAccountCheck({ checking: true, hasAccount: null });
-                    console.log('Set oauthAccountCheck to checking: true');
+// [AUDIT] Removed console.log // line 1212
 
                     const supabaseUser: SupabaseUser = {
                         id: session.user.id,
@@ -1230,22 +1230,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                     // Check if user has an existing account profile
                     try {
-                        console.log('Checking profile for user:', session.user.id);
+// [AUDIT] Removed console.log // line 1233
                         const { data: profileData, error } = await supabase
                             .from('profiles')
                             .select('*')
                             .eq('id', session.user.id)
                             .maybeSingle();
 
-                        console.log('Profile check result from profiles table:', { profileData, error });
+// [AUDIT] Removed console.log // line 1240
 
                         if (profileData && !error) {
-                            console.log("✅ Profile found for OAuth user in profiles table:", session.user.id);
+// [AUDIT] Removed console.log // line 1243
                             await decryptAndSetUserProfile(profileData);
                             setOauthAccountCheck({ checking: false, hasAccount: true });
-                            console.log('Set oauthAccountCheck to hasAccount: true');
+// [AUDIT] Removed console.log // line 1246
                         } else {
-                            console.log("⚠️ No profile found in profiles table, checking pilot_licensure_experience for OAuth user:", session.user.id);
+// [AUDIT] Removed console.log // line 1248
                             // Try pilot_licensure_experience as fallback
                             const { data: pilotData, error: pilotError } = await supabase
                                 .from('pilot_licensure_experience')
@@ -1254,13 +1254,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                 .maybeSingle();
 
                             if (pilotData && !pilotError) {
-                                console.log("✅ Profile found for OAuth user in pilot_licensure_experience table:", session.user.id);
+// [AUDIT] Removed console.log // line 1257
                                 await decryptAndSetUserProfile(pilotData);
                                 setOauthAccountCheck({ checking: false, hasAccount: true });
                             } else {
-                                console.log("⚠️ No profile found anywhere for OAuth user:", session.user.id);
+// [AUDIT] Removed console.log // line 1261
                                 setOauthAccountCheck({ checking: false, hasAccount: false });
-                                console.log('Set oauthAccountCheck to hasAccount: false');
+// [AUDIT] Removed console.log // line 1263
                                 // Create default profile
                                 const defaultProfile = {
                                     id: session.user.id,
@@ -1276,13 +1276,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     } catch (err) {
                         console.error("❌ Error checking profile for OAuth user:", err);
                         setOauthAccountCheck({ checking: false, hasAccount: false });
-                        console.log('Set oauthAccountCheck to hasAccount: false due to error');
+// [AUDIT] Removed console.log // line 1279
                     }
 
                     setLoading(false);
                 } else {
                     // User already signed in or same user, just set the user without checking account
-                    console.log('User already authenticated or same user, skipping account check');
+// [AUDIT] Removed console.log // line 1285
                     const supabaseUser: SupabaseUser = {
                         id: session.user.id,
                         uid: session.user.id,
@@ -1299,7 +1299,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     setLoading(false);
                 }
             } else if (event === 'SIGNED_OUT') {
-                console.log('User signed out');
+// [AUDIT] Removed console.log // line 1302
                 setCurrentUserWithRef(null);
                 setUserProfile(null);
                 setLoading(false);
@@ -1307,7 +1307,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setOauthModalShown(false);
                 localStorage.removeItem('oauthModalShown');
             } else if (event === 'TOKEN_REFRESHED') {
-                console.log('Token refreshed');
+// [AUDIT] Removed console.log // line 1310
                 // Session is still valid, no action needed
             }
         });
@@ -1320,21 +1320,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         // Verify session using Supabase native session check (bypassing Edge Function due to 403 errors)
         const verifySession = async () => {
-            console.log('[DEBUG][AuthContext] verifySession start — url:', window.location.href);
+// [AUDIT] Removed console.log // line 1323
             // Clear explicit logout flag on OAuth redirect routes (callback or setup page)
             if (typeof window !== 'undefined') {
                 const path = window.location.pathname;
                 const isOAuthCallback = path === '/auth/callback' || path === '/callback';
                 const isSetupPage = new URLSearchParams(window.location.search).get('setup') === '1';
                 if (isOAuthCallback || isSetupPage) {
-                    console.log('[DEBUG][AuthContext] OAuth/setup route — clearing explicitLogout before guard check');
+// [AUDIT] Removed console.log // line 1330
                     setExplicitLogoutInStorage(false);
                 }
             }
-            console.log('[DEBUG][AuthContext] explicitLogout flag:', localStorage.getItem('explicitLogout'));
+// [AUDIT] Removed console.log // line 1334
             // Check if user explicitly logged out - prevent session restoration
             if (isExplicitLogout()) {
-                console.log("⚠️ User explicitly logged out, skipping session restoration");
+// [AUDIT] Removed console.log // line 1337
                 setCurrentUser(null);
                 setUserProfile(null);
                 setLoading(false);
@@ -1344,10 +1344,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             try {
                 // Use Supabase native session check instead of Edge Function
                 const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-                console.log('[DEBUG][AuthContext] Supabase getSession result:', { userId: session?.user?.id, hasToken: !!session?.access_token, error: sessionError?.message });
+// [AUDIT] Removed console.log // line 1347
 
                 if (sessionError) {
-                    console.log("⚠️ Session check error:", sessionError);
+// [AUDIT] Removed console.log // line 1350
                     setCurrentUser(null);
                     setUserProfile(null);
                     setLoading(false);
@@ -1355,7 +1355,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
 
                 if (session?.user) {
-                    console.log("✅ Session verified via Supabase:", session.user.id, session.user.email);
+// [AUDIT] Removed console.log // line 1358
 
                     // Create SupabaseUser object
                     const verifiedUser: SupabaseUser = {
@@ -1383,10 +1383,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             .maybeSingle();
 
                         if (profileData && !error) {
-                            console.log("✅ Supabase profile fetched for user:", session.user.id);
+// [AUDIT] Removed console.log // line 1386
                             await decryptAndSetUserProfile(profileData);
                         } else {
-                            console.log("⚠️ No Supabase profile found for user:", session.user.id, "Creating default profile");
+// [AUDIT] Removed console.log // line 1389
                             const defaultProfile = {
                                 user_id: session.user.id,
                                 email: session.user.email,
@@ -1408,7 +1408,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         setUserProfile(defaultProfile);
                     }
                 } else {
-                    console.log("⚠️ No Supabase session found, checking for Auth0 session...");
+// [AUDIT] Removed console.log // line 1411
                     
                     // Check for Auth0 session in localStorage
                     const auth0Provider = localStorage.getItem('sb-auth-provider');
@@ -1420,7 +1420,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     if (auth0Provider === 'auth0' && auth0UserId && auth0Email) {
                         // Check if session expired
                         if (auth0Expiry && parseInt(auth0Expiry) > Date.now()) {
-                            console.log("✅ Restoring Auth0 session:", auth0UserId);
+// [AUDIT] Removed console.log // line 1423
                             const restoredUser: SupabaseUser = {
                                 id: auth0UserId,
                                 uid: auth0UserId,
@@ -1442,7 +1442,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                     .maybeSingle();
                                 
                                 if (profileData) {
-                                    console.log("✅ Profile data loaded for Auth0 session");
+// [AUDIT] Removed console.log // line 1445
                                     let displayData = profileData;
                                     try {
                                         const { data: { session: s } } = await supabase.auth.getSession();
@@ -1462,7 +1462,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                 console.warn("⚠️ Could not load profile data for Auth0 session:", err);
                             }
                         } else {
-                            console.log("⚠️ Auth0 session expired");
+// [AUDIT] Removed console.log // line 1465
                             // Clear expired session data
                             localStorage.removeItem('sb-auth-provider');
                             localStorage.removeItem('sb-auth-user-id');
@@ -1472,13 +1472,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             setCurrentUser(null);
                         }
                     } else {
-                        console.log("⚠️ No valid session found");
+// [AUDIT] Removed console.log // line 1475
                         setCurrentUser(null);
                     }
                     setUserProfile(null);
                 }
             } catch (err) {
-                console.log("⚠️ Session verification failed:", err);
+// [AUDIT] Removed console.log // line 1481
                 setCurrentUser(null);
                 setUserProfile(null);
             } finally {

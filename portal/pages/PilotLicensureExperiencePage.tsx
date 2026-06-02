@@ -227,7 +227,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
     const loadExistingData = async () => {
       const userId = userProfile?.id || userProfile?.uid;
       if (!userId) {
-        console.log('No userProfile id available, skipping data load');
+// [AUDIT] Removed console.log // line 230
         setDataLoaded(true); // Mark as loaded so loader hides
         return;
       }
@@ -244,9 +244,9 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         let initialData: any = {};
         
         if (profileError) {
-          console.log('No profile data found:', profileError);
+// [AUDIT] Removed console.log // line 247
         } else if (profileData) {
-          console.log('Profile data loaded:', profileData);
+// [AUDIT] Removed console.log // line 249
           
           // Extract from onboarding_responses JSONB as fallback
           const onboarding = profileData.onboarding_responses || {};
@@ -310,13 +310,13 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           .maybeSingle();
 
         if (pilotProfileError) {
-          console.log('No pilot profile data found:', pilotProfileError);
+// [AUDIT] Removed console.log // line 313
         } else if (pilotProfileData) {
-          console.log('Pilot profile data loaded:', pilotProfileData);
+// [AUDIT] Removed console.log // line 315
         }
 
         if (error) {
-          console.log('No existing licensure data found:', error);
+// [AUDIT] Removed console.log // line 319
           // Only use profile data as fallback if we haven't already set the values
           if (!fullLegalName) setFullLegalName(initialData.fullLegalName || '');
           if (!firstName) setFirstName(initialData.firstName || userProfile?.firstName || '');
@@ -325,7 +325,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           if (!residingCountry) setResidingCountry(initialData.residingCountry || '');
           if (!dateOfBirth) setDateOfBirth(initialData.dateOfBirth || '');
         } else if (data) {
-          console.log('Licensure data loaded:', data);
+// [AUDIT] Removed console.log // line 328
           // Personal Info - use licensure data if available, fallback to profiles
           setFirstName(data.first_name || initialData.firstName || userProfile?.firstName || '');
           setMiddleName(data.middle_name || '');
@@ -513,7 +513,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
         updated_at: new Date().toISOString()
       };
 
-      console.log('Saving data to pilot_licensure_experience:', data);
+// [AUDIT] Removed console.log // line 516
       
       const { error } = await supabase
         .from('pilot_licensure_experience')
@@ -551,7 +551,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           updated_at: new Date().toISOString()
         };
 
-        console.log('Syncing data to profiles table:', profileUpdateData);
+// [AUDIT] Removed console.log // line 554
         
         const { error: profileError } = await supabase
           .from('profiles')
@@ -562,7 +562,7 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
           console.error('Profile sync error (non-critical):', profileError);
           // Non-critical: main data is saved to pilot_licensure_experience
         } else {
-          console.log('✅ Data synced to profiles table');
+// [AUDIT] Removed console.log // line 565
         }
       }
 

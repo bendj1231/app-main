@@ -35,11 +35,11 @@ export default function JoinPSAPage() {
   const [consentChecked, setConsentChecked] = useState(false);
 
   const handleGoogleSignup = () => {
-    console.log('Google signup clicked');
+// [AUDIT] Removed console.log // line 38
   };
 
   const handleEmailSignup = () => {
-    console.log('Email signup clicked');
+// [AUDIT] Removed console.log // line 42
   };
 
   return (

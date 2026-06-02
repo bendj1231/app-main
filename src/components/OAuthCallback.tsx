@@ -12,11 +12,11 @@ export const OAuthCallback = () => {
 
     const createSupabaseProfile = async () => {
       try {
-        console.log('[DEBUG][OAuthCallback] Running with user:', { sub: user.sub, email: user.email });
+// [AUDIT] Removed console.log // line 15
         const { supabase } = await import('@/src/lib/supabase');
 
         const { data: { session: cbSession } } = await supabase.auth.getSession();
-        console.log('[DEBUG][OAuthCallback] Supabase session:', { userId: cbSession?.user?.id, hasToken: !!cbSession?.access_token });
+// [AUDIT] Removed console.log // line 19
 
         // 1. Check by auth0_id first
         let { data: existing } = await supabase
@@ -24,17 +24,17 @@ export const OAuthCallback = () => {
           .select('id, auth0_id, display_name, total_flight_hours')
           .eq('auth0_id', user.sub)
           .maybeSingle();
-        console.log('[DEBUG][OAuthCallback] Profile lookup by auth0_id:', { found: !!existing, id: existing?.id });
+// [AUDIT] Removed console.log // line 27
 
         // 2. Fallback: check by email (covers users registered before Auth0)
         if (!existing && user.email) {
-          console.log('[DEBUG][OAuthCallback] No profile by auth0_id, trying email:', user.email);
+// [AUDIT] Removed console.log // line 31
           const { data: byEmail } = await supabase
             .from('profiles')
             .select('id, auth0_id, display_name, total_flight_hours')
             .eq('email', user.email)
             .maybeSingle();
-          console.log('[DEBUG][OAuthCallback] Profile lookup by email:', { found: !!byEmail, id: byEmail?.id });
+// [AUDIT] Removed console.log // line 37
 
           if (byEmail) {
             await supabase
@@ -47,12 +47,15 @@ export const OAuthCallback = () => {
 
         // Determine redirect based on domain
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
+        const isCareerPathways = window.location.hostname.includes('pilotcareerpathways') || 
+          window.location.hostname.includes('careerpathways') ||
+          (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('product') === 'careerpathways');
         
         if (!existing) {
-          console.log('[DEBUG][OAuthCallback] No existing profile — checking Supabase session before attempting upsert');
+// [AUDIT] Removed console.log // line 55
           const { data: { session } } = await supabase.auth.getSession();
           const supabaseUid = session?.user?.id;
-          console.log('[DEBUG][OAuthCallback] Supabase UID for insert:', supabaseUid);
+// [AUDIT] Removed console.log // line 58
 
           if (supabaseUid) {
             // Has a Supabase session — safe to upsert from client (RLS: auth.uid() = id)
@@ -64,7 +67,7 @@ export const OAuthCallback = () => {
               account_tier: 'free',
               created_at: new Date().toISOString(),
             }, { onConflict: 'auth0_id' }).select('id').maybeSingle();
-            console.log('[DEBUG][OAuthCallback] Profile upsert result:', { newProfileId: newProfile?.id, error: upsertError?.message });
+// [AUDIT] Removed console.log // line 70
 
             if (newProfile?.id) {
               await supabase.functions.invoke('generate-profile-token', {
@@ -73,20 +76,20 @@ export const OAuthCallback = () => {
             }
           } else {
             // No Supabase session yet (Auth0-only flow) — profile will be created by create-wallet edge function
-            console.log('[DEBUG][OAuthCallback] No Supabase session — skipping client upsert, create-wallet will handle profile creation');
+// [AUDIT] Removed console.log // line 79
           }
 
           setProfileCreated(true);
-          // Redirect to terminal for pilotterminal.com, otherwise to become-member
-          navigate(isPilotTerminal ? '/' : '/become-member?setup=1');
+          // Redirect: pilotterminal -> home, careerpathways -> become-member for setup, otherwise -> become-member
+          navigate(isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1');
         } else if (!existing.display_name) {
           // Profile exists but setup not completed
           setProfileCreated(true);
-          navigate(isPilotTerminal ? '/' : '/become-member?setup=1');
+          navigate(isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1');
         } else {
           setProfileCreated(true);
-          // Redirect to terminal for pilotterminal.com, otherwise to platform
-          navigate(isPilotTerminal ? '/' : '/platform');
+          // Redirect: pilotterminal -> home, careerpathways -> home (pathways page), otherwise -> platform
+          navigate(isPilotTerminal ? '/' : isCareerPathways ? '/' : '/platform');
         }
       } catch (err) {
         console.error('Profile creation error:', err);

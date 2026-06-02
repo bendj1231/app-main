@@ -13,7 +13,7 @@ interface MilitaryPathwaysPageProps {
 type Region = 'All' | 'Asia' | 'Europe' | 'Americas' | 'Oceania' | 'Africa' | 'Middle East';
 
 const MilitaryPathwaysPage: React.FC<MilitaryPathwaysPageProps> = ({ pathwayId, onBack, onNavigate }) => {
-  console.log('[DEBUG] MilitaryPathwaysPage mounted with pathwayId:', pathwayId);
+// [AUDIT] Removed console.log // line 16
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMilitaryPathway, setSelectedMilitaryPathway] = useState<any>(null);
   const militaryCarouselRef = useRef<HTMLDivElement>(null);

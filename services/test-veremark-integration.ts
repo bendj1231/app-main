@@ -25,7 +25,7 @@ async function testVeremarkIntegration() {
         pilotId,
         type: 'license',
         data: {
-          number: '155660-CPL',
+          number: 'REDACTED-CPL',
           type: 'Commercial Pilot License',
           issueDate: '2025-10-24',
           expiryDate: '2030-10-23',

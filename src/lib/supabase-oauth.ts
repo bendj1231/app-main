@@ -19,17 +19,17 @@ export async function exchangeCodeForSupabaseSession(
   error: null;
 }> {
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] [SUPABASE OAUTH] Starting token exchange`);
-  console.log(`[${timestamp}] [SUPABASE OAUTH] Code length: ${code.length}`);
-  console.log(`[${timestamp}] [SUPABASE OAUTH] Code prefix: ${code.substring(0, 20)}...`);
-  console.log(`[${timestamp}] [SUPABASE OAUTH] Redirect URI:`, redirectUri);
-  console.log(`[${timestamp}] [SUPABASE OAUTH] Token endpoint:`, GOOGLE_OAUTH_CONFIG.tokenEndpoint);
-  console.log(`[${timestamp}] [SUPABASE OAUTH] Client ID:`, GOOGLE_OAUTH_CONFIG.clientId);
+// [AUDIT] Removed console.log // line 22
+// [AUDIT] Removed console.log // line 23
+// [AUDIT] Removed console.log // line 24
+// [AUDIT] Removed console.log // line 25
+// [AUDIT] Removed console.log // line 26
+// [AUDIT] Removed console.log // line 27
 
   try {
     // Step 1: Exchange authorization code for Google ID token
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Step 1: Exchanging code for Google ID token`);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Fetching from: ${GOOGLE_OAUTH_CONFIG.tokenEndpoint}`);
+// [AUDIT] Removed console.log // line 31
+// [AUDIT] Removed console.log // line 32
 
     const tokenResponse = await fetch(GOOGLE_OAUTH_CONFIG.tokenEndpoint, {
       method: 'POST',
@@ -45,8 +45,8 @@ export async function exchangeCodeForSupabaseSession(
       }),
     });
 
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Token response status: ${tokenResponse.status} ${tokenResponse.statusText}`);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Token response headers:`, Object.fromEntries(tokenResponse.headers.entries()));
+// [AUDIT] Removed console.log // line 48
+// [AUDIT] Removed console.log // line 49
 
     if (!tokenResponse.ok) {
       const errorText = await tokenResponse.text();
@@ -59,10 +59,10 @@ export async function exchangeCodeForSupabaseSession(
     }
 
     const tokenData = await tokenResponse.json();
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Token response received`);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Token data keys:`, Object.keys(tokenData));
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Has id_token:`, !!tokenData.id_token);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Has access_token:`, !!tokenData.access_token);
+// [AUDIT] Removed console.log // line 62
+// [AUDIT] Removed console.log // line 63
+// [AUDIT] Removed console.log // line 64
+// [AUDIT] Removed console.log // line 65
 
     if (!tokenData.id_token) {
       console.error(`[${timestamp}] [SUPABASE OAUTH ERROR] No id_token in Google token response`);
@@ -70,23 +70,23 @@ export async function exchangeCodeForSupabaseSession(
       throw new Error('No id_token in Google token response');
     }
 
-    console.log(`[${timestamp}] [SUPABASE OAUTH] ID token length: ${tokenData.id_token.length}`);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] ID token prefix: ${tokenData.id_token.substring(0, 30)}...`);
+// [AUDIT] Removed console.log // line 73
+// [AUDIT] Removed console.log // line 74
 
     // Step 2: Sign in to Supabase using the Google ID token
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Step 2: Signing in to Supabase with ID token`);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Calling supabase.auth.signInWithIdToken`);
+// [AUDIT] Removed console.log // line 77
+// [AUDIT] Removed console.log // line 78
 
     const { data, error } = await supabase.auth.signInWithIdToken({
       provider: 'google',
       token: tokenData.id_token,
     });
 
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Supabase sign-in response received`);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Has error:`, !!error);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Has data:`, !!data);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Has session:`, !!data?.session);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Has user:`, !!data?.user);
+// [AUDIT] Removed console.log // line 85
+// [AUDIT] Removed console.log // line 86
+// [AUDIT] Removed console.log // line 87
+// [AUDIT] Removed console.log // line 88
+// [AUDIT] Removed console.log // line 89
 
     if (error) {
       console.error(`[${timestamp}] [SUPABASE OAUTH ERROR] Supabase sign-in failed`);
@@ -101,10 +101,10 @@ export async function exchangeCodeForSupabaseSession(
       throw new Error('No session returned from Supabase sign-in');
     }
 
-    console.log(`[${timestamp}] [SUPABASE OAUTH] SUCCESS - Session created`);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] User ID:`, data.user?.id);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] User email:`, data.user?.email);
-    console.log(`[${timestamp}] [SUPABASE OAUTH] Session access token length:`, data.session?.access_token?.length);
+// [AUDIT] Removed console.log // line 104
+// [AUDIT] Removed console.log // line 105
+// [AUDIT] Removed console.log // line 106
+// [AUDIT] Removed console.log // line 107
 
     return {
       data: {

@@ -52,7 +52,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
     setIsLoading(true);
 
     try {
-      console.log("Attempting login with:", wmUser);
+// [AUDIT] Removed console.log // line 55
 
       // Create a timeout promise that rejects after 15 seconds
       const timeoutPromise = new Promise((_, reject) =>
@@ -65,18 +65,18 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onNavigate, logoUrl 
         timeoutPromise
       ]);
 
-      console.log("Login successful, checking MFA status...");
+// [AUDIT] Removed console.log // line 68
       
       // Check if MFA is enabled for this user
       const isMFAEnabled = await mfaCheckStatus();
       
       if (isMFAEnabled) {
-        console.log("MFA enabled, showing verification modal");
+// [AUDIT] Removed console.log // line 74
         setMfaPendingUser(wmUser);
         setShowMFAVerify(true);
         setIsLoading(false);
       } else {
-        console.log("MFA not enabled, proceeding to login");
+// [AUDIT] Removed console.log // line 79
         const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot';
         addToast('success', `Welcome back, ${userName}!`);
         onLogin(wmUser);

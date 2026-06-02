@@ -45,7 +45,7 @@ export default function PilotShortageRoute() {
         if (page.startsWith('/')) {
           window.location.href = page;
         } else {
-          console.log('Navigate to:', page);
+// [AUDIT] Removed console.log // line 48
         }
       }}
       onLogin={() => console.log('Login clicked')}

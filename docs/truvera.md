@@ -43,7 +43,7 @@ Permissions:
 
 ### Step 1: Pilot Inputs Data
 Pilot enters aviation credentials:
-- License Number (e.g., 155660-CPL)
+- License Number (e.g., REDACTED-CPL)
 - Medical Certificate details
 - Flight hours and experience
 - Personal information

@@ -43,8 +43,8 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
     setError('');
 
     try {
-      // Issue credential directly to walt.id - NO PLATFORM STORAGE
-      const WALT_ISSUER_URL = 'https://issuer.demo.walt.id';
+      // Issue credential directly to Pilot Wallet - NO PLATFORM STORAGE
+      const PILOT_ISSUER_URL = 'https://issuer.pilotrecognition.com';
       const ISSUER_DID = 'did:web:pilotrecognition.com';
       const subjectDid = `did:web:pilotrecognition.com:pilots:${auth0Id.replace('|', '-')}`;
 
@@ -52,7 +52,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
       const expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
 
       // Onboard issuer key (dev mode)
-      const onboardRes = await fetch(`${WALT_ISSUER_URL}/onboard/issuer`, {
+      const onboardRes = await fetch(`${PILOT_ISSUER_URL}/onboard/issuer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
         })
       });
       
-      if (!onboardRes.ok) throw new Error('walt.id onboard failed');
+      if (!onboardRes.ok) throw new Error('Issuer onboard failed');
       const onboardData = await onboardRes.json();
 
       // Create credential with pilot-provided data
@@ -88,7 +88,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
       };
 
       // Issue credential via OID4VCI
-      const issueRes = await fetch(`${WALT_ISSUER_URL}/openid4vc/jwt/issue`, {
+      const issueRes = await fetch(`${PILOT_ISSUER_URL}/openid4vc/jwt/issue`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'accept': 'text/plain' },
         body: JSON.stringify({
@@ -108,7 +108,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
         })
       });
 
-      if (!issueRes.ok) throw new Error('walt.id issue failed');
+      if (!issueRes.ok) throw new Error('Issuer signing failed');
       const credentialOfferUrl = await issueRes.text();
 
       setCredentialUrl(credentialOfferUrl);
@@ -133,11 +133,11 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
   const handleClaimCredential = () => {
     if (credentialUrl) {
       // Store that user claimed the credential
-      sessionStorage.setItem('wallet_claimed_provider', 'walt');
+      sessionStorage.setItem('wallet_claimed_provider', 'pilot');
       sessionStorage.setItem('manual_credential_claimed', 'true');
       
-      // Open walt.id wallet
-      window.open(`https://wallet.walt.id/?offer=${encodeURIComponent(credentialUrl)}`, '_blank');
+      // Open Pilot Wallet
+      window.open(`https://wallet.pilotrecognition.com/?offer=${encodeURIComponent(credentialUrl)}`, '_blank');
       
       onCredentialClaimed(credentialUrl);
     }
@@ -206,7 +206,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
             <span className="font-medium">Privacy-First Design</span>
           </div>
           <p className="text-green-700 text-sm mt-1">
-            This credential will be stored only in your walt.id wallet, not on our platform.
+            This credential will be stored only in your Pilot Wallet, not on our platform.
           </p>
         </div>
 
@@ -254,7 +254,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
               <span className="font-medium">Privacy-First Design</span>
             </div>
             <p className="text-green-700 text-sm mt-1">
-              Your credentials are stored only in your walt.id wallet
+              Your credentials are stored only in your Pilot Wallet
             </p>
           </div>
         </div>
@@ -427,7 +427,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
           <div className="mt-4 text-sm text-gray-500">
             <p>✓ Credential data prepared</p>
             <p>⏳ Signing with platform key</p>
-            <p>⏳ Sending to walt.id wallet</p>
+            <p>⏳ Sending to Pilot Wallet</p>
           </div>
         </div>
       </div>
@@ -463,7 +463,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
             onClick={handleClaimCredential}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition-colors font-medium"
           >
-            Claim to walt.id Wallet
+            Claim to Pilot Wallet
           </button>
           
           <p className="text-xs text-gray-500 mt-4">

@@ -112,6 +112,13 @@ Deno.serve(async (req: Request) => {
     await supabase.from('user_app_access').delete().eq('user_id', userId);
     await supabase.from('enrollments').delete().eq('user_id', userId);
 
+    // NOTE: match_agreements and recognition_fee_invoices are INTENTIONALLY NOT deleted.
+    // These are permanent financial audit records required for tax compliance.
+    // pilot_id in match_agreements is stored as raw UUID (no FK) — the record
+    // remains intact but becomes anonymized when the pilot's profile is deleted.
+    // recognition_fee_invoices stores only static snapshot data (name, reference code)
+    // and has NO foreign key to profiles — it survives deletion completely.
+
     // Wallet & VC data — must be revoked before deletion
     await supabase.from('vc_revocation_registry').delete().eq('subject_id', userId);
     await supabase.from('pilot_verification_wallet').delete().eq('profile_id', userId);

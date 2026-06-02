@@ -19,9 +19,9 @@ const OAuthCallback: React.FC = () => {
   useEffect(() => {
     const handleOAuthCallback = async () => {
       const timestamp = new Date().toISOString();
-      console.log(`[${timestamp}] [OAUTH CALLBACK] OAuth callback handler started`);
-      console.log(`[${timestamp}] [OAUTH CALLBACK] Current URL:`, window.location.href);
-      console.log(`[${timestamp}] [OAUTH CALLBACK] Search params:`, Object.fromEntries(searchParams.entries()));
+// [AUDIT] Removed console.log // line 22
+// [AUDIT] Removed console.log // line 23
+// [AUDIT] Removed console.log // line 24
 
       try {
         // Extract authorization code from URL
@@ -30,7 +30,7 @@ const OAuthCallback: React.FC = () => {
         const errorDescription = searchParams.get('error_description');
         const state = searchParams.get('state');
 
-        console.log(`[${timestamp}] [OAUTH CALLBACK] Extracted params - code: ${code ? code.substring(0, 10) + '...' : 'null'}, error: ${error}, state: ${state}`);
+// [AUDIT] Removed console.log // line 33
 
         // Handle OAuth errors from Google
         if (error) {
@@ -49,28 +49,28 @@ const OAuthCallback: React.FC = () => {
           return;
         }
 
-        console.log(`[${timestamp}] [OAUTH CALLBACK] Authorization code received, length: ${code.length}`);
-        console.log(`[${timestamp}] [OAUTH CALLBACK] Code prefix: ${code.substring(0, 20)}...`);
+// [AUDIT] Removed console.log // line 52
+// [AUDIT] Removed console.log // line 53
 
         // Set OAuth session flag to skip CSRF validation
         sessionStorage.setItem('oauth_session', 'true');
-        console.log(`[${timestamp}] [OAUTH CALLBACK] OAuth session flag set in sessionStorage`);
+// [AUDIT] Removed console.log // line 57
 
         // Call Agent 2's token exchange function
         const redirectUri = `${window.location.origin}/auth/callback`;
-        console.log(`[${timestamp}] [OAUTH CALLBACK] About to call exchangeCodeForSupabaseSession`);
-        console.log(`[${timestamp}] [OAUTH CALLBACK] Redirect URI:`, redirectUri);
+// [AUDIT] Removed console.log // line 61
+// [AUDIT] Removed console.log // line 62
 
         const { data: sessionData } = await exchangeCodeForSupabaseSession(code, redirectUri);
 
-        console.log(`[${timestamp}] [OAUTH CALLBACK] Supabase session created successfully`);
-        console.log(`[${timestamp}] [OAUTH CALLBACK] User ID:`, sessionData.user?.id);
-        console.log(`[${timestamp}] [OAUTH CALLBACK] User email:`, sessionData.user?.email);
-        console.log(`[${timestamp}] [OAUTH CALLBACK] Session data:`, JSON.stringify(sessionData, null, 2));
+// [AUDIT] Removed console.log // line 66
+// [AUDIT] Removed console.log // line 67
+// [AUDIT] Removed console.log // line 68
+// [AUDIT] Removed console.log // line 69
 
         // Create user profile if it doesn't exist (non-critical)
         try {
-            console.log(`[${timestamp}] [OAUTH CALLBACK] Creating user profile...`);
+// [AUDIT] Removed console.log // line 73
             const { supabase } = await import('../../lib/supabase');
             const { data: existingProfile, error: profileCheckError } = await supabase
                 .from('profiles')
@@ -83,7 +83,7 @@ const OAuthCallback: React.FC = () => {
             }
 
             if (!existingProfile) {
-                console.log(`[${timestamp}] [OAUTH CALLBACK] Creating new profile for user:`, sessionData.user?.id);
+// [AUDIT] Removed console.log // line 86
                 const { error: profileCreateError } = await supabase
                     .from('profiles')
                     .insert({
@@ -100,10 +100,10 @@ const OAuthCallback: React.FC = () => {
                 if (profileCreateError) {
                     console.error(`[${timestamp}] [OAUTH CALLBACK] Profile creation error:`, profileCreateError);
                 } else {
-                    console.log(`[${timestamp}] [OAUTH CALLBACK] Profile created successfully`);
+// [AUDIT] Removed console.log // line 103
                 }
             } else {
-                console.log(`[${timestamp}] [OAUTH CALLBACK] Profile already exists`);
+// [AUDIT] Removed console.log // line 106
             }
         } catch (profileError) {
             console.error(`[${timestamp}] [OAUTH CALLBACK] Profile creation failed (non-critical):`, profileError);
@@ -112,9 +112,9 @@ const OAuthCallback: React.FC = () => {
 
         // Success - redirect to home page
         setStatus('success');
-        console.log(`[${timestamp}] [OAUTH CALLBACK] Status set to success, preparing to redirect`);
+// [AUDIT] Removed console.log // line 115
         setTimeout(() => {
-          console.log(`[${timestamp}] [OAUTH CALLBACK] Redirecting to home page`);
+// [AUDIT] Removed console.log // line 117
           window.location.href = window.location.origin;
         }, 500);
 
@@ -129,7 +129,7 @@ const OAuthCallback: React.FC = () => {
       }
     };
 
-    console.log(`[${new Date().toISOString()}] [OAUTH CALLBACK] useEffect triggered, calling handleOAuthCallback`);
+// [AUDIT] Removed console.log // line 132
     handleOAuthCallback();
   }, [searchParams, navigate]);
 

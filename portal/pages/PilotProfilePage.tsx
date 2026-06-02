@@ -1333,7 +1333,7 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
                       e.currentTarget.style.transform = 'translateY(0)';
                     }}
                     onClick={() => {
-                      console.log('Digital Logbook clicked, handler:', onViewDigitalLogbook);
+// [AUDIT] Removed console.log // line 1336
                       onViewDigitalLogbook?.();
                     }}
                   >
@@ -1367,7 +1367,7 @@ export const PilotProfilePage: React.FC<PilotProfilePageProps> = ({ onBack, onVi
                       e.currentTarget.style.transform = 'translateY(0)';
                     }}
                     onClick={() => {
-                      console.log('Mentor Logbook clicked, handler:', onViewMentorLogbook);
+// [AUDIT] Removed console.log // line 1370
                       onViewMentorLogbook?.();
                     }}
                   >

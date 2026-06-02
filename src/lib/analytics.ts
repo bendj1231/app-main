@@ -71,7 +71,7 @@ class Analytics {
     this.initialized = true;
     
     if (this.config.debugMode) {
-      console.log('[Analytics] Initialized with config:', this.config);
+// [AUDIT] Removed console.log // line 74
     }
   }
 
@@ -131,7 +131,7 @@ class Analytics {
     window.gtag('event', 'page_view', params);
 
     if (this.config.debugMode) {
-      console.log('[Analytics] Page view tracked:', params);
+// [AUDIT] Removed console.log // line 134
     }
   }
 
@@ -152,7 +152,7 @@ class Analytics {
     window.gtag('event', event.name, params);
 
     if (this.config.debugMode) {
-      console.log('[Analytics] Event tracked:', event.name, params);
+// [AUDIT] Removed console.log // line 155
     }
   }
 
@@ -179,7 +179,7 @@ class Analytics {
     window.gtag('event', 'conversion', params);
 
     if (this.config.debugMode) {
-      console.log('[Analytics] Conversion tracked:', params);
+// [AUDIT] Removed console.log // line 182
     }
   }
 
@@ -199,7 +199,7 @@ class Analytics {
     window.gtag('event', 'error', params);
 
     if (this.config.debugMode) {
-      console.log('[Analytics] Error tracked:', params);
+// [AUDIT] Removed console.log // line 202
     }
   }
 
@@ -222,7 +222,7 @@ class Analytics {
     window.gtag('event', 'timing_complete', params);
 
     if (this.config.debugMode) {
-      console.log('[Analytics] Timing tracked:', params);
+// [AUDIT] Removed console.log // line 225
     }
   }
 

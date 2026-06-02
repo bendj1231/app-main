@@ -8,7 +8,7 @@ const CORS = {
 // PilotTerminal.com is the credential infrastructure domain
 // All VCs are issued under did:web:pilotterminal.com
 const ISSUER_DID = 'did:web:pilotrecognition.com';
-const WALT_ISSUER_URL = 'https://issuer.demo.walt.id';
+const PILOT_ISSUER_URL = 'https://issuer.pilotrecognition.com';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
@@ -60,15 +60,15 @@ Deno.serve(async (req) => {
       credentialSubject,
     };
 
-    // Onboard a fresh issuer key (dev mode — replace with WALT_ISSUER_JWK secret in production)
-    const ISSUER_JWK = Deno.env.get('WALT_ISSUER_JWK');
+    // Onboard a fresh issuer key (dev mode — replace with PLATFORM_SIGNING_KEY_JWK secret in production)
+    const ISSUER_JWK = Deno.env.get('PLATFORM_SIGNING_KEY_JWK');
     let issuerKey: any;
     let issuerDid = ISSUER_DID;
 
     if (ISSUER_JWK) {
       issuerKey = { type: 'jwk', jwk: JSON.parse(ISSUER_JWK) };
     } else {
-      const onboardRes = await fetch(`${WALT_ISSUER_URL}/onboard/issuer`, {
+      const onboardRes = await fetch(`${PILOT_ISSUER_URL}/onboard/issuer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -78,7 +78,7 @@ Deno.serve(async (req) => {
       });
       if (!onboardRes.ok) {
         const err = await onboardRes.text();
-        throw new Error(`walt.id onboard failed: ${err}`);
+        throw new Error(`Issuer onboard failed: ${err}`);
       }
       const onboardData = await onboardRes.json();
       issuerKey = { type: 'jwk', jwk: onboardData.issuerKey.jwk };
@@ -86,8 +86,8 @@ Deno.serve(async (req) => {
       console.log('[PilotTerminal] Onboarded issuer DID:', issuerDid);
     }
 
-    // Issue via walt.id OID4VCI
-    const issueRes = await fetch(`${WALT_ISSUER_URL}/openid4vc/jwt/issue`, {
+    // Issue via PilotRecognition OID4VCI
+    const issueRes = await fetch(`${PILOT_ISSUER_URL}/openid4vc/jwt/issue`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'accept': 'text/plain' },
       body: JSON.stringify({
@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
 
     if (!issueRes.ok) {
       const err = await issueRes.text();
-      throw new Error(`walt.id issue failed (${issueRes.status}): ${err}`);
+      throw new Error(`Issuer signing failed (${issueRes.status}): ${err}`);
     }
 
     const credentialOfferUrl = await issueRes.text();
@@ -143,7 +143,7 @@ Deno.serve(async (req) => {
       credential_type,
       // Deep link for wallet claim
       claim_links: {
-        walt_id: `https://wallet.walt.id/?offer=${encodeURIComponent(credentialOfferUrl)}`,
+        pilot_wallet: `https://wallet.pilotrecognition.com/?offer=${encodeURIComponent(credentialOfferUrl)}`,
         iota: credentialOfferUrl,
       }
     }), {

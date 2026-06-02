@@ -24,7 +24,7 @@ const TRUSTED_ISSUER_DIDS = [
   'did:web:pilotterminal.com',
 ];
 
-const WALT_ISSUER_URL = 'https://issuer.demo.walt.id';
+const PILOT_ISSUER_URL = 'https://issuer.pilotrecognition.com';
 
 function base64urlDecode(str: string): string {
   const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
           .eq('id', credentialId)
           .single();
         if (cred) {
-          // credential_offer_url is the OID4VCI offer — use walt.id to resolve
+          // credential_offer_url is the OID4VCI offer — use pilot.wallet to resolve
           // For direct JWT verification, pilot must present the raw JWT
           return new Response(JSON.stringify({
             verified: false,
@@ -165,11 +165,11 @@ Deno.serve(async (req) => {
     const isRevoked = revocationStatus?.status === 'revoked' || revocationStatus?.status === 'suspended';
     const registryStatus = revocationStatus?.status || 'not_registered';
 
-    // --- Cryptographic verification via walt.id verifier ---
+    // --- Cryptographic verification via pilot.wallet verifier ---
     let cryptoVerified = false;
     let cryptoError: string | null = null;
     try {
-      const verifyRes = await fetch(`${WALT_ISSUER_URL}/openid4vc/verify`, {
+      const verifyRes = await fetch(`${PILOT_ISSUER_URL}/openid4vc/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: credentialJwt }),
@@ -178,7 +178,7 @@ Deno.serve(async (req) => {
         const verifyData = await verifyRes.json();
         cryptoVerified = verifyData.valid === true || verifyData.verified === true;
       } else {
-        cryptoError = `walt.id verifier returned ${verifyRes.status}`;
+        cryptoError = `Pilot verifier returned ${verifyRes.status}`;
       }
     } catch (e: any) {
       cryptoError = `Crypto verification unavailable: ${e.message}`;

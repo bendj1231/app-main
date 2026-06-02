@@ -42,10 +42,10 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
 
     setIsCheckingCooldown(true);
     
-    console.log(`🔍 DEBUG - SupportEnquiryPage Cooldown Check:`);
-    console.log(`  - User ID: ${userProfile?.id}`);
-    console.log(`  - User Email: ${userProfile?.email}`);
-    console.log(`  - Program Name: "${programName}"`);
+// [AUDIT] Removed console.log // line 45
+// [AUDIT] Removed console.log // line 46
+// [AUDIT] Removed console.log // line 47
+// [AUDIT] Removed console.log // line 48
     
     try {
       // Query Firestore for existing enquiries from this user for this program
@@ -65,33 +65,33 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
       
       const querySnapshot = await getDocs(q);
       
-      console.log(`  - Query results: ${querySnapshot.docs.length} documents found`);
+// [AUDIT] Removed console.log // line 68
       
       if (!querySnapshot.empty) {
         const lastEnquiry = querySnapshot.docs[0].data();
-        console.log(`  - Last enquiry:`, lastEnquiry);
+// [AUDIT] Removed console.log // line 72
         
         const submissionTime = lastEnquiry.timestamp?.toDate()?.getTime() || Date.now();
         const currentTime = new Date().getTime();
         const timeDiff = currentTime - submissionTime;
         const hoursDiff = timeDiff / (1000 * 60 * 60);
         
-        console.log(`  - Time difference: ${hoursDiff.toFixed(2)} hours`);
+// [AUDIT] Removed console.log // line 79
         
         // If submitted within last 24 hours, show cooldown
         if (hoursDiff < 24) {
           const hoursRemaining = Math.ceil(24 - hoursDiff);
           const message = `Unable to send enquiry. Please wait ${hoursRemaining} hours before submitting another enquiry. After 24 hours, please contact support for help at +629670481890`;
           setCooldownMessage(message);
-          console.log(`  - ✅ Cooldown ACTIVE: ${hoursRemaining} hours remaining`);
+// [AUDIT] Removed console.log // line 86
           return true;
         } else {
           setCooldownMessage('');
-          console.log(`  - ✅ No cooldown: enquiry was ${hoursDiff.toFixed(2)} hours ago (> 24 hours)`);
+// [AUDIT] Removed console.log // line 90
         }
       } else {
         setCooldownMessage('');
-        console.log(`  - ✅ No cooldown: no enquiries found for this program`);
+// [AUDIT] Removed console.log // line 94
       }
     } catch (error) {
       // Fallback to localStorage if Firebase fails
@@ -181,7 +181,7 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
       await addDoc(notificationsRef, notificationData);
 
       // Simulate email notification (in production, this would trigger an email service)
-      console.log('📧 Email notification sent to super admin:', {
+// [AUDIT] Removed console.log // line 184
         to: 'benjamintigerbowler@gmail.com',
         subject: `New Support Enquiry: ${formData.subject}`,
         enquiry: notificationData

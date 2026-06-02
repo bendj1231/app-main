@@ -39,7 +39,7 @@ export const indexedDB = {
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-          console.log('✅ Session saved to IndexedDB');
+// [AUDIT] Removed console.log // line 42
           resolve();
         };
 
@@ -62,10 +62,10 @@ export const indexedDB = {
         request.onsuccess = () => {
           const data = request.result as AuthSessionData | undefined;
           if (data && data.session) {
-            console.log('✅ Session restored from IndexedDB');
+// [AUDIT] Removed console.log // line 65
             resolve(data.session);
           } else {
-            console.log('⚠️ No session found in IndexedDB');
+// [AUDIT] Removed console.log // line 68
             resolve(null);
           }
         };
@@ -90,7 +90,7 @@ export const indexedDB = {
           const { data: { session: currentSession }, error: sessionError } = await supabaseClient.auth.getSession();
           
           if (sessionError || !currentSession) {
-            console.log('⚠️ Session no longer valid in Supabase auth, clearing session');
+// [AUDIT] Removed console.log // line 93
             await this.clearSession();
             return null;
           }
@@ -109,14 +109,14 @@ export const indexedDB = {
               await this.clearSession();
               return null;
             }
-            console.log('⚠️ Profile not found in database, but user is authenticated');
+// [AUDIT] Removed console.log // line 112
           }
 
           if (!profile) {
-            console.log('⚠️ Profile not found in database, but user is authenticated. Profile will be created on first login.');
+// [AUDIT] Removed console.log // line 116
             // Don't clear session - allow user to continue
           } else {
-            console.log('✅ User verified in Supabase auth and database');
+// [AUDIT] Removed console.log // line 119
           }
         } catch (verifyError) {
           console.error('❌ Error verifying user:', verifyError);
@@ -143,7 +143,7 @@ export const indexedDB = {
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-          console.log('✅ Session cleared from IndexedDB');
+// [AUDIT] Removed console.log // line 146
           resolve();
         };
 

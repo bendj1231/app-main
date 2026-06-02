@@ -156,16 +156,16 @@ serve(async (req) => {
     console.log(`[verify-completion] Pilot ${record.profile_id} verified. DID: ${pilotDid}`)
 
     // Step 5: Issue platform-signed VerifiedOperatorVC (the digital watermark)
-    // Signed by issuer.portal.walt.id using PilotRecognition's issuer key
+    // Signed by PilotRecognition's self-hosted issuer
     let watermarkCredentialUrl: string | null = null
     try {
-      const WALT_ISSUER_URL = Deno.env.get('WALT_ISSUER_URL') || 'https://issuer.portal.walt.id'
+      const PILOT_ISSUER_URL = Deno.env.get('PILOT_ISSUER_URL') || 'https://issuer.pilotrecognition.com'
       const now = new Date()
       const issuanceDate = now.toISOString()
       const expirationDate = new Date(now.getFullYear() + 2, now.getMonth(), now.getDate()).toISOString()
 
       // Onboard issuer key
-      const onboardRes = await fetch(`${WALT_ISSUER_URL}/onboard/issuer`, {
+      const onboardRes = await fetch(`${PILOT_ISSUER_URL}/onboard/issuer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key: { backend: 'jwk', keyType: 'secp256r1' }, did: { method: 'jwk' } })
@@ -174,7 +174,7 @@ serve(async (req) => {
       if (onboardRes.ok) {
         const onboardData = await onboardRes.json()
 
-        const issueRes = await fetch(`${WALT_ISSUER_URL}/openid4vc/jwt/issue`, {
+        const issueRes = await fetch(`${PILOT_ISSUER_URL}/openid4vc/jwt/issue`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'accept': 'text/plain' },
           body: JSON.stringify({

@@ -10,7 +10,24 @@ const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 );
 
+// Webhook endpoints should deny cross-origin requests
+const webhookHeaders = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': 'null',  // Deny cross-origin
+  'X-Content-Type-Options': 'nosniff',
+};
+
 Deno.serve(async (req) => {
+  // Handle OPTIONS preflight
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { 
+      headers: {
+        'Access-Control-Allow-Origin': 'null',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      }
+    });
+  }
+
   const signature = req.headers.get('stripe-signature');
   const body = await req.text();
   const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
@@ -22,7 +39,7 @@ Deno.serve(async (req) => {
     console.error('Webhook signature verification failed:', err.message);
     return new Response(JSON.stringify({ error: 'Invalid signature' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' },
+      headers: webhookHeaders,
     });
   }
 
@@ -158,13 +175,13 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: webhookHeaders,
     });
   } catch (err: any) {
     console.error('Webhook processing error:', err);
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: webhookHeaders,
     });
   }
 });

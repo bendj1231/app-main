@@ -64,9 +64,9 @@ interface InfraStats {
   // Helio (crypto payments)
   helioTokensTotal: number;
   paymentSplitsTotal: number;
-  // Walt.id / DID
-  waltDids: number;
-  waltWalletsActive: number;
+  // Pilot Wallet / DID
+  pilotDids: number;
+  pilotWalletsActive: number;
   // Resend (email)
   emailsSentTotal: number;
   // IPFS
@@ -177,7 +177,7 @@ export const InfrastructureDashboard: React.FC = () => {
         auth0TodayRes, auth0TotalRes,
         logbookTotalRes, logbookActiveRes, logbookProvidersRes,
         helioRes, paymentSplitsRes,
-        waltDidsRes, waltWalletsRes,
+        pilotDidsRes, pilotWalletsRes,
         emailsRes, ipfsPinsRes,
         mfaRes, passkeysRes, pilotDocsRes, payoutsPendingRes,
         atoCommRes, atoVerifRes, recScoreRes, atlasRes,
@@ -223,9 +223,9 @@ export const InfrastructureDashboard: React.FC = () => {
         // Helio
         supabase.from('ato_issued_tokens').select('*', { count: 'exact', head: true }),
         supabase.from('payment_splits').select('*', { count: 'exact', head: true }),
-        // Walt.id
+        // Pilot Wallet
         supabase.from('pilot_dids').select('*', { count: 'exact', head: true }),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).not('walt_wallet_id', 'is', null),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).not('wallet_id', 'is', null),
         // Resend — via notifications table method column
         supabase.from('notifications').select('*', { count: 'exact', head: true }),
         // IPFS
@@ -287,8 +287,8 @@ export const InfrastructureDashboard: React.FC = () => {
         connectedProviders,
         helioTokensTotal: helioRes.count ?? 0,
         paymentSplitsTotal: paymentSplitsRes.count ?? 0,
-        waltDids: waltDidsRes.count ?? 0,
-        waltWalletsActive: waltWalletsRes.count ?? 0,
+        pilotDids: pilotDidsRes.count ?? 0,
+        pilotWalletsActive: pilotWalletsRes.count ?? 0,
         emailsSentTotal: emailsRes.count ?? 0,
         ipfsPins: ipfsPinsRes.count ?? 0,
         mfaRequiredUsers: mfaRes.count ?? 0,
@@ -377,10 +377,10 @@ export const InfrastructureDashboard: React.FC = () => {
     { name: 'Pilot Documents', category: 'Verification', status: stats.pilotDocuments > 0 ? 'live' : 'partial', notes: `${stats.pilotDocuments ?? 0} documents uploaded. Admin review queue built (/admin/verification).` },
     // ── WALLET / CREDENTIALS ──────────────────────────────────
     { name: 'Pilot Wallet (W3C VC)', category: 'Wallet', status: 'live', notes: `${stats.pilotWallets} wallets. AES-256-GCM encrypted storage. Bitstring status list polling.` },
-    { name: 'Walt.id Issuer', category: 'Wallet', status: 'partial', edgeFn: 'wallet-provision / pilot-terminal-issue', notes: `${stats.waltWalletsActive} active walt wallets. ${stats.waltDids} DIDs. Issuer API live at issuer.portal.walt.id. Proof signatures still PENDING_ENCLAVE_SIGNATURE.` },
+    { name: 'Pilot Wallet Issuer', category: 'Wallet', status: 'partial', edgeFn: 'wallet-provision / pilot-terminal-issue', notes: `${stats.pilotWalletsActive} active wallets. ${stats.pilotDids} DIDs. Issuer API live at issuer.pilotrecognition.com. Self-hosted P-256 signing keys.` },
     { name: 'Truvera (VC issuer)', category: 'Wallet', status: 'partial', notes: 'TRUVERA_API_KEY configured. TruveraWalletSetup component built. Not yet wired to production pilot flow.' },
     { name: 'VC Revocation', category: 'Wallet', status: 'live', edgeFn: 'vc-revoke / vc-status', notes: `${stats.vcRevocations} revocations. Bitstring Status List circuit breaker. vc_revocation_registry table active.` },
-    { name: 'DID Registry', category: 'Wallet', status: stats.waltDids > 0 ? 'live' : 'partial', notes: `${stats.waltDids} DIDs in pilot_dids table. did:key derivation from P-256 enclave key.` },
+    { name: 'DID Registry', category: 'Wallet', status: stats.pilotDids > 0 ? 'live' : 'partial', notes: `${stats.pilotDids} DIDs in pilot_dids table. did:key derivation from P-256 enclave key.` },
     // ── AI ────────────────────────────────────────────────────
     { name: 'Groq AI Coaching', category: 'AI', status: 'live', edgeFn: 'ai-coaching', notes: `${stats.aiRequestsToday}/500 requests today. Rate limited. ai_usage_log active. Coaching / chat / pathway / atlas-cv types.` },
     { name: 'Recognition Score', category: 'AI', status: stats.recognitionScores > 0 ? 'live' : 'partial', edgeFn: 'recognition-score', notes: `${stats.recognitionScores ?? 0} scores computed. Edge fn deployed. Score = career currency for pathway access.` },
@@ -697,14 +697,14 @@ export const InfrastructureDashboard: React.FC = () => {
         )}
       </ServiceBlock>
 
-      {/* ── WALT.ID / DID ──────────────────────────────────────── */}
-      <ServiceBlock title="Walt.id — DID / Verifiable Credential Issuer" status={stats.waltWalletsActive > 0 ? 'live' : 'partial'} icon={Lock} color="#6366f1">
+      {/* ── PILOT WALLET / DID ──────────────────────────────────────── */}
+      <ServiceBlock title="Pilot Wallet — DID / Verifiable Credential Issuer" status={stats.pilotWalletsActive > 0 ? 'live' : 'partial'} icon={Lock} color="#6366f1">
         <div className="grid grid-cols-2 gap-2">
-          <StatCard icon={Lock} label="Walt Wallets Active" value={stats.waltWalletsActive} color="#6366f1" sub="profiles with walt_wallet_id" />
-          <StatCard icon={Globe} label="DIDs Registered" value={stats.waltDids} color="#818cf8" sub="pilot_dids table" />
+          <StatCard icon={Lock} label="Pilot Wallets Active" value={stats.pilotWalletsActive} color="#6366f1" sub="profiles with wallet_id" />
+          <StatCard icon={Globe} label="DIDs Registered" value={stats.pilotDids} color="#818cf8" sub="pilot_dids table" />
         </div>
         <p className="text-[9px] text-white/20 mt-2">
-          Issuer API: issuer.portal.walt.id &nbsp;·&nbsp; Wallet API: VITE_WALT_WALLET_API &nbsp;·&nbsp; Wallet provision edge fn: /wallet-provision
+          Issuer API: issuer.pilotrecognition.com &nbsp;·&nbsp; Wallet API: Native browser wallet &nbsp;·&nbsp; Wallet provision edge fn: /wallet-provision
         </p>
       </ServiceBlock>
 
@@ -744,7 +744,7 @@ export const InfrastructureDashboard: React.FC = () => {
 
       {/* Footer */}
       <div className="text-[9px] text-white/20 text-center pt-2 border-t border-white/5">
-        Supabase-queryable: Groq AI, Cloudinary, Veremark, Stripe, Logbook connections, Helio, Walt.id, IPFS
+        Supabase-queryable: Groq AI, Cloudinary, Veremark, Stripe, Logbook connections, Helio, Pilot Wallet, IPFS
         &nbsp;·&nbsp; External consoles needed: Auth0, Firebase, Neon, MongoDB, Sentry, Resend, Backblaze
         &nbsp;·&nbsp; Auto-refresh every 30s
       </div>

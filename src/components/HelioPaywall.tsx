@@ -76,7 +76,7 @@ export const HelioPaywall: React.FC<HelioPaywallProps> = ({
           platform: 'pilotrecognition.com',
         },
         onSuccess: (event: any) => {
-          console.log('Helio payment success:', event);
+// [AUDIT] Removed console.log // line 79
           onSuccess?.(event.paymentId || event.transactionId);
         },
         onError: (event: any) => {

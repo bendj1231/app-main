@@ -63,7 +63,7 @@ We would like to schedule a 30-minute call to walk you through the platform and 
 
 ## About Us
 
-- **Benjamin Bowler** — Founder, WCC graduate, CPL #155660, built the platform from scratch after graduating with no placement
+- **Benjamin Bowler** — Founder, WCC graduate, CPL holder, built the platform from scratch after graduating with no placement
 - **Karl Brian Vogt** — Co-Founder, commercial flying degree, experienced the same post-training gap from Europe
 - **Platform:** pilotrecognition.com — live, in final pre-launch phase
 - **Infrastructure:** Supabase, verified credential wallet, Veremark background check integration

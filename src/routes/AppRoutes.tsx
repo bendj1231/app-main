@@ -203,16 +203,16 @@ export const AppRoutes = () => {
 
   // Re-check domain when location changes
   useEffect(() => {
-    console.log('[DEBUG AppRoutes] Location changed:', window.location.href);
+// [AUDIT] Removed console.log // line 206
     const isDomain = window.location.hostname === 'careerpathways.pilotrecognition.com' ||
       window.location.hostname === 'pilotcareerpathways.com' ||
       window.location.hostname === 'www.pilotcareerpathways.com';
     const isLocalDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       && new URLSearchParams(window.location.search).get('product') === 'careerpathways';
 
-    console.log('[DEBUG AppRoutes] hostname:', window.location.hostname);
-    console.log('[DEBUG AppRoutes] isDomain:', isDomain);
-    console.log('[DEBUG AppRoutes] isLocalDev:', isLocalDev);
+// [AUDIT] Removed console.log // line 213
+// [AUDIT] Removed console.log // line 214
+// [AUDIT] Removed console.log // line 215
 
     if (isDomain || isLocalDev) {
       localStorage.setItem('careerpathways_mode', 'true');
@@ -223,7 +223,7 @@ export const AppRoutes = () => {
   // Listen for custom login modal events
   useEffect(() => {
     const handleOpenLoginModal = () => {
-      console.log('[DEBUG AppRoutes] open-login-modal event received - opening login modal');
+// [AUDIT] Removed console.log // line 226
       setIsLoginModalOpen(true);
     };
 
@@ -281,37 +281,37 @@ export const AppRoutes = () => {
   // Subdomain routing for enterprise.pilotrecognition.com
   if (window.location.hostname === 'enterprise.pilotrecognition.com') {
     const path = window.location.pathname;
-    console.log('[DEBUG AppRoutes] Enterprise subdomain detected, path:', path);
+// [AUDIT] Removed console.log // line 284
 
     if (path === '/enterprise-access/airlines') {
-      console.log('[DEBUG AppRoutes] Rendering AirlinesOperatorsPage');
+// [AUDIT] Removed console.log // line 287
       return <AirlinesOperatorsPage />;
     }
     if (path === '/enterprise-access/learn-more') {
-        console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessLearnMorePage');
+// [AUDIT] Removed console.log // line 291
         return <EnterpriseAccessLearnMorePage />;
     }
     if (path === '/enterprise-access/pricing') {
-        console.log('[DEBUG AppRoutes] Rendering EnterprisePricingPage');
+// [AUDIT] Removed console.log // line 295
         return <EnterprisePricingPage />;
     }
     if (path === '/' || path === '/enterprise-access') {
-      console.log('[DEBUG AppRoutes] Rendering EnterpriseAccessPage');
+// [AUDIT] Removed console.log // line 299
       return <EnterpriseAccessPage />;
     }
     if (path === '/framework/full' || path === '/framework/full/index.html') {
-      console.log('[DEBUG AppRoutes] Rendering FrameworkFullPage on enterprise');
+// [AUDIT] Removed console.log // line 303
       return <FrameworkFullPage />;
     }
     if (path === '/ucf') {
-      console.log('[DEBUG AppRoutes] Rendering UCFPage on enterprise');
+// [AUDIT] Removed console.log // line 307
       return <UCFPage />;
     }
     if (path === '/ucf/official-release' || path.startsWith('/ucf/official-release')) {
-      console.log('[DEBUG AppRoutes] Rendering UCFOfficialReleasePage on enterprise');
+// [AUDIT] Removed console.log // line 311
       return <UCFOfficialReleasePage />;
     }
-    console.log('[DEBUG AppRoutes] Unknown path on enterprise subdomain, falling through to Routes');
+// [AUDIT] Removed console.log // line 314
   }
 
   // Domain routing for pilotshortage.org - standalone app experience
@@ -321,7 +321,7 @@ export const AppRoutes = () => {
     (searchParams.get('shortage') === '1' || searchParams.get('product') === 'shortage');
 
   if (isShortageDomain || isShortageLocalDev) {
-    console.log('[DEBUG AppRoutes] PilotShortage domain detected - rendering standalone app');
+// [AUDIT] Removed console.log // line 324
     return (
       <Suspense fallback={<LoadingFallback />}>
         <ShortageApp />
@@ -335,7 +335,7 @@ export const AppRoutes = () => {
   const isPilotTerminalLocalDev = isLocalhost && searchParams.get('product') === 'pilotterminal';
 
   if (isPilotTerminalDomain || isPilotTerminalLocalDev) {
-    console.log('[DEBUG AppRoutes] PilotTerminal domain detected - rendering community forum');
+// [AUDIT] Removed console.log // line 338
     return (
       <Suspense fallback={<LoadingFallback />}>
         <PilotTerminalHome />
@@ -345,12 +345,12 @@ export const AppRoutes = () => {
 
   // Domain routing for careerpathways.pilotrecognition.com or pilotcareerpathways.com
   // NOTE: Using careerPathwaysMode state which is updated by useEffect on location change
-  console.log('[DEBUG AppRoutes] hostname:', window.location.hostname);
-  console.log('[DEBUG AppRoutes] href:', window.location.href);
-  console.log('[DEBUG AppRoutes] careerPathwaysMode state:', careerPathwaysMode);
+// [AUDIT] Removed console.log // line 348
+// [AUDIT] Removed console.log // line 349
+// [AUDIT] Removed console.log // line 350
 
   if (careerPathwaysMode) {
-    console.log('[DEBUG AppRoutes] RENDERING CareerPathwaysApp');
+// [AUDIT] Removed console.log // line 353
     return (
       <Suspense fallback={<CareerPathwaysLoadingFallback />}>
         <CareerPathwaysApp onLogin={() => setIsLoginModalOpen(true)} />

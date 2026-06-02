@@ -103,7 +103,7 @@ export const EnterpriseDashboard: React.FC = () => {
           userId={currentUser?.id}
           userEmail={currentUser?.email}
           onSuccess={(paymentId) => {
-            console.log('Payment success:', paymentId);
+// [AUDIT] Removed console.log // line 106
             window.location.reload();
           }}
           onError={(error) => {

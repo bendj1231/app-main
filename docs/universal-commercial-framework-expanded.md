@@ -1,7 +1,8 @@
 <!-- CACHE-BUST: 2025-01-12-2250 - Force refresh -->
-<!-- Version: 5.0 -->
-<!-- Last-Modified: 2025-01-12T22:50:00Z -->
-<!-- Pillars: 21 -->
+<!-- Version: 6.0 -->
+<!-- Last-Modified: 2026-06-02T11:00:00Z -->
+<!-- Pillars: 26 -->
+<!-- NEW: Pillar 26 — Revenue Architecture & Monetization Framework -->
 
 # Universal Commercial Framework
 
@@ -18,10 +19,11 @@
 
 | Field                | Details                |
 | -------------------- | ---------------------- |
-| **Version**          | 10.0-Expanded          |
-| **Total Pages**      | 80+ Pages              |
-| **Stakeholder Hubs** | 7 Hubs, 25 Pillars     |
-| **Last Updated**     | May 2026               |
+| **Version**          | 11.0-Revenue-Integrated |
+| **Total Pages**      | 112+ Pages              |
+| **Stakeholder Hubs** | 8 Hubs, 26 Pillars      |
+| **Last Updated**     | June 2026               |
+| **NEW**              | Pillar 26 — Revenue Architecture |
 | **Document Owner**   | Platform Strategy Team |
 | **Review Cycle**     | Quarterly              |
 
@@ -91,13 +93,22 @@
     - Professional Communities (forums, discussion boards, Discord communities)
     - Voice & AI Assistants (virtual assistants, conversational AI, chatbot platforms)
 
-### Part VIII: Technical & Commercial Appendices (Pages 98-112)
+### Part VIII: Hub H - Revenue Architecture & Capital Formation (Pages 97-112)
 
-30. Appendix A: Technical Integration Specifications
-31. Appendix B: Data Governance & Compliance Framework
-32. Appendix C: Commercial Framework & Pricing
-33. Appendix D: Implementation Timeline & Milestones
-34. Appendix E: ROI Case Studies & Success Metrics
+31. **Pillar 26: Revenue Architecture & Monetization Framework**
+    - Three-Product Revenue Model (Programs, Recognition, Pathways)
+    - Enterprise & Operator Contracts
+    - Legal & Administrative Services Revenue
+    - Year 1-3 Financial Projections ($1.2M → $10-15M → $40-50M)
+    - Cost Structure & Profitability Analysis (79.7% net margin)
+
+### Part IX: Technical & Commercial Appendices (Pages 113-125)
+
+32. Appendix A: Technical Integration Specifications
+33. Appendix B: Data Governance & Compliance Framework
+34. Appendix C: Commercial Framework & Pricing
+35. Appendix D: Implementation Timeline & Milestones
+36. Appendix E: ROI Case Studies & Success Metrics
 35. Appendix F: Glossary & Industry Definitions
 
 ---
@@ -3580,7 +3591,373 @@ Every aviation career question — from a 16-year-old dreaming of becoming a pil
 
 ---
 
-### Appendix A: Technical Integration
+# PART VIII: HUB H — REVENUE ARCHITECTURE & CAPITAL FORMATION
+
+## Page 97-112: Pillar 26 — Revenue Architecture & Monetization Framework
+
+> 🔒 **ADMINISTRATOR ACCESS ONLY**
+> 
+> This section contains confidential financial projections, cost structures, revenue models, and strategic pricing information. Access is restricted to platform administrators and authorized personnel only. Do not share with external stakeholders without explicit written approval.
+
+---
+
+### The Financial Engine of the Aviation Industry Operating System
+
+**Pillar Mission:** Transform the 25-pilot ecosystem into sustainable, scalable revenue streams with 79.7% net margins while maintaining platform neutrality and data sovereignty.
+
+**Revenue Philosophy:** Every stakeholder interaction that creates value should generate revenue — from pilot education to airline recruitment to legal protection.
+
+---
+
+### 26.1 Three-Product Revenue Architecture
+
+#### **A. Programs Revenue** — Education & Career Development
+
+| Product | Price | Target Volume (Y1) | Projected Revenue |
+|---------|-------|-------------------|---------------------|
+| **Foundation Program** | $49 (or $24.50 scholarship) | 2,000 pilots | $98,000 |
+| **Transition Program** | $299 (or $149 for Foundation grads) | 1,000 pilots | $149,000 |
+| **EBT Video Scoring** | Bundled with Transition | 1,000 pilots | Included |
+| **Campus Partnerships** | $5,000-15,000/year | 6 campuses | $60,000 |
+| **Programs Subtotal** | | | **$307,000** |
+
+**Value Proposition:** Pilots invest in career development; platform delivers verified, airline-aligned competency building.
+
+---
+
+#### **B. Recognition Profile Revenue** — Subscription & Access
+
+| Tier | Annual Price | Features | Target Volume (Y1) | Projected Revenue |
+|------|---------------|----------|-------------------|---------------------|
+| **Free Tier** | $0 | Basic profile, 2 gaps shown, 3 pathways/month | 10,000 pilots | $0 |
+| **Recognition Plus** | $99/year | Full comparison, unlimited pathways, priority matching | 3,000 pilots | $297,000 |
+| **Recognition Subtotal** | | | | **$297,000** |
+
+**Value Proposition:** Recognition Score becomes industry currency — pilots pay for visibility and competitive advantage.
+
+---
+
+#### **C. Pathways Revenue** — Specialized Career Access
+
+| Tier | Price | Features | Target Volume (Y1) | Projected Revenue |
+|------|-------|----------|-------------------|---------------------|
+| **Free Pathways** | $0 | Public airline, cargo, cadet pathways | All pilots | $0 |
+| **Premium Pathways** | $49 each or $199/year bundle | Corporate aviation, charter, VIP transport, specialized roles | 500 pilots | $99,500 |
+| **Pathways Subtotal** | | | | **$99,500** |
+
+**Value Proposition:** Access to hidden job markets (private aviation, specialized roles) that aren't publicly advertised.
+
+---
+
+### 26.2 Enterprise & Operator Revenue
+
+#### **B2B Contracts — Airlines, Cargo, Charter Operators**
+
+| Contract Type | Monthly Price | Annual Price | Features | Target (Y1) | Revenue |
+|---------------|---------------|--------------|----------|-------------|---------|
+| **Free Tier** | $0 | $0 | Post pathways, view public profiles | 50 operators | $0 |
+| **Enterprise** | $1,000 | $12,000 | Pull API, unlimited profile pulls, ATS integration, EBT video access | 10 operators | $120,000 |
+| **Success Fee** | — | — | $500 per pilot hired through pathway | 50 hires | $25,000 |
+| **Enterprise Subtotal** | | | | | **$145,000** |
+
+**Value Proposition:** Airlines save recruitment costs; pay only for verified, pre-qualified talent they actually hire.
+
+---
+
+### 26.3 Ecosystem & Referral Revenue
+
+#### **Network Effect Monetization**
+
+| Source | Fee Structure | Volume Target (Y1) | Projected Revenue |
+|--------|---------------|-------------------|---------------------|
+| **Flight School Referrals** | $20/conversion | 500 pilots | $10,000 |
+| **Manufacturer Referrals** | $20/conversion | 300 pilots | $6,000 |
+| **Type Rating Center Referrals** | $20/conversion | 400 pilots | $8,000 |
+| **Training Resource Center Referrals** | $20/conversion | 200 pilots | $4,000 |
+| **Referral Subtotal** | | | **$28,000** |
+
+**Value Proposition:** Platform becomes the trusted routing layer for aviation career decisions — monetize the navigation.
+
+---
+
+### 26.4 Legal & Administrative Services Revenue
+
+#### **Sequential Accountability Protocol — The "Tax on Chaos"**
+
+| Service Level | Fee Range | Volume Estimate (Y1) | Revenue |
+|---------------|-----------|---------------------|---------|
+| **Level 1 — Platform Inquiry** | $500-2,000 | 50 inquiries | $75,000 |
+| **Level 2 — Verification Records** | $1,000-3,000 | 30 inquiries | $60,000 |
+| **Level 3 — Operator Audit** | $2,000-5,000 | 20 inquiries | $70,000 |
+| **Level 4 — Originating Attestor Review** | $1,500-4,000 | 15 inquiries | $41,250 |
+| **Full Chain Documentation** | $5,000-10,000 | 10 cases | $75,000 |
+| **Legal Services Subtotal** | | | **$321,250** |
+
+**Dual Purpose:**
+1. **Protection:** Frivolous claims face economic disincentives ($10K-24K to pursue)
+2. **Revenue:** Legitimate grievances generate administrative fee income
+
+**Value Proposition:** Turn liability risk into profit center — every dispute generates revenue while protecting the ecosystem.
+
+---
+
+### 26.5 Additional High-Margin Micro-Services
+
+#### **Five Specialized Revenue Streams**
+
+| Service | Payer | Revenue Model |
+|---------|-------|---------------|
+| **Dynamic Crew-Risk Telemetry** | Insurance Underwriters (Pillar 23) | API access fee for anonymized risk aggregation |
+| **EBT Telemetry Pipes** | ATOs & Airlines (Pillars 6, 18) | Per-session data-routing fee |
+| **Remote ID & Autonomous Operator Auth** | Drone Networks (Pillar 4) | Fraction-of-a-cent per flight plan clearance |
+| **Ready-to-Deploy Talent Bidding** | Recruitment Agencies (Pillar 5) | Substantial per-placement booking fee |
+| **Credit-Risk & Asset Lease Validation** | Banks (Pillar 8) | Per-evaluation fee for pilot creditworthiness |
+
+**Projection:** Additional $50,000-100,000 Year 1, scaling to $500K+ by Year 3.
+
+---
+
+### 26.6 Financial Projections: Year 1-3 (Realistic Startup Model)
+
+> **Note:** These projections reflect a pre-revenue startup bridging to product-market fit. Year 1 focuses on validation, not scale. Numbers based on 6 partnerships already secured, 6 years platform development, and conservative conversion assumptions.
+
+---
+
+#### **Year 1 — Foundation & Validation ($150K-250K)**
+
+**Quarterly Breakdown:**
+
+| Quarter | Milestone | Revenue Target | Key Activities |
+|---------|-----------|----------------|----------------|
+| **Q1** (Launch) | Beta release | $0-5,000 | 50-100 pilot signups (free tier) |
+| **Q2** | First paid conversions | $10,000-25,000 | 100-250 Recognition Plus subscribers |
+| **Q3** | First enterprise contract | $50,000-75,000 | 1 airline pilot program, 500 paid users |
+| **Q4** | Validation | $75,000-100,000 | 2nd airline contract, 1,000 paid users |
+| **Year 1 Total** | | **$150,000-250,000** | Product-market fit proven |
+
+**Revenue Mix Year 1:**
+
+| Stream | Conservative | Optimistic | Notes |
+|--------|--------------|------------|-------|
+| Programs (Foundation/Transition) | $20,000 | $40,000 | 400-800 pilots at $49 avg |
+| Recognition Plus ($99/year) | $50,000 | $100,000 | 500-1,000 paid subscribers |
+| Premium Pathways | $15,000 | $25,000 | 300-500 pilots at $49 each |
+| Enterprise Contracts | $50,000 | $75,000 | 1-2 operators at $1K-3K/month |
+| Referral Fees | $10,000 | $15,000 | 500 conversions at $20 |
+| **TOTAL** | **$150,000** | **$250,000** | Pre-revenue → early revenue |
+
+**Year 1 Goal:** Prove pilots will pay, prove airlines will buy, achieve 1,000 paid users.
+
+---
+
+#### **Year 2 — Growth & Break-Even ($600K-1.2M)**
+
+**If Product-Market Fit Achieved:**
+
+| Metric | Conservative | Optimistic | Driver |
+|--------|--------------|------------|--------|
+| **Monthly Recurring Revenue** | $50,000 | $100,000 | Recognition Plus scaling |
+| **Total Pilots** | 10,000 | 15,000 | Word of mouth, campus partnerships |
+| **Paid Subscribers** | 3,000 | 6,000 | 30-40% conversion rate |
+| **Enterprise Operators** | 5 | 10 | Airlines, cargo operators |
+| **Annual Revenue** | **$600,000** | **$1,200,000** | Sustainable growth |
+| **Break-Even** | Month 18 | Month 15 | Operational profitability |
+
+**Revenue Mix Year 2:**
+
+| Stream | Conservative | Optimistic |
+|--------|--------------|------------|
+| Programs & Campus | $100,000 | $150,000 |
+| Recognition Plus | $297,000 | $594,000 |
+| Premium Pathways | $50,000 | $100,000 |
+| Enterprise Contracts | $120,000 | $300,000 |
+| Legal & Admin Services | $50,000 | $100,000 |
+| **TOTAL** | **$600,000** | **$1,200,000** |
+
+**Year 2 Goal:** Achieve monthly break-even, prove scalability, expand to 5-10 enterprise customers.
+
+---
+
+#### **Year 3 — Scale & Profitability ($2-5M)**
+
+**If Network Effects Kick In:**
+
+| Metric | Conservative | Optimistic | Validation |
+|--------|--------------|------------|------------|
+| **Annual Revenue** | **$2M** | **$5M** | Recognition Score industry standard |
+| **Monthly Recurring Revenue** | $150,000 | $400,000 | Subscription dominance |
+| **Enterprise Contracts** | 15 | 30 | Major airlines onboard |
+| **International Markets** | 2 regions | 5 regions | EU, APAC expansion |
+| **Gross Margin** | 75% | 80% | SaaS economics at scale |
+| **Net Margin** | 30% | 50% | Profitable operations |
+
+**Revenue Mix Year 3:**
+
+| Stream | Conservative | Optimistic |
+|--------|--------------|------------|
+| Programs & Campus | $200,000 | $400,000 |
+| Recognition Plus | $900,000 | $2,000,000 |
+| Premium Pathways | $150,000 | $400,000 |
+| Enterprise Contracts | $500,000 | $1,500,000 |
+| Legal & Admin Services | $150,000 | $400,000 |
+| Micro-Services | $100,000 | $300,000 |
+| **TOTAL** | **$2,000,000** | **$5,000,000** |
+
+**Year 3 Goal:** Profitable, scalable, international — ready for Series A or strategic acquisition.
+
+---
+
+#### **Summary: 3-Year Trajectory**
+
+| Year | Revenue | Key Milestone | Status |
+|------|---------|---------------|--------|
+| **Year 1** | $150K-250K | Product-market fit | Pre-revenue → Early revenue |
+| **Year 2** | $600K-1.2M | Break-even | Sustainable growth |
+| **Year 3** | $2-5M | Profitability | Scale & expansion |
+
+**Cumulative 3-Year Revenue:** $2.75M-6.45M  
+**Exit Valuation Range:** $10-30M (based on 3-5x revenue multiple for SaaS)
+
+---
+
+### 26.7 Cost Structure & Profitability (Startup Reality)
+
+> **Note:** Year 1 operates at a loss while building product-market fit. Profitability achieved in Year 2 as revenue scales.
+
+---
+
+#### **Fixed Costs (Year 1) — Lean Startup Model**
+
+| Category | Amount | Notes |
+|----------|--------|-------|
+| Mauritius company maintenance | $2,000 | Domestic company (Mauritian national advantage) |
+| International tax compliance | $10,000 | Minimal (pre-revenue, simple structure) |
+| Legal infrastructure (GDPR, DPO, SCCs) | $15,000 | Critical compliance for launch |
+| Cloud infrastructure (Supabase, Vercel) | $12,000 | Scales with usage |
+| Security compliance (Red Flags 3-5) | $10,000 | Post-registration compliance |
+| Insurance (cyber liability, E&O) | $15,000 | Basic coverage for startup |
+| Founder salary (minimal) | $24,000 | $2K/month survival wage |
+| **Fixed Costs** | **$88,000** | Lean operations |
+
+---
+
+#### **Variable Costs (Year 1) — Scales With Revenue**
+
+| Item | Per Unit | Volume | Total |
+|------|----------|--------|-------|
+| Stripe processing | 2.9% + $0.30 | $150K GMV | $4,800 |
+| Veremark verification | $15/pilot | 500 pilots | $7,500 |
+| Vault data custody | $2/pilot/month | avg 300 pilots | $7,200 |
+| Email delivery (Resend) | $0.001/email | 100K emails | $100 |
+| Marketing/partnerships | — | Events, content | $25,000 |
+| **Variable Costs** | | | **$44,600** |
+
+---
+
+#### **Year 1 Profitability (The Honest Truth)**
+
+| Metric | Conservative | Optimistic |
+|--------|--------------|------------|
+| **Total Revenue** | $150,000 | $250,000 |
+| **Total Costs** | $132,600 | $142,600 |
+| **Net Income** | **$17,400** | **$107,400** |
+| **Net Margin** | **11.6%** | **43%** |
+
+**Cash Flow Reality:**
+- Q1-Q2: Negative cash flow (investment phase)
+- Q3-Q4: Break-even or slight profit
+- **Year 1 is about validation, not profit**
+
+---
+
+#### **Year 2 Profitability (If Product-Market Fit Achieved)**
+
+| Metric | Conservative | Optimistic |
+|--------|--------------|------------|
+| **Total Revenue** | $600,000 | $1,200,000 |
+| **Total Costs** | $250,000 | $350,000 |
+| **Net Income** | **$350,000** | **$850,000** |
+| **Net Margin** | **58%** | **71%** |
+
+**Break-Even Point:** Month 15-18 (Q2-Q3 Year 2)
+
+---
+
+#### **Unit Economics (Year 1 Baseline)**
+
+| Metric | Value | Notes |
+|--------|-------|-------|
+| **Customer Acquisition Cost (CAC)** | ~$10-20 | Organic, content-driven, campus partnerships |
+| **Lifetime Value (LTV)** | $100-200 | Recognition Plus + potential Program upgrade |
+| **LTV/CAC Ratio** | **5:1 to 10:1** | Healthy for SaaS |
+| **Payback Period** | 3-6 months | Recognition Plus subscription |
+| **Gross Margin** | 70-75% | SaaS economics even at small scale |
+
+**Key Insight:** Even at Year 1 scale, unit economics work. The challenge is volume, not margins.
+
+---
+
+### 26.8 Go-to-Market Strategy Integration
+
+#### **Three-Phase Revenue Capture**
+
+**Phase 1: Foundation (Months 1-12)**
+- Target: 1,000-5,000 pilots, 5-10 operators
+- Channels: Events (WATS Dubai, NBAA), campus partnerships, content marketing
+- Revenue focus: Programs + early Enterprise contracts
+
+**Phase 2: Growth (Months 13-36)**
+- Target: 5,000-15,000 pilots, 20-30 operators
+- Channels: Referral programs, enterprise sales, viral "Recognition Score" growth
+- Revenue focus: Scale Recognition Plus subscriptions, close major airline partnerships
+
+**Phase 3: Expansion (Months 37-60)**
+- Target: 15,000-30,000 pilots, 50+ operators
+- Channels: Global partnerships, OEM integrations, aviation authority licensing
+- Revenue focus: White-label platform, international expansion, data monetization
+
+---
+
+### 26.9 Revenue Model Innovation
+
+#### **Network Effects as Revenue Multiplier**
+
+**Early Adopter Advantage:**
+- First 1,000 pilots generate exponential value
+- Recognition Score becomes industry currency → more pilots join → more attractive to airlines → more pathways → more pilot signups
+- Data moat deepens with each verified profile
+
+**Legal Services as Profit Center:**
+- Zero marginal cost (automated chain routing)
+- $321,250 projected Year 1 from legal fees alone
+- Grows with ecosystem disputes (inevitable in aviation)
+
+**Data Moat Valuation:**
+- Verified pilot profiles (not available elsewhere)
+- Flight school performance metrics
+- Real-time placement outcome tracking
+- Exit valuation: $200-500M based on proprietary database alone
+
+---
+
+### 26.10 Stakeholder Revenue Alignment
+
+#### **Every Pillar Contributes to Revenue**
+
+| Pillar | Revenue Contribution |
+|--------|---------------------|
+| **Pillar 1 (Airlines)** | Enterprise contracts, success fees |
+| **Pillar 6 (ATOs)** | Campus partnerships, referral fees |
+| **Pillar 10 (Banks)** | Credit-risk validation fees |
+| **Pillar 11 (Insurance)** | Crew-risk telemetry subscriptions |
+| **Pillar 23 (Authorities)** | White-label licensing fees |
+| **All Pilots** | Programs, Recognition Plus, Premium Pathways |
+
+**Platform Neutrality Maintained:** Revenue comes from services rendered, not from selling pilot data or biased recommendations.
+
+---
+
+## Appendix A: Technical Integration
 
 - API architecture, webhook specifications, authentication protocols
 - Rate limiting: Free (100/hr), Professional (1,000/hr), Enterprise (10,000/hr)
