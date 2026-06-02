@@ -39,7 +39,7 @@ export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: Issuer
                 {/* Key callout */}
                 <div className="rounded-2xl bg-[#00b4d8]/5 border border-[#00b4d8]/20 px-6 py-5 mb-10">
                     <p className="text-white/80 text-sm leading-relaxed">
-                        PilotRecognition (operated by WM Pilot Group) issues <strong className="text-white">digital attestation credentials</strong> in the W3C Verifiable Credentials (VC) standard. These credentials attest that PilotRecognition has verified specific pilot data through authorised third-party sources. They do <strong className="text-white">not</strong> replace, supersede, or constitute official aviation authority documents.
+                        PilotRecognition (operated by Aviation Pathways Ltd) issues <strong className="text-white">digital attestation credentials</strong> in the W3C Verifiable Credentials (VC) standard. These credentials attest that PilotRecognition has verified specific pilot data through authorised third-party sources. They do <strong className="text-white">not</strong> replace, supersede, or constitute official aviation authority documents.
                     </p>
                 </div>
 
@@ -174,7 +174,7 @@ export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: Issuer
                 {/* Footer note */}
                 <div className="mt-16 pt-8 border-t border-white/5 text-center">
                     <p className="text-white/20 text-xs">
-                        PilotRecognition · WM Pilot Group · Dubai, UAE<br />
+                        PilotRecognition · Aviation Pathways Ltd · Mauritius<br />
                         Credential Issuer Policy v1.0 · {lastUpdated}
                     </p>
                 </div>

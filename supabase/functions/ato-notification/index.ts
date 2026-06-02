@@ -1,11 +1,8 @@
+/// <reference lib="deno.ns" />
 import { Resend } from 'https://esm.sh/resend@3.2.0';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
+import { getCorsHeaders } from '../_shared/cors.ts';
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL') || Deno.env.get('NEXT_PUBLIC_SUPABASE_URL') || '';
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
@@ -19,6 +16,7 @@ const resend = new Resend(resendApiKey);
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
+  const corsHeaders = getCorsHeaders(req);
     return new Response('ok', { headers: corsHeaders });
   }
 

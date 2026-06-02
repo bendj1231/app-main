@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { 
@@ -17,6 +18,7 @@ serve(async (req) => {
 
   // Handle CORS preflight request
   if (req.method === 'OPTIONS') {
+  const corsHeaders = getCorsHeaders(req);
     const response = new Response(null, { status: 204 })
     response.headers.set('Access-Control-Allow-Origin', '*')
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')

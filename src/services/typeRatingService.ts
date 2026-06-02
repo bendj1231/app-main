@@ -272,12 +272,14 @@ class TypeRatingService {
    */
   async searchAircraft(query: string): Promise<AircraftTypeRatingCamel[]> {
     try {
+      const safeQuery = query.replace(/[%_]/g, '').trim();
+      if (!safeQuery) return [];
       const { data, error } = await supabase
         .from('aircraft_type_ratings')
         .select('*')
-        .or(`model.ilike.%${query}%,description.ilike.%${query}%`)
+        .or(`model.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%`)
         .order('model');
-      
+
       if (error) throw error;
       return (data || []).map((item: any) => toCamelCase(item));
     } catch (error) {

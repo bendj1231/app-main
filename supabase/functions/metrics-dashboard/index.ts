@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 // Performance Monitoring Dashboard API
 // Real-time metrics and analytics for API Gateway
 
@@ -133,6 +134,7 @@ serve(async (req) => {
   const requestId = crypto.randomUUID()
   
   try {
+  const corsHeaders = getCorsHeaders(req);
     console.log(JSON.stringify({
       timestamp: new Date().toISOString(),
       level: 'info',

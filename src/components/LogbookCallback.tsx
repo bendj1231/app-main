@@ -36,11 +36,12 @@ export const LogbookCallback = () => {
 
     const exchange = async () => {
       try {
+        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
         const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
         if (!SUPABASE_ANON_KEY) throw new Error('VITE_SUPABASE_ANON_KEY is not configured');
         let res: Response;
         try {
-          res = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/mfb-token-exchange', {
+          res = await fetch(`${SUPABASE_URL}/functions/v1/mfb-token-exchange`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ export const LogbookCallback = () => {
             body: JSON.stringify({
               code,
               redirect_uri: redirectUri,
-              auth0_id: localStorage.getItem('auth0_user_id') || undefined,
+              auth0_id: sessionStorage.getItem('auth0_user_id') || undefined,
             }),
           });
         } catch (fetchErr: any) {

@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const ALLOWED_ORIGINS = [
@@ -12,6 +13,32 @@ function getCorsHeaders(origin: string | null) {
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-veremark-signature',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
+}
+
+/**
+ * Verify HMAC-SHA256 signature against raw request body.
+ * Veremark sends x-veremark-signature as hex-encoded HMAC-SHA256(body, secret).
+ */
+async function verifySignature(body: string, signature: string, secret: string): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sigBuf = await crypto.subtle.sign('HMAC', key, encoder.encode(body));
+  const expected = Array.from(new Uint8Array(sigBuf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+  // Constant-time comparison
+  if (signature.length !== expected.length) return false;
+  let result = 0;
+  for (let i = 0; i < signature.length; i++) {
+    result |= signature.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return result === 0;
 }
 
 const supabaseAdmin = createClient(
@@ -43,6 +70,15 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.text();
+
+    const isValid = await verifySignature(body, signature, veremarkSecret);
+    if (!isValid) {
+      console.error('[veremark-webhook] Signature verification failed');
+      return new Response(
+        JSON.stringify({ error: 'Invalid signature' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     let event;
     try {
       event = JSON.parse(body);

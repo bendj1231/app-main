@@ -54,7 +54,7 @@ export function CSVUploadBox({ atoName, onInvited }: Props) {
         const body = encodeURIComponent(
           `Hi ${row.name},\n\nYour flight school ${atoName} is now on PilotRecognition.com. Create your verified pilot profile and unlock airline pathways.\n\nhttps://pilotrecognition.com\n\n— ${atoName}`
         );
-        window.open(`mailto:${row.email}?subject=${subject}&body=${body}`, '_blank');
+        window.open(`mailto:${row.email}?subject=${subject}&body=${body}`, '_blank', 'noopener,noreferrer');
         count++;
         await new Promise(r => setTimeout(r, 400)); // throttle to avoid popup blockers
       } catch {}

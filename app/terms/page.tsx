@@ -14,11 +14,11 @@ export default function TermsPage() {
           </div>
           <h1 className="text-3xl font-black text-slate-900 mb-2">Privacy Policy & Terms of Service</h1>
           <p className="text-slate-500 text-sm mb-4">
-            WM Pilot Group (operating as PilotRecognition.com)
+            Aviation Pathways Ltd (operating as PilotRecognition.com)
           </p>
           <div className="bg-slate-100 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 leading-relaxed">
             Please read this document carefully before creating your account. By creating an account, you agree to these Terms
-            and establish a binding legal agreement between yourself (the <em>Data Controller</em>) and WM Pilot Group (the <em>Data Processor</em>).
+            and establish a binding legal agreement between yourself (the <em>Data Subject</em>) and Aviation Pathways Ltd (the <em>Data Controller</em>).
           </div>
         </div>
 
@@ -42,7 +42,7 @@ export default function TermsPage() {
                   </div>
                   <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
                     <p className="text-xs font-bold text-slate-700 mb-1">We are the Data Processor</p>
-                    <p className="text-xs text-slate-600">WM Pilot Group provides secure pipelines and cloud hosting. We operate under a <strong className="text-slate-700">zero-knowledge model</strong> — your data is fully encrypted on your device before it reaches us. We cannot see, read, modify, or monetize your personal information.</p>
+                    <p className="text-xs text-slate-600">Aviation Pathways Ltd provides secure pipelines and cloud hosting. We operate under a <strong className="text-slate-700">zero-knowledge model</strong> — your data is fully encrypted on your device before it reaches us. We cannot see, read, modify, or monetize your personal information.</p>
                   </div>
                 </div>
               </div>
@@ -62,7 +62,7 @@ export default function TermsPage() {
                   {[
                     ['Pilot Credentials', 'Licence particulars, type ratings, and medical certification status.'],
                     ['Aviation Records', 'Flight logbook hours and professional profile details.'],
-                    ['Identity Verifications', 'Unencrypted source documents (e.g., passports or licences) uploaded only during the background screening process.'],
+                    ['Identity Verifications', 'CAA-issued aviation credentials (pilot licence, medical certificate Class 1/2/3, English Language Proficiency certificate) uploaded only during the background screening process.'],
                   ].map(([title, detail]) => (
                     <li key={title} className="flex items-start gap-2.5 text-sm">
                       <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0" />
@@ -95,7 +95,7 @@ export default function TermsPage() {
                   </div>
                 </div>
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800">
-                  <strong>How it works:</strong> Both environments are secured at the baseline level by WM Pilot Group,
+                  <strong>How it works:</strong> Both environments are secured at the baseline level by Aviation Pathways Ltd,
                   but your data is stored strictly as mathematical ciphertext (AES-256-GCM). By selecting a provider, you issue
                   a direct technical instruction to route your encrypted files to that specific cloud host.
                   Decryption without your unique device key is computationally impossible.
@@ -115,9 +115,11 @@ export default function TermsPage() {
                 </p>
                 <ul className="space-y-2 mb-3">
                   {[
-                    ['No Forced Providers', 'We do not choose your verifier. You have the absolute freedom to select your preferred verification authority (e.g., Veremark Ltd. or specific Civil Aviation Authorities) from our interface.'],
+                    ['No Forced Providers', 'We do not choose your verifier. You have the absolute freedom to select your preferred verification authority (e.g., Veremark Ltd. or specific Civil Aviation Authorities) from our interface. You must review and accept that verifier\'s independent terms of service and privacy policy before proceeding.'],
+                    ['Consent & Declaration', 'Before sharing documents, you must provide explicit informed consent to the specific verifier. You must also digitally declare that all information submitted is true, accurate, and complete. If the verifier flags a document as fraudulent or inaccurate, your account will be placed on review, you will be notified via email or in-app notification of the specific cause, and you may respond or submit corrected documents before any credential is revoked. Verification fees are non-refundable.'],
                     ['Direct Pass-Through', 'When you request a verification, you directly authorise the platform to route your raw, unencrypted source documents to your chosen provider.'],
-                    ['Immediate Deletion', 'WM Pilot Group does not store or view these raw documents. Once your verification provider confirms and signs the digital record, all raw source documents are immediately deleted from our pipelines. We retain only an encrypted tracking hash.'],
+                    ['Direct-to-Verifier Routing', 'You select your preferred verifier from a region-filtered list in our interface (e.g., Veremark for Philippines/Europe, First Advantage for US). Only providers capable of verifying your jurisdiction\'s credentials are shown. The yearly verification subscription fee (USD 100) is collected via Stripe. Of this amount, approximately USD 30 is held for your selected verifier in accordance with our MSA contracts with verification providers; the remainder constitutes our platform infrastructure fee. You may choose to verify immediately or defer to a later date. Upon your selected verifier confirming successful receipt of your documents and commencing the verification process, we shall remit the verifier\'s portion (approximately USD 30) in accordance with the applicable MSA. Your raw documents upload directly to that verifier\'s secure portal. They never transit or reside on our servers.'],
+                    ['Transient Storage Fallback', 'In regions without direct verifier integration, you may upload raw documents to our encrypted transient storage for routing. These are encrypted with your device-held keys, held for a maximum of 24 hours, and then irreversibly deleted. We do not store raw documents as a permanent archive.'],
                   ].map(([title, detail]) => (
                     <li key={title} className="flex items-start gap-2.5 text-sm">
                       <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0" />
@@ -177,7 +179,7 @@ export default function TermsPage() {
                 </ul>
                 <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-800">
                   <strong>Your Responsibility:</strong> If you lose your devices, local passkeys, or master seed phrases,
-                  WM Pilot Group cannot recover your account. Your data will be permanently locked and inaccessible.
+                  Aviation Pathways Ltd cannot recover your account. Your data will be permanently locked and inaccessible.
                 </div>
               </div>
             </div>
@@ -190,7 +192,7 @@ export default function TermsPage() {
               <div className="flex-1">
                 <h2 className="text-lg font-bold text-slate-900 mb-2">Limitation of Liability</h2>
                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                  WM Pilot Group accepts liability strictly for the technical maintenance of its database accounts,
+                  Aviation Pathways Ltd accepts liability strictly for the technical maintenance of its database accounts,
                   code routing infrastructure, and the security of its public credential verification registry.
                 </p>
                 <p className="text-sm text-slate-600 leading-relaxed mb-2">
@@ -268,7 +270,7 @@ export default function TermsPage() {
         {/* Footer */}
         <div className="mt-10 text-center space-y-2">
           <p className="text-xs text-slate-400">
-            PR-PPTS-001 · Last Updated: 20 May 2026 · WM Pilot Group
+            PR-PPTS-001 · Last Updated: 02 June 2026 · Aviation Pathways Ltd
           </p>
           <p className="text-xs text-slate-400">
             By creating an account the Registrant confirms acceptance of this instrument in its entirety.

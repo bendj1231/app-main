@@ -31,8 +31,18 @@ export default async function handler(req: Request) {
       });
     }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+    // Authenticate using the Authorization header token
+    const authHeader = req.headers.get('Authorization') || '';
+    const token = authHeader.replace('Bearer ', '');
+    if (!token) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
     if (authError || !user || user.id !== userId) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,

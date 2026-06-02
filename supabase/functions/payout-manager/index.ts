@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
@@ -7,11 +8,8 @@ const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 
 Deno.serve(async (req: Request) => {
   // CORS headers
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-  }
+import { getCorsHeaders } from '../_shared/cors.ts';
+  const corsHeaders = getCorsHeaders(req);
 
   // Handle preflight requests
   if (req.method === 'OPTIONS') {

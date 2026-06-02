@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 // Cache Invalidation and Warming Service
 // Manages multi-tier cache lifecycle for API Gateway
 
@@ -124,6 +125,7 @@ serve(async (req) => {
   const requestId = crypto.randomUUID()
   
   try {
+  const corsHeaders = getCorsHeaders(req);
     console.log(JSON.stringify({
       timestamp: new Date().toISOString(),
       level: 'info',

@@ -8,6 +8,7 @@
  * - Audit logging to user_activity_log
  */
 
+/// <reference lib="deno.ns" />
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { getCorsHeaders } from '../_shared/cors.ts';
 
@@ -37,8 +38,8 @@ async function checkRateLimit(
 
   if (error) {
     console.error('[pilot-pull-api] Rate limit check error:', error);
-    // Fail open on rate limit check errors (allow request)
-    return { allowed: true, remaining: 0, resetTime: now + windowMs };
+    // Fail closed on rate limit check errors — deny request to prevent abuse
+    return { allowed: false, remaining: 0, resetTime: now + windowMs };
   }
 
   const currentCount = count || 0;

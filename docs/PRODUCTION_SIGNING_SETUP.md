@@ -173,12 +173,27 @@ WHERE proof_value IS NOT NULL;
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Private key backed up | ☐ | Use 1Password, Vault, or HSM |
-| Private key never logged | ☐ | Check `generate-issuer-keys.ts` output wasn't saved to shell history |
-| DID document hosted | ☐ | Verify at `/.well-known/did.json` |
-| HTTPS only | ☐ | DID must be served over TLS |
-| Key rotation plan | ☐ | Document how to rotate in case of compromise |
-| Revocation registry ready | ☐ | `vc_revocation_registry` table exists |
+| Private key configured in Supabase secrets | ✅ | `PLATFORM_SIGNING_KEY_JWK` is set and active |
+| Private key backed up | ⚠️ PENDING | Verify backup exists in 1Password, Vault, or HSM |
+| Private key never logged | ⚠️ PENDING | Verify `generate-issuer-keys.ts` output was not saved to shell history |
+| DID document hosted | ✅ | `public/.well-known/did.json` exists in repo |
+| HTTPS only | ✅ | pilotrecognition.com serves over TLS via Vercel/Netlify |
+| Key rotation plan | ✅ | Documented below |
+| Revocation registry ready | ✅ | `vc_revocation_registry` table exists and is updated by `veremark-webhook` and `vc-revoke` |
+
+### Key Rotation Plan
+
+**In case of suspected key compromise:**
+
+1. Generate new key pair using `scripts/generate-issuer-keys.ts`
+2. Update `PLATFORM_SIGNING_KEY_JWK` in Supabase secrets
+3. Update `public/.well-known/did.json` with new public key
+4. Redeploy `issuer-sign` edge function
+5. Update all active credentials in `vc_revocation_registry` with new issuer key reference
+6. Notify all enterprise partners of DID document update
+7. Old credentials remain verifiable against historical DID document snapshots
+
+**Rotation frequency:** Annual review, or immediately upon compromise suspicion.
 
 ---
 

@@ -1,28 +1,26 @@
+/// <reference lib="deno.ns" />
 import "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { getCorsHeaders } from '../_shared/cors.ts';
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
 
 Deno.serve(async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req);
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
 
   if (req.method !== 'DELETE' && req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405, headers: { 'Access-Control-Allow-Origin': '*' } });
+    return new Response('Method not allowed', { status: 405, headers: corsHeaders });
   }
 
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-    // Decode the JWT to extract sub — works for both Supabase JWTs and Auth0 JWTs
+    // Verify JWT signature via Supabase auth
     const authHeader = req.headers.get('Authorization') || '';
     const jwt = authHeader.replace(/^Bearer\s+/i, '');
     if (!jwt) {
@@ -31,35 +29,25 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    let sub: string | null = null;
-    try {
-      const parts = jwt.split('.');
-      if (parts.length !== 3) throw new Error('bad jwt structure');
-      // Restore standard base64 from base64url, then pad to multiple of 4
-      let b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-      while (b64.length % 4 !== 0) b64 += '=';
-      const payload = JSON.parse(atob(b64));
-      sub = payload.sub as string;
-      console.log('[delete-account] decoded sub:', sub);
-    } catch (e: any) {
-      console.error('[delete-account] JWT decode error:', e.message, '| jwt prefix:', jwt.substring(0, 30));
-      return new Response(JSON.stringify({ error: 'Invalid token' }), {
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: `Bearer ${jwt}` } }
+    });
+    const { data: { user }, error: authErr } = await supabaseAuth.auth.getUser();
+    if (authErr || !user) {
+      return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    if (!sub) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    const sub = user.id;
+    const auth0Sub = user.user_metadata?.sub as string | undefined;
 
-    // Look up the profile — sub may be a Supabase UUID or an Auth0 id (google-oauth2|...)
-    const isAuth0 = sub.includes('|');
+    // Look up the profile — sub may be a Supabase UUID or an Auth0 id
+    const isAuth0 = typeof auth0Sub === 'string' && auth0Sub.includes('|');
     const { data: profile } = await supabase
       .from('profiles')
       .select('id, auth0_id')
-      .eq(isAuth0 ? 'auth0_id' : 'id', sub)
+      .eq(isAuth0 ? 'auth0_id' : 'id', isAuth0 ? auth0Sub : sub)
       .maybeSingle();
 
     if (!profile?.id) {

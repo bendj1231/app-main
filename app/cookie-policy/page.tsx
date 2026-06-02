@@ -26,7 +26,7 @@ export default function CookiePolicyPage({ onBack, onNavigate, onLogin }: Cookie
                 <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-8">
                     Cookie Policy
                 </h1>
-                <p className="text-sm text-slate-500 mb-8">Last updated: April 2024</p>
+                <p className="text-sm text-slate-500 mb-8">Last updated: June 2, 2026</p>
 
                 <div className="space-y-8 text-slate-700">
                     <section>
@@ -38,11 +38,10 @@ export default function CookiePolicyPage({ onBack, onNavigate, onLogin }: Cookie
                         <h2 className="text-2xl font-bold text-slate-900 mb-4">2. How We Use Cookies</h2>
                         <p className="mb-4">We use cookies for the following purposes:</p>
                         <ul className="list-disc pl-6 space-y-2">
-                            <li><strong>Essential Cookies:</strong> Required for the website to function properly</li>
+                            <li><strong>Essential Cookies:</strong> Required for the website to function properly (session management, CSRF protection, authentication)</li>
                             <li><strong>Authentication Cookies:</strong> Keep you logged in during your session</li>
                             <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
-                            <li><strong>Analytics Cookies:</strong> Help us understand how you use our platform</li>
-                            <li><strong>Marketing Cookies:</strong> Track your interactions with our marketing content</li>
+                            <li><strong>Analytics Cookies:</strong> Help us understand how you use our platform (Google Analytics, Sentry error monitoring). These are optional and can be disabled.</li>
                         </ul>
                     </section>
 

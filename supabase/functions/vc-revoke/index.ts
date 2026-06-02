@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 /**
  * vc-revoke — Revoke or suspend a Verifiable Credential
  *
@@ -11,14 +12,16 @@
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
+import { getCorsHeaders } from '../_shared/cors.ts';
 
 Deno.serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req);
+  const CORS = {
+    'Access-Control-Allow-Origin': corsHeaders['Access-Control-Allow-Origin'],
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  };
+
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
 
   try {

@@ -424,7 +424,7 @@ export const ProgramProgressPage: React.FC<ProgramProgressPageProps> = ({
               </div>
             </div>
             <button
-              onClick={() => window.open('https://w1000.vercel.app', '_blank')}
+              onClick={() => window.open('https://w1000.vercel.app', '_blank', 'noopener,noreferrer')}
               style={{
                 background: '#2563eb',
                 color: '#fff',

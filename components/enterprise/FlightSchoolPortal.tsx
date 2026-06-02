@@ -284,7 +284,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
             {copied === 'link' ? 'Copied!' : 'Copy'}
           </button>
           <button
-            onClick={() => window.open(referralLink, '_blank')}
+            onClick={() => window.open(referralLink, '_blank', 'noopener,noreferrer')}
             className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
@@ -476,7 +476,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                 description="Download QR code for print materials"
                 icon={Download}
                 action="Generate QR"
-                onAction={() => window.open(`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(referralLink)}`, '_blank')}
+                onAction={() => window.open(`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(referralLink)}`, '_blank', 'noopener,noreferrer')}
               />
               <MarketingCard
                 title="Referral Card"
@@ -557,7 +557,7 @@ export const FlightSchoolPortal: React.FC<FlightSchoolPortalProps> = ({ flightSc
                       <td className="py-3 px-4">
                         <div className="flex gap-2">
                           <button
-                            onClick={() => window.open(`mailto:${referral.pilot_email}`, '_blank')}
+                            onClick={() => window.open(`mailto:${referral.pilot_email}`, '_blank', 'noopener,noreferrer')}
                             className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
                           >
                             <Mail className="w-4 h-4" />

@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 /**
  * passkey-verify — Server-side WebAuthn assertion verification
  *
@@ -194,10 +195,8 @@ function derToRaw(der: Uint8Array): Uint8Array {
 // ── Main Handler ──────────────────────────────────────────────────────────────
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  };
+import { getCorsHeaders } from '../_shared/cors.ts';
+  const corsHeaders = getCorsHeaders(req);
 
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });

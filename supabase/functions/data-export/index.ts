@@ -4,15 +4,12 @@
  * held about the authenticated user across all platform tables.
  */
 
+/// <reference lib="deno.ns" />
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { getCorsHeaders } from '../_shared/cors.ts';
 
 Deno.serve(async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req);
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -24,9 +21,10 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Decode JWT to get user sub
+    // Verify JWT signature via Supabase auth
     const authHeader = req.headers.get('Authorization') || '';
     const jwt = authHeader.replace(/^Bearer\s+/i, '');
     if (!jwt) {
@@ -35,31 +33,24 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    let sub: string | null = null;
-    try {
-      const parts = jwt.split('.');
-      if (parts.length !== 3) throw new Error('bad jwt');
-      let b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-      while (b64.length % 4 !== 0) b64 += '=';
-      const payload = JSON.parse(atob(b64));
-      sub = payload.sub as string;
-    } catch {
-      return new Response(JSON.stringify({ error: 'Invalid token' }), {
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: `Bearer ${jwt}` } }
+    });
+    const { data: { user }, error: authErr } = await supabaseAuth.auth.getUser();
+    if (authErr || !user) {
+      return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    if (!sub) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    const sub = user.id;
+    const auth0Sub = user.user_metadata?.sub as string | undefined;
 
-    const isAuth0 = sub.includes('|');
+    const isAuth0 = typeof auth0Sub === 'string' && auth0Sub.includes('|');
     const { data: profile } = await supabase
       .from('profiles')
       .select('id, auth0_id')
-      .eq(isAuth0 ? 'auth0_id' : 'id', sub)
+      .eq(isAuth0 ? 'auth0_id' : 'id', isAuth0 ? auth0Sub : sub)
       .maybeSingle();
 
     if (!profile?.id) {
@@ -94,10 +85,8 @@ Deno.serve(async (req: Request) => {
       { name: 'interview_feedback', query: supabase.from('interview_feedback').select('*').eq('reviewer_id', userId) },
       { name: 'interviews', query: supabase.from('interviews').select('*').eq('pilot_profile_id', userId) },
       { name: 'vc_revocation_registry', query: supabase.from('vc_revocation_registry').select('*').eq('profile_id', userId) },
-      { name: 'veremark_webhook_logs', query: supabase.from('veremark_webhook_logs').select('*').eq('pilot_id', userId) },
       { name: 'ato_activation_credits', query: supabase.from('ato_activation_credits').select('*').eq('pilot_id', userId) },
       { name: 'referral_credits', query: supabase.from('referral_credits').select('*').eq('referrer_id', userId) },
-      { name: 'recognition_fee_invoices', query: supabase.from('recognition_fee_invoices').select('*').eq('profile_id', userId) },
     ];
 
     const exportPackage: Record<string, any> = {

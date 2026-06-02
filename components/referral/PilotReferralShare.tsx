@@ -95,15 +95,15 @@ export const PilotReferralShare: React.FC<PilotReferralShareProps> = ({ userId }
 
   const shareViaTwitter = () => {
     const text = encodeURIComponent(`🚀 Join PilotRecognition.com - The platform for pilot career advancement. Sign up through my referral link: ${referralLink} #Aviation #PilotCareers`);
-    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener,noreferrer');
   };
 
   const shareViaFacebook = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`, '_blank');
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`, '_blank', 'noopener,noreferrer');
   };
 
   const downloadQRCode = () => {
-    window.open(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(referralLink)}`, '_blank');
+    window.open(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(referralLink)}`, '_blank', 'noopener,noreferrer');
   };
 
   if (loading) {

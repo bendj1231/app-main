@@ -1,23 +1,24 @@
 /**
- * Airline Image Bank — extracted from PathwaysPageModern
- * Image URLs and helper functions for airline/aircraft imagery
+ * Airline Image Bank — Copyright-Compliant Version
+ * All images sourced from Unsplash (Unsplash License — free for commercial use)
+ * See /public/IMAGE_LICENSES.md for full attribution
  */
 
-// Confirmed working Cloudinary images from AirlineExpectationsCarousel
+// Generic aviation imagery by airline keyword (no logos, no hotlinks)
 export const CLOUDINARY_AIRLINES: Record<string, string> = {
-  'qatar': 'https://airlinegeeks.com/wp-content/uploads/2018/10/IMG_3495-e1540774160956.jpg',
-  'singapore': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/singapore-airlines.jpg',
-  'cathay': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
-  'emirates': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
-  'etihad': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/etihad-airways-new.jpg',
-  'lufthansa': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/lufthansa.jpg',
-  'british': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/british-airways.jpg',
-  'airfrance': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686790/airline-expectations/air-france.jpg',
-  'klm': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/klm.jpg',
-  'swiss': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/swiss.jpg',
-  'turkish': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/turkish-airlines.jpg',
-  'ana': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/ana.jpg',
-  'jal': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/japan-airlines.jpg',
+  'qatar': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'singapore': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+  'cathay': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'emirates': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'etihad': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'lufthansa': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'british': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'airfrance': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'klm': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'swiss': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'turkish': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'ana': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+  'jal': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
 };
 
 // Reliable fallback images by category (Unsplash)
@@ -31,19 +32,19 @@ export const FALLBACK_IMAGES: Record<string, string> = {
   'airtaxi-drones': 'https://images.unsplash.com/photo-1483304528321-0674f0040030?w=800&q=80',
 };
 
-// Aircraft-specific images
+// Aircraft-specific images (Unsplash only — no airline liveries or trademarked designs)
 export const AIRCRAFT_IMAGES: Record<string, string> = {
-  // Airbus
-  'A320': 'https://www.etihad.com/content/dam/eag/etihadairways/etihadcom/2025/global/products/our-fleet/A320-NEO.png?imwidth=480&imdensity=2.625',
-  'A320NEO': 'https://www.etihad.com/content/dam/eag/etihadairways/etihadcom/2025/global/products/our-fleet/A320-NEO.png?imwidth=480&imdensity=2.625',
-  'A318': 'https://global.discourse-cdn.com/infiniteflight/optimized/4X/f/9/6/f966bce5d678bd7b536ac56588bc1e13ef566e4d_2_820x332.png',
-  'A319': 'https://global.discourse-cdn.com/infiniteflight/optimized/4X/f/9/6/f966bce5d678bd7b536ac56588bc1e13ef566e4d_2_820x332.png',
-  'A321': 'https://global.discourse-cdn.com/infiniteflight/optimized/4X/f/9/6/f966bce5d678bd7b536ac56588bc1e13ef566e4d_2_820x332.png',
+  // Airbus family
+  'A320': 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
+  'A320NEO': 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
+  'A318': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'A319': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
+  'A321': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
   'A330': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
   'A350': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
   'A380': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
   'A220': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  // Boeing
+  // Boeing family
   'B737': 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
   '737': 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
   'B747': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
@@ -56,7 +57,7 @@ export const AIRCRAFT_IMAGES: Record<string, string> = {
   '757': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
   'B767': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
   '767': 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
-  // Regional
+  // Regional jets
   'ERJ': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
   'E170': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
   'E175': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
@@ -65,56 +66,38 @@ export const AIRCRAFT_IMAGES: Record<string, string> = {
   'CRJ': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
   'CRJ700': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
   'CRJ900': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  // Business Jets
-  'Citation': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/Citation-web.png',
-  'Citation I': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/Citation-web.png',
-  'Citation ISP': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/Citation-web.png',
-  'Citation III': 'https://askjet.ru/wp-content/uploads/2025/08/cb2b78fb-994f-446f-9605-b24948035ea9.png',
-  'Citation Sovereign': 'https://w7.pngwing.com/pngs/86/879/png-transparent-aircraft-cessna-citation-sovereign-cessna-citation-x-cessna-citation-longitude-cessna-citationjet-m2-private-jet-mode-of-transport-flight-airplane.png',
-  'Citation M2': 'https://tadistributors.com/wp-content/uploads/2017/12/M2-Cutout-1.png',
-  'Citation CJ4': 'https://www.jetfinder.com/wp-content/uploads/2024/01/citation_cj4_exterior.png',
-  'CJ4': 'https://www.jetfinder.com/wp-content/uploads/2024/01/citation_cj4_exterior.png',
-  'M2': 'https://tadistributors.com/wp-content/uploads/2017/12/M2-Cutout-1.png',
-  'Sovereign': 'https://w7.pngwing.com/pngs/86/879/png-transparent-aircraft-cessna-citation-sovereign-cessna-citation-x-cessna-citation-longitude-cessna-citationjet-m2-private-jet-mode-of-transport-flight-airplane.png',
+  // Business Jets (generic, no branded imagery)
+  'Citation': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'Citation I': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'Citation ISP': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'Citation III': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'Citation Sovereign': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'Citation M2': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'Citation CJ4': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'CJ4': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'M2': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'Sovereign': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   'Gulfstream': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
-  'Challenger': 'https://res.cloudinary.com/flyblackbird/image/upload/c_scale,q_auto:eco,w_600/v1/aircraft/bombardier-challenger-300',
-  'CL-30': 'https://res.cloudinary.com/flyblackbird/image/upload/c_scale,q_auto:eco,w_600/v1/aircraft/bombardier-challenger-300',
+  'Challenger': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
+  'CL-30': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   'Global': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   'Learjet': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   'Falcon': 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
   // Turboprops
-  'King Air': 'https://www.callandfly.pl/wp-content/uploads/Zrzut_ekranu_2024-07-29_o_13.07.24-removebg-preview.png',
+  'King Air': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
   'Caravan': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
   'Pilatus': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'PC-24': 'https://www.oriensaviation.com/wp-content/uploads/2025/02/PC-24.png',
-  'Pilatus PC-24': 'https://www.oriensaviation.com/wp-content/uploads/2025/02/PC-24.png',
+  'PC-24': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
+  'Pilatus PC-24': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
   'TBM': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  'PA-31': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/N146J-exterior.jpg',
-  'Navajo': 'https://elasticbeanstalk-us-east-1-921481824325.s3.us-east-1.amazonaws.com/tailimages/N146J-exterior.jpg',
+  'PA-31': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
+  'Navajo': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
 };
 
-// Airline logos
-export const AIRLINE_LOGOS: Record<string, string> = {
-  'etihad': 'https://logos-world.net/wp-content/uploads/2023/01/Etihad-Airways-Logo.png',
-  'ejm': 'https://www.jsfirm.com/assets/logos/EJM_logo-2023.jpg',
-  'emirates': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/1200px-Emirates_logo.svg.png',
-  'qatar': 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Qatar_Airways_logo.svg/1200px-Qatar_Airways_logo.svg.png',
-  'singapore': 'https://upload.wikimedia.org/wikipedia/en/thumb/6/2b/Singapore_Airlines_logo.svg/1200px-Singapore_Airlines_logo.svg.png',
-  'cathay': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/15/Cathay_Pacific_logo.svg/1200px-Cathay_Pacific_logo.svg.png',
-  'lufthansa': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Lufthansa_Logo_2018.svg/1200px-Lufthansa_Logo_2018.svg.png',
-  'british airways': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/49/British_Airways_1997.svg/1200px-British_Airways_1997.svg.png',
-  'air france': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Air_France-Logo.svg/1200px-Air_France-Logo.svg.png',
-  'klm': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/KLM_Logo.svg/1200px-KLM_Logo.svg.png',
-  'turkish': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Turkish_Airlines_logo_2019.svg/1200px-Turkish_Airlines_logo_2019.svg.png',
-  'ana': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/All_Nippon_Airways_Logo.svg/1200px-All_Nippon_Airways_Logo.svg.png',
-  'jal': 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3a/Japan_Airlines_logo.svg/1200px-Japan_Airlines_logo.svg.png',
-  'delta': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780355/airline-logos/airline-logos/delta.svg',
-  'american': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780357/airline-logos/airline-logos/american.svg',
-  'united': 'https://res.cloudinary.com/dridtecu6/image/upload/v1776780360/airline-logos/airline-logos/united.svg',
-  'jetblue': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/23/JetBlue_Airways_Logo.svg/1200px-JetBlue_Airways_Logo.svg.png',
-  'southwest': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Southwest_Airlines_logo_2014.svg/1200px-Southwest_Airlines_logo_2014.svg.png',
-  'alaska': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Alaska_Airlines_logo_2014.svg/1200px-Alaska_Airlines_logo_2014.svg.png',
-};
+// Airline logos — REMOVED due to trademark restrictions
+// Platform now displays airline names as text only.
+// To restore logos, written trademark licenses must be obtained from each airline.
+export const AIRLINE_LOGOS: Record<string, string> = {};
 
 export function getAircraftImage(aircraftType: string): string {
   const typeKey = String(aircraftType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');

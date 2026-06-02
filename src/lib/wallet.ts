@@ -5,9 +5,9 @@ const PILOT_ISSUER_URL = (typeof window !== 'undefined' && (import.meta as any).
   : 'https://issuer.pilotrecognition.com';
 
 // PilotRecognition Wallet API — native browser wallet, no external dependency
-const PILOT_WALLET_API = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_PILOT_WALLET_API)
-  ? (import.meta as any).env.VITE_PILOT_WALLET_API
-  : 'http://localhost:7001';
+const PILOT_WALLET_API = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_WALT_WALLET_API)
+  ? (import.meta as any).env.VITE_WALT_WALLET_API
+  : '';
 
 async function sha256(text: string): Promise<string> {
   const encoder = new TextEncoder();

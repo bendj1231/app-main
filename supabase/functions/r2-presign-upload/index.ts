@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 /**
  * r2-presign-upload
  * Issues a short-lived presigned PUT URL for direct browser → Cloudflare R2 upload.
@@ -78,7 +79,8 @@ async function createPresignedPutUrl(objectKey: string, ttlSeconds: number): Pro
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'authorization, content-type' } });
+  const corsHeaders = getCorsHeaders(req);
+    return new Response('ok', { headers: { 'Access-Control-Allow-Origin': getCorsHeaders(req)['Access-Control-Allow-Origin'], 'Access-Control-Allow-Headers': 'authorization, content-type' } });
   }
   if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
@@ -100,7 +102,7 @@ Deno.serve(async (req: Request) => {
 
     return new Response(JSON.stringify({ uploadUrl, objectKey, expiresAt }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': getCorsHeaders(req)['Access-Control-Allow-Origin'] },
     });
   } catch (err: any) {
     console.error('r2-presign-upload error:', err);

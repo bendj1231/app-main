@@ -25,8 +25,10 @@ const VAULT_VERSION = 1;
 // ─── Pepper Fetch ─────────────────────────────────────────────────────────────
 
 async function fetchPepper(supabaseAccessToken: string): Promise<Uint8Array> {
-  const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL
-    || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+  const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL;
+  if (!supabaseUrl) {
+    throw new Error('VITE_SUPABASE_URL is not configured');
+  }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000); // 8s hard timeout

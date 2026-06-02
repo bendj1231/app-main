@@ -63,7 +63,9 @@ export function useVaultProfile() {
       if (idToken) {
         return getVaultKeyFromAuth0Token(auth0User.sub, idToken);
       }
-    } catch (_) {}
+    } catch (err: any) {
+      console.warn('[vault] Auth0 ID token key derivation failed:', err.message);
+    }
     // Fallback: server-pepper path (Supabase session required)
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.access_token) {

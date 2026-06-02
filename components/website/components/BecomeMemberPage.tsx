@@ -381,7 +381,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             // Open wallet with credential
             const pilotWallet = CREDENTIAL_WALLETS.find(w => w.id === 'pilot');
             if (pilotWallet && pilotWallet.href) {
-                window.open(pilotWallet.href(credentialOfferUrl), '_blank');
+                window.open(pilotWallet.href(credentialOfferUrl), '_blank', 'noopener,noreferrer');
             }
 
         } catch (err) {
@@ -1617,7 +1617,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 w.id === 'lissi' ? 'https://lissi.id/wallet' :
                                                 w.id === 'dock' ? 'https://certs.dock.io/wallet' : '#';
                                             
-                                            window.open(walletUrl, '_blank');
+                                            window.open(walletUrl, '_blank', 'noopener,noreferrer');
                                         }
                                     }}
                                     className={`group relative flex flex-row items-center gap-4 px-4 py-4 rounded-xl border transition-all text-left w-full ${

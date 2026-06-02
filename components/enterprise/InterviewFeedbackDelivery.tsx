@@ -214,7 +214,7 @@ export function InterviewFeedbackDelivery({
 
   // Preview feedback
   const previewFeedback = () => {
-    const previewWindow = window.open('', '_blank');
+    const previewWindow = window.open('', '_blank', 'noopener,noreferrer');
     if (previewWindow) {
       previewWindow.document.write(`
         <html>

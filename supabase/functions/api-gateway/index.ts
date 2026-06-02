@@ -1,9 +1,11 @@
+/// <reference lib="deno.ns" />
 // Enterprise API Gateway for Supabase Edge Functions
 // Provides unified entry point, routing, caching, and monitoring
 // Targets: Sub-50ms cached responses, 99.9% uptime
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { getCorsHeaders } from '../_shared/cors.ts';
 
 // ==================== CONFIGURATION ====================
 const CONFIG = {
@@ -481,6 +483,7 @@ serve(async (req) => {
   const path = url.pathname
 
   try {
+  const corsHeaders = getCorsHeaders(req);
     // Log incoming request
     console.log(JSON.stringify({
       timestamp: new Date().toISOString(),
@@ -495,10 +498,11 @@ serve(async (req) => {
 
     // CORS preflight
     if (req.method === 'OPTIONS') {
+      const corsHeaders = getCorsHeaders(req);
       return new Response(null, {
         status: 204,
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
           'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-CSRF-Token, X-Request-ID',
           'Access-Control-Max-Age': '86400'

@@ -380,7 +380,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                     {/* Platform Selection */}
                     <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full max-w-4xl justify-center items-center">
                         <button
-                            onClick={() => window.open(DESKTOP_APP_URL, '_blank')}
+                            onClick={() => window.open(DESKTOP_APP_URL, '_blank', 'noopener,noreferrer')}
                             className="group w-full md:flex-1 bg-zinc-900 border border-zinc-800 hover:border-blue-500 rounded-2xl p-8 flex flex-col items-center transition-all duration-300 hover:scale-105 hover:bg-zinc-800 shadow-2xl"
                         >
                             <div className="w-16 h-16 rounded-full bg-blue-900/20 flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors">
@@ -391,7 +391,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                         </button>
 
                         <button
-                            onClick={() => window.open(MOBILE_APP_URL, '_blank')}
+                            onClick={() => window.open(MOBILE_APP_URL, '_blank', 'noopener,noreferrer')}
                             className="group w-full md:flex-1 bg-zinc-900 border border-zinc-800 hover:border-green-500 rounded-2xl p-8 flex flex-col items-center transition-all duration-300 hover:scale-105 hover:bg-zinc-800 shadow-2xl"
                         >
                             <div className="w-16 h-16 rounded-full bg-green-900/20 flex items-center justify-center mb-4 group-hover:bg-green-600 transition-colors">
@@ -644,7 +644,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                     <div className="mt-8 flex flex-col items-center space-y-6">
                         <div className="flex flex-wrap justify-center gap-6">
                             <button
-                                onClick={() => window.open(MOBILE_APP_URL, '_blank')}
+                                onClick={() => window.open(MOBILE_APP_URL, '_blank', 'noopener,noreferrer')}
                                 className={`flex items-center space-x-3 px-6 py-3 rounded-xl border transition-all hover:-translate-y-1 shadow-lg cursor-pointer
                                           bg-red-600 border-red-500 text-white hover:bg-red-500 shadow-red-900/20`}
                             >
@@ -656,7 +656,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
                             </button>
 
                             <button
-                                onClick={() => window.open(DESKTOP_APP_URL, '_blank')}
+                                onClick={() => window.open(DESKTOP_APP_URL, '_blank', 'noopener,noreferrer')}
                                 className={`flex items-center space-x-3 px-6 py-3 rounded-xl border transition-all hover:-translate-y-1 shadow-lg cursor-pointer
                                           bg-blue-600 border-blue-500 text-white hover:bg-blue-500 shadow-blue-900/20`}
                             >
@@ -690,7 +690,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ isVideoWarm = false, s
 
                                 {/* 2. Button - In Middle */}
                                 <button
-                                    onClick={() => window.open('https://wmprogram.vercel.app/', '_blank')}
+                                    onClick={() => window.open('https://wmprogram.vercel.app/', '_blank', 'noopener,noreferrer')}
                                     className={`px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all shadow-xl hover:scale-105
                                               ${isDarkMode
                                             ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-blue-900/50'

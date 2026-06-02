@@ -455,7 +455,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                     const body = encodeURIComponent(
                       `Institution: ${ato!.institution_name}\nATO ID: ${ato!.id}\nRequested Payout: $${ato!.referral_dividend_balance_usd.toFixed(2)}\nAdmin Email: ${currentUser?.email || ''}`
                     );
-                    window.open(`mailto:support@pilotrecognition.com?subject=${subject}&body=${body}`, '_blank');
+                    window.open(`mailto:support@pilotrecognition.com?subject=${subject}&body=${body}`, '_blank', 'noopener,noreferrer');
                   }}
                   style={{ marginTop: '0.5rem', padding: '0.25rem 0.6rem', borderRadius: '6px', border: '1px solid rgba(252,211,77,0.3)', background: 'transparent', color: '#fcd34d', fontSize: '0.65rem', cursor: 'pointer' }}
                 >
@@ -606,7 +606,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                   {/* QR Code */}
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=${encodeURIComponent(`https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/verify-token?tokenId=${tok.id}`)}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=${encodeURIComponent(`import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/verify-token?tokenId=${tok.id}`)}`}
                     alt="Verify QR"
                     style={{ width: 32, height: 32, borderRadius: 4, opacity: 0.8 }}
                     title="Scan to verify credential"
@@ -620,8 +620,8 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                   </button>
                   <button
                     onClick={() => {
-                      const url = `https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/verify-token?tokenId=${tok.id}`;
-                      window.open(url, '_blank');
+                      const url = `import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/verify-token?tokenId=${tok.id}`;
+                      window.open(url, '_blank', 'noopener,noreferrer');
                     }}
                     style={{ padding: '0.35rem 0.75rem', borderRadius: '8px', border: '1px solid rgba(14,165,233,0.3)', background: 'transparent', color: '#38bdf8', fontSize: '0.72rem', cursor: 'pointer' }}
                   >
@@ -805,7 +805,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                               onClick={() => {
                                 const email = g.email;
                                 if (email) {
-                                  window.open(`mailto:${email}?subject=Join PilotRecognition&body=Hi ${g.display_name || 'there'},\n\nYour flight school ${ato!.institution_name} is on PilotRecognition. Join to get verified and unlock pathways.\n\nhttps://pilotrecognition.com`, '_blank');
+                                  window.open(`mailto:${email}?subject=Join PilotRecognition&body=Hi ${g.display_name || 'there'},\n\nYour flight school ${ato!.institution_name} is on PilotRecognition. Join to get verified and unlock pathways.\n\nhttps://pilotrecognition.com`, '_blank', 'noopener,noreferrer');
                                 } else {
                                   alert('No email on file for this pilot.');
                                 }
@@ -830,7 +830,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
       {viewCredentialId && (() => {
         const tok = tokens.find(t => t.id === viewCredentialId);
         if (!tok) return null;
-        const verifyUrl = `https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/verify-token?tokenId=${tok.id}`;
+        const verifyUrl = `import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/verify-token?tokenId=${tok.id}`;
         return (
           <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={(e) => { if (e.target === e.currentTarget) setViewCredentialId(null); }}>
             <div style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', maxWidth: '480px', width: '100%', padding: '2rem', position: 'relative' }}>

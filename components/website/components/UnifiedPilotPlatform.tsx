@@ -4580,7 +4580,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         imgEl.src = URL.createObjectURL(file);
       });
       const base64 = canvas.toDataURL('image/jpeg', 0.8);
-      const uploadRes = await fetch('https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/cloudinary-upload', {
+      const uploadRes = await fetch(`${(import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'}/functions/v1/cloudinary-upload`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ file: base64, userId: profileData.id }),

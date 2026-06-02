@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getBlogPostBySlug, getAllPostMeta, formatDate } from '@/lib/blog/loader';
 import { markdownToHtml } from '@/lib/blog/markdown';
+import { sanitizeHtmlCustom } from '@/src/lib/sanitize-html';
 import { ArrowLeft, Calendar, Clock, Tag, Share2, Twitter, Linkedin, Facebook } from 'lucide-react';
 
 export default function BlogArticlePage() {
@@ -16,8 +17,17 @@ export default function BlogArticlePage() {
       const blogPost = getBlogPostBySlug(slug);
       if (blogPost) {
         setPost(blogPost);
-        // Convert markdown to HTML (synchronous for now)
-        markdownToHtml(blogPost.content).then(setHtmlContent);
+        // Convert markdown to HTML then sanitize before rendering
+        markdownToHtml(blogPost.content).then((rawHtml) => {
+          const safeHtml = sanitizeHtmlCustom(rawHtml, [
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'p', 'br', 'ul', 'ol', 'li',
+            'strong', 'em', 'b', 'i',
+            'a', 'span', 'blockquote',
+            'pre', 'code', 'img',
+          ], ['href', 'target', 'rel', 'class', 'src', 'alt']);
+          setHtmlContent(safeHtml);
+        });
         
         // Get related posts
         const allPosts = getAllPostMeta();

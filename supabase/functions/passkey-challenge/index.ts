@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 /**
  * passkey-challenge — Issue a single-use WebAuthn challenge
  *
@@ -25,10 +26,8 @@ function generateChallenge(): string {
 }
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  };
+import { getCorsHeaders } from '../_shared/cors.ts';
+  const corsHeaders = getCorsHeaders(req);
 
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });

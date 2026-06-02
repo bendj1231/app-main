@@ -26,12 +26,12 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                 <h1 className="text-4xl md:text-5xl font-serif text-slate-900 leading-tight mb-4">
                     Privacy Policy
                 </h1>
-                <p className="text-sm text-slate-500 mb-2">Last updated: 21 May 2026</p>
-                <p className="text-sm text-slate-500 mb-10">Effective date: 20 May 2026</p>
+                <p className="text-sm text-slate-500 mb-2">Last updated: 02 June 2026</p>
+                <p className="text-sm text-slate-500 mb-10">Effective date: 02 June 2026</p>
 
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-10">
                     <p className="text-sm text-slate-700 leading-relaxed">
-                        This Privacy Policy explains how <strong>PilotRecognition.com</strong>, operated by <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> (together, "we", "us", "our"), collects, uses, stores, and protects your personal information. It applies to all users of our platform, including pilots, aviation professionals, flight school administrators, and airline operators. By using PilotRecognition.com you agree to this Policy in full.
+                        This Privacy Policy explains how <strong>PilotRecognition.com</strong>, operated by <strong>Aviation Pathways Ltd</strong> ("we", "us", "our"), collects, uses, stores, and protects your personal information. It applies to all users of our platform, including pilots, aviation professionals, flight school administrators, and airline operators. By using PilotRecognition.com you agree to this Policy in full.
                     </p>
                 </div>
 
@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                     <section>
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">1. Who We Are — Data Controller vs. Data Owner</h2>
                         <p className="mb-3">
-                            PilotRecognition.com is operated by <strong>Karl Brian Vogt</strong> and <strong>Andrew Bowler</strong> as joint personal information controllers under the Philippines Data Privacy Act of 2012 (RA 10173), the EU General Data Protection Regulation (GDPR), and the UAE Federal Decree-Law No. 45 of 2021 on Personal Data Protection.
+                            PilotRecognition.com is operated by <strong>Aviation Pathways Ltd</strong>, a company registered in the Republic of Mauritius, as Data Controller under the Philippines Data Privacy Act of 2012 (RA 10173), the EU General Data Protection Regulation (GDPR), and the UAE Federal Decree-Law No. 45 of 2021 on Personal Data Protection.
                         </p>
                         <div className="bg-indigo-50 border border-indigo-200 rounded-xl px-5 py-4 mb-4 text-sm">
                             <p className="font-semibold text-indigo-900 mb-2">Two distinct roles — both matter:</p>
@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                                 </div>
                                 <div className="bg-white rounded-lg px-4 py-3 border border-indigo-100">
                                     <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide mb-1">You are the Data Owner</p>
-                                    <p className="text-slate-600 text-xs">You decide what to share, with whom, and when. Your Verifiable Credentials live in your own wallet. Your sensitive fields are encrypted with a key only you can derive. You can delete everything at any time.</p>
+                                    <p className="text-slate-600 text-xs">You decide what to share, with whom, and when. Your Verifiable Credentials live in your own wallet and are retained server-side as signed records for revocation and pathway gating. Your sensitive fields are encrypted at rest using AES-256-GCM with keys derived from your Google identity and a server-side secret. You can delete your account and personal data at any time, except where legal obligations require retention (e.g., consent records, payment history).</p>
                                 </div>
                             </div>
                             <p className="text-xs text-indigo-700 mt-3">These roles are not in conflict. We control the infrastructure. You own the data. Both are true simultaneously.</p>
@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                             <strong>Contact for data matters:</strong> <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a>
                         </p>
                         <p className="text-sm text-slate-500">
-                            We do not currently operate through a registered corporate entity. All data processing decisions are made by us as individuals and we accept personal responsibility for compliance with applicable privacy laws.
+                            Aviation Pathways Ltd shall apply for registration with the Data Protection Office of the Republic of Mauritius as a Data Controller within 14 days of commencing data processing activities. Registration status available upon request to privacy@pilotrecognition.com.
                         </p>
                     </section>
 
@@ -87,16 +87,20 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                         </ul>
                         <p className="text-sm mb-4"><strong>Legal basis:</strong> Explicit consent (you provide this voluntarily to build your verified profile).</p>
                         <p className="text-sm mb-4 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
-                            <strong>Encryption Notice:</strong> Sensitive credential fields (licence number, medical class, date of birth, contact number, expiry dates) are encrypted at rest using AES-256-GCM before storage. The encryption key is derived from your Google account identity and a server-side secret. We cannot read these fields without your authenticated session.
+                            <strong>Encryption Notice:</strong> Sensitive credential fields (licence number, medical class, date of birth, contact number, expiry dates) are encrypted at rest using AES-256-GCM before storage. The encryption key is derived from your Google account identity and a server-side secret. Platform administrators cannot read these fields without your authenticated session. However, the platform retains the technical capability to access structured profile data for operational purposes (pathway matching, verification routing, and account support).
                         </p>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-4">2c. Verifiable Credential Data</h3>
                         <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
-                            <li>Cryptographic credential hashes stored in our revocation registry</li>
-                            <li>Credential offer URLs for your Pilot Wallet</li>
+                            <li>Cryptographically signed Verifiable Credentials (VCs) issued by the platform under <code>did:web:pilotrecognition.com</code></li>
+                            <li>Minimal structured verification outcomes (status, check ID, timestamp only)</li>
                             <li>Credential status (active, revoked, expired)</li>
+                            <li>Revocation registry entries</li>
                         </ul>
-                        <p className="text-sm mb-4">The actual Verifiable Credential (VC) is stored in your personal Pilot Wallet — not on our servers. We retain only a revocation status entry to allow airlines to verify your credential has not been revoked.</p>
+                        <p className="text-sm mb-4">The platform issues and stores cryptographically signed VCs as digital access tickets. These VCs are delivered to your personal Pilot Wallet and retained server-side as signed records for pathway gating and revocation purposes. The platform does not store raw verification documents or detailed receipts — only the signed VC and minimal verification outcome data (status, check ID, timestamp).</p>
+                        <p className="text-sm mb-4 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+                            <strong>Verification Receipt Notice:</strong> When you use a third-party verifier (e.g., Veremark), the verifier sends you a <strong>full detailed verification receipt</strong> directly to your email (containing PEL numbers, medical dates, license classes, examiner names, logbook audit details, etc.). The platform does <strong>not</strong> receive, view, or store this detailed receipt. We only receive a minimal structured outcome via webhook (status, check ID, timestamp) to issue your access credential.
+                        </p>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-4">2d. Usage &amp; Technical Data</h3>
                         <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
@@ -156,9 +160,21 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                                 <tbody>
                                     <tr>
                                         <td className="px-4 py-3 border border-slate-200 font-medium">Supabase</td>
-                                        <td className="px-4 py-3 border border-slate-200">Database &amp; auth storage</td>
-                                        <td className="px-4 py-3 border border-slate-200">Encrypted profile data, activity logs</td>
-                                        <td className="px-4 py-3 border border-slate-200">US (AWS)</td>
+                                        <td className="px-4 py-3 border border-slate-200">Primary database &amp; auth storage</td>
+                                        <td className="px-4 py-3 border border-slate-200">Encrypted profile data, activity logs, signed VC records</td>
+                                        <td className="px-4 py-3 border border-slate-200">Australia (Sydney, ap-southeast-2)</td>
+                                    </tr>
+                                    <tr className="bg-slate-50">
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Neon PostgreSQL</td>
+                                        <td className="px-4 py-3 border border-slate-200">OEM data, pathway cards, IPFS CID index</td>
+                                        <td className="px-4 py-3 border border-slate-200">Anonymised pathway data, IPFS references</td>
+                                        <td className="px-4 py-3 border border-slate-200">Singapore (ap-southeast-1)</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">MongoDB Atlas</td>
+                                        <td className="px-4 py-3 border border-slate-200">Raw aviation API payloads, flight telemetry, logbook JSON</td>
+                                        <td className="px-4 py-3 border border-slate-200">Aviation API data, telemetry records</td>
+                                        <td className="px-4 py-3 border border-slate-200">Singapore (ap-southeast-1)</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="px-4 py-3 border border-slate-200 font-medium">Auth0 (Okta)</td>
@@ -167,9 +183,9 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                                         <td className="px-4 py-3 border border-slate-200">US</td>
                                     </tr>
                                     <tr>
-                                        <td className="px-4 py-3 border border-slate-200 font-medium">Veremark</td>
+                                        <td className="px-4 py-3 border border-slate-200 font-medium">Veremark Ltd.</td>
                                         <td className="px-4 py-3 border border-slate-200">Credential verification</td>
-                                        <td className="px-4 py-3 border border-slate-200">Name, licence docs (verification only)</td>
+                                        <td className="px-4 py-3 border border-slate-200">User uploads docs directly to Veremark. Veremark sends full detailed receipt to user's email. Platform receives only minimal structured outcome (status, check ID, timestamp).</td>
                                         <td className="px-4 py-3 border border-slate-200">UK / Singapore</td>
                                     </tr>
                                     <tr className="bg-slate-50">
@@ -233,11 +249,11 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                     <section>
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">6. Data Security</h2>
                         <ul className="list-disc pl-6 space-y-2 text-sm">
-                            <li><strong>Encryption at rest:</strong> Sensitive credential fields are encrypted using AES-256-GCM with per-pilot keys before reaching our database.</li>
-                            <li><strong>Encryption in transit:</strong> All data transmitted between your browser and our servers uses TLS 1.2+.</li>
-                            <li><strong>Row-Level Security:</strong> Database access controls ensure pilots can only query their own records.</li>
-                            <li><strong>Vault key architecture:</strong> Your encryption key is derived from your Google identity and a server-side secret stored in a hardware-backed secret manager. We cannot decrypt your data without your authenticated session.</li>
-                            <li><strong>Verifiable Credentials:</strong> Your actual VCs are stored in your personal Pilot Wallet. We hold only a revocation status entry.</li>
+                            <li><strong>Encryption at rest:</strong> Sensitive credential fields are encrypted using AES-256-GCM before storage in our databases.</li>
+                            <li><strong>Encryption in transit:</strong> All data transmitted between your browser and our servers uses TLS 1.3.</li>
+                            <li><strong>Row-Level Security:</strong> Database access controls ensure pilots can only query their own records via authenticated sessions.</li>
+                            <li><strong>Vault key architecture:</strong> Your encryption key is derived from your Google identity and a server-side secret. Platform administrators cannot decrypt your data without your authenticated session.</li>
+                            <li><strong>Verifiable Credentials:</strong> Your VCs are stored in your personal Pilot Wallet and retained server-side as signed records for revocation and pathway gating.</li>
                             <li><strong>Passkey architecture:</strong> If you register a passkey, the private key is stored exclusively in your device hardware and synced end-to-end encrypted by Google or Apple. We store only your public key — a value that can verify your identity but cannot impersonate you. A full compromise of our database would not expose your private key.</li>
                         </ul>
                         <p className="mt-4 text-sm text-slate-500">No system is 100% secure. In the event of a breach affecting your personal data, we will notify you and the relevant supervisory authority within 72 hours of becoming aware, as required under GDPR Article 33.</p>
@@ -307,10 +323,10 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">12. Supervisory Authority Complaints</h2>
                         <p className="text-sm mb-3">If you believe we have processed your data unlawfully, you have the right to lodge a complaint with the relevant supervisory authority:</p>
                         <ul className="list-disc pl-6 space-y-1 text-sm">
+                            <li><strong>Mauritius (primary jurisdiction):</strong> Data Protection Office of the Republic of Mauritius — Phone: (230) 210 3434 · Email: dpo@govmu.org · Website: dataprotection.govmu.org</li>
                             <li><strong>Philippines:</strong> National Privacy Commission (NPC) — <a href="https://www.privacy.gov.ph" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">privacy.gov.ph</a></li>
                             <li><strong>EU/EEA:</strong> Your local Data Protection Authority (DPA)</li>
                             <li><strong>UK:</strong> Information Commissioner's Office (ICO) — <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">ico.org.uk</a></li>
-                            <li><strong>UAE:</strong> UAE Data Office — <a href="https://uaedataoffice.gov.ae" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">uaedataoffice.gov.ae</a></li>
                         </ul>
                         <p className="mt-3 text-sm">We would appreciate the opportunity to address your concern before you contact a regulator. Please email us first at <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a>.</p>
                     </section>
@@ -324,43 +340,44 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                     {/* ── SECTION 15 ── */}
                     <section>
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">15. Architectural Neutrality &amp; Data Intermediation</h2>
-                        <p className="text-xs text-slate-400 mb-4">Protocol Date: May 2026 · Regulatory Baseline: PDPA 2012 (Singapore), Electronic Transactions Act (Cap. 88), Privacy by Design Principles</p>
+                        <p className="text-xs text-slate-400 mb-4">Protocol Date: June 2026 · Regulatory Baseline: Mauritius Data Protection Act 2017, Electronic Transactions Act 2000, Privacy by Design Principles</p>
 
                         <p className="text-sm mb-4">
-                            The Platform operates under a policy of <strong>absolute architectural neutrality</strong>. It does not function as an active data processor or credential-verifying authority. Instead, it serves exclusively as a <strong>stateless digital infrastructure utility</strong> — a passive pipeline designed to securely display aviation metadata without maintaining a centralised proprietary database of sensitive personal identifiers.
+                            The Platform serves as the <strong>Data Controller</strong> for all personal data processed through its infrastructure. It maintains appropriate technical and organisational safeguards to protect user data while routing verification requests to third-party providers and issuing cryptographically signed Verifiable Credentials (VCs) as digital access tickets.
                         </p>
 
                         {/* Pipeline diagram */}
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5 overflow-x-auto">
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">The Passive Pipeline Architecture</p>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Data Flow Architecture</p>
                             <div className="flex items-center gap-2 text-xs min-w-max">
                                 <div className="border border-slate-300 rounded-lg px-3 py-2 bg-white text-center">
                                     <p className="font-bold text-slate-700">The Pilot</p>
                                     <p className="text-slate-500 text-[10px]">Controls account initiation</p>
-                                    <p className="text-slate-500 text-[10px]">Inputs self-claimed metadata</p>
+                                    <p className="text-slate-500 text-[10px]">Inputs profile metadata</p>
                                 </div>
                                 <div className="text-slate-400 font-bold text-base">→</div>
-                                <div className="border-2 border-red-300 rounded-lg px-3 py-2 bg-red-50 text-center">
-                                    <p className="font-black text-red-700">Pilot Recognition</p>
-                                    <p className="text-red-500 text-[10px] font-semibold">Stateless Render Pipeline</p>
+                                <div className="border-2 border-indigo-300 rounded-lg px-3 py-2 bg-indigo-50 text-center">
+                                    <p className="font-black text-indigo-700">Pilot Recognition</p>
+                                    <p className="text-indigo-500 text-[10px] font-semibold">Data Controller & VC Issuer</p>
                                 </div>
                                 <div className="text-slate-400 font-bold text-base">→</div>
                                 <div className="border border-slate-300 rounded-lg px-3 py-2 bg-white text-center">
-                                    <p className="font-bold text-slate-700">Integration Partners</p>
-                                    <p className="text-slate-500 text-[10px]">Authoritative data stores (CAAS)</p>
-                                    <p className="text-slate-500 text-[10px]">Independent screening providers</p>
+                                    <p className="font-bold text-slate-700">Third-Party Verifiers</p>
+                                    <p className="text-slate-500 text-[10px]">Independent verification providers</p>
+                                    <p className="text-slate-500 text-[10px]">Data Issuers (CAAP, EASA, FAA)</p>
                                 </div>
                             </div>
                         </div>
 
-                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15a. The Passive Pipeline Specification</h3>
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15a. Platform Data Processing Specification</h3>
                         <div className="overflow-x-auto mb-5">
                             <table className="w-full text-sm border-collapse">
                                 <tbody>
                                     {[
-                                        ['Modifying Data', 'The Platform does not write, edit, generate, or alter aviation credentials.'],
-                                        ['Risk Attenuation', 'Zero storage of raw credentials, government licence IDs, or logbook records.'],
-                                        ['Fault Attribution', 'Liability for validation accuracy rests solely with data-originating sources.'],
+                                        ['Credential Issuance', 'The Platform generates cryptographically signed W3C Verifiable Credentials (VCs) under did:web:pilotrecognition.com based on minimal structured verification outcomes received from third-party verifiers.'],
+                                        ['Data Routing', 'Raw credential documents uploaded by users are forwarded directly to the chosen third-party verifier and deleted from Platform infrastructure within 24 hours. The Platform does not retain raw documents.'],
+                                        ['Verification Outcomes', 'The Platform receives only minimal structured data from verifiers (status, check ID, timestamp) — not detailed receipts. Full detailed receipts are sent directly to the user\'s email by the verifier.'],
+                                        ['Fault Attribution', 'Liability for verification accuracy rests with the independent third-party verifier and the data-issuing aviation authority.'],
                                     ].map(([label, desc], i) => (
                                         <tr key={label} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                                             <td className="px-4 py-3 border border-slate-200 font-semibold text-slate-700 w-40 whitespace-nowrap">{label}</td>
@@ -372,22 +389,22 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                         </div>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-5">15b. Authentication Isolation</h3>
-                        <p className="text-sm mb-3">Account authentication is completely decoupled from Platform infrastructure via Auth0 by Okta. Credentials (passwords and emails) never transit or reside on Platform servers. The Platform's back-end database stores only a non-identifiable, alphanumeric user token string.</p>
+                        <p className="text-sm mb-3">Account authentication is managed by Auth0 by Okta. User passwords never transit or reside on Platform servers. The Platform's database stores only the Auth0 user identifier token.</p>
 
-                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15c. Decentralised Financial Settlement</h3>
-                        <p className="text-sm mb-3">All financial transactions are routed via an automated, decentralised split-payment architecture (Helio / MoonPay Commerce). The Platform does not hold pooled client funds, nor does it act as a centralised data reseller or financial custodian. The on-chain transaction log serves as an unalterable audit trail establishing the exact institutional or corporate partner compensated to perform a given verification process.</p>
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15c. Payment Processing</h3>
+                        <p className="text-sm mb-3">Payment processing is handled by Stripe. The Platform does not store card numbers or bank details. We retain only transaction IDs, amounts, and subscription status for accounting and customer support purposes.</p>
 
-                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15d. Singapore PDPA &amp; ETA Compliance</h3>
-                        <p className="text-sm mb-3">Under Section 2(1) of the Personal Data Protection Act 2012 (PDPA), the Platform fulfils the core definitions of a <strong>Data Intermediary</strong>. Its responsibilities are strictly restricted to maintaining appropriate technical safeguards over the active session environment and honouring account deletion workflows within 30 business days.</p>
-                        <p className="text-sm mb-3">Pursuant to Singapore's Electronic Transactions Act (Cap. 88), user confirmation via interface checkboxes constitutes execution of valid <strong>electronic assent</strong>, legally equivalent to a physical signature.</p>
+                        <h3 className="font-semibold text-slate-800 mb-2 mt-5">15d. Mauritius Data Protection Act 2017 Compliance</h3>
+                        <p className="text-sm mb-3">As a company incorporated in the Republic of Mauritius, Aviation Pathways Ltd is subject to the <strong>Data Protection Act 2017</strong> and shall apply for registration as a Data Controller with the Data Protection Office of Mauritius within 14 days of commencing data processing activities.</p>
+                        <p className="text-sm mb-3">User confirmation via interface checkboxes constitutes valid <strong>electronic consent</strong> under the Mauritius Electronic Transactions Act 2000, legally equivalent to a physical signature for contractual purposes.</p>
 
                         <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-600 mb-4">
                             <p className="font-semibold text-slate-700 mb-1">Consent Log Data Specification</p>
-                            <p><strong>System Metadata:</strong> Timestamp + anonymous Auth0 User ID · <strong>Legal Status:</strong> Non-SPI (Not Sensitive Personal Information) · <strong>Compliance Base:</strong> ETA Cap. 88 Mandated Proof of Authorised Pipeline Activation</p>
+                            <p><strong>System Metadata:</strong> Timestamp + anonymous Auth0 User ID · <strong>Legal Status:</strong> Processing record under Mauritius Data Protection Act 2017 · <strong>Retention:</strong> Consent timestamps retained for legal compliance even after account deletion</p>
                         </div>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-5">15e. Aviation Authority Disclaimer</h3>
-                        <p className="text-sm">The Platform maintains absolute independence from national regulatory bodies. The output generated by independent third-party verification tools within the profile interface is for <strong>informational networking purposes only</strong> and possesses no formal weight as official regulatory documentation. Total liability for licensing authentication remains strictly between the individual aviator and the competent civil aviation authority.</p>
+                        <p className="text-sm">The Platform maintains independence from national regulatory bodies. The output generated by independent third-party verification tools within the profile interface is for <strong>informational and pathway-matching purposes only</strong> and does not constitute official regulatory documentation. Total liability for licensing authentication remains strictly between the individual aviator and the competent civil aviation authority.</p>
                     </section>
 
                     {/* ── SECTION 14 ── */}

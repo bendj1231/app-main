@@ -206,7 +206,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
                                 <div
                                     className="w-full h-full"
                                     style={{
-                                        backgroundImage: 'url(https://airlinegeeks.com/wp-content/uploads/2018/10/IMG_3495-e1540774160956.jpg)',
+                                        backgroundImage: 'url(https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80)',
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                     }}

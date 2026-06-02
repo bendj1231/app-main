@@ -120,7 +120,7 @@ export const ManualCredentialFlow: React.FC<ManualCredentialFlowProps> = ({
       sessionStorage.setItem('manual_credential_claimed', 'true');
       
       // Open Pilot Wallet
-      window.open(`https://wallet.pilotrecognition.com/?offer=${encodeURIComponent(credentialUrl)}`, '_blank');
+      window.open(`https://wallet.pilotrecognition.com/?offer=${encodeURIComponent(credentialUrl)}`, '_blank', 'noopener,noreferrer');
       
       onCredentialClaimed(credentialUrl);
     }

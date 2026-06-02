@@ -83,7 +83,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         setUserProfile(decrypted);
                         return;
                     }
-                } catch (_) {}
+                } catch (err: any) {
+                    console.warn('[AuthContext] Auth0 ID token vault decryption failed:', err.message);
+                }
                 // Fallback: server-pepper path
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session?.access_token) {
@@ -93,7 +95,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     return;
                 }
             }
-        } catch (_) {}
+        } catch (err: any) {
+            console.warn('[AuthContext] Profile decryption failed:', err.message);
+        }
         setUserProfile(data);
     };
 
@@ -198,16 +202,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             };
             setCurrentUser(auth0AsSupabaseUser);
             setLoading(false);
-            // Persist auth0 user ID for logbook sync VC issuance
-            if (auth0User.sub) localStorage.setItem('auth0_user_id', auth0User.sub);
-            
-            // Create Supabase session so user persists after reload
+
+            // TODO: Move session restoration to httpOnly cookies via backend endpoint
+            // localStorage session restoration is vulnerable to XSS extraction.
             // Store auth0 token info in localStorage for session restoration
             localStorage.setItem('sb-auth-provider', 'auth0');
             localStorage.setItem('sb-auth-user-id', auth0User.sub || '');
             localStorage.setItem('sb-auth-email', auth0User.email || '');
             localStorage.setItem('sb-auth-name', auth0User.name || '');
             localStorage.setItem('sb-auth-expiry', (Date.now() + 7 * 24 * 60 * 60 * 1000).toString()); // 7 days
+
+            // Persist auth0 user ID in sessionStorage for MFB logbook sync callback
+            // sessionStorage is cleared on tab close, reducing XSS persistence vs localStorage
+            if (auth0User.sub) sessionStorage.setItem('auth0_user_id', auth0User.sub);
             // Initialise vault key then background re-encrypt any plaintext legacy records
             if (auth0User.sub) {
                 supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -1367,7 +1374,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                             const vKey = await getVaultKey(auth0UserId, s.access_token);
                                             displayData = await decryptFields(profileData, PROFILE_SENSITIVE_FIELDS as any, vKey);
                                         }
-                                    } catch (_) {}
+                                    } catch (err: any) {
+                                        console.warn('[AuthContext] Vault decryption failed for restored session:', err.message);
+                                    }
                                     setUserProfile({
                                         ...displayData,
                                         user_id: auth0UserId,

@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 import Stripe from 'https://esm.sh/stripe@14.21.0';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
 
@@ -5,11 +6,7 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
   apiVersion: '2026-04-22.dahlia',
 });
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
+import { getCorsHeaders } from '../_shared/cors.ts';
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL') || Deno.env.get('NEXT_PUBLIC_SUPABASE_URL') || '';
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
@@ -20,6 +17,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
+  const corsHeaders = getCorsHeaders(req);
     return new Response('ok', { headers: corsHeaders });
   }
 

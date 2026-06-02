@@ -16,13 +16,9 @@
  *   - Supabase RLS ensures pilot only gets their own pepper
  */
 
+/// <reference lib="deno.ns" />
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-};
+import { getCorsHeaders } from '../_shared/cors.ts';
 
 /**
  * HMAC-SHA256 of (secret + sub) → hex string
@@ -48,11 +44,12 @@ async function derivePerPilotPepper(masterSecret: string, sub: string): Promise<
 }
 
 Deno.serve(async (req: Request) => {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
+  const corsHeaders = getCorsHeaders(req);
+  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   if (req.method !== 'GET') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405, headers: { ...CORS, 'Content-Type': 'application/json' },
+      status: 405, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 
@@ -60,7 +57,7 @@ Deno.serve(async (req: Request) => {
     const authHeader = req.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Authorization required' }), {
-        status: 401, headers: { ...CORS, 'Content-Type': 'application/json' },
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
@@ -76,7 +73,7 @@ Deno.serve(async (req: Request) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
-        status: 401, headers: { ...CORS, 'Content-Type': 'application/json' },
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
@@ -85,7 +82,7 @@ Deno.serve(async (req: Request) => {
     if (!masterSecret) {
       console.error('[vc-vault-key] VAULT_MASTER_SECRET not set');
       return new Response(JSON.stringify({ error: 'Vault not configured' }), {
-        status: 503, headers: { ...CORS, 'Content-Type': 'application/json' },
+        status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
@@ -128,13 +125,13 @@ Deno.serve(async (req: Request) => {
       issued_at: new Date().toISOString(),
     }), {
       status: 200,
-      headers: { ...CORS, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
   } catch (err: any) {
     console.error('[vc-vault-key] Error:', err.message);
     return new Response(JSON.stringify({ error: err.message }), {
-      status: 500, headers: { ...CORS, 'Content-Type': 'application/json' },
+      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 });

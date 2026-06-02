@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 /**
  * b2-backup — Cold storage backup to Backblaze B2
  * Backs up Neon DB dump + Supabase pilot profile export
@@ -15,7 +16,7 @@ const SUPABASE_URL  = Deno.env.get('SUPABASE_URL')!;
 
 const CORS = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': getCorsHeaders(req)['Access-Control-Allow-Origin'],
 };
 
 // ─── B2 S3-compatible upload ─────────────────────────────────────────────────
@@ -95,7 +96,8 @@ async function backupNeonCache(): Promise<{ count: number; key: string; url: str
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'authorization, content-type' } });
+  const corsHeaders = getCorsHeaders(req);
+    return new Response('ok', { headers: { 'Access-Control-Allow-Origin': getCorsHeaders(req)['Access-Control-Allow-Origin'], 'Access-Control-Allow-Headers': 'authorization, content-type' } });
   }
 
   const authHeader = req.headers.get('Authorization') || '';

@@ -12,6 +12,7 @@
  *   PLATFORM_DID — did:web:pilotrecognition.com
  */
 
+/// <reference lib="deno.ns" />
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { getCorsHeaders } from '../_shared/cors.ts';
 
@@ -263,6 +264,39 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    // Authenticate caller — must be internal service key or admin JWT
+    const authHeader = req.headers.get('Authorization') || '';
+    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+    const isServiceCall = authHeader === `Bearer ${serviceKey}`;
+
+    if (!isServiceCall) {
+      // Validate as admin JWT
+      const supabase = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_ANON_KEY')!,
+        { global: { headers: { Authorization: authHeader } } }
+      );
+      const { data: { user }, error: authErr } = await supabase.auth.getUser();
+      if (authErr || !user) {
+        return new Response(
+          JSON.stringify({ error: 'Unauthorized' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      // Verify caller is admin
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('system_role')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (profile?.system_role !== 'admin') {
+        return new Response(
+          JSON.stringify({ error: 'Forbidden: admin only' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
     // Parse and validate request
     let body;
     try {
@@ -273,7 +307,7 @@ Deno.serve(async (req: Request) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-    
+
     const {
       credential_type,
       subject_did,

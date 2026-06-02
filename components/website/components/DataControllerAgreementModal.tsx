@@ -74,10 +74,10 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     style={{ minHeight: 0 }}
                 >
                     <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-500 leading-relaxed">
-                        <strong className="text-slate-700">Data Controller Agreement — WM Pilot Group</strong><br />
+                        <strong className="text-slate-700">Data Controller Agreement — Aviation Pathways Ltd</strong><br />
                         Document Reference: PR-DCA-001 · Version 1.7 · Effective: 02 June 2026<br />
                         This instrument constitutes a binding infrastructure and data governance agreement between the Data Subject
-                        (the Registrant, hereinafter the <em>Credential Custodian</em>) and WM Pilot Group (hereinafter the{' '}
+                        (the Registrant, hereinafter the <em>Credential Custodian</em>) and Aviation Pathways Ltd (hereinafter the{' '}
                         <em>Infrastructure Controller</em> or <em>the Platform</em>), effective immediately upon account creation in Terminal 1.
                     </div>
 
@@ -91,15 +91,15 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         </p>
                         <div className="space-y-2">
                             <div className="bg-white border border-slate-200 rounded-lg px-3 py-2">
-                                <p className="text-slate-800 font-bold text-xs mb-1">1. Infrastructure Controller (The Platform) — WM Pilot Group</p>
-                                <p className="text-slate-500 text-xs">WM Pilot Group acts as an <strong className="text-black">Independent Data Controller strictly for platform infrastructure, ecosystem routing, and gate governance</strong>. The Platform determines the purposes and means of processing only for: account creation, security session handling (Auth0), passkey synchronization, billing/payment orchestration, and the secure routing of encrypted API webhooks. The Platform operates as a zero-knowledge terminal — hosting only computationally infeasible ciphertext with zero technical or legal means to decrypt, read, or intercept raw credential payloads.</p>
+                                <p className="text-slate-800 font-bold text-xs mb-1">1. Infrastructure Controller (The Platform) — Aviation Pathways Ltd</p>
+                                <p className="text-slate-500 text-xs">Aviation Pathways Ltd acts as an <strong className="text-black">Independent Data Controller strictly for platform infrastructure, ecosystem routing, and gate governance</strong>. The Platform determines the purposes and means of processing only for: account creation, security session handling (Auth0), passkey synchronization, billing/payment orchestration, and the secure routing of encrypted API webhooks. The Platform operates as a zero-knowledge terminal — hosting only computationally infeasible ciphertext with zero technical or legal means to decrypt, read, or intercept raw credential payloads.</p>
                             </div>
                             <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2">
                                 <p className="text-red-700 font-bold text-xs mb-1">2. Credential Custodian — The Registrant</p>
                                 <p className="text-slate-500 text-xs">The Registrant natively holds, owns, and controls their master cryptographic identity credential via their local device hardware. The Registrant acts as the primary Data Controller of their personal identity records, determines the lifecycle of their data, and must explicitly initiate all verification and sharing pathways.</p>
                             </div>
                             <div className="bg-white border border-slate-200 rounded-lg px-3 py-2">
-                                <p className="text-slate-700 font-bold text-xs mb-1">3. Verification Controllers — Veremark Ltd. & Regional IDPs</p>
+                                <p className="text-slate-700 font-bold text-xs mb-1">3. Verification Controllers — Third-Party Verification Providers & Regional IDPs</p>
                                 <p className="text-slate-500 text-xs">When the Registrant initiates a verification flow to enter Terminal 3, they establish a direct, independent consent agreement with the selected third-party provider (e.g., Veremark Ltd.). These parties act as <strong className="text-black">Independent Data Controllers</strong> for the purpose of querying and verifying raw credential data against civil aviation authorities and ATOs. The Platform merely routes the user-directed transaction and accepts no liability for these external operations.</p>
                             </div>
                             <div className="bg-white border border-slate-200 rounded-lg px-3 py-2">
@@ -189,7 +189,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                                 ['Right to Erasure (Art. 17 GDPR)', 'Triggers a permanent, unrecoverable purge of ciphertext rows from all active database engines via the user dashboard.'],
                                 ['Right to Portability (Art. 20 GDPR)', 'Natively fulfilled via portability of the W3C Verifiable Credential — exportable to any compatible SSI wallet framework.'],
                                 ['Right of Access & Rectification', 'Real-time visibility and management of all data holdings through the user terminal interface.'],
-                                ['Right to Object (Art. 21 GDPR)', 'Withdrawal of consent for non-essential processing. Objection to essential processing results in immediate account termination.'],
+                                ['Right to Object (Art. 21 GDPR)', 'Withdrawal of consent for non-essential processing. Objection to essential processing results in account being placed on review or hold with non-refundable status.'],
                                 ['Right to Restriction (Art. 18 GDPR)', 'Suspension of active processing pending dispute resolution.'],
                             ].map(([right, detail]) => (
                                 <li key={right} className="flex items-start gap-2 text-xs">
@@ -210,7 +210,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         <p className="text-xs leading-relaxed">
                             The Platform explicitly accepts <strong className="text-slate-900">no liability</strong> for:
                             (i) <strong className="text-slate-900">Infrastructure vendor breaches</strong> — global security incidents, data leaks, or outages originating within the separate networks of Supabase Inc. or Google LLC;
-                            (ii) <strong className="text-slate-900">Third-party verification & IDP failures</strong> — security incidents or compliance failures within the independent networks of Veremark Ltd., civil aviation authorities, or user-nominated ATOs;
+                            (ii) <strong className="text-slate-900">Third-party verification & IDP failures</strong> — security incidents or compliance failures within the independent networks of the user-selected third-party verification provider, civil aviation authorities, or user-nominated ATOs;
                             (iii) <strong className="text-slate-900">Employment actions</strong> — hiring decisions, data retention misconduct, or labour disputes arising after an airline or operator accesses a profile via Terminal 2 or Terminal 3.
                         </p>
                     </section>
@@ -230,7 +230,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     <section>
                         <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 9 — Mauritius Data Controller Registration</h3>
                         <p className="mb-2 text-xs leading-relaxed">
-                            <strong className="text-black">WM Pilot Group (Aviation Pathways Limited)</strong> is registered as a Data Controller 
+                            <strong className="text-black">Aviation Pathways Ltd</strong> is registered as a Data Controller 
                             with the Data Protection Office of Mauritius under the Data Protection Act 2017.
                         </p>
                         <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
@@ -290,7 +290,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         <ul className="space-y-1.5">
                             {[
                                 ['View-Only Access', 'Minor and Student Pilot accounts are fully permitted to navigate Terminal 1, view available career pathways, and utilise logbook tracking infrastructure.'],
-                                ['Terminal 3 Firewall', 'Minor and Student Pilot accounts are structurally restricted from launching Veremark verification flights or submitting profiles to premium international airline gates within Terminal 3.'],
+                                ['Terminal 3 Firewall', 'Minor and Student Pilot accounts are structurally restricted from launching third-party verification flights or submitting profiles to premium international airline gates within Terminal 3.'],
                                 ['Terminal 2 Routing', 'Eligible Student Pilots may be routed to designated flight school lounges or cadet-track pathways within Terminal 2 that accept unverified or self-declared training data.'],
                             ].map(([title, detail]) => (
                                 <li key={title} className="flex items-start gap-2 text-xs">
@@ -316,7 +316,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     </section>
 
                     <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-xs text-slate-400">
-                        <span>PR-DCA-001 v1.7 — 02 June 2026 — WM Pilot Group</span>
+                        <span>PR-DCA-001 v1.7 — 02 June 2026 — Aviation Pathways Ltd</span>
                         <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 underline transition-colors">
                             Full instrument ↗
                         </a>
@@ -339,7 +339,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                             className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-white accent-red-600 cursor-pointer"
                         />
                         <span className="text-slate-600 text-xs leading-relaxed group-hover:text-slate-900 transition-colors">
-                            I agree to the Data Controller Agreement (Ref: PR-DCA-001, v1.7). By creating an account, I acknowledge that I am the Pilot in Command (PIC) and primary Data Controller of my personal identity records, utilizing the platform's self-sovereign cryptographic architecture. I explicitly instruct WM Pilot Group, acting as my Infrastructure Controller and platform operator, to secure, host, and route my encrypted ciphertext according to the storage engine configuration (Single or Multi-Engine) and routing pathways I select.
+                            I agree to the Data Controller Agreement (Ref: PR-DCA-001, v1.7). By creating an account, I acknowledge that I am the Pilot in Command (PIC) and primary Data Controller of my personal identity records, utilizing the platform's self-sovereign cryptographic architecture. I explicitly instruct Aviation Pathways Ltd, acting as my Infrastructure Controller and platform operator, to secure, host, and route my encrypted ciphertext according to the storage engine configuration (Single or Multi-Engine) and routing pathways I select.
                         </span>
                     </label>
 

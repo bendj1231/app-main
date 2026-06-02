@@ -130,7 +130,7 @@ const COMMERCIAL_PATHWAYS: PathwayJob[] = [
     requirements: ['40+ hrs', 'CPL', 'Class 1 Medical', 'US Citizen/Perm Resident'],
     tags: ['American Airlines Flow', 'Embraer Fleet', 'Tuition Reimbursement'],
     postedAt: 'Accepting Applications',
-    image: 'https://www.envoyair.com/wp-content/uploads/2024/03/IMG_CadetProgram_MeganSnow.jpg'
+    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
   },
   {
     id: 'disc-comm-3',
@@ -143,7 +143,7 @@ const COMMERCIAL_PATHWAYS: PathwayJob[] = [
     requirements: ['0 hrs (Ab Initio)', 'Age 18+', 'Height 163cm+', 'Degree Preferred'],
     tags: ['Hong Kong Base', 'A350/B777 Fleet', 'Worldwide Destinations'],
     postedAt: 'Open Intake',
-    image: 'https://airhex.com/images/airline-logos/cathay-pacific.png'
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80'
   },
   {
     id: 'disc-comm-4',
@@ -156,7 +156,7 @@ const COMMERCIAL_PATHWAYS: PathwayJob[] = [
     requirements: ['17+ years', 'High School Diploma', 'ICAO English Level 4'],
     tags: ['Boeing 737 Fleet', 'MPL Training', 'Growing Airline'],
     postedAt: 'Now Accepting',
-    image: 'https://1000logos.net/wp-content/uploads/2020/04/Flydubai-logo-500x313.png'
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80'
   },
   {
     id: 'disc-comm-6',
@@ -169,7 +169,7 @@ const COMMERCIAL_PATHWAYS: PathwayJob[] = [
     requirements: ['18+ years', 'EU/EEA/Swiss Citizen', 'English Proficient', 'Clean Record'],
     tags: ['Europe Largest Airline', 'Boeing 737 8200', 'Fast Captain Promotion'],
     postedAt: 'Rolling Admissions',
-    image: 'https://logowik.com/content/uploads/images/ryanair-new-20138725.logowik.com.webp'
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80'
   },
   {
     id: 'disc-comm-cebu',
@@ -182,7 +182,7 @@ const COMMERCIAL_PATHWAYS: PathwayJob[] = [
     requirements: ['Philippine Citizen', '18-30 years', 'College Degree Preferred'],
     tags: ['Philippines Only', 'A320 Fleet', 'No Age Limit'],
     postedAt: 'Accepting Applications',
-    image: 'https://airhex.com/images/airline-logos/cebu-pacific.png'
+    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'
   },
   {
     id: 'disc-comm-skywest',
@@ -195,7 +195,7 @@ const COMMERCIAL_PATHWAYS: PathwayJob[] = [
     requirements: ['US Citizen', 'CPL + ME/IR', 'Part 141 Graduate'],
     tags: ['United Express', 'Delta/United/American', 'CRJ/ERJ Fleet'],
     postedAt: 'Continuous Hiring',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/SkyWest_Airlines_logo.svg/2560px-SkyWest_Airlines_logo.svg.png'
+    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80'
   }
 ];
 

@@ -357,7 +357,7 @@ export const CareerPathwaysNavbar: React.FC<CareerPathwaysNavbarProps> = ({
               <button
                 onClick={() => {
                   setIsEnterpriseModalOpen(false);
-                  window.open('https://enterprise.pilotrecognition.com', '_blank');
+                  window.open('https://enterprise.pilotrecognition.com', '_blank', 'noopener,noreferrer');
                 }}
                 className="group flex flex-col justify-between p-8 text-left hover:bg-slate-50 transition-all"
               >

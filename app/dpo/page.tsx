@@ -20,8 +20,11 @@ export default function DPOPage() {
           <h1 className="text-4xl font-black text-slate-900 mb-3">Data Protection Officer</h1>
           <p className="text-slate-600 max-w-2xl">
             For all privacy, data protection, and compliance enquiries. We respond to data subject requests
-            under GDPR, RA 10173 (Philippines), and UAE PDPL within our published SLA.
+            under the Mauritius Data Protection Act 2017, GDPR, and RA 10173 (Philippines) within our published SLA.
           </p>
+          <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800">
+            <strong>DPO Independence Notice:</strong> The Data Protection Officer role is currently filled by a company director (Benjamin Bowler) pending appointment of an independent DPO. This is acknowledged as a temporary arrangement under the Mauritius Data Protection Act 2017. An independent DPO will be appointed as the company scales and resources permit.
+          </div>
         </div>
 
         {/* Contact Cards */}
@@ -81,19 +84,24 @@ export default function DPOPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
               <p className="font-semibold text-slate-800 mb-1">Legal Entity</p>
-              <p className="text-slate-600">WM Pilot Group (Aviation Pathways Limited)</p>
+              <p className="text-slate-600">Aviation Pathways Ltd</p>
+              <p className="text-xs text-slate-500 mt-1">Incorporated in the Republic of Mauritius</p>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
               <p className="font-semibold text-slate-800 mb-1">Mauritius Registration</p>
-              <p className="text-slate-600">Data Controller — Data Protection Office, Republic of Mauritius</p>
+              <p className="text-slate-600">Application for registration as Data Controller shall be filed with the Data Protection Office, Republic of Mauritius within 14 days of commencing data processing activities. Certificate available upon completion of registration.</p>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-              <p className="font-semibold text-slate-800 mb-1">Operating Jurisdiction</p>
-              <p className="text-slate-600">United Arab Emirates (primary), Mauritius, Philippines</p>
+              <p className="font-semibold text-slate-800 mb-1">Managing Director</p>
+              <p className="text-slate-600">Marie Maureen Synthia Maya</p>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-              <p className="font-semibold text-slate-800 mb-1">Platform Operator</p>
-              <p className="text-slate-600">Karl Brian Vogt & Andrew Bowler — Joint Personal Information Controllers</p>
+              <p className="font-semibold text-slate-800 mb-1">Non-Executive Director / Sole Shareholder</p>
+              <p className="text-slate-600">Benjamin Bowler</p>
+            </div>
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+              <p className="font-semibold text-slate-800 mb-1">Data Protection Officer</p>
+              <p className="text-slate-600">Benjamin Bowler — privacy@pilotrecognition.com</p>
             </div>
           </div>
         </div>
@@ -158,8 +166,9 @@ export default function DPOPage() {
               <a href="https://uaedataoffice.gov.ae" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline text-xs">uaedataoffice.gov.ae</a>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-              <p className="font-semibold text-slate-800 mb-1">Mauritius</p>
+              <p className="font-semibold text-slate-800 mb-1">Mauritius (Primary)</p>
               <p className="text-slate-600 text-xs">Data Protection Office, Republic of Mauritius</p>
+              <p className="text-slate-600 text-xs">Phone: (230) 210 3434 · Email: dpo@govmu.org</p>
               <a href="https://dataprotection.govmu.org" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline text-xs">dataprotection.govmu.org</a>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
@@ -173,7 +182,7 @@ export default function DPOPage() {
         {/* Footer */}
         <div className="text-center">
           <p className="text-xs text-slate-400">
-            Last updated: 02 June 2026 · Document Reference: PR-DPO-001 v1.0 · WM Pilot Group
+            Last updated: 02 June 2026 · Document Reference: PR-DPO-001 v1.0 · Aviation Pathways Ltd
           </p>
         </div>
       </div>

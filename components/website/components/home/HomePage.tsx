@@ -1444,7 +1444,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto pb-8">
                         {/* Card 1 - Pilot Terminal */}
                         <div
-                            onClick={() => window.open('https://pilotterminal.com', '_blank')}
+                            onClick={() => window.open('https://pilotterminal.com', '_blank', 'noopener,noreferrer')}
                             className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
@@ -1466,7 +1466,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                         {/* Card 2 - Pilot Shortage */}
                         <div
-                            onClick={() => window.open('https://pilotshortage.org', '_blank')}
+                            onClick={() => window.open('https://pilotshortage.org', '_blank', 'noopener,noreferrer')}
                             className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
@@ -1529,9 +1529,9 @@ export const HomePage: React.FC<HomePageProps> = ({
                             const slideIdx = activeBillboardSlide || 0;
                             type SlideConfig = { src?: string; contain: boolean; invert: boolean; whiteBg?: boolean; prLogo?: boolean };
                             const slides: SlideConfig[] = [
-                                { src: 'https://1000logos.net/wp-content/uploads/2020/03/Airbus-Logo.png', contain: true, invert: false, whiteBg: true },
-                                { src: 'https://freepnglogo.com/images/all_img/boeing-logo-e30b.png', contain: true, invert: false, whiteBg: true },
-                                { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Etihad-airways-logo.svg/1280px-Etihad-airways-logo.svg.png', contain: true, invert: false, whiteBg: true },
+                                { src: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80', contain: true, invert: false, whiteBg: true },
+                                { src: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80', contain: true, invert: false, whiteBg: true },
+                                { src: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80', contain: true, invert: false, whiteBg: true },
                                 { src: '/images/foundational-program.png', contain: false, invert: false },
                                 { contain: true, invert: false, whiteBg: true, prLogo: true },
                             ];

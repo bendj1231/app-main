@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -107,6 +108,7 @@ function sanitizeError(error: unknown): string {
 
 serve(async (req) => {
   try {
+  const corsHeaders = getCorsHeaders(req);
     // Only allow POST requests
     if (req.method !== 'POST') {
       return new Response(JSON.stringify({ error: 'Method not allowed' }), {

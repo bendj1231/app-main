@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 /**
  * vc-status — Public Revocation Registry Read Endpoint
  *
@@ -12,13 +13,14 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const CORS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': getCorsHeaders(req)['Access-Control-Allow-Origin'],
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
 };
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
+  const corsHeaders = getCorsHeaders(req);
 
   try {
     // Use anon key — public read via RLS policy

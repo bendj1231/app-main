@@ -310,8 +310,8 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'airbus',
     name: 'Airbus',
-    logo: 'https://1000logos.net/wp-content/uploads/2020/03/Airbus-Logo.png',
-    heroImage: 'https://static0.simpleflyingimages.com/wordpress/wp-content/uploads/2020/10/A320-Family-production-increase.jpeg',
+    logo: '',
+    heroImage: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'Airbus offers the most comprehensive and authoritative type rating programs directly from the manufacturer. With the world\'s largest Airbus simulator fleet and OEM-direct training, pilots gain unparalleled expertise on the A320 family, A330, A350, and A220. Airbus training is globally recognized by airlines, providing pilots with a competitive edge in career advancement and access to the world\'s most popular commercial aircraft fleet.',
     why_choose_rating: 'Airbus type ratings provide pilots with direct OEM training that is recognized globally by airlines. The Airbus fly-by-wire system and common cockpit philosophy across all Airbus aircraft enable pilots to easily transition between different models, from the A320neo to the A350. With over 200,000 Airbus-rated pilots worldwide and the majority of commercial airline fleets operating Airbus aircraft, an Airbus type rating opens doors to career opportunities with airlines across Europe, Asia, the Middle East, and the Americas.',
     founded: 1970,
@@ -326,7 +326,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Toulouse, France',
         country: 'France',
         offers: ['A320', 'A330', 'A350', 'A380', 'A220'],
-        image: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.airbus.com/training'
       },
       {
@@ -335,7 +335,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Miami, USA',
         country: 'United States',
         offers: ['A320', 'A330', 'A350'],
-        image: 'https://www.airbus.com/sites/g/files/jknrzu326/images/styles/1600x900/public/2021-03/airbus-training-centre-miami-1.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.airbus.com/training'
       }
     ],
@@ -360,7 +360,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'boeing',
     name: 'Boeing',
-    logo: 'https://freepnglogo.com/images/all_img/boeing-logo-e30b.png',
+    logo: '',
     description: 'The Boeing Company is an American multinational corporation that designs, manufactures, and sells airplanes, rotorcraft, rockets, satellites, and missiles worldwide.',
     founded: 1916,
     headquarters: 'Chicago, Illinois, USA',
@@ -374,7 +374,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Miami, USA',
         country: 'United States',
         offers: ['737', '747', '767', '777', '787'],
-        image: 'https://www.boeing.com/resources/boeingdotcom/company/about_bc/history/images/boeing-training-center-miami.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.boeing.com/training'
       },
       {
@@ -383,7 +383,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Seattle, USA',
         country: 'United States',
         offers: ['737', '747', '777', '787'],
-        image: 'https://www.boeing.com/resources/boeingdotcom/company/about_bc/history/images/boeing-training-center-seattle.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.boeing.com/training'
       }
     ],
@@ -431,7 +431,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'embraer',
     name: 'Embraer',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Embraer_logo.svg/3840px-Embraer_logo.svg.png',
+    logo: '',
     description: 'Embraer S.A. is a Brazilian aerospace conglomerate that produces commercial, military, executive and agricultural aircraft and provides aeronautical services.',
     founded: 1969,
     headquarters: 'São José dos Campos, Brazil',
@@ -445,7 +445,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'São Paulo, Brazil',
         country: 'Brazil',
         offers: ['E170', 'E175', 'E190', 'E195', 'E-Jets'],
-        image: 'https://www.embraer.com/sites/default/files/styles/1600x900/public/2021-01/embraer-training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.embraer.com/training'
       }
     ],
@@ -470,7 +470,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'bombardier',
     name: 'Bombardier',
-    logo: 'https://download.logo.wine/logo/Bombardier_Inc./Bombardier_Inc.-Logo.wine.png',
+    logo: '',
     description: 'Bombardier Inc. is a Canadian multinational manufacturer of trains and aircraft. The aerospace division was sold to Airbus and Viking Air in 2020.',
     founded: 1942,
     headquarters: 'Montreal, Quebec, Canada',
@@ -484,7 +484,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Montreal, Canada',
         country: 'Canada',
         offers: ['CRJ Series', 'Challenger', 'Global'],
-        image: 'https://www.bombardier.com/content/dam/bombardiercom/feature-stories/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.bombardier.com/training'
       }
     ],
@@ -509,7 +509,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'gulfstream',
     name: 'Gulfstream',
-    logo: 'https://download.logo.wine/logo/Gulfstream_Aerospace/Gulfstream_Aerospace-Logo.wine.png',
+    logo: '',
     description: 'Gulfstream Aerospace is an American aircraft manufacturer and a wholly owned subsidiary of General Dynamics.',
     founded: 1958,
     headquarters: 'Savannah, Georgia, USA',
@@ -523,7 +523,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Savannah, USA',
         country: 'United States',
         offers: ['G280', 'G450', 'G550', 'G650', 'G700'],
-        image: 'https://www.gulfstream.com/content/dam/gulfstream/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.gulfstream.com/training'
       }
     ],
@@ -548,7 +548,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'cessna',
     name: 'Cessna',
-    logo: 'https://static.cdnlogo.com/logos/c/90/cessna-aircraft.png',
+    logo: '',
     description: 'Cessna is an American general aviation aircraft manufacturing corporation headquartered in Wichita, Kansas. It is now a subsidiary of Textron Aviation.',
     founded: 1927,
     headquarters: 'Wichita, Kansas, USA',
@@ -562,7 +562,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Wichita, USA',
         country: 'United States',
         offers: ['172', '182', 'Citation', 'Caravan'],
-        image: 'https://www.textronaviation.com/content/dam/textronaviation/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.textronaviation.com/training'
       }
     ],
@@ -587,7 +587,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'dassault-falcon',
     name: 'Dassault Falcon',
-    logo: 'https://www.skyservice.com/wp-content/uploads/2023/08/dassault.png',
+    logo: '',
     description: 'Dassault Falcon is a French manufacturer of business jets and military aircraft. It is a subsidiary of Dassault Aviation.',
     founded: 1936,
     headquarters: 'Paris, France',
@@ -601,7 +601,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Paris, France',
         country: 'France',
         offers: ['Falcon 7X', 'Falcon 8X', 'Falcon 900', 'Falcon 2000'],
-        image: 'https://www.dassaultfalcon.com/content/dam/dassaultfalcon/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.dassaultfalcon.com/training'
       }
     ],
@@ -626,7 +626,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'pilatus',
     name: 'Pilatus',
-    logo: 'https://swartzaviationgroup.com/wp-content/uploads/2025/04/Pilatus.png',
+    logo: '',
     description: 'Pilatus Aircraft Ltd. is a Swiss manufacturer of aircraft and systems. It is known for its PC-12 turboprop and PC-24 business turboprop aircraft.',
     founded: 1939,
     headquarters: 'Stans, Switzerland',
@@ -640,7 +640,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Stans, Switzerland',
         country: 'Switzerland',
         offers: ['PC-12', 'PC-24', 'PC-6'],
-        image: 'https://www.pilatus-aircraft.com/content/dam/pilatus/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.pilatus-aircraft.com/training'
       }
     ],
@@ -665,7 +665,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'beechcraft',
     name: 'Beechcraft',
-    logo: 'https://1000logos.net/wp-content/uploads/2020/09/Beechcraft-logo.png',
+    logo: '',
     description: 'Beechcraft Corporation is an American manufacturer of general aviation and military aircraft, ranging from light single-engine aircraft to business jets.',
     founded: 1932,
     headquarters: 'Wichita, Kansas, USA',
@@ -679,7 +679,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Wichita, USA',
         country: 'United States',
         offers: ['King Air', 'Baron', 'Bonanza', 'Premier'],
-        image: 'https://www.beechcraft.com/content/dam/beechcraft/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.beechcraft.com/training'
       }
     ],
@@ -704,7 +704,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'sikorsky',
     name: 'Sikorsky',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/9/97/Sikorsky_Aircraft_Logo.png',
+    logo: '',
     description: 'Sikorsky Aircraft is an American aircraft manufacturer based in Stratford, Connecticut. It is a subsidiary of Lockheed Martin.',
     founded: 1925,
     headquarters: 'Stratford, Connecticut, USA',
@@ -718,7 +718,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Stratford, USA',
         country: 'United States',
         offers: ['S-70', 'S-76', 'S-92', 'UH-60'],
-        image: 'https://www.sikorsky.com/content/dam/sikorsky/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.sikorsky.com/training'
       }
     ],
@@ -743,7 +743,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'leonardo',
     name: 'Leonardo',
-    logo: 'https://iconlogovector.com/uploads/images/2025/04/lg-67fd7d3a3dbc5-Leonardo.webp',
+    logo: '',
     description: 'Leonardo S.p.A. is an Italian multinational company that produces helicopters, aircraft, and defense systems.',
     founded: 1948,
     headquarters: 'Rome, Italy',
@@ -757,7 +757,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Rome, Italy',
         country: 'Italy',
         offers: ['AW139', 'AW189', 'AW169', 'AW101'],
-        image: 'https://www.leonardo.com/content/dam/leonardo/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.leonardo.com/training'
       }
     ],
@@ -782,7 +782,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'atr',
     name: 'ATR',
-    logo: 'https://images.seeklogo.com/logo-png/43/2/atr-logo-png_seeklogo-433115.png',
+    logo: '',
     description: 'ATR is a French-Italian aircraft manufacturer headquartered in Blagnac, France. It produces regional airliners.',
     founded: 1981,
     headquarters: 'Blagnac, France',
@@ -796,7 +796,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Toulouse, France',
         country: 'France',
         offers: ['ATR 42', 'ATR 72', 'ATR 600'],
-        image: 'https://www.atr-aircraft.com/content/dam/atr/training-center-toulouse.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.atr-aircraft.com/training'
       }
     ],
@@ -821,7 +821,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'de-havilland',
     name: 'De Havilland',
-    logo: 'https://upload.wikimedia.org/wikipedia/en/c/ca/De_Havilland.png',
+    logo: '',
     description: 'De Havilland Canada was a Canadian aircraft manufacturer. The company is now part of Viking Air, which supports the DHC-8 Twin Otter and other legacy aircraft.',
     founded: 1928,
     headquarters: 'Toronto, Ontario, Canada',
@@ -835,7 +835,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Toronto, Canada',
         country: 'Canada',
         offers: ['DHC-6 Twin Otter', 'DHC-8'],
-        image: 'https://www.vikingair.com/content/dam/viking/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.vikingair.com/training'
       }
     ],
@@ -860,7 +860,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'mitsubishi-mrj',
     name: 'Mitsubishi MRJ',
-    logo: 'https://image.pitchbook.com/M35hhwSoZmMCkeXDGeQYTR6rDoP1546610261630_200x200',
+    logo: '',
     description: 'Mitsubishi SpaceJet (formerly MRJ) was a regional jet project by Mitsubishi Aircraft Corporation. The program was suspended in 2020.',
     founded: 2008,
     headquarters: 'Nagoya, Japan',
@@ -889,7 +889,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'comac-c919',
     name: 'COMAC C919',
-    logo: 'https://www.logo.wine/a/logo/Comac/Comac-Logo.wine.svg',
+    logo: '',
     description: 'COMAC C919 is a Chinese narrow-body airliner produced by Commercial Aircraft Corporation of China (COMAC).',
     founded: 2008,
     headquarters: 'Shanghai, China',
@@ -903,7 +903,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Shanghai, China',
         country: 'China',
         offers: ['C919'],
-        image: 'https://www.comac.cc/content/dam/comac/training.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.comac.cc/training'
       }
     ],
@@ -928,7 +928,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'tecnam',
     name: 'Tecnam',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Primary_Logo_-_Tecnam.png',
+    logo: '',
     description: 'Tecnam is an Italian aircraft manufacturer specializing in light sport aircraft, general aviation aircraft, and twin-engine piston aircraft.',
     founded: 1948,
     headquarters: 'Capua, Italy',
@@ -942,7 +942,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Capua, Italy',
         country: 'Italy',
         offers: ['P92', 'P2002', 'P2006T'],
-        image: 'https://www.tecnam.com/content/dam/tecnam/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.tecnam.com/training'
       }
     ],
@@ -967,7 +967,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'piper',
     name: 'Piper',
-    logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Piper_logo.svg/1280px-Piper_logo.svg.png',
+    logo: '',
     description: 'Piper Aircraft is an American general aviation aircraft manufacturer known for their Cherokee, Archer, and Warrior series of aircraft.',
     founded: 1927,
     headquarters: 'Vero Beach, Florida, USA',
@@ -981,7 +981,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Vero Beach, USA',
         country: 'USA',
         offers: ['PA-28', 'PA-18', 'PA-34'],
-        image: 'https://www.piper.com/content/dam/piper/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.piper.com/training'
       }
     ],
@@ -1006,7 +1006,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'cirrus',
     name: 'Cirrus',
-    logo: 'https://brandlogos.net/wp-content/uploads/2022/02/cirrus_aircraft-logo-brandlogos.net_.png',
+    logo: '',
     description: 'Cirrus Aircraft is an American aircraft manufacturer known for their SR series of single-engine piston aircraft and the Vision SF50 personal jet.',
     founded: 1984,
     headquarters: 'Duluth, Minnesota, USA',
@@ -1020,7 +1020,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Duluth, USA',
         country: 'USA',
         offers: ['SR20', 'SR22', 'Vision SF50'],
-        image: 'https://www.cirrusaircraft.com/content/dam/cirrus/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.cirrusaircraft.com/training'
       }
     ],
@@ -1045,7 +1045,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'let',
     name: 'Let',
-    logo: 'https://www.let.cz/images/logos/logo_new_s.png',
+    logo: '',
     description: 'Let Aircraft Industries is a Czech aircraft manufacturer known for their L-410 Turbolet turboprop regional airliner.',
     founded: 1936,
     headquarters: 'Kunovice, Czech Republic',
@@ -1059,7 +1059,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Kunovice, Czech Republic',
         country: 'Czech Republic',
         offers: ['L-410'],
-        image: 'https://www.letair.cz/content/dam/let/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.letair.cz/training'
       }
     ],
@@ -1084,7 +1084,7 @@ export const manufacturers: Manufacturer[] = [
   {
     id: 'aeroprakt',
     name: 'Aeroprakt',
-    logo: 'https://www.aeropraktsouthafrica.co.za/img/logo.png',
+    logo: '',
     description: 'Aeroprakt is a Ukrainian aircraft manufacturer known for their A-22 Foxbat light sport aircraft.',
     founded: 1991,
     headquarters: 'Kyiv, Ukraine',
@@ -1098,7 +1098,7 @@ export const manufacturers: Manufacturer[] = [
         location: 'Kyiv, Ukraine',
         country: 'Ukraine',
         offers: ['A-22 Foxbat'],
-        image: 'https://www.aeroprakt.com.ua/content/dam/aeroprakt/training-center.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         website: 'https://www.aeroprakt.com.ua/training'
       }
     ],
@@ -1131,7 +1131,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A220-100',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The A220-100 is the "specialist" of the family. While it shares 99% commonality with the larger -300, it is the version pilots choose for high-performance missions. It is specifically engineered for steep approaches and short runways that traditional jets can\'t touch. It occupies a niche (100-135 seats) that Boeing currently has no answer for, providing A220 pilots with unique market leverage.',
     why_choose_rating: 'The A220-100 offers pilots the quietest cockpit in the narrow-body world with full sidestick control and active feedback—no legacy cables or pulleys. It flies like a "sports car" compared to the heavier -300, offering superior climb rates and maneuverability. With 25% less CO2 emissions, it is the "greenest" rating a pilot can hold, protecting against future environmental flight caps and ensuring long-term fleet sustainability.',
     first_flight: 2013,
@@ -1232,7 +1232,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A220-300',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://accaviation.com/wp-content/uploads/2025/04/A220.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A220 is a modern, single-aisle aircraft family designed for the 100 to 160-seat market. Originally developed by Bombardier as the CSeries, it was rebranded as the A220 after Airbus acquired a majority stake in July 2018. Known for high efficiency, advanced Fly-By-Wire cockpit, and superior passenger comfort. The A220-300 is tailored for larger markets with typical seating of 120-150 passengers. As of March 2026, there are 501 aircraft delivered and 25 commercial operators worldwide. Delta Air Lines leads with 85 active A220s, followed by JetBlue (61), Air France (55), Breeze Airways (54), and airBaltic (54).',
     why_choose_rating: 'With advanced fly-by-wire systems, fuel efficiency, and growing airline adoption worldwide, the A220-300 type rating offers pilots excellent career opportunities. The aircraft\'s modern cockpit and commonality with Airbus systems provide a solid foundation for progression to larger Airbus aircraft like the A320neo and A350 families. Pilots rated on the A220-300 gain access to a rapidly expanding fleet with strong demand across Europe, Asia, and North America.',
     demandLevel: 'high',
@@ -1331,7 +1331,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320',
     category: 'flagship',
     subcategory: 'versatile-champion',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'ae3d357729a44f278f9ef9326977504a',
     description: 'The Airbus A320 is the world\'s best-selling airliner family and the pioneer of digital Fly-By-Wire technology in commercial aviation. It replaced traditional cables and pulleys with electronic signals and a sidestick controller, setting the standard for every subsequent Airbus model. Today, the A320neo variant offers 20% lower fuel burn, making it the primary choice for airlines worldwide.',
     why_choose_rating: 'An A320 rating is the most portable credential in aviation. With one landing or takeoff occurring every two seconds globally, job security is unrivaled. Pilots rated on the A320 can transition to the widebody A330 or A350 in as little as 8-10 days due to cockpit commonality through Cross-Crew Qualification (CCQ).',
@@ -1428,7 +1428,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330',
     category: 'flagship',
     subcategory: 'widebody',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The A330 is one of the most successful wide-body aircraft in history. It was designed alongside the four-engine A340, sharing a near-identical flight deck. Today, the family has evolved into the A330neo (-800 and -900 variants), which uses Rolls-Royce Trent 7000 engines and A350-style wings to fly further and more efficiently. For pilots, the A330 offers a seamless step up from the A320 with minimal "Difference Training."',
     why_choose_rating: 'The A330 rating is a "passport" to global wide-body carriers. It is the backbone of major carriers like Delta, Cathay Pacific, Qatar Airways, and Turkish Airlines. For A320-rated pilots, the transition is famously smooth via Cross-Crew Qualification (CCQ) - only 8-10 working days of training instead of a full month-long type rating.',
     first_flight: 1992,
@@ -1504,7 +1504,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A318',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A318 is the smallest member of the A320 family, known as the "Baby Bus". It was designed for short-haul routes with limited passenger demand.',
     first_flight: 2002,
     specifications: {
@@ -1567,7 +1567,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A319',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A319 is a shortened version of the A320, designed for routes with lower passenger demand while maintaining the A320 family\'s commonality.',
     first_flight: 1995,
     specifications: {
@@ -1630,7 +1630,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A321 is the stretched, highest-capacity version of the A320 family, designed for medium-haul routes with higher passenger demand.',
     first_flight: 1993,
     specifications: {
@@ -1693,7 +1693,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A319neo',
     category: 'commercial',
     subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A319neo is the upgraded A319 featuring larger, more efficient engines and aerodynamic "Sharklets" for improved fuel efficiency.',
     first_flight: 2017,
     specifications: {
@@ -1756,7 +1756,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320neo',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A320neo is the backbone of global low-cost carriers like IndiGo and Air India. It is the most frequent choice for fresh pilots due to high hiring volume.',
     first_flight: 2015,
     specifications: {
@@ -1819,7 +1819,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321neo',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A321neo is the current "king" of narrow-body jets. With the introduction of the A321XLR, pilots can now fly 11-hour transatlantic routes previously reserved for widebodies, making this rating highly lucrative.',
     first_flight: 2016,
     specifications: {
@@ -1882,7 +1882,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321LR',
     category: 'commercial',
     subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A321LR (Long Range) is a modified A321neo with extra fuel tanks, enabling transatlantic flights and long-haul routes.',
     first_flight: 2018,
     specifications: {
@@ -1945,7 +1945,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321XLR',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A321XLR is a game-changer in 2026 that allows single-aisle pilots to earn "long-haul" pay scales with 11-hour transatlantic capability.',
     first_flight: 2022,
     specifications: {
@@ -2008,7 +2008,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '50c4ed883e00436e80a3f1c8048f549f',
     description: 'The Airbus A330 is a wide-body, twin-engine jet airliner. It was designed to replace the earlier A300.',
     first_flight: 1992,
@@ -2072,7 +2072,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330-200 is the shorter fuselage, longer-range variant of the A330 family, designed for medium-to-long-haul routes.',
     first_flight: 1997,
     specifications: {
@@ -2135,7 +2135,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-300',
     category: 'flagship',
     subcategory: 'legacy-fading',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330-300ceo is an older generation that remains heavily in service with a large pool of rated pilots, often serving as a bridge to the A350.',
     first_flight: 1992,
     specifications: {
@@ -2198,7 +2198,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-800',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330-800 is the upgraded A330-200 featuring Rolls-Royce Trent 7000 engines and aerodynamic improvements for better fuel efficiency.',
     first_flight: 2018,
     specifications: {
@@ -2261,7 +2261,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-900',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330-900neo is a fuel-efficient widebody favorite for airlines like Delta Air Lines and TAP Air Portugal.',
     first_flight: 2017,
     specifications: {
@@ -2324,7 +2324,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350',
     category: 'commercial',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '0703224a1a7e497eaa2a860e1d3b1774',
     description: 'The Airbus A350 is a long-range, wide-body, twin-engine jet airliner. It is the first Airbus aircraft with both fuselage and wing structures made primarily of carbon-fiber-reinforced polymer.',
     first_flight: 2013,
@@ -2388,7 +2388,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350-900',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A350-900 is a highly sought-after long-haul rating. It shares a Common Type Rating with the A330, allowing pilots to fly both with only eight days of additional training.',
     first_flight: 2013,
     specifications: {
@@ -2451,7 +2451,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A350F is the newest flagship freighter entering service in 2026. It is a clean-sheet freighter designed to replace the Boeing 777F, featuring a massive main deck cargo door and carbon-fiber technology for maximum efficiency.',
     first_flight: 2024,
     specifications: {
@@ -2514,7 +2514,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A321P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A321P2F is the modernized "iPhone of cargo" - a narrow-body passenger-to-freighter conversion rapidly replacing older Boeing 737 freighters for short-range express delivery with operators like DHL and Qantas.',
     first_flight: 2020,
     specifications: {
@@ -2577,7 +2577,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A320P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A320P2F is the smaller sibling of the A321P2F, a narrow-body passenger-to-freighter conversion used for lower-volume regional cargo routes.',
     first_flight: 2019,
     specifications: {
@@ -2640,7 +2640,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-300P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330-300P2F is the most popular medium-to-long-range freighter conversion today, offering high volume and excellent efficiency for e-commerce with operators like FedEx, UPS, and DHL.',
     first_flight: 2017,
     specifications: {
@@ -2703,7 +2703,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330-200F is one of the few wide-body aircraft originally built by Airbus as a freighter from day one, featuring a distinctive "nose bubble" to keep the cargo floor level on the ground.',
     first_flight: 2009,
     specifications: {
@@ -2766,7 +2766,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330-200P2F',
     category: 'cargo',
     subcategory: 'p2f-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330-200P2F is a converted version of the A330-200, offering longer range than the -300P2F but slightly less volume for medium-to-long-range cargo operations.',
     first_flight: 2018,
     specifications: {
@@ -2829,7 +2829,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300-600F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A300-600F is the "Grandfather" of the fleet, a reliable but aging heavy lifter. UPS and FedEx still operate large numbers, but many carriers completed final retirements in 2025/early 2026. Most will be phased out by the end of the decade.',
     first_flight: 1983,
     specifications: {
@@ -2892,7 +2892,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310-300F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A310-300F is a legacy freighter about to retire. Very few remain in commercial service, mostly used by niche regional cargo airlines or as military transports.',
     first_flight: 1985,
     specifications: {
@@ -2955,7 +2955,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'BelugaXL (A330-743L)',
     category: 'cargo',
     subcategory: 'outsize-transport',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus BelugaXL (A330-743L) is the newest "Mega-Lifter" for Airbus internal logistics. Six are currently in service, handling the massive parts like wings and fuselages for the A350 and A320 programs between Airbus factories.',
     first_flight: 2018,
     specifications: {
@@ -3018,7 +3018,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'BelugaST (A300-600ST)',
     category: 'cargo',
     subcategory: 'outsize-transport',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus BelugaST (A300-600ST) is the original "Mega-Lifter" that is now legacy/retired. Airbus officially began retiring this fleet in 2025. As of January 2026, Beluga #5 performed its final flight. Only 1 or 2 remain operational for "Airbus Beluga Transport" missions in their final months of service.',
     first_flight: 1994,
     specifications: {
@@ -3081,7 +3081,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300 B2/B4 Cargo',
     category: 'cargo',
     subcategory: 'historical-cargo',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A300 B2/B4 Cargo are the original 1970s conversions. None are in active commercial service today. They exist only in memories or museums as historical aircraft.',
     first_flight: 1972,
     specifications: {
@@ -3144,7 +3144,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Super Guppy',
     category: 'cargo',
     subcategory: 'historical-cargo',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Super Guppy was the NASA/Airbus predecessor to the Beluga. Airbus retired its last one in the 1990s (though NASA still flies one). It was a specialized outsize transport aircraft with a uniquely enlarged fuselage for carrying large aerospace components.',
     first_flight: 1965,
     specifications: {
@@ -3207,7 +3207,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350-900ULR',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A350-900ULR (Ultra Long Range) is a variant capable of flying the world\'s longest routes, currently used by Singapore Airlines for non-stop flights between Singapore and New York. It is the flagship of long-range aviation.',
     first_flight: 2018,
     specifications: {
@@ -3270,7 +3270,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A350-1000',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A350-1000 is the stretched, highest-capacity model of the A350 family, featuring advanced carbon-composite construction. It is the flagship of Airbus\'s current wide-body lineup.',
     first_flight: 2016,
     specifications: {
@@ -3333,7 +3333,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A380',
     category: 'flagship',
     subcategory: 'resurgent',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'b4fbb839e6b4bb989422426bfc8fd1c',
     description: 'The Airbus A380 is the iconic double-decker quad-engine jet, the largest commercial passenger aircraft ever built. While production ended in 2021, it remains the flagship of Airbus engineering excellence.',
     first_flight: 2005,
@@ -3397,7 +3397,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-200',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A340-200 is the initial version of the A340 family, a four-engine long-haul airliner developed to bypass early twin-engine flight restrictions. End of Life. No commercial airline flies this version anymore. Only 28 were ever built, and the last few were used as government "Air Force One" style planes for countries like Egypt or Qatar, but even those have largely been replaced by modern A350s.',
     first_flight: 1991,
     specifications: {
@@ -3460,7 +3460,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-300',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A340-300 is the most popular variant of the A340 family, featuring a longer fuselage and higher capacity. Production ended in 2011.',
     first_flight: 1991,
     specifications: {
@@ -3523,7 +3523,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-500',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A340-500 is the ultra-long-range version of the A340 family with a stretched fuselage. Almost Extinct. This was a "niche" ultra-long-range plane. Almost every airline has retired them because they have four engines and burn too much fuel. Only a tiny handful exist as private VIP jets.',
     first_flight: 2002,
     specifications: {
@@ -3586,7 +3586,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A300 was the first twin-engine wide-body aircraft, a pioneer in modern aviation. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
     first_flight: 1972,
     specifications: {
@@ -3649,7 +3649,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A310 was a smaller version of the A300, designed for medium-haul routes. Once the flagship wide-body of the 80s and 90s, it now only flies in cargo or specialized military roles.',
     first_flight: 1982,
     specifications: {
@@ -3712,7 +3712,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Concorde',
     category: 'flagship',
     subcategory: 'historical-flagship',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'Concorde was the world\'s first supersonic passenger airliner, a joint venture between Aérospatiale and BAC. While technically not exclusively Airbus, it remains the most iconic retired flagship in the Airbus heritage. It operated from 1976 to 2003, flying at Mach 2.04.',
     first_flight: 1969,
     specifications: {
@@ -3775,7 +3775,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A340-600',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A340-600 is the stretched, high-capacity version of the A340 family, the longest Airbus aircraft until the A350-1000. Production ended in 2011.',
     first_flight: 2001,
     specifications: {
@@ -3838,7 +3838,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300B1',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A300B1 was the first variant of the A300, the world\'s first twin-engine wide-body airliner. Retired. Only two were ever built. Both are long gone.',
     first_flight: 1972,
     specifications: {
@@ -3901,7 +3901,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300B2',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A300B2 was the production version of the A300 with increased range and capacity compared to the B1. Retired. These were the early 1970s models. They lack the modern tech required to fly in today\'s crowded airspace.',
     first_flight: 1974,
     specifications: {
@@ -3964,7 +3964,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300B4',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A300B4 was an extended range version of the A300 with center fuel tank for longer flights. Retired. These were the early 1970s models. They lack the modern tech required to fly in today\'s crowded airspace.',
     first_flight: 1976,
     specifications: {
@@ -4027,7 +4027,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A300-600',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A300-600 was the modernized, definitive version of the A300 family with glass cockpit and improved aerodynamics.',
     first_flight: 1983,
     specifications: {
@@ -4090,7 +4090,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310-200',
     category: 'legacy',
     subcategory: 'retired',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A310-200 is a shorter, longer-range derivative of the A300 family. It was the first Airbus aircraft with a two-crew glass cockpit. Retired. Most were scrapped or converted years ago.',
     first_flight: 1982,
     specifications: {
@@ -4153,7 +4153,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310-300',
     category: 'legacy',
     subcategory: 'reaching-end-of-service',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A310-300 is the extended range version of the A310 family with center fuel tank and increased MTOW. Final Phase. You won\'t find these at major airports like London or New York. They are mostly flying in Iran (Mahan Air) or as specialized military tankers (A310 MRTT) that are currently being replaced by the newer A330 MRTT.',
     first_flight: 1985,
     specifications: {
@@ -4216,7 +4216,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A310F',
     category: 'cargo',
     subcategory: 'freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A310F is a freighter variant of the A310, featuring a large cargo door and reinforced floor for cargo operations.',
     first_flight: 1988,
     specifications: {
@@ -4279,7 +4279,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330P2F',
     category: 'cargo',
     subcategory: 'p2f-conversion',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330P2F is a passenger-to-freighter conversion of the A330, featuring a large cargo door and reinforced floor for cargo operations.',
     first_flight: 2017,
     specifications: {
@@ -4342,7 +4342,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ TwoTwenty',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ TwoTwenty is the corporate jet version of the A220, offering long-range capability in a compact size.',
     first_flight: 2018,
     specifications: {
@@ -4405,7 +4405,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ318',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ318 is the corporate jet version of the A318, offering long-range capability in a compact size.',
     first_flight: 2005,
     specifications: {
@@ -4468,7 +4468,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ319',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ319 is the corporate jet version of the A319, offering long-range capability and spacious cabin.',
     first_flight: 2003,
     specifications: {
@@ -4531,7 +4531,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ320',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ320 is the corporate jet version of the A320, offering long-range capability and spacious cabin.',
     first_flight: 2001,
     specifications: {
@@ -4594,7 +4594,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ321',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ321 is the corporate jet version of the A321, offering the longest range and most spacious cabin in the A320 family.',
     first_flight: 2004,
     specifications: {
@@ -4657,7 +4657,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ330',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ330 is the corporate jet version of the A330, offering ultra-long-range capability and spacious cabin.',
     first_flight: 2008,
     specifications: {
@@ -4720,7 +4720,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ340',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ340 is the corporate jet version of the A340, offering ultra-long-range capability with four engines.',
     first_flight: 2005,
     specifications: {
@@ -4783,7 +4783,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'ACJ350',
     category: 'private',
     subcategory: 'corporate-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus ACJ350 is the corporate jet version of the A350, featuring advanced carbon-composite construction and ultra-long-range capability.',
     first_flight: 2015,
     specifications: {
@@ -4846,7 +4846,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A400M Atlas',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A400M Atlas is a four-engine turboprop tactical airlifter with strategic capabilities, designed to replace older military transport aircraft.',
     first_flight: 2009,
     specifications: {
@@ -4909,7 +4909,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'A330 MRTT',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus A330 MRTT (Multi Role Tanker Transport) is a military derivative of the A330 used for aerial refueling and transport.',
     first_flight: 2007,
     specifications: {
@@ -4972,7 +4972,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'C295',
     category: 'military',
     subcategory: 'tactical-transport',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus C295 is a robust, twin-turboprop tactical transport and maritime patrol aircraft.',
     first_flight: 1997,
     specifications: {
@@ -5035,7 +5035,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'CN235',
     category: 'military',
     subcategory: 'tactical-transport',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus CN235 is a medium-range twin-turboprop transport aircraft, originally a joint venture with CASA.',
     first_flight: 1983,
     specifications: {
@@ -5098,7 +5098,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Eurofighter Typhoon',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Eurofighter Typhoon is a twin-engine, canard-delta wing, multirole fighter. Airbus is a major partner in the consortium that builds this aircraft.',
     first_flight: 1994,
     specifications: {
@@ -5161,7 +5161,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H125',
     category: 'helicopter',
     subcategory: 'light-single-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H125 (formerly AS350 Écureuil) is a single-engine light utility helicopter known for its performance in high-altitude and hot conditions. It holds the record for landing on Mt. Everest.',
     first_flight: 1974,
     specifications: {
@@ -5219,7 +5219,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H130',
     category: 'helicopter',
     subcategory: 'light-single-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H130 is a wide-body single-engine helicopter known as the "iPhone Pro" of sightseeing due to its huge windows and quiet Fenestron tail rotor. It\'s perfect for tourism and VIP transport.',
     first_flight: 2012,
     specifications: {
@@ -5282,7 +5282,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H135',
     category: 'helicopter',
     subcategory: 'light-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H135 is a light twin-engine helicopter known for its versatility in emergency medical services and law enforcement roles.',
     first_flight: 1994,
     specifications: {
@@ -5345,7 +5345,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H145',
     category: 'helicopter',
     subcategory: 'medium-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H145 is a light twin-engine helicopter featuring a fenestron tail rotor and advanced avionics.',
     first_flight: 2014,
     specifications: {
@@ -5408,7 +5408,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H155',
     category: 'helicopter',
     subcategory: 'medium-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H155 (formerly EC155 B1) is a medium twin-engine helicopter with a spacious cabin for VIP transport.',
     first_flight: 1997,
     specifications: {
@@ -5471,7 +5471,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H175',
     category: 'helicopter',
     subcategory: 'heavy-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H175 (formerly EC175 B1) is a heavy twin-engine helicopter designed for offshore oil and gas transport.',
     first_flight: 2009,
     specifications: {
@@ -5534,7 +5534,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H225',
     category: 'helicopter',
     subcategory: 'heavy-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H225 (formerly Super Puma) is a heavy twin-engine helicopter used for offshore transport and heavy lift operations.',
     first_flight: 1990,
     specifications: {
@@ -5597,7 +5597,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'NH90',
     category: 'military',
     subcategory: 'attack-tactical-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The NH90 is a medium-sized, twin-engine multi-role military helicopter developed by NHIndustries (Airbus is a partner).',
     first_flight: 1995,
     specifications: {
@@ -5660,7 +5660,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Tiger',
     category: 'military',
     subcategory: 'attack-tactical-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus Tiger is a four-bladed, twin-engine attack helicopter developed by Eurocopter (now Airbus Helicopters).',
     first_flight: 1991,
     specifications: {
@@ -5723,7 +5723,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H145M',
     category: 'military',
     subcategory: 'utility-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H145M is the military variant of the H145, featuring advanced mission systems for special operations and armed reconnaissance.',
     first_flight: 2014,
     specifications: {
@@ -5786,7 +5786,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H225M Caracal',
     category: 'military',
     subcategory: 'attack-tactical-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H225M Caracal is the military variant of the H225, used for special operations, combat search and rescue, and tactical transport.',
     first_flight: 2000,
     specifications: {
@@ -5849,7 +5849,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H215',
     category: 'helicopter',
     subcategory: 'heavy-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H215 (formerly AS332 Super Puma Mk2) is the slightly smaller, more rugged sibling of the H225. It is heavily used for heavy-lift work and firefighting operations worldwide.',
     first_flight: 1979,
     specifications: {
@@ -5907,7 +5907,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H160',
     category: 'helicopter',
     subcategory: 'medium-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H160 is the "Next-Gen" medium twin-engine helicopter featuring massive technological leaps like curved "Blue Edge" blades to make it incredibly quiet. It represents the future of the medium class.',
     first_flight: 2015,
     specifications: {
@@ -5965,7 +5965,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'H140',
     category: 'helicopter',
     subcategory: 'light-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus H140 is a brand new light twin-engine model introduced around 2025, designed to bridge the gap between the H135 and H145 with enhanced performance and capacity.',
     first_flight: 2025,
     specifications: {
@@ -6023,7 +6023,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'UH-72 Lakota',
     category: 'military',
     subcategory: 'utility-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus UH-72 Lakota is the military version of the H145, used extensively by the U.S. Army for training, medevac, and utility missions.',
     first_flight: 2006,
     specifications: {
@@ -6081,7 +6081,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'nEUROn',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The nEUROn is an experimental European stealth combat drone (UCAV). Airbus (CASA/EADS) was a major partner in developing its stealth and flight systems. It serves as a technology demonstrator.',
     first_flight: 2012,
     specifications: {
@@ -6139,7 +6139,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Bird of Prey',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus Bird of Prey is a high-subsonic interceptor drone designed to hunt down and "neutralize" enemy kamikaze drones autonomously. It\'s a new for 2026 platform.',
     first_flight: 2026,
     specifications: {
@@ -6197,7 +6197,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Zephyr',
     category: 'military',
     subcategory: 'surveillance-uas',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus Zephyr is a solar-powered "pseudo-satellite" (HAPS) that flies in the stratosphere for 60+ days at a time, providing constant surveillance or 5G signal.',
     first_flight: 2018,
     specifications: {
@@ -6255,7 +6255,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Capa-X',
     category: 'military',
     subcategory: 'surveillance-uas',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus Capa-X is a modular "heavy" drone (120kg) selected by the European Defence Agency for electronic warfare and cargo delivery in combat zones. It\'s a new for 2026 platform.',
     first_flight: 2026,
     specifications: {
@@ -6313,7 +6313,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'AS365 Dauphin',
     category: 'helicopter',
     subcategory: 'medium-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus AS365 Dauphin is a sleek, fast helicopter famous for its "Fenestron" (shrouded) tail rotor. It is the "father" of the H155 and still widely used for VIP transport and offshore missions.',
     first_flight: 1975,
     specifications: {
@@ -6371,7 +6371,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'BO-105',
     category: 'helicopter',
     subcategory: 'light-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus BO-105 is a legendary small twin-engine helicopter known for being the first that could perform loops and rolls. It is highly maneuverable and still in service for law enforcement and EMS.',
     first_flight: 1967,
     specifications: {
@@ -6429,7 +6429,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'BK-117',
     category: 'helicopter',
     subcategory: 'light-twin-engine',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus BK-117 is the predecessor to the H145 and still widely seen as life-flight/medical helicopters. It was developed in partnership with Kawasaki.',
     first_flight: 1979,
     specifications: {
@@ -6487,7 +6487,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'Gazelle',
     category: 'military',
     subcategory: 'utility-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus Gazelle is a fast, thin scout helicopter with a very distinctive look, still used by many militaries for reconnaissance and light attack missions.',
     first_flight: 1967,
     specifications: {
@@ -6545,7 +6545,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'CityAirbus',
     category: 'helicopter',
     subcategory: 'evtol',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus CityAirbus is an all-electric "flying taxi" (eVTOL) project designed for urban air mobility and short-range passenger transport.',
     first_flight: 2024,
     specifications: {
@@ -6603,7 +6603,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'VSR700',
     category: 'military',
     subcategory: 'surveillance-uas',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     description: 'The Airbus VSR700 is an unmanned (drone) helicopter designed for navies to launch from ships for reconnaissance and surveillance missions.',
     first_flight: 2022,
     specifications: {
@@ -6660,7 +6660,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'airbus',
     model: 'A220',
     category: 'regional',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'ce4fbb839e6b4bb989422426bfc8fd1c',
     description: 'The Airbus A220 is a family of narrow-body, twin-engine, medium-range jet airliners. It was originally developed by Bombardier as the CSeries.',
     first_flight: 2013,
@@ -6724,7 +6724,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna 172',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'd1b15841c29c43d0862667300bad55a4',
     description: 'The Cessna 172 Skyhawk is a four-seat, single-engine, high wing, fixed-wing aircraft. It is the most produced aircraft in history.',
     first_flight: 1955,
@@ -6782,7 +6782,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna 152',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'f20f6eb4616e4a708241eb3c8a90340a',
     description: 'The Cessna 152 is a two-seat, tricycle gear, general aviation airplane. It was designed primarily as a flight trainer.',
     first_flight: 1977,
@@ -6840,7 +6840,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna 182',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'ed54f082ab014626a1359009b33e7e81',
     description: 'The Cessna 182 Skylane is a four-seat, single-engine, high-wing light aircraft. It is known for its stability and performance.',
     first_flight: 1956,
@@ -6898,7 +6898,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna 206',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'cf61032f294f4cfab478de38451422a3',
     description: 'The Cessna 206 Stationair is a six-seat, single-engine, high-wing aircraft. It is popular for utility and bush flying.',
     first_flight: 1962,
@@ -6956,7 +6956,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna 208 Caravan',
     category: 'cargo',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '2759f3b519904924bb09d02bd961a308',
     description: 'The Cessna 208 Caravan is a single-engine turboprop aircraft. It is widely used for cargo and regional passenger transport.',
     first_flight: 1982,
@@ -7019,7 +7019,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cessna',
     model: 'Cessna Citation X',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'a9eac6363d7f4bfaa7f0ee3b9beca604',
     description: 'The Cessna Citation X is a long-range, medium-sized business jet. It was one of the fastest business jets in production.',
     first_flight: 1993,
@@ -7084,7 +7084,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '737 MAX',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '7a548b5ba64340f78f7c58d23781ffe9',
     description: 'The Boeing 737 MAX is the backbone of global short-haul operations in 2026. With the MAX 8, 9, and 10 variants, it dominates the narrow-body market and remains the most sought-after rating for rapid employment.',
     first_flight: 2016,
@@ -7148,7 +7148,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '747-8F',
     category: 'cargo',
     subcategory: 'production-freighter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '86ec524a08e74e5e8907771c2d96b525',
     description: 'The Boeing 747-8F is the final iteration of the iconic Queen of the Skies freighter. The 747-8F continues to serve cargo operations as the largest cargo aircraft in Boeing fleet.',
     first_flight: 2010,
@@ -7212,7 +7212,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '777-300ER',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'c4b6d9e7f8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z4',
     description: 'The Boeing 777-300ER is a workhorse of long-haul operations. With its exceptional range and capacity, it remains a primary flagship for major airlines, particularly for premium routes and cargo operations.',
     first_flight: 2002,
@@ -7276,7 +7276,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '787 Dreamliner',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'd5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6',
     description: 'The Boeing 787 Dreamliner revolutionized long-haul travel with its composite airframe and fuel efficiency. The 787-8, 787-9, and 787-10 variants are in active production and highly sought-after for medium-to-long-haul routes.',
     first_flight: 2009,
@@ -7340,7 +7340,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '777X (777-8, 777-9)',
     category: 'flagship',
     subcategory: 'game-changer',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6',
     description: 'The Boeing 777X represents the future of long-haul travel with folding wingtips and advanced engines. The 777-8 and 777-9 are in testing and early delivery phases, set to become the new flagship for premium airlines in 2026.',
     first_flight: 2019,
@@ -7404,7 +7404,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '767-300F',
     category: 'cargo',
     subcategory: 'p2f-conversion',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7',
     description: 'The Boeing 767-300F is a converted freighter variant of the 767-300ER. Active in cargo operations, it serves as a medium-haul freighter with excellent range and capacity.',
     first_flight: 1986,
@@ -7468,7 +7468,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '737 NG (-700, -800, -900)',
     category: 'legacy',
     subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '7a548b5ba64340f78f7c58d23781ffe9',
     description: 'The Boeing 737 Next Generation (-700, -800, -900) is in legacy-retired status as airlines transition to the 737 MAX. Once the backbone of short-haul operations, it is being rapidly phased out.',
     first_flight: 1997,
@@ -7532,7 +7532,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '757-200 / -300',
     category: 'legacy',
     subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7',
     description: 'The Boeing 757-200 and -300 are in legacy-retired status. Once a popular medium-haul aircraft, it has been retired by most airlines and replaced by more efficient 737 MAX and A321neo variants.',
     first_flight: 1982,
@@ -7596,7 +7596,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '717 (formerly MD-95)',
     category: 'regional',
     subcategory: 'regional-jet',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8',
     description: 'The Boeing 717, originally the McDonnell Douglas MD-95, was the last narrow-body aircraft designed by McDonnell Douglas before the Boeing merger. A regional jet that served short-haul routes efficiently.',
     first_flight: 1998,
@@ -7660,7 +7660,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '727',
     category: 'legacy',
     subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9',
     description: 'The Boeing 727 was a pioneering narrow-body trijet that revolutionized short-to-medium-haul travel. Now in legacy-retired status, it was once one of the most popular aircraft globally.',
     first_flight: 1963,
@@ -7724,7 +7724,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '707 / 720',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0',
     description: 'The Boeing 707 and its shorter variant 720 were the first successful commercial jet airliners, revolutionizing air travel. Now in legacy-retired status, they established Boeing as a global aviation leader.',
     first_flight: 1957,
@@ -7788,7 +7788,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '377 Stratocruiser',
     category: 'legacy',
     subcategory: 'wide-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1',
     description: 'The Boeing 377 Stratocruiser was a luxurious long-range propeller airliner of the 1950s. In legacy-retired status, it represented the pinnacle of piston-engine commercial aviation before the jet age.',
     first_flight: 1947,
@@ -7852,7 +7852,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '247',
     category: 'legacy',
     subcategory: 'narrow-body',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2',
     description: 'The Boeing 247 was the first modern airliner, featuring all-metal construction, retractable landing gear, and de-icing boots. In legacy-retired status, it revolutionized commercial aviation in the 1930s.',
     first_flight: 1933,
@@ -7916,7 +7916,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: '314 Clipper',
     category: 'legacy',
     subcategory: 'flying-boat',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'm4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p3',
     description: 'The Boeing 314 Clipper was a legendary flying boat that pioneered transoceanic passenger service in the 1930s-40s. In legacy-retired status, it represented the golden age of luxury air travel before WWII.',
     first_flight: 1938,
@@ -7980,7 +7980,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'F-15EX Eagle II',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4',
     description: 'The F-15EX Eagle II is the latest iteration of the iconic F-15 Eagle, featuring advanced avionics, weapons systems, and improved range. A modern multirole fighter serving as the backbone of air superiority operations.',
     first_flight: 2021,
@@ -8044,7 +8044,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'F/A-18E/F Super Hornet',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5',
     description: 'The F/A-18E/F Super Hornet is a multirole fighter serving as the primary strike fighter for the US Navy and Marine Corps. Features advanced avionics, AESA radar, and extended range capabilities.',
     first_flight: 1995,
@@ -8108,7 +8108,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'B-52H Stratofortress',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6',
     description: 'The B-52H Stratofortress is a legendary strategic bomber scheduled to fly until 2050+. With continuous upgrades, it remains the backbone of US strategic bombing capabilities and will serve for over 90 years.',
     first_flight: 1961,
@@ -8172,7 +8172,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'C-17 Globemaster III',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7',
     description: 'The C-17 Globemaster III is a large military transport aircraft capable of rapid strategic delivery of troops and cargo to main operating bases or forward operating bases worldwide. Active in service with global air forces.',
     first_flight: 1991,
@@ -8236,7 +8236,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'AH-64 Apache',
     category: 'helicopter',
     subcategory: 'attack-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8',
     description: 'The AH-64 Apache is the world\'s most advanced multi-role combat helicopter. With advanced avionics, weapons systems, and night vision capabilities, it serves as the primary attack helicopter for the US Army and allied forces.',
     first_flight: 1975,
@@ -8300,7 +8300,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'CH-47 Chinook',
     category: 'helicopter',
     subcategory: 'heavy-lift-helicopter',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 's0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9',
     description: 'The CH-47 Chinook is a tandem-rotor heavy-lift helicopter serving as the primary transport helicopter for the US Army and allied forces. Known for its exceptional lifting capacity and versatility in combat operations.',
     first_flight: 1961,
@@ -8364,7 +8364,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'P-8 Poseidon',
     category: 'military',
     subcategory: 'surveillance-uas',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 't1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0',
     description: 'The P-8 Poseidon is a military maritime patrol aircraft based on the 737-800ERX. Active in service with the US Navy and allied forces for anti-submarine warfare, anti-surface warfare, and intelligence gathering.',
     first_flight: 2009,
@@ -8428,7 +8428,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'KC-46 Pegasus',
     category: 'military',
     subcategory: 'transport-tanker',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1',
     description: 'The KC-46 Pegasus is a military aerial refueling and strategic military transport aircraft based on the 767-200ER. Active in service with the USAF and allied forces, replacing the aging KC-135 Stratotanker fleet.',
     first_flight: 2015,
@@ -8492,7 +8492,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'V-22 Osprey',
     category: 'helicopter',
     subcategory: 'tiltrotor',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2',
     description: 'The V-22 Osprey is a multi-mission, tiltrotor military aircraft with both vertical takeoff and landing (VTOL), and short takeoff and landing (STOL) capabilities. Joint development with Bell, serving USMC, USAF, and USN.',
     first_flight: 1989,
@@ -8556,7 +8556,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'B-17 Flying Fortress',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3',
     description: 'The B-17 Flying Fortress was a four-engine heavy bomber developed in the 1930s for the US Army Air Corps. A historical WWII icon that played a crucial role in the strategic bombing campaign over Europe.',
     first_flight: 1935,
@@ -8620,7 +8620,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'B-29 Superfortress',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3z4',
     description: 'The B-29 Superfortress was a four-engine heavy bomber used by the US in WWII and Korea. The most advanced bomber of its time, it introduced pressurized cabins, remote-controlled turrets, and advanced fire control systems.',
     first_flight: 1942,
@@ -8684,7 +8684,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     model: 'F-86 Sabre',
     category: 'military',
     subcategory: 'combat-stealth',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'y6z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p4q5r6s7t8u9v0w1x2y3z4a5',
     description: 'The F-86 Sabre was a transonic jet fighter aircraft produced by North American Aviation (acquired by Rockwell, later Boeing). A historical Korean War icon and the first swept-wing fighter in the US inventory.',
     first_flight: 1947,
@@ -8748,7 +8748,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'tecnam',
     model: 'Tecnam P92',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '4b1c90cce7f14fa3bcbade0bb8c3d855',
     description: 'The Tecnam P92 is a high-wing, single-engine, light sport aircraft. It is designed for touring and flight training.',
     first_flight: 1993,
@@ -8806,7 +8806,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'tecnam',
     model: 'Tecnam P2002 Sierra',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '5325a60e1c2f402a8b5b71656ffaea66',
     description: 'The Tecnam P2002 Sierra is a low-wing, single-engine, light sport aircraft. It is designed for touring and flight training.',
     first_flight: 2003,
@@ -8864,7 +8864,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'tecnam',
     model: 'Tecnam P2006T',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'a0a4d717a8c94a17b958eb69c4efc352',
     description: 'The Tecnam P2006T is a twin-engine, high-wing, light aircraft. It is designed for multi-engine training and utility operations.',
     first_flight: 2007,
@@ -8923,7 +8923,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'piper',
     model: 'Piper PA-28 Cherokee',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'e39b3679c3a94053a53c4be4eff548bc',
     description: 'The Piper PA-28 Cherokee is a family of two-seat or four-seat, light aircraft. It is widely used for flight training.',
     first_flight: 1960,
@@ -8981,7 +8981,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'piper',
     model: 'Piper PA-18 Super Cub',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '947504c5e11244db8d512f1511e75e4b',
     description: 'The Piper PA-18 Super Cub is a two-seat, single-engine, taildragger aircraft. It is popular for bush flying and backcountry operations.',
     first_flight: 1949,
@@ -9040,7 +9040,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'embraer',
     model: 'Embraer E190',
     category: 'regional',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'b971aca02af4435db7104c8c2ce9bbdd',
     description: 'The Embraer E190 is a medium-range, twin-engine, narrow-body jet airliner. It is part of the E-Jet family.',
     first_flight: 2004,
@@ -9103,7 +9103,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'embraer',
     model: 'Embraer Phenom 300',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'cdc1ecc85bf345b788e0094f2fb7e91e',
     description: 'The Embraer Phenom 300 is a light jet aircraft. It is one of the best-selling light jets in the world.',
     first_flight: 2008,
@@ -9167,7 +9167,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cirrus',
     model: 'Cirrus SR22',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'cba602c99c524cd4b40e5c2e5f9c5b4f',
     description: 'The Cirrus SR22 is a single-engine, composite aircraft. It is known for its ballistic parachute recovery system.',
     first_flight: 2001,
@@ -9225,7 +9225,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'cirrus',
     model: 'Cirrus Vision SF50',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: 'd46dd06b4b5646acaed90993db34d639',
     description: 'The Cirrus Vision SF50 is a single-engine, very light jet. It is the first single-engine jet to receive FAA certification.',
     first_flight: 2008,
@@ -9289,7 +9289,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'atr',
     model: 'ATR 72-600',
     category: 'regional',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '1e1a7186f7444d288675262fcee44744',
     description: 'The ATR 72-600 is a twin-engine turboprop regional airliner. It is an upgraded version of the ATR 72 with improved performance and avionics.',
     first_flight: 2009,
@@ -9353,7 +9353,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'let',
     model: 'Let L410 Turbolet',
     category: 'regional',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '38c3aaea4de54eb1a20634586c2a215f',
     description: 'The Let L410 Turbolet is a twin-engine turboprop regional airliner. It is widely used in Eastern Europe and Africa.',
     first_flight: 1969,
@@ -9417,7 +9417,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'gulfstream',
     model: 'Gulfstream G650',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '67451e56d38746de86667347d7a56587',
     description: 'The Gulfstream G650 is a long-range, large-cabin business jet. It is one of the fastest business jets in production.',
     first_flight: 2009,
@@ -9481,7 +9481,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'Bombardier Challenger 350',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '5f7af63167374f98a3a457f38818b996',
     description: 'The Bombardier Challenger 350 is a super mid-size business jet. It offers a spacious cabin and long-range capabilities.',
     first_flight: 2013,
@@ -9544,7 +9544,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'bombardier',
     model: 'CRJ-700',
     category: 'regional',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '98e4de0ba2b6489c896f224fb70c5e75',
     description: 'The CRJ-700 is a regional jet airliner. It is part of the CRJ series of regional jets.',
     first_flight: 1999,
@@ -9608,7 +9608,7 @@ export const aircraftTypeRatings: AircraftTypeRating[] = [
     manufacturer_id: 'aeroprakt',
     model: 'Aeroprakt A22 Foxbat',
     category: 'private',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777026906/aircraft/jumdb0h50mw3g5hz0tvz.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     sketchfab_id: '881d2479d29149b7bf2b5788b869094f',
     description: 'The Aeroprakt A22 Foxbat is a light sport aircraft. It is designed for touring and flight training.',
     first_flight: 1996,

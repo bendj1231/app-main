@@ -137,7 +137,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
       const session = (await supabase.auth.getSession()).data.session;
       if (!session) throw new Error('Not authenticated');
       const res = await fetch(
-        'https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/veremark-initiate',
+        'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/veremark-initiate',
         {
           method: 'POST',
           headers: {
@@ -1448,7 +1448,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
                     if (!session) throw new Error('Not authenticated');
                     const blob = new Blob([JSON.stringify(walletState.activePresentation, null, 2)], { type: 'application/json' });
                     const { uploadUrl, objectKey } = await fetch(
-                      'https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/r2-presign-upload',
+                      'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/r2-presign-upload',
                       {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },

@@ -170,7 +170,7 @@ const AirlinesOperatorsPage = () => {
                             <a href="/enterprise-access" className="text-slate-600 hover:text-slate-900 text-sm font-medium">
                                 ← Back to Enterprise
                             </a>
-                            <button onClick={() => window.open('https://pilotrecognition.com', '_blank')} className="bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2 rounded-lg text-sm transition-colors">
+                            <button onClick={() => window.open('https://pilotrecognition.com', '_blank', 'noopener,noreferrer')} className="bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2 rounded-lg text-sm transition-colors">
                                 Request Access
                             </button>
                         </div>

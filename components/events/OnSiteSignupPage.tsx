@@ -79,7 +79,7 @@ export function OnSiteSignupPage({ eventId, eventTitle, onComplete, onCancel }: 
   };
 
   const printQRCode = () => {
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open('', '_blank', 'noopener,noreferrer');
     if (printWindow) {
       printWindow.document.write(`
         <html>

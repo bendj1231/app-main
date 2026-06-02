@@ -2,72 +2,73 @@
 ## Complete Legal Rewrite — Corporate Shield & Neutral Conduit
 
 **Date:** May 19, 2026  
-**Version:** 2.0 — AJBowler Consult Operator Status  
+**Version:** 2.0 — Aviation Pathways Ltd Operator Status  
 **Effective:** Upon deployment
 
 ---
 
 ## Agreement and Operator Status
 
-**This Agreement is entered into by and between you ("the User") and AJBowler Consult ("the Operator"), the legal entity operating the pilotrecognition.com platform.**
+**This Agreement is entered into by and between you ("the User") and Aviation Pathways Ltd ("the Operator"), a company registered in the Republic of Mauritius and the legal entity operating the pilotrecognition.com platform.**
 
-Pilot Recognition functions strictly as a digital aggregator and neutral software interface. All platform operations, payment processing, and legal liabilities are the responsibility of AJBowler Consult, a duly registered entity.
+Pilot Recognition functions strictly as a digital aggregator and neutral software interface. All platform operations, payment processing, and legal liabilities are the responsibility of Aviation Pathways Ltd, a duly registered entity.
 
-**The Operators:** Platform development and technical architecture maintained by authorized representatives of AJBowler Consult.
+**The Operators:** Platform development and technical architecture maintained by authorized representatives of Aviation Pathways Ltd.
 
 ---
 
 ## PLATFORM CLASSIFICATION
 
-### Neutral Data Intermediary — Passive Conduit
+### Data Controller & Infrastructure Provider
 
-**Pilot Recognition operates exclusively as a neutral data infrastructure provider — a passive pipeline and data intermediary.**
+**Aviation Pathways Ltd is the Data Controller** for all personal data processed through the PilotRecognition.com platform, registered under the Mauritius Data Protection Act 2017.
 
-**We are NOT:**
-- ❌ A data controller
-- ❌ A data processor
-- ❌ A credential issuer
-- ❌ A verification authority
+**Our role:**
+- ✅ **Data Controller** — We determine the purposes and means of processing personal data on the platform
+- ✅ **Infrastructure Provider** — We host and secure user profiles, credential records, and verification outcomes
+- ✅ **Credential Infrastructure** — We issue cryptographically signed Verifiable Credentials (VCs) under our `did:web:pilotrecognition.com` DID
+- ✅ **Digital Storefront** — We connect users to third-party verification service providers
 
-**We ARE:**
-- ✅ A read-only display interface
-- ✅ A neutral routing layer
-- ✅ A digital storefront connecting users to verified service providers
-
-**Data ownership and control sit exclusively with:**
-1. **The User** (pilot — controls input and consent)
-2. **Third-Party Verification Providers** (process and verify data)
-3. **Data Issuers** (aviation authorities, training organizations)
+**Data ownership and control:**
+1. **The User** (pilot — controls consent, owns their wallet-held VCs, can delete their profile)
+2. **Aviation Pathways Ltd** (Data Controller — manages infrastructure, processes, and security)
+3. **Third-Party Verification Providers** (Data Processors — execute verification checks on our behalf)
+4. **Data Issuers** (aviation authorities, training organizations — source of truth for credentials)
 
 ---
 
 ## 1. Role Under Data Privacy Frameworks
 
-### Data Intermediary / Passive Conduit Status
+### Data Controller Status
 
 Under applicable data privacy laws, including:
-- Data Privacy Act of 2012 (R.A. 10173)
-- GDPR (where applicable)
+- **Mauritius Data Protection Act 2017** (primary jurisdiction)
+- EU General Data Protection Regulation (GDPR) (where applicable to EU data subjects)
+- Philippines Data Privacy Act of 2012 (R.A. 10173) (where applicable)
 - Equivalent regional frameworks
 
-**Pilot Recognition acts exclusively as a Data Intermediary / Passive Conduit.**
+**Aviation Pathways Ltd is the Data Controller** for personal data processed through this platform. We are registered with the Data Protection Office of the Republic of Mauritius.
 
 **The chain of responsibility:**
-- **User** = Data Controller (declares inputs, grants consent)
-- **Third-Party Verification Partners** = Data Processors/Controllers (verify output)
-- **Platform** = Neutral display layer only
-
-**We do not store:**
-- Raw credentials
-- Logbooks
-- Government IDs
-- Medical certificates
-- License documents
+- **Aviation Pathways Ltd** = Data Controller (determines purposes and means of processing)
+- **User** = Data Subject (provides consent, exercises data subject rights)
+- **Third-Party Verification Partners** = Data Processors (execute verification checks under our instruction)
 
 **What we store:**
-- Anonymous User ID (Auth0 token)
-- User-declared metadata (estimated hours, ratings)
-- Consent timestamp (system event, not SPI)
+- Account data (name, email, DOB, nationality, contact details — encrypted at rest)
+- Aviation credential metadata (license numbers, PEL numbers, medical class and expiry, flight hours, ratings — user-declared or verifier-confirmed)
+- Cryptographically signed Verifiable Credentials (VCs) issued by the platform under `did:web:pilotrecognition.com` — these are digital access tickets stored in your self-custodied wallet and retained server-side as signed records
+- Verification outcomes (status, timestamps, check IDs, provider names — structured data, not documents)
+- Revocation registry entries (cryptographic status lists for issued VCs)
+- Payment records (Stripe transaction IDs — no card numbers stored)
+- Technical data (IP address, device fingerprint, geolocation for security)
+- Cryptographic key references (DIDs, public verification keys — not private keys)
+
+**What we do NOT store:**
+- Raw scanned license documents, PDFs, or images (forwarded directly to your chosen third-party verifier and deleted from our infrastructure within 24 hours)
+- Payment card numbers (handled entirely by Stripe)
+- User passwords (handled by Auth0)
+- Private signing keys (held in secure Supabase secrets, not in application code or databases)
 
 ---
 
@@ -102,7 +103,7 @@ Payments processed through this platform are aggregate fees covering:
 
 ### Explicit Informed Consent
 
-By creating an account, you provide explicit, informed consent to AJBowler Consult to:
+By creating an account, you provide explicit, informed consent to Aviation Pathways Ltd to:
 - Store your anonymous user identifier
 - Display user-declared metadata
 - Route verification requests to third-party providers
@@ -121,32 +122,51 @@ Login and account security managed independently by **Auth0 by Okta**.
 - Access your email
 - Store login credentials
 
-### Data Limitation
+### Data We Collect
 
-**Platform displays only:**
-- User-declared aviation metadata (estimated hours, general ratings)
-- Data based entirely on explicit user input
+**Platform collects and processes:**
+- Identity and contact data (full name, email, phone, address, DOB, nationality)
+- Aviation credential data (license numbers, PEL numbers, medical class and expiry, flight hours, ratings, training records)
+- Account and preference data (subscription tier, pathway interests, program enrollments)
+- Verification data (background check results, education verification, employment history)
+- Technical data (IP address, device fingerprint, browser type, geolocation for fraud prevention)
+- Payment data (Stripe transaction IDs and billing records)
 
-**Platform does NOT:**
-- Collect official government license numbers
-- Store legal credentials
-- Verify documents directly
+**How credentials are verified:**
+- You initiate verification and select a third-party provider (e.g., Veremark) from a region-filtered list
+- Any documents you upload are forwarded directly to the selected verifier's secure portal — the platform does not retain raw scanned documents
+- The third-party provider conducts the verification and queries Data Issuers (aviation authorities, ATOs) on your behalf
+- **What the verifier sends YOU (the user):** A detailed verification receipt/report delivered directly to your email or the verifier's customer portal. This contains full credential details (PEL numbers, license classes, medical dates, examiner names, etc.). The platform does **not** receive, view, or store this detailed receipt.
+- **What the verifier sends the PLATFORM:** A minimal structured outcome via webhook — containing only: verification status (`verified` / `expired` / `failed`), check ID, timestamp, and high-level category results (e.g., license valid, medical expired). No detailed credential data is transmitted to the platform.
+- The platform cryptographically signs a W3C Verifiable Credential (VC) under `did:web:pilotrecognition.com` based solely on the minimal structured outcome — this VC acts as your digital access ticket
+- The VC is issued to your self-custodied wallet and retained server-side as a signed record for revocation purposes
+- A VC in your wallet grants you access to Recognition+ features and exclusive pathway matching
+- You control which airlines and operators can view your verified profile data
 
-**Legal authentication remains between:**
-- The user
-- The aviation Data Issuer
-- Authorized verification providers
+**What the Verifiable Credential represents:**
+- A cryptographically signed statement by Aviation Pathways Ltd that a specific third-party verifier has confirmed your credential status
+- NOT a copy of your original medical certificate or license — the VC is a ticket, not a document
+- The VC contains only: verifier name, check status, and expiry date — not your detailed credential data
+- Revocable by the platform if the verifier later reports fraud, expiration, or discrepancy
+
+**Legal verification chain:**
+- You (the user) initiate verification and consent to share data with a specific verifier
+- Aviation Pathways Ltd routes the request to the authorized verification provider you selected
+- The third-party provider queries Data Issuers (aviation authorities, ATOs) on your behalf and sends you the full detailed receipt directly
+- The third-party provider sends the platform only a minimal structured outcome via secure webhook
+- Upon receiving the structured outcome, the platform issues a signed VC to your wallet
+- Verified outcomes are stored as structured data — original documents and detailed receipts are never retained by the platform
 
 ---
 
 ## 4. Dispute Resolution and Data Accuracy
 
-### Aggregator's Deflection Clause
+### Dispute Resolution Framework
 
-**Because Pilot Recognition is a read-only display interface:**
-- We do not have the ability to alter, override, or amend verified credentials
-- We do not store the underlying verification data
-- We cannot modify third-party API outputs
+**Because Pilot Recognition routes verification through independent third-party providers:**
+- We do not alter, override, or amend verified credentials from Data Issuers
+- We store structured verification outcomes (status, dates, check IDs) but not original documents
+- We cannot modify third-party API outputs once received
 
 **Dispute routing:**
 > "Any disputes regarding the accuracy of background checks, flight hours, or license validity must be directed exclusively to the respective Data Issuer or Third-Party Verification Provider."
@@ -210,13 +230,13 @@ You agree NOT to:
 
 ### Ownership
 
-All platform content, features, functionality owned by AJBowler Consult.
+All platform content, features, functionality owned by Aviation Pathways Ltd.
 
 ### Limitation of Liability
 
 **Platform provided "as-is" without warranties.**
 
-AJBowler Consult not liable for:
+Aviation Pathways Ltd is not liable for:
 - Indirect, incidental, special, consequential damages
 - Data display errors
 - Third-party API failures
@@ -230,18 +250,23 @@ AJBowler Consult not liable for:
 
 ### Primary Jurisdiction
 
-**Republic of the Philippines**
+**Republic of Mauritius**
 
 Governing laws:
-- Civil Code of the Philippines
-- Data Privacy Act of 2012 (R.A. 10173)
-- Electronic Commerce Act (R.A. 8792)
+- Data Protection Act 2017 of the Republic of Mauritius
+- Civil Code of Mauritius (where applicable)
+- Electronic Transactions Act 2000 (where applicable)
 
 ### Regulatory Authority
 
 Data protection rights and complaints:
-- National Privacy Commission (NPC)
-- AJBowler Consult compliance officer
+- Data Protection Office of the Republic of Mauritius
+  - Phone: (230) 210 3434
+  - Email: dpo@govmu.org
+  - Website: dataprotection.govmu.org
+- Aviation Pathways Ltd Data Protection Officer: Benjamin Bowler
+  - Email: benjamin@pilotrecognition.com
+  - Phone: +639670481890
 
 ---
 
@@ -249,7 +274,7 @@ Data protection rights and complaints:
 
 ### Binding Electronic Signature
 
-Under Electronic Commerce Act (R.A. 8792):
+Under the Mauritius Electronic Transactions Act 2000 (ETA) and, where applicable, the Philippines Electronic Commerce Act (R.A. 8792):
 - Clicking "I Agree" = legally binding signature
 - Equivalent to paper contract with pen
 
@@ -280,7 +305,7 @@ Upon deletion:
 
 ### Platform Termination
 
-AJBowler Consult reserves right to terminate accounts for:
+Aviation Pathways Ltd reserves the right to terminate accounts for:
 - Terms violation
 - Fraudulent activity
 - Platform abuse
@@ -291,9 +316,9 @@ AJBowler Consult reserves right to terminate accounts for:
 
 **Legal contact:** legal@pilotrecognition.com
 
-**Operator entity:** AJBowler Consult
+**Operator entity:** Aviation Pathways Ltd
 
-**Compliance officer:** compliance@pilotrecognition.com
+**Compliance officer:** privacy@pilotrecognition.com
 
 ---
 
@@ -301,10 +326,10 @@ AJBowler Consult reserves right to terminate accounts for:
 
 | Risk | Protection Implemented |
 |------|------------------------|
-| Personal liability | AJBowler Consult corporate veil |
-| Data breach | Stateless architecture (no storage) |
+| Personal liability | Aviation Pathways Ltd corporate veil |
+| Data breach | AES-256-GCM encryption, RLS policies, 72-hour breach notification |
 | Dispute costs | Deflection to third-party providers |
-| Regulatory action | Clear intermediary classification |
+| Regulatory action | Registered Data Controller with Mauritius DPO |
 | Financial liability | Commission-based model, capped exposure |
 | Privacy violations | Consent logging, DPA compliance |
 
@@ -312,5 +337,5 @@ AJBowler Consult reserves right to terminate accounts for:
 
 **By using this platform, you acknowledge and agree to these terms.**
 
-**Last updated:** May 19, 2026  
-**Operator:** AJBowler Consult
+**Last updated:** June 2, 2026  
+**Operator:** Aviation Pathways Ltd

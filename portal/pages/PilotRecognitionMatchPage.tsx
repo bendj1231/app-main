@@ -606,7 +606,7 @@ export const PilotRecognitionMatchPage: React.FC<PilotRecognitionMatchPageProps>
                   // Open application URL
                   const job = jobOpportunities.find(j => j.job_id === selectedMatch.job_id);
                   if (job?.application_url) {
-                    window.open(job.application_url, '_blank');
+                    window.open(job.application_url, '_blank', 'noopener,noreferrer');
                   }
                 }}
               >
