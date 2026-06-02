@@ -1,0 +1,65 @@
+🔐 PilotRecognition Issuer Key Generator (Node.js)
+===================================================
+
+✅ Keys generated successfully!
+
+🔒 PRIVATE KEY (JWK - Keep Secret!):
+=====================================
+{
+  "kty": "EC",
+  "x": "4G9IVLl2KqhQ6jf0h5rkzIJ7a4Kg-ssEGnyM1YtODck",
+  "y": "AlbfbrpNbPDOIIi9AnzaUvAo0_lKFuSbm8fKSQabNP0",
+  "crv": "P-256",
+  "d": "J-k2kd2NjQSCTHxaPBrIQBYlTBX-JAaeh5CfMEKBGJ8"
+}
+
+🔓 PUBLIC KEY (JWK - Goes in DID Document):
+==========================================
+{
+  "kty": "EC",
+  "x": "4G9IVLl2KqhQ6jf0h5rkzIJ7a4Kg-ssEGnyM1YtODck",
+  "y": "AlbfbrpNbPDOIIi9AnzaUvAo0_lKFuSbm8fKSQabNP0",
+  "crv": "P-256"
+}
+
+📄 DID DOCUMENT (Save to public/.well-known/did.json):
+======================================================
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1"
+  ],
+  "id": "did:web:pilotrecognition.com",
+  "verificationMethod": [
+    {
+      "id": "did:web:pilotrecognition.com#key-1",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:pilotrecognition.com",
+      "publicKeyJwk": {
+        "kty": "EC",
+        "x": "4G9IVLl2KqhQ6jf0h5rkzIJ7a4Kg-ssEGnyM1YtODck",
+        "y": "AlbfbrpNbPDOIIi9AnzaUvAo0_lKFuSbm8fKSQabNP0",
+        "crv": "P-256"
+      }
+    }
+  ],
+  "assertionMethod": [
+    "did:web:pilotrecognition.com#key-1"
+  ]
+}
+
+✅ DID document updated: /Users/bowler/Documents/apps/app-main/public/.well-known/did.json
+
+🚀 NEXT STEPS:
+==============
+1. Set the private key as Supabase secret:
+   supabase secrets set PLATFORM_SIGNING_KEY_JWK
+   [Copy the JWK from above]
+
+2. Deploy the edge function:
+   supabase functions deploy issuer-sign --project-ref gkbhgrozrzhalnjherfu
+
+3. Test the issuer:
+   curl -X POST https://gkbhgrozrzhalnjherfu.supabase.co/functions/v1/issuer-sign ...
+
+⚠️  IMPORTANT: Save the private key JWK somewhere secure!
+   If you lose it, you cannot sign credentials.
