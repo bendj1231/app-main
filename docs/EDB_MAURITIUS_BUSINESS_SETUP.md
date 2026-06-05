@@ -60,7 +60,7 @@ Aviation Pathways Limited
 
 | Scenario | Structure | Trigger |
 |------------|-----------|---------|
-| **Partnership Admission** | Convert to GBC | Karl Vogt joins as formal co-founder |
+| **Partnership Admission** | Convert to GBC | Benjamin Bowler joins as formal co-founder |
 | **Investment Round** | Convert to Ltd with shareholders | External investor funding |
 | **Regional Ops** | Philippines subsidiary | CAAP verification center |
 | **US Market** | Delaware C-Corp | FAA pathway expansion |
@@ -120,7 +120,7 @@ OBJECTS CLAUSE (Essential Activities):
 
 SHARE STRUCTURE:
 - Authorized: 100,000 shares of $1.00 par value
-- Issued: 10,000 shares (90% Benjamin Bowler, 10% reserve for Karl Vogt)
+- Issued: 10,000 shares (100% Benjamin Bowler)
 - Share classes: Ordinary (voting), Deferred (non-voting for advisors)
 ```
 
@@ -276,18 +276,18 @@ PilotRecognition Ltd (Mauritius)
 
 ## 7. Key Agreements & Documentation
 
-### Shareholders Agreement (Bowler & Vogt)
+### Shareholders Agreement (Sole Director)
 
 **Essential Clauses:**
 
 ```
 1. GOVERNANCE
-   - Board composition: 2 directors (Bowler MD, Vogt BD)
+   - Board composition: 1 director (Bowler MD)
    - Reserved matters: Fundraising >$100K, IP licensing, new jurisdictions
-   - Deadlock resolution: Independent aviation industry expert
+   - Advisory board: Independent aviation industry experts appointed at discretion of Managing Director
 
 2. VESTING SCHEDULE
-   - Karl Vogt: 25% equity vests over 4 years (1-year cliff)
+   - Benjamin Bowler: 25% equity vests over 4 years (1-year cliff)
    - Acceleration: Full vest on acquisition (change of control)
 
 3. TRANSFER RESTRICTIONS
@@ -464,7 +464,7 @@ PilotRecognition Ltd (Mauritius)
    - Job creation plan (Mauritian hires)
 
 4. **Shareholders agreement negotiation**
-   - Schedule call with Karl Vogt
+   - Schedule call with Benjamin Bowler
    - Review vesting terms
    - Confirm equity split (60/30/10 reserve)
 

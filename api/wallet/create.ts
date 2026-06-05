@@ -17,7 +17,7 @@ interface TruveraWalletResponse {
   createdAt: string;
 }
 
-const TRUVERA_API_URL = process.env.TRUVERA_API_URL || 'https://api.truvera.io';
+const TRUVERA_API_URL = process.env.TRUVERA_API_URL;
 const TRUVERA_API_KEY = process.env.TRUVERA_API_KEY;
 
 export default async function handler(

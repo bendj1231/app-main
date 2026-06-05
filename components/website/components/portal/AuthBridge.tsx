@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../../../src/lib/firebase';
+import { auth, onAuthStateChanged } from '../../../../portal/lib/firebase-stub';
 import { supabase } from '../../../../portal/lib/supabase-auth';
 
 interface AuthBridgeProps {
@@ -18,7 +17,7 @@ export const AuthBridge: React.FC<AuthBridgeProps> = ({ children }) => {
             return;
         }
 
-        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: User | null) => {
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: any) => {
             try {
                 if (firebaseUser) {
                     // Check if user exists in Supabase

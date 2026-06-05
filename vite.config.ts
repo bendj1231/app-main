@@ -12,17 +12,15 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      nodePolyfills({
-        include: ['buffer', 'process'],
-        globals: {
-          Buffer: true,
-          process: true,
-        },
-      }),
     ],
     define: {
-      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      // NEVER put API keys here — Vite bundles them into client JS.
+      // Server-side secrets belong in Supabase Edge Function secrets.
+      __BUILD_TIME__: JSON.stringify(new Date().toISOString())
+    },
+    esbuild: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+      pure: mode === 'production' ? ['console.log', 'console.warn', 'console.error', 'console.debug', 'console.info'] : []
     },
     build: {
       rollupOptions: {
@@ -39,6 +37,11 @@ export default defineConfig(({ mode }) => {
               if (id.includes('@paper-design') || id.includes('@fontsource')) return 'vendor-ui';
               return 'vendor-misc';
             }
+            // Split large app modules individually
+            if (id.includes('PortalWrapper')) return 'portal-wrapper';
+            if (id.includes('PilotLicensureExperiencePage')) return 'pilot-licensure';
+            if (id.includes('DigitalLogbookPage')) return 'logbook';
+            if (id.includes('PilotJobDatabasePage')) return 'job-db';
           },
           entryFileNames: 'assets/[name]-[hash].js',
           chunkFileNames: 'assets/[name]-[hash].js',

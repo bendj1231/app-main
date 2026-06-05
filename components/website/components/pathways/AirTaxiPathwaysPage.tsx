@@ -4,7 +4,7 @@ import { ArrowLeft, Plane, Users, Award, TrendingUp, Building2, CheckCircle2, Za
 interface AirTaxiPathwaysPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const AirTaxiPathwaysPage: React.FC<AirTaxiPathwaysPageProps> = ({ onBack, onNavigate, onLogin }) => {

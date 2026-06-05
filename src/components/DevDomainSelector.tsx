@@ -126,7 +126,7 @@ export const DevDomainSelector: React.FC = () => {
 
         {/* Footer */}
         <div className="mt-12 text-center text-slate-600 text-xs">
-          <p>Development Environment • WM Pilot Group</p>
+          <p>Development Environment • Aviation Pathways Ltd</p>
         </div>
       </div>
     </div>

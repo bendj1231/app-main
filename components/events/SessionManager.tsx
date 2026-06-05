@@ -287,9 +287,9 @@ export function SessionManager({ eventId, eventTitle, user, onClose }: SessionMa
               <Plus className="w-4 h-4" />
               Add Session
             </button>
-            {onCancel && (
+            {onClose && (
               <button
-                onClick={onCancel}
+                onClick={onClose}
                 className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
               >
                 <X className="w-5 h-5" />

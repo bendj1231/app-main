@@ -67,14 +67,15 @@ class WebVitalsTracker {
     this.initialized = true;
   }
 
-  private handleMetric(metric: any): void {
+  private handleMetric(metric: unknown): void {
+    const m = metric as WebVitalsMetric;
     const webVitalMetric: WebVitalsMetric = {
-      name: metric.name,
-      value: metric.value,
-      rating: metric.rating,
-      id: metric.id,
-      delta: metric.delta,
-      navigationType: metric.navigationType || 'navigate'
+      name: m.name,
+      value: m.value,
+      rating: m.rating,
+      id: m.id,
+      delta: m.delta,
+      navigationType: m.navigationType || 'navigate'
     };
 
     this.metrics.push(webVitalMetric);
@@ -84,9 +85,10 @@ class WebVitalsTracker {
 
     // Log in development
     if (process.env.NODE_ENV === 'development') {
-        value: metric.value,
-        rating: metric.rating,
-        delta: metric.delta
+      console.warn('[Web Vitals]', m.name, {
+        value: m.value,
+        rating: m.rating,
+        delta: m.delta
       });
     }
   }

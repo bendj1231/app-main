@@ -102,7 +102,7 @@ export const EnterpriseDashboard: React.FC = () => {
           paymentType="enterprise_monthly"
           userId={currentUser?.id}
           userEmail={currentUser?.email}
-          onSuccess={(paymentId) => {
+          onSuccess={(_paymentId) => {
             window.location.reload();
           }}
           onError={(error) => {

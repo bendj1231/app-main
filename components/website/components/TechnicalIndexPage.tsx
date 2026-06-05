@@ -6,7 +6,7 @@ import { sanitizeHtml } from '@/src/lib/sanitize-html';
 interface TechnicalIndexPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
@@ -404,13 +404,35 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 </div>
             </div>
 
+            {/* Data Architecture & Privacy Section */}
+            <div className="py-12 px-6 max-w-6xl mx-auto space-y-16">
+                <div className="text-center max-w-4xl mx-auto">
+                    <p className="text-xs font-bold text-blue-700 uppercase tracking-[0.3em] mb-2">Infrastructure & Privacy</p>
+                    <h2 className="text-2xl md:text-3xl font-serif text-slate-900 mb-8">Data Architecture & Privacy Boundaries</h2>
+                    <div className="text-left space-y-8">
+                        <div className="space-y-2">
+                            <h3 className="text-lg font-bold text-slate-900">What PilotRecognition Stores</h3>
+                            <p className="text-base text-slate-700 leading-relaxed">PilotRecognition acts as a <strong>technical gateway and intermediary</strong>, not a traditional data controller. The platform stores only: platform preferences (pathway bookmarks, settings), voluntary display names and optional bios, verification ticket stubs (binary status: verified/pending/expired, check ID, timestamp — no health data), and subscription metadata (tier, expiry, transaction ID). We do not store your email, phone number, or password — these are held and encrypted by Auth0.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-lg font-bold text-slate-900">What We Do NOT Store</h3>
+                            <p className="text-base text-slate-700 leading-relaxed">Raw passport scans, medical certificates, and license scans are processed exclusively by <strong>Veremark Ltd.</strong> — they never touch our servers. Flight hours and logbook entries are held by your chosen <strong>Logbook Provider</strong>. Payment card numbers and bank details are processed by <strong>Stripe</strong>. Identity passwords, 2FA secrets, and session tokens are managed by <strong>Auth0</strong>.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-lg font-bold text-slate-900">Data Controller Status</h3>
+                            <p className="text-base text-slate-700 leading-relaxed">Aviation Pathways Ltd has applied for registration as a Data Controller with the Data Protection Office, Republic of Mauritius. Benjamin Bowler (Non-Executive Director, Sole Shareholder) serves as the registered contact person. An independent Data Protection Officer under GDPR Article 37 will be appointed prior to processing EU data subjects at scale.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Footer */}
             <div className="bg-slate-900 text-white py-12 px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-4 gap-8 mb-8">
                         <div>
                             <h3 className="font-bold text-lg mb-4">PilotRecognition</h3>
-                            <p className="text-slate-400 text-sm">The Aviation Industry's First Pilot Recognition-Based Platform</p>
+                            <p className="text-slate-400 text-sm">Aviation Pathways Ltd — Managing Director: Marie Maureen Synthia Maya</p>
                         </div>
                         <div>
                             <h3 className="font-bold text-lg mb-4">Platform</h3>
@@ -438,7 +460,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                         </div>
                     </div>
                     <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-                        <p>&copy; 2024 PilotRecognition - WM Pilot Group. All rights reserved.</p>
+                        <p>&copy; 2024 PilotRecognition — operated by Benjamin Bowler as Non-Executive Director / Sole Shareholder pending incorporation of Aviation Pathways Ltd (Managing Director: Marie Maureen Synthia Maya). All rights reserved.</p>
                     </div>
                 </div>
             </div>

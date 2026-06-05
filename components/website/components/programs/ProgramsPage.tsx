@@ -5,7 +5,7 @@ import { TopNavbar } from '../TopNavbar';
 interface ProgramsPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const ProgramsPage: React.FC<ProgramsPageProps> = ({

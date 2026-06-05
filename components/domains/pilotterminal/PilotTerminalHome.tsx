@@ -475,7 +475,7 @@ export default function PilotTerminalHome() {
             <div className="flex items-center gap-3">
               <Plane className="w-5 h-5 text-yellow-400" />
               <span className="font-bold"><span className="text-white">Pilot</span><span className="text-yellow-400">Terminal</span></span>
-              <span className="text-slate-500 text-sm">| A WM Pilot Group Project</span>
+              <span className="text-slate-500 text-sm">| A PilotRecognition Project</span>
             </div>
             <div className="flex gap-6 text-sm text-slate-400">
               <a href="/pilot-terminal/privacy" className="hover:text-white transition-colors">Privacy</a>

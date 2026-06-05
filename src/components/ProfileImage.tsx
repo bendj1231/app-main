@@ -14,7 +14,7 @@
  *   />
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCachedProfileImage, revokeImageUrl } from '../lib/cloudinaryClient';
 import { getProfileImageUrl } from '../lib/cloudinaryConfig';
 
@@ -92,7 +92,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
         revokeImageUrl(imageUrl);
       }
     };
-  }, [url, publicId]);
+  }, [url, publicId, imageUrl]);
 
   if (!imageUrl || isLoading) {
     // Show initials fallback

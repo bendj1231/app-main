@@ -1,6 +1,9 @@
 // Google OAuth Configuration
+// Client ID is public by design (embedded in OAuth URL), but env-driven for rotation.
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
+
 export const GOOGLE_OAUTH_CONFIG = {
-  clientId: '90918059889-jesc3p48sfo84nv8ef75v5iu8q8p1ne1.apps.googleusercontent.com',
+  clientId,
   scopes: ['openid', 'email', 'profile'],
   authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
   tokenEndpoint: 'https://oauth2.googleapis.com/token',
@@ -25,7 +28,7 @@ export interface GoogleAuthCodeResult {
  * @returns The complete authorization URL
  */
 export function generateGoogleAuthUrl(params: GoogleAuthUrlParams): string {
-  const timestamp = new Date().toISOString();
+  void new Date().toISOString(); // timestamp for potential logging
 
   const { clientId, authorizationEndpoint, scopes } = GOOGLE_OAUTH_CONFIG;
 
@@ -67,8 +70,6 @@ export function extractCodeFromUrl(url: string): GoogleAuthCodeResult {
     const urlObj = new URL(url);
     const code = urlObj.searchParams.get('code');
     const error = urlObj.searchParams.get('error');
-    const state = urlObj.searchParams.get('state');
-
 
     const result = {
       code,

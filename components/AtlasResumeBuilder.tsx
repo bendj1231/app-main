@@ -509,7 +509,7 @@ const AtlasResumeBuilder: React.FC<AtlasResumeBuilderProps> = ({ onBack }) => {
               <AircraftTypesSection data={resumeData.aircraftTypes} onChange={(data) => setResumeData(prev => ({ ...prev, aircraftTypes: data }))} />
             )}
             {activeSection === 'licenses' && (
-              <LicensesSection data={resumeData.licenses} onChange={(data) => setResumeData(prev => ({ ...prev, licenses: data }))} />
+              <LicensesSection licenses={resumeData.licenses} ratings={resumeData.ratings} onLicensesChange={(data) => setResumeData(prev => ({ ...prev, licenses: data }))} onRatingsChange={(data) => setResumeData(prev => ({ ...prev, ratings: data }))} />
             )}
             {activeSection === 'experience' && (
               <ExperienceSection data={resumeData.workExperience} onChange={(data) => setResumeData(prev => ({ ...prev, workExperience: data }))} />

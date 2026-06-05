@@ -14,7 +14,7 @@ export interface BookmarkItem {
   title: string;
   description?: string;
   image_url?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   created_at: string;
   updated_at: string;
 }
@@ -25,7 +25,7 @@ export interface BookmarkCreateInput {
   title: string;
   description?: string;
   image_url?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 class BookmarkService {

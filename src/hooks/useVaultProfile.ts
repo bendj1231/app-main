@@ -33,7 +33,7 @@ function isEncrypted(value: unknown): boolean {
 
 /** Returns true if a record has ANY sensitive field that is still plaintext. */
 function hasPlaintextFields(
-  record: Record<string, any>,
+  record: Record<string, unknown>,
   fields: readonly string[]
 ): boolean {
   return fields.some(f => {
@@ -43,15 +43,13 @@ function hasPlaintextFields(
 }
 
 export function useVaultProfile() {
-  const { user: auth0User } = useAuth0();
+  const { user: auth0User, getIdTokenClaims } = useAuth0();
 
   /**
    * Get the vault key for the current pilot.
    * Throws if unavailable — callers must handle and surface the error.
    * Never returns null to prevent silent plaintext writes.
    */
-  const { getIdTokenClaims } = useAuth0();
-
   const getKey = useCallback(async (): Promise<CryptoKey> => {
     if (!auth0User?.sub) {
       throw new Error('[vault] No authenticated user — cannot derive vault key');
@@ -63,8 +61,8 @@ export function useVaultProfile() {
       if (idToken) {
         return getVaultKeyFromAuth0Token(auth0User.sub, idToken);
       }
-    } catch (err: any) {
-      console.warn('[vault] Auth0 ID token key derivation failed:', err.message);
+    } catch (err: unknown) {
+      console.warn('[vault] Auth0 ID token key derivation failed:', err instanceof Error ? err.message : err);
     }
     // Fallback: server-pepper path (Supabase session required)
     const { data: { session } } = await supabase.auth.getSession();
@@ -72,7 +70,7 @@ export function useVaultProfile() {
       throw new Error('[vault] No active session — cannot derive vault key');
     }
     return getVaultKey(auth0User.sub, session.access_token);
-  }, [auth0User?.sub, getIdTokenClaims]);
+  }, [auth0User, getIdTokenClaims]);
 
   /**
    * Read pilot profile from `profiles` table, decrypting sensitive fields.
@@ -89,10 +87,10 @@ export function useVaultProfile() {
 
     try {
       const key = await getKey();
-      const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
+      const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as unknown as string[], key);
       return { data: decrypted, error: null };
-    } catch (err: any) {
-      console.warn('[vault] Read: key unavailable, returning raw data:', err.message);
+    } catch (err: unknown) {
+      console.warn('[vault] Read: key unavailable, returning raw data:', err instanceof Error ? err.message : err);
       return { data, error: null };
     }
   }, [getKey]);
@@ -111,10 +109,10 @@ export function useVaultProfile() {
 
     try {
       const key = await getKey();
-      const decrypted = await decryptFields(data, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
+      const decrypted = await decryptFields(data, PILOT_LICENSURE_SENSITIVE_FIELDS as unknown as string[], key);
       return { data: decrypted, error: null };
-    } catch (err: any) {
-      console.warn('[vault] Read: key unavailable, returning raw data:', err.message);
+    } catch (err: unknown) {
+      console.warn('[vault] Read: key unavailable, returning raw data:', err instanceof Error ? err.message : err);
       return { data, error: null };
     }
   }, [getKey]);
@@ -123,9 +121,9 @@ export function useVaultProfile() {
    * Write (insert) a new profile row, encrypting sensitive fields first.
    * THROWS if vault key is unavailable — never writes plaintext.
    */
-  const writeProfile = useCallback(async (userId: string, profileData: Record<string, any>) => {
+  const writeProfile = useCallback(async (userId: string, profileData: Record<string, unknown>) => {
     const key = await getKey(); // throws if unavailable
-    const payload = await encryptFields(profileData, PROFILE_SENSITIVE_FIELDS as any, key);
+    const payload = await encryptFields(profileData, PROFILE_SENSITIVE_FIELDS as unknown as string[], key);
     return supabase.from('profiles').insert({ id: userId, ...payload });
   }, [getKey]);
 
@@ -133,9 +131,9 @@ export function useVaultProfile() {
    * Update an existing profile row, encrypting sensitive fields first.
    * THROWS if vault key is unavailable — never writes plaintext.
    */
-  const updateProfile = useCallback(async (userId: string, updates: Record<string, any>) => {
+  const updateProfile = useCallback(async (userId: string, updates: Record<string, unknown>) => {
     const key = await getKey(); // throws if unavailable
-    const payload = await encryptFields(updates, PROFILE_SENSITIVE_FIELDS as any, key);
+    const payload = await encryptFields(updates, PROFILE_SENSITIVE_FIELDS as unknown as string[], key);
     return supabase.from('profiles').update(payload).eq('id', userId);
   }, [getKey]);
 
@@ -143,9 +141,9 @@ export function useVaultProfile() {
    * Write (upsert) pilot_licensure_experience, encrypting sensitive fields first.
    * THROWS if vault key is unavailable — never writes plaintext.
    */
-  const writeLicensure = useCallback(async (userId: string, data: Record<string, any>) => {
+  const writeLicensure = useCallback(async (userId: string, data: Record<string, unknown>) => {
     const key = await getKey(); // throws if unavailable
-    const payload = await encryptFields(data, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
+    const payload = await encryptFields(data, PILOT_LICENSURE_SENSITIVE_FIELDS as unknown as string[], key);
     return supabase
       .from('pilot_licensure_experience')
       .upsert({ user_id: userId, ...payload }, { onConflict: 'user_id' });
@@ -167,8 +165,8 @@ export function useVaultProfile() {
         .eq('id', userId)
         .maybeSingle();
 
-      if (profile && hasPlaintextFields(profile, PROFILE_SENSITIVE_FIELDS as any)) {
-        const encrypted = await encryptFields(profile, PROFILE_SENSITIVE_FIELDS as any, key);
+      if (profile && hasPlaintextFields(profile, PROFILE_SENSITIVE_FIELDS as unknown as string[])) {
+        const encrypted = await encryptFields(profile, PROFILE_SENSITIVE_FIELDS as unknown as string[], key);
         await supabase.from('profiles').update(encrypted).eq('id', userId);
       }
 
@@ -179,13 +177,13 @@ export function useVaultProfile() {
         .eq('user_id', userId)
         .maybeSingle();
 
-      if (licensure && hasPlaintextFields(licensure, PILOT_LICENSURE_SENSITIVE_FIELDS as any)) {
-        const encrypted = await encryptFields(licensure, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
+      if (licensure && hasPlaintextFields(licensure, PILOT_LICENSURE_SENSITIVE_FIELDS as unknown as string[])) {
+        const encrypted = await encryptFields(licensure, PILOT_LICENSURE_SENSITIVE_FIELDS as unknown as string[], key);
         await supabase.from('pilot_licensure_experience').update(encrypted).eq('user_id', userId);
       }
 
-    } catch (err: any) {
-      console.warn('[vault] reEncryptIfPlaintext failed (non-critical):', err.message);
+    } catch (err: unknown) {
+      console.warn('[vault] reEncryptIfPlaintext failed (non-critical):', err instanceof Error ? err.message : err);
     }
   }, [getKey]);
 

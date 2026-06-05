@@ -29,7 +29,7 @@ This document contains every field you will need to enter into the **CBRIS onlin
 | 1 | BN/1 Name Reservation Certificate number | Marie (from CBRIS) | ⏳ Obtain first |
 | 2 | Marie's passport number | Marie | ⏳ Provide to Benjamin |
 | 3 | Marie's NIC number | Marie | ⏳ Provide to Benjamin |
-| 4 | Marie's proof of address (utility bill/bank statement, last 3 months) | Marie | ⏳ Mandatory for CBRD |
+| 4 | Marie's proof of address — **CWA water bill** in her name at 24 Avenue Le Morne, Tamarin (last 3 months) | Marie | ⏳ Mandatory for CBRD |
 | 5 | Benjamin's passport number | Benjamin | ⏳ Provide to Marie |
 | 6 | Benjamin's NIC number | Benjamin | ⏳ Provide to Marie |
 | 7 | Benjamin's proof of address (Philippines) | Benjamin | ⏳ Provide to Marie |
@@ -239,8 +239,8 @@ This document contains every field you will need to enter into the **CBRIS onlin
 | 4 | **Form F8 — Consent and Certificate of Secretary (Marie)** | 🖨️ Auto-generated | Print from CBRIS → sign → scan → upload |
 | 5 | **Form F9 — Consent of Shareholder (Benjamin)** | 🖨️ Auto-generated | Print from CBRIS → sign → scan → upload |
 | 6 | **Form 23 — Declaration of Beneficial Owner (Benjamin)** | 📥 Download from CBRIS | Fill → sign → scan → upload |
-| 7 | **Proof of Address — Marie (resident director)** | 📄 To obtain | Utility bill or bank statement (last 3 months) |
-| 8 | **Proof of Address — Benjamin** | 📄 To obtain | Utility bill or bank statement (last 3 months) |
+| 7 | **Proof of Address — Marie (resident director)** | 📄 To obtain | **CWA water bill** in Marie's name at 24 Avenue Le Morne, Tamarin (last 3 months) |
+| 8 | **Proof of Address — Benjamin** | 📄 To obtain | Philippines utility bill or bank statement (last 3 months). Note: **CEB electricity bill** at registered office is under Benjamin's name — can supplement registered office proof |
 | 9 | **Certified copy of Marie's Passport / NIC** | 📄 To obtain | *[Scan and certify]* |
 | 10 | **Certified copy of Benjamin's Passport / NIC** | 📄 To obtain | *[Scan and certify — Benjamin to send from Philippines]* |
 | 11 | **Form 1 — Declaration of Compliance (Form F7 variant)** | 🖨️ Auto-generated | *[CBRIS may generate this automatically]* |
@@ -248,7 +248,7 @@ This document contains every field you will need to enter into the **CBRIS onlin
 ## G2. Document Notes
 
 - **Consents (F7, F8, F9):** CBRIS auto-populates these forms after you enter director/shareholder/secretary details. Click **Print F7**, **Print F8**, **Print F9** in the portal. Most fields will be pre-filled. The signatory just needs to sign and print their name in the blank spaces.
-- **Proof of Address:** At least one resident director (Marie) must provide this. It is **mandatory**.
+- **Proof of Address:** At least one resident director (Marie) must provide this. It is **mandatory**. CWA water bill in Marie's name covers both her residential address and the registered office. CEB electricity bill under Benjamin's name at the same address provides supplementary proof.
 - **Benjamin's documents:** He is in the Philippines. He must print, sign, scan, and email his signed F7 and F9 to you for upload.
 
 ---

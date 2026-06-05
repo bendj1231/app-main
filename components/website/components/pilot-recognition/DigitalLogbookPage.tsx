@@ -11790,28 +11790,28 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                   <div>
                     <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>PPL Requirements</div>
                     <div style={{ fontSize: '0.75rem', color: '#047857' }}>
-                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (40h req)</div>
-                      <div>Cross-Country: {flightLogs.filter(log => log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (10h req)</div>
-                      <div>Solo XC: {flightLogs.filter(log => log.faaIsSolo && log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (5h req)</div>
-                      <div>Solo: {flightLogs.filter(log => log.faaIsSolo).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (10h req)</div>
+                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (40h req)</div>
+                      <div>Cross-Country: {flightLogs.filter(log => log.faaIsCrossCountry).reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (10h req)</div>
+                      <div>Solo XC: {flightLogs.filter(log => log.faaIsSolo && log.faaIsCrossCountry).reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (5h req)</div>
+                      <div>Solo: {flightLogs.filter(log => log.faaIsSolo).reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (10h req)</div>
                     </div>
                   </div>
                   <div>
                     <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>CPL Requirements</div>
                     <div style={{ fontSize: '0.75rem', color: '#047857' }}>
-                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (250h req)</div>
-                      <div>PIC XC: {flightLogs.filter(log => log.faaIsPic && log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (100h req)</div>
-                      <div>Night XC: {flightLogs.filter(log => log.faaIsCrossCountry && parseFloat(log.faaNightTime || 0) > 0).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (25h req)</div>
-                      <div>Instrument: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.faaActualInstrument || 0) + parseFloat(log.faaSimulatedInstrument || 0)), 0).toFixed(1)}h (40h req)</div>
+                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (250h req)</div>
+                      <div>PIC XC: {flightLogs.filter(log => log.faaIsPic && log.faaIsCrossCountry).reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (100h req)</div>
+                      <div>Night XC: {flightLogs.filter(log => log.faaIsCrossCountry && Number(log.faaNightTime || 0) > 0).reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (25h req)</div>
+                      <div>Instrument: {flightLogs.reduce((acc, log) => acc + (Number(log.faaActualInstrument || 0) + Number(log.faaSimulatedInstrument || 0)), 0).toFixed(1)}h (40h req)</div>
                     </div>
                   </div>
                   <div>
                     <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>ATPL Requirements</div>
                     <div style={{ fontSize: '0.75rem', color: '#047857' }}>
-                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (1500h req)</div>
-                      <div>PIC XC: {flightLogs.filter(log => log.faaIsPic && log.faaIsCrossCountry).reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h (500h req)</div>
-                      <div>Night: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.faaNightTime || 0)), 0).toFixed(1)}h (100h req)</div>
-                      <div>Instrument: {flightLogs.reduce((acc, log) => acc + (parseFloat(log.faaActualInstrument || 0) + parseFloat(log.faaSimulatedInstrument || 0)), 0).toFixed(1)}h (250h req)</div>
+                      <div>Total Time: {flightLogs.reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (1500h req)</div>
+                      <div>PIC XC: {flightLogs.filter(log => log.faaIsPic && log.faaIsCrossCountry).reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h (500h req)</div>
+                      <div>Night: {flightLogs.reduce((acc, log) => acc + (Number(log.faaNightTime || 0)), 0).toFixed(1)}h (100h req)</div>
+                      <div>Instrument: {flightLogs.reduce((acc, log) => acc + (Number(log.faaActualInstrument || 0) + Number(log.faaSimulatedInstrument || 0)), 0).toFixed(1)}h (250h req)</div>
                     </div>
                   </div>
                 </div>
@@ -11926,7 +11926,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.aircraftType || '-'}</td>
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaDepartureAirport || '-'}</td>
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaArrivalAirport || '-'}</td>
-                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{parseFloat(log.hours || 0).toFixed(1)}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{Number(log.hours || 0).toFixed(1)}</td>
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0', fontWeight: 600 }}>
                             {log.faaIsSolo && <span style={{ color: '#059669' }}>S</span>}
                             {log.faaIsPic && <span style={{ color: '#1e40af' }}>P</span>}
@@ -11939,7 +11939,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                               <span style={{ color: '#059669', fontWeight: 700 }}>✓</span>
                             ) : '-'}
                           </td>
-                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaCrossCountryDistance ? parseFloat(log.faaCrossCountryDistance).toFixed(0) : '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaCrossCountryDistance ? Number(log.faaCrossCountryDistance).toFixed(0) : '-'}</td>
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaDayTime?.toFixed(1) || '-'}</td>
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaNightTime?.toFixed(1) || '-'}</td>
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.faaActualInstrument?.toFixed(1) || '-'}</td>
@@ -12111,11 +12111,11 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
                   <div>
                     <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>Total Time for the Page</div>
-                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#059669' }}>{flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h</div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#059669' }}>{flightLogs.reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h</div>
                   </div>
                   <div>
                     <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '0.25rem' }}>Grand Totals</div>
-                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#059669' }}>{flightLogs.reduce((acc, log) => acc + (parseFloat(log.hours) || 0), 0).toFixed(1)}h</div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#059669' }}>{flightLogs.reduce((acc, log) => acc + (Number(log.hours) || 0), 0).toFixed(1)}h</div>
                   </div>
                 </div>
               </div>
@@ -12181,7 +12181,7 @@ export const DigitalLogbookPage: React.FC<DigitalLogbookPageProps> = ({ onBack, 
                               <span style={{ color: '#059669', fontWeight: 700 }}>✓</span>
                             ) : '-'}
                           </td>
-                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapCrossCountryDistance ? parseFloat(log.caapCrossCountryDistance).toFixed(0) : '-'}</td>
+                          <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>{log.caapCrossCountryDistance ? Number(log.caapCrossCountryDistance).toFixed(0) : '-'}</td>
                           <td style={{ padding: '0.3rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>
                             {log.caapIsCheckride ? (
                               <span style={{ color: '#dc2626', fontWeight: 700 }}>✓</span>

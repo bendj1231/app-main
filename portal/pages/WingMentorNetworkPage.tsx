@@ -1,12 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Icons } from '../icons';
 import { JobMatchingCard } from '../components/JobMatchingCard';
+import { auth } from '../lib/firebase-stub';
 
 interface PilotRecognitionNetworkPageProps {
     onBack: () => void;
     onLogout: () => void;
     onViewChange?: (view: 'aviation-expectations') => void;
 }
+
+interface PilotRecognitionUser {
+    id: string;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    region?: string;
+    flightSchool?: string;
+    totalHours?: number;
+    role?: string;
+}
+
+interface ChatMessage {
+    id: string;
+    senderId: string;
+    text: string;
+    timestamp: string;
+}
+
+// Stub functions for Firebase-dependent chat/networking
+const searchUsers = async (_region: string, _school: string, _query: string): Promise<PilotRecognitionUser[]> => [];
+const getUserProfile = async (_uid: string): Promise<PilotRecognitionUser | null> => null;
+const subscribeToMessages = (_chatId: string, _callback: (msgs: ChatMessage[]) => void): (() => void) => () => {};
+const getOrCreateChat = async (_uid1: string, _uid2: string): Promise<string> => 'stub-chat-id';
+const sendMessage = async (_chatId: string, _senderId: string, _text: string): Promise<void> => {};
 
 export const PilotRecognitionNetworkPage: React.FC<PilotRecognitionNetworkPageProps> = ({ onBack, onLogout, onViewChange }) => {
     // Current User Data (simplifying for now, ideally fetched deeply if needed)

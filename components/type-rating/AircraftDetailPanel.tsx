@@ -70,10 +70,10 @@ export function AircraftDetailPanel({
             </div>
             {/* Indicators */}
             <div className="flex flex-wrap gap-2">
-              {selectedAircraft.career_score ? (
+              {selectedAircraft.careerScore ? (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-sky-400 backdrop-blur-xl shadow-lg">
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  Career Score: {selectedAircraft.career_score}/100
+                  Career Score: {selectedAircraft.careerScore}/100
                 </div>
               ) : (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-sky-400 backdrop-blur-xl shadow-lg">
@@ -81,18 +81,18 @@ export function AircraftDetailPanel({
                   Career Score: {calculateCareerScore(selectedAircraft)}/100
                 </div>
               )}
-              {selectedAircraft.demand_level && (
+              {selectedAircraft.demandLevel && (
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-xl border-2 ${
-                  selectedAircraft.demand_level === 'high' ? 'bg-emerald-500 text-white border-emerald-400' :
-                  selectedAircraft.demand_level === 'low' ? 'bg-amber-500 text-white border-amber-400' :
+                  selectedAircraft.demandLevel === 'high' ? 'bg-emerald-500 text-white border-emerald-400' :
+                  selectedAircraft.demandLevel === 'low' ? 'bg-amber-500 text-white border-amber-400' :
                   'bg-red-500 text-white border-red-400'
                 }`}>
                   <div className={`w-2 h-2 rounded-full ${
-                    selectedAircraft.demand_level === 'high' ? 'bg-white' :
-                    selectedAircraft.demand_level === 'low' ? 'bg-white' :
+                    selectedAircraft.demandLevel === 'high' ? 'bg-white' :
+                    selectedAircraft.demandLevel === 'low' ? 'bg-white' :
                     'bg-white'
                   }`} />
-                  Demand: {selectedAircraft.demand_level === 'high' ? 'High' : selectedAircraft.demand_level === 'low' ? 'Low' : 'None'}
+                  Demand: {selectedAircraft.demandLevel === 'high' ? 'High' : selectedAircraft.demandLevel === 'low' ? 'Low' : 'None'}
                 </div>
               )}
               {selectedAircraft.conditionally_new && (

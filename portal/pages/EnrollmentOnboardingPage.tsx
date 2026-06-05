@@ -55,6 +55,7 @@ export const EnrollmentOnboardingPage: React.FC<EnrollmentOnboardingPageProps> =
             
             // Complete enrollment in Supabase
             await completeEnrollment(user.id, {
+                interest: goals,
                 goals,
                 agreementVersion: '1.0',
                 agreedAt: new Date().toISOString()

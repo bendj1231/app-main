@@ -39,7 +39,7 @@ This plan establishes the procedures Aviation Pathways Ltd will follow upon disc
 | **BRT Lead / DPO / Managing Director** | Benjamin Bowler (sole director and shareholder) | privacy@pilotrecognition.com |
 | **Technical Lead** | Benjamin Bowler | Same as above |
 | **Legal Advisor** | [External counsel — to be appointed] | TBD |
-| **Communications / Outreach** | Karl Brian Vogt (supporting team) | TBD |
+| **Communications / Outreach** | Benjamin Bowler (supporting team) | TBD |
 | **Platform Ops / Pilot Advocacy** | Daniel / Keiv (supporting team) | TBD |
 | **Finance & Accounting** | Sebastien (external service provider) | TBD |
 

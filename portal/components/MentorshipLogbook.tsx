@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
-import { auth } from '../lib/firebase';
+import { auth } from '../lib/firebase-stub';
 import { submitMentorshipLog, getUserLogs, type MentorshipLog } from '../lib/firestore';
 import { supabase } from '../lib/supabase-auth';
 

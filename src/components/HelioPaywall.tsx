@@ -10,9 +10,13 @@ interface HelioPaywallProps {
   onError?: (error: string) => void;
 }
 
+interface HelioCheckout {
+  createPayment: (config: Record<string, unknown>) => void;
+}
+
 declare global {
   interface Window {
-    helioCheckout: any;
+    helioCheckout?: HelioCheckout;
   }
 }
 
@@ -42,52 +46,60 @@ export const HelioPaywall: React.FC<HelioPaywallProps> = ({
       };
       document.body.appendChild(script);
     } else {
-      setLoaded(true);
+      const t = setTimeout(() => setLoaded(true), 0);
+      return () => clearTimeout(t);
     }
   }, [onError]);
 
   useEffect(() => {
     if (!loaded || !containerRef.current || !window.helioCheckout) return;
 
-    try {
-      window.helioCheckout.createPayment({
-        paylinkId: null, // Use custom payment
-        elementId: containerRef.current.id,
-        amount,
-        currency: 'USD',
-        recipient: recipientWallet,
-        network: 'solana', // or 'ethereum', 'polygon'
-        token: 'USDC',
-        fullScreen: false,
-        theme: {
-          backgroundColor: '#ffffff',
-          primaryColor: '#dc2626', // red-600
-          textColor: '#1e293b',
-        },
-        customTexts: {
-          title: `Unlock ${paymentType === 'enterprise_annual' ? 'Enterprise Annual' : paymentType === 'enterprise_monthly' ? 'Enterprise Monthly' : 'Recognition+'}`,
-          description: `Pay $${amount.toLocaleString(} USDC to unlock premium features. Invoice generated automatically.`,
-          payButton: `Pay $${amount.toLocaleString(} USDC`,
-        },
-        metadata: {
-          user_id: userId || '',
-          user_email: userEmail || '',
-          payment_type: paymentType,
-          platform: 'pilotrecognition.com',
-        },
-        onSuccess: (event: any) => {
-          onSuccess?.(event.paymentId || event.transactionId);
-        },
-        onError: (event: any) => {
-          console.error('Helio payment error:', event);
-          setError(event.message || 'Payment failed');
-          onError?.(event.message || 'Payment failed');
-        },
-      });
-    } catch (err: any) {
-      setError(err.message);
-      onError?.(err.message);
-    }
+    const initPayment = () => {
+      try {
+        window.helioCheckout?.createPayment({
+          paylinkId: null,
+          elementId: containerRef.current!.id,
+          amount,
+          currency: 'USD',
+          recipient: recipientWallet,
+          network: 'solana',
+          token: 'USDC',
+          fullScreen: false,
+          theme: {
+            backgroundColor: '#ffffff',
+            primaryColor: '#dc2626',
+            textColor: '#1e293b',
+          },
+          customTexts: {
+            title: `Unlock ${paymentType === 'enterprise_annual' ? 'Enterprise Annual' : paymentType === 'enterprise_monthly' ? 'Enterprise Monthly' : 'Recognition+'}`,
+            description: `Pay $${amount.toLocaleString()} USDC to unlock premium features. Invoice generated automatically.`,
+            payButton: `Pay $${amount.toLocaleString()} USDC`,
+          },
+          metadata: {
+            user_id: userId || '',
+            user_email: userEmail || '',
+            payment_type: paymentType,
+            platform: 'pilotrecognition.com',
+          },
+          onSuccess: (event: { paymentId?: string; transactionId?: string }) => {
+            onSuccess?.(event.paymentId || event.transactionId || '');
+          },
+          onError: (event: { message?: string }) => {
+            const msg = event.message || 'Payment failed';
+            setError(msg);
+            onError?.(msg);
+          },
+        });
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'Payment failed';
+        setError(msg);
+        onError?.(msg);
+      }
+    };
+
+    // Defer to avoid synchronous setState during render
+    const timer = setTimeout(initPayment, 0);
+    return () => clearTimeout(timer);
   }, [loaded, amount, recipientWallet, paymentType, userId, userEmail, onSuccess, onError]);
 
   if (error) {

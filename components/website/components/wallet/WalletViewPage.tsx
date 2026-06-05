@@ -29,6 +29,9 @@ import {
 import type { EnclaveStatus } from '../../../../lib/wallet/enclave';
 import type { StorageHealthReport } from '../../../../lib/wallet/storage';
 
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+
 interface WalletViewPageProps {
   userId?: string;
   onBack?: () => void;
@@ -115,6 +118,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
   const [veremarkInitiating, setVeremarkInitiating] = useState(false);
   const [veremarkError, setVeremarkError] = useState<string | null>(null);
   const [veremarkFeedbackUrl, setVeremarkFeedbackUrl] = useState<string | null>(null);
+  const [ipfsCid, setIpfsCid] = useState<string | null>(null);
 
   const VEREMARK_STATUS_CONFIG: Record<string, { label: string; dot: string; text: string }> = {
     not_started: { label: 'Not Started', dot: '#94a3b8', text: '#475569' },
@@ -137,7 +141,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
       const session = (await supabase.auth.getSession()).data.session;
       if (!session) throw new Error('Not authenticated');
       const res = await fetch(
-        'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/veremark-initiate',
+        `${SUPABASE_URL}/functions/v1/veremark-initiate`,
         {
           method: 'POST',
           headers: {
@@ -549,7 +553,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                     </svg>
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#ffffff', letterSpacing: '0.04em' }}>Wallet Alerts</span>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#ffffff', letterSpacing: '0.04em' }}>PIC Alerts</span>
                     {allNotifs.length > 0 && (
                       <span style={{ fontSize: 9, fontWeight: 700, background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', borderRadius: 8, padding: '1px 6px' }}>
                         {allNotifs.length}
@@ -892,7 +896,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
               }}
               style={{ padding: '7px 16px', borderRadius: 8, border: '1px solid #fca5a5', background: 'transparent', color: '#dc2626', fontSize: 10, fontWeight: 700, cursor: 'pointer', letterSpacing: '0.05em' }}
             >
-              Wipe Local Cryptographic Wallet Data
+              Wipe Local PIC Data
             </button>
             <button
               onClick={async () => {
@@ -1448,7 +1452,7 @@ export const WalletViewPage: React.FC<WalletViewPageProps> = ({
                     if (!session) throw new Error('Not authenticated');
                     const blob = new Blob([JSON.stringify(walletState.activePresentation, null, 2)], { type: 'application/json' });
                     const { uploadUrl, objectKey } = await fetch(
-                      'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/r2-presign-upload',
+                      `${SUPABASE_URL}/functions/v1/r2-presign-upload`,
                       {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },

@@ -66,14 +66,14 @@ export async function withRetry<T>(
  * @returns The result of the query or throws the last error
  */
 export async function retrySupabaseQuery<T>(
-  queryFn: () => Promise<{ data: T | null; error: any }>,
+  queryFn: () => Promise<{ data: T | null; error: unknown }>,
   options: RetryOptions = {}
 ): Promise<T> {
   const result = await withRetry(
     async () => {
       const { data, error } = await queryFn();
       if (error) {
-        throw new Error(error.message || 'Supabase query failed');
+        throw new Error(error instanceof Error ? error.message : String(error) || 'Supabase query failed');
       }
       if (!data) {
         throw new Error('No data returned from Supabase query');

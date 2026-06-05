@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface ApplicationsSystemsPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const ApplicationsSystemsDirectoryPage: React.FC<ApplicationsSystemsPageProps> = ({

@@ -39,8 +39,8 @@ interface PathwayData {
 }
 
 // Configuration
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const PATHWAYS_FILE = join(__dirname, '../data/pathways.json');
 
 function loadPathwaysFromFile(filePath: string): PathwayData {

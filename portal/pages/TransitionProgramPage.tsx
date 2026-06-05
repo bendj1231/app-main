@@ -47,7 +47,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
     if (!checkProgramAccess()) {
         return (
             <RestrictionPage
-                onBack={() => onBack?.() || (() => {})}
+                onBack={() => onBack?.()}
                 userProfile={userProfile!}
                 programName="Transition Program"
                 restrictionReason="Your access to the Transition Program has been restricted by an administrator. Please contact your mentor or program administrator for assistance."

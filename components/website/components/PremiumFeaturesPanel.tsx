@@ -45,7 +45,7 @@ const TIER_COLORS: Record<string, string> = {
   low:      'text-green-400 bg-green-900/30 border-green-700',
 };
 
-function PaywallCard({ title, icon: Icon, tagline, bullets }: { title: string; icon: React.ElementType; tagline: string; bullets: string[] }) {
+function PaywallCard({ title, icon: Icon, tagline, bullets }: { title: string; icon: any; tagline: string; bullets: string[] }) {
   return (
     <div className="relative rounded-xl border border-slate-700 bg-slate-900/50 p-5 overflow-hidden">
       <div className="absolute inset-0 backdrop-blur-[2px] bg-slate-950/60 z-10 flex flex-col items-center justify-center gap-3">
@@ -159,7 +159,7 @@ export default function PremiumFeaturesPanel({
     if (panel === 'audit' && !auditLoaded) loadAuditLocker();
   };
 
-  const featureDefs = [
+  const featureDefs: Array<{ id: string; icon: React.ElementType; title: string; tagline: string; bullets: string[] }> = [
     {
       id: 'seniority',
       icon: TrendingUp,
@@ -203,7 +203,7 @@ export default function PremiumFeaturesPanel({
               className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <Icon className="w-5 h-5 text-amber-400" />
+                {(Icon as any)({ className: 'w-5 h-5 text-amber-400' })}
                 <div className="text-left">
                   <p className="text-sm font-semibold text-white">{title}</p>
                   <p className="text-xs text-slate-400">{tagline}</p>

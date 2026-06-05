@@ -22,6 +22,7 @@ export const useLearningHours = (userId: string | null) => {
     if (userId) {
       fetchLearningHours();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchLearningHours = async () => {

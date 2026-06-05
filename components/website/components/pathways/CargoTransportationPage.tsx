@@ -5,7 +5,7 @@ import { TopNavbar } from '../TopNavbar';
 interface CargoTransportationPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const CargoTransportationPage: React.FC<CargoTransportationPageProps> = ({ onBack, onNavigate, onLogin }) => {

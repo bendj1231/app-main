@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { doc, onSnapshot, collection, query, where, getDocs } from 'firebase/firestore';
-import { auth, db } from '../lib/firebase';
+import { doc, onSnapshot, collection, query, where, getDocs, auth, db } from '../lib/firebase-stub';
 
 // ─── Firestore Document Shape ────────────────────────────────────────────────
 

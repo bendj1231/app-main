@@ -44,13 +44,13 @@ export function useAccountTier(userId?: string | null): AccountTierState {
           isRecognitionPlus: tier === 'recognition_plus' || tier === 'enterprise' || tier === 'enterprise_admin',
           error: null,
         });
-      } catch (err: any) {
+      } catch (err: unknown) {
         setState({
           tier: 'free',
           loading: false,
           isEnterprise: false,
           isRecognitionPlus: false,
-          error: err.message,
+          error: err instanceof Error ? err.message : String(err),
         });
       }
     }
@@ -69,6 +69,7 @@ export function useAccountTier(userId?: string | null): AccountTierState {
           filter: `id=eq.${userId}`,
         },
         (payload) => {
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
           const newTier = (payload.new as any)?.account_tier as AccountTier;
           if (newTier) {
             setState({

@@ -4,7 +4,8 @@ import { supabase } from '../../../src/lib/supabase';
 import { FleetIntelligenceCard } from './FleetIntelligenceCard';
 import PremiumFeaturesPanel from './PremiumFeaturesPanel';
 
-const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
 
 const REGIONS = ['Asia-Pacific', 'Europe', 'North America', 'Middle East', 'Latin America', 'Africa'];
 const SEGMENT_COLORS: Record<string, string> = {

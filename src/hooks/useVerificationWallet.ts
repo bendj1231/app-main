@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
-declare global { interface ImportMeta { env: Record<string, string> } }
 
 export type CheckStatus = 'pending' | 'in_review' | 'verified' | 'failed' | 'expired' | 'not_required';
 export type WalletStatus = 'not_started' | 'in_progress' | 'verified' | 'partially_verified';
@@ -63,8 +62,8 @@ export function useVerificationWallet() {
       if (checksErr) throw checksErr;
 
       setWallet({ ...walletRow, checks: checks ?? [] });
-    } catch (e: any) {
-      setError(e?.message ?? 'Failed to load verification wallet');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to load verification wallet');
     } finally {
       setLoading(false);
     }
@@ -79,9 +78,8 @@ export function useVerificationWallet() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
-      const baseUrl = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_FIREBASE_FUNCTIONS_URL)
-        ? (import.meta as any).env.VITE_FIREBASE_FUNCTIONS_URL
-        : 'https://us-central1-pilotrecognition-prod.cloudfunctions.net';
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      const baseUrl = (import.meta as any).env?.VITE_FIREBASE_FUNCTIONS_URL as string;
 
       const res = await window.fetch(`${baseUrl}/initiateVerification`, {
         method: 'POST',
@@ -92,8 +90,8 @@ export function useVerificationWallet() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? 'Failed to initiate verification');
       await loadWallet();
-    } catch (e: any) {
-      setError(e?.message ?? 'Failed to start verification');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to start verification');
     } finally {
       setInitiating(false);
     }

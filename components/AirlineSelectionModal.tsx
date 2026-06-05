@@ -374,14 +374,9 @@ const AirlineCard: React.FC<AirlineCardProps> = ({ airline, selected, onToggle }
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-center gap-3">
           {airline.airline_logo_url ? (
-            <img
-              src={airline.airline_logo_url}
-              alt={airline.airline_name}
-              className="w-10 h-10 object-contain rounded-lg"
-              onError={e => {
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
-            />
+            <div className="w-10 h-10 flex items-center justify-center bg-blue-600/20 rounded-lg">
+              <span className="text-slate-900 font-bold text-xs">{airline.airline_name?.slice(0, 2)}</span>
+            </div>
           ) : (
             <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
               <Plane className="w-5 h-5 text-slate-400" />

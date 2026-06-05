@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 interface PilotGapAboutPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const PilotGapAboutPage: React.FC<PilotGapAboutPageProps> = ({

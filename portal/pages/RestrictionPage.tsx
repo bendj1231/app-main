@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import type { UserProfile } from '../types/user';
 import { SupportEnquiryPage } from './SupportEnquiryPage';
-import React, { useState, useEffect } from 'react';
-import type { UserProfile } from '../types/user';
 import { CloudBackground } from '../components/CloudBackground';
+import { db, doc, getDoc, collection, query, where, orderBy, limit, getDocs } from '../lib/firebase-stub';
+import { EnquiryAlreadySentPage } from './EnquiryAlreadySentPage';
 
 interface RestrictionPageProps {
   onBack: () => void;

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 export default function PilotTerminalGuidelinesPage() {
   return (
@@ -42,7 +42,7 @@ export default function PilotTerminalGuidelinesPage() {
             <p className="text-sm leading-relaxed">
               Messages in public channels are visible to all members. DMs are end-to-end encrypted.
               We do not sell your data. For full details, see our{' '}
-              <Link href="/privacy-policy" className="text-yellow-400 hover:underline">Privacy Policy</Link>.
+              <Link to="/privacy-policy" className="text-yellow-400 hover:underline">Privacy Policy</Link>.
             </p>
           </section>
 
@@ -57,8 +57,8 @@ export default function PilotTerminalGuidelinesPage() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-800 text-sm text-slate-500">
-          <p>Last updated: 02 June 2026 · Part of the WM Pilot Group ·{' '}
-            <Link href="/dpo" className="text-yellow-400 hover:underline">Data Protection Officer</Link>
+          <p>Last updated: 02 June 2026 · Operated by Benjamin Bowler · Pending incorporation of Aviation Pathways Ltd ·{' '}
+            <Link to="/dpo" className="text-yellow-400 hover:underline">Data Protection Officer</Link>
           </p>
         </div>
       </div>

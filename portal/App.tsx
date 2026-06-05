@@ -278,7 +278,11 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
     | 'examination-portal'
     | 'portal-airline-expectations'
     | 'w1000'
-    | 'w1000-app';
+    | 'w1000-app'
+    | 'atpl-pathway'
+    | 'air-taxi'
+    | 'private-sector'
+    | 'applications';
 
   const VIEW_WHITELIST: ViewName[] = [
     'hub','programs','pathways-modern','foundational','privatesector',
@@ -783,9 +787,9 @@ function App({ onNavigateToMainApp, directToEnrollment = false }: { onNavigateTo
   applications[0].onClickAction = () => setCurrentView('pilot-profile');
 
   if (pathways.length >= 3) {
-    pathways[0].onClickAction = () => setCurrentView('atpl');
-    pathways[1].onClickAction = () => setCurrentView('airtaxi');
-    pathways[2].onClickAction = () => setCurrentView('privatesector');
+    pathways[0].onClickAction = () => setCurrentView('atpl-pathway');
+    pathways[1].onClickAction = () => setCurrentView('air-taxi');
+    pathways[2].onClickAction = () => setCurrentView('private-sector');
   }
 
   return (

@@ -1,14 +1,11 @@
 import { HomePage } from '@/components/website/components/home/HomePage';
 import PilotShortageUCF from './pilotshortage/page';
 import BrandSwitchWrapper from '@/components/domains/BrandSwitchWrapper';
-import { Metadata } from 'next';
-import { headers } from 'next/headers';
-
-export const metadata: Metadata = {
-  title: 'Pilotrecognition.com | Aviation Industry\'s First Pilot Recognition-Based Platform - WM Pilot Group',
-  description: 'Pilotrecognition.com is the Aviation Industry\'s First Pilot Recognition-Based Platform operated by WM Pilot Group. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways with support from Airbus and Etihad.',
-  keywords: 'pilotrecognition, pilot recognition, aviation industry first, recognition-based platform, aviation career, pilot pathways, foundation program, transition program, EBT CBTA, Airbus, Etihad, ATLAS CV, pilot jobs, aviation training, WM Pilot Group, mentorship, blockchain certificates',
-  authors: [{ name: 'WM Pilot Group' }],
+export const metadata = {
+  title: 'Pilotrecognition.com | Aviation Industry\'s First Pilot Recognition-Based Platform',
+  description: 'Pilotrecognition.com is the Aviation Industry\'s First Pilot Recognition-Based Platform operated by Benjamin Bowler pending incorporation of Aviation Pathways Ltd. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways with support from Airbus and Etihad.',
+  keywords: 'pilotrecognition, pilot recognition, aviation industry first, recognition-based platform, aviation career, pilot pathways, foundation program, transition program, EBT CBTA, Airbus, Etihad, ATLAS CV, pilot jobs, aviation training, mentorship, digital verification certificates',
+  authors: [{ name: 'Benjamin Bowler' }],
   openGraph: {
     title: 'Pilotrecognition.com | Aviation Career Recognition & Pilot Pathways',
     description: 'Transform your aviation career with Pilotrecognition.com. Industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways.',
@@ -40,9 +37,8 @@ export const metadata: Metadata = {
 };
 
 export default function MainPage() {
-  // Domain-based brand detection
-  const headersList = headers();
-  const domain = headersList.get('host') || '';
+  // Domain-based brand detection (client-side for Vite)
+  const domain = typeof window !== 'undefined' ? window.location.hostname : '';
   const isShortage = domain.includes('pilotshortage.org');
   const isPathways = domain.includes('pilotcareerpathways.com');
   const isTerminal = domain.includes('pilotterminal.com');
@@ -68,7 +64,7 @@ export default function MainPage() {
         onJoinUs={() => console.log('Join Us clicked')}
         onLogin={() => console.log('Login clicked')}
         onNavigate={(page: string) => console.log('Navigate to:', page)}
-        onGoToProgramDetail={(slide: string) => console.log('Go to program detail:', slide)}
+        onGoToProgramDetail={(slide) => console.log('Go to program detail:', slide)}
         isLoggedIn={false}
         onLoginModalOpen={() => console.log('Login modal opened')}
       />

@@ -9,7 +9,7 @@ import { FoundationLoadingScreen } from './FoundationLoadingScreen';
 interface FoundationalProgramPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = ({
@@ -216,7 +216,7 @@ export const FoundationalProgramPage: React.FC<FoundationalProgramPageProps> = (
                                     This is the vision of pilotrecognition.com
                                 </p>
                                 <p style={{ color: '#64748b', fontSize: '0.875rem', margin: '0.5rem 0 0 0' }}>
-                                    — Benjamin Tiger Bowler & Karl Vogt, Founders
+                                    — Benjamin Bowler, Founder
                                 </p>
                             </div>
                         </div>

@@ -7,6 +7,16 @@ import {
 } from 'lucide-react';
 import { supabase } from '../enterprise/hooks/useEnterpriseAuth';
 
+/** Escape HTML special characters to prevent XSS in document.write */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 interface OnSiteSignupPageProps {
   eventId: string;
   eventTitle: string;
@@ -84,7 +94,7 @@ export function OnSiteSignupPage({ eventId, eventTitle, onComplete, onCancel }: 
       printWindow.document.write(`
         <html>
           <head>
-            <title>Event Pass - ${eventTitle}</title>
+            <title>Event Pass - ${escapeHtml(eventTitle)}</title>
             <style>
               body {
                 font-family: Arial, sans-serif;
@@ -131,13 +141,13 @@ export function OnSiteSignupPage({ eventId, eventTitle, onComplete, onCancel }: 
           </head>
           <body>
             <div class="pass">
-              <h1>${eventTitle}</h1>
-              <div class="name">${formData.first_name} ${formData.last_name}</div>
-              <div class="info">${formData.email}</div>
-              ${formData.company ? `<div class="info">${formData.company}</div>` : ''}
+              <h1>${escapeHtml(eventTitle)}</h1>
+              <div class="name">${escapeHtml(formData.first_name)} ${escapeHtml(formData.last_name)}</div>
+              <div class="info">${escapeHtml(formData.email)}</div>
+              ${formData.company ? `<div class="info">${escapeHtml(formData.company)}</div>` : ''}
               <div class="qr-container">
                 <div style="font-size: 100px; color: #1e40af;">■</div>
-                <div style="font-size: 12px; margin-top: 10px; color: #64748b;">${registration?.qr_code}</div>
+                <div style="font-size: 12px; margin-top: 10px; color: #64748b;">${escapeHtml(registration?.qr_code || '')}</div>
               </div>
               <div class="footer">
                 Show this QR code at the event entrance<br>

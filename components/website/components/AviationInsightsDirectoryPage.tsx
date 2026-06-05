@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface AviationInsightsPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const AviationInsightsDirectoryPage: React.FC<AviationInsightsPageProps> = ({

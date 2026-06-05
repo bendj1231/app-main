@@ -57,7 +57,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Jose Abad Santos Avenue, Clark Freeport Zone, Pampanga, Philippines',
     rating: 4.9,
     price: '~$60,000–$62,000 (Full CPL/APP) / $25,000–$35,000 (A320 Type Rating/FOT)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404520/flight-schools/aag.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 (G1000 equipped) — up to 32 aircraft region-wide',
@@ -89,7 +89,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Manuel A. Roxas Highway, Clark Freeport Zone, Pampanga, Philippines',
     rating: 4.8,
     price: '~$8,000–$10,000 (PPL) / $48,000–$52,000 (ACTP 200-hr incl. JOC & IR)',
-    image: 'https://omni-aviation.digiteer.dev/bg-about.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 (primary trainer) ×15+',
@@ -121,7 +121,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Corner P. Kalaw Street, C.M. Recto Highway, Clark Freeport Zone, Pampanga, Philippines',
     rating: 4.9,
     price: '~$24,000–$40,000 (A320 / ATR 72-600 Type Rating) / ~$77,000+ (Full Cadet Programme ab-initio to FO)',
-    image: 'https://aviationnewsphilippines.wordpress.com/wp-content/uploads/2014/01/paat.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Airbus A320 Full Flight Simulator (Level D) ×3 — CAE-built',
@@ -216,7 +216,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Plaridel, Bulacan, Philippines',
     rating: 4.6,
     price: '~$8,000–$10,000 (PPL) / $53,000–$57,000 (Full CPL/IR International)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404520/flight-schools/aag.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: ['Cessna 152 ×5', 'Cessna 172 ×2', 'Piper Seneca PA-34-200 ×2', 'Redbird MCX Full Motion Simulator'],
     offerings: ['PPL (Single & Multi-Engine Land)', 'CPL (Single & Multi-Engine Land)', 'Instrument Rating (IR)', 'Flight Instructor License (FIL)', 'Crew Resource Management (CRM)', 'Aircraft Maintenance Technology', 'Aviation Electronics Technology'],
@@ -231,7 +231,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Mabalacat City, Pampanga, Philippines',
     rating: 4.7,
     price: '$14,000 - $21,000',
-    image: 'https://pbs.twimg.com/media/C68DqJyWsAEmDEq.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     lat: 15.1861, lng: 120.5400,
   },
@@ -242,7 +242,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'BKN Bldg., McArthur Hi-way, Dau, Mabalacat City, Pampanga, Philippines',
     rating: 4.5,
     price: '~$45,000–$55,000 (Full CPL/IR — approx. ₱2.5M–₱3M)',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/0/06/FDSA航空科学技術大学.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 (multiple units)',
@@ -270,7 +270,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Iba Airport, Iba, Zambales, Philippines',
     rating: 4.5,
     price: '~$48,000–$58,000 (Full CPL/IR zero-to-hero — approx. ₱2.7M–₱3.2M)',
-    image: 'https://aaa-central.com/wp-content/uploads/2022/04/Aerial172_trainingfleets.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 ×13 (primary trainer)',
@@ -299,7 +299,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'San Fernando Airport (Poro Point), La Union, Philippines (+ Cebu & Taguig satellites)',
     rating: 4.9,
     price: '~$38,000–$48,000 (Full PPL-CPL-IR — approx. ₱2.2M–₱2.8M)',
-    image: 'https://cdn.flightsim.to/images/26/tecnam-p2006t---leading-edge-international-aviation-academy-321711-1695483794-YDehO.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 ×23 (core fleet)',
@@ -331,7 +331,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Subic Bay International Airport, Philippines (+ QC & Cagayan de Oro ground school satellites)',
     rating: 4.9,
     price: '~$55,000–$65,000 (Full PPL-CPL-IR-FIC — approx. ₱3.3M)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404524/flight-schools/laminar.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 RP-C 4088 (first solo trainer)',
@@ -363,7 +363,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Aero Equipt Hangar, Bldg. 8324A, Argonaut Highway, Subic Bay International Airport, Philippines',
     rating: 4.7,
     price: '~$45,000–$55,000 (Full zero-to-CPL; monthly plans from ₱25,000)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404525/flight-schools/aero-equipt.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 (multiple units)',
@@ -391,7 +391,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Plaridel Airport, Bulacan, Philippines (Office: Pasay City, Metro Manila)',
     rating: 4.6,
     price: '~$45,000–$55,000 (Full CPL/IR — approx. ₱2.5M–₱3M)',
-    image: 'https://www.mastersflyingschool.com/files/photo_gallery/13-156.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 150 RP-C63',
@@ -424,7 +424,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Plaridel Airport, 0365 Lumang Bayan, Plaridel, Bulacan, Philippines',
     rating: 4.7,
     price: '~$32,000–$40,000 (Full PPL-CPL-IR — approx. ₱1.8M–₱2.2M)',
-    image: 'https://strikewingph.com/wp-content/uploads/2025/09/Slideshow2.webp',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152/172 RP-C 1002',
@@ -450,7 +450,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Plaridel Airport, Bulacan, Philippines (Admin: Pasay City)',
     rating: 4.5,
     price: '~$35,000–$45,000 (Full CPL/IR; competitive IR-specific modules)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404534/flight-schools/precision-flight.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 RP-C 1911',
@@ -478,7 +478,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Plaridel Airport, 0380 Lumang Bayan, Plaridel, Bulacan, Philippines',
     rating: 4.4,
     price: '~$34,000–$42,000 (Full PPL-CPL-IR — approx. ₱1.9M–₱2.3M)',
-    image: 'https://lh3.googleusercontent.com/proxy/NQOCVTcksU9gcZvdy5K4Ylje5p2VXJJt-GpqV2DdQUhCl-lojlEM4YZXkxTgseEFk2Jn6XjsqqMWoP7NlUPytW_TdgEdY_7Ovxtfbs1JB2E5ytrP-yFFlK-NfxY',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172S RP-C 3188 (G1000 equipped — IR flagship)',
@@ -506,7 +506,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Lumang Bayan, Plaridel, Bulacan, Philippines',
     rating: 4.5,
     price: '~$35,000–$45,000 (Integrated Flight/AMT programme estimated cost)',
-    image: 'https://www.mastersflyingschool.com/files/courses/header1.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 150',
@@ -538,7 +538,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'General Aviation Area, Mactan-Cebu International Airport, Lapu-Lapu City, Cebu, Philippines',
     rating: 4.8,
     price: '~$36,000–$85,000 (Full CPL/IR ~₱2.1M; Cebu Pacific Cadet Programme ~₱5M)',
-    image: 'https://insiderph.com/uploads/articles/thumb_cebu-pacific-airworks-open-program-for-4th-batch-of-aspiring-cadet-pilots-3-1280x960.webp',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 ×13',
@@ -567,7 +567,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Lot 2797, General Aviation Road, Basak, Lapu-Lapu City, Cebu, Philippines',
     rating: 4.7,
     price: '~$40,000–$55,000 (Standard CPL/IR — approx. ₱2M–₱3M)',
-    image: 'https://cdn.jetphotos.com/full/6/1652396_1711448287.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 RP-C 7945 (verified 2025 solo logs)',
@@ -593,7 +593,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Salinas Drive, Lahug, Cebu City, Philippines',
     rating: 4.6,
     price: '~$1,500–$2,500/semester (degree programmes; ₱85K–₱140K total for 2-year courses)',
-    image: 'https://www.cats.edu.ph/images/catsfsuits.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     established: 1953,
     fleet: [
@@ -618,7 +618,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'IAU Town Center, Kagodoy Road, Basak, Lapu-Lapu City, Cebu, Philippines',
     rating: 4.7,
     price: '~$53,000–$65,000 (Full BS Aviation Technology / Pilot programme — approx. ₱3M+)',
-    image: 'https://iau.com.ph/dev/wp-content/uploads/2022/05/277174556_5012682215445256_6046942567345249772_n.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 150L RP-C 50 (primary trainer)',
@@ -651,7 +651,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'General Aviation Area, Bacolod-Silay International Airport, Silay City, Negros Occidental, Philippines',
     rating: 4.5,
     price: '~$38,000–$48,000 (Full CPL/IR zero-to-hero — approx. ₱2.2M–₱2.8M)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404527/flight-schools/aeronavigation.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 RP-C 1097 (newest addition, July 2024)',
@@ -677,7 +677,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Hangar 11, General Aviation Road, Basak, Lapu-Lapu City, Cebu, Philippines',
     rating: 4.4,
     price: '~$44,000–$62,000 (Full CPL/IR — approx. ₱2.5M–₱3.5M)',
-    image: 'https://www.continentalaero.com/wp-content/uploads/2023/11/210-CENTURION-Banner.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     established: 1980,
     fleet: [
@@ -711,7 +711,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'LKTJ Center, Pasay City, Philippines (Phase 2: Gold Coast, Australia — Airways Aviation)',
     rating: 4.9,
     price: '~$75,000–$80,000 (Full ab-initio — approx. ₱4.5M)',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLBLsxaLunaswh_0K_GW62zR2EEKnKH9aZyPnUVcBzSN9hNoIl1_XBMQamO-LJSWhMGBAvRHuHaDMqZGI-YXbU3RJPibAk8EkRX2l4yNOy9z_wJt6XHQJuWXiL2tri2u9fjhyphenhyphenjLWUxPPg/s1600/Clark+Facade.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172R/S Skyhawk',
@@ -738,7 +738,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Domestic Road, Pasay City, Philippines (Flight Base: Lubang Island, Occidental Mindoro)',
     rating: 4.7,
     price: '~$55,000–$65,000 (Full BS Aviation major in Flying — approx. ₱3.2M+)',
-    image: 'https://cdn.manilastandard.net/wp-content/uploads/2020/11/c9cfb_airlink.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 150 ×11 (primary trainers)',
@@ -768,7 +768,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Lombos Avenue, San Isidro, Parañaque City, Philippines',
     rating: 4.6,
     price: '~$21,000–$25,000 (Full BS Aeronautical Engineering — approx. ₱1.2M)',
-    image: 'https://static.where-e.com/Philippines/Metro_Manila/Patts-College-Of-Aeronautics_bd0ec344fde40318d224d68875629b71.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Ground fleet: multiple retired aircraft on-campus (maintenance training)',
@@ -794,7 +794,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Parañaque City, Philippines (Flight Bases: Calapan Airport & Puerto Princesa Airport)',
     rating: 4.5,
     price: '~$42,000–$55,000 (Full CPL/IR — approx. ₱2.4M–₱3.1M)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404543/flight-schools/sapphire.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172M Skyhawk RP-C 1138 (verified active April 2025)',
@@ -826,7 +826,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Binalonan Airfield, Brgy. Linmansangan, Binalonan, Pangasinan, Philippines',
     rating: 4.7,
     price: '~$55,000–$75,000 (Full CPL/IR with A320 rating — approx. ₱3.5M–₱4.5M)',
-    image: 'https://www.wccaviation.com/frontend/images/ss_thumbnail.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Tecnam P-Mentor RP-C 4505 (first in PH; IR & advanced ratings)',
@@ -863,7 +863,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'EAA Hangar, Marinduque Airport, Brgy. Masiga, Gasan, Marinduque, Philippines',
     rating: 4.4,
     price: '~$45,000–$55,000 (Full CPL/IR — approx. ₱2.6M–₱3.2M)',
-    image: 'https://eagleair.academy/wp-content/uploads/2021/06/EA-Hangar.webp',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172M RP-C 718 (advanced solo & cross-country)',
@@ -896,7 +896,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'General Aviation Group, Old Airport Road, Sasa, Davao City, Philippines',
     rating: 4.6,
     price: '~$40,000–$55,000 (Full PPL-CPL-IR — approx. ₱2.3M–₱3.1M)',
-    image: 'https://i.ytimg.com/vi/PLHqN9Q0mJY/maxresdefault.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172N RP-C 7349',
@@ -923,7 +923,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'R. Castillo Street, Agdao, Davao City, 8000 Davao del Sur, Philippines',
     rating: 4.5,
     price: '~$1,500–$3,500/year (degree programmes; ₱80K–₱180K total for 4–5 year courses)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404528/flight-schools/mats.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 421B RP-C 144 (ground instruction)',
@@ -947,7 +947,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Salem Complex, Pasay City, Philippines (Flight Bases: Bicol International Airport & Subic Bay International Airport)',
     rating: 4.4,
     price: '~$45,000–$60,000 (Full CPL/IR — approx. ₱2.5M–₱3.5M)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404529/flight-schools/topflite.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 (multiple units — primary trainers)',
@@ -977,7 +977,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Cauayan Airport, San Fermin, Cauayan City, 3305 Isabela, Philippines',
     rating: 4.5,
     price: '~$35,000–$48,000 (Full PPL-CPL-IR — approx. ₱2M–₱2.8M)',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsbtqwno0GJ1hqtW81SNsARNSIkiT0cWZtEA&s',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 (primary trainer)',
@@ -1002,7 +1002,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Echo Air Hangar, Tuguegarao Airport, Pengue-Ruyu, Tuguegarao City, Cagayan 3500, Philippines',
     rating: 4.4,
     price: '~$45,000–$60,000 (Full CPL/IR — approx. ₱2.6M–₱3.5M)',
-    image: 'https://echoairaviationacademy.com/assets/img/echo-air-aviation.webp',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 RP-C 8598',
@@ -1031,7 +1031,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Camiguin Airport, Lumad, Mambajao, Camiguin 9100, Philippines',
     rating: 4.6,
     price: '₱36,000–₱120,000 per specialised course/package (UPRT 4-flight pkg to Train-the-Trainer 20–25 flight pkg)',
-    image: 'https://www.camiguinaviation.com/images/our-aircraft-compressed.png',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'American Champion Super Decathlon 8KCAB RP-C 983 (aerobatic trainer)',
@@ -1099,7 +1099,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Northsky Air Inc. Hangar, Tuguegarao Airport, Tuguegarao City, Cagayan, Philippines',
     rating: 4.5,
     price: '~$48,000–$58,000 (Full CPL/IR; ground school from ₱60,000)',
-    image: 'https://orientflights.com/wp-content/uploads/2025/07/OFAA-Gallery6-1200x900.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 RP-C 9076 (primary trainer)',
@@ -1125,7 +1125,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Domestic Road, Pasay City, Philippines (Flight Base: Lingayen Airport, Pangasinan)',
     rating: 4.4,
     price: '~$45,000–$58,000 (Full CPL/IR — approx. ₱2.6M–₱3.3M)',
-    image: 'https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,h=506,fit=crop/NdZJ0ctrIN4Cw5Yv/476022351_1011412874346989_4391702872587576357_n-KgDNcw0fRk62TxMw.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 RP-C 8205 (first solo flights — Lingayen)',
@@ -1155,7 +1155,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'MCIAA, Lapu-Lapu City, Cebu, Philippines (Satellite: Old Airport Road, Davao City)',
     rating: 4.5,
     price: '~$45,000–$58,000 (Full CPL/IR — approx. ₱2.6M–₱3.3M)',
-    image: 'https://www.adventureflight.ph/wp-content/uploads/2021/09/20210513_144610-1024x576.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 Skyhawk ×4 (Continental Diesel Engines — only diesel C172s in PH)',
@@ -1182,7 +1182,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Echo Air Hangar, Tuguegarao Airport, Pengue-Ruyu, Tuguegarao City, Cagayan 3500, Philippines',
     rating: 4.4,
     price: '~$45,000–$60,000 (Full CPL/IR — approx. ₱2.6M–₱3.5M)',
-    image: 'https://echoairaviationacademy.com/assets/img/echo-air-aviation.webp',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 RP-C 8598',
@@ -1211,7 +1211,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Piccio Garden, Villamor, Pasay City, Metro Manila, Philippines',
     rating: 4.7,
     price: 'Free tuition (state-funded; ~₱800K–₱2M for external flight hours and miscellaneous fees)',
-    image: 'https://media.assettype.com/tribune/2025-09-13/ezzapxei/viberimage2025-09-1318-57-43-277.png?w=1200&h=675&auto=format%2Ccompress&fit=max&enlarge=true',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Aircraft engines and airframes (laboratory & maintenance training — on-campus)',
@@ -1234,7 +1234,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Helios Street, Sta. Cruz, Manila, Philippines',
     rating: 4.5,
     price: '~$2,500–$4,500/year (approx. ₱113K–₱127K per semester for Aero Eng, SY 2026–2027)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404531/flight-schools/feati.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'North American T-28 Trojan "Tora-Tora" (on-campus lab trainer)',
@@ -1261,7 +1261,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: '#1 Holy Angel Avenue, Sto. Rosario Street, Angeles City, Pampanga, Philippines',
     rating: 4.6,
     price: '~$2,500–$4,500/year (total academic fees approx. ₱120K–₱150K)',
-    image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1778404532/flight-schools/holy-angel.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 (engine familiarization & ground taxiing — via AAG SPP partnership)',
@@ -1285,7 +1285,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Lot 21 MCIAA, General Aviation Area, Pajac, Lapu-Lapu City, Cebu, Philippines',
     rating: 4.5,
     price: '~$45,000–$60,000 (Full CPL/IR; PPL alone ~$10,000)',
-    image: 'https://scontent.fcrk2-3.fna.fbcdn.net/v/t39.30808-6/474934137_602392139069604_7357743128288431342_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=2a1932&_nc_eui2=AeGpVj8YHxcI_tCUQKLsP2Z7gMmhzxW3XW6AyaHPFbddboBJWtRQrGX9OrTogmPi4V5eemV6bNO0Dq3OFnO2haag&_nc_ohc=hQciQwchDN8Q7kNvwHoylZ-&_nc_oc=Adpeq7zDK1_ZBitVD6Gkcg-aYAFnfeQv17TdkEz2f60AWrKs1YJENTO3zGVkQEp0ha0&_nc_zt=23&_nc_ht=scontent.fcrk2-3.fna&_nc_gid=Lt9jKmkUoKky8pOEoFnkWg&_nc_ss=7b2a8&oh=00_Af79QO_Yti7rA-9SKg-eVB06LRMYRBu4MScavzaLGUETlw&oe=6A062BE3',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 172 RP-C 377 (primary trainer — single-engine & instrument)',
@@ -1324,7 +1324,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: '689 Castillo St., Libson East, Lingayen 2401, Pangasinan, Philippines (Ground School: P. Mayuga St., Brgy. Tambo, Parañaque)',
     rating: 4.4,
     price: '~$38,000–$55,000 (Full CPL/IR — approx. ₱2.2M–₱3.1M; orientation course from ₱50,000)',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb0GAQW50efGK_w41QHZOsX8OaawiroaSm2g&s',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 RP-C 4427 (verified March 2026 solo releases — Lingayen)',
@@ -1349,7 +1349,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: '2nd Floor Ong Building, North National Highway, Bunao Road, Dumaguete City, Negros Oriental, Philippines',
     rating: 4.8,
     price: '~$52,500–$59,900 (Full CPL/IR/ME package; installment payment available)',
-    image: 'https://royhleaviation.com/Academy/wp-content/uploads/2020/04/Royhle-Group.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 RP-C 1096 (new addition — early 2026)',
@@ -1380,7 +1380,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Mati Airport, Brgy. Dahican, Mati City, Davao Oriental, Philippines (Admin: Balai Belen Building, Agdao, Davao City)',
     rating: 4.7,
     price: '~$45,000–$58,000 (Full CPL/IR — approx. ₱2.6M–₱3.3M)',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvEMvA3OrOs3X-ZZJgw0hyP3NqmKkDLZpMZA&s',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Tecnam P2008JC (modern primary trainer)',
@@ -1406,7 +1406,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'San Jose Gusu, Zamboanga City, Zamboanga del Sur 7000, Philippines',
     rating: 4.5,
     price: '~$35,000–$48,000 (Full CPL/IR — approx. ₱2.0M–₱2.8M)',
-    image: 'https://aviation.scci.edu.ph/wp-content/uploads/slider/cache/1169276bdc4d67671b8818ae0e9f2ba5/Aviation-1.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 (primary trainer)',
@@ -1432,7 +1432,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Zamboanga International Airport, Zamboanga City, Philippines (Satellite: AKA Airport, Luuk, Sulu)',
     rating: 4.4,
     price: '~$38,000–$52,000 (Full CPL/IR — approx. ₱2.2M–₱3M)',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo5rddLLpgvnO4Rftn0_m5mhQZrGSEqN7zog&s',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Cessna 152 RP-C 8259 (primary trainer — Zamboanga base)',
@@ -1457,7 +1457,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Plaridel, Bulacan & Pasay City, Metro Manila, Philippines',
     rating: 4.5,
     price: 'Contact for rates (simulator-only training)',
-    image: 'https://lh5.googleusercontent.com/proxy/_pN1Co4R1EVG08immuZV_o3142ukHVd-XU9WxvX8dRAIUbjMfhc81lKDC4b9tQSzC_uJ9XrEGadHrpEMtrxxC7vwsOqLDjn78pIE',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Custom PFCPI Fixed Base Simulators (multiple types)',
@@ -1479,7 +1479,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Clark Freeport Zone, Pampanga, Philippines',
     rating: 4.9,
     price: 'Contact for rates (type rating & recurrent training)',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbWMOzrzA7z3Fu1gvWwFDC4KdfzYUUwh2boQ&s',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Airbus A320 Full Flight Simulator ×3 (Level D)',
@@ -1504,7 +1504,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Philippines',
     rating: 4.6,
     price: 'Contact for rates (recreational simulator sessions)',
-    image: 'https://bnc.bilyonaryo.com/wp-content/uploads/2025/07/sputnikaviation.jpg',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Airbus A320 Full Flight Simulator (recreational use)',
@@ -1524,7 +1524,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Makati City, Metro Manila, Philippines',
     rating: 4.4,
     price: 'Contact for rates (simulation sessions)',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXU93FpR11I7ii8KcYZL3Csxxbc3Gt7VgbwA&s',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'Aviation Cockpit Simulators',
@@ -1545,7 +1545,7 @@ export const DUMMY_FLIGHT_SCHOOLS: FlightSchool[] = [
     location: 'Pasay City, Metro Manila, Philippines',
     rating: 4.8,
     price: 'Contact for rates (simulator training packages)',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKNhQ8aWNiGPz2KgDWf71-cq_eJn5OSRMDtg&s',
+    image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     region: 'Asia' as Region,
     fleet: [
       'ALSIM ALX Multi-Engine Simulator',

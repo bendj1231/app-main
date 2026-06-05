@@ -39,7 +39,7 @@ export const Paywall: React.FC<PaywallProps> = ({
   }
 
   // Paywall screen
-  const isRecognitionPaywall = requiredTier === 'recognition_plus';
+  const _isRecognitionPaywall = requiredTier === 'recognition_plus';
   const isEnterprisePaywall = requiredTier === 'enterprise' || requiredTier === 'enterprise_admin';
 
   return (

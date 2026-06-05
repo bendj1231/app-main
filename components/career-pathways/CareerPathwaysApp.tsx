@@ -154,11 +154,11 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
       setUserName(user.name || user.email?.split('@')[0] || 'Pilot');
       setUserAvatar(user.picture || '');
     } else {
-      // Fallback to localStorage
-      const token = localStorage.getItem('auth_token');
+      // Fallback to sessionStorage (not localStorage — reduces XSS persistence)
+      const token = sessionStorage.getItem('auth_token');
       if (token) {
         setIsLoggedIn(true);
-        setUserName(localStorage.getItem('user_name') || 'Pilot');
+        setUserName(sessionStorage.getItem('user_name') || 'Pilot');
       }
     }
   }, [isAuthenticated, user]);
@@ -213,7 +213,7 @@ export const CareerPathwaysApp: React.FC<CareerPathwaysAppProps> = ({ onLogin })
             />
             <Route 
               path="/get-started" 
-              element={<GetStartedPage onNavigate={handleNavigate} onLogin={onLogin} />} 
+              element={<GetStartedPage />} 
             />
             <Route 
               path="/become-member" 

@@ -10,7 +10,7 @@ interface BlogIndexPageProps {
   categories: BlogCategory[];
   tags: string[];
   onNavigate: (page: string) => void;
-  onLogin: () => void;
+  onLogin?: () => void;
   onArticleClick: (slug: string) => void;
 }
 

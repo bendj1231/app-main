@@ -5,7 +5,7 @@ import { CheckCircle2, Download, Monitor, Apple } from 'lucide-react';
 
 interface DownloadPageProps {
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
     onBack: () => void;
 }
 

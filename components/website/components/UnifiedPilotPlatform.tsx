@@ -59,7 +59,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard',     label: 'Recognition Board', icon: BarChart3 },
   { id: 'home',          label: 'Home',           icon: Home },
   { id: 'profile',       label: 'My Profile',      icon: User },
-  { id: 'wallet',        label: 'Credential Wallet', icon: Shield },
+  { id: 'wallet',        label: 'Credential Vault', icon: Shield },
   { id: 'pathways',      label: 'Pathways',        icon: Map },
   { id: 'programs',      label: 'Programs',        icon: BookOpen },
   { id: 'airlines',      label: 'Airlines',        icon: Plane },
@@ -1307,7 +1307,7 @@ const HomeTab: React.FC<{
                       </div>
                     </div>
                     <div className="px-4 py-4 text-center space-y-3">
-                      <p className="text-[10px] text-gray-500">Connect wallet or scan QR to pay</p>
+                      <p className="text-[10px] text-gray-500">Connect PIC or scan QR to pay</p>
                       <div className="w-16 h-16 mx-auto flex items-center justify-center" style={{ background: '#f5f7fa', border: '1px solid #e2e8f0' }}>
                         <Lock size={20} className="text-gray-300" />
                       </div>
@@ -1456,7 +1456,7 @@ const HomeTab: React.FC<{
 const COMPETENCIES = [
   { id: 1, name: 'Technical Knowledge', desc: 'Aircraft systems, avionics, regulations, meteorology, navigation. Verified via programs and exam scores.', weight: 15, icon: BookOpen },
   { id: 2, name: 'Flight Hours & Currency', desc: 'Total time, PIC time, instrument time, night time, multi-engine. Raw logbook data.', weight: 15, icon: Clock },
-  { id: 3, name: 'License & Ratings', desc: 'CPL/ATPL, type ratings, endorsements. Verified via Credential Wallet token.', weight: 12, icon: Award },
+  { id: 3, name: 'License & Ratings', desc: 'CPL/ATPL, type ratings, endorsements. Verified via PIC record.', weight: 12, icon: Award },
   { id: 4, name: 'Medical Validity', desc: 'Class 1 / Class 2 current status. Expires independently of license.', weight: 10, icon: Shield },
   { id: 5, name: 'Behavioural Competency (EBT)', desc: 'Constructivism, cognitive thinking, CRM. Scored via EBT Video Interview — proprietary IP.', weight: 18, icon: Zap },
   { id: 6, name: 'Industry Alignment', desc: 'Completion of Transition Program, 9 core competencies mapped to HINFACT/ICAO standards.', weight: 12, icon: Target },
@@ -2162,7 +2162,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', color: '#dc2626', textTransform: 'uppercase', marginBottom: 4 }}>Pilot Credential Vault</p>
-              <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4 }}>Access Your Wallet</p>
+              <p style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 4 }}>Access Your PIC</p>
               <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>Enter credentials, upload verification documents, and build your Pre-Cleared profile — zero-knowledge, pilot-owned.</p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
@@ -2956,7 +2956,7 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
         {/* Credential cards */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-black tracking-widest text-white/60 uppercase">Credential Tokens</p>
+            <p className="text-xs font-black tracking-widest text-white/60 uppercase">Credential Records</p>
             {walletChecks.length > 0 && (
               <button onClick={() => { setWizardOpen(true); setWizardStep(1); }} className="text-[10px] font-bold px-3 py-1.5 tracking-wider text-white/70 hover:text-white" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }}>
                 + ADD CREDENTIAL
@@ -3155,9 +3155,9 @@ const WalletTab: React.FC<{ walletChecks: any[]; profile: any; pendingRequests?:
         </div>
         <div className="flex-1 min-w-0">
           <p className={`text-xs font-black tracking-wider ${allVerified ? 'text-emerald-400' : hasExpired ? 'text-red-400' : 'text-blue-300'}`}>
-            {allVerified ? 'PRE-CLEARED ✓' : hasExpired ? 'ACTION REQUIRED' : walletChecks.length > 0 ? `${walletChecks.length} CREDENTIAL TOKEN${walletChecks.length !== 1 ? 'S' : ''} IN VAULT` : 'NO CREDENTIALS YET'}
+            {allVerified ? 'PRE-CLEARED ✓' : hasExpired ? 'ACTION REQUIRED' : walletChecks.length > 0 ? `${walletChecks.length} CREDENTIAL RECORD${walletChecks.length !== 1 ? 'S' : ''} IN VAULT` : 'NO CREDENTIALS YET'}
           </p>
-          <p className="text-[10px] text-white/35 mt-0.5">View verification status, ZK tokens, and initiate Veremark check</p>
+          <p className="text-[10px] text-white/35 mt-0.5">View verification status, records, and initiate Veremark check</p>
         </div>
         <ChevronRight size={14} className="text-white/30 flex-shrink-0" />
       </button>
@@ -3920,7 +3920,7 @@ const NEWSROOM_DATA = [
     category: 'pilot' as const,
     tag: 'Recognition Systems',
     title: 'How to Build the Right Recognition Profile',
-    description: 'CEO & Founder Karl Brian Vogt breaks down how to align your profile with Airbus EBT standards. It is not about flight hours alone — airlines want cognitive skills, behavioral markers, and constructivist thinking that static CVs never capture.',
+    description: 'CEO & Founder Benjamin Bowler breaks down how to align your profile with Airbus EBT standards. It is not about flight hours alone — airlines want cognitive skills, behavioral markers, and constructivist thinking that static CVs never capture.',
     bullets: ['EBT CBTA-aligned assessment framework', 'Industry-recognized competency validation', 'Live profile matching with operators'],
     metrics: [{ label: 'Live Webinars', value: 'This week' }, { label: 'Profile Views', value: '2,340 +' }],
     image: '/images/pilotrecognitioncompoennt.png',
@@ -4109,7 +4109,7 @@ const EmailVerifyGate: React.FC<{ onResend: () => void; sent: boolean }> = ({ on
     </div>
     <h2 className="text-xl font-black text-white mb-2">Verify your email first</h2>
     <p className="text-sm text-white/50 max-w-sm mb-6 leading-relaxed">
-      Your credential wallet is locked until you confirm your email address. Check your inbox for a verification link from PilotRecognition.
+      Your credential vault is locked until you confirm your email address. Check your inbox for a verification link from PilotRecognition.
     </p>
     {sent ? (
       <p className="text-xs text-emerald-400 font-semibold">✓ Verification email sent — check your inbox</p>
@@ -4580,7 +4580,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         imgEl.src = URL.createObjectURL(file);
       });
       const base64 = canvas.toDataURL('image/jpeg', 0.8);
-      const uploadRes = await fetch(`${(import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'}/functions/v1/cloudinary-upload`, {
+      const uploadRes = await fetch(`${(import.meta as any).env?.VITE_SUPABASE_URL as string}/functions/v1/cloudinary-upload`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ file: base64, userId: profileData.id }),
@@ -4938,7 +4938,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
                       <div className="py-1">
                         {[
                           { label: 'Edit Profile', tab: 'profile' as TabId, icon: User },
-                          { label: 'My Wallet', tab: 'wallet' as TabId, icon: Shield },
+                          { label: 'My Vault', tab: 'wallet' as TabId, icon: Shield },
                           { label: 'Pathways', tab: 'pathways' as TabId, icon: Map },
                           { label: 'Settings', tab: 'settings' as TabId, icon: Settings },
                         ].map(({ label, tab, icon: Icon }) => (

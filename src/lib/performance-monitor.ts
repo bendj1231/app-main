@@ -12,7 +12,7 @@ export interface PerformanceMetric {
   name: string;
   duration: number;
   timestamp: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface APIPerformanceMetric extends PerformanceMetric {
@@ -46,9 +46,9 @@ class PerformanceMonitor {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        entries.forEach((entry: any) => {
+        entries.forEach((entry) => {
           if (entry.entryType === 'resource') {
-            this.trackResourceTiming(entry);
+            this.trackResourceTiming(entry as PerformanceResourceTiming);
           }
         });
       });
@@ -82,7 +82,7 @@ class PerformanceMonitor {
     }
   }
 
-  trackAPICall(url: string, method: string, startTime: number, status: number, success: boolean, metadata?: Record<string, any>): void {
+  trackAPICall(url: string, method: string, startTime: number, status: number, success: boolean, metadata?: Record<string, unknown>): void {
     const duration = performance.now() - startTime;
     
     const metric: APIPerformanceMetric = {
@@ -142,7 +142,7 @@ class PerformanceMonitor {
     });
   }
 
-  trackCustomMetric(name: string, duration: number, metadata?: Record<string, any>): void {
+  trackCustomMetric(name: string, duration: number, metadata?: Record<string, unknown>): void {
     const metric: PerformanceMetric = {
       name,
       duration,
@@ -160,7 +160,7 @@ class PerformanceMonitor {
     });
   }
 
-  private reportToAnalytics(category: string, data: Record<string, any>): void {
+  private reportToAnalytics(_category: string, _data: Record<string, unknown>): void {
     // This will be connected to the analytics module
     // For now, just log to console
     if (process.env.NODE_ENV === 'development') {
@@ -230,7 +230,7 @@ export function withAPITracking<T>(
   url: string,
   method: string,
   apiCall: () => Promise<T>,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<T> {
   const monitor = getPerformanceMonitor();
   const startTime = performance.now();

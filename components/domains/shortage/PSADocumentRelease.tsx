@@ -56,7 +56,7 @@ export default function PSADocumentRelease() {
       pillars: [
         { id: 'p19', num: 19, name: 'Anonymous Hosting & Identity Protection', desc: 'Technical infrastructure for whistleblower safety — Redaction, encryption, anonymous submission. Critical: Safety against airline retaliation.' },
         { id: 'p20', num: 20, name: 'Legal Shield (Whistleblower Protection)', desc: 'Legal framework for anonymous speakers — Jurisdiction selection, liability protection. Goal: Pilots can speak without career suicide.' },
-        { id: 'p21', num: 21, name: 'Data Custodians (WM Pilot Group)', desc: 'Non-profit database ownership — Owns PSA data, not airlines. Structure: No commercial exploitation of pilot stories.' },
+        { id: 'p21', num: 21, name: 'Data Custodians (Aviation Pathways Ltd)', desc: 'Non-profit database ownership — Owns PSA data, not airlines. Structure: No commercial exploitation of pilot stories.' },
         { id: 'p22', num: 22, name: 'Collaboration Framework', desc: 'Association partnerships — Other aviation associations joining PSA cause. Goal: Coalition of pilot advocates.' },
         { id: 'p23', num: 23, name: 'Transparency Technology', desc: 'Open-source / auditable platform — Public can verify PSA operates as stated. Trust: No black boxes, no hidden agendas.' },
         { id: 'p24', num: 24, name: 'Academic Research Partners', desc: 'University aviation programs — Study pipeline clogging, publish findings. Credibility: Academic validation of PSA claims.' },

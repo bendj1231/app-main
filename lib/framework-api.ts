@@ -123,7 +123,7 @@ export async function getPillarDetail(pillarNumber: number): Promise<PillarDetai
     console.error('Error fetching stakeholder relations:', relationsError);
   }
 
-  const stakeholders = stakeholderRelations?.map(r => r.stakeholder) || [];
+  const stakeholders = (stakeholderRelations?.map(r => r.stakeholder).flat() as FrameworkStakeholder[]) || [];
 
   return {
     pillar,

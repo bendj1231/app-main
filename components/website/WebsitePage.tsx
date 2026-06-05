@@ -94,7 +94,7 @@ export const WebsitePage: React.FC<WebsitePageProps> = ({
             icon: "fa-book-reader",
             color: "bg-blue-900",
             borderColor: "border-blue-700",
-            img: IMAGES.WINGMENTOR_PASSPORT_APP_IMG,
+            img: '/images/wingmentor-passport.png',
             target: 'handbook'
         },
         {

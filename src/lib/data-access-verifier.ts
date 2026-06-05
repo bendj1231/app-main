@@ -10,7 +10,7 @@ interface DataAccessRequest {
 
 interface DataAccessResult {
   granted: boolean;
-  data: any;
+  data: unknown;
   consent?: ConsentRecord;
   reason?: string;
 }
@@ -144,8 +144,8 @@ class DataAccessVerifier {
   private filterDataByConsent(
     pilotData: PilotData,
     requestedTypes: string[],
-    pilotDID: string,
-    requester: string
+    _pilotDID: string,
+    _requester: string
   ): Partial<PilotData> {
     const filteredData: Partial<PilotData> = {};
 

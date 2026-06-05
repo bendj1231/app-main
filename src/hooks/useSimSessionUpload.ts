@@ -68,7 +68,7 @@ export function useSimSessionUpload() {
 
     try {
       // 1. Upsert platform connection
-      const providerSlug = `manual-sim-${(form.provider_name || 'generic').toLowerCase().replace(/\s+/g, '-').slice(0, 20)}`;
+      const _providerSlug = `manual-sim-${(form.provider_name || 'generic').toLowerCase().replace(/\s+/g, '-').slice(0, 20)}`;
 
       const { data: existingConn } = await supabase
         .from('pilot_platform_connections')
@@ -141,8 +141,8 @@ export function useSimSessionUpload() {
         });
 
       setStatus('success');
-    } catch (e: any) {
-      setUploadError(e?.message ?? 'Upload failed.');
+    } catch (e: unknown) {
+      setUploadError(e instanceof Error ? e.message : 'Upload failed.');
       setStatus('error');
     }
   }, [currentUser?.id]);

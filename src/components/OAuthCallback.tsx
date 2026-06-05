@@ -15,7 +15,7 @@ export const OAuthCallback = () => {
       try {
         const { supabase } = await import('@/src/lib/supabase');
 
-        const { data: { session: cbSession } } = await supabase.auth.getSession();
+        const { data: { session: _cbSession } } = await supabase.auth.getSession();
 
         // 1. Check by auth0_id first
         let { data: existing } = await supabase
@@ -53,7 +53,7 @@ export const OAuthCallback = () => {
 
           if (supabaseUid) {
             // Has a Supabase session — safe to upsert from client (RLS: auth.uid() = id)
-            const { data: newProfile, error: upsertError } = await supabase.from('profiles').upsert({
+            const { data: newProfile, error: _upsertError } = await supabase.from('profiles').upsert({
               id: supabaseUid,
               auth0_id: user.sub,
               email: user.email,
@@ -90,7 +90,7 @@ export const OAuthCallback = () => {
     };
 
     createSupabaseProfile();
-  }, [isAuthenticated, user, profileCreated]);
+  }, [isAuthenticated, user, profileCreated, navigate]);
 
   if (error) {
     return (

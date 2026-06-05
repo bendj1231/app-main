@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Circle } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 export interface Step {
   id: string;

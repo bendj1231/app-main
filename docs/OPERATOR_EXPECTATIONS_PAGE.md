@@ -251,7 +251,7 @@ A **marketing landing page** where operators pitch themselves to skilled, underv
 
 **After Alignment:**
 - Operator sees: **Pilot's verified profile**
-  - Name: Capt. Karl Vogt
+  - Name: Capt. Benjamin Bowler
   - Hours: 6,200 PIC
   - Veremark: ✅ Verified
   - Registry: ✅ Active

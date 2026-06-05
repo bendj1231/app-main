@@ -206,7 +206,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
             <span className="font-medium">Privacy-First Design</span>
           </div>
           <p className="text-green-700 text-sm mt-1">
-            This credential will be stored only in your Pilot Wallet, not on our platform.
+            This credential will be stored only in your PIC, not on our platform.
           </p>
         </div>
 
@@ -244,7 +244,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Create Your Digital Credential</h2>
           <p className="text-gray-600 mb-4">
-            Your data stays private - it goes directly to your wallet, not our platform.
+            Your data stays private - it goes directly to your PIC, not our platform.
           </p>
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 max-w-md mx-auto">
             <div className="flex items-center gap-2 text-green-800">
@@ -254,7 +254,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
               <span className="font-medium">Privacy-First Design</span>
             </div>
             <p className="text-green-700 text-sm mt-1">
-              Your credentials are stored only in your Pilot Wallet
+              Your credentials are stored only in your PIC
             </p>
           </div>
         </div>
@@ -422,12 +422,12 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Creating Your Digital Credential</h3>
           <p className="text-gray-600">
-            Your credential is being generated and sent directly to your wallet.
+            Your credential is being generated and sent directly to your PIC.
           </p>
           <div className="mt-4 text-sm text-gray-500">
             <p>✓ Credential data prepared</p>
             <p>⏳ Signing with platform key</p>
-            <p>⏳ Sending to Pilot Wallet</p>
+            <p>⏳ Sending to PIC</p>
           </div>
         </div>
       </div>
@@ -446,7 +446,7 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
           
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Digital Credential Ready!</h3>
           <p className="text-gray-600 mb-6">
-            Your pilot credential has been created and is ready to be claimed to your wallet.
+            Your pilot credential has been created and is ready to be claimed to your PIC.
           </p>
           
           <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
@@ -463,11 +463,11 @@ export const WalletFirstCredentialFlow: React.FC<WalletFirstCredentialFlowProps>
             onClick={handleClaimCredential}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition-colors font-medium"
           >
-            Claim to Pilot Wallet
+            Claim to PIC
           </button>
           
           <p className="text-xs text-gray-500 mt-4">
-            Your credential will be stored securely in your personal wallet.
+            Your credential will be stored securely in your personal PIC.
           </p>
         </div>
       </div>

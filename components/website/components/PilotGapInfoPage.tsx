@@ -6,7 +6,7 @@ import { RevealOnScroll } from './RevealOnScroll';
 interface PilotGapInfoPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const PilotGapInfoPage: React.FC<PilotGapInfoPageProps> = ({

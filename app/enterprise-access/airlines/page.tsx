@@ -92,7 +92,7 @@ const AirlinesOperatorsPage = () => {
 
     return (
         <>
-            <style jsx>{`
+            <style>{`
                 @media (max-width: 1024px) {
                     html, body {
                         zoom: 0.5;
@@ -219,7 +219,10 @@ const AirlinesOperatorsPage = () => {
             <section className="py-16 px-6 border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
                 <div className="max-w-4xl mx-auto text-center">
                     <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">{airlinesSector.label}</p>
-                    <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-6 text-slate-900" dangerouslySetInnerHTML={{ __html: airlinesSector.tagline }} />
+                    <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-6 text-slate-900">
+                        Close the <span className="text-red-600">recognition gap</span>.<br />
+                        Surface your <span className="text-red-600">expectations</span>. Pull <span className="text-red-600">aligned pilots</span>.
+                    </h1>
                     <p className="text-slate-600 text-base max-w-2xl mx-auto mb-8">
                         Stop drowning in mismatched applications. Build a pipeline of pilots who already understand your needs and have positioned themselves accordingly.
                     </p>

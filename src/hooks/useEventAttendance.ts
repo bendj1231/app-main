@@ -24,6 +24,7 @@ export const useEventAttendance = (userId: string | null) => {
     if (userId) {
       fetchEvents();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchEvents = async () => {

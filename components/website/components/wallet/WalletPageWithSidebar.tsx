@@ -118,8 +118,8 @@ export const WalletPageWithSidebar: React.FC<WalletPageWithSidebarProps> = ({ us
           </div>
           {!sidebarCollapsed && (
             <div style={{ overflow: 'hidden' }}>
-              <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>Pilot Wallet</p>
-              <p style={{ margin: '2px 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap' }}>Credential Vault</p>
+              <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: 500 }}>PIC</p>
+              <p style={{ margin: '2px 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap' }}>Secure Vault</p>
             </div>
           )}
         </div>

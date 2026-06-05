@@ -25,7 +25,7 @@ const navItems = [
     label: "SOLUTION",
     dropdown: [
       { label: "Verified Stories", href: "#stories" },
-      { label: "Credential Wallet", href: "#wallet" },
+      { label: "Credential Vault", href: "#wallet" },
       { label: "Career Pathways", href: "#pathways" },
       { label: "Pilot Recognition", href: "#recognition" }
     ]

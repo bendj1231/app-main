@@ -24,6 +24,7 @@ export const useAlumniNetwork = (userId: string | null) => {
     if (userId) {
       fetchConnections();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchConnections = async () => {

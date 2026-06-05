@@ -5,7 +5,7 @@
 
 ## The Airport Metaphor — Full Airspace Blueprint
 
-### Terminal 1 — WM Pilot Group (The Command Center)
+### Terminal 1 — Aviation Pathways Ltd (The Command Center)
 - Every pilot enters here. Account creation, passkeys (Google/Apple), encrypted vault (Supabase + Firebase dual-engine), payment processing.
 - **Legal Role:** Independent Data Controller of the application/infrastructure layer only — not the controller of the pilot's raw credential data.
 - Zero-knowledge: hosts only AES-256-GCM ciphertext. Cannot read, alter, or decrypt payloads.
@@ -97,8 +97,8 @@ IF Age < 18 OR License == "Student/SPL":
 - Pilot pays $99 → triggers two simultaneous Veremark orders
 - **Check 1** ($13): CAAP single PEL lookup → License + Class 1 Medical + ICAO ELP + Aircraft Ratings
 - **Check 2** ($9): ATO/Operator nominated by pilot → Graduate cert, course completion, flight hours (statutory declaration), logbook sign-off validity
-- Veremark contacts CAA/ATO directly under pilot's explicit, direct consent agreement (pilot ↔ Veremark, not pilot ↔ WM Pilot Group)
-- Result returns to Terminal 1 as **Pass/Fail verification status only** — no raw credential data stored on WM Pilot Group servers
+- Veremark contacts CAA/ATO directly under pilot's explicit, direct consent agreement (pilot ↔ Veremark, not pilot ↔ Aviation Pathways Ltd)
+- Result returns to Terminal 1 as **Pass/Fail verification status only** — no raw credential data stored on Aviation Pathways Ltd servers
 - **Revenue:** $99 in, $22 out → ~$77 margin
 
 **Multi-Operator Verification:** Each additional institution requires a separate check and consent. Pricing to be scoped after first flow is proven end-to-end.
@@ -109,7 +109,7 @@ IF Age < 18 OR License == "Student/SPL":
 
 | Entity | Role | Liability |
 |---|---|---|
-| **WM Pilot Group** | Platform Orchestrator / Infrastructure Controller | App layer, routing, payment, ecosystem governance |
+| **Aviation Pathways Ltd** | Platform Orchestrator / Infrastructure Controller | App layer, routing, payment, ecosystem governance |
 | **The Pilot** | Credential Custodian / Data Controller of raw credentials | Holds private keys, sole owner of raw data |
 | **Veremark / IDPs** | Independent Verification Controllers | Raw credential processing, CAA/ATO queries |
 | **Airlines (Enterprise)** | Independent Data Controllers | Assume full HR/employment liability on profile access |
@@ -127,13 +127,13 @@ IF Age < 18 OR License == "Student/SPL":
 - **Free Boarding Pass:** Pilots with high score/status fast-tracked to airline interest pool.
 
 **Enterprise TOS must state:**
-> "Upon unlocking and accessing a pilot's verified profile, the Airline assumes the role of an Independent Data Controller. The Airline agrees to process this data in accordance with applicable employment and data protection laws. WM Pilot Group accepts no liability for the Airline's subsequent use, storage, or processing of the pilot's data."
+> "Upon unlocking and accessing a pilot's verified profile, the Airline assumes the role of an Independent Data Controller. The Airline agrees to process this data in accordance with applicable employment and data protection laws. Aviation Pathways Ltd accepts no liability for the Airline's subsequent use, storage, or processing of the pilot's data."
 
 ---
 
 ## Data Controller Agreement Summary (PR-DCA-001 v1.5)
 
-**Correct legal framing for WM Pilot Group:**
+**Correct legal framing for Aviation Pathways Ltd:**
 > "We are a Platform Orchestrator (Data Controller of the Infrastructure/Application layer). We do not act as a Joint Controller for raw data. We do not store unencrypted PII or medical data. Authentication is outsourced to Google Passkeys via Auth0. Verification is outsourced to Veremark as an Independent Controller via direct user consent. Data sharing with airlines transitions full Controller liability to the corporate subscriber at the point of access. Our storage uses a zero-knowledge, client-side encrypted active-active redundant architecture."
 
 **Key Article revisions required in DCA:**

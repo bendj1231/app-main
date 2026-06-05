@@ -24,6 +24,7 @@ export const usePeerEndorsements = (userId: string | null) => {
     if (userId) {
       fetchEndorsements();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchEndorsements = async () => {

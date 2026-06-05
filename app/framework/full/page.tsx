@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { sanitizeHtml } from '@/src/lib/sanitize-html';
 
 // Pillar Accordion Table Component
 function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
@@ -51,7 +52,7 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
             <span
               key={j}
               className={`text-sm px-3 py-1 ${isCurrentState ? 'text-red-600 font-medium' : 'text-slate-700'}`}
-              dangerouslySetInnerHTML={{ __html: cellText }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(cellText) }}
             />
           );
         })}
@@ -69,14 +70,14 @@ function PillarTabTable({ headerLine, groups, colCount, scrollToSection }: {
       return (
         <div key={idx} className="my-3 mx-2 px-5 py-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
           <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Keynote</p>
-          <p className="text-sm text-slate-700 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: keynoteText }} />
+          <p className="text-sm text-slate-700 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: sanitizeHtml(keynoteText) }} />
         </div>
       );
     }
     if (isSubSection) {
       return (
         <div key={idx} className={`grid ${gridClass} py-2 border-y border-slate-400 bg-slate-600`}>
-          <span className="col-span-full px-3 text-xs font-bold text-white tracking-wide" dangerouslySetInnerHTML={{ __html: processCellText(rawLabel) }} />
+          <span className="col-span-full px-3 text-xs font-bold text-white tracking-wide" dangerouslySetInnerHTML={{ __html: sanitizeHtml(processCellText(rawLabel)) }} />
         </div>
       );
     }
@@ -601,7 +602,7 @@ export default function FullFrameworkPage() {
         }
         
         // Regular paragraph
-        return <p key={i} className="text-slate-700 leading-relaxed mb-2" dangerouslySetInnerHTML={{ __html: processedLine }} />;
+        return <p key={i} className="text-slate-700 leading-relaxed mb-2" dangerouslySetInnerHTML={{ __html: sanitizeHtml(processedLine) }} />;
       })
       .filter(Boolean);
   };

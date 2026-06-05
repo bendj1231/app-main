@@ -797,7 +797,8 @@ export const PilotRecognitionProfilePage: React.FC<PilotRecognitionProfilePagePr
             setProfileData(finalProfileData);
             // Use decrypted profile image from profiles table first, then fall back to pilot_recognition_matches
             // Call Supabase Edge Function to calculate pathway matches
-            const supabaseUrl = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+            const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string;
             const edgeFunctionUrl = `${supabaseUrl}/functions/v1/calculate-pathway-matches`;
             
             

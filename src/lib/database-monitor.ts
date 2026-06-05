@@ -166,8 +166,8 @@ export async function withDatabaseTracking<T>(
   query: string,
   table: string,
   operation: 'select' | 'insert' | 'update' | 'delete',
-  dbCall: () => Promise<{ data: T | null; error: any }>
-): Promise<{ data: T | null; error: any }> {
+  dbCall: () => Promise<{ data: T | null; error: unknown }>
+): Promise<{ data: T | null; error: unknown }> {
   const monitor = getDatabaseMonitor();
   const startTime = performance.now();
 

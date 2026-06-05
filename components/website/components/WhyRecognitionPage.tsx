@@ -5,7 +5,7 @@ import { ArrowLeft, GraduationCap, Plane, BadgeCheck, Globe, TrendingUp, Award }
 interface WhyRecognitionPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const WhyRecognitionPage: React.FC<WhyRecognitionPageProps> = ({ onBack, onNavigate, onLogin }) => {

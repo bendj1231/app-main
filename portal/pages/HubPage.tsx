@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../icons';
 import type { UserProfile } from '../types/user';
+import { db, query, collection, where, getDocs } from '../lib/firebase-stub';
 import { RecognitionDashboard } from '../../components/RecognitionDashboard';
 
 interface HubPageProps {

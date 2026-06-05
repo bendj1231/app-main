@@ -7,7 +7,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { IMAGES } from '../../../../src/lib/website-constants';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { PathwayGrid } from './PathwayGrid';
+import { PathwayGrid, type Slide } from './PathwayGrid';
 import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { HomePageSchema } from '../seo/HomePageSchema';
@@ -17,7 +17,7 @@ import { NewsroomModal } from '../NewsroomModal';
 
 interface HomePageProps {
     onJoinUs: () => void;
-    onLogin: () => void;
+    onLogin?: () => void;
     onNavigate: (page: string) => void;
     onGoToProgramDetail: (slide?: Slide) => void;
     isLoggedIn?: boolean;
@@ -32,18 +32,6 @@ interface HomePageProps {
     overallRecognitionScore?: number;
     userDisplayName?: string;
     userEmail?: string;
-}
-
-interface Slide {
-    image: string;
-    title: string;
-    subtitle: string;
-    category: 'program' | 'systems_automation' | 'network' | 'application' | 'pathways';
-    regions?: { name: string; flag?: string }[];
-    isDarkCard?: boolean;
-    titleColor?: string;
-    subtitleColor?: string;
-    description?: string;
 }
 
 const navItems = [
@@ -338,14 +326,14 @@ const newsroomHighlights = [
         id: 'recognition-profiles',
         tag: 'Recognition Systems',
         title: 'How to Build the Right Recognition Profile',
-        description: 'CEO & Founder Karl Brian Vogt breaks down how to align your profile with Airbus EBT standards. It is not about flight hours alone — airlines want cognitive skills, behavioral markers, and constructivist thinking that static CVs never capture.',
+        description: 'CEO & Founder Benjamin Bowler breaks down how to align your profile with Airbus EBT standards. It is not about flight hours alone — airlines want cognitive skills, behavioral markers, and constructivist thinking that static CVs never capture.',
         image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590630/newsroom/kvos2ityyztesx5idue2.png',
         metrics: [
             { label: 'Live Webinars', value: 'This week' },
             { label: 'Profile Views', value: '2,340 +' }
         ],
         bullets: [
-            'Webinar series with Karl Brian Vogt on EBT CBTA alignment beyond stick-and-rudder skills',
+            'Webinar series with Benjamin Bowler on EBT CBTA alignment beyond stick-and-rudder skills',
             'Behavioral scoring, mentorship hours, and competency verification in one live profile',
             'Airlines and operators pull verified profiles — no more static CVs into black holes'
         ],
@@ -508,7 +496,7 @@ const HOME_PATHWAYS = [
         matchProbability: 94,
         pr: 82,
         location: 'United States | Home-Based',
-        image: 'https://www.envoyair.com/wp-content/uploads/2024/03/IMG_CadetProgram_MeganSnow.jpg',
+        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
         tags: ['American Airlines Flow', 'Embraer Fleet', 'Tuition Reimbursement'],
         category: 'Pilot Training & Certification'
     },
@@ -519,7 +507,7 @@ const HOME_PATHWAYS = [
         matchProbability: 92,
         pr: 78,
         location: 'Phnom Penh, Cambodia',
-        image: 'https://s28477.pcdn.co/wp-content/uploads/2024/10/CAngkor_1-984x554.png',
+        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
         tags: ['Sponsored Training', 'A320 Type Rating', 'Direct Pathway'],
         category: 'Pilot Training & Certification'
     },
@@ -530,7 +518,7 @@ const HOME_PATHWAYS = [
         matchProbability: 88,
         pr: 75,
         location: 'Hong Kong / Australia',
-        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/cathay-pacific.jpg',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         tags: ['Full Sponsorship', 'A350/B777', 'Definite Return'],
         category: 'Commercial Operations'
     },
@@ -541,7 +529,7 @@ const HOME_PATHWAYS = [
         matchProbability: 90,
         pr: 80,
         location: 'Dubai, United Arab Emirates',
-        image: 'https://cdn.uc.assets.prezly.com/5f1fd10f-a9bc-4bf0-aa29-b9a26dc42407/-/crop/1952x1066/0,272/-/preview/-/resize/1108x/-/quality/best/-/format/auto/',
+        image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80',
         tags: ['B737 MAX', 'Dubai Base', 'Career Progression'],
         category: 'Commercial Operations'
     },
@@ -552,7 +540,7 @@ const HOME_PATHWAYS = [
         matchProbability: 89,
         pr: 77,
         location: 'Dublin, Ireland / Various',
-        image: 'https://astonfly.com/wp-content/uploads/2024/06/Branding-04-min-scaled.webp',
+        image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=80',
         tags: ['Low-Cost Leader', 'Fast Upgrade', '500+ Aircraft'],
         category: 'Commercial Operations'
     },
@@ -563,7 +551,7 @@ const HOME_PATHWAYS = [
         matchProbability: 92,
         pr: 81,
         location: 'New York, NY / Various Bases',
-        image: 'https://sanpedrosun.s3.us-west-1.amazonaws.com/wp-content/uploads/2023/12/09170529/Belizean-pilot-flies-JetBlues-inaugural-flight-to-Belize-3-657x438.jpg',
+        image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
         tags: ['Direct-to-Airline', 'A320/A220 Fleet', 'East Coast Network'],
         category: 'Career Progression'
     },
@@ -574,7 +562,7 @@ const HOME_PATHWAYS = [
         matchProbability: 93,
         pr: 85,
         location: 'Dubai, UAE',
-        image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/emirates.png',
+        image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
         tags: ['A380/A350 Fleet', '5-Star Airline', 'Global Network'],
         category: 'Pilot Training & Certification'
     },
@@ -585,7 +573,7 @@ const HOME_PATHWAYS = [
         matchProbability: 87,
         pr: 74,
         location: 'London, UK / Various European Bases',
-        image: 'https://www.cae.com/content/images/civil-aviation/_webp/easyJet_crew_.jpg_webp_40cd750bba9870f18aada2478b24840a.webp',
+        image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=800&q=80',
         tags: ['A320 Fleet', 'European Network', 'Low-Cost Leader'],
         category: 'Commercial Operations'
     },
@@ -2645,7 +2633,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         </div>
                     </div>
                     <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-                        <p>&copy; 2024 PilotRecognition - WM Pilot Group. All rights reserved.</p>
+                        <p>&copy; 2024 PilotRecognition - Benjamin Bowler (pending Aviation Pathways Ltd). All rights reserved.</p>
                     </div>
                 </div>
             </footer>

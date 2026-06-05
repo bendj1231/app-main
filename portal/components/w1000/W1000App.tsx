@@ -309,7 +309,7 @@ const App: React.FC<{ userProfile?: { displayName?: string; email?: string; avat
       return React.cloneElement(element, {
           onMouseEnter: () => setHoveredControl(label),
           onMouseLeave: () => setHoveredControl(null)
-      });
+      } as any);
   };
 
   const SideControls = ({ mode }: { mode: InterfaceMode }) => (

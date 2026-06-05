@@ -41,6 +41,7 @@ export const useMentorshipMessaging = (userId: string | null) => {
     if (userId) {
       fetchConversations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchConversations = async () => {

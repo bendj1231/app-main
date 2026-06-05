@@ -1,11 +1,10 @@
-import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import { Navigate } from 'react-router-dom';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Privacy Policy — PilotTerminal',
   description: 'Privacy policy for PilotTerminal.com.',
 };
 
 export default function PilotTerminalPrivacyRedirect() {
-  redirect('/privacy-policy');
+  return <Navigate to="/privacy-policy" replace />;
 }

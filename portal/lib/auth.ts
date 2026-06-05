@@ -1,6 +1,6 @@
-import { onAuthStateChanged, type User } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import { onAuthStateChanged, doc, getDoc, setDoc, serverTimestamp } from './firebase-stub';
+import type { User } from 'firebase/auth';
+import { auth, db } from './firebase-stub';
 import type { UserProfile, UserRole } from '../types/user';
 import { AVAILABLE_APPS, ROLE_PERMISSIONS } from '../types/user';
 

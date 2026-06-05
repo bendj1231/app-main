@@ -1,9 +1,9 @@
 # PSA → ALPA: Response to "Setting the Record Straight"
-*Simulated correspondence from Karl Brian Vogt (WM Pilot Group / pilotshortage.org) to Capt. Jason Ambrosi.*
+*Simulated correspondence from Benjamin Bowler (Aviation Pathways Ltd / pilotshortage.org) to Capt. Jason Ambrosi.*
 
 ---
 
-**From:** Karl Brian Vogt, Director, WM Pilot Group; Founder, pilotshortage.org / Wingman Network  
+**From:** Benjamin Bowler, Director, Aviation Pathways Ltd; Founder, pilotshortage.org / Wingman Network  
 **To:** Capt. Jason Ambrosi, President, Air Line Pilots Association  
 **Date:** June 1, 2026  
 **Subject:** RE: Setting the Record Straight: Professional Standards vs. The Devaluation of Aviation Safety
@@ -63,8 +63,8 @@ We do not want to tear down your wall, Captain Ambrosi. We want an honest, data-
 
 Sincerely,
 
-**Karl Brian Vogt**  
-Director, WM Pilot Group  
+**Benjamin Bowler**  
+Director, Aviation Pathways Ltd  
 Founder, pilotshortage.org / Wingman Network
 
 ---

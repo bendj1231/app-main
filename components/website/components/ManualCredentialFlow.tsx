@@ -175,7 +175,7 @@ export const ManualCredentialFlow: React.FC<ManualCredentialFlowProps> = ({
           
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Credentials Verified!</h3>
           <p className="text-gray-600 mb-6">
-            Your pilot credentials have been verified and are ready to be claimed to your wallet.
+            Your pilot credentials have been verified and are ready to be claimed to your PIC.
           </p>
           
           <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
@@ -192,11 +192,11 @@ export const ManualCredentialFlow: React.FC<ManualCredentialFlowProps> = ({
             onClick={handleClaimCredential}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition-colors font-medium"
           >
-            Claim to Pilot Wallet
+            Claim to PIC
           </button>
           
           <p className="text-xs text-gray-500 mt-4">
-            You'll be redirected to Pilot Wallet to store your verifiable credential.
+            You'll be redirected to your PIC to store your verified credential.
           </p>
         </div>
       </div>

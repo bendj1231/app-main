@@ -2,8 +2,8 @@
 title: "PilotRecognition Partners with Veremark for Verified Pilot Credentials"
 excerpt: "We're launching a comprehensive verification partnership with Veremark to bring enterprise-grade background checks and credential verification to aviation professionals worldwide."
 author:
-  name: "Karl Brian Vogt"
-  role: "Managing Director, WM Pilot Group"
+  name: "Benjamin Bowler"
+  role: "Managing Director, Aviation Pathways Ltd"
 publishedAt: "2026-05-22T10:00:00Z"
 category: "Partnerships"
 tags: ["Veremark", "Verification", "CAAP", "Philippines", "Partnerships", "Credentials"]

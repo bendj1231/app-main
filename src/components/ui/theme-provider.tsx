@@ -10,38 +10,31 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('system');
-  const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
+function getInitialTheme(): Theme {
+  try {
+    const stored = localStorage.getItem('theme') as Theme | null;
+    if (stored) return stored;
+  } catch { /* noop */ }
+  return 'system';
+}
 
-  useEffect(() => {
-    // Get initial theme from localStorage or system preference
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    if (storedTheme) {
-      setThemeState(storedTheme);
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+
+  const actualTheme: 'light' | 'dark' = React.useMemo(() => {
+    if (theme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-  }, []);
+    return theme;
+  }, [theme]);
 
   useEffect(() => {
     const root = window.document.documentElement;
-
-    // Determine actual theme
-    let resolvedTheme: 'light' | 'dark' = 'light';
-
-    if (theme === 'system') {
-      resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    } else {
-      resolvedTheme = theme;
-    }
-
-    setActualTheme(resolvedTheme);
-
-    // Apply theme to DOM
-    root.setAttribute('data-theme', resolvedTheme);
-
-    // Store preference
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    root.setAttribute('data-theme', actualTheme);
+    try {
+      localStorage.setItem('theme', theme);
+    } catch { /* noop */ }
+  }, [actualTheme, theme]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -54,6 +47,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+  // eslint-disable-next-line react-refresh/only-export-components
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {

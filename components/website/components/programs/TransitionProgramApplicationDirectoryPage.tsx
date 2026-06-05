@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface TransitionProgramApplicationPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const TransitionProgramApplicationPage: React.FC<TransitionProgramApplicationPageProps> = ({ onBack, onNavigate, onLogin }) => {

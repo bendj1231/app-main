@@ -256,7 +256,7 @@ export function PilotSpotlightManager({ eventId, eventTitle, user, onClose }: Pi
               <Plus className="w-4 h-4" />
               Add Spotlight
             </button>
-            {onCancel && (
+            {onClose && (
               <button
                 onClick={onClose}
                 className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"

@@ -9949,7 +9949,7 @@ export default function UCFOfficialReleasePage() {
                         <tbody>
                           {([
                             { auth: 'CAAP', region: 'Philippines', approach: 'Direct partnership — Veremark local infrastructure already in place. Pilot program with 500 CPL holders.', timeline: 'Q3 2026 (September target)' },
-                            { auth: 'GCAA', region: 'UAE', approach: 'UAE company registration advantage. WM Pilot Group domicile. Position as Gulf digital credential standard.', timeline: 'Q4 2026' },
+                            { auth: 'GCAA', region: 'UAE', approach: 'UAE company registration advantage. Benjamin Bowler (pending Aviation Pathways Ltd) domicile. Position as Gulf digital credential standard.', timeline: 'Q4 2026' },
                             { auth: 'CAAS', region: 'Singapore', approach: 'Veremark Singapore hub. APAC expansion anchor. Singapore as regional VC issuer registry node.', timeline: 'Q1 2027' },
                             { auth: 'FAA', region: 'United States', approach: 'Separate US verification partner (First Advantage / HireRight for PRD). Largest pilot database globally.', timeline: 'Q2 2027' },
                             { auth: 'EASA', region: 'Europe (27 states)', approach: 'eIDAS 2.0 alignment. EU digital wallet (EUDIW) compatibility. Coordinate via European flight academy partners.', timeline: 'Q3 2027' },

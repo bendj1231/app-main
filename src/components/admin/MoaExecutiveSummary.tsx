@@ -18,7 +18,7 @@ export const MoaExecutiveSummary: React.FC = () => {
                         <strong>BETWEEN</strong><br/>
                         The Civil Aviation Authority of the Philippines (CAAP)<br/>
                         <strong>AND</strong><br/>
-                        PilotRecognition.com / WM Pilot Group
+                        PilotRecognition.com / Aviation Pathways Ltd
                     </p>
                     
                     <h3 className="text-xl font-bold text-gray-900 mt-6 mb-3">Executive Summary</h3>

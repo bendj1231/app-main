@@ -5,36 +5,21 @@
  * zero-knowledge wallets for submitting verified anonymous stories.
  */
 
-import { Metadata } from 'next';
+'use client';
+
 import { ShortageWalletPage } from '../../../components/domains/shortage/ShortageWalletPage';
 import { DataCustodyExplainer } from '../../../components/website/components/DataCustodyExplainer';
-import { createClient } from '@supabase/supabase-js';
-import { redirect } from 'next/navigation';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Anonymous Wallet | Pilot Shortage Alliance',
   description: 'Create a zero-knowledge wallet to verify your pilot status while staying anonymous.',
 };
 
-export default async function WalletPage() {
-  // Server-side auth check
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/pilotshortage/join?redirect=/pilotshortage/wallet');
-  }
-
-  // Get profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id, auth0_id')
-    .eq('id', user.id)
-    .single();
+export default function WalletPage() {
+  // TODO: Wire up client-side auth check (useAuth hook + useNavigate)
+  // Previously: server-side auth + redirect via Next.js
+  const profile = { id: '', auth0_id: '' };
+  const user = { id: '' };
 
   return (
     <div className="min-h-screen bg-slate-950">

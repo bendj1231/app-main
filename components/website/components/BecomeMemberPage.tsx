@@ -12,6 +12,7 @@ import { supabase } from '../../../src/lib/supabase';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
 import { issueAndStoreCredential, issueAndStoreCredentialSelfHosted } from '../../../src/lib/wallet';
 import { getVaultKeyFromAuth0Token, encryptFields } from '../../../lib/vault';
+import { getRegionalSupabaseClient, getJurisdictionCode } from '../../../lib/regionalRouter';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
@@ -39,7 +40,7 @@ const COUNTRIES = [
 interface BecomeMemberPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 const GoogleIcon = () => (
@@ -275,7 +276,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const passkeyRegistrationRef = React.useRef<(() => Promise<void>) | null>(null);
 
     const CREDENTIAL_WALLETS = [
-        { id: 'pilot', name: 'Pilot Wallet', logo: '🔐', desc: 'Native browser wallet · DID · W3C VC', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `${import.meta.env.VITE_PILOT_WALLET_URL}?offer=${encodeURIComponent(url)}` },
+        { id: 'pilot', name: 'PilotRecognition PIC', logo: '🔐', desc: 'Pilot Identity Credentials · Secure digital verification', color: 'text-[#00b4d8]', border: 'border-[#00b4d8]/40', href: (url: string) => `${import.meta.env.VITE_PILOT_WALLET_URL}?offer=${encodeURIComponent(url)}` },
     ];
 
     const LOGBOOK_PROVIDERS = [
@@ -443,9 +444,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             const sbUserId = session?.user?.id;
 
             // Try auth0_id first
-            const { count } = await supabase.from('profiles').update(fields)
-                .eq('auth0_id', auth0Id).select('id', { count: 'exact', head: true });
-            if ((count ?? 0) === 0 && sbUserId) {
+            const { data: updatedRows } = await supabase.from('profiles').update(fields)
+                .eq('auth0_id', auth0Id).select('id');
+            if ((!updatedRows || updatedRows.length === 0) && sbUserId) {
                 await supabase.from('profiles').update({ ...fields, auth0_id: auth0Id }).eq('id', sbUserId);
             }
         } catch (e) {
@@ -462,6 +463,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         if (!cleanLast || cleanLast.length < 1) { setSaveError('Last name is required.'); return; }
         if (!cleanName || cleanName.length < 2) { setSaveError('Callsign is required.'); return; }
         if (!OCCUPATIONS.includes(occupation)) { setSaveError('Please select a valid role.'); return; }
+        if (!issuingAuthority || issuingAuthority.trim() === '') { setSaveError('License issuing authority is required to determine your data residency region.'); return; }
         const wholeHrs = parseInt(hoursWhole);
         const mins = parseInt(hoursMinutes || '0');
         if (hoursWhole && (isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999)) { setSaveError('Please enter valid flight hours.'); return; }
@@ -472,6 +474,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setSaving(true);
         setSaveError('');
         try {
+            // Determine region based on license issuing authority
+            const regionalSupabase = getRegionalSupabaseClient(issuingAuthority);
+            const jurisdictionCode = getJurisdictionCode(issuingAuthority);
+
             const payload = {
                 display_name: cleanName,
                 full_name: `${cleanFirst} ${cleanLast}`.trim(),
@@ -483,24 +489,25 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 nationality: nationality || null,
                 license_issuing_authority: issuingAuthority || null,
                 country_of_license: issuingAuthority || null,
+                origin_jurisdiction: jurisdictionCode,
                 ratings: ratings.length > 0 ? ratings : null,
                 license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
             };
 
-            // Primary: update by auth0_id
-            const { error, count } = await supabase
+            // Primary: update by auth0_id using regional Supabase client
+            const { error, data: updatedRows } = await regionalSupabase
                 .from('profiles')
                 .update(payload)
                 .eq('auth0_id', auth0Id)
-                .select('id', { count: 'exact', head: true });
+                .select('id');
             if (error) { console.error('🔴 [handleSaveProfile] supabase error:', error); throw error; }
 
             // Fallback: if auth0_id matched nothing, update by Supabase session user id
-            if ((count ?? 0) === 0) {
+            if (!updatedRows || updatedRows.length === 0) {
                 console.warn('🟡 [handleSaveProfile] auth0_id matched 0 rows — falling back to session user.id');
                 const sbUserId = dbgSession?.user?.id;
                 if (!sbUserId) throw new Error('No Supabase session user id available');
-                const { error: fbError } = await supabase
+                const { error: fbError } = await regionalSupabase
                     .from('profiles')
                     .update({ ...payload, auth0_id: auth0Id })
                     .eq('id', sbUserId);
@@ -560,7 +567,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     const result = await navigator.credentials.create({
                         publicKey: {
                             challenge: challengeBytes.buffer,
-                            rp: { name: 'PilotRecognition Wallet', id: rpId },
+                            rp: { name: 'PilotRecognition', id: rpId },
                             user: { id: userIdBytes.buffer, name: userEmail, displayName: cleanName },
                             pubKeyCredParams: [
                                 { type: 'public-key', alg: -7 },
@@ -1279,11 +1286,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             </div>
                             </>)}{/* end step-3 */}
 
-                            {/* ── STEP 4: Pilot Credentials Wallet ── */}
+                            {/* ── STEP 4: Your PIC ── */}
                             {activeInstrument === 4 && (<>
                             <div className="step-card step-card-active">
                                 <span className={`fic-status-dot ${walletConnected ? 'fic-dot-done' : activeInstrument === 4 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">Your Pilot Wallet</div>
+                                <div className="fic-title">Your PIC</div>
                                 <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '14px' }}>
                                     We automatically create a secure digital ID for you — like a passport that lives inside your profile. It holds your verified credentials and lets airlines confirm your qualifications instantly, with no paperwork.
                                 </div>
@@ -1295,7 +1302,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <div>
                                             <p style={{ fontSize: '12px', fontWeight: 700, color: '#ef4444', margin: '0 0 4px' }}>Your browser will prompt you to save a passkey</p>
                                             <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.5 }}>
-                                                Without this key you will lose access to your wallet and be unable to retrieve your data. Save it to Touch ID, Face ID, or Google Password Manager when prompted.
+                                                Without this key you will lose access to your PIC and be unable to retrieve your data. Save it to Touch ID, Face ID, or Google Password Manager when prompted.
                                             </p>
                                         </div>
                                     </div>
@@ -1342,8 +1349,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 return;
                                             }
 
-                                            const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-                                            const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
+                                            const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+                                            const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string;
 
                                             // Time-bound token: base64(auth0Id + ':ts:' + timestamp) — verified server-side within 5-min window
                                             const requestToken = btoa(`${auth0Id}:ts:${Date.now()}`);
@@ -1415,7 +1422,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             console.error('Wallet creation error:', e);
                                             setWalletCreating('idle');
                                             setSaving(false);
-                                            setSaveError('Failed to create wallet. Please try again.');
+                                            setSaveError('Failed to create PIC. Please try again.');
                                         }
                                     }}
                                     style={{
@@ -1429,13 +1436,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 >
                                     {walletCreating === 'generating' && '⏳ Generating Secure Keys...'}
                                     {walletCreating === 'syncing' && '🔄 Registering Account & Issuing Credential...'}
-                                    {(walletCreating === 'active' || walletConnected) && '🎉 Wallet Active — Redirecting to Dashboard...'}
-                                    {walletCreating === 'idle' && '🔐 Create Wallet & Enter Platform →'}
+                                    {(walletCreating === 'active' || walletConnected) && '🎉 PIC Active — Redirecting to Dashboard...'}
+                                    {walletCreating === 'idle' && '🔐 Create PIC & Enter Platform →'}
                                 </button>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '8px' }}>
                                     <span style={{ fontSize: '10px', color: '#94a3b8' }}>Decentralised identity</span>
                                     <span style={{ fontSize: '10px', color: '#cbd5e1' }}>·</span>
-                                    <span style={{ fontSize: '10px', color: '#00b4d8', fontWeight: 600 }}>PilotRecognition Wallet</span>
+                                    <span style={{ fontSize: '10px', color: '#00b4d8', fontWeight: 600 }}>PilotRecognition PIC</span>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
@@ -1455,7 +1462,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
                                 <span style={{ color: '#7dd3fc', fontSize: '11px', fontWeight: 600 }}>Powered by Auth0</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
-                                <span style={{ color: '#ef4444', fontSize: '11px', fontWeight: 600 }}>Wallet by PilotRecognition</span>
+                                <span style={{ color: '#ef4444', fontSize: '11px', fontWeight: 600 }}>PIC by PilotRecognition</span>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '4px 16px' }}>
                                 <button onClick={() => onNavigate('privacy-policy')} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Privacy Policy</button>
@@ -1570,8 +1577,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="relative z-10 w-full max-w-2xl bg-slate-900 border border-white/10 rounded-2xl p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-5">
                             <div>
-                                <h3 className="text-white font-black text-base">Connect Credentials Wallet</h3>
-                                <p className="text-white/40 text-xs mt-0.5">Select your decentralized identity wallet</p>
+                                <h3 className="text-white font-black text-base">Connect Your PIC</h3>
+                                <p className="text-white/40 text-xs mt-0.5">Select your Pilot Identity Credentials provider</p>
                             </div>
                             <button onClick={() => setShowWalletSelector(false)} className="text-white/40 hover:text-white text-xl leading-none transition-colors">×</button>
                         </div>
@@ -1911,7 +1918,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         const result = await navigator.credentials.create({
                                             publicKey: {
                                                 challenge: cb.buffer,
-                                                rp: { name: 'PilotRecognition Wallet', id: rpId },
+                                                rp: { name: 'PilotRecognition', id: rpId },
                                                 user: { id: new TextEncoder().encode(pkUserId).buffer, name: pkEmail, displayName: pkDisplay },
                                                 pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
                                                 authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
@@ -1964,7 +1971,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, marginBottom: '18px' }}>
-                            Without a passkey, you will <strong style={{ color: '#ef4444' }}>permanently lose access</strong> to your wallet and all credentials stored inside. Copy your backup recovery key below and paste it into your Notes or a password manager before continuing.
+                            Without a passkey, you will <strong style={{ color: '#ef4444' }}>permanently lose access</strong> to your PIC and all credentials stored inside. Copy your backup recovery key below and paste it into your Notes or a password manager before continuing.
                         </p>
 
                         {/* Recovery key display */}

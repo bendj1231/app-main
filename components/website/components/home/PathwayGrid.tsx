@@ -41,7 +41,7 @@ import { DigitalLogbookAnimation } from './DigitalLogbookAnimation';
 import { EtihadExpectationsAnimation } from './EtihadExpectationsAnimation';
 import { DiscoverPathwaysAnimation } from './DiscoverPathwaysAnimation';
 
-interface Slide {
+export interface Slide {
     image: string;
     title: string;
     category: string;
@@ -58,7 +58,7 @@ interface PathwayGridProps {
     slides: Slide[];
     onNavigate: (page: string) => void;
     onGoToProgramDetail: (slide: Slide) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
     isLoggedIn?: boolean;
     isEnrolledInFoundation?: boolean;
 }
@@ -551,7 +551,7 @@ const heroSlides: HeroSlide[] = [
 ];
 
 const AccessPlatformCard: React.FC<{
-    onLogin: () => void;
+    onLogin?: () => void;
     onNavigate: (page: string) => void;
     isLoggedIn: boolean;
 }> = ({ onLogin, onNavigate, isLoggedIn }) => {

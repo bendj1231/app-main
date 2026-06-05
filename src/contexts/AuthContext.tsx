@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '../lib/supabase';
-import { indexedDB } from '../lib/indexedDB';
-import { createManagementAPI } from '../lib/supabase-management';
+// import { indexedDB } from '../lib/indexedDB';
+// import { createManagementAPI } from '../lib/supabase-management';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
 import { getVaultKey, getVaultKeyFromAuth0Token, clearVaultKey, encryptFields, decryptFields, PROFILE_SENSITIVE_FIELDS, PILOT_LICENSURE_SENSITIVE_FIELDS } from '../../lib/vault';
 
@@ -17,12 +17,60 @@ interface SupabaseUser {
     displayName?: string; // For backward compatibility
 }
 
+interface UserProfile {
+    id?: string;
+    uid?: string;
+    email?: string;
+    full_name?: string;
+    display_name?: string;
+    firstName?: string;
+    lastName?: string;
+    role?: string;
+    status?: string;
+    auth0_id?: string;
+    avatar_url?: string;
+    profile_image_url?: string;
+    profile_image_public_id?: string;
+    phone?: string;
+    address?: string;
+    date_of_birth?: string;
+    nationality?: string;
+    current_flight_hours?: number;
+    flight_hours?: number;
+    total_hours?: number;
+    total_flight_hours?: number;
+    mentorship_hours?: number;
+    foundation_progress?: number;
+    overall_recognition_score?: number;
+    recognition_score?: number;
+    score?: number;
+    current_level?: string;
+    level?: string;
+    current_occupation?: string;
+    license_id?: string;
+    country_of_license?: string;
+    ratings?: string[];
+    pilot_id?: string;
+    user_id?: string;
+    created_at?: string;
+    enrolled_programs?: unknown[];
+    appAccess?: unknown[];
+    displayName?: string;
+    avatarUrl?: string;
+    is_enrolled_in_foundational?: boolean;
+    recognitionTier?: string;
+    tier?: string;
+    subscription_tier?: string;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    [key: string]: any;
+}
+
 interface AuthContextType {
     currentUser: SupabaseUser | null;
-    userProfile: any | null;
+    userProfile: UserProfile | null;
     loading: boolean;
     signupInProgress: boolean;
-    signup: (email: string, password: string, userData: any) => Promise<void>;
+    signup: (email: string, password: string, userData: Record<string, string | string[] | undefined>) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     deleteAccount: (userId: string) => Promise<void>;
@@ -49,6 +97,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+  // eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     const context = useContext(AuthContext);
     if (context === undefined) {
@@ -66,9 +115,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentUserRef.current = user;
         setCurrentUser(user);
     };
-    const [userProfile, setUserProfile] = useState<any | null>(null);
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
-    const decryptAndSetUserProfile = async (data: any, auth0Sub?: string) => {
+    const decryptAndSetUserProfile = async (data: UserProfile | null, auth0Sub?: string) => {
         if (!data) { setUserProfile(null); return; }
         try {
             const sub = auth0Sub || auth0User?.sub;
@@ -79,24 +128,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     const idToken = claims?.__raw;
                     if (idToken) {
                         const key = await getVaultKeyFromAuth0Token(sub, idToken);
+                        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                         const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
                         setUserProfile(decrypted);
                         return;
                     }
-                } catch (err: any) {
-                    console.warn('[AuthContext] Auth0 ID token vault decryption failed:', err.message);
+                } catch (err: unknown) {
+                    console.warn('[AuthContext] Auth0 ID token vault decryption failed:', err instanceof Error ? err.message : err);
                 }
                 // Fallback: server-pepper path
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session?.access_token) {
                     const key = await getVaultKey(sub, session.access_token);
-                    const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as any, key);
+                    const decrypted = await decryptFields(data, PROFILE_SENSITIVE_FIELDS as unknown as string[], key);
                     setUserProfile(decrypted);
                     return;
                 }
             }
-        } catch (err: any) {
-            console.warn('[AuthContext] Profile decryption failed:', err.message);
+        } catch (err: unknown) {
+            console.warn('[AuthContext] Profile decryption failed:', err instanceof Error ? err.message : err);
         }
         setUserProfile(data);
     };
@@ -177,7 +227,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             events.forEach(e => window.removeEventListener(e, resetTimer));
             if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
         };
-    }, [currentUser]);
+    }, [currentUser, IDLE_TIMEOUT_MS]);
 
     // Article 5 — Flush vault key on tab close / navigate away (shared airport terminal protection)
     useEffect(() => {
@@ -203,14 +253,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setCurrentUser(auth0AsSupabaseUser);
             setLoading(false);
 
-            // TODO: Move session restoration to httpOnly cookies via backend endpoint
-            // localStorage session restoration is vulnerable to XSS extraction.
-            // Store auth0 token info in localStorage for session restoration
-            localStorage.setItem('sb-auth-provider', 'auth0');
-            localStorage.setItem('sb-auth-user-id', auth0User.sub || '');
-            localStorage.setItem('sb-auth-email', auth0User.email || '');
-            localStorage.setItem('sb-auth-name', auth0User.name || '');
-            localStorage.setItem('sb-auth-expiry', (Date.now() + 7 * 24 * 60 * 60 * 1000).toString()); // 7 days
+            // Store auth0 token info in sessionStorage for session restoration
+            // sessionStorage is cleared on tab close, reducing XSS persistence vs localStorage
+            sessionStorage.setItem('sb-auth-provider', 'auth0');
+            sessionStorage.setItem('sb-auth-user-id', auth0User.sub || '');
+            sessionStorage.setItem('sb-auth-email', auth0User.email || '');
+            sessionStorage.setItem('sb-auth-name', auth0User.name || '');
+            sessionStorage.setItem('sb-auth-expiry', (Date.now() + 7 * 24 * 60 * 60 * 1000).toString()); // 7 days
 
             // Persist auth0 user ID in sessionStorage for MFB logbook sync callback
             // sessionStorage is cleared on tab close, reducing XSS persistence vs localStorage
@@ -227,6 +276,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         const isPlain = (v: unknown) =>
                             v !== null && v !== undefined && v !== '' &&
                             !(typeof v === 'string' && v.startsWith(VAULT_PREFIX));
+                        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                         const needsReEncrypt = (rec: Record<string, any>, fields: readonly string[]) =>
                             fields.some(f => isPlain(rec[f]));
 
@@ -234,6 +284,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         const { data: profile } = await supabase
                             .from('profiles').select('*').eq('id', userId).maybeSingle();
                         if (profile && needsReEncrypt(profile, PROFILE_SENSITIVE_FIELDS)) {
+                            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                             const enc = await encryptFields(profile, PROFILE_SENSITIVE_FIELDS as any, key);
                             await supabase.from('profiles').update(enc).eq('id', userId);
                         }
@@ -242,11 +293,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         const { data: lic } = await supabase
                             .from('pilot_licensure_experience').select('*').eq('user_id', userId).maybeSingle();
                         if (lic && needsReEncrypt(lic, PILOT_LICENSURE_SENSITIVE_FIELDS)) {
+                            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                             const enc = await encryptFields(lic, PILOT_LICENSURE_SENSITIVE_FIELDS as any, key);
                             await supabase.from('pilot_licensure_experience').update(enc).eq('user_id', userId);
                         }
-                    } catch (err: any) {
-                        console.warn('[vault] Init/re-encrypt failed (non-critical):', err.message);
+                    } catch (err: unknown) {
+                        console.warn('[vault] Init/re-encrypt failed (non-critical):', err instanceof Error ? err.message : err);
                     }
                 });
             }
@@ -307,18 +359,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const [signupInProgress, setSignupInProgress] = useState(false);
 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     async function signup(email: string, password: string, userData: any) {
         setSignupInProgress(true);
 
         try {
             let userId: string;
-            let firebaseUser: any = null;
-            let userAlreadyExisted = false;
+            const _firebaseUser = null;
+            let _userAlreadyExisted = false;
 
             // Skip Edge Function to avoid rate limiting (429 errors) - use direct Supabase auth
             try {
                 throw new Error('SKIP_EDGE_FUNCTION');
-            } catch (edgeFunctionError) {
+            } catch (_edgeFunctionError) {
                 
                 // Fallback to direct Supabase auth (original logic)
                 const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
@@ -334,7 +387,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                 if (supabaseError) {
                     if (supabaseError.message.includes('already registered') || supabaseError.message === 'User already registered') {
-                        userAlreadyExisted = true;
+                        _userAlreadyExisted = true;
                     
                         const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
                             email,
@@ -384,8 +437,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (session?.access_token && sub) {
                 vaultKey = await getVaultKey(sub, session.access_token);
             }
-        } catch (vaultErr: any) {
-            console.warn('[vault] Key unavailable during signup, writing plaintext:', vaultErr.message);
+        } catch (vaultErr: unknown) {
+            console.warn('[vault] Key unavailable during signup, writing plaintext:', vaultErr instanceof Error ? vaultErr.message : vaultErr);
         }
 
         // Step 2: Create or update portal profile in profiles table
@@ -436,6 +489,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         professional_experiences: userData.jobExperiences || []
                 };
                 const updatePayload = vaultKey
+                    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                     ? await encryptFields(rawUpdatePayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
                     : rawUpdatePayload;
                 const { error: updateError } = await supabase
@@ -449,7 +503,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
             } else {
                 // Profile doesn't exist, create it
-                const experienceLevel = (() => {
+                const _experienceLevel = (() => {
                     const hours = parseInt(userData.currentFlightHours || '0', 10);
                     if (hours < 500) return 'Low Timer';
                     if (hours < 1500) return 'Middle Timer';
@@ -507,6 +561,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                         professional_experiences: userData.jobExperiences || []
                 };
                 const insertPayload = vaultKey
+                    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                     ? await encryptFields(rawInsertPayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
                     : rawInsertPayload;
                 const { error: profileError } = await supabase
@@ -537,7 +592,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                 name: userData.fullName || email.split('@')[0],
                             }),
                         }).then(r => r.json()).then(d => {
-                            if (d.success) console.log('✅ Pilot Wallet provisioned:', d.walletId);
+                            if (d.success) console.warn('✅ Pilot Wallet provisioned:', d.walletId);
                             else console.warn('⚠️ Pilot Wallet provision skipped (wallet API offline):', d.error);
                         }).catch(e => console.warn('⚠️ Pilot Wallet provision failed (non-critical):', e));
                     }
@@ -596,8 +651,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 try {
                     supabase.functions.invoke('generate-referral', {
                         body: { auth0Id: userData.auth0Id || userId, profileId: userId },
-                    }).then(r => {
-                        if (r.data?.referralCode) console.log('✅ Referral code generated:', r.data.referralCode);
                     }).catch(() => {});
                 } catch {}
 
@@ -739,6 +792,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     updated_at: new Date().toISOString()
             };
             const licensurePayload = vaultKey
+                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                 ? await encryptFields(rawLicensurePayload, PILOT_LICENSURE_SENSITIVE_FIELDS as any, vaultKey)
                 : rawLicensurePayload;
             const { error: pilotTableError } = await supabase
@@ -759,7 +813,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             const displayName = userData.fullName || email.split('@')[0];
             
-            const { data, error } = await supabase.functions.invoke('send-account-created-email', {
+            const { error } = await supabase.functions.invoke('send-account-created-email', {
                 body: {
                     email,
                     name: displayName
@@ -782,7 +836,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             try {
                 const experienceLevel = structuredData.experienceLevel;
                 const shortUid = userId.substring(0, 5);
-                const safeId = `[${experienceLevel}] ${userData.pilotCategory} (${shortUid})`
+                const _safeId = `[${experienceLevel}] ${userData.pilotCategory} (${shortUid})`
                     .replace(/\//g, '-')
                     .replace(/\./g, '_');
 
@@ -898,13 +952,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUserProfile(null); // Clear user profile
         clearVaultKey(); // Clear vault key from memory
         
-        // Clear Auth0 session data from localStorage
-        localStorage.removeItem('sb-auth-provider');
-        localStorage.removeItem('sb-auth-user-id');
-        localStorage.removeItem('sb-auth-email');
-        localStorage.removeItem('sb-auth-name');
-        localStorage.removeItem('sb-auth-expiry');
-        localStorage.removeItem('auth0_user_id');
+        // Clear Auth0 session data from sessionStorage
+        sessionStorage.removeItem('sb-auth-provider');
+        sessionStorage.removeItem('sb-auth-user-id');
+        sessionStorage.removeItem('sb-auth-email');
+        sessionStorage.removeItem('sb-auth-name');
+        sessionStorage.removeItem('sb-auth-expiry');
+        sessionStorage.removeItem('auth0_user_id');
 
         try {
             const { error } = await supabase.auth.signOut();
@@ -915,8 +969,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
             console.error("❌ Logout error:", error);
             // If Supabase API fails, clear session storage directly
-            // Remove all Supabase auth tokens from storage
-            const keysToRemove = [];
+            // Remove all Supabase auth tokens from BOTH localStorage and sessionStorage
+            const keysToRemove: string[] = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key && (key.startsWith('sb-') || key.includes('auth') || key.includes('token'))) {
@@ -924,7 +978,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 }
             }
             keysToRemove.forEach(key => localStorage.removeItem(key));
-            sessionStorage.clear();
+            // Also purge sessionStorage (Supabase auth session now lives here)
+            const ssKeysToRemove: string[] = [];
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                if (key && (key.startsWith('sb-') || key.includes('auth') || key.includes('token'))) {
+                    ssKeysToRemove.push(key);
+                }
+            }
+            ssKeysToRemove.forEach(key => sessionStorage.removeItem(key));
         }
     }
 
@@ -1251,6 +1313,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return () => {
             subscription.unsubscribe();
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -1336,12 +1399,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     }
                 } else {
                     
-                    // Check for Auth0 session in localStorage
-                    const auth0Provider = localStorage.getItem('sb-auth-provider');
-                    const auth0UserId = localStorage.getItem('sb-auth-user-id');
-                    const auth0Email = localStorage.getItem('sb-auth-email');
-                    const auth0Name = localStorage.getItem('sb-auth-name');
-                    const auth0Expiry = localStorage.getItem('sb-auth-expiry');
+                    // Check for Auth0 session in sessionStorage
+                    const auth0Provider = sessionStorage.getItem('sb-auth-provider');
+                    const auth0UserId = sessionStorage.getItem('sb-auth-user-id');
+                    const auth0Email = sessionStorage.getItem('sb-auth-email');
+                    const auth0Name = sessionStorage.getItem('sb-auth-name');
+                    const auth0Expiry = sessionStorage.getItem('sb-auth-expiry');
                     
                     if (auth0Provider === 'auth0' && auth0UserId && auth0Email) {
                         // Check if session expired
@@ -1372,10 +1435,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                         const { data: { session: s } } = await supabase.auth.getSession();
                                         if (s?.access_token && auth0UserId) {
                                             const vKey = await getVaultKey(auth0UserId, s.access_token);
+                                            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
                                             displayData = await decryptFields(profileData, PROFILE_SENSITIVE_FIELDS as any, vKey);
                                         }
-                                    } catch (err: any) {
-                                        console.warn('[AuthContext] Vault decryption failed for restored session:', err.message);
+                                    } catch (err: unknown) {
+                                        console.warn('[AuthContext] Vault decryption failed for restored session:', err instanceof Error ? err.message : err);
                                     }
                                     setUserProfile({
                                         ...displayData,
@@ -1389,11 +1453,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             }
                         } else {
                             // Clear expired session data
-                            localStorage.removeItem('sb-auth-provider');
-                            localStorage.removeItem('sb-auth-user-id');
-                            localStorage.removeItem('sb-auth-email');
-                            localStorage.removeItem('sb-auth-name');
-                            localStorage.removeItem('sb-auth-expiry');
+                            sessionStorage.removeItem('sb-auth-provider');
+                            sessionStorage.removeItem('sb-auth-user-id');
+                            sessionStorage.removeItem('sb-auth-email');
+                            sessionStorage.removeItem('sb-auth-name');
+                            sessionStorage.removeItem('sb-auth-expiry');
                             setCurrentUser(null);
                         }
                     } else {
@@ -1401,7 +1465,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     }
                     setUserProfile(null);
                 }
-            } catch (err) {
+            } catch (_err) {
                 setCurrentUser(null);
                 setUserProfile(null);
             } finally {
@@ -1413,6 +1477,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         return () => {
     };
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
 const value = {

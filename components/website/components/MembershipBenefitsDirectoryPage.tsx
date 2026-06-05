@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface MembershipBenefitsPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const MembershipBenefitsPage: React.FC<MembershipBenefitsPageProps> = ({ onBack, onNavigate, onLogin }) => {

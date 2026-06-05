@@ -117,7 +117,7 @@ export const WalletPublicCard: React.FC<{ token: string; onManage: () => void }>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           </svg>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', color: '#dc2626', textTransform: 'uppercase' }}>PilotRecognition Wallet</span>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', color: '#dc2626', textTransform: 'uppercase' }}>PilotRecognition PIC</span>
         </div>
         <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.1em' }}>READ ONLY · PUBLIC VIEW</span>
       </div>
@@ -214,7 +214,7 @@ export const WalletPublicCard: React.FC<{ token: string; onManage: () => void }>
         {/* Token fingerprint footer */}
         <div style={{ padding: '14px 28px 20px', borderTop: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
           <div>
-            <p style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase', margin: 0 }}>Token Fingerprint</p>
+            <p style={{ fontSize: 9, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase', margin: 0 }}>Record Fingerprint</p>
             <p style={{ fontSize: 10, fontFamily: 'monospace', color: '#475569', margin: '3px 0 0' }}>
               {token.length > 20 ? `${token.slice(0, 10)}…${token.slice(-8)}` : token}
             </p>
@@ -239,7 +239,7 @@ export const WalletPublicCard: React.FC<{ token: string; onManage: () => void }>
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#0f172a'; }}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Manage My Wallet — Passkey Required
+            Manage My PIC — Passkey Required
           </button>
           <p style={{ textAlign: 'center', fontSize: 9, color: '#94a3b8', margin: '8px 0 0', letterSpacing: '0.05em' }}>
             Airlines and operators see only this read-only view · Your raw data is never shared

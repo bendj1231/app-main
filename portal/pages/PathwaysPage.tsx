@@ -2885,11 +2885,11 @@ const DiscoveryCards: React.FC<{
                   // Standard card rendering
                   <>
                 {/* Full Background Image - Support dual images with gradient fade */}
-                {typeof pathway.image === 'object' && pathway.image.background ? (
+                {pathway.image && typeof pathway.image === 'object' && (pathway.image as any).background ? (
                   <div className="absolute inset-0">
                     {/* Background building image */}
                     <img
-                      src={pathway.image.background}
+                      src={(pathway.image as any).background}
                       alt={pathway.title}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
@@ -2913,7 +2913,7 @@ const DiscoveryCards: React.FC<{
                       }}
                     >
                       <img
-                        src={pathway.image.logo}
+                        src={(pathway.image as any).logo}
                         alt={`${pathway.company} logo`}
                         className="w-full h-full object-contain drop-shadow-2xl"
                         style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
@@ -2922,7 +2922,7 @@ const DiscoveryCards: React.FC<{
                   </div>
                 ) : (
                   <img
-                    src={typeof pathway.image === 'string' ? pathway.image : pathway.image?.background}
+                    src={typeof pathway.image === 'string' ? pathway.image : (pathway.image as any)?.background}
                     alt={pathway.title}
                     className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${
                       pathway.title === 'Cathay Pacific Cadet Pilot Programme' 
@@ -3806,7 +3806,7 @@ const AllJobListings: React.FC<{
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 400, letterSpacing: '-0.02em', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
-              {title || 'All Job Listings'}
+              {'All Job Listings'}
             </h2>
             <p style={{ margin: '0.5rem 0 0', color: isDarkMode ? '#94a3b8' : '#64748b', lineHeight: 1.6, fontSize: '0.95rem', maxWidth: '500px' }}>
               Complete directory of all available positions
@@ -3909,7 +3909,9 @@ const AllJobListings: React.FC<{
 const CategoryRow: React.FC<{ section: CategorySection; index: number; isDarkMode?: boolean; profile: UserProfileData | null }> = ({ section, index, isDarkMode = true, profile }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<Animation | null>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [hasReachedEnd, setHasReachedEnd] = useState(false);
 
   // Auto-scroll effect - Only enable if 3 or more cards
   const shouldAutoScroll = section.pathways.length >= 3;

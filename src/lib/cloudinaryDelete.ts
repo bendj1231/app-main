@@ -34,7 +34,7 @@ export async function deleteProfileImage(publicId: string): Promise<DeleteImageR
 
     if (error) {
       console.error('[cloudinaryDelete] Edge function error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: error instanceof Error ? error.message : String(error) };
     }
 
     if (!data?.success) {
@@ -42,9 +42,9 @@ export async function deleteProfileImage(publicId: string): Promise<DeleteImageR
     }
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[cloudinaryDelete] Error:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 

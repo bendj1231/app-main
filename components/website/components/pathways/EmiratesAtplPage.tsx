@@ -5,7 +5,7 @@ import { TopNavbar } from '../TopNavbar';
 interface EmiratesAtplPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const EmiratesAtplPage: React.FC<EmiratesAtplPageProps> = ({ onBack, onNavigate, onLogin }) => {

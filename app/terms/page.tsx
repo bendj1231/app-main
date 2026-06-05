@@ -14,11 +14,14 @@ export default function TermsPage() {
           </div>
           <h1 className="text-3xl font-black text-slate-900 mb-2">Privacy Policy & Terms of Service</h1>
           <p className="text-slate-500 text-sm mb-4">
-            Aviation Pathways Ltd (operating as PilotRecognition.com)
+            Operated by Benjamin Bowler — Aviation Pathways Ltd (incorporation pending)
           </p>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 leading-relaxed mb-4">
+            <strong>Entity Disclosure:</strong> PilotRecognition.com is currently operated by Benjamin Bowler as an individual entrepreneur pending the incorporation of Aviation Pathways Ltd in the Republic of Mauritius. All contractual obligations, data controller responsibilities, and liabilities described herein are presently vested in Benjamin Bowler and shall be novated to Aviation Pathways Ltd upon issuance of the Certificate of Incorporation by CBRD. Until such novation occurs, Benjamin Bowler is the legal counterparty to this agreement.
+          </div>
           <div className="bg-slate-100 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 leading-relaxed">
             Please read this document carefully before creating your account. By creating an account, you agree to these Terms
-            and establish a binding legal agreement between yourself (the <em>Data Subject</em>) and Aviation Pathways Ltd (the <em>Data Controller</em>).
+            and establish a binding legal agreement between yourself (the <em>Data Subject</em>) and Benjamin Bowler (the <em>Data Controller</em>), pending novation to Aviation Pathways Ltd upon incorporation.
           </div>
         </div>
 
@@ -42,7 +45,7 @@ export default function TermsPage() {
                   </div>
                   <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
                     <p className="text-xs font-bold text-slate-700 mb-1">We are the Data Processor</p>
-                    <p className="text-xs text-slate-600">Aviation Pathways Ltd provides secure pipelines and cloud hosting. We operate under a <strong className="text-slate-700">zero-knowledge model</strong> — your data is fully encrypted on your device before it reaches us. We cannot see, read, modify, or monetize your personal information.</p>
+                    <p className="text-xs text-slate-600">Benjamin Bowler (pending Aviation Pathways Ltd) provides secure pipelines and cloud hosting. We operate under a <strong className="text-slate-700">zero-knowledge model</strong> — your data is fully encrypted on your device before it reaches us. We cannot see, read, modify, or monetize your personal information.</p>
                   </div>
                 </div>
               </div>
@@ -95,7 +98,7 @@ export default function TermsPage() {
                   </div>
                 </div>
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800">
-                  <strong>How it works:</strong> Both environments are secured at the baseline level by Aviation Pathways Ltd,
+                  <strong>How it works:</strong> Both environments are secured at the baseline level by Benjamin Bowler (pending Aviation Pathways Ltd),
                   but your data is stored strictly as mathematical ciphertext (AES-256-GCM). By selecting a provider, you issue
                   a direct technical instruction to route your encrypted files to that specific cloud host.
                   Decryption without your unique device key is computationally impossible.
@@ -179,7 +182,7 @@ export default function TermsPage() {
                 </ul>
                 <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-800">
                   <strong>Your Responsibility:</strong> If you lose your devices, local passkeys, or master seed phrases,
-                  Aviation Pathways Ltd cannot recover your account. Your data will be permanently locked and inaccessible.
+                  Benjamin Bowler (pending Aviation Pathways Ltd) cannot recover your account. Your data will be permanently locked and inaccessible.
                 </div>
               </div>
             </div>
@@ -192,7 +195,7 @@ export default function TermsPage() {
               <div className="flex-1">
                 <h2 className="text-lg font-bold text-slate-900 mb-2">Limitation of Liability</h2>
                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                  Aviation Pathways Ltd accepts liability strictly for the technical maintenance of its database accounts,
+                  Benjamin Bowler (pending Aviation Pathways Ltd) accepts liability strictly for the technical maintenance of its database accounts,
                   code routing infrastructure, and the security of its public credential verification registry.
                 </p>
                 <p className="text-sm text-slate-600 leading-relaxed mb-2">
@@ -270,7 +273,7 @@ export default function TermsPage() {
         {/* Footer */}
         <div className="mt-10 text-center space-y-2">
           <p className="text-xs text-slate-400">
-            PR-PPTS-001 · Last Updated: 02 June 2026 · Aviation Pathways Ltd
+            PR-PPTS-001 · Last Updated: 02 June 2026 · Benjamin Bowler (pending Aviation Pathways Ltd)
           </p>
           <p className="text-xs text-slate-400">
             By creating an account the Registrant confirms acceptance of this instrument in its entirety.

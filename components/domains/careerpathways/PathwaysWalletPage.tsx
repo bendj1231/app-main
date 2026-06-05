@@ -191,17 +191,17 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
               <Wallet className="w-8 h-8 text-cyan-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">
-              Create Your Career Wallet
+              Create Your Career PIC
             </h2>
             <p className="text-slate-600 mb-6 max-w-md mx-auto">
               Store your verified credentials and apply to airline pathways with one click. 
-              Your wallet proves your qualifications without repeated verification.
+              Your PIC proves your qualifications without repeated verification.
             </p>
             <button
               onClick={() => setShowSetup(true)}
               className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium px-6 py-3 rounded-xl transition-colors"
             >
-              Setup Wallet
+              Setup PIC
             </button>
           </div>
         ) : (
@@ -363,7 +363,7 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
                     disabled={!dcaConsent}
                     className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-2 rounded-lg transition-colors"
                   >
-                    Create Wallet & Issue Credentials
+                    Create PIC & Issue Credentials
                   </button>
                   <button
                     onClick={() => setSetupStep('hours')}
@@ -390,7 +390,7 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
               <Wallet className="w-6 h-6 text-cyan-600" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-900">Career Wallet</h2>
+              <h2 className="text-xl font-bold text-slate-900">Career PIC</h2>
               <p className="text-slate-500 text-sm">DID: {did?.slice(0, 25)}...</p>
             </div>
           </div>
@@ -514,7 +514,7 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
             <a href="/dpo" className="hover:text-cyan-600 transition-colors">DPO Contact</a>
           </div>
           <p className="text-xs text-slate-400">
-            pilotcareerpathways.com · Part of the WM Pilot Group
+            pilotcareerpathways.com · A PilotRecognition Platform
           </p>
         </div>
       </div>

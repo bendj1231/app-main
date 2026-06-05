@@ -39,7 +39,7 @@ const defaultAppAccess = AVAILABLE_APPS.map(app => ({
   restricted: false
 }));
 
-export const createUserProfile = async (user: any, role: string = 'pilot'): Promise<UserProfile> => {
+export const createUserProfile = async (user: any, role: UserProfile['role'] = 'mentee'): Promise<UserProfile> => {
   console.log('🔧 createUserProfile called for:', user.email);
   
   // Add timeout to prevent hanging

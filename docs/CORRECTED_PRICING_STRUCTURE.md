@@ -120,7 +120,7 @@ Maximum: [10,000]
 SORT BY: [ Match Score ▼ ]
 
 ┌──────────────────────────────────┐
-│ 🥇 #1 CAPT. KARL VOGT            │
+│ 🥇 #1 CAPT. BENJAMIN BOWLER      │
 │ Match Score: 98%                 │
 │ • 6,200 PIC hours (B737: 3,400)  │
 │ • FAA ATPL | EASA ATPL           │

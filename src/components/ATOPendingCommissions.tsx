@@ -23,6 +23,26 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
   const [timeLeft, setTimeLeft] = useState<{hours: number; minutes: number; seconds: number} | null>(null);
 
   useEffect(() => {
+    async function loadCommissions() {
+      try {
+        const { data, error } = await supabase
+          .from('held_commissions')
+          .select('*')
+          .eq('ato_enterprise_account_id', atoId)
+          .eq('status', 'held')
+          .order('expires_at', { ascending: true });
+
+        if (error) throw error;
+
+        setCommissions(data || []);
+        setTotal((data || []).reduce((sum, c) => sum + (c.amount || 0), 0));
+      } catch (err) {
+        console.error('Failed to load commissions:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
     loadCommissions();
   }, [atoId]);
 
@@ -54,26 +74,6 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
     return () => clearInterval(interval);
   }, [commissions]);
 
-  async function loadCommissions() {
-    try {
-      const { data, error } = await supabase
-        .from('held_commissions')
-        .select('*')
-        .eq('ato_enterprise_account_id', atoId)
-        .eq('status', 'held')
-        .order('expires_at', { ascending: true });
-
-      if (error) throw error;
-
-      setCommissions(data || []);
-      setTotal((data || []).reduce((sum, c) => sum + (c.amount || 0), 0));
-    } catch (err) {
-      console.error('Failed to load commissions:', err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function handleRelease() {
     setReleasing(true);
     try {
@@ -90,8 +90,8 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
       setReleased(true);
       setCommissions([]);
       setTotal(0);
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : String(err));
     } finally {
       setReleasing(false);
     }
@@ -147,7 +147,7 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
             </p>
           </div>
           <div className="text-right">
-            <p className={`text-2xl font-bold ${isUrgent ? 'text-red-900' : 'text-amber-900'}`}>${total.toFixed(2}</p>
+            <p className={`text-2xl font-bold ${isUrgent ? 'text-red-900' : 'text-amber-900'}`}>${total.toFixed(2)}</p>
             <p className="text-xs text-slate-500">USDC held in escrow</p>
           </div>
         </div>
@@ -186,11 +186,11 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
                 <p className="text-sm font-semibold text-slate-700">Verification Check</p>
                 <p className="text-xs text-slate-400">
                   Held {new Date(commission.held_at).toLocaleDateString()}
-                  {commissionExpired ? ' — EXPIRED' : ` — Expires ${new Date(commission.expires_at).toLocaleTimeString(}`}
+                  {commissionExpired ? ' — EXPIRED' : ` — Expires ${new Date(commission.expires_at).toLocaleTimeString()}`}
                 </p>
               </div>
               <span className={`text-sm font-bold ${commissionExpired ? 'text-slate-400 line-through' : 'text-amber-700'}`}>
-                +${commission.amount.toFixed(2}
+                +${commission.amount.toFixed(2)}
               </span>
             </div>
           );
@@ -209,7 +209,7 @@ export const ATOPendingCommissions: React.FC<AtoPendingCommissionsProps> = ({ at
                 : 'bg-red-600 text-white hover:bg-red-700'
             }`}
           >
-            {releasing ? 'Releasing...' : isUrgent ? `CLAIM $${total.toFixed(2} NOW — EXPIRES SOON` : `Release $${total.toFixed(2} USDC to My Wallet`}
+            {releasing ? 'Releasing...' : isUrgent ? `CLAIM $${total.toFixed(2)} NOW — EXPIRES SOON` : `Release $${total.toFixed(2)} USDC to My Wallet`}
           </button>
           <p className="text-xs text-slate-400 text-center mt-2">
             {isUrgent 

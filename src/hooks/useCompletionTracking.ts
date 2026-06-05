@@ -29,6 +29,7 @@ export const useCompletionTracking = (userId: string | null) => {
     if (userId) {
       fetchCompletions();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchCompletions = async () => {

@@ -57,14 +57,14 @@ export const EnterpriseInvoiceRequest: React.FC<EnterpriseInvoiceRequestProps> =
 
       setResult({
         success: true,
-        message: data.message,
+        message: typeof data.message === 'string' ? data.message : 'Invoice created successfully',
         invoiceUrl: data.invoiceUrl,
         pdfUrl: data.pdfUrl,
         paymentMethod: data.paymentMethod,
       });
       onSubmitted?.();
-    } catch (err: any) {
-      setResult({ success: false, message: err.message });
+    } catch (err: unknown) {
+      setResult({ success: false, message: err instanceof Error ? err.message : String(err) });
     } finally {
       setLoading(false);
     }
@@ -77,7 +77,7 @@ export const EnterpriseInvoiceRequest: React.FC<EnterpriseInvoiceRequestProps> =
           <span className="text-green-600 text-2xl font-bold">✓</span>
         </div>
         <h3 className="text-xl font-bold text-slate-900 mb-2">Invoice Sent Successfully</h3>
-        <p className="text-slate-600 mb-6">{result.message}</p>
+        <p className="text-slate-600 mb-6">{result instanceof Error ? result.message : String(result)}</p>
 
         <div className="space-y-3">
           {result.invoiceUrl && (
@@ -331,7 +331,7 @@ export const EnterpriseInvoiceRequest: React.FC<EnterpriseInvoiceRequestProps> =
 
       {result && !result.success && (
         <div className="bg-red-50 text-red-700 text-sm rounded-lg p-3">
-          {result.message}
+          {result instanceof Error ? result.message : String(result)}
         </div>
       )}
 

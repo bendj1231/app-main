@@ -10,7 +10,7 @@ interface BlogArticlePageProps {
   htmlContent: string;
   relatedPosts: { slug: string; title: string; excerpt: string }[];
   onNavigate: (page: string) => void;
-  onLogin: () => void;
+  onLogin?: () => void;
   onBack: () => void;
   onRelatedArticleClick: (slug: string) => void;
 }

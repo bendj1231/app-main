@@ -408,7 +408,7 @@ Provide 5-7 opportunities in JSON format with:
   /**
    * Generate recommendations based on demand data
    */
-  private generateRecommendations(roleDemands: IndustryDemandData[], emergingOpportunities[]): string[] {
+  private generateRecommendations(roleDemands: IndustryDemandData[], emergingOpportunities: Array<{opportunity: string; description: string}>): string[] {
     const recommendations: string[] = [];
 
     // High demand roles

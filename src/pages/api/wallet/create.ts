@@ -1,4 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+// Next.js API route — TODO: Convert to Supabase Edge Function for Vite
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type NextApiRequest = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type NextApiResponse = any;
 
 interface CreateWalletRequest {
   pilotId: string;
@@ -17,7 +21,7 @@ interface TruveraWalletResponse {
   createdAt: string;
 }
 
-const TRUVERA_API_URL = process.env.TRUVERA_API_URL || 'https://api.truvera.io';
+const TRUVERA_API_URL = process.env.TRUVERA_API_URL;
 const TRUVERA_API_KEY = process.env.TRUVERA_API_KEY;
 
 export default async function handler(
@@ -106,6 +110,7 @@ export default async function handler(
     }
 
     // Step 3: Log creation for audit
+    console.warn('[wallet/create] Wallet created:', {
       pilotId,
       walletId: walletData.walletId,
       did: walletData.did,

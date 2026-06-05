@@ -51,6 +51,7 @@ export const useMentorMatching = (menteeId: string | null, isPremium: boolean = 
     if (menteeId) {
       fetchMentorMatches();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menteeId, isPremium]);
 
   const fetchMentorMatches = async () => {
@@ -97,6 +98,7 @@ export const useMentorMatching = (menteeId: string | null, isPremium: boolean = 
     }
   };
 
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const calculateMatches = (mentee: MenteeProfile, mentors: any[], isPremium: boolean): MentorMatch[] => {
     return mentors.map((mentor) => {
       let score = 0;

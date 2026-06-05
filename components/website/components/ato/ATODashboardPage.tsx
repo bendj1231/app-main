@@ -8,6 +8,9 @@ import { supabase } from '../../../../src/lib/supabase';
 import { useAuth } from '../../../../src/contexts/AuthContext';
 import { CSVUploadBox } from './CSVUploadBox';
 
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+
 interface Props {
   onBack: () => void;
   onNavigate: (page: string) => void;
@@ -106,8 +109,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
     setBillingLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-      const res = await fetch(`${supabaseUrl}/functions/v1/ato-stripe-checkout`, {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/ato-stripe-checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,8 +139,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
     setBillingLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-      const res = await fetch(`${supabaseUrl}/functions/v1/ato-stripe-cancel`, {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/ato-stripe-cancel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -606,7 +607,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                   {/* QR Code */}
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=${encodeURIComponent(`import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/verify-token?tokenId=${tok.id}`)}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=64x64&data=${encodeURIComponent(`${SUPABASE_URL}/functions/v1/verify-token?tokenId=${tok.id}`)}`}
                     alt="Verify QR"
                     style={{ width: 32, height: 32, borderRadius: 4, opacity: 0.8 }}
                     title="Scan to verify credential"
@@ -620,7 +621,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                   </button>
                   <button
                     onClick={() => {
-                      const url = `import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/verify-token?tokenId=${tok.id}`;
+                      const url = `${SUPABASE_URL}/functions/v1/verify-token?tokenId=${tok.id}`;
                       window.open(url, '_blank', 'noopener,noreferrer');
                     }}
                     style={{ padding: '0.35rem 0.75rem', borderRadius: '8px', border: '1px solid rgba(14,165,233,0.3)', background: 'transparent', color: '#38bdf8', fontSize: '0.72rem', cursor: 'pointer' }}
@@ -641,15 +642,15 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
           </div>
         )}
 
-        {/* ── ISSUE TOKEN TAB ── */}
+        {/* ── ISSUE RECORD TAB ── */}
         {activeTab === 'issue' && (
           <div style={{ ...card }}>
-            <p style={{ margin: '0 0 1.25rem', fontSize: '0.8rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Issue Credential Token</p>
+            <p style={{ margin: '0 0 1.25rem', fontSize: '0.8rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Issue Credential Record</p>
 
             {issueSuccess && (
               <div style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '10px', padding: '0.85rem', marginBottom: '1rem', display: 'flex', gap: '0.65rem', alignItems: 'center' }}>
                 <CheckCircle2 size={15} color="#10b981" />
-                <p style={{ margin: 0, fontSize: '0.82rem', color: '#34d399' }}>Token issued successfully.</p>
+                <p style={{ margin: 0, fontSize: '0.82rem', color: '#34d399' }}>Record issued successfully.</p>
               </div>
             )}
 
@@ -659,7 +660,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                 <input type="text" placeholder="Pilot's Supabase user ID (UUID)" value={issueForm.pilot_id} onChange={e => setIssueForm(f => ({ ...f, pilot_id: e.target.value }))} style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(30,41,59,0.6)', color: '#fff', fontSize: '0.82rem', outline: 'none' }} />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem', fontWeight: 600 }}>Token Type</label>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem', fontWeight: 600 }}>Record Type</label>
                 <select value={issueForm.token_type} onChange={e => setIssueForm(f => ({ ...f, token_type: e.target.value }))} style={{ width: '100%', padding: '0.65rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(30,41,59,0.6)', color: '#fff', fontSize: '0.82rem', outline: 'none', appearance: 'none' }}>
                   <option value="cpl_complete">CPL-Complete</option>
                   <option value="aam_ready">AAM-Ready</option>
@@ -668,7 +669,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
                 </select>
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem', fontWeight: 600 }}>Token Label <span style={{ color: '#ef4444' }}>*</span></label>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '0.3rem', fontWeight: 600 }}>Record Label <span style={{ color: '#ef4444' }}>*</span></label>
                 <input type="text" placeholder="e.g. CPL-Complete — WCC Aviation 2025" value={issueForm.token_label} onChange={e => setIssueForm(f => ({ ...f, token_label: e.target.value }))} style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(30,41,59,0.6)', color: '#fff', fontSize: '0.82rem', outline: 'none' }} />
               </div>
               <div>
@@ -701,7 +702,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
               }}
             >
               {issuing ? <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> : <ShieldCheck size={15} />}
-              Issue Credential Token
+              Issue Credential Record
             </button>
           </div>
         )}
@@ -830,7 +831,7 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
       {viewCredentialId && (() => {
         const tok = tokens.find(t => t.id === viewCredentialId);
         if (!tok) return null;
-        const verifyUrl = `import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co'/functions/v1/verify-token?tokenId=${tok.id}`;
+        const verifyUrl = `${SUPABASE_URL}/functions/v1/verify-token?tokenId=${tok.id}`;
         return (
           <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={(e) => { if (e.target === e.currentTarget) setViewCredentialId(null); }}>
             <div style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', maxWidth: '480px', width: '100%', padding: '2rem', position: 'relative' }}>

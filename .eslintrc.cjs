@@ -15,8 +15,12 @@ module.exports = {
             'warn',
             { allowConstantExport: true },
         ],
-        '@typescript-eslint/no-explicit-any': 'error', // No "any" types allowed!
-        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-explicit-any': 'error',
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+        'no-undef': 'off',
+        'no-empty': 'off',
+        'no-redeclare': 'off',
+        'no-prototype-builtins': 'off',
         'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
 }

@@ -6,7 +6,7 @@ import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 interface TransitionProgramPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({

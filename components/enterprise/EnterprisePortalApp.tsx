@@ -2003,7 +2003,8 @@ function SupportPage({ user, account }: { user: any; account: any }) {
   const send = async () => {
     if (!form.subject || !form.message) return;
     setSending(true);
-    await fetch('https://us-central1-pilotrecognition-airline.cloudfunctions.net/enterpriseAccess', {
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    await fetch(`${(import.meta as any).env?.VITE_FIREBASE_FUNCTIONS_URL as string}/enterpriseAccess`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: account?.airline_name || 'Enterprise User', email: user?.email, company: account?.airline_name || '', role: 'Enterprise User', message: `SUPPORT REQUEST\n\nSubject: ${form.subject}\n\n${form.message}` }),
     });

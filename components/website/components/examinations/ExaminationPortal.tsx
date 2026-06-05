@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Clock, Users, Award, ChevronRight, Lock, CheckCircle, PlayCircle, BookOpen, Brain, Plane, Shield, Target, ArrowLeft } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 interface Examination {
@@ -172,7 +172,7 @@ const ExaminationPortal: React.FC = () => {
         }
     ];
 
-    const cardVariants = {
+    const cardVariants: Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: (i: number) => ({
             opacity: 1,

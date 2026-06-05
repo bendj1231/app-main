@@ -17,7 +17,6 @@ import {
 } from '../../services/recognition-score-service';
 import {
   PilotScoreInput,
-  calculateRecognitionScore,
 } from '../../lib/pilot-recognition-score';
 
 export interface UseRecognitionScoreReturn {
@@ -28,7 +27,7 @@ export interface UseRecognitionScoreReturn {
   refreshScore: () => Promise<void>;
   leaderboard: RecognitionScoreRecord[];
   rank: number | null;
-  statistics: any;
+  statistics: unknown;
   loadLeaderboard: (limit?: number, tierFilter?: string) => Promise<void>;
 }
 
@@ -38,7 +37,7 @@ export const useRecognitionScore = (): UseRecognitionScoreReturn => {
   const [error, setError] = useState<string | null>(null);
   const [leaderboard, setLeaderboard] = useState<RecognitionScoreRecord[]>([]);
   const [rank, setRank] = useState<number | null>(null);
-  const [statistics, setStatistics] = useState<any>(null);
+  const [statistics, setStatistics] = useState<unknown>(null);
   const [userId, setUserId] = useState<string | null>(null);
 
   // Get current user ID from Supabase auth
@@ -77,8 +76,8 @@ export const useRecognitionScore = (): UseRecognitionScoreReturn => {
       // Fetch statistics
       const statsData = await getScoreStatistics(userId);
       setStatistics(statsData);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -96,8 +95,8 @@ export const useRecognitionScore = (): UseRecognitionScoreReturn => {
       if (updatedScore) {
         setScore(updatedScore);
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -108,7 +107,7 @@ export const useRecognitionScore = (): UseRecognitionScoreReturn => {
     try {
       const data = await getLeaderboard(limit, tierFilter);
       setLeaderboard(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error loading leaderboard:', err);
     }
   }, []);

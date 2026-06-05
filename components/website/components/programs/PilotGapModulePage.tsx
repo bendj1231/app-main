@@ -2918,10 +2918,10 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
 
                                     <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid rgba(15, 23, 42, 0.1)', textAlign: 'center' }}>
                                         <p style={{ color: '#0f172a', fontSize: '1.1rem', fontWeight: 600, margin: 0, fontFamily: 'Georgia, serif' }}>
-                                            Benjamin Tiger Bowler & Karl Brian Vogt
+                                            Benjamin Bowler
                                         </p>
                                         <p style={{ color: '#64748b', fontSize: '0.9rem', margin: '0.25rem 0 0 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                            Founders, Wingmentor
+                                            Founder, Wingmentor
                                         </p>
                                     </div>
                                 </div>
@@ -5057,7 +5057,7 @@ const PilotGapModulePage: React.FC<PilotGapModulePageProps> = ({ onBack, onCompl
                                     <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.05em' }}>FOUNDER</div>
                                 </div>
                                 <div style={{ textAlign: 'center' }}>
-                                    <div style={{ fontWeight: 700, color: '#0f172a', letterSpacing: '0.1em', fontSize: '0.9rem', marginBottom: '0.25rem' }}>KARL BRIAN VOGT</div>
+                                    <div style={{ fontWeight: 700, color: '#0f172a', letterSpacing: '0.1em', fontSize: '0.9rem', marginBottom: '0.25rem' }}>BENJAMIN BOWLER</div>
                                     <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.05em' }}>FOUNDER</div>
                                 </div>
                             </div>

@@ -1,11 +1,10 @@
-import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import { Navigate } from 'react-router-dom';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'DPO — Pilot Career Pathways',
   description: 'Data Protection Officer contact for pilotcareerpathways.com.',
 };
 
 export default function PathwaysDPORedirect() {
-  redirect('/dpo');
+  return <Navigate to="/dpo" replace />;
 }

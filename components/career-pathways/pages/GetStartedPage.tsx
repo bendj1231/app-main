@@ -296,11 +296,16 @@ export const GetStartedPage: React.FC = () => {
                                         </li>
                                     ))}
                                 </ul>
+                                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-4">
+                                    <p className="text-amber-300 text-xs font-bold text-center">
+                                        Invite co-pilots to earn $20 USD for every Recognition+ subscription with your unique code
+                                    </p>
+                                </div>
                                 <button
                                     onClick={() => {}}
                                     className="w-full py-2.5 text-xs font-black tracking-widest text-white rounded-lg bg-red-600 hover:bg-red-700 transition-all"
                                 >
-                                    UPGRADE NOW — $99/YEAR
+                                    UPGRADE NOW — $120/YEAR
                                 </button>
                                 <p className="text-white/40 text-[10px] text-center mt-2 leading-snug">
                                     Processing infrastructure fees are distributed securely on-chain via a decentralized gateway to our respective integration nodes.
@@ -672,7 +677,7 @@ export const GetStartedPage: React.FC = () => {
                                 {submitStatus === 'success' && (
                                     <div className="mt-4 p-4 bg-green-900/50 border border-green-700 rounded-lg">
                                         <p className="text-green-400 font-medium">Profile created successfully!</p>
-                                        <p className="text-green-300 text-sm mt-1">Redirecting to your wallet setup...</p>
+                                        <p className="text-green-300 text-sm mt-1">Redirecting to your PIC setup...</p>
                                     </div>
                                 )}
                                 
@@ -713,8 +718,8 @@ export const GetStartedPage: React.FC = () => {
                 {showWalletFlow && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div className="bg-slate-900 rounded-lg p-6 max-w-md w-full mx-4">
-                            <h3 className="text-xl font-semibold text-white mb-4">Wallet Setup</h3>
-                            <p className="text-slate-300 mb-6">Your wallet credentials will be set up here.</p>
+                            <h3 className="text-xl font-semibold text-white mb-4">PIC Setup</h3>
+                            <p className="text-slate-300 mb-6">Your PIC credentials will be set up here.</p>
                             <button
                                 onClick={() => setShowWalletFlow(false)}
                                 className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"

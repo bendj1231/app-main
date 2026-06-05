@@ -5,7 +5,7 @@ import { TopNavbar } from '../TopNavbar';
 interface PilotedDronesPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const PilotedDronesPage: React.FC<PilotedDronesPageProps> = ({

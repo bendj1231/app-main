@@ -42,6 +42,7 @@ export const useMentorshipTracking = (userId: string | null, role: 'mentor' | 'm
     if (userId) {
       fetchSessions();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, role]);
 
   const fetchSessions = async () => {

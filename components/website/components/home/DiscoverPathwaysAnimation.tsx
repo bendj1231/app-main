@@ -279,7 +279,7 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
                     transition={{ duration: 5, ease: [0.25, 0.1, 0.25, 1] }}
                     className="absolute inset-0"
                   >
-                    <img src="https://res.cloudinary.com/dridtecu6/image/upload/v1776686673/airline-expectations/etihad-airways-new.jpg" alt="Etihad Airways" className="w-full h-full object-cover scale-110" />
+                    <div className="w-full h-full bg-gradient-to-br from-slate-800 via-slate-900 to-black" />
                   </motion.div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
@@ -410,9 +410,7 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
                         transition={{ delay: i * 0.15, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
                         style={{ perspective: 1000 }}
                         className={`flex-shrink-0 w-[72px] rounded-lg overflow-hidden bg-white border ${a.selected ? 'ring-1 ring-sky-500 border-sky-400' : 'border-slate-200'} cursor-pointer`}>
-                        <div className="h-11 relative bg-slate-100">
-                          <img src={a.img} alt={a.name} className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <div className="h-11 relative bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
                           <div className="absolute bottom-0.5 left-1"><div className="text-white text-[6px] font-semibold leading-tight">{a.name}</div><div className="text-white/70 text-[4px]">{a.cat}</div></div>
                         </div>
                         <div className="p-0.5 flex gap-0.5 flex-wrap">
@@ -727,7 +725,7 @@ export const DiscoverPathwaysAnimation: React.FC<DiscoverPathwaysAnimationProps>
                         {/* Info bottom — with airline logo */}
                         <div className="absolute bottom-1 left-0 right-0 px-2 text-center">
                           <div className="flex items-center justify-center gap-1 mb-0.5">
-                            {pw.logo && <img src={pw.logo} alt={pw.airline} className="h-3 w-auto object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />}
+                            {pw.logo && <span className="text-white/80 text-[6px] font-bold">{pw.airline}</span>}
                             <div className="text-white text-[8px] font-serif">{pw.name}</div>
                           </div>
                           <div className="text-white/70 text-[5px]">{pw.airline} · {pw.aircraft} · {pw.loc}</div>

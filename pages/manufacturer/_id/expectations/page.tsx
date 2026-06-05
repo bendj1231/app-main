@@ -57,7 +57,7 @@ const ManufacturerExpectationsPage: React.FC = () => {
     },
     {
       title: "Career Progression",
-      description: manufacturer.careerProgression && manufacturer.careerProgression.stages ? manufacturer.careerProgression.stages.map(stage => stage.title).join(', ') : `Career progression typically follows standard aviation pathways from entry-level positions to captain roles, with opportunities for specialization in different aircraft types. ${manufacturer.name} offers various career paths for pilots with appropriate experience and qualifications.`
+      description: manufacturer.careerProgression ? `${manufacturer.careerProgression.entryLevel} → ${manufacturer.careerProgression.midLevel} → ${manufacturer.careerProgression.seniorLevel} (${manufacturer.careerProgression.timeline})` : `Career progression typically follows standard aviation pathways from entry-level positions to captain roles, with opportunities for specialization in different aircraft types. ${manufacturer.name} offers various career paths for pilots with appropriate experience and qualifications.`
     }
   ];
 

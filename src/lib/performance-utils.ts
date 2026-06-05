@@ -10,9 +10,13 @@ import { useEffect, useRef, useState, useCallback } from 'react';
  */
 export function useRenderPerformance(componentName: string) {
   const renderCount = useRef(0);
-  const startTime = useRef(performance.now());
+  const startTime = useRef(0);
 
   useEffect(() => {
+    if (startTime.current === 0) {
+      startTime.current = performance.now();
+      return;
+    }
     renderCount.current++;
     const endTime = performance.now();
     const duration = endTime - startTime.current;
@@ -27,16 +31,13 @@ export function useRenderPerformance(componentName: string) {
     startTime.current = endTime;
   });
 
-  return {
-    renderCount: renderCount.current,
-    lastRenderTime: startTime.current,
-  };
+  return { renderCount: -1, lastRenderTime: -1 };
 }
 
 /**
  * Hook to debounce expensive operations
  */
-export function useDebounce<T extends (...args: any[]) => any>(
+export function useDebounce<T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number
 ): (...args: Parameters<T>) => void {
@@ -59,7 +60,7 @@ export function useDebounce<T extends (...args: any[]) => any>(
 /**
  * Hook to throttle expensive operations
  */
-export function useThrottle<T extends (...args: any[]) => any>(
+export function useThrottle<T extends (...args: unknown[]) => unknown>(
   callback: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -127,13 +128,13 @@ export function measureCoreWebVitals() {
   new PerformanceObserver((list) => {
     const entries = list.getEntries();
     const lastEntry = entries[entries.length - 1];
-    // Report to analytics: lastEntry.startTime
+    void lastEntry; // Report to analytics: lastEntry.startTime
   }).observe({ entryTypes: ['largest-contentful-paint'] });
 
   // First Input Delay (FID)
   new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
-      const fidEntry = entry as PerformanceEventTiming;
+      void entry; // FID entry available for reporting
     }
   }).observe({ entryTypes: ['first-input'] });
 
@@ -141,10 +142,12 @@ export function measureCoreWebVitals() {
   let clsValue = 0;
   new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
-      if (!(entry as any).hadRecentInput) {
-        clsValue += (entry as any).value;
+      const layoutEntry = entry as unknown as { hadRecentInput?: boolean; value?: number };
+      if (!layoutEntry.hadRecentInput) {
+        clsValue += layoutEntry.value || 0;
       }
     }
+    void clsValue; // CLS value available for reporting
   }).observe({ entryTypes: ['layout-shift'] });
 }
 
@@ -176,7 +179,7 @@ export function batchDOMOperations(operations: (() => void)[]) {
   requestAnimationFrame(() => {
     // Use requestIdleCallback for non-critical operations if available
     if ('requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(() => {
+      (window as unknown as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback?.(() => {
         operations.forEach((op) => op());
       });
     } else {
@@ -194,7 +197,7 @@ export function useMemoryCleanup(cleanupFn: () => void) {
       cleanupFn();
       // Force garbage collection hint (if available)
       if ('gc' in window) {
-        (window as any).gc();
+        (window as unknown as { gc?: () => void }).gc?.();
       }
     };
   }, [cleanupFn]);

@@ -156,7 +156,7 @@ export const ShortageWalletPage: React.FC<ShortageWalletPageProps> = ({ auth0Id,
                 disabled={isCreating}
                 className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
               >
-                {isCreating ? 'Creating...' : 'Create Wallet'}
+                {isCreating ? 'Creating...' : 'Create PIC'}
               </button>
               <button
                 onClick={() => setShowCreateModal(false)}
@@ -179,7 +179,7 @@ export const ShortageWalletPage: React.FC<ShortageWalletPageProps> = ({ auth0Id,
             <Wallet className="w-5 h-5 text-green-400" />
           </div>
           <div>
-            <h3 className="text-white font-semibold">Anonymous Wallet Active</h3>
+            <h3 className="text-white font-semibold">Anonymous PIC Active</h3>
             <p className="text-slate-400 text-xs">DID: {did?.slice(0, 20)}...</p>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+const mfaEncryptionKey = Deno.env.get('MFA_ENCRYPTION_KEY')!
 
 // Rate limiting store
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
@@ -165,12 +166,24 @@ serve(async (req) => {
     // Generate QR code URL
     const qrCodeURL = generateQRCodeURL(secret, email)
 
-    // Store the secret (encrypted in production, plain for now - should use pgcrypto)
+    // Encrypt the secret using pgcrypto via RPC
+    const { data: encryptedSecret, error: encryptError } = await supabase
+      .rpc('encrypt_mfa_secret', { p_secret: secret, p_key: mfaEncryptionKey })
+
+    if (encryptError || !encryptedSecret) {
+      console.error('Failed to encrypt MFA secret:', encryptError)
+      return new Response(JSON.stringify({ error: 'Failed to setup MFA' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
+
+    // Store the encrypted secret
     const { error: insertError } = await supabase
       .from('mfa_secrets')
       .upsert({
         user_id: userId,
-        secret: secret, // TODO: Encrypt this using pgcrypto in production
+        encrypted_secret: encryptedSecret,
         method: method,
         phone_number: phoneNumber || null,
         is_enabled: false,

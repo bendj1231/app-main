@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { db, query, collection, where, getDocs } from '../lib/firebase-stub';
 
 interface FlightLog {
   id: string;

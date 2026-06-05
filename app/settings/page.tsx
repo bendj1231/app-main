@@ -1,37 +1,37 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { SettingsDirectoryPage } from '../../components/website/components/SettingsDirectoryPage';
 
 export default function SettingsPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   return (
     <SettingsDirectoryPage
-      onBack={() => router.back()}
+      onBack={() => navigate(-1)}
       onNavigate={(page: string) => {
         if (page === 'portal') {
-          router.push('/portal');
+          navigate('/portal');
         } else if (page === 'subscription') {
-          router.push('/subscription');
+          navigate('/subscription');
         } else if (page === 'notifications') {
-          router.push('/notifications');
+          navigate('/notifications');
         } else if (page === 'privacy') {
-          router.push('/privacy-policy');
+          navigate('/privacy-policy');
         } else if (page === 'appearance') {
-          router.push('/appearance');
+          navigate('/appearance');
         } else if (page === 'language') {
-          router.push('/language');
+          navigate('/language');
         } else if (page === 'pilot-terminal-settings') {
-          router.push('/pilot-terminal');
+          navigate('/pilot-terminal');
         } else if (page === 'contact-support') {
-          router.push('/contact');
+          navigate('/contact');
         } else {
-          router.push(`/${page}`);
+          navigate(`/${page}`);
         }
       }}
-      onLogin={() => router.push('/login')}
+      onLogin={() => navigate('/login')}
     />
   );
 }

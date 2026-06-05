@@ -7,7 +7,7 @@ Flight school accountants need a proper commercial invoice with:
 - Corporate tax ID number
 - Physical business address
 
-Without a registered entity, "WM Pilot Group" (or individual developer names) cannot provide these.
+Without a registered entity, "Aviation Pathways Ltd" (or individual developer names) cannot provide these.
 
 ## The Solution: Stripe Invoicing
 

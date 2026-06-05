@@ -8,12 +8,13 @@ import { LoginModal } from './LoginModal';
 
 interface WhatIsPilotRecognitionPageProps {
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
     onJoinUs: () => void;
 }
 
 const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({ onNavigate, onLogin, onJoinUs }) => {
-    const { currentUser, isLoggedIn } = useAuth();
+    const { currentUser } = useAuth();
+    const isLoggedIn = !!currentUser;
     const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
     const pilotId = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Pilot';
     const userDisplayName = currentUser?.displayName;
@@ -24,7 +25,6 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
             <TopNavbar
                 onNavigate={onNavigate}
                 onLogin={onLogin}
-                onJoinUs={onJoinUs}
                 isLight={true}
                 onLoginModalOpen={() => setIsLoginModalOpen(true)}
             />

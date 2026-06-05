@@ -1,11 +1,10 @@
 import PilotTerminalDashboard from '@/components/website/components/pilot-terminal/PilotTerminalDashboard';
-import { Metadata } from 'next';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Pilot Terminal - AI-Powered Aviation Career Intelligence | Pilotrecognition.com',
-  description: 'Access the Pilot Terminal AI system for intelligent aviation career matching, real-time market intelligence, and AI-powered pilot recognition profiles. Powered by Pilotrecognition.com and WM Pilot Group.',
-  keywords: 'pilot terminal, AI aviation, career intelligence, pilot recognition, aviation AI, career matching, pilot database, WM Pilot Group, Pilotrecognition',
-  authors: [{ name: 'WM Pilot Group' }],
+  description: 'Access the Pilot Terminal AI system for intelligent aviation career matching, real-time market intelligence, and AI-powered pilot recognition profiles. Powered by Pilotrecognition.com operated by Benjamin Bowler.',
+  keywords: 'pilot terminal, AI aviation, career intelligence, pilot recognition, aviation AI, career matching, pilot database, Pilotrecognition',
+  authors: [{ name: 'Benjamin Bowler' }],
   openGraph: {
     title: 'Pilot Terminal - AI-Powered Aviation Career Intelligence | Pilotrecognition.com',
     description: 'Access the Pilot Terminal AI system for intelligent aviation career matching, real-time market intelligence, and AI-powered pilot recognition profiles.',

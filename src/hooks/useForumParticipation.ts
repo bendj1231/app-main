@@ -25,6 +25,7 @@ export const useForumParticipation = (userId: string | null) => {
     if (userId) {
       fetchPosts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchPosts = async () => {

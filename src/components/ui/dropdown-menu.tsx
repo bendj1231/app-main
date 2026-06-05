@@ -148,7 +148,7 @@ export interface DropdownContextProps {
   children: React.ReactNode;
 }
 
-export function DropdownContext({ isOpen, onClose, children }: DropdownContextProps) {
+export function DropdownContext({ isOpen: _isOpen, onClose: _onClose, children }: DropdownContextProps) {
   return (
     <div className="relative">
       {children}

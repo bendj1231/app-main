@@ -517,7 +517,6 @@ export const PilotLicensureExperiencePage: React.FC<PilotLicensureExperiencePage
       }
 
       // Also sync with profiles table for consistency
-      const userId = userProfile?.id || userProfile?.uid;
       if (userId) {
         const profileUpdateData: any = {
           full_name: fullLegalName,

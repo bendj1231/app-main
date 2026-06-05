@@ -24,7 +24,7 @@ export const DataCustodyExplainer: React.FC<DataCustodyExplainerProps> = ({
       <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm">
         <div className="flex items-center gap-2 text-slate-600">
           <Shield className="w-4 h-4 text-cyan-600" />
-          <span>Your wallet holds the credential.</span>
+          <span>Your PIC holds the credential.</span>
         </div>
         <div className="flex items-center gap-2 text-slate-600 mt-1">
           <Database className="w-4 h-4 text-blue-600" />
@@ -41,7 +41,7 @@ export const DataCustodyExplainer: React.FC<DataCustodyExplainerProps> = ({
   const tiers = [
     {
       id: 1,
-      title: "Your Pilot Wallet",
+      title: "Your Pilot PIC",
       subtitle: "Your Device • Your Control",
       icon: Shield,
       color: "cyan",
@@ -165,7 +165,7 @@ export const DataCustodyExplainer: React.FC<DataCustodyExplainerProps> = ({
 
       <div className="bg-slate-100 rounded-lg p-3 text-xs text-slate-600">
         <p>
-          <strong>Key Principle:</strong> Your wallet holds the cryptographic proof, 
+          <strong>Key Principle:</strong> Your PIC holds the verification proof, 
           we store text claims for verification lookup, and regional authorities manage 
           physical documents per local aviation law.
         </p>

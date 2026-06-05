@@ -66,6 +66,8 @@ export const ProgramProgress = ({ connected, onConnect }: { connected: boolean; 
                     src="https://www.jotform.com/report/240087115842049"
                     className="w-full h-full border-0"
                     title="Program Analytics"
+                    sandbox="allow-scripts allow-same-origin"
+                    referrerPolicy="strict-origin"
                 ></iframe>
                 <div className="absolute inset-0 bg-slate-50 flex items-center justify-center -z-10">
                     <p className="text-slate-400 animate-pulse">Loading Secured Analytics Dashboard...</p>

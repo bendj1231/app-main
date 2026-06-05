@@ -1043,7 +1043,7 @@ export const PilotJourneyScroll: React.FC<PilotJourneyScrollProps> = ({ onNaviga
                 <p className="text-[8px] text-blue-600 uppercase tracking-wide">FOUNDER</p>
               </div>
               <div className="text-center">
-                <p className="text-[10px] font-bold text-slate-900">KARL BRIAN VOGT</p>
+                <p className="text-[10px] font-bold text-slate-900">BENJAMIN BOWLER</p>
                 <p className="text-[8px] text-blue-600 uppercase tracking-wide">FOUNDER</p>
               </div>
             </div>

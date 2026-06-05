@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 interface EBTCBTAPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const EBTCBTAPage: React.FC<EBTCBTAPageProps> = ({ onBack, onNavigate, onLogin }) => {

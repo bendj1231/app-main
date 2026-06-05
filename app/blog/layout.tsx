@@ -1,6 +1,4 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
+export const metadata = {
   title: 'PilotRecognition Blog | Modern Aviation Career Intelligence',
   description: 'Evidence-based strategies for pilots navigating the new competency-focused recruitment landscape. Learn about EBT/CBTA, skill stacking, ATLAS CV formatting, and more.',
   keywords: ['aviation careers', 'pilot recruitment', 'EBT training', 'CBTA', 'competency-based training', 'ATLAS CV', 'pilot profile'],

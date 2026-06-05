@@ -1,6 +1,42 @@
-import { Metadata } from 'next';
-import { typeRatingService, ManufacturerCamel } from '@/src/services/typeRatingService';
-import { notFound } from 'next/navigation';
+// TODO: Replace with client-side service (typeRatingService is Next.js server-only)
+// import { typeRatingService, ManufacturerCamel } from '@/src/services/typeRatingService';
+
+interface ManufacturerCamel {
+  id: string;
+  name: string;
+  logo?: string;
+  description?: string;
+  founded?: string;
+  headquarters?: string;
+  reputationScore?: number;
+  totalAircraftCount?: number;
+  website?: string;
+  expectations?: {
+    overview?: string;
+    pilotExpectations?: Array<{
+      role: string;
+      experience: string;
+      typeRating: string;
+      requirements: string[];
+    }>;
+    skills?: string[];
+  };
+  careerProgression?: Array<{
+    title: string;
+    description: string;
+    timeline: string;
+    requirements: string[];
+  }>;
+  trainingCenters?: Array<{
+    name: string;
+    location: string;
+    contact: string;
+  }>;
+  marketDemandStatistics?: Array<{
+    label: string;
+    value: string;
+  }>;
+}
 
 interface PageProps {
   params: {
@@ -8,56 +44,37 @@ interface PageProps {
   };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const manufacturer = await typeRatingService.getManufacturerById(params.id);
+export const metadata = {
+  title: 'Manufacturer Expectations - Pilotrecognition.com | Aviation Career Recognition Platform',
+  description: 'Learn about expectations, requirements, and career progression for manufacturer pilots. Operated by Benjamin Bowler pending incorporation of Aviation Pathways Ltd.',
+  keywords: 'pilot expectations, type rating, aviation career, pilot jobs',
+  authors: [{ name: 'Benjamin Bowler' }],
+  openGraph: {
+    title: 'Manufacturer Expectations - Pilotrecognition.com',
+    description: 'Learn about expectations, requirements, and career progression for manufacturer pilots.',
+    url: 'https://pilotrecognition.com/manufacturer/expectations',
+    siteName: 'Pilotrecognition.com',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export default function ManufacturerExpectationsPage({ params }: PageProps) {
+  // TODO: Replace with client-side data fetch (typeRatingService is server-only in Next.js)
+  const manufacturer = null;
   
   if (!manufacturer) {
-    return {
-      title: 'Manufacturer Not Found',
-    };
-  }
-
-  return {
-    title: `${manufacturer.name} Expectations - Pilotrecognition.com | Aviation Career Recognition Platform`,
-    description: `Learn about expectations, requirements, and career progression for ${manufacturer.name} pilots. Operated by WM Pilot Group.`,
-    keywords: `${manufacturer.name}, pilot expectations, type rating, aviation career, pilot jobs, ${manufacturer.id}`,
-    authors: [{ name: 'WM Pilot Group' }],
-    openGraph: {
-      title: `${manufacturer.name} Expectations - Pilotrecognition.com`,
-      description: `Learn about expectations, requirements, and career progression for ${manufacturer.name} pilots.`,
-      url: `https://pilotrecognition.com/manufacturer/${manufacturer.id}/expectations`,
-      siteName: 'Pilotrecognition.com',
-      images: [
-        {
-          url: manufacturer.logo || 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-          width: 1200,
-          height: 630,
-          alt: `${manufacturer.name} Logo`,
-        },
-      ],
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${manufacturer.name} Expectations - Pilotrecognition.com`,
-      description: `Learn about expectations, requirements, and career progression for ${manufacturer.name} pilots.`,
-      images: [manufacturer.logo || 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png'],
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      canonical: `https://pilotrecognition.com/manufacturer/${manufacturer.id}/expectations`,
-    },
-  };
-}
-
-export default async function ManufacturerExpectationsPage({ params }: PageProps) {
-  const manufacturer = await typeRatingService.getManufacturerById(params.id);
-  
-  if (!manufacturer) {
-    notFound();
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">Manufacturer Not Found</h1>
+          <p className="text-slate-400">The manufacturer profile you are looking for does not exist.</p>
+        </div>
+      </div>
+    );
   }
 
   return (

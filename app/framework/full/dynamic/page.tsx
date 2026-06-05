@@ -155,7 +155,7 @@ export default function DynamicFrameworkPage() {
                       <table className="w-full border-collapse border border-slate-200">
                         <thead>
                           <tr className="bg-slate-100">
-                            {table.headers?.map((header: string, idx: number) => (
+                            {(table.headers as string[])?.map((header: string, idx: number) => (
                               <th key={idx} className="border border-slate-200 px-4 py-2 text-left text-sm font-semibold">
                                 {header}
                               </th>

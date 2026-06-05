@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface ATLASCVPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const ATLASCVPage: React.FC<ATLASCVPageProps> = ({

@@ -50,24 +50,26 @@
 - **Incorporating Authority:** Companies and Business Registration Division (CBRD), Mauritius
 - **Share Capital:** MUR 100,000 authorised / 100 ordinary shares issued (100% Benjamin Bowler)
 - **Registered Office:** 24 Avenue Le Morne, Black Rock 2, Villa 24, Tamarin, Republic of Mauritius
-- **Company Secretary:** Benjamin Bowler
-- **Data Protection Officer:** Benjamin Bowler (registered with Mauritius Data Protection Office)
+- **Company Secretary:** Marie Maureen Synthia Maya (Managing Director)
+- **Data Protection Contact:** Benjamin Bowler (Non-Executive Director, Sole Shareholder). The Company has applied for registration as a Data Controller with the Mauritius Data Protection Office under the Data Protection Act 2017. Benjamin Bowler serves as the registered contact person for data protection matters pending appointment of an independent Data Protection Officer upon platform launch.
 
 ### 2.2 Ownership
 
 | Shareholder | Shares | Percentage | Role |
 |-------------|--------|------------|------|
-| Benjamin Bowler | 100 | 100% | Managing Director, Sole Shareholder, DPO, Company Secretary |
+| Benjamin Bowler | 100 | 100% | Non-Executive Director, Sole Shareholder, Interim DPO, Company Secretary |
 
 **Future Equity:** The Company has reserved unissued shares for:
-- Karl Brian Vogt (Co-Founder, Outreach & BD) — potential 10–15% upon formal admission
+- Karl Brian Vogt (Co-Founder, Outreach & Business Development) — potential 25–30% upon formal admission
 - Employee Stock Option Pool — 10% for key hires
+- Daniel & Keiv (Operations & Pilot Advocates) — potential 2–3% each upon formal admission
 
 ### 2.3 Governance
 
-As a single-director company, governance is streamlined:
-- **Strategic decisions:** Made by the Managing Director from Mauritius
-- **Board meetings:** Conducted electronically (video conference) as permitted under the Articles of Association
+The Company has two directors with clear separation of roles:
+- **Executive authority:** The Managing Director (Marie Maureen Synthia Maya) manages day-to-day operations, bank relationships, and Mauritius-based compliance from the registered office in Tamarin
+- **Strategic oversight:** The Non-Executive Director / Sole Shareholder (Benjamin Bowler) holds all issued shares and controls board composition, major asset decisions, and IP licensing strategy
+- **Board meetings:** Conducted electronically (video conference) as permitted under the Articles of Association. Quorum is one director
 - **Annual General Meeting:** First AGM within 18 months of incorporation
 - **Audit:** Independent auditor appointed annually
 
@@ -328,33 +330,51 @@ Core software development oversight, algorithm refinement, and strategic IP mana
 
 ### 8.1 Technical Architecture
 
-**Frontend:** React / Next.js / TypeScript  
-**Backend:** Supabase (PostgreSQL + Edge Functions)  
-**Auth:** Auth0 (OAuth 2.0 / WebAuthn passkeys)  
-**Storage:** Supabase Storage (encrypted), Cloudinary (profile images), IPFS (public VC metadata)  
-**Wallet:** Browser-based IndexedDB with AES-256-GCM encryption, did:key derivation  
-**Verification Routing:** Direct-to-verifier webhooks (Veremark API, CAAP PEL system)  
-**Analytics:** Custom analytics pipeline (privacy-preserving, no third-party trackers)  
+**Frontend:** React / Vite / TypeScript  
+**Backend:** Supabase (PostgreSQL + Edge Functions), Neon PostgreSQL (OEM data), MongoDB Atlas (telemetry)  
+**Auth:** Auth0 (OAuth 2.0 / WebAuthn passkeys) — Auth0 holds and encrypts all identity credentials (email, phone, password)  
+**Storage:** Supabase Storage (profile images, public documents), IPFS (public VC metadata)  
+**Wallet:** Browser-based IndexedDB with AES-256-GCM encryption, did:web:pilotrecognition.com DID issuer  
+**Logbook:** Third-party Logbook Provider integration — PilotRecognition does not store raw flight logs  
+**Verification Routing:** Direct-to-verifier webhooks (Veremark API, CAAP PEL system) — raw documents never touch PilotRecognition servers  
+**Analytics:** Privacy-preserving event logging, no third-party ad trackers  
 
-### 8.2 Security and Compliance
+### 8.2 Data Controller Scope (What PilotRecognition Actually Stores)
 
-- **Encryption:** AES-256-GCM at rest, TLS 1.3 in transit
-- **Authentication:** Passkey/WebAuthn (passwordless), Google OAuth
-- **Database:** Row-Level Security (RLS), encrypted credential fields
-- **Data Protection:** DPO registered in Mauritius, GDPR/RA 10173/UAE PDPL compliance
+PilotRecognition acts as a **technical gateway and intermediary**, not a traditional data controller. The platform stores only:
+
+- **Platform preferences** — pathway bookmarks, settings, display name, optional bio
+- **Verification ticket stubs** — binary status (`verified`/`pending`/`expired`), check ID, timestamp (no health data, no document images)
+- **Subscription metadata** — tier name, expiry date, transaction ID (Stripe handles card data)
+- **Auth0 user ID reference** — UUID linking to Auth0 tenant; PilotRecognition never stores passwords, emails, or phone numbers
+
+**What PilotRecognition does NOT store:**
+- Raw passport scans, medical certificates, license scans (Veremark holds these)
+- Flight hours, logbook entries, ADS-B telemetry (Logbook Provider holds these)
+- Payment card numbers, bank details (Stripe holds these)
+- Identity passwords, 2FA secrets, session tokens (Auth0 holds these)
+
+### 8.3 Security Measures
+
+- **Encryption:** AES-256-GCM at rest (Supabase), TLS 1.3 in transit
+- **Authentication:** Passkey/WebAuthn via Auth0 (passwordless), Google OAuth
+- **Database:** Row-Level Security (RLS) on all tables, encrypted credential metadata fields
+- **Data Protection:** Registered Data Controller contact person (Mauritius DPA 2017); GDPR compliance obligations triggered only upon processing EU citizen sensitive data at scale
 - **Audit:** Security event logging, 12-month retention with automatic purge
 
-### 8.3 Development Team
+### 8.4 Development Team
 
 **Current Team (Remote / Distributed):**
-- **Benjamin Bowler** (Mauritius / Dubai): Founder, Managing Director, Full-Stack Development, Product
-- **Karl Brian Vogt** (Germany): Co-Founder, Outreach, Business Development, Flight School Partnerships
-- **Daniel & Keiv** (Philippines): Operations, Pilot Advocacy, Community Management
-- **Sebastien** (External): Finance, Accounting, USDC Reconciliation
+- **Benjamin Bowler** (Dubai / Philippines): Founder, Non-Executive Director, Sole Shareholder, Full-Stack Development, Product Architecture
+- **Karl Brian Vogt** (Germany): Co-Founder, Outreach & Business Development, Flight School & Airline Partnerships
+- **Marie Maureen Synthia Maya** (Mauritius): Managing Director, Company Secretary, Mauritius Compliance & Banking
+- **Daniel** (Philippines): Operations, Pilot Advocacy, Community Management
+- **Keiv** (Philippines): Operations, Pilot Advocacy, Peer Outreach
+- **Sebastien** (External Contractor): Finance, Accounting, USDC Reconciliation
 
 **Planned Mauritius Hires (Year 1–2):**
 - Software Developer (1 FTE) — local employment to meet GBC substance requirements
-- Administrative Support (0.5 FTE) — company secretary assistant, compliance
+- Administrative Support (0.5 FTE) — compliance assistant, data controller registration maintenance
 
 ---
 
@@ -477,7 +497,7 @@ The following CIGA are conducted from and directed in Mauritius:
 | **Competitor copy** | Medium | Medium | Network effects (more pilots → more airlines → more pilots); IP on EBT scoring algorithm |
 | **Data breach** | Low | Critical | Zero-knowledge architecture, encrypted fields, no raw document storage, DPO compliance |
 | **Funding shortfall** | Medium | High | Bootstrapped model; revenue from Day 1 (programs); minimal burn rate |
-| **Key person dependency** | High | Medium | Documented architecture, gradual team expansion, Karl Vogt as co-founder backup |
+| **Key person dependency** | High | Medium | Documented architecture, gradual team expansion, Benjamin Bowler as founder |
 
 ### 11.2 Contingency Plans
 

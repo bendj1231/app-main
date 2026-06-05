@@ -5,7 +5,7 @@ import { TopNavbar } from './TopNavbar';
 interface OnboardingRecognitionProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 const recognitions = [

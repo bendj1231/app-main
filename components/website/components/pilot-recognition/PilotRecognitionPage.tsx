@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 interface PilotRecognitionPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const PilotRecognitionPage: React.FC<PilotRecognitionPageProps> = ({

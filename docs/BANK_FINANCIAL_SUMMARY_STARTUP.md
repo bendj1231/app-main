@@ -133,7 +133,7 @@
 | Risk | Mitigation |
 |------|------------|
 | Pre-revenue | 6 partnerships already secured, LOIs in hand |
-| Single founder | Co-founder (Karl Vogt) operational in Europe, joining formally |
+| Single founder | Benjamin Bowler operational in Dubai, sole founder |
 | Market validation | 6-year development based on direct pilot feedback |
 | Regulatory | Mauritian company structure, compliance framework ready |
 

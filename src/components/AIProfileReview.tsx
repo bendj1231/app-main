@@ -24,6 +24,27 @@ export const AIProfileReview: React.FC = () => {
     const sessionId = localStorage.getItem('pr_pending_session_id');
 
     useEffect(() => {
+        async function loadPendingProfile() {
+            try {
+                const { data, error } = await supabase
+                    .from('pending_profiles')
+                    .select('*')
+                    .eq('session_id', sessionId)
+                    .eq('approval_status', 'pending')
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .maybeSingle();
+
+                if (error) throw error;
+                setPending(data);
+            } catch (err) {
+                console.error('Error loading pending profile:', err);
+                setPending(null);
+            } finally {
+                setLoading(false);
+            }
+        }
+
         if (!sessionId) {
             setLoading(false);
             return;
@@ -31,31 +52,11 @@ export const AIProfileReview: React.FC = () => {
         loadPendingProfile();
     }, [sessionId]);
 
-    async function loadPendingProfile() {
-        try {
-            const { data, error } = await supabase
-                .from('pending_profiles')
-                .select('*')
-                .eq('session_id', sessionId)
-                .eq('approval_status', 'pending')
-                .order('created_at', { ascending: false })
-                .limit(1)
-                .maybeSingle();
-
-            if (error) throw error;
-            setPending(data);
-        } catch (err) {
-            console.error('Failed to load pending profile:', err);
-        } finally {
-            setLoading(false);
-        }
-    }
-
     async function handleApprove() {
         if (!sessionId) return;
         setProcessing(true);
         try {
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .rpc('promote_pending_profile', { p_session_id: sessionId });
 
             if (error) throw error;
@@ -63,8 +64,8 @@ export const AIProfileReview: React.FC = () => {
             setResult('Profile approved and synced to your account.');
             setPending(null);
             localStorage.removeItem('pr_pending_session_id');
-        } catch (err: any) {
-            setResult(`Error: ${err.message}`);
+        } catch (err: unknown) {
+            setResult(`Error: ${err instanceof Error ? err.message : String(err)}`);
         } finally {
             setProcessing(false);
         }
@@ -82,8 +83,8 @@ export const AIProfileReview: React.FC = () => {
             setResult('AI-generated profile rejected. You can enter your data manually.');
             setPending(null);
             localStorage.removeItem('pr_pending_session_id');
-        } catch (err: any) {
-            setResult(`Error: ${err.message}`);
+        } catch (err: unknown) {
+            setResult(`Error: ${err instanceof Error ? err.message : String(err)}`);
         } finally {
             setProcessing(false);
         }

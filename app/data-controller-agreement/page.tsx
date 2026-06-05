@@ -14,12 +14,15 @@ export default function DataControllerAgreementPage() {
           </div>
           <h1 className="text-3xl font-black text-slate-900 mb-2">Data Controller Agreement</h1>
           <p className="text-slate-500 text-sm mb-4">
-            Aviation Pathways Ltd (operating as PilotRecognition.com) · Effective: 02 June 2026
+            Operated by Benjamin Bowler — Aviation Pathways Ltd (incorporation pending) · Effective: 02 June 2026
           </p>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 leading-relaxed mb-4">
+            <strong>Entity Disclosure:</strong> This agreement is currently entered into with Benjamin Bowler as an individual entrepreneur pending the incorporation of Aviation Pathways Ltd in the Republic of Mauritius. All obligations of the Infrastructure Controller described herein are presently vested in Benjamin Bowler and shall be novated to Aviation Pathways Ltd upon issuance of the Certificate of Incorporation by the Companies and Business Registration Division (CBRD). Until such novation occurs, Benjamin Bowler is the legal Infrastructure Controller and Data Controller for all personal data processed through this platform.
+          </div>
           <div className="bg-slate-100 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 leading-relaxed">
             This instrument constitutes a binding infrastructure and data governance agreement between the Data Subject
-            (the Registrant, hereinafter the <em>Credential Custodian</em>) and Aviation Pathways Ltd (hereinafter the{' '}
-            <em>Infrastructure Controller</em> or <em>the Platform</em>), effective immediately upon account creation in Terminal 1.
+            (the Registrant, hereinafter the <em>Credential Custodian</em>) and Benjamin Bowler (hereinafter the{' '}
+            <em>Infrastructure Controller</em> or <em>the Platform</em>), pending novation to Aviation Pathways Ltd upon incorporation, effective immediately upon account creation in Terminal 1.
           </div>
         </div>
 

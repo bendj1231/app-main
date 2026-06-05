@@ -13,9 +13,8 @@
 import { supabase } from './supabase';
 
 // CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@drcfmairy
-const VITE_SUPABASE_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL)
-  ? (import.meta as any).env.VITE_SUPABASE_URL
-  : 'https://gkbhgrozrzhalnjherfu.supabase.co';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const VITE_SUPABASE_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL) as string;
 
 export interface ImageUploadResult {
   success: boolean;
@@ -133,9 +132,9 @@ export async function uploadProfileImage(
       publicId: result.publicId,
     };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[profileImageUpload] Upload failed:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 

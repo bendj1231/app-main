@@ -240,7 +240,7 @@ const filterPilots = (pilots: Pilot[], settings: FilterSettings) => {
 ┌─────────────────────────────────────────┐
 │  ✅ BORDER CLEARANCE TOKEN               │
 │                                         │
-│  Pilot: Capt. Karl Vogt                 │
+│  Pilot: Capt. Benjamin Bowler           │
 │  Status: 🟢 CLEARED FOR ROUTE           │
 │                                         │
 │  Verifications:                          │

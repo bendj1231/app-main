@@ -23,7 +23,7 @@ export default function DPOPage() {
             under the Mauritius Data Protection Act 2017, GDPR, and RA 10173 (Philippines) within our published SLA.
           </p>
           <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800">
-            <strong>DPO Independence Notice:</strong> The Data Protection Officer role is currently filled by a company director (Benjamin Bowler) pending appointment of an independent DPO. This is acknowledged as a temporary arrangement under the Mauritius Data Protection Act 2017. An independent DPO will be appointed as the company scales and resources permit.
+            <strong>Data Protection Contact:</strong> Benjamin Bowler (Non-Executive Director / Sole Shareholder) serves as the registered contact person for data protection matters with the Data Protection Office, Republic of Mauritius. This role is distinct from a GDPR Article 37 Data Protection Officer. An independent DPO under GDPR Article 37 will be appointed prior to processing personal data of data subjects within the European Economic Area at scale. The platform has not yet commenced user data processing.
           </div>
         </div>
 
@@ -82,14 +82,14 @@ export default function DPOPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-            <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+            <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
               <p className="font-semibold text-slate-800 mb-1">Legal Entity</p>
-              <p className="text-slate-600">Aviation Pathways Ltd</p>
-              <p className="text-xs text-slate-500 mt-1">Incorporated in the Republic of Mauritius</p>
+              <p className="text-slate-600">Aviation Pathways Ltd (pending incorporation, Republic of Mauritius)</p>
+              <p className="text-xs text-amber-700 mt-1">Managed by Marie Maureen Synthia Maya (Managing Director) and Benjamin Bowler (Non-Executive Director / Sole Shareholder).</p>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
               <p className="font-semibold text-slate-800 mb-1">Mauritius Registration</p>
-              <p className="text-slate-600">Application for registration as Data Controller shall be filed with the Data Protection Office, Republic of Mauritius within 14 days of commencing data processing activities. Certificate available upon completion of registration.</p>
+              <p className="text-slate-600">Application for registration as Data Controller filed with the Data Protection Office, Republic of Mauritius under the Data Protection Act 2017. The platform has not commenced user data processing. The 14-day registration clock begins upon first user registration.</p>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
               <p className="font-semibold text-slate-800 mb-1">Managing Director</p>
@@ -100,8 +100,9 @@ export default function DPOPage() {
               <p className="text-slate-600">Benjamin Bowler</p>
             </div>
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-              <p className="font-semibold text-slate-800 mb-1">Data Protection Officer</p>
+              <p className="font-semibold text-slate-800 mb-1">Data Protection Contact</p>
               <p className="text-slate-600">Benjamin Bowler — privacy@pilotrecognition.com</p>
+              <p className="text-xs text-slate-500 mt-1">Registered contact person under Mauritius DPA 2017. Not a GDPR Article 37 DPO.</p>
             </div>
           </div>
         </div>
@@ -182,7 +183,7 @@ export default function DPOPage() {
         {/* Footer */}
         <div className="text-center">
           <p className="text-xs text-slate-400">
-            Last updated: 02 June 2026 · Document Reference: PR-DPO-001 v1.0 · Aviation Pathways Ltd
+            Last updated: 02 June 2026 · Document Reference: PR-DPO-001 v1.0 · Aviation Pathways Ltd (pending incorporation) — Managing Director: Marie Maureen Synthia Maya · Non-Executive Director: Benjamin Bowler
           </p>
         </div>
       </div>

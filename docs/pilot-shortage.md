@@ -956,6 +956,6 @@ WCC is your ATO. They know you. They trained you. They have a relationship with 
 **Version:** 2.1  
 **Created:** May 30, 2026  
 **Updated:** May 30, 2026 (added The Angel Investor case study, The Flight Instructor Dignity Gap section, recognition/credibility pathway framing for instructors)  
-**Owner:** WM Pilot Group / Pilot Shortage Association  
+**Owner:** Aviation Pathways Ltd / Pilot Shortage Association  
 **Purpose:** Narrative foundation for pilotshortage.org website, marketing, and advocacy  
 **Next Review:** June 15, 2026 (post-launch analytics)

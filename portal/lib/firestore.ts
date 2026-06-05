@@ -13,9 +13,9 @@ import {
     getDoc,
     onSnapshot,
     orderBy,
-    limit
-} from 'firebase/firestore';
-import { db } from './firebase';
+    limit,
+    db
+} from './firebase-stub';
 
 export interface MentorshipLog {
     id?: string;
@@ -26,7 +26,7 @@ export interface MentorshipLog {
     sessionDescription: string;
     program: string;
     status: 'pending' | 'verified';
-    createdAt: Timestamp | any;
+    createdAt: any;
 }
 
 /**

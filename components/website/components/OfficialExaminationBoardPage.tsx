@@ -7,7 +7,7 @@ import { MeshGradient } from '@paper-design/shaders-react';
 interface OfficialExaminationBoardPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 const OfficialExaminationBoardPage: React.FC<OfficialExaminationBoardPageProps> = ({

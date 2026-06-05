@@ -3,7 +3,7 @@ import { TopNavbar } from './TopNavbar';
 
 interface FounderStoryPageProps {
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const FounderStoryPage: React.FC<FounderStoryPageProps> = ({ onNavigate, onLogin }) => {

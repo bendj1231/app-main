@@ -178,7 +178,7 @@
 
 ```
 ┌─────────────────────────────────────────┐
-│  PILOT ALIGNED: CAPT. KARL VOGT         │
+│  PILOT ALIGNED: CAPT. BENJAMIN BOWLER   │
 │                                         │
 │  🟢 VERIFICATION STATUS                  │
 │                                         │
@@ -376,7 +376,7 @@
 ┌─────────────────────────────────────────┐
 │  🔴 NEW PILOT ALIGNED                    │
 │                                         │
-│  Capt. Karl Vogt has aligned their      │
+│  Capt. Benjamin Bowler has aligned their      │
 │  profile to your ATR-72 pathway.        │
 │                                         │
 │  Match Quality: EXCELLENT               │

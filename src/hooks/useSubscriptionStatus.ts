@@ -38,6 +38,7 @@ export const useSubscriptionStatus = (userId: string | null) => {
     if (userId) {
       fetchSubscriptionStatus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchSubscriptionStatus = async () => {
@@ -66,7 +67,7 @@ export const useSubscriptionStatus = (userId: string | null) => {
 
       setStatus({
         isPremium,
-        plan: plan as any,
+        plan: plan as 'free' | 'enterprise' | 'basic' | 'premium',
         expiresAt,
         features,
       });

@@ -16,7 +16,7 @@ export interface MentorshipBadge {
   badge_icon: string;
   badge_tier: 'bronze' | 'silver' | 'gold' | 'platinum';
   earned_at: string;
-  criteria_met: any;
+  criteria_met: unknown;
   is_displayed: boolean;
 }
 
@@ -26,6 +26,7 @@ export interface BadgeDefinition {
   description: string;
   icon: string;
   tier: 'bronze' | 'silver' | 'gold' | 'platinum';
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   criteria: (stats: any) => boolean;
 }
 
@@ -148,6 +149,7 @@ export const useMentorshipBadges = (userId: string | null) => {
       fetchBadges();
       checkAvailableBadges();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchBadges = async () => {

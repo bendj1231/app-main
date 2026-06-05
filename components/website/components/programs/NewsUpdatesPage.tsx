@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 interface NewsUpdatesPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const NewsUpdatesPage: React.FC<NewsUpdatesPageProps> = ({

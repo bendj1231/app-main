@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/src/lib/supabase';
 import { safeRedirect } from '@/src/lib/url-validator';
-import { HomePage } from '@/routes';
+import { HomePage } from '@/src/routes';
 import { LoginModal } from '@/components/website/components/LoginModal';
 import { CookieConsent } from '@/components/CookieConsent';
 import { PasskeyPrompt } from '@/components/website/components/PasskeyPrompt';
@@ -26,7 +26,7 @@ const ACCREDITATION_5_URL = "/images/accreditation-5.png";
 initializeAnalyticsServices();
 
 export const App = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, _setLoading] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
   const [isEnrolledInFoundation, setIsEnrolledInFoundation] = useState(false);
@@ -38,7 +38,7 @@ export const App = () => {
   const [examinationScore, setExaminationScore] = useState(0);
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
-  const { currentUser, logout, showPasskeyPrompt, dismissPasskeyPrompt, userProfile } = useAuth();
+  const { currentUser, logout: _logout, showPasskeyPrompt, dismissPasskeyPrompt, userProfile } = useAuth();
 
   
   // Fetch user's enrollment status from Supabase
@@ -127,7 +127,7 @@ export const App = () => {
     safeRedirect('/portal');
   }, []);
 
-  const navigateTo = useCallback((page: string, _data?: any) => {
+  const navigateTo = useCallback((page: string, _data?: unknown) => {
     // Admin routes - render admin components directly, update state only
     if (page === 'moa-executive-summary' || page === 'investor-pitch' || 
         page === 'government-promotion' || page === 'veremark-pricing') {
@@ -219,8 +219,7 @@ export const App = () => {
           if (route) navigateTo(route);
           else navigateTo('about-programs');
         }}
-      )}
-      )}
+      />)}
 
       {/* Login Modal */}
       {isLoginModalOpen && (

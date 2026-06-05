@@ -86,16 +86,19 @@ export const OptimizedMotion: React.FC<OptimizedMotionProps> = ({
 };
 
 // Predefined animation variants for common use cases
+  // eslint-disable-next-line react-refresh/only-export-components
 export const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
 
+  // eslint-disable-next-line react-refresh/only-export-components
 export const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
 
+  // eslint-disable-next-line react-refresh/only-export-components
 export const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {

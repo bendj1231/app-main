@@ -79,7 +79,7 @@ export default function FlightSchoolPartnersPage() {
             <blockquote className="text-lg italic text-gray-700 mb-4">
               "We are therefore looking to save this costly period for both pilot (not having the required back up knowledge) and the airline spending time and money."
             </blockquote>
-            <p className="text-sm text-gray-500">— Karl Brian Vogt, Co-founder, WM Pilot Group</p>
+            <p className="text-sm text-gray-500">— Benjamin Bowler, Founder, Aviation Pathways Ltd</p>
           </div>
         </div>
       </div>
@@ -289,10 +289,10 @@ export default function FlightSchoolPartnersPage() {
       <div className="max-w-6xl mx-auto px-4 py-12 border-t border-gray-200">
         <div className="grid md:grid-cols-3 gap-8 text-center">
           <div>
-            <h4 className="font-bold text-gray-900 mb-2">WM Pilot Group</h4>
+            <h4 className="font-bold text-gray-900 mb-2">Benjamin Bowler</h4>
             <p className="text-sm text-gray-600">
-              Achern, Talstraße 17<br />
-              77855 Baden-Württemberg, Germany
+              Pending: Aviation Pathways Ltd, Republic of Mauritius<br />
+              Dubai, United Arab Emirates
             </p>
           </div>
           <div>
@@ -307,7 +307,7 @@ export default function FlightSchoolPartnersPage() {
           <div>
             <h4 className="font-bold text-gray-900 mb-2">Database Ownership</h4>
             <p className="text-sm text-gray-600">
-              WM Pilot Group owns the pilot database.<br />
+              Benjamin Bowler (pending Aviation Pathways Ltd) owns the pilot database.<br />
               Partners receive verified access.
             </p>
           </div>

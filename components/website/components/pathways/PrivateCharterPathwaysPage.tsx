@@ -5,7 +5,7 @@ import { TopNavbar } from '../TopNavbar';
 interface PrivateCharterPathwaysPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const PrivateCharterPathwaysPage: React.FC<PrivateCharterPathwaysPageProps> = ({ onBack, onNavigate, onLogin }) => {

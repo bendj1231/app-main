@@ -100,7 +100,7 @@ export const validatePhone = (phone: string): ValidationResult => {
     return { isValid: false, error: 'Phone number is required' };
   }
 
-  const phoneRegex = /^[\d\s\-\(\)\+]{10,}$/;
+  const phoneRegex = /^[\d\s\-()+]{10,}$/;
   if (!phoneRegex.test(phone)) {
     return { isValid: false, error: 'Please enter a valid phone number' };
   }

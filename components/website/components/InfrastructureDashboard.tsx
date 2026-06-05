@@ -357,7 +357,7 @@ export const InfrastructureDashboard: React.FC = () => {
     // ── AUTH ──────────────────────────────────────────────────
     { name: 'Auth0', category: 'Auth', status: 'live', envKey: 'VITE_AUTH0_CLIENT_ID', notes: 'Login/logout/MFA via Auth0 React SDK. Session bridged to Supabase JWT.' },
     { name: 'Supabase Auth', category: 'Auth', status: 'live', notes: 'JWT session, RLS policies, edge function auth.' },
-    { name: 'MFA (TOTP)', category: 'Auth', status: 'partial', edgeFn: 'auth-mfa-setup', notes: `Edge fns deployed. mfa_secrets unencrypted (TODO: pgcrypto). ${stats.mfaRequiredUsers} users with MFA required.`, dbCheck: stats.mfaRequiredUsers },
+    { name: 'MFA (TOTP)', category: 'Auth', status: 'live', edgeFn: 'auth-mfa-setup', notes: `Edge fns deployed. mfa_secrets encrypted via pgcrypto (pgp_sym_encrypt). ${stats.mfaRequiredUsers} users with MFA required.`, dbCheck: stats.mfaRequiredUsers },
     { name: 'Passkeys (WebAuthn)', category: 'Auth', status: 'partial', edgeFn: 'passkey-challenge / passkey-verify', notes: 'Edge fns deployed. pilot_passkeys table exists. 0 passkeys registered.', dbCheck: stats.passkeysRegistered ?? 0 },
     // ── STORAGE ───────────────────────────────────────────────
     { name: 'Cloudinary', category: 'Storage', status: 'live', notes: `Profile images. ${stats.profilesWithImages} pilots have uploaded. Unsigned preset, auto-optimize.` },

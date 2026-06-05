@@ -31,7 +31,7 @@ const FAQS = [
   },
   {
     q: 'Who pays for what?',
-    a: 'Pilots pay subscriptions to tokenize their credentials, manage their profiles, and unlock full pathway access. That is the primary revenue model — pilots invest in their own verified record. Operators who move beyond free scouting into active, high-volume recruitment pay $1,000/year for Pull API and data access. Corporate costs are for pipeline tools, not individual profile views.',
+    a: 'Pilots pay subscriptions to build and verify their professional profiles, manage their career data, and unlock full pathway access. That is the primary revenue model — pilots invest in their own verified record. Operators who move beyond free scouting into active, high-volume recruitment pay $1,000/year for Pull API and data access. Corporate costs are for pipeline tools, not individual profile views.',
   },
   {
     q: 'Why $1,000/year and not monthly?',

@@ -32,6 +32,16 @@ function urnUuid(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return `urn:uuid:${crypto.randomUUID()}`;
   }
+  // Fallback using crypto.getRandomValues for cryptographically secure UUID v4
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    const buf = new Uint8Array(16);
+    crypto.getRandomValues(buf);
+    buf[6] = (buf[6] & 0x0f) | 0x40; // Version 4
+    buf[8] = (buf[8] & 0x3f) | 0x80; // Variant 10
+    const hex = Array.from(buf, b => b.toString(16).padStart(2, '0')).join('');
+    return `urn:uuid:${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+  // Last resort fallback (not cryptographically secure — should never be needed in modern browsers)
   return `urn:uuid:${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`;
 }
 

@@ -51,8 +51,7 @@ export const AirlineDetailModal: React.FC<AirlineDetailModalProps> = ({
         {/* Scrollable Content */}
         <div className="overflow-y-auto max-h-[90vh]">
           {/* Hero Section */}
-          <div className="relative h-64">
-            <img src={airline.image} alt={airline.name} className="w-full h-full object-cover" />
+          <div className="relative h-64 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900">
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/30" />
             <div className="absolute bottom-0 left-0 right-0 p-6">
               <h1 className="text-4xl font-serif text-white mb-2">{airline.name}</h1>

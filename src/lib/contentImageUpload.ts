@@ -8,9 +8,8 @@
 import { supabase } from './supabase';
 import { CONTENT_CLOUDINARY } from './cloudinaryConfig';
 
-const VITE_SUPABASE_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL)
-  ? (import.meta as any).env.VITE_SUPABASE_URL
-  : 'https://gkbhgrozrzhalnjherfu.supabase.co';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const VITE_SUPABASE_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_SUPABASE_URL) as string;
 
 export interface ContentUploadResult {
   success: boolean;
@@ -83,9 +82,9 @@ export async function uploadContentImage(
       publicId: result.publicId,
     };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[contentImageUpload] Upload failed:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 

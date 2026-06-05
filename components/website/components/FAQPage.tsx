@@ -6,7 +6,7 @@ import { sanitizeJsonLd, sanitizeHtml } from '@/src/lib/sanitize-html';
 interface FAQPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin }) => {
@@ -86,16 +86,16 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             ]
         },
         {
-            category: "Verification & Your Wallet",
-            label: "Verification & Your Wallet",
+            category: "Verification & Your Digital Profile",
+            label: "Verification & Your Digital Profile",
             questions: [
                 {
                     q: "How does verification actually work?",
-                    a: "Recognition Plus members upload their credentials — license, medical, ratings — to our temporary secure storage. You initiate the verification process. With your consent, a regional verification provider accesses your credentials and authenticates them against the issuing authority (CAAP, FAA, EASA, etc.). Once the provider returns their confirmation, your documents are automatically deleted from our storage. We receive only the result: verified or not. A Verified Credential token is then issued to your cryptographic wallet by the provider. That token is yours. PilotRecognition never sees your documents — we receive the stamp, not the paper."
+                    a: "Recognition Plus members upload their credentials — license, medical, ratings — to our temporary secure storage. You initiate the verification process. With your consent, a regional verification provider accesses your credentials and authenticates them against the issuing authority (CAAP, FAA, EASA, etc.). Once the provider returns their confirmation, your documents are automatically deleted from our storage. We receive only the result: verified or not. A verified digital record is then issued to your secure profile by the provider. That record is yours. PilotRecognition never sees your documents — we receive the stamp, not the paper."
                 },
                 {
-                    q: "What is the cryptographic wallet?",
-                    a: "Every pilot on PilotRecognition gets a wallet built on open-source cryptographic infrastructure (currently walt.id, with additional DID integrations planned). Only you can see what's stored in it. Your private key is bound to your device — synced to your Google or iCloud Keychain, or saved manually if you prefer. Every time you access your wallet, you decrypt it with your key. Every time you share data with an operator, you re-authenticate. Your credentials live there as cryptographic tokens — not PDFs that can be photocopied or falsified. We are the infrastructure. The key is yours."
+                    q: "What is the secure digital profile?",
+                    a: "Every pilot on PilotRecognition gets a secure digital profile built on open-standard digital identity infrastructure. Only you can see what's stored in it. Your access key is bound to your device — synced to your Google or iCloud Keychain, or saved manually if you prefer. Every time you access your profile, you decrypt it with your key. Every time you share data with an operator, you re-authenticate. Your credentials live there as verified digital records — not PDFs that can be photocopied or falsified. We are the infrastructure. The key is yours."
                 },
                 {
                     q: "How are flight hours actually verified — not just documents?",
@@ -107,15 +107,15 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
                 },
                 {
                     q: "What happens if I don't renew Recognition Plus?",
-                    a: "You are downgraded to free tier. Your profile reverts to text-claim status — no verified badge, no exclusive pathway access, no priority matching. Your wallet tokens remain intact in your possession. Nothing is deleted. When you renew and re-verify, your status restores. The platform also flags credential expiry as part of the downgrade notice — if your medical or ELP has lapsed in the meantime, the re-verification process will surface that."
+                    a: "You are downgraded to free tier. Your profile reverts to text-claim status — no verified badge, no exclusive pathway access, no priority matching. Your verified records remain intact in your possession. Nothing is deleted. When you renew and re-verify, your status restores. The platform also flags credential expiry as part of the downgrade notice — if your medical or ELP has lapsed in the meantime, the re-verification process will surface that."
                 },
                 {
                     q: "What happens to my documents after verification?",
-                    a: "Deleted automatically once the verification process completes. Your credentials are stored in a dual-provider system during the process — so if one storage provider goes down, continuity is maintained. After verification, both copies are purged. What remains is the Verified Credential token in your wallet, signed by the verification provider, not by us. We receive only the confirmation. We never retain the source files."
+                    a: "Deleted automatically once the verification process completes. Your credentials are stored in a dual-provider system during the process — so if one storage provider goes down, continuity is maintained. After verification, both copies are purged. What remains is the verified digital record in your secure profile, signed by the verification provider, not by us. We receive only the confirmation. We never retain the source files."
                 },
                 {
                     q: "Who owns my data?",
-                    a: "You. Pilot in command of pilot identity — that is our legal and infrastructure position. PilotRecognition is the infrastructure data controller: we maintain the platform, storage providers, pathway operations, and user account access. You are the data controller of your credentials. You decide what you upload, who you consent to share with, and what interest you submit. Your wallet is encrypted, your private key is yours, and no one — including us — can read what is in it. You can delete your account and export your data at any time."
+                    a: "You. Pilot in command of pilot identity — that is our legal and infrastructure position. PilotRecognition is the infrastructure data controller: we maintain the platform, storage providers, pathway operations, and user account access. You are the data controller of your credentials. You decide what you upload, who you consent to share with, and what interest you submit. Your profile is encrypted, your access key is yours, and no one — including us — can read what is in it. You can delete your account and export your data at any time."
                 }
             ]
         },
@@ -203,15 +203,15 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onBack, onNavigate, onLogin })
             questions: [
                 {
                     q: "Is my data secure?",
-                    a: "Your credentials are encrypted at rest and in transit. Your wallet contents are visible only to you — they are cryptographically locked, not stored in plaintext anywhere on our infrastructure. Document uploads for verification are held in temporary secure storage and deleted automatically after the verification process completes. Operators cannot access your personal information without your explicit consent. Every access event is logged to your activity record. You can see who has viewed your profile and when."
+                    a: "Your credentials are encrypted at rest and in transit. Your profile contents are visible only to you — they are cryptographically locked, not stored in plaintext anywhere on our infrastructure. Document uploads for verification are held in temporary secure storage and deleted automatically after the verification process completes. Operators cannot access your personal information without your explicit consent. Every access event is logged to your activity record. You can see who has viewed your profile and when."
                 },
                 {
                     q: "What if I want to delete my account?",
-                    a: "You can delete your account and all associated data at any time from your settings. Your cryptographic wallet credentials are yours — export them before deletion if you want to retain your verified tokens for use elsewhere. Once deleted, your data is removed from our systems. We do not retain it."
+                    a: "You can delete your account and all associated data at any time from your settings. Your verified digital records are yours — export them before deletion if you want to retain your verified credentials for use elsewhere. Once deleted, your data is removed from our systems. We do not retain it."
                 },
                 {
                     q: "Can I use my verified credentials outside PilotRecognition?",
-                    a: "Yes. That is by design. Your Verified Credential tokens are issued to a cryptographic wallet built on open standards. They are yours to use, port, and present wherever they are accepted. The platform is infrastructure — your career record is not locked inside it."
+                    a: "Yes. That is by design. Your verified digital records are issued to a secure profile built on open standards. They are yours to use, port, and present wherever they are accepted. The platform is infrastructure — your career record is not locked inside it."
                 }
             ]
         },

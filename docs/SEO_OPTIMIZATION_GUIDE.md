@@ -170,8 +170,8 @@ Transform your aviation career with industry-accredited pilot recognition profil
 
 ### Meta Tags Optimization
 ```html
-<title>Pilotrecognition.com | Aviation Industry's First Pilot Recognition-Based Platform - WM Pilot Group</title>
-<meta name="description" content="Pilotrecognition.com is the Aviation Industry's First Pilot Recognition-Based Platform operated by WM Pilot Group. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways with support from Airbus and Etihad.">
+<title>Pilotrecognition.com | Aviation Industry's First Pilot Recognition-Based Platform - Aviation Pathways Ltd</title>
+<meta name="description" content="Pilotrecognition.com is the Aviation Industry's First Pilot Recognition-Based Platform operated by Aviation Pathways Ltd. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways with support from Airbus and Etihad.">
 ```
 
 ## 🚀 Deployment Checklist

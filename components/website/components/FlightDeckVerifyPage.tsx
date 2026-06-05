@@ -9,8 +9,8 @@ function getPendingEmail(): string { return sessionStorage.getItem('fd_pending_e
 function getPendingConnection(): string { return sessionStorage.getItem('fd_pending_connection') || 'email'; }
 function clearPending() { sessionStorage.removeItem('fd_pending_email'); sessionStorage.removeItem('fd_pending_connection'); }
 
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
+const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
+const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string;
 
 interface FlightDeckVerifyPageProps {
     onNavigate: (page: string) => void;

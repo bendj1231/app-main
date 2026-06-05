@@ -1,6 +1,4 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Universal Commercial Framework | PilotRecognition.com - Aviation Industry Operating System',
   description: 'The Master Blueprint for the Aviation Industry Operating System. 21 Pillars covering Commercial Airlines, Cargo & Freight, Charter Aviation, Flight Training, Background Checks, Government Authorities, and Humanitarian Missions. Strategic framework for pilot recognition, verification, and career pathways.',
   keywords: [

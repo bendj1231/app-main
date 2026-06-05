@@ -5,7 +5,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface DigitalLogbookDirectoryPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const DigitalLogbookDirectoryPage: React.FC<DigitalLogbookDirectoryPageProps> = ({

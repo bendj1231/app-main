@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface HinfactPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const HinfactPage: React.FC<HinfactPageProps> = ({

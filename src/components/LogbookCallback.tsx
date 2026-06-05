@@ -36,7 +36,7 @@ export const LogbookCallback = () => {
 
     const exchange = async () => {
       try {
-        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
         const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
         if (!SUPABASE_ANON_KEY) throw new Error('VITE_SUPABASE_ANON_KEY is not configured');
         let res: Response;
@@ -53,8 +53,8 @@ export const LogbookCallback = () => {
               auth0_id: sessionStorage.getItem('auth0_user_id') || undefined,
             }),
           });
-        } catch (fetchErr: any) {
-          throw new Error(`Network error: ${fetchErr?.message ?? 'fetch failed'}`);
+        } catch (fetchErr: unknown) {
+          throw new Error(`Network error: ${fetchErr instanceof Error ? fetchErr.message : 'fetch failed'}`);
         }
 
         if (!res.ok) {
@@ -79,8 +79,8 @@ export const LogbookCallback = () => {
         }
 
         // Don't auto-redirect - let user click Continue when ready
-      } catch (err: any) {
-        setErrorMsg(err?.message ?? 'Token exchange failed');
+      } catch (err: unknown) {
+        setErrorMsg(err instanceof Error ? err.message : 'Token exchange failed');
         setStatus('error');
       }
     };

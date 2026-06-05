@@ -815,7 +815,7 @@ A government agency under the Department of Transportation, Republic of the Phil
 
 **AND**
 
-**PILOTRECOGNITION.COM / WM PILOT GROUP**
+**PILOTRECOGNITION.COM / AVIATION PATHWAYS LTD**
 A private technology company registered in [Jurisdiction], represented by [Name]
 
 **FOR THE ESTABLISHMENT OF A PUBLIC-PRIVATE PARTNERSHIP (PPP) DIGITAL VERIFICATION FRAMEWORK**
@@ -970,7 +970,7 @@ Name: Dr. Fausto Atahan Jr.
 Title: Acting Director General
 Date: _______________
 
-**FOR PILOTRECOGNITION.COM / WM PILOT GROUP:**
+**FOR PILOTRECOGNITION.COM / AVIATION PATHWAYS LTD:**
 
 _______________________________
 Name: [Founder Name]
@@ -12902,7 +12902,7 @@ For technical support or questions:
 **Step 91:** Harden anonymous hosting infrastructure  
 **Step 92:** Deploy advanced encryption (at rest + in transit)  
 **Step 93:** Create legal jurisdiction selection (whistleblower)  
-**Step 94:** Build data custodian governance (WM Pilot Group)  
+**Step 94:** Build data custodian governance (Aviation Pathways Ltd)  
 **Step 95:** Deploy transparency technology (open source audit)  
 **Step 96:** Create academic research partnership portal  
 **Step 97:** Build international expansion toolkit  
@@ -13266,7 +13266,7 @@ Unlike pilotrecognition.com's commercial verification framework, pilotshortage.o
 - **Function:** Jurisdiction selection, liability protection
 - **Goal:** Pilots can speak without career suicide
 
-### Pillar 21: Data Custodians (WM Pilot Group)
+### Pillar 21: Data Custodians (Aviation Pathways Ltd)
 
 - **Role:** Non-profit database ownership
 - **Function:** Owns PSA data, not airlines
@@ -22090,7 +22090,7 @@ const matchPathway = async (pilotId: string, pathwayId: string) => {
 | Risk | Mitigation |
 |------|------------|
 | Pre-revenue | 6 partnerships already secured, LOIs in hand |
-| Single founder | Co-founder (Karl Vogt) operational in Europe, joining formally |
+| Single founder | Co-founder (Benjamin Bowler) operational in Europe, joining formally |
 | Market validation | 6-year development based on direct pilot feedback |
 | Regulatory | Mauritian company structure, compliance framework ready |
 
@@ -24695,7 +24695,7 @@ Maximum: [10,000]
 SORT BY: [ Match Score ▼ ]
 
 ┌──────────────────────────────────┐
-│ 🥇 #1 CAPT. KARL VOGT            │
+│ 🥇 #1 CAPT. BENJAMIN BOWLER            │
 │ Match Score: 98%                 │
 │ • 6,200 PIC hours (B737: 3,400)  │
 │ • FAA ATPL | EASA ATPL           │
@@ -26686,7 +26686,7 @@ Aviation Pathways Limited
 
 | Scenario | Structure | Trigger |
 |------------|-----------|---------|
-| **Partnership Admission** | Convert to GBC | Karl Vogt joins as formal co-founder |
+| **Partnership Admission** | Convert to GBC | Benjamin Bowler joins as formal co-founder |
 | **Investment Round** | Convert to Ltd with shareholders | External investor funding |
 | **Regional Ops** | Philippines subsidiary | CAAP verification center |
 | **US Market** | Delaware C-Corp | FAA pathway expansion |
@@ -26746,7 +26746,7 @@ OBJECTS CLAUSE (Essential Activities):
 
 SHARE STRUCTURE:
 - Authorized: 100,000 shares of $1.00 par value
-- Issued: 10,000 shares (90% Benjamin Bowler, 10% reserve for Karl Vogt)
+- Issued: 10,000 shares (90% Benjamin Bowler, 10% reserve for Benjamin Bowler)
 - Share classes: Ordinary (voting), Deferred (non-voting for advisors)
 ```
 
@@ -26913,7 +26913,7 @@ PilotRecognition Ltd (Mauritius)
    - Deadlock resolution: Independent aviation industry expert
 
 2. VESTING SCHEDULE
-   - Karl Vogt: 25% equity vests over 4 years (1-year cliff)
+   - Benjamin Bowler: 25% equity vests over 4 years (1-year cliff)
    - Acceleration: Full vest on acquisition (change of control)
 
 3. TRANSFER RESTRICTIONS
@@ -27090,7 +27090,7 @@ PilotRecognition Ltd (Mauritius)
    - Job creation plan (Mauritian hires)
 
 4. **Shareholders agreement negotiation**
-   - Schedule call with Karl Vogt
+   - Schedule call with Benjamin Bowler
    - Review vesting terms
    - Confirm equity split (60/30/10 reserve)
 
@@ -27333,7 +27333,7 @@ Flight school accountants need a proper commercial invoice with:
 - Corporate tax ID number
 - Physical business address
 
-Without a registered entity, "WM Pilot Group" (or individual developer names) cannot provide these.
+Without a registered entity, "Aviation Pathways Ltd" (or individual developer names) cannot provide these.
 
 ## The Solution: Stripe Invoicing
 
@@ -38151,7 +38151,7 @@ partners, specifically:
 ### 🟢 Verified
 
 ```
-CAPT. KARL VOGT
+CAPT. BENJAMIN BOWLER
 Total Hours: 4,200
 Status: 🟢 VERIFIED
 ```
@@ -38213,7 +38213,7 @@ Status: 🔴 NOT CURRENT
 
 **Operator sees:**
 ```
-🥇 Capt. Karl Vogt
+🥇 Capt. Benjamin Bowler
 4,200 hours | 🟢 VERIFIED
 [ASSIGN TO FLIGHT]
 ```
@@ -41980,7 +41980,7 @@ A **marketing landing page** where operators pitch themselves to skilled, underv
 
 **After Alignment:**
 - Operator sees: **Pilot's verified profile**
-  - Name: Capt. Karl Vogt
+  - Name: Capt. Benjamin Bowler
   - Hours: 6,200 PIC
   - Veremark: ✅ Verified
   - Registry: ✅ Active
@@ -42444,7 +42444,7 @@ const filterPilots = (pilots: Pilot[], settings: FilterSettings) => {
 ┌─────────────────────────────────────────┐
 │  ✅ BORDER CLEARANCE TOKEN               │
 │                                         │
-│  Pilot: Capt. Karl Vogt                 │
+│  Pilot: Capt. Benjamin Bowler                 │
 │  Status: 🟢 CLEARED FOR ROUTE           │
 │                                         │
 │  Verifications:                          │
@@ -49952,7 +49952,7 @@ As CEO of PilotRecognition.com, responsibilities include:
 
 ## The Airport Metaphor — Full Airspace Blueprint
 
-### Terminal 1 — WM Pilot Group (The Command Center)
+### Terminal 1 — Aviation Pathways Ltd (The Command Center)
 - Every pilot enters here. Account creation, passkeys (Google/Apple), encrypted vault (Supabase + Firebase dual-engine), payment processing.
 - **Legal Role:** Independent Data Controller of the application/infrastructure layer only — not the controller of the pilot's raw credential data.
 - Zero-knowledge: hosts only AES-256-GCM ciphertext. Cannot read, alter, or decrypt payloads.
@@ -50044,8 +50044,8 @@ IF Age < 18 OR License == "Student/SPL":
 - Pilot pays $99 → triggers two simultaneous Veremark orders
 - **Check 1** ($13): CAAP single PEL lookup → License + Class 1 Medical + ICAO ELP + Aircraft Ratings
 - **Check 2** ($9): ATO/Operator nominated by pilot → Graduate cert, course completion, flight hours (statutory declaration), logbook sign-off validity
-- Veremark contacts CAA/ATO directly under pilot's explicit, direct consent agreement (pilot ↔ Veremark, not pilot ↔ WM Pilot Group)
-- Result returns to Terminal 1 as **Pass/Fail verification status only** — no raw credential data stored on WM Pilot Group servers
+- Veremark contacts CAA/ATO directly under pilot's explicit, direct consent agreement (pilot ↔ Veremark, not pilot ↔ Aviation Pathways Ltd)
+- Result returns to Terminal 1 as **Pass/Fail verification status only** — no raw credential data stored on Aviation Pathways Ltd servers
 - **Revenue:** $99 in, $22 out → ~$77 margin
 
 **Multi-Operator Verification:** Each additional institution requires a separate check and consent. Pricing to be scoped after first flow is proven end-to-end.
@@ -50056,7 +50056,7 @@ IF Age < 18 OR License == "Student/SPL":
 
 | Entity | Role | Liability |
 |---|---|---|
-| **WM Pilot Group** | Platform Orchestrator / Infrastructure Controller | App layer, routing, payment, ecosystem governance |
+| **Aviation Pathways Ltd** | Platform Orchestrator / Infrastructure Controller | App layer, routing, payment, ecosystem governance |
 | **The Pilot** | Credential Custodian / Data Controller of raw credentials | Holds private keys, sole owner of raw data |
 | **Veremark / IDPs** | Independent Verification Controllers | Raw credential processing, CAA/ATO queries |
 | **Airlines (Enterprise)** | Independent Data Controllers | Assume full HR/employment liability on profile access |
@@ -50074,13 +50074,13 @@ IF Age < 18 OR License == "Student/SPL":
 - **Free Boarding Pass:** Pilots with high score/status fast-tracked to airline interest pool.
 
 **Enterprise TOS must state:**
-> "Upon unlocking and accessing a pilot's verified profile, the Airline assumes the role of an Independent Data Controller. The Airline agrees to process this data in accordance with applicable employment and data protection laws. WM Pilot Group accepts no liability for the Airline's subsequent use, storage, or processing of the pilot's data."
+> "Upon unlocking and accessing a pilot's verified profile, the Airline assumes the role of an Independent Data Controller. The Airline agrees to process this data in accordance with applicable employment and data protection laws. Aviation Pathways Ltd accepts no liability for the Airline's subsequent use, storage, or processing of the pilot's data."
 
 ---
 
 ## Data Controller Agreement Summary (PR-DCA-001 v1.5)
 
-**Correct legal framing for WM Pilot Group:**
+**Correct legal framing for Aviation Pathways Ltd:**
 > "We are a Platform Orchestrator (Data Controller of the Infrastructure/Application layer). We do not act as a Joint Controller for raw data. We do not store unencrypted PII or medical data. Authentication is outsourced to Google Passkeys via Auth0. Verification is outsourced to Veremark as an Independent Controller via direct user consent. Data sharing with airlines transitions full Controller liability to the corporate subscriber at the point of access. Our storage uses a zero-knowledge, client-side encrypted active-active redundant architecture."
 
 **Key Article revisions required in DCA:**
@@ -51336,11 +51336,11 @@ Profile image appears in **5 locations** (all use `ProfileImage` component):
 ## FILE: docs/PSA-Response-to-ALPA-Record-Straight.md
 
 # PSA → ALPA: Response to "Setting the Record Straight"
-*Simulated correspondence from Karl Brian Vogt (WM Pilot Group / pilotshortage.org) to Capt. Jason Ambrosi.*
+*Simulated correspondence from Benjamin Bowler (Aviation Pathways Ltd / pilotshortage.org) to Capt. Jason Ambrosi.*
 
 ---
 
-**From:** Karl Brian Vogt, Director, WM Pilot Group; Founder, pilotshortage.org / Wingman Network  
+**From:** Benjamin Bowler, Director, Aviation Pathways Ltd; Founder, pilotshortage.org / Wingman Network  
 **To:** Capt. Jason Ambrosi, President, Air Line Pilots Association  
 **Date:** June 1, 2026  
 **Subject:** RE: Setting the Record Straight: Professional Standards vs. The Devaluation of Aviation Safety
@@ -51400,8 +51400,8 @@ We do not want to tear down your wall, Captain Ambrosi. We want an honest, data-
 
 Sincerely,
 
-**Karl Brian Vogt**  
-Director, WM Pilot Group  
+**Benjamin Bowler**  
+Director, Aviation Pathways Ltd  
 Founder, pilotshortage.org / Wingman Network
 
 ---
@@ -51800,7 +51800,7 @@ pilotshortage.org
 
 ```
 ┌─────────────────────────────────────────┐
-│  PILOT ALIGNED: CAPT. KARL VOGT         │
+│  PILOT ALIGNED: CAPT. BENJAMIN BOWLER         │
 │                                         │
 │  🟢 VERIFICATION STATUS                  │
 │                                         │
@@ -51998,7 +51998,7 @@ pilotshortage.org
 ┌─────────────────────────────────────────┐
 │  🔴 NEW PILOT ALIGNED                    │
 │                                         │
-│  Capt. Karl Vogt has aligned their      │
+│  Capt. Benjamin Bowler has aligned their      │
 │  profile to your ATR-72 pathway.        │
 │                                         │
 │  Match Quality: EXCELLENT               │
@@ -56272,8 +56272,8 @@ Transform your aviation career with industry-accredited pilot recognition profil
 
 ### Meta Tags Optimization
 ```html
-<title>Pilotrecognition.com | Aviation Industry's First Pilot Recognition-Based Platform - WM Pilot Group</title>
-<meta name="description" content="Pilotrecognition.com is the Aviation Industry's First Pilot Recognition-Based Platform operated by WM Pilot Group. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways with support from Airbus and Etihad.">
+<title>Pilotrecognition.com | Aviation Industry's First Pilot Recognition-Based Platform - Aviation Pathways Ltd</title>
+<meta name="description" content="Pilotrecognition.com is the Aviation Industry's First Pilot Recognition-Based Platform operated by Aviation Pathways Ltd. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, Foundation and Transition programs, AI-powered career matching, and direct airline pathways with support from Airbus and Etihad.">
 ```
 
 ## 🚀 Deployment Checklist
@@ -58515,18 +58515,18 @@ echo "Backup created: $BACKUP_FILE"
 ## Complete Legal Rewrite — Corporate Shield & Neutral Conduit
 
 **Date:** May 19, 2026  
-**Version:** 2.0 — AJBowler Consult Operator Status  
+**Version:** 2.0 — Aviation Pathways Ltd Operator Status  
 **Effective:** Upon deployment
 
 ---
 
 ## Agreement and Operator Status
 
-**This Agreement is entered into by and between you ("the User") and AJBowler Consult ("the Operator"), the legal entity operating the pilotrecognition.com platform.**
+**This Agreement is entered into by and between you ("the User") and Aviation Pathways Ltd ("the Operator"), the legal entity operating the pilotrecognition.com platform.**
 
-Pilot Recognition functions strictly as a digital aggregator and neutral software interface. All platform operations, payment processing, and legal liabilities are the responsibility of AJBowler Consult, a duly registered entity.
+Pilot Recognition functions strictly as a digital aggregator and neutral software interface. All platform operations, payment processing, and legal liabilities are the responsibility of Aviation Pathways Ltd, a duly registered entity.
 
-**The Operators:** Platform development and technical architecture maintained by authorized representatives of AJBowler Consult.
+**The Operators:** Platform development and technical architecture maintained by authorized representatives of Aviation Pathways Ltd.
 
 ---
 
@@ -58615,7 +58615,7 @@ Payments processed through this platform are aggregate fees covering:
 
 ### Explicit Informed Consent
 
-By creating an account, you provide explicit, informed consent to AJBowler Consult to:
+By creating an account, you provide explicit, informed consent to Aviation Pathways Ltd to:
 - Store your anonymous user identifier
 - Display user-declared metadata
 - Route verification requests to third-party providers
@@ -58723,13 +58723,13 @@ You agree NOT to:
 
 ### Ownership
 
-All platform content, features, functionality owned by AJBowler Consult.
+All platform content, features, functionality owned by Aviation Pathways Ltd.
 
 ### Limitation of Liability
 
 **Platform provided "as-is" without warranties.**
 
-AJBowler Consult not liable for:
+Aviation Pathways Ltd not liable for:
 - Indirect, incidental, special, consequential damages
 - Data display errors
 - Third-party API failures
@@ -58754,7 +58754,7 @@ Governing laws:
 
 Data protection rights and complaints:
 - National Privacy Commission (NPC)
-- AJBowler Consult compliance officer
+- Aviation Pathways Ltd compliance officer
 
 ---
 
@@ -58793,7 +58793,7 @@ Upon deletion:
 
 ### Platform Termination
 
-AJBowler Consult reserves right to terminate accounts for:
+Aviation Pathways Ltd reserves right to terminate accounts for:
 - Terms violation
 - Fraudulent activity
 - Platform abuse
@@ -58804,7 +58804,7 @@ AJBowler Consult reserves right to terminate accounts for:
 
 **Legal contact:** legal@pilotrecognition.com
 
-**Operator entity:** AJBowler Consult
+**Operator entity:** Aviation Pathways Ltd
 
 **Compliance officer:** compliance@pilotrecognition.com
 
@@ -58814,7 +58814,7 @@ AJBowler Consult reserves right to terminate accounts for:
 
 | Risk | Protection Implemented |
 |------|------------------------|
-| Personal liability | AJBowler Consult corporate veil |
+| Personal liability | Aviation Pathways Ltd corporate veil |
 | Data breach | Stateless architecture (no storage) |
 | Dispute costs | Deflection to third-party providers |
 | Regulatory action | Clear intermediary classification |
@@ -58826,7 +58826,7 @@ AJBowler Consult reserves right to terminate accounts for:
 **By using this platform, you acknowledge and agree to these terms.**
 
 **Last updated:** May 19, 2026  
-**Operator:** AJBowler Consult
+**Operator:** Aviation Pathways Ltd
 
 ---
 
@@ -60622,7 +60622,7 @@ Airlines gain **total sovereignty** over proprietary financial data. Money is on
 ┌─────────────────────────────────────────┐
 │  INTERESTED PILOTS (3 Verified)         │
 │                                         │
-│  1. Capt. Karl Vogt                     │
+│  1. Capt. Benjamin Bowler                     │
 │     • 6,200 hours (PIC)                │
 │     • B737, A320 Rated                   │
 │     • Veremark: ✅ Verified              │
@@ -60664,7 +60664,7 @@ Airlines gain **total sovereignty** over proprietary financial data. Money is on
 ```
 ┌─────────────────────────────────────────┐
 │  STAGE 2: FINANCIAL PACKAGE             │
-│  (Authorized for Capt. Karl Vogt only)  │
+│  (Authorized for Capt. Benjamin Bowler only)  │
 │                                         │
 │  DAILY RATE: $1,200/day                 │
 │  PER DIEM: $150/day                     │
@@ -67875,8 +67875,8 @@ The 1,500-hour requirement isn't disappearing overnight. But the definition of w
 title: "PilotRecognition Partners with Veremark for Verified Pilot Credentials"
 excerpt: "We're launching a comprehensive verification partnership with Veremark to bring enterprise-grade background checks and credential verification to aviation professionals worldwide."
 author:
-  name: "Karl Brian Vogt"
-  role: "Managing Director, WM Pilot Group"
+  name: "Benjamin Bowler"
+  role: "Managing Director, Aviation Pathways Ltd"
 publishedAt: "2026-05-22T10:00:00Z"
 category: "Partnerships"
 tags: ["Veremark", "Verification", "CAAP", "Philippines", "Partnerships", "Credentials"]
@@ -67975,7 +67975,7 @@ Philippine pilots can begin verification immediately through the **Pilot Termina
 ## FILE: docs/co-founder-agreement.md
 
 # Co-Founder Agreement
-## PilotRecognition.com — WM Pilot Group
+## PilotRecognition.com — Aviation Pathways Ltd
 **Date:** May 2026  
 **Version:** 1.0 — Draft for Review
 
@@ -67990,7 +67990,7 @@ Founder, Product & Technology
 Domicile: Dubai, UAE  
 Citizenship: Mauritius / British  
 
-**Party B — Karl Brian Vogt**  
+**Party B — Benjamin Bowler**  
 Co-Founder, Outreach & Business Development  
 Domicile: Germany  
 
@@ -68000,7 +68000,7 @@ Collectively referred to as "the Co-Founders."
 
 ## 1. The Venture
 
-The Co-Founders are jointly building and operating **PilotRecognition.com**, a pilot recognition and credential verification platform, operated under the trading name **AJBowler Consult**, registered as a sole trader in the Dubai Freezone.
+The Co-Founders are jointly building and operating **PilotRecognition.com**, a pilot recognition and credential verification platform, operated under the trading name **Aviation Pathways Ltd**, registered as a sole trader in the Dubai Freezone.
 
 The platform includes but is not limited to:
 - Pilot credential wallet and verification infrastructure
@@ -68017,7 +68017,7 @@ Upon formalisation of the business entity, equity shall be distributed as follow
 | Party | Equity Share |
 |-------|-------------|
 | Benjamin Tiger Bowler | 65% |
-| Karl Brian Vogt | 25% |
+| Benjamin Bowler | 25% |
 | Reserved (advisors, future hires) | 10% |
 
 **Rationale:**
@@ -68038,7 +68038,7 @@ Equity is subject to a **vesting schedule** as defined in Section 5.
 - Responsible for Supabase, Neon, MongoDB infrastructure
 - Manages third-party integrations (Veremark, Helio, Auth0)
 
-### Karl Brian Vogt
+### Benjamin Bowler
 - Full ownership of outreach, partnership development, and B2B relationships
 - Primary contact for flight schools, ATOs, airlines, aviation operators
 - Attends aviation events and career fairs as company representative
@@ -68082,7 +68082,7 @@ Until the business generates sufficient revenue, both Co-Founders operate on a *
 
 ## 7. Intellectual Property
 
-All intellectual property created for PilotRecognition.com — including but not limited to code, design, content, databases, brand assets, and business processes — is owned by the venture (AJBowler Consult / the future entity), not by either Co-Founder individually.
+All intellectual property created for PilotRecognition.com — including but not limited to code, design, content, databases, brand assets, and business processes — is owned by the venture (Aviation Pathways Ltd / the future entity), not by either Co-Founder individually.
 
 Upon departure of either party, IP remains with the venture. The departing party retains only their vested equity stake.
 
@@ -68153,7 +68153,7 @@ Location: Dubai, UAE
 
 ---
 
-**Karl Brian Vogt**  
+**Benjamin Bowler**  
 Signature: ___________________________  
 Date: ___________________________  
 Location: Germany  
@@ -71109,7 +71109,7 @@ WCC is your ATO. They know you. They trained you. They have a relationship with 
 **Version:** 2.1  
 **Created:** May 30, 2026  
 **Updated:** May 30, 2026 (added The Angel Investor case study, The Flight Instructor Dignity Gap section, recognition/credibility pathway framing for instructors)  
-**Owner:** WM Pilot Group / Pilot Shortage Association  
+**Owner:** Aviation Pathways Ltd / Pilot Shortage Association  
 **Purpose:** Narrative foundation for pilotshortage.org website, marketing, and advocacy  
 **Next Review:** June 15, 2026 (post-launch analytics)
 
@@ -82078,7 +82078,7 @@ Signature: _________________________
 ## FILE: docs/wcc-partnership-outreach.md
 
 # WCC Aviation College — Partnership Outreach Email
-**From:** Karl Brian Vogt, Co-Founder — PilotRecognition.com
+**From:** Benjamin Bowler, Co-Founder — PilotRecognition.com
 **To:** WCC Aviation College — Partnerships / Graduate Relations
 **Subject:** Your graduates are stuck. We built the solution.
 
@@ -82086,7 +82086,7 @@ Signature: _________________________
 
 Dear WCC Aviation College Team,
 
-My name is Karl Vogt. I am the Co-Founder of PilotRecognition.com, a pilot credential and career recognition platform built specifically for the graduates your school produces.
+My name is Benjamin Bowler. I am the Co-Founder of PilotRecognition.com, a pilot credential and career recognition platform built specifically for the graduates your school produces.
 
 I am writing to you directly because we know your graduates — not from a distance, but from the inside.
 
@@ -82143,7 +82143,7 @@ We would like to schedule a 30-minute call to walk you through the platform and 
 ## About Us
 
 - **Benjamin Bowler** — Founder, WCC graduate, CPL holder, built the platform from scratch after graduating with no placement
-- **Karl Brian Vogt** — Co-Founder, commercial flying degree, experienced the same post-training gap from Europe
+- **Benjamin Bowler** — Co-Founder, commercial flying degree, experienced the same post-training gap from Europe
 - **Platform:** pilotrecognition.com — live, in final pre-launch phase
 - **Infrastructure:** Supabase, verified credential wallet, Veremark background check integration
 
@@ -82157,15 +82157,15 @@ We look forward to speaking with you.
 
 Warm regards,
 
-**Karl Brian Vogt**
+**Benjamin Bowler**
 Co-Founder, PilotRecognition.com
-WM Pilot Group
+Aviation Pathways Ltd
 partnership@pilotrecognition.com
 pilotrecognition.com
 
 ---
 
-*PilotRecognition.com is operated by AJBowler Consult, registered in the Dubai Freezone.*
+*PilotRecognition.com is operated by Aviation Pathways Ltd, registered in the Dubai Freezone.*
 
 ---
 
@@ -84458,7 +84458,7 @@ For technical support or questions:
 **Step 91:** Harden anonymous hosting infrastructure  
 **Step 92:** Deploy advanced encryption (at rest + in transit)  
 **Step 93:** Create legal jurisdiction selection (whistleblower)  
-**Step 94:** Build data custodian governance (WM Pilot Group)  
+**Step 94:** Build data custodian governance (Aviation Pathways Ltd)  
 **Step 95:** Deploy transparency technology (open source audit)  
 **Step 96:** Create academic research partnership portal  
 **Step 97:** Build international expansion toolkit  
@@ -84822,7 +84822,7 @@ Unlike pilotrecognition.com's commercial verification framework, pilotshortage.o
 - **Function:** Jurisdiction selection, liability protection
 - **Goal:** Pilots can speak without career suicide
 
-### Pillar 21: Data Custodians (WM Pilot Group)
+### Pillar 21: Data Custodians (Aviation Pathways Ltd)
 
 - **Role:** Non-profit database ownership
 - **Function:** Owns PSA data, not airlines

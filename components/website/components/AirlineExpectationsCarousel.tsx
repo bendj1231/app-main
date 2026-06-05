@@ -1310,12 +1310,7 @@ export const AirlineExpectationsCarousel: React.FC<AirlineExpectationsCarouselPr
                   onClick={() => goToCard(index)}
                 >
                     {/* Card Image */}
-                    <div className="relative w-full h-full">
-                      <img
-                        src={airline.image}
-                        alt={airline.name}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="relative w-full h-full bg-gradient-to-br from-slate-800 via-slate-900 to-black">
                       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/20" />
 
                       {/* Card Content */}

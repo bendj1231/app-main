@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronRight, Home, Users, User, Settings, Bell, Plane, BookOpen, FolderOpen, CheckCircle2, GraduationCap, Award, BarChart3, Bookmark, Brain, Clock, Target, PlayCircle, LogOut } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import { NewsroomModal } from './NewsroomModal';
@@ -212,7 +212,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
         },
     ];
 
-    const cardVariants = {
+    const cardVariants: Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: (i: number) => ({
             opacity: 1,
@@ -231,7 +231,7 @@ export const AccessPortal2Page: React.FC<AccessPortal2PageProps> = ({ onNavigate
             id: 'recognition-profiles',
             tag: 'Recognition Systems',
             title: 'How to Build the Right Recognition Profile',
-            description: 'CEO & Founder Karl Brian Vogt breaks down how to align your profile with Airbus EBT standards. It is not about flight hours alone — airlines want cognitive skills, behavioral markers, and constructivist thinking that static CVs never capture.',
+            description: 'CEO & Founder Benjamin Bowler breaks down how to align your profile with Airbus EBT standards. It is not about flight hours alone — airlines want cognitive skills, behavioral markers, and constructivist thinking that static CVs never capture.',
             image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1777590630/newsroom/kvos2ityyztesx5idue2.png',
             metrics: [
                 { label: 'Live Webinars', value: 'This week' },

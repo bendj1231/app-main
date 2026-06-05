@@ -51,10 +51,10 @@ export function PathwayCard({ pathway, pilotScore, pilotProfile, onApply }: Path
     r => !pilotProfile.ratings.includes(r)
   );
   if (missingRatings.length > 0) {
-    gaps.push(`Missing ratings: ${missingRatings.join(', '}`);
+    gaps.push(`Missing ratings: ${missingRatings.join(', ')}`);
   }
   if (pathway.requirements.ratings.some(r => pilotProfile.ratings.includes(r))) {
-    meets.push(`${pathway.requirements.ratings.filter(r => pilotProfile.ratings.includes(r)).join(', '} ✓`);
+    meets.push(`${pathway.requirements.ratings.filter(r => pilotProfile.ratings.includes(r)).join(', ')} ✓`);
   }
   
   if (pilotScore < pathway.requirements.minRecognitionScore) {
@@ -212,6 +212,7 @@ export function PathwayCard({ pathway, pilotScore, pilotProfile, onApply }: Path
 }
 
 // Pre-defined pathways for MVP
+  // eslint-disable-next-line react-refresh/only-export-components
 export const MVP_PATHWAYS: Pathway[] = [
   {
     id: 'dubai-credential-philippines',

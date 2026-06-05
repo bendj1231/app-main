@@ -32,7 +32,7 @@ export const ConsentBanner: React.FC<ConsentBannerProps> = ({
   onAccept,
   onDecline,
   customMessage,
-  showLink = true
+  showLink: _showLink = true
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -50,7 +50,8 @@ export const ConsentBanner: React.FC<ConsentBannerProps> = ({
 
     if (!storedPreferences || !timestamp) {
       // Show banner if no consent has been given
-      setIsVisible(true);
+      const t = setTimeout(() => setIsVisible(true), 0);
+      return () => clearTimeout(t);
     } else {
       // Check if consent is older than 1 year (GDPR requires re-consent)
       const consentDate = new Date(timestamp);
@@ -58,10 +59,20 @@ export const ConsentBanner: React.FC<ConsentBannerProps> = ({
       oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
       if (consentDate < oneYearAgo) {
-        setIsVisible(true);
+        const t = setTimeout(() => setIsVisible(true), 0);
+        return () => clearTimeout(t);
       } else {
-        // Load existing preferences
-        setPreferences(JSON.parse(storedPreferences));
+        // Load existing preferences safely
+        try {
+          const parsed = JSON.parse(storedPreferences) as ConsentPreferences;
+          const t = setTimeout(() => setPreferences(parsed), 0);
+          return () => clearTimeout(t);
+        } catch {
+          localStorage.removeItem(CONSENT_STORAGE_KEY);
+          localStorage.removeItem(CONSENT_TIMESTAMP_KEY);
+          const t = setTimeout(() => setIsVisible(true), 0);
+          return () => clearTimeout(t);
+        }
       }
     }
   }, []);
@@ -215,6 +226,7 @@ export const ConsentBanner: React.FC<ConsentBannerProps> = ({
 };
 
 // Hook to check and manage consent
+  // eslint-disable-next-line react-refresh/only-export-components
 export function useConsent() {
   const [preferences, setPreferences] = useState<ConsentPreferences | null>(null);
   const [hasConsented, setHasConsented] = useState(false);
@@ -222,9 +234,17 @@ export function useConsent() {
   useEffect(() => {
     const stored = localStorage.getItem(CONSENT_STORAGE_KEY);
     if (stored) {
-      const prefs = JSON.parse(stored);
-      setPreferences(prefs);
-      setHasConsented(true);
+      try {
+        const prefs = JSON.parse(stored) as ConsentPreferences;
+        const t = setTimeout(() => {
+          setPreferences(prefs);
+          setHasConsented(true);
+        }, 0);
+        return () => clearTimeout(t);
+      } catch {
+        localStorage.removeItem(CONSENT_STORAGE_KEY);
+        localStorage.removeItem(CONSENT_TIMESTAMP_KEY);
+      }
     }
   }, []);
 

@@ -10,7 +10,7 @@ export type ActivityType =
   | 'goal_completion';
 
 interface ActivityLogOptions {
-  activityDetails?: Record<string, any>;
+  activityDetails?: Record<string, unknown>;
   ipAddress?: string;
   userAgent?: string;
 }
@@ -68,7 +68,7 @@ export const useUserActivityLog = () => {
     await logActivity('logout', userId);
   };
 
-  const logProfileUpdate = async (userId: string, details: Record<string, any>) => {
+  const logProfileUpdate = async (userId: string, details: Record<string, unknown>) => {
     await logActivity('profile_update', userId, { activityDetails: details });
   };
 

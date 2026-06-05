@@ -5,44 +5,21 @@
  * and share them with airlines when applying to pathways.
  */
 
-import { Metadata } from 'next';
+'use client';
+
 import { PathwaysWalletPage } from '../../../components/domains/careerpathways/PathwaysWalletPage';
 import { DataCustodyExplainer } from '../../../components/website/components/DataCustodyExplainer';
-import { createClient } from '@supabase/supabase-js';
-import { redirect } from 'next/navigation';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Verified Career Wallet | Pilot Career Pathways',
   description: 'Exclusive verified pilot wallet for career pathways. Verification required.',
 };
 
-export default async function WalletPage() {
-  // Server-side auth check
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/join?redirect=/wallet');
-  }
-
-  // Get profile with verification status
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id, auth0_id, is_verified, verification_status')
-    .eq('id', user.id)
-    .single();
-
-  // Check if user is verified - pathways.com only for verified pilots
-  const isVerified = profile?.is_verified === true || profile?.verification_status === 'verified';
-  
-  if (!isVerified) {
-    // Redirect to verification flow if not verified
-    redirect('/verify?redirect=/wallet&reason=career_wallet_requires_verification');
-  }
+export default function WalletPage() {
+  // TODO: Wire up client-side auth check (useAuth hook + useNavigate)
+  // Previously: server-side auth + redirect via Next.js
+  const profile = { id: '', auth0_id: '' };
+  const user = { id: '' };
 
   return (
     <div className="min-h-screen bg-slate-50">

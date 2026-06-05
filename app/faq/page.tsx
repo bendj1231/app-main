@@ -1,11 +1,9 @@
 import { FAQPage } from '@/components/website/components/FAQPage';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
+export const metadata = {
   title: 'FAQ - Pilotrecognition.com | Aviation Career Recognition Platform',
-  description: 'Find answers to common questions about pilotrecognition, our Foundation Program, Transition Program, mentorship, and career opportunities in aviation. Operated by WM Pilot Group.',
+  description: 'Find answers to common questions about pilotrecognition, our Foundation Program, Transition Program, mentorship, and career opportunities in aviation. Operated by Benjamin Bowler pending incorporation of Aviation Pathways Ltd.',
   keywords: 'pilotrecognition, pilot recognition, aviation career, pilot jobs, foundation program, transition program, mentorship, ATLAS CV, EBT CBTA, Airbus, Etihad',
-  authors: [{ name: 'WM Pilot Group' }],
+  authors: [{ name: 'Benjamin Bowler' }],
   openGraph: {
     title: 'FAQ - Pilotrecognition.com | Aviation Career Recognition Platform',
     description: 'Find answers to common questions about pilotrecognition, our programs, mentorship, and career opportunities in aviation.',
@@ -36,11 +34,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function FAQPage() {
+export default function FAQPageWrapper() {
   return (
     <FAQPage 
-      onBack={() =>
-        {/* Coded by Benjamin Bowler */} window.history.back()} 
+      onBack={() => {
+        // Coded by Benjamin Bowler
+        window.history.back();
+      }} 
       onNavigate={(page) => console.log('Navigate to:', page)}
       onLogin={() => console.log('Login clicked')}
     />

@@ -73,9 +73,9 @@ export async function uploadProfileImage(
       path: filePath,
     };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[supabaseImageStorage] Upload failed:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 

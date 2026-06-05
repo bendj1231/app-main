@@ -19,7 +19,7 @@ A government agency under the Department of Transportation, Republic of the Phil
 
 **AND**
 
-**PILOTRECOGNITION.COM / WM PILOT GROUP**
+**PILOTRECOGNITION.COM / AVIATION PATHWAYS LTD**
 A private technology company registered in [Jurisdiction], represented by [Name]
 
 **FOR THE ESTABLISHMENT OF A PUBLIC-PRIVATE PARTNERSHIP (PPP) DIGITAL VERIFICATION FRAMEWORK**
@@ -174,7 +174,7 @@ Name: Dr. Fausto Atahan Jr.
 Title: Acting Director General
 Date: _______________
 
-**FOR PILOTRECOGNITION.COM / WM PILOT GROUP:**
+**FOR PILOTRECOGNITION.COM / AVIATION PATHWAYS LTD:**
 
 _______________________________
 Name: [Founder Name]

@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 interface ProgramBenefitsPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const ProgramBenefitsPage: React.FC<ProgramBenefitsPageProps> = ({

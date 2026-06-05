@@ -1,11 +1,15 @@
 import { supabase } from './supabase';
 
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const PILOT_ISSUER_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_PILOT_ISSUER_URL)
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   ? (import.meta as any).env.VITE_PILOT_ISSUER_URL
   : 'https://issuer.pilotrecognition.com';
 
 // PilotRecognition Wallet API — native browser wallet, no external dependency
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const PILOT_WALLET_API = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_WALT_WALLET_API)
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   ? (import.meta as any).env.VITE_WALT_WALLET_API
   : '';
 
@@ -173,7 +177,7 @@ export async function registerPilotWallet(
 export async function getOrCreatePilotWallet(
   auth0Id: string,
   profileId: string,
-  email: string
+  _email: string
 ): Promise<{ walletId: string; token: string } | null> {
   // Check if already registered in Supabase
   const { data: profile } = await supabase

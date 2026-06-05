@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface IndustryStewardshipPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const IndustryStewardshipPage: React.FC<IndustryStewardshipPageProps> = ({

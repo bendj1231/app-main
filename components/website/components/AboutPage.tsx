@@ -6,7 +6,7 @@ import { sanitizeHtml } from '../../../src/lib/sanitize-html';
 interface AboutPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({
@@ -468,7 +468,7 @@ The Foundation Program builds the verified competency record operators look for.
                         </div>
                     </div>
                     <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
-                        <p>&copy; 2024 PilotRecognition - WM Pilot Group. All rights reserved.</p>
+                        <p>&copy; 2024 PilotRecognition - Benjamin Bowler (pending Aviation Pathways Ltd). All rights reserved.</p>
                     </div>
                 </div>
             </div>

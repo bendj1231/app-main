@@ -11,7 +11,8 @@
 // Type declarations for Google Analytics
 declare global {
   interface Window {
-    dataLayer: any[];
+    dataLayer: unknown[];
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     gtag: (...args: any[]) => void;
   }
 }
@@ -25,7 +26,7 @@ export interface AnalyticsConfig {
 
 export interface AnalyticsEvent {
   name: string;
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
   userId?: string;
   sessionId?: string;
 }
@@ -42,7 +43,7 @@ export interface ConversionEvent {
   funnel_step: string;
   funnel_name: string;
   conversion_value?: number;
-  user_properties?: Record<string, any>;
+  user_properties?: Record<string, unknown>;
 }
 
 class Analytics {
@@ -50,7 +51,7 @@ class Analytics {
   private initialized: boolean = false;
   private sessionId: string;
   private userId: string | null = null;
-  private userProperties: Record<string, any> = {};
+  private userProperties: Record<string, unknown> = {};
 
   constructor(config: AnalyticsConfig) {
     this.config = config;
@@ -101,7 +102,7 @@ class Analytics {
     }
   }
 
-  setUserProperties(properties: Record<string, any>): void {
+  setUserProperties(properties: Record<string, unknown>): void {
     this.userProperties = { ...this.userProperties, ...properties };
     if (this.initialized && window.gtag) {
       window.gtag('set', 'user_properties', properties);
@@ -113,7 +114,7 @@ class Analytics {
       return;
     }
 
-    const params: any = {
+    const params: Record<string, unknown> = {
       page_title: event.page_title,
       page_location: event.page_location,
       page_path: event.page_path,
@@ -138,7 +139,7 @@ class Analytics {
       return;
     }
 
-    const params: any = {
+    const params: Record<string, unknown> = {
       ...event.params,
       session_id: this.sessionId
     };
@@ -158,7 +159,7 @@ class Analytics {
       return;
     }
 
-    const params: any = {
+    const params: Record<string, unknown> = {
       funnel_step: event.funnel_step,
       funnel_name: event.funnel_name,
       session_id: this.sessionId
@@ -179,12 +180,12 @@ class Analytics {
     }
   }
 
-  trackError(error: Error, context?: Record<string, any>): void {
+  trackError(error: Error, context?: Record<string, unknown>): void {
     if (!this.initialized || !window.gtag) {
       return;
     }
 
-    const params: any = {
+    const params: Record<string, unknown> = {
       error_name: error.name,
       error_message: error.message,
       error_stack: error.stack?.substring(0, 1000), // Limit stack trace length
@@ -203,7 +204,7 @@ class Analytics {
       return;
     }
 
-    const params: any = {
+    const params: Record<string, unknown> = {
       event_category: category,
       name: variable,
       value: Math.round(value),

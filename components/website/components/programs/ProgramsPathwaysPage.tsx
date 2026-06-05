@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 interface ProgramsPathwaysPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const ProgramsPathwaysPage: React.FC<ProgramsPathwaysPageProps> = ({

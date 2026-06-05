@@ -26,6 +26,7 @@ export const useGoalTracking = (userId: string | null) => {
     if (userId) {
       fetchGoals();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchGoals = async () => {

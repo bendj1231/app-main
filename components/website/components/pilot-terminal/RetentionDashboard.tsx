@@ -112,13 +112,13 @@ export default function RetentionDashboard() {
             </div>
             <div className="text-right">
               <span className="text-xs font-semibold inline-block text-blue-600">
-                {(100 - parseFloat(retentionRate)).toFixed(1)}%
+                {(100 - Number(retentionRate)).toFixed(1)}%
               </span>
             </div>
           </div>
           <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
             <div
-              style={{ width: `${100 - parseFloat(retentionRate)}%` }}
+              style={{ width: `${100 - Number(retentionRate)}%` }}
               className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
             />
           </div>
@@ -142,7 +142,7 @@ export default function RetentionDashboard() {
                         style={{ width: `${Math.min((count as number) / (retentionReport.totalEntries || 1) * 100, 100)}%` }}
                       />
                     </div>
-                    <span className="text-sm font-semibold">{count}</span>
+                    <span className="text-sm font-semibold">{count as number}</span>
                   </div>
                 </div>
               ))}
@@ -167,7 +167,7 @@ export default function RetentionDashboard() {
                         style={{ width: `${Math.min((count as number) / (retentionReport.totalEntries || 1) * 100, 100)}%` }}
                       />
                     </div>
-                    <span className="text-sm font-semibold">{count}</span>
+                    <span className="text-sm font-semibold">{count as number}</span>
                   </div>
                 </div>
               ))}

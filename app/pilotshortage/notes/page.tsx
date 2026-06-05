@@ -5,8 +5,7 @@
 // that was previously on the homepage. The homepage is being rebuilt.
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useSearchParams, Link } from 'react-router-dom';
 
 const useAuth = () => ({
   user: null,
@@ -164,7 +163,7 @@ export default function NotesPage() {
         className="desktop-nav"
       >
         <div style={{ marginBottom: '24px' }}>
-          <Link href="/pilotshortage" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 700, fontSize: '1.1rem' }}>
+          <Link to="/pilotshortage" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 700, fontSize: '1.1rem' }}>
             ← Back to Home
           </Link>
         </div>
@@ -287,7 +286,7 @@ export default function NotesPage() {
         >
           <div style={{ maxWidth: '400px', margin: '0 auto' }}>
             <div style={{ marginBottom: '20px' }}>
-              <Link href="/pilotshortage" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 600 }}>
+              <Link to="/pilotshortage" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 600 }}>
                 ← Back to Home
               </Link>
             </div>
@@ -389,7 +388,7 @@ export default function NotesPage() {
           </p>
           <div style={{ marginTop: '16px' }}>
             <Link 
-              href="/pilotshortage" 
+              to="/pilotshortage" 
               style={{ 
                 display: 'inline-block',
                 padding: '8px 16px',
@@ -412,7 +411,7 @@ export default function NotesPage() {
           </h2>
           <div style={{ background: '#0f172a', padding: '20px', borderRadius: '8px', border: '1px solid #1e293b' }}>
             <p style={{ marginBottom: '12px', lineHeight: 1.6 }}><strong>Status:</strong> Living Document — Version 1.0.0</p>
-            <p style={{ marginBottom: '12px', lineHeight: 1.6 }}><strong>Authors:</strong> Karl Brian Vogt & Contributors</p>
+            <p style={{ marginBottom: '12px', lineHeight: 1.6 }}><strong>Authors:</strong> Benjamin Bowler & Contributors</p>
             <p style={{ marginBottom: '12px', lineHeight: 1.6 }}><strong>Last Updated:</strong> January 21, 2026</p>
             <p style={{ lineHeight: 1.6 }}><strong>Abstract:</strong> This document presents a comprehensive 26-pillar industry framework designed to bridge the gap between aviation training and employment. The framework addresses systemic failures in pilot career progression through structured mentorship, verified credentials, and transparent employer-pilot matching.</p>
           </div>

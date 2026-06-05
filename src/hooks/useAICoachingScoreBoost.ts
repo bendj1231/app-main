@@ -38,6 +38,7 @@ export const useAICoachingScoreBoost = (userId?: string) => {
       loadCoachingActions();
       loadBoostHistory();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const loadCoachingActions = async () => {
@@ -53,6 +54,7 @@ export const useAICoachingScoreBoost = (userId?: string) => {
 
       if (error) throw error;
 
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       const actions: AICoachingAction[] = (data || []).map((item: any) => ({
         actionId: item.id,
         type: item.action_type,
@@ -84,6 +86,7 @@ export const useAICoachingScoreBoost = (userId?: string) => {
 
       if (error) throw error;
 
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       const history: ScoreBoostHistory[] = (data || []).map((item: any) => ({
         boostId: item.id,
         actionId: item.action_id,

@@ -60,7 +60,7 @@ class SentryTracker {
         }
         return event;
       },
-      beforeBreadcrumb(breadcrumb, hint) {
+      beforeBreadcrumb(breadcrumb, _hint) {
         // Filter breadcrumbs if needed
         return breadcrumb;
       },
@@ -86,7 +86,7 @@ class SentryTracker {
     Sentry.setUser(null);
   }
 
-  captureException(error: Error, context?: Record<string, any>): void {
+  captureException(error: Error, context?: Record<string, unknown>): void {
     if (!this.initialized) {
       console.error('[Sentry] Not initialized, error:', error);
       return;
@@ -97,7 +97,7 @@ class SentryTracker {
     });
   }
 
-  captureMessage(message: string, level: 'info' | 'warning' | 'error' = 'info', context?: Record<string, any>): void {
+  captureMessage(message: string, level: 'info' | 'warning' | 'error' = 'info', context?: Record<string, unknown>): void {
     if (!this.initialized) {
       return;
     }
@@ -112,7 +112,7 @@ class SentryTracker {
     category?: string;
     message?: string;
     level?: 'info' | 'warning' | 'error';
-    data?: Record<string, any>;
+    data?: Record<string, unknown>;
   }): void {
     if (!this.initialized) return;
 
@@ -125,7 +125,7 @@ class SentryTracker {
     Sentry.setTag(key, value);
   }
 
-  setContext(key: string, context: Record<string, any>): void {
+  setContext(key: string, context: Record<string, unknown>): void {
     if (!this.initialized) return;
 
     Sentry.setContext(key, context);

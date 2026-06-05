@@ -17,7 +17,7 @@ The name of the Company is **Aviation Pathways Ltd**.
 
 ## 2. Registered Office
 
-The registered office of the Company shall be situated in the Republic of Mauritius at such address as the directors may from time to time determine. The Company does not maintain a separate physical operational office. The registered office serves as the legal address for service of process and statutory notices. This may be the personal residence of the director (if located in Mauritius) or an address provided by a licensed Mauritius company formation agent.
+The registered office of the Company shall be situated in the Republic of Mauritius at such address as the directors may from time to time determine. The Company does not maintain a separate physical operational office. The registered office serves as the legal address for service of process and statutory notices. The initial registered office shall be the personal residence of the Managing Director at 24 Avenue Le Morne, Black Rock 2, Villa 24, Tamarin, Republic of Mauritius, which address the Managing Director has consented to use for this purpose. The directors may, by resolution, relocate the registered office to the address of a licensed Mauritius company formation agent or other suitable premises at any time.
 
 **24 Avenue Le Morne, Black Rock 2, Villa 24, Tamarin, Republic of Mauritius**
 
@@ -42,35 +42,38 @@ The objects for which the Company is established are:
 ### Primary Objects
 
 1. **Aviation Technology Platform Development**
-   - To develop, operate, and maintain software-as-a-service (SaaS) platforms for the aviation industry, including but not limited to pilot credential verification systems, career pathway matching engines, and evidence-based training (EBT) scoring platforms.
+   - To develop, operate, and maintain interconnected software-as-a-service (SaaS) platforms for the aviation industry, including but not limited to: pilot credential verification and professional profile management systems; career pathway matching and recruitment platforms connecting aviation professionals with airlines, flight schools, type rating centres, aircraft manufacturers, and other aviation enterprises; content aggregation and networking platforms for aviation professionals; and evidence-based training (EBT) and competency-based training and assessment (CBTA) scoring and evaluation platforms. Such platforms may be offered under any domain name, brand, or trading name as the directors may determine, and may operate on subscription, freemium, enterprise licensing, advertising, or any other revenue model deemed appropriate by the Company. All platforms shall be capable of operating from unified technical infrastructure as the directors deem appropriate.
 
 2. **Pilot Verification and Credential Management**
-   - To provide digital infrastructure for the verification and credential management of aviation professionals, including the routing of verification requests to authorised third-party providers, the issuance of digital credentials, and the operation of secure data processing systems in compliance with applicable data protection laws.
+   - To provide digital infrastructure acting as a technical intermediary and gateway for the verification and credential management of aviation professionals. The Company routes verification requests to independent third-party providers (e.g., Veremark Ltd.) and issues digital access credentials (Verifiable Credentials) based solely on minimal structured outcomes (status, check identifier, timestamp) received from such providers. The Company does not store, process, or access raw identity documents, medical certificates, or flight credentials — these are processed exclusively by the user-selected third-party verifier.
    - To issue and manage digital credentials and decentralised identifiers for use by aviation professionals and approved third-party verifiers.
 
 3. **Intellectual Property Holding and Licensing**
-   - To acquire, develop, hold, license, and commercialise intellectual property, including proprietary algorithms for pilot-to-airline pathway matching, behavioural scoring models, competency-based training assessment frameworks, and aviation data analytics.
+   - To acquire, develop, hold, license, and commercialise intellectual property, including proprietary algorithms for pilot-to-airline pathway matching, aviation competency-based training and assessment (CBTA) video evaluation models aligned with evidence-based training (EBT) regulatory frameworks, mentorship-verified competency assessment frameworks, and aviation data analytics. Such evaluation models shall assess pilot demonstration of defined operational competencies and non-technical skills (including but not limited to crew resource management, threat and error management, situational awareness, and decision-making) in accordance with standard aviation regulatory frameworks, and shall not constitute psychological profiling, behavioural health assessment, or medical evaluation. All intellectual property developed by the founders or directors prior to incorporation of the Company shall be assigned to the Company by way of formal assignment agreements for consideration to be determined by the directors. Scored interview videos generated through the platform shall be stored as part of the pilot's live profile, made available for the pilot's own export and sharing, and watermarked with the Company's proprietary branding.
 
 4. **B2B Enterprise Software Licensing**
-   - To license platform access, application programming interfaces (APIs), and data feeds to airlines, approved training organisations (ATOs), flight schools, aviation authorities, and enterprise operators on a subscription, per-transaction, or success-fee basis.
+   - To license platform access, application programming interfaces (APIs), and data feeds to airlines, approved training organisations (ATOs), flight schools, aviation authorities, and enterprise operators on a subscription or per-transaction basis. The Company does not engage in the recruitment, placement, or employment of workers, and no fees shall be charged contingent upon the hiring, employment, or placement of any individual.
 
 5. **Data Analytics and Aviation Industry Research**
-   - To collect, anonymise, analyse, and publish aviation labour market data, pilot shortage trends, training outcome metrics, and industry benchmarking reports, subject to applicable data protection laws and consent frameworks.
+   - To collect, anonymise, analyse, and publish aggregate aviation labour market data, pilot shortage trends, training outcome metrics, and industry benchmarking reports, subject to applicable data protection laws and consent frameworks. All data collection shall be limited to anonymised, non-identifiable, and aggregated datasets. No individual personal data shall be published, sold, or disclosed in identifiable form. The Company shall obtain explicit user consent prior to inclusion of any data in aggregate research outputs, maintain strict technical and organisational measures to prevent re-identification, and ensure all published reports comply with the Data Protection Act 2017 of Mauritius and applicable international standards.
 
-6. **Online Education and Training Program Delivery**
-   - To design, market, and deliver online educational programmes, mentorship frameworks, and professional development courses for pilots and aviation professionals, excluding formal flight training regulated under FAA Part 141/142 or EASA equivalent.
+6. **Online Education and Mentorship-Verified Program Delivery**
+   - To design, market, and deliver online educational programmes and professional development courses for pilots and aviation professionals, excluding formal flight training regulated under FAA Part 141/142 or EASA equivalent. Program completion shall be certified only upon verified demonstration of applied learning, including but not limited to: logged mentorship hours assisting other pilots, documented peer advocacy missions, and submission of verifiable proof of assistance rendered, assessed against programme-specific competency rubrics.
+
+7. **Aviation Industry Association and Networking**
+   - To establish, operate, and maintain pilotshortage.org as an open-membership aviation industry association and networking platform welcoming all aviation industry participants — including pilots, airlines, approved training organisations (ATOs), flight schools, regulators, and the general public — to collaborate in addressing aviation workforce shortages, promoting pilot career development, and advancing awareness of the global pilot shortage. Such platforms shall be operated by the Company as an open, cause-driven industry body without separate legal personality, and shall not be established as a registered non-profit entity, charitable organisation, or independent association under any non-profit law. Membership shall be free and open to all interested parties. The Company may also establish and operate affiliated networking platforms under the same open membership model.
 
 ### Ancillary Objects
 
-7. To carry on any other business that may conveniently or advantageously be carried on in connection with or ancillary to any of the above objects.
+8. To carry on any other business that may conveniently or advantageously be carried on in connection with or ancillary to any of the above objects.
 
-8. To acquire, hold, manage, and dispose of property, real and personal, and to invest the funds of the Company in such manner as the directors think fit.
+9. To acquire, hold, manage, and dispose of property, real and personal, and to invest the funds of the Company in such manner as the directors think fit.
 
-9. To enter into partnerships, joint ventures, collaborations, or other arrangements with any person, company, or entity for the purpose of furthering the Company's objects.
+10. To enter into partnerships, joint ventures, collaborations, or other arrangements with any person, company, or entity for the purpose of furthering the Company's objects.
 
-10. To borrow or raise money in such manner as the directors shall think fit, and to secure the repayment of any money borrowed, raised, or owing by mortgage, charge, lien, or other security upon the whole or any part of the Company's property or assets.
+11. To borrow or raise money in such manner as the directors shall think fit, and to secure the repayment of any money borrowed, raised, or owing by mortgage, charge, lien, or other security upon the whole or any part of the Company's property or assets.
 
-11. To do all such other things as are incidental or conducive to the attainment of the above objects.
+12. To do all such other things as are incidental or conducive to the attainment of the above objects.
 
 **The objects set forth in any paragraph of this clause shall not, unless expressly provided, be limited or restricted by reference to the terms of any other paragraph or the name of the Company.**
 
@@ -129,7 +132,7 @@ The minimum number of directors shall be one (1) and the maximum number shall be
 
 **Marie Maureen Synthia Maya** — Managing Director, appointed to satisfy Mauritian residency requirements for company operations and bank account opening. The Managing Director holds no shares. Notwithstanding the general removal power in Article 4.5, the Managing Director may be removed by ordinary resolution of the sole shareholder only if: (a) not less than thirty (30) days' prior written notice of the proposed resolution is given to the Managing Director; and (b) the resolution states the reasonable grounds for removal, which may include failure to fulfil statutory duties, breach of fiduciary obligation, or prolonged incapacity to act.
 
-**Benjamin Bowler** — Non-Executive Director, sole shareholder (100%), and Data Protection Officer.
+**Benjamin Bowler** — Non-Executive Director, sole shareholder (100%), and Authorized Signatory and Representative of the Data Controller (Mauritius Data Protection Act 2017).
 
 ### 4.2 Powers of Directors
 The business and affairs of the Company shall be managed by the directors, who may exercise all such powers of the Company as are not, by the Act or by these Articles, required to be exercised by the Company in general meeting.
@@ -259,11 +262,11 @@ The Company may purchase and maintain insurance for the benefit of any director,
 
 ## 13. Data Protection and Compliance
 
-### 13.1 Data Controller Status
-The Company shall, within 14 days of commencing data processing activities, apply for registration as a Data Controller with the Data Protection Office of the Republic of Mauritius under the Data Protection Act 2017.
+### 13.1 Data Controller Registration
+The Company shall register as a Data Controller with the Data Protection Office of the Republic of Mauritius under the Data Protection Act 2017 prior to commencing any user data processing. As of the date of these Articles, the platform has not commenced user data processing. The 14-day registration obligation shall commence upon the platform's first user registration or first processing of personal data, whichever occurs first. The Company qualifies for the discounted registration and renewal fee applicable to enterprises with five (5) or fewer employees, currently set at Rs 1,000 for a three (3) year period. As the sole shareholder and Authorized Signatory of the Data Controller, Benjamin Bowler assumes full responsibility for implementing basic data security practices, including password-protected systems, secure deletion of data no longer required, and maintenance of records of processing activities, pending the appointment of an independent Data Protection Officer.
 
-### 13.2 Data Protection Officer
-The directors shall appoint a Data Protection Officer (DPO) responsible for overseeing the Company's data protection strategy and compliance. The initial DPO shall be Benjamin Bowler.
+### 13.2 Data Protection Officer (Mauritius)
+The Company is the registered Data Controller. Benjamin Bowler (Non-Executive Director, Sole Shareholder) serves as the Authorized Signatory and Representative of the Data Controller for all filings and correspondence with the Mauritius Data Protection Office. Under the Mauritius Data Protection Act 2017, the Data Protection Officer must be independent from operational decision-making and shall not be the owner, sole shareholder, or executive director of the Data Controller. Accordingly, the Company acknowledges that Benjamin Bowler does not serve as, and cannot serve as, the Data Protection Officer under the Mauritius Data Protection Act 2017. The position of Data Protection Officer shall remain vacant until such time as the Company appoints an independent person to that role, which appointment shall occur no later than the commencement of processing activities or upon the Company exceeding the small enterprise threshold, whichever occurs first. The Company acknowledges that a separate independent Data Protection Officer under GDPR Article 37 shall also be appointed prior to processing personal data of data subjects within the European Economic Area at scale.
 
 ### 13.3 Records of Processing
 The Company shall maintain accurate and up-to-date records of all processing activities, including:
@@ -330,7 +333,7 @@ These Articles and all matters arising from them shall be governed by and constr
 | Residential Address | Dacanay Boarding House, Apt 10, Rosario, La Union, Concepcion 2506, Philippines |
 | Occupation | Commercial Pilot / Software Entrepreneur |
 | Qualification | Commercial Pilot Licence (CPL) Holder |
-| Role in Company | Non-Executive Director, Sole Shareholder, Data Protection Officer |
+| Role in Company | Non-Executive Director, Sole Shareholder, Authorized Signatory and Representative of the Data Controller (Mauritius Data Protection Act 2017) |
 | Date of Appointment | [Date of incorporation] |
 
 ## Shareholder

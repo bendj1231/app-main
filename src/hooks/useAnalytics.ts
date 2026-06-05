@@ -98,7 +98,7 @@ export function useUserTracking() {
     trackedRef.current = true;
   }, [currentUser]);
 
-  const trackUserAction = useCallback((action: string, details?: Record<string, any>) => {
+  const trackUserAction = useCallback((action: string, details?: Record<string, unknown>) => {
     const analytics = getAnalytics();
     if (!analytics || !analytics.isEnabled()) return;
 
@@ -111,7 +111,7 @@ export function useUserTracking() {
     });
   }, []);
 
-  const trackFeatureUsage = useCallback((feature: string, details?: Record<string, any>) => {
+  const trackFeatureUsage = useCallback((feature: string, details?: Record<string, unknown>) => {
     const analytics = getAnalytics();
     if (!analytics || !analytics.isEnabled()) return;
 
@@ -148,7 +148,7 @@ export function usePerformanceTracking() {
 export function useErrorTracking() {
   const sentry = getSentry();
 
-  const trackError = useCallback((error: Error, context?: Record<string, any>) => {
+  const trackError = useCallback((error: Error, context?: Record<string, unknown>) => {
     const analytics = getAnalytics();
     const sentryTracker = getSentry();
 
@@ -166,7 +166,7 @@ export function useErrorTracking() {
     }
   }, []);
 
-  const trackMessage = useCallback((message: string, level: 'info' | 'warning' | 'error' = 'info', context?: Record<string, any>) => {
+  const trackMessage = useCallback((message: string, level: 'info' | 'warning' | 'error' = 'info', context?: Record<string, unknown>) => {
     const sentryTracker = getSentry();
 
     if (sentryTracker && sentryTracker.isEnabled()) {
@@ -181,7 +181,7 @@ export function useErrorTracking() {
     category?: string;
     message?: string;
     level?: 'info' | 'warning' | 'error';
-    data?: Record<string, any>;
+    data?: Record<string, unknown>;
   }) => {
     if (sentry && sentry.isEnabled()) {
       sentry.addBreadcrumb(breadcrumb);
@@ -194,7 +194,7 @@ export function useErrorTracking() {
 export function useFunnelTracking(funnelName: string) {
   const { trackConversion } = useConversionTracking();
 
-  const trackFunnelStep = useCallback((step: string, value?: number, userProperties?: Record<string, any>) => {
+  const trackFunnelStep = useCallback((step: string, value?: number, userProperties?: Record<string, unknown>) => {
     trackConversion({
       funnel_step: step,
       funnel_name: funnelName,

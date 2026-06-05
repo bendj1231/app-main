@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../lib/supabase-auth';
+import { db } from '../lib/firebase-stub';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

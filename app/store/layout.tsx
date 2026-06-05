@@ -1,6 +1,4 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
+export const metadata = {
   title: 'PilotRecognition Store | Programs, Digital Products & Gift Cards',
   description: 'Invest in your aviation career with PilotRecognition programs, digital resources, and tools. Foundation Program, Transition Program, Recognition+ Membership, and more.',
   keywords: ['pilot training', 'aviation programs', 'ATLAS CV', 'pilot career', 'flight training', 'Recognition+', 'gift cards'],

@@ -317,9 +317,9 @@ export function MarketingMaterialsGenerator({ eventId, eventTitle, user, onClose
               <Plus className="w-4 h-4" />
               Generate Material
             </button>
-            {onCancel && (
+            {onClose && (
               <button
-                onClick={onCancel}
+                onClick={onClose}
                 className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
               >
                 <X className="w-5 h-5" />

@@ -30,7 +30,7 @@ export const PasskeyRecoveryPage: React.FC<PasskeyRecoveryPageProps> = ({ onNavi
             await navigator.credentials.create({
                 publicKey: {
                     challenge: cb.buffer,
-                    rp: { name: 'PilotRecognition Wallet', id: rpId },
+                    rp: { name: 'PilotRecognition', id: rpId },
                     user: { id: new TextEncoder().encode(userId).buffer, name: email || userId, displayName: email || userId },
                     pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
                     authenticatorSelection: { userVerification: 'required', residentKey: 'required' },
@@ -75,7 +75,7 @@ export const PasskeyRecoveryPage: React.FC<PasskeyRecoveryPageProps> = ({ onNavi
                 {/* Warning */}
 <div style={{ background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.25)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
                     <p style={{ fontSize: '12px', color: 'rgba(0,0,0,0.65)', lineHeight: 1.6, margin: 0 }}>
-                        Without a passkey or this recovery key, you will <strong style={{ color: '#ef4444' }}>permanently lose access</strong> to your wallet and all credentials stored inside. We cannot recover it for you.
+                        Without a passkey or this recovery key, you will <strong style={{ color: '#ef4444' }}>permanently lose access</strong> to your PIC and all credentials stored inside. We cannot recover it for you.
                     </p>
                 </div>
 

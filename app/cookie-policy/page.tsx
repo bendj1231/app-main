@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 interface CookiePolicyPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export default function CookiePolicyPage({ onBack, onNavigate, onLogin }: CookiePolicyPageProps) {

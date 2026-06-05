@@ -5,7 +5,7 @@ import { ArrowLeft, AlertTriangle, Target, GraduationCap, Plane, Users, BadgeChe
 interface PilotShortagePageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const PilotShortagePage: React.FC<PilotShortagePageProps> = ({ onBack, onNavigate, onLogin }) => {

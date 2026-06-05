@@ -25,59 +25,57 @@ export const VerificationCheckout: React.FC<VerificationCheckoutProps> = ({ onCo
   const verificationAmount = 100; // $100 USDC
 
   useEffect(() => {
+    async function checkAtoStatus() {
+      try {
+        // 1. Get pilot's ATO from profile
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('ato_enterprise_account_id, flight_school_address')
+          .eq('id', currentUser!.id)
+          .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        // 2. If pilot has an ATO, check if it's paid
+        if (profile?.ato_enterprise_account_id) {
+          const { data: atoAccount, error: atoError } = await supabase
+            .from('enterprise_accounts')
+            .select('id, name, account_tier, status')
+            .eq('id', profile.ato_enterprise_account_id)
+            .maybeSingle();
+
+          if (atoError) throw atoError;
+
+          setAtoStatus({
+            id: atoAccount?.id || '',
+            name: atoAccount?.name || 'Unknown ATO',
+            account_tier: atoAccount?.account_tier || 'free',
+            status: atoAccount?.status || 'inactive',
+            isPaid: atoAccount?.account_tier === 'enterprise' && atoAccount?.status === 'active',
+          });
+        } else {
+          // No ATO linked — platform keeps everything
+          setAtoStatus({
+            id: '',
+            name: 'No ATO linked',
+            account_tier: 'none',
+            status: 'none',
+            isPaid: false,
+          });
+        }
+
+        setStep('review');
+      } catch {
+        setStep('review');
+      }
+    }
+
     if (!currentUser?.id) {
       setStep('review');
       return;
     }
     checkAtoStatus();
   }, [currentUser]);
-
-  async function checkAtoStatus() {
-    try {
-      // 1. Get pilot's ATO from profile
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('ato_enterprise_account_id, flight_school_address')
-        .eq('id', currentUser!.id)
-        .maybeSingle();
-
-      if (profileError) throw profileError;
-
-      // 2. If pilot has an ATO, check if it's paid
-      if (profile?.ato_enterprise_account_id) {
-        const { data: atoAccount, error: atoError } = await supabase
-          .from('enterprise_accounts')
-          .select('id, name, account_tier, status')
-          .eq('id', profile.ato_enterprise_account_id)
-          .maybeSingle();
-
-        if (atoError) throw atoError;
-
-        setAtoStatus({
-          id: atoAccount?.id || '',
-          name: atoAccount?.name || 'Unknown ATO',
-          account_tier: atoAccount?.account_tier || 'free',
-          status: atoAccount?.status || 'inactive',
-          isPaid: atoAccount?.account_tier === 'enterprise' && atoAccount?.status === 'active',
-        });
-      } else {
-        // No ATO linked — platform keeps everything
-        setAtoStatus({
-          id: '',
-          name: 'No ATO linked',
-          account_tier: 'none',
-          status: 'none',
-          isPaid: false,
-        });
-      }
-
-      setStep('review');
-    } catch (err: any) {
-      console.error('ATO check failed:', err);
-      setError('Failed to load ATO status. Please try again.');
-      setStep('review');
-    }
-  }
 
   if (step === 'loading') {
     return (
@@ -159,6 +157,7 @@ export const VerificationCheckout: React.FC<VerificationCheckoutProps> = ({ onCo
 
         <HelioPaywall
           amount={verificationAmount}
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
           recipientWallet={(window as any).ENV?.PLATFORM_WALLET || 'YOUR_WALLET'}
           paymentType="recognition_plus"
           userId={currentUser?.id}

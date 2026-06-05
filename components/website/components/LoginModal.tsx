@@ -25,11 +25,12 @@ const AppleIcon = () => (
 interface LoginModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onLogin?: () => void;
     onNavigate: (page: string) => void;
 }
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 
 function base64urlToBuffer(base64url: string): ArrayBuffer {
     const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');

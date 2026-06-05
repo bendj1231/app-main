@@ -15,13 +15,13 @@ export interface Manufacturer {
   website: string;
   reputation_score: number;
   total_aircraft_count: number;
-  market_demand_statistics?: any;
-  salary_expectations?: any;
-  career_progression?: any;
-  expectations?: any;
-  training_centers?: any[];
-  news_and_updates?: any[];
-  user_reviews?: any[];
+  market_demand_statistics?: unknown;
+  salary_expectations?: unknown;
+  career_progression?: unknown;
+  expectations?: unknown;
+  training_centers?: unknown[];
+  news_and_updates?: unknown[];
+  user_reviews?: unknown[];
 }
 
 // CamelCase interface for frontend compatibility
@@ -37,13 +37,13 @@ export interface ManufacturerCamel {
   website: string;
   reputationScore: number;
   totalAircraftCount: number;
-  marketDemandStatistics?: any;
-  salaryExpectations?: any;
-  careerProgression?: any;
-  expectations?: any;
-  trainingCenters?: any[];
-  newsAndUpdates?: any[];
-  userReviews?: any[];
+  marketDemandStatistics?: unknown;
+  salaryExpectations?: unknown;
+  careerProgression?: unknown;
+  expectations?: unknown;
+  trainingCenters?: unknown[];
+  newsAndUpdates?: unknown[];
+  userReviews?: unknown[];
 }
 
 export interface AircraftTypeRating {
@@ -66,19 +66,19 @@ export interface AircraftTypeRating {
   engine_type?: string;
   range_versatility?: 'short' | 'medium' | 'long' | 'versatile';
   cabin_features?: string[];
-  news?: any[];
+  news?: unknown[];
   career_score?: number;
   pilot_count?: number;
   first_flight: number;
-  specifications: any;
-  training_requirements: any;
-  training_curriculum?: any[];
-  simulator_details?: any;
-  instructor_qualifications?: any[];
-  certification?: any;
-  success_stories?: any[];
-  faq?: any[];
-  career_info?: any;
+  specifications: unknown;
+  training_requirements: unknown;
+  training_curriculum?: unknown[];
+  simulator_details?: unknown;
+  instructor_qualifications?: unknown[];
+  certification?: unknown;
+  success_stories?: unknown[];
+  faq?: unknown[];
+  career_info?: unknown;
 }
 
 // CamelCase interface for frontend compatibility
@@ -102,22 +102,23 @@ export interface AircraftTypeRatingCamel {
   engineType?: string;
   rangeVersatility?: 'short' | 'medium' | 'long' | 'versatile';
   cabinFeatures?: string[];
-  news?: any[];
+  news?: unknown[];
   careerScore?: number;
   pilotCount?: number;
   firstFlight: number;
-  specifications: any;
-  trainingRequirements: any;
-  trainingCurriculum?: any[];
-  simulatorDetails?: any;
-  instructorQualifications?: any[];
-  certification?: any;
-  successStories?: any[];
-  faq?: any[];
-  careerInfo?: any;
+  specifications: unknown;
+  trainingRequirements: unknown;
+  trainingCurriculum?: unknown[];
+  simulatorDetails?: unknown;
+  instructorQualifications?: unknown[];
+  certification?: unknown;
+  successStories?: unknown[];
+  faq?: unknown[];
+  careerInfo?: unknown;
 }
 
 // Helper functions to convert snake_case to camelCase
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function toCamelCase(obj: any): any {
   if (obj === null || typeof obj !== 'object') return obj;
   
@@ -134,6 +135,7 @@ function toCamelCase(obj: any): any {
   }
   return result;
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 class TypeRatingService {
   /**
@@ -147,7 +149,7 @@ class TypeRatingService {
         .order('name');
       
       if (error) throw error;
-      return (data || []).map((item: any) => toCamelCase(item));
+      return (data || []).map((item: unknown) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching manufacturers:', error);
       throw error;
@@ -184,7 +186,7 @@ class TypeRatingService {
         .order('model');
       
       if (error) throw error;
-      return (data || []).map((item: any) => toCamelCase(item));
+      return (data || []).map((item: unknown) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft type ratings:', error);
       throw error;
@@ -203,7 +205,7 @@ class TypeRatingService {
         .order('model');
       
       if (error) throw error;
-      return (data || []).map((item: any) => toCamelCase(item));
+      return (data || []).map((item: unknown) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft by manufacturer:', error);
       throw error;
@@ -222,7 +224,7 @@ class TypeRatingService {
         .order('model');
       
       if (error) throw error;
-      return (data || []).map((item: any) => toCamelCase(item));
+      return (data || []).map((item: unknown) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft by category:', error);
       throw error;
@@ -241,7 +243,7 @@ class TypeRatingService {
         .order('model');
       
       if (error) throw error;
-      return (data || []).map((item: any) => toCamelCase(item));
+      return (data || []).map((item: unknown) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft by subcategory:', error);
       throw error;
@@ -281,7 +283,7 @@ class TypeRatingService {
         .order('model');
 
       if (error) throw error;
-      return (data || []).map((item: any) => toCamelCase(item));
+      return (data || []).map((item: unknown) => toCamelCase(item));
     } catch (error) {
       console.error('Error searching aircraft:', error);
       throw error;
@@ -291,7 +293,7 @@ class TypeRatingService {
   /**
    * Get aircraft with manufacturer details (returns camelCase)
    */
-  async getAircraftWithManufacturer(): Promise<any[]> {
+  async getAircraftWithManufacturer(): Promise<unknown[]> {
     try {
       const { data, error } = await supabase
         .from('aircraft_type_ratings')
@@ -299,7 +301,7 @@ class TypeRatingService {
         .order('model');
       
       if (error) throw error;
-      return (data || []).map((item: any) => toCamelCase(item));
+      return (data || []).map((item: unknown) => toCamelCase(item));
     } catch (error) {
       console.error('Error fetching aircraft with manufacturer:', error);
       throw error;

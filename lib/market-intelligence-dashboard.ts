@@ -61,7 +61,7 @@ export interface IndustryTrend {
   opportunities: string[];
 }
 
-export interface MarketIntelligenceDashboard {
+export interface MarketIntelligenceDashboardData {
   timestamp: string;
   overallMarketHealth: number;
   healthIndicators: MarketHealthIndicator[];
@@ -92,7 +92,7 @@ export class MarketIntelligenceDashboard {
   /**
    * Generate comprehensive market intelligence dashboard
    */
-  async generateDashboard(): Promise<MarketIntelligenceDashboard> {
+  async generateDashboard(): Promise<MarketIntelligenceDashboardData> {
     console.log('📊 Generating market intelligence dashboard...');
 
     const healthIndicators = await this.getHealthIndicators();
@@ -103,7 +103,7 @@ export class MarketIntelligenceDashboard {
     const topOpportunities = await this.getTopOpportunities();
     const recommendations = await this.generateRecommendations(healthIndicators, geographicDemand, industryTrends);
 
-    const dashboard: MarketIntelligenceDashboard = {
+    const dashboard: MarketIntelligenceDashboardData = {
       timestamp: new Date().toISOString(),
       overallMarketHealth: this.calculateOverallHealth(healthIndicators),
       healthIndicators,
@@ -511,7 +511,7 @@ export class MarketIntelligenceDashboard {
   /**
    * Get personalized recommendations
    */
-  private getPersonalizedRecommendations(profile: any, dashboard: MarketIntelligenceDashboard): string[] {
+  private getPersonalizedRecommendations(profile: any, dashboard: MarketIntelligenceDashboardData): string[] {
     const recommendations: string[] = [];
 
     // Based on flight hours
@@ -579,7 +579,7 @@ export class MarketIntelligenceDashboard {
   /**
    * Calculate market fit score
    */
-  private calculateMarketFit(profile: any, dashboard: MarketIntelligenceDashboard): any {
+  private calculateMarketFit(profile: any, dashboard: MarketIntelligenceDashboardData): any {
     let fitScore = 70;
 
     // Hours fit
@@ -607,7 +607,7 @@ export class MarketIntelligenceDashboard {
   /**
    * Identify strengths
    */
-  private identifyStrengths(profile: any, dashboard: MarketIntelligenceDashboard): string[] {
+  private identifyStrengths(profile: any, dashboard: MarketIntelligenceDashboardData): string[] {
     const strengths: string[] = [];
 
     if (profile.totalFlightHours > 1000) strengths.push('Strong flight hours for senior roles');
@@ -625,7 +625,7 @@ export class MarketIntelligenceDashboard {
   /**
    * Identify improvements
    */
-  private identifyImprovements(profile: any, dashboard: MarketIntelligenceDashboard): string[] {
+  private identifyImprovements(profile: any, dashboard: MarketIntelligenceDashboardData): string[] {
     const improvements: string[] = [];
 
     if (profile.totalFlightHours < 500) improvements.push('Build flight hours to access more opportunities');

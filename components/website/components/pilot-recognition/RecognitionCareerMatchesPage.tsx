@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 interface RecognitionCareerMatchesPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPageProps> = ({
@@ -1109,7 +1109,7 @@ export const RecognitionCareerMatchesPage: React.FC<RecognitionCareerMatchesPage
 
                     <h4 className="text-xl font-bold text-slate-900 mb-3 mt-6">Industry Collaboration</h4>
                     <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                        For example, the Pilot-recognition WM Pilot Group attends annual meetings with airlines to present our community of more than <strong>5,000 pilots</strong> on pilotrecognition.com who are seeking answers and opportunities. We are working with <strong>Airbus representatives</strong> under the head of training with EBT CBTA, recognizing that <strong>communication between pilots and the industry must be bridged</strong>.
+                        For example, Benjamin Bowler (pending incorporation of Aviation Pathways Ltd) attends annual meetings with airlines to present our community of more than <strong>5,000 pilots</strong> on pilotrecognition.com who are seeking answers and opportunities. We are working with <strong>Airbus representatives</strong> under the head of training with EBT CBTA, recognizing that <strong>communication between pilots and the industry must be bridged</strong>.
                     </p>
 
                     <h4 className="text-xl font-bold text-slate-900 mb-3 mt-6">The Pilot Talent Crisis</h4>

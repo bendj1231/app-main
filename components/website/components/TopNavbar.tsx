@@ -9,7 +9,7 @@ import { sanitizeHtml } from '@/src/lib/sanitize-html';
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
     isDark?: boolean;
     forceScrolled?: boolean;
     isLight?: boolean;

@@ -363,7 +363,9 @@ export const RecommendedPathwaysDynamic: React.FC<RecommendedPathwaysDynamicProp
                             onClick={() => onNavigate && onNavigate('portal-airline-expectations')}
                         >
                             <div className="flex items-center gap-2 mb-2">
-                                <img src={airline.image} alt={airline.name} className="w-8 h-8 object-cover rounded" />
+                                <div className="w-8 h-8 flex items-center justify-center bg-blue-600/20 rounded">
+                                    <span className="text-slate-900 font-bold text-[10px]">{airline.name.slice(0, 2)}</span>
+                                </div>
                                 <span className="text-xs font-semibold text-white">{airline.name}</span>
                             </div>
                             <p className="text-xs text-slate-400">{airline.salaryRange}</p>

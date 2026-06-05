@@ -1,11 +1,10 @@
-import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import { Navigate } from 'react-router-dom';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Privacy Policy — Pilot Career Pathways',
   description: 'Privacy policy for pilotcareerpathways.com.',
 };
 
 export default function PathwaysPrivacyRedirect() {
-  redirect('/privacy-policy');
+  return <Navigate to="/privacy-policy" replace />;
 }

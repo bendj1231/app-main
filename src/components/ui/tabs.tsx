@@ -60,7 +60,8 @@ export function Tabs({
 
   useEffect(() => {
     if (defaultTab) {
-      setActiveTab(defaultTab);
+      const t = setTimeout(() => setActiveTab(defaultTab), 0);
+      return () => clearTimeout(t);
     }
   }, [defaultTab]);
 
@@ -168,7 +169,7 @@ export interface TabTriggerProps {
   className?: string;
 }
 
-export function TabTrigger({ value, children, disabled = false, className = '' }: TabTriggerProps) {
+export function TabTrigger({ value: _value, children, disabled = false, className = '' }: TabTriggerProps) {
   return (
     <button
       role="tab"

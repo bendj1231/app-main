@@ -1,12 +1,10 @@
 import { WhyRecognitionPage } from '@/components/website/components/WhyRecognitionPage';
 import { safeRedirect } from '@/src/lib/url-validator';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Why Every Pilot Needs a Recognition Profile | PilotRecognition.com',
   description: 'In a rapidly evolving industry, a paper logbook and standard CV are no longer enough. Discover why being "Recognized" is the new aviation standard for students, hobbyists, and active pilots.',
   keywords: 'pilot recognition profile, aviation career, pilot digital identity, airline ready, pilot verification, aviation standards, pilot resume',
-  authors: [{ name: 'WM Pilot Group' }],
+  authors: [{ name: 'Benjamin Bowler' }],
   openGraph: {
     title: 'Why Every Pilot Needs a Recognition Profile | PilotRecognition.com',
     description: 'Pilot Recognition is the global infrastructure for your aviation identity. Whether career or recreation, being "Recognized" is the new industry standard.',
@@ -40,8 +38,10 @@ export const metadata: Metadata = {
 export default function WhyRecognitionRoute() {
   return (
     <WhyRecognitionPage 
-      onBack={() =>
-        {/* Coded by Benjamin Bowler */} window.history.back()} 
+      onBack={() => {
+        // Coded by Benjamin Bowler
+        window.history.back();
+      }}
       onNavigate={(page: string) => {
         if (page.startsWith('/')) {
           safeRedirect(page);

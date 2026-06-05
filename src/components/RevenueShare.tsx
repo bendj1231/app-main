@@ -42,7 +42,7 @@ export const RevenueShare: React.FC<RevenueShareProps> = ({
       <div className="bg-slate-900 px-6 py-4">
         <h3 className="text-lg font-bold text-white">Payment Distribution</h3>
         <p className="text-sm text-slate-400">
-          ${amount.toLocaleString(} USDC split automatically on payment
+          ${amount.toLocaleString()} USDC split automatically on payment
         </p>
         {!atoIsPaid && (
           <p className="text-xs text-amber-400 mt-1">
@@ -78,7 +78,7 @@ export const RevenueShare: React.FC<RevenueShareProps> = ({
               <div className="flex items-center justify-between mt-1">
                 <span className="text-sm font-semibold text-slate-700">{split.label}</span>
                 <span className={`text-sm font-bold ${isSkipped ? 'text-slate-400 line-through' : 'text-slate-900'}`}>
-                  {split.percentage > 0 ? `$${splitAmount.toFixed(2} USDC` : '$0.00'}
+                  {split.percentage > 0 ? `$${splitAmount.toFixed(2)} USDC` : '$0.00'}
                 </span>
               </div>
             </div>
@@ -88,13 +88,13 @@ export const RevenueShare: React.FC<RevenueShareProps> = ({
         {/* Total */}
         <div className="border-t border-slate-200 pt-4 flex items-center justify-between">
           <span className="text-sm font-bold text-slate-900">Total</span>
-          <span className="text-lg font-bold text-slate-900">${amount.toFixed(2} USDC</span>
+          <span className="text-lg font-bold text-slate-900">${amount.toFixed(2)} USDC</span>
         </div>
 
         {/* Helio fee note */}
         <p className="text-xs text-slate-500 text-center">
           Helio processing fee (~1%) deducted from platform share.
-          Net to platform: ~${(amount * platformShare).toFixed(2} USDC.
+          Net to platform: ~${(amount * platformShare).toFixed(2)} USDC.
         </p>
 
         {/* Wallet toggle */}

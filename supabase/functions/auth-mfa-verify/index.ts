@@ -4,6 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+const mfaEncryptionKey = Deno.env.get('MFA_ENCRYPTION_KEY')!
 
 // Rate limiting store
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
@@ -182,19 +183,31 @@ serve(async (req) => {
     // Get MFA secret for user
     const { data: mfaSecret, error: secretError } = await supabase
       .from('mfa_secrets')
-      .select('*')
+      .select('encrypted_secret, is_enabled')
       .eq('user_id', userId)
       .single()
 
-    if (secretError || !mfaSecret) {
+    if (secretError || !mfaSecret || !mfaSecret.encrypted_secret) {
       return new Response(JSON.stringify({ error: 'MFA not set up for this user' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       })
     }
 
+    // Decrypt the secret using pgcrypto via RPC
+    const { data: decryptedSecret, error: decryptError } = await supabase
+      .rpc('decrypt_mfa_secret', { p_encrypted: mfaSecret.encrypted_secret, p_key: mfaEncryptionKey })
+
+    if (decryptError || !decryptedSecret) {
+      console.error('Failed to decrypt MFA secret:', decryptError)
+      return new Response(JSON.stringify({ error: 'MFA verification failed' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
+
     // Verify TOTP code
-    const isValid = await verifyTOTP(mfaSecret.secret, code)
+    const isValid = await verifyTOTP(decryptedSecret, code)
 
     if (!isValid) {
       return new Response(JSON.stringify({ error: 'Invalid code' }), {

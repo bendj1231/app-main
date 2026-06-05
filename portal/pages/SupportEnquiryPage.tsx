@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { UserProfile } from '../types/user';
 import { CloudBackground } from '../components/CloudBackground';
+import { db, collection, query, where, getDocs, orderBy, limit, serverTimestamp, addDoc } from '../lib/firebase-stub';
 
 interface SupportEnquiryPageProps {
   onBack: () => void;
@@ -171,6 +172,7 @@ export const SupportEnquiryPage: React.FC<SupportEnquiryPageProps> = ({
       await addDoc(notificationsRef, notificationData);
 
       // Simulate email notification (in production, this would trigger an email service)
+      console.log({
         to: 'benjamintigerbowler@gmail.com',
         subject: `New Support Enquiry: ${formData.subject}`,
         enquiry: notificationData

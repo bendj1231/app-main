@@ -317,7 +317,7 @@ export const VeremarkVerifiedBadge: React.FC<VeremarkVerifiedBadgeProps> = ({
         {/* Progress Bar */}
         <div className="mt-3">
           <div className="flex justify-between text-xs mb-1">
-            <span className="text-slate-400">Wallet Completeness</span>
+            <span className="text-slate-400">PIC Completeness</span>
             <span className="text-emerald-400 font-medium">{Math.round(progressPercent)}%</span>
           </div>
           <div className="h-2 rounded-full overflow-hidden" style={{ background: '#1D2636', border: '1px solid rgba(255,255,255,0.06)' }}>

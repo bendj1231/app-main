@@ -252,8 +252,8 @@ The following documents must be attached to this KYC submission:
 | 3 | Proof of Residential Address (utility bill / bank statement / tenancy agreement, dated within last 3 months) | **(B)** Benjamin — Philippines address | [ ] | [ ] |
 | 4 | Certified copy of Mauritian Passport (bio-data page) | **(M)** Marie | [ ] | [ ] |
 | 5 | Certified copy of National Identity Card (NIC) | **(M)** Marie | [ ] | [ ] |
-| 6 | Proof of Residential Address (utility bill / bank statement, dated within last 3 months) | **(M)** Marie — Mauritius address | [ ] | [ ] |
-| 7 | Proof of Registered Office Address (utility bill in company name or director's name at registered address) | **(M)** Marie | [ ] | [ ] |
+| 6 | Proof of Residential Address (utility bill / bank statement, dated within last 3 months) | **(M)** Marie — **CWA water bill** in her name at 24 Avenue Le Morne, Tamarin | [ ] | [ ] |
+| 7 | Proof of Registered Office Address (utility bill in company name or director's name at registered address) | **(M)** Marie — **CWA water bill** in her name; supplementary: **CEB electricity bill** under Benjamin's name at same address | [ ] | [ ] |
 | 8 | Source of funds documentation (bank statements for last 6 months, or family contribution letter) | **(B)** Benjamin | [ ] | [ ] |
 | 9 | Police clearance certificate | **(B)** Benjamin — NBI Clearance (Philippines) obtained; Mauritius clearance pending | [ ] | [ ] |
 | 10 | PEP and sanctions self-screening printout | **(B)** Benjamin | [ ] | [ ] |

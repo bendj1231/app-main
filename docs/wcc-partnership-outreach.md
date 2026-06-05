@@ -1,5 +1,5 @@
 # WCC Aviation College — Partnership Outreach Email
-**From:** Karl Brian Vogt, Co-Founder — PilotRecognition.com
+**From:** Benjamin Bowler, Founder — PilotRecognition.com
 **To:** WCC Aviation College — Partnerships / Graduate Relations
 **Subject:** Your graduates are stuck. We built the solution.
 
@@ -7,7 +7,7 @@
 
 Dear WCC Aviation College Team,
 
-My name is Karl Vogt. I am the Co-Founder of PilotRecognition.com, a pilot credential and career recognition platform built specifically for the graduates your school produces.
+My name is Benjamin Bowler. I am the Founder of PilotRecognition.com, a pilot credential and career recognition platform built specifically for the graduates your school produces.
 
 I am writing to you directly because we know your graduates — not from a distance, but from the inside.
 
@@ -64,7 +64,6 @@ We would like to schedule a 30-minute call to walk you through the platform and 
 ## About Us
 
 - **Benjamin Bowler** — Founder, WCC graduate, CPL holder, built the platform from scratch after graduating with no placement
-- **Karl Brian Vogt** — Co-Founder, commercial flying degree, experienced the same post-training gap from Europe
 - **Platform:** pilotrecognition.com — live, in final pre-launch phase
 - **Infrastructure:** Supabase, verified credential wallet, Veremark background check integration
 
@@ -78,12 +77,12 @@ We look forward to speaking with you.
 
 Warm regards,
 
-**Karl Brian Vogt**
-Co-Founder, PilotRecognition.com
-WM Pilot Group
+**Benjamin Bowler**
+Founder, PilotRecognition.com
+Aviation Pathways Ltd
 partnership@pilotrecognition.com
 pilotrecognition.com
 
 ---
 
-*PilotRecognition.com is operated by AJBowler Consult, registered in the Dubai Freezone.*
+*PilotRecognition.com is operated by Aviation Pathways Ltd, registered in the Republic of Mauritius.*

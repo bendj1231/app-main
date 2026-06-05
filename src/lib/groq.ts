@@ -66,7 +66,7 @@ async function post(body: object): Promise<Response> {
 }
 
 /** One-shot career coaching analysis for a pilot profile */
-export async function getCareerCoaching(profile: Record<string, any>): Promise<CoachingResponse> {
+export async function getCareerCoaching(profile: Record<string, unknown>): Promise<CoachingResponse> {
   const res = await post({ type: 'coaching', profile });
   const json = await res.json();
   return { data: json.data as CoachingResult, quota: json.quota };
@@ -75,7 +75,7 @@ export async function getCareerCoaching(profile: Record<string, any>): Promise<C
 /** Multi-turn chat with the aviation career coach */
 export async function chatWithCoach(
   messages: { role: 'user' | 'assistant'; content: string }[],
-  profile?: Record<string, any>
+  profile?: Record<string, unknown>
 ): Promise<ChatResponse> {
   const res = await post({ type: 'chat', messages, profile });
   const json = await res.json();
@@ -83,7 +83,7 @@ export async function chatWithCoach(
 }
 
 /** Atlas CV improvement suggestions */
-export async function getAtlasCVSuggestions(profile: Record<string, any>): Promise<string> {
+export async function getAtlasCVSuggestions(profile: Record<string, unknown>): Promise<string> {
   const res = await fetch(FUNCTION_URL, {
     method: 'POST',
     headers: {

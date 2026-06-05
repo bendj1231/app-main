@@ -17,7 +17,7 @@ interface PathwayCarouselProps {
     slides: Slide[];
     onNavigate: (page: string) => void;
     onGoToProgramDetail: (slide: Slide) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const PathwayCarousel: React.FC<PathwayCarouselProps> = ({
@@ -173,7 +173,7 @@ export const PathwayCarousel: React.FC<PathwayCarouselProps> = ({
 const ActiveCard: React.FC<{
     slide: Slide;
     onLearnMore: () => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }> = ({ slide, onLearnMore, onLogin }) => {
     return (
         <div className="relative group">

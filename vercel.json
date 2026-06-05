@@ -140,12 +140,11 @@
   ],
   "headers": [
     {
-      "has": [{ "type": "host", "value": "wallet.pilotrecognition.com" }],
       "source": "/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://gkbhgrozrzhalnjherfu.supabase.co https://api.veremark.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://gkbhgrozrzhalnjherfu.supabase.co https://api.veremark.com https://*.googleusercontent.com https://*.auth0.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
         },
         {
           "key": "Strict-Transport-Security",
@@ -161,7 +160,7 @@
         },
         {
           "key": "Referrer-Policy",
-          "value": "strict-origin"
+          "value": "strict-origin-when-cross-origin"
         },
         {
           "key": "Permissions-Policy",

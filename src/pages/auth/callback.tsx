@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { extractCodeFromUrl } from '../../lib/google-oauth';
 import { exchangeCodeForSupabaseSession } from '../../lib/supabase-oauth';
 
 /**
@@ -26,7 +25,6 @@ const OAuthCallback: React.FC = () => {
         const code = searchParams.get('code');
         const error = searchParams.get('error');
         const errorDescription = searchParams.get('error_description');
-        const state = searchParams.get('state');
 
 
         // Handle OAuth errors from Google
@@ -40,7 +38,6 @@ const OAuthCallback: React.FC = () => {
         // Check if authorization code is present
         if (!code) {
           console.error(`[${timestamp}] [OAUTH CALLBACK ERROR] No authorization code found in URL`);
-          console.error(`[${timestamp}] [OAUTH CALLBACK ERROR] Full URL params:`, window.location.search);
           setErrorMessage('No authorization code received');
           setStatus('error');
           return;
@@ -55,6 +52,7 @@ const OAuthCallback: React.FC = () => {
 
         const { data: sessionData } = await exchangeCodeForSupabaseSession(code, redirectUri);
 
+        const sessionUser = sessionData.user as { id: string; email: string; user_metadata?: { full_name?: string } } | undefined;
 
         // Create user profile if it doesn't exist (non-critical)
         try {
@@ -62,7 +60,7 @@ const OAuthCallback: React.FC = () => {
             const { data: existingProfile, error: profileCheckError } = await supabase
                 .from('profiles')
                 .select('id')
-                .eq('id', sessionData.user?.id)
+                .eq('id', sessionUser?.id)
                 .single();
 
             if (profileCheckError && profileCheckError.code !== 'PGRST116') {
@@ -73,10 +71,10 @@ const OAuthCallback: React.FC = () => {
                 const { error: profileCreateError } = await supabase
                     .from('profiles')
                     .insert({
-                        id: sessionData.user?.id,
-                        email: sessionData.user?.email,
-                        display_name: sessionData.user?.user_metadata?.full_name || sessionData.user?.email?.split('@')[0],
-                        full_name: sessionData.user?.user_metadata?.full_name,
+                        id: sessionUser?.id,
+                        email: sessionUser?.email,
+                        display_name: sessionUser?.user_metadata?.full_name || sessionUser?.email?.split('@')[0],
+                        full_name: sessionUser?.user_metadata?.full_name,
                         role: 'mentee',
                         status: 'active',
                         created_at: new Date().toISOString(),
@@ -102,10 +100,7 @@ const OAuthCallback: React.FC = () => {
 
       } catch (err) {
         const errorTimestamp = new Date().toISOString();
-        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error processing OAuth callback:`, err);
-        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error name:`, err instanceof Error ? err.name : 'Unknown');
-        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error message:`, err instanceof Error ? err.message : String(err));
-        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error stack:`, err instanceof Error ? err.stack : 'No stack available');
+        console.error(`[${errorTimestamp}] [OAUTH CALLBACK ERROR] Error processing OAuth callback:`, err instanceof Error ? err.message : String(err));
         setErrorMessage(err instanceof Error ? err.message : 'An unexpected error occurred');
         setStatus('error');
       }

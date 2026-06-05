@@ -25,7 +25,6 @@ export interface MetricCard {
 
 export const AnalyticsDashboard: React.FC = () => {
   const [metrics, setMetrics] = useState<MetricCard[]>([]);
-  const [webVitalsScore, setWebVitalsScore] = useState(0);
   const [apiMetrics, setApiMetrics] = useState({ avgDuration: 0, totalCalls: 0, errorRate: 0 });
   const [edgeFunctionMetrics, setEdgeFunctionMetrics] = useState({ avgDuration: 0, totalCalls: 0, coldStartRate: 0 });
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +34,6 @@ export const AnalyticsDashboard: React.FC = () => {
       // Web Vitals
       const webVitals = getWebVitals();
       const score = webVitals?.getPerformanceScore() || 0;
-      setWebVitalsScore(score);
 
       // API Performance
       const perfMonitor = getPerformanceMonitor();
@@ -74,21 +72,21 @@ export const AnalyticsDashboard: React.FC = () => {
         },
         {
           title: 'Avg API Response',
-          value: `${avgApiDuration.toFixed(0}ms`,
+          value: `${avgApiDuration.toFixed(0)}ms`,
           change: avgApiDuration < 500 ? 'Good' : 'Slow',
           icon: <Clock className="w-5 h-5" />,
           color: avgApiDuration < 500 ? 'text-green-500' : avgApiDuration < 1000 ? 'text-yellow-500' : 'text-red-500'
         },
         {
           title: 'API Error Rate',
-          value: `${errorRate.toFixed(1}%`,
+          value: `${errorRate.toFixed(1)}%`,
           change: errorRate < 1 ? 'Low' : 'High',
           icon: <AlertTriangle className="w-5 h-5" />,
           color: errorRate < 1 ? 'text-green-500' : errorRate < 5 ? 'text-yellow-500' : 'text-red-500'
         },
         {
           title: 'Edge Function Avg',
-          value: `${avgEdgeDuration.toFixed(0}ms`,
+          value: `${avgEdgeDuration.toFixed(0)}ms`,
           icon: <Zap className="w-5 h-5" />,
           color: avgEdgeDuration < 200 ? 'text-green-500' : avgEdgeDuration < 500 ? 'text-yellow-500' : 'text-red-500'
         }
@@ -98,9 +96,24 @@ export const AnalyticsDashboard: React.FC = () => {
     };
 
     updateMetrics();
-    const interval = setInterval(updateMetrics, 5000); // Update every 5 seconds
+    let interval: ReturnType<typeof setInterval> | null = null;
 
-    return () => clearInterval(interval);
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (interval) clearInterval(interval);
+      } else {
+        updateMetrics();
+        interval = setInterval(updateMetrics, 5000);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    interval = setInterval(updateMetrics, 5000);
+
+    return () => {
+      if (interval) clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   const getWebVitalsDetails = () => {

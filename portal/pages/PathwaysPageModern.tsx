@@ -73,7 +73,7 @@ import {
   getCachedPathways,
   type LocalPilotProfile 
 } from '../../lib/pathways/pathwayMatchingEngine';
-import type { PathwayMatch, Pathway } from '../../lib/pathways/types';
+import type { PathwayMatch } from '../../lib/pathways/types';
 import type { PathwayData, GapAnalysis, RecognitionProfile, RequirementMatch } from './pathways/components/types';
 import { InterestBadge } from './pathways/components/InterestBadge';
 import { ProbabilityBadge } from './pathways/components/ProbabilityBadge';
@@ -1695,10 +1695,7 @@ const PathwayCard: React.FC<{
                   </div>
                 ) : (
                   <div className="h-48 w-full rounded-lg relative">
-                    <Aircraft3DCanvas 
-                      aircraftType={pathway.aircraftType || 'default'} 
-                      isDarkMode={isDarkMode} 
-                    />
+                    <div className="flex items-center justify-center h-full text-slate-500">Aircraft Preview</div>
                   </div>
                 )}
                 <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'} mt-2 text-center`}>
@@ -1720,10 +1717,7 @@ const PathwayCard: React.FC<{
                     Cockpit Interior 3D
                   </h4>
                   <div className="h-48 w-full rounded-lg relative">
-                    <Cockpit3DCanvas 
-                      aircraftType={pathway.aircraftType || 'default'} 
-                      isDarkMode={isDarkMode} 
-                    />
+                    <div className="flex items-center justify-center h-full text-slate-500">Cockpit Preview</div>
                   </div>
                   <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-400'} mt-2 text-center`}>
                     {(String(pathway.aircraftType || '').toUpperCase().includes('B747') || String(pathway.aircraftType || '').toUpperCase().includes('747'))
@@ -3568,7 +3562,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
   const [stage2NearestSort, setStage2NearestSort] = useState<boolean>(false);
   const [stage2TypeRatingFilter, setStage2TypeRatingFilter] = useState<string>('All');
   const [stage2ViewFilter, setStage2ViewFilter] = useState<'All' | 'Type Rating Centers' | 'Flight School (ATO)' | 'Special Ratings'>('All');
-  const [trSchoolTab, setTrSchoolTab] = useState<'about' | 'expectations' | 'requirements' | 'access'>('about');
+  const [trSchoolTab, setTrSchoolTab] = useState<'about' | 'expectations' | 'requirements' | 'access' | 'comparison'>('about');
   const [flightSchoolCardImgIdx, setFlightSchoolCardImgIdx] = useState<number>(0);
   const [flightSchoolCardData, setFlightSchoolCardData] = useState<Record<string, any>>({});
   const [flightSchoolEngagement, setFlightSchoolEngagement] = useState<Record<string, any>>({});
@@ -3788,11 +3782,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
 
   // Wrapper function for Post Pathway button (without pathway data)
   const handlePostPathwayClick = () => {
-    addToast({
-      title: 'Enterprise Posting',
-      description: 'Pathway posting is available for Enterprise accounts. Contact support to upgrade.',
-      variant: 'default',
-    });
+    addToast('info', 'Enterprise Posting', 'Pathway posting is available for Enterprise accounts. Contact support to upgrade.');
   };
 
   // Pathways Intelligence — Firebase R-formula powered data
@@ -3904,8 +3894,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           category: catKey,
           matchProbability: item.matchPercentage / 100,
           requirements: { totalHours: 0, typeRatings: [] },
+          aircraftType: 'default',
+          interestLevel: 'moderate',
           isRecommended: item.matchPercentage >= 90,
-        }))
+        } as PathwayData))
       );
       
       // Show all cards from the same category as the selected pathway
@@ -4238,7 +4230,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
       case 'newest':
         // Sort by creation date or last updated (newest first)
         // If no date available, use id as fallback for stable sort
-        return (b.updatedAt || b.createdAt || b.id).localeCompare(a.updatedAt || a.createdAt || a.id);
+        return ((b as any).updatedAt || (b as any).createdAt || b.id).localeCompare((a as any).updatedAt || (a as any).createdAt || a.id);
       case 'alphabetical':
         // Sort by name A-Z
         return (a.name || '').localeCompare(b.name || '');
@@ -4517,7 +4509,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
         }
 
         // Load pathways (from cache or fetch)
-        let pathways: Pathway[] | null = getCachedPathways();
+        let pathways: Pathway[] | null = getCachedPathways() as any;
         if (!pathways) {
           const { data: pathwayData, error } = await supabase
             .from('pathways')
@@ -4526,12 +4518,12 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
           
           if (!error && pathwayData) {
             pathways = pathwayData;
-            cachePathways(pathways);
+            cachePathways(pathways as any);
           }
         }
 
         if (pathways) {
-          pathwayEngine.setPathways(pathways);
+          pathwayEngine.setPathways(pathways as any);
         }
 
         // Load user profile
@@ -4571,7 +4563,7 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
             : 0;
           const stats = {
             lastCalculationTime: Math.round(endTime - startTime),
-            pathwaysLoaded: pathwayEngine.getPathways().length,
+            pathwaysLoaded: (pathwayEngine as any).pathways?.length || 0,
             matchesCalculated: matches.length,
             avgMatchScore: avgScore,
             algorithmVersion: 'v1.0.0-browser',
@@ -7680,10 +7672,10 @@ export const PathwaysPageModern: React.FC<PathwaysPageModernProps> = ({
               <p className="text-white/70 text-xs leading-relaxed">
                 By submitting your self-declared credentials to this gate, you instruct the platform to open a pass-through skybridge to the operator.
                 The receiving entity acts as an <span className="text-white font-semibold">Independent Data Controller</span> of this cargo.
-                WM Pilot Group does not verify Terminal 2 entries and assumes <span className="text-white font-semibold">zero liability</span> for downstream HR data retention or vetting.
+                Benjamin Bowler (pending Aviation Pathways Ltd) does not verify Terminal 2 entries and assumes <span className="text-white font-semibold">zero liability</span> for downstream HR data retention or vetting.
               </p>
               <div className="mt-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-[10px] text-white/35 leading-relaxed">
-                Your profile data is encrypted on your device (AES-256-GCM) before transmission. The operator receives only a signed, self-declared credential payload — no raw personal data is transferred by WM Pilot Group.
+                Your profile data is encrypted on your device (AES-256-GCM) before transmission. The operator receives only a signed, self-declared credential payload — no raw personal data is transferred by Benjamin Bowler (pending Aviation Pathways Ltd).
               </div>
             </div>
             {/* Actions */}

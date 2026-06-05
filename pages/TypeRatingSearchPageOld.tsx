@@ -769,7 +769,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
               return (
                 <div className="px-6 md:px-8 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 border-b border-slate-100">
                   <div className="flex items-center gap-3">
-                    <img src={info.manufacturerLogo} alt={info.manufacturerName} className="h-8 object-contain" onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
+                    <span className="text-sm font-bold text-slate-800">{info.manufacturerName}</span>
                     <div>
                       <p className="text-[10px] uppercase tracking-widest text-slate-400">Manufacturer</p>
                       <p className="text-sm font-semibold text-slate-800">{info.manufacturerName}</p>
@@ -812,7 +812,7 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                   <div className="flex flex-wrap gap-3">
                     {info.airlinesUsingFleet.map(a => (
                       <div key={a.name} className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
-                        <img src={a.logo} alt={a.name} className="h-6 w-10 object-contain" onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
+                        <div className="h-6 w-10 flex items-center justify-center bg-blue-600/10 rounded"><span className="text-[8px] font-bold text-slate-700">{a.name.slice(0,2)}</span></div>
                         <span className="text-xs font-medium text-slate-700">{a.name}</span>
                       </div>
                     ))}
@@ -895,8 +895,8 @@ export default function TypeRatingSearchPage({ onNavigate }: Props) {
                   <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' } as React.CSSProperties}>
                     {info.atoCarousel.map((ato, i) => (
                       <div key={i} className="flex-shrink-0 w-64 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex flex-col">
-                        <div className="h-36 overflow-hidden">
-                          <img src={ato.img} alt={ato.name} className="w-full h-full object-cover" />
+                        <div className="h-36 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                          <span className="text-xs font-bold text-slate-500">{ato.name}</span>
                         </div>
                         <div className="p-3 flex flex-col flex-1">
                           <p className="font-semibold text-sm text-slate-900">{ato.name}</p>

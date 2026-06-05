@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
-const FIREBASE_BASE = 'https://us-central1-pilotrecognition-airline.cloudfunctions.net';
+const FIREBASE_BASE = import.meta.env.VITE_FIREBASE_FUNCTIONS_URL as string;
 
 // ─── Nav structure ───────────────────────────────────────────────
 const NAV_GROUPS = [
@@ -1324,7 +1324,7 @@ const EnterpriseAccessPage = () => {
                         <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Founder Perspective</h3>
                         <div className="bg-white border border-gray-300 rounded-lg p-6">
                             <div className="mb-4">
-                                <p className="text-sm font-semibold text-gray-700 mb-2">Benjamin Bowler & Karl Brian Vogt — Founders</p>
+                                <p className="text-sm font-semibold text-gray-700 mb-2">Benjamin Bowler — Founder</p>
                                 <p className="text-xs text-gray-500 uppercase tracking-widest">Operational Experience Assessment</p>
                             </div>
                             <div className="space-y-4 text-gray-700 text-sm leading-relaxed">
@@ -1364,7 +1364,7 @@ const EnterpriseAccessPage = () => {
                             {/* Left: intro */}
                             <div className="lg:col-span-5">
                                 <p className={`text-[11px] uppercase tracking-[0.25em] font-semibold mb-3 ${COLOR_CLASSES[s.color]?.eyebrow ?? 'text-red-600'}`}>{s.label}</p>
-                                <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 sm:mb-5 text-slate-900" dangerouslySetInnerHTML={{ __html: s.tagline }} />
+                                <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 sm:mb-5 text-slate-900">{s.tagline}</h2>
                                 {s.id === 'airlines' && (
                                     <div className="mb-5">
                                         <img 

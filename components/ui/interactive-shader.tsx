@@ -205,7 +205,14 @@ const useShaderAnimation = (canvasRef, params) => {
 // --- Components ---
 
 // Memoized slider component to prevent re-renders when props haven't changed.
-const ControlSlider = React.memo(({ label, value, onChange, min, max, step }) => (
+const ControlSlider = React.memo(({ label, value, onChange, min, max, step }: {
+  label: string;
+  value: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  min: number;
+  max: number;
+  step: number;
+}) => (
     <div className="flex flex-col text-white">
         <div className="flex justify-between items-center mb-1">
             <label className="text-sm font-medium select-none">{label}</label>
@@ -221,7 +228,12 @@ const ControlSlider = React.memo(({ label, value, onChange, min, max, step }) =>
 ));
 
 // The core canvas component, now cleaner by using the useShaderAnimation hook.
-const ShaderCanvas = React.memo(({ hue, speed, intensity, complexity }) => {
+const ShaderCanvas = React.memo(({ hue, speed, intensity, complexity }: {
+  hue: number;
+  speed: number;
+  intensity: number;
+  complexity: number;
+}) => {
     const canvasRef = useRef(null);
     useShaderAnimation(canvasRef, { hue, speed, intensity, complexity });
     return <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full" />;
@@ -250,10 +262,10 @@ const ShaderComponent = () => {
             </div>
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-lg p-4">
                 <div className="bg-black/50 backdrop-blur-md p-6 rounded-2xl shadow-lg space-y-4 border border-white/10">
-                    <ControlSlider label="Hue" value={hue} onChange={handleHueChange} min="0" max="360" step="1" />
-                    <ControlSlider label="Speed" value={speed} onChange={handleSpeedChange} min="0.0" max="2.0" step="0.01" />
-                    <ControlSlider label="Intensity" value={intensity} onChange={handleIntensityChange} min="0.1" max="3.0" step="0.01" />
-                    <ControlSlider label="Complexity" value={complexity} onChange={handleComplexityChange} min="1.0" max="10.0" step="0.1" />
+                    <ControlSlider label="Hue" value={hue} onChange={handleHueChange} min={0} max={360} step={1} />
+                    <ControlSlider label="Speed" value={speed} onChange={handleSpeedChange} min={0.0} max={2.0} step={0.01} />
+                    <ControlSlider label="Intensity" value={intensity} onChange={handleIntensityChange} min={0.1} max={3.0} step={0.01} />
+                    <ControlSlider label="Complexity" value={complexity} onChange={handleComplexityChange} min={1.0} max={10.0} step={0.1} />
                 </div>
             </div>
         </div>

@@ -200,7 +200,7 @@ const FoundationalProgramShowcasePage: React.FC<FoundationalProgramShowcasePageP
     if (!checkProgramAccess()) {
         return (
             <RestrictionPage
-                onBack={() => onBack?.() || (() => {})}
+                onBack={() => onBack?.()}
                 userProfile={userProfile!}
                 programName="Foundational Program"
                 restrictionReason="Your access to the Foundational Program has been restricted by an administrator. Please contact your mentor or program administrator for assistance."

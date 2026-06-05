@@ -645,12 +645,9 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
               }`}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent pointer-events-none" />
-              <img
-                src={airline.cardImage || airline.image}
-                alt={airline.name}
-                className="w-48 h-48 object-contain mx-auto relative z-10"
-                onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'; }}
-              />
+              <div className="w-48 h-48 flex items-center justify-center mx-auto relative z-10 bg-white/5 rounded-xl">
+                <span className="text-slate-900 font-bold text-center text-lg px-4 leading-tight">{airline.name}</span>
+              </div>
             </button>
           ))}
         </div>
@@ -972,15 +969,9 @@ export const PortalAirlineExpectationsPage: React.FC<PortalAirlineExpectationsPa
         <div className="max-w-7xl mx-auto px-6 mb-12 relative z-20">
           <div className={`rounded-2xl overflow-hidden border ${card}`}>
             {/* Hero Image */}
-            <div className="relative h-64 md:h-80">
-              <img
-                src={selectedAirline.image}
-                alt={selectedAirline.name}
-                className="w-full h-full object-cover"
-                onError={e => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80'; }}
-              />
+            <div className="relative h-64 md:h-80 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900">
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-              <div className={`absolute inset-0 bg-gradient-to-r ${selectedAirline.id === 'qatar' ? 'from-[#800000]/70 via-transparent to-transparent' : 'from-black/70 via-transparent to-transparent'}`} />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6 md:p-8">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">{selectedAirline.flag}</span>

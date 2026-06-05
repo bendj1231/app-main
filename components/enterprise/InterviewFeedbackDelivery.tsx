@@ -8,6 +8,16 @@ import {
 } from 'lucide-react';
 import { supabase } from './hooks/useEnterpriseAuth';
 
+/** Escape HTML special characters to prevent XSS in document.write */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 interface InterviewFeedbackDeliveryProps {
   interviewId: string;
   pilotProfileId: string;
@@ -232,33 +242,33 @@ export function InterviewFeedbackDelivery({
           </head>
           <body>
             <h1>Interview Assessment Feedback</h1>
-            <p><strong>Pilot:</strong> ${pilotName}</p>
+            <p><strong>Pilot:</strong> ${escapeHtml(pilotName)}</p>
             <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
-            
+
             <div class="section">
               <h2>Overall Grade</h2>
-              <div class="grade">${assessment?.overall_grade || 'N/A'}</div>
+              <div class="grade">${escapeHtml(assessment?.overall_grade || 'N/A')}</div>
               <p>Score: ${assessment?.overall_score || 0}/100</p>
             </div>
 
             <div class="section">
               <h2>Summary</h2>
-              <p>${feedbackData.summary.replace(/\n/g, '<br>')}</p>
+              <p>${escapeHtml(feedbackData.summary).replace(/\n/g, '<br>')}</p>
             </div>
 
             <div class="section">
               <h2>Key Takeaways</h2>
-              ${feedbackData.keyTakeaways.map(t => t ? `<div class="takeaway">${t}</div>` : '').join('')}
+              ${feedbackData.keyTakeaways.map(t => t ? `<div class="takeaway">${escapeHtml(t)}</div>` : '').join('')}
             </div>
 
             <div class="section">
               <h2>Recommended Actions</h2>
-              ${feedbackData.recommendedActions.map(a => a ? `<div class="action">${a}</div>` : '').join('')}
+              ${feedbackData.recommendedActions.map(a => a ? `<div class="action">${escapeHtml(a)}</div>` : '').join('')}
             </div>
 
             <div class="section">
               <h2>Resources</h2>
-              ${feedbackData.resources.map(r => r.title && r.url ? `<div class="resource"><a href="${r.url}">${r.title}</a></div>` : '').join('')}
+              ${feedbackData.resources.map(r => r.title && r.url ? `<div class="resource"><a href="${escapeHtml(r.url)}">${escapeHtml(r.title)}</a></div>` : '').join('')}
             </div>
           </body>
         </html>

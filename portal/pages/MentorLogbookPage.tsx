@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase-auth';
+import { db, doc, deleteDoc, addDoc, collection } from '../lib/firebase-stub';
 
 interface MentorLogEntry {
   id: string;

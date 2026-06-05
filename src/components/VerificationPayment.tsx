@@ -71,6 +71,7 @@ export const VerificationPayment: React.FC<VerificationPaymentProps> = ({
         </button>
         <HelioPaywall
           amount={verificationAmount}
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
           recipientWallet={(window as any).ENV?.PLATFORM_WALLET || 'YOUR_WALLET'}
           paymentType="recognition_plus"
           userId={pilotId}
@@ -83,7 +84,7 @@ export const VerificationPayment: React.FC<VerificationPaymentProps> = ({
               body: JSON.stringify({
                 pilotId,
                 amount: verificationAmount,
-                paymentId: `helio_${Date.now(}`,
+                paymentId: `helio_${Date.now()}`,
                 paymentProvider: 'helio',
               }),
             });

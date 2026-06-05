@@ -1,5 +1,4 @@
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from './firebase';
+import { doc, getDoc, db } from './firebase-stub';
 import type { UserProfile } from '../types/user';
 
 // Firebase config verification
@@ -41,7 +40,7 @@ export const verifyProgramAccess = async (
   try {
     if (!db) {
       console.error('Firestore not initialized');
-      return userProfile;
+      return { latestProfile: userProfile, status: 'not_configured' as ProgramVerificationStatus };
     }
     const userRef = doc(db, 'users', userProfile.id);
     const snapshot = await getDoc(userRef);

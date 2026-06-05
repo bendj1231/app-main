@@ -25,5 +25,16 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".next",
+    "public",
+    "external-references",
+    "functions",
+    "waltid-identity",
+    "supabase"
+  ]
 }

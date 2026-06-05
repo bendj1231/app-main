@@ -41,7 +41,7 @@ if (import.meta.env.DEV) {
 
 export default pool;
 
-export async function neonQuery<T = any>(text: string, params?: any[]): Promise<T[]> {
+export async function neonQuery<T = unknown>(text: string, params?: unknown[]): Promise<T[]> {
   const res = await pool.query(text, params);
   return res.rows as T[];
 }

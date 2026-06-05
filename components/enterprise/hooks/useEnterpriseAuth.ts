@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../../shared/lib/supabase';
 
-const FIREBASE_BASE = 'https://us-central1-pilotrecognition-airline.cloudfunctions.net';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const FIREBASE_BASE = (import.meta as any).env?.VITE_FIREBASE_FUNCTIONS_URL as string;
 
 export interface EnterpriseAccount {
   id: string;

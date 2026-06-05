@@ -1,8 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/src/lib/supabase';
 
-const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
 
 const DOC_TYPES = [
   { value: 'hiring_rubric',      label: 'Hiring Rubric / Cadet Expectations' },
@@ -227,7 +228,7 @@ export const IpfsPinPanel: React.FC = () => {
             {pins.map(pin => (
               <div key={pin.id} style={{ display: 'grid', gridTemplateColumns: '2fr 130px 100px 80px 120px', gap: 12, padding: '10px 12px', background: 'white', border: '1px solid #f1f5f9', alignItems: 'center' }}>
                 <div style={{ minWidth: 0 }}>
-                  <p style={{ margin: '0 0 2px', fontSize: 11, fontWeight: 700, color: '#0f172a', truncate: true }}>{pin.title || '—'}</p>
+                  <p style={{ margin: '0 0 2px', fontSize: 11, fontWeight: 700, color: '#0f172a', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{pin.title || '—'}</p>
                   <a href={pin.gateway_url || `https://ipfs.io/ipfs/${pin.ipfs_cid}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, fontFamily: 'monospace', color: '#7c3aed', wordBreak: 'break-all' }}>{pin.ipfs_cid}</a>
                 </div>
                 <span style={{ fontSize: 10, color: '#475569', fontWeight: 600 }}>{pin.doc_type.replace(/_/g, ' ')}</span>

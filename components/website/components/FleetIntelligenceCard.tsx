@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { supabase } from '../../../src/lib/supabase';
 
-const SUPABASE_URL = 'https://gkbhgrozrzhalnjherfu.supabase.co';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
 
 // ─── Tier config ────────────────────────────────────────────────────────────
 const TIER_CONFIG: Record<string, {

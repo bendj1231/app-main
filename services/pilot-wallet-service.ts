@@ -136,7 +136,8 @@ class PilotWalletService {
 
   private getCredentials(req: express.Request, res: express.Response): void {
     try {
-      const { pilotId } = req.params;
+      const { pilotId: rawPilotId } = req.params;
+      const pilotId = Array.isArray(rawPilotId) ? rawPilotId[0] : rawPilotId;
       const { requester, dataTypes } = req.query;
 
       if (!pilotId) {
@@ -146,8 +147,8 @@ class PilotWalletService {
 
       // Check consent
       if (requester && dataTypes) {
-        const requesterStr = Array.isArray(requester) ? requester[0] : requester;
-        const dataTypesArray = Array.isArray(dataTypes) ? dataTypes : [dataTypes];
+        const requesterStr = (Array.isArray(requester) ? requester[0] : requester) as string;
+        const dataTypesArray = (Array.isArray(dataTypes) ? dataTypes : [dataTypes]) as string[];
         const hasConsent = this.checkPilotConsent(pilotId, requesterStr, dataTypesArray);
         if (!hasConsent) {
           res.status(403).json({ error: 'No valid consent for data access' });
@@ -262,7 +263,8 @@ class PilotWalletService {
 
   private getConsents(req: express.Request, res: express.Response): void {
     try {
-      const { pilotId } = req.params;
+      const { pilotId: rawPilotId } = req.params;
+      const pilotId = Array.isArray(rawPilotId) ? rawPilotId[0] : rawPilotId;
 
       if (!pilotId) {
         res.status(400).json({ error: 'Pilot ID required' });
@@ -278,7 +280,8 @@ class PilotWalletService {
 
   private veremarkDataRetrieval(req: express.Request, res: express.Response): void {
     try {
-      const { pilotId, dataTypes, purpose, verificationId } = req.body;
+      const { pilotId: rawPilotId, dataTypes, purpose, verificationId } = req.body;
+      const pilotId = Array.isArray(rawPilotId) ? rawPilotId[0] : rawPilotId;
 
       if (!pilotId || !dataTypes || !purpose) {
         res.status(400).json({ 
@@ -310,7 +313,7 @@ class PilotWalletService {
         pilotConsents.push(pendingConsent);
         this.consents.set(pilotId, pilotConsents);
 
-        return res.json({
+        res.json({
           status: 'pending_consent',
           message: 'Pilot consent required for data access',
           consentId: pendingConsent.id,

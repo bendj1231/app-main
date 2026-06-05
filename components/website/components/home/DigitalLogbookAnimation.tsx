@@ -8,7 +8,7 @@ interface DigitalLogbookAnimationProps {
 export const DigitalLogbookAnimation: React.FC<DigitalLogbookAnimationProps> = ({ isHovered }) => {
   const [scrollY, setScrollY] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
-  const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
     // Clear any existing timeouts
@@ -47,13 +47,7 @@ export const DigitalLogbookAnimation: React.FC<DigitalLogbookAnimationProps> = (
     runAnimation();
     
     return () => {
-      timeoutsRef.current.forEach(timeout => {
-        if (typeof timeout === 'object' && 'current' in timeout) {
-          clearInterval(timeout.current);
-        } else {
-          clearTimeout(timeout);
-        }
-      });
+      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
       timeoutsRef.current = [];
     };
   }, [isHovered]); // Add isHovered dependency to restart when returning to component

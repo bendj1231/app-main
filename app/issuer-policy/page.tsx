@@ -5,7 +5,7 @@ import { ArrowLeft, Shield, CheckCircle, AlertTriangle, Globe, FileText } from '
 interface IssuerPolicyPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: IssuerPolicyPageProps) {
@@ -14,7 +14,7 @@ export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: Issuer
     return (
         <div className="min-h-screen bg-[#0a0f1e] text-white">
             {/* Coded by Benjamin Bowler */}
-            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onJoinUs={() => {}} onLoginModalOpen={() => {}} />
+            <TopNavbar onNavigate={onNavigate} onLogin={onLogin} />
 
             <div className="max-w-3xl mx-auto px-6 py-24">
                 {/* Back */}
@@ -37,9 +37,14 @@ export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: Issuer
                 </div>
 
                 {/* Key callout */}
+                <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 px-6 py-5 mb-6">
+                    <p className="text-amber-200 text-xs leading-relaxed">
+                        <strong>Entity Disclosure:</strong> PilotRecognition is currently operated by Benjamin Bowler as an individual entrepreneur pending incorporation of Aviation Pathways Ltd in the Republic of Mauritius. All obligations described herein shall novate to Aviation Pathways Ltd upon CBRD issuance of the Certificate of Incorporation.
+                    </p>
+                </div>
                 <div className="rounded-2xl bg-[#00b4d8]/5 border border-[#00b4d8]/20 px-6 py-5 mb-10">
                     <p className="text-white/80 text-sm leading-relaxed">
-                        PilotRecognition (operated by Aviation Pathways Ltd) issues <strong className="text-white">digital attestation credentials</strong> in the W3C Verifiable Credentials (VC) standard. These credentials attest that PilotRecognition has verified specific pilot data through authorised third-party sources. They do <strong className="text-white">not</strong> replace, supersede, or constitute official aviation authority documents.
+                        PilotRecognition (operated by Benjamin Bowler pending incorporation of Aviation Pathways Ltd) issues <strong className="text-white">digital attestation credentials</strong> in the W3C Verifiable Credentials (VC) standard. These credentials attest that PilotRecognition has verified specific pilot data through authorised third-party sources. They do <strong className="text-white">not</strong> replace, supersede, or constitute official aviation authority documents.
                     </p>
                 </div>
 
@@ -157,7 +162,7 @@ export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: Issuer
                     <section>
                         <h2 className="text-base font-bold text-white mb-3">6. Governing Law</h2>
                         <p className="text-white/50 text-sm leading-relaxed">
-                            This policy and all credentials issued under it are governed by the laws of the United Arab Emirates (UAE), the domicile of WM Pilot Group operations. For pilots in regulated jurisdictions (EU, UK, US, AU), applicable local privacy and data protection laws also apply as described in our <button onClick={() => onNavigate('terms-of-service')} className="text-[#00b4d8] hover:underline">Terms of Service</button>.
+                            This policy and all credentials issued under it are governed by the laws of the United Arab Emirates (UAE), the domicile of Benjamin Bowler (pending incorporation of Aviation Pathways Ltd). For pilots in regulated jurisdictions (EU, UK, US, AU), applicable local privacy and data protection laws also apply as described in our <button onClick={() => onNavigate('terms-of-service')} className="text-[#00b4d8] hover:underline">Terms of Service</button>.
                         </p>
                     </section>
 
@@ -174,7 +179,7 @@ export default function IssuerPolicyPage({ onBack, onNavigate, onLogin }: Issuer
                 {/* Footer note */}
                 <div className="mt-16 pt-8 border-t border-white/5 text-center">
                     <p className="text-white/20 text-xs">
-                        PilotRecognition · Aviation Pathways Ltd · Mauritius<br />
+                        PilotRecognition · Benjamin Bowler (pending Aviation Pathways Ltd) · Mauritius<br />
                         Credential Issuer Policy v1.0 · {lastUpdated}
                     </p>
                 </div>

@@ -21,7 +21,7 @@ interface Airline {
 interface AirlineExpectationsPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
     selectedAirline?: Airline;
 }
 
@@ -114,11 +114,7 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             <div className={selectedAirline ? "pt-12 pb-8 px-6 bg-gradient-to-b from-blue-950 via-blue-900 to-blue-950" : "pt-32 pb-12 px-6 bg-gradient-to-b from-blue-950 via-blue-900 to-blue-950"}>
                 <div className="max-w-6xl mx-auto text-center relative z-20">
                     <RevealOnScroll>
-                        <img
-                            src="https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png"
-                            alt="PilotRecognition Logo"
-                            className="mx-auto w-64 h-auto object-contain mb-2"
-                        />
+                        <h1 className="text-4xl font-serif text-white mb-2">PilotRecognition</h1>
                         <p className="text-sm font-bold tracking-[0.3em] uppercase text-blue-300 mb-4">
                             Strategic Career Guidance
                         </p>
@@ -199,31 +195,10 @@ export const AirlineExpectationsPage: React.FC<AirlineExpectationsPageProps> = (
             {/* Selected Airline Hero Section - Netflix-style */}
             {selectedAirline && (
                 <div className="relative h-[70vh] min-h-[500px]">
-                    {/* Background Image - cockpit for Qatar Airways, exterior for others */}
-                    <div className="absolute inset-0">
-                        {selectedAirline.id === 'qatar' ? (
-                            <>
-                                <div
-                                    className="w-full h-full"
-                                    style={{
-                                        backgroundImage: 'url(https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80)',
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                    }}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-                            </>
-                        ) : (
-                            <>
-                                <img
-                                    src={selectedAirline.image}
-                                    alt={selectedAirline.name}
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
-                            </>
-                        )}
+                    {/* Background - generic gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
                     </div>
 
                     {/* Content Overlay */}

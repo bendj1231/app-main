@@ -42,7 +42,7 @@ The platform has strong technical architecture but critical legal and corporate 
 | Tax residency certificate | MRA | None |
 
 ### Risk
-- **Unlimited personal liability** for Benjamin Bowler and Karl Vogt.
+- **Unlimited personal liability** for Benjamin Bowler.
 - Cannot sign B2B enterprise contracts (airlines, ATOs, Veremark) as individuals.
 - Cannot process payments under corporate structure.
 - No corporate veil protection for IP, data breach liability, or employment disputes.
@@ -81,11 +81,11 @@ Three different operator names appear across legally binding documents:
 
 | Document | Claims Operator As |
 |----------|-------------------|
-| `docs/TERMS_OF_SERVICE_REWRITE.md` | **AJBowler Consult** |
-| `app/privacy-policy/page.tsx` | **Karl Brian Vogt & Andrew Bowler** (individuals) |
-| `app/terms/page.tsx` | **WM Pilot Group** |
-| `app/dpo/page.tsx` | **WM Pilot Group (Aviation Pathways Limited)** |
-| `DataControllerAgreementModal.tsx` | **WM Pilot Group** |
+| `docs/TERMS_OF_SERVICE_REWRITE.md` | **Aviation Pathways Ltd** |
+| `app/privacy-policy/page.tsx` | **Aviation Pathways Ltd** |
+| `app/terms/page.tsx` | **Aviation Pathways Ltd** |
+| `app/dpo/page.tsx` | **Aviation Pathways Ltd** |
+| `DataControllerAgreementModal.tsx` | **Aviation Pathways Ltd** |
 
 **This is a fatal compliance flaw.** A regulator or enterprise legal team will reject the platform immediately upon seeing inconsistent contracting parties.
 
@@ -122,7 +122,7 @@ Three different operator names appear across legally binding documents:
 **Fix:** Generate standard DPAs for each sub-processor. Store signed copies.
 
 #### Gap 2.5 — Mauritius Registration Claimed But Unverified
-- DCA v1.7 Article 9 claims: *"WM Pilot Group (Aviation Pathways Limited) is registered as a Data Controller with the Data Protection Office of Mauritius."*
+- DCA v1.7 Article 9 claims: *"Aviation Pathways Ltd is registered as a Data Controller with the Data Protection Office of Mauritius."*
 - No registration number is provided.
 - The EDB guide is a plan, not a certificate.
 
@@ -177,9 +177,9 @@ From `PRE_AUDIT_REMEDIATION_REPORT.md`:
 
 ### Conflicting Legal Entities (Critical)
 As documented in Section 2.1, the platform uses three different legal identities:
-1. **AJBowler Consult** — Terms of Service Rewrite v2.0
-2. **Karl Brian Vogt & Andrew Bowler** — Privacy Policy
-3. **WM Pilot Group / Aviation Pathways Limited** — DCA, DPO page, Terms page
+1. **Aviation Pathways Ltd** — Terms of Service Rewrite v2.0
+2. **Aviation Pathways Ltd** — Privacy Policy
+3. **Aviation Pathways Ltd** — DCA, DPO page, Terms page
 
 **Impact:** Any contract, privacy complaint, or regulatory inquiry will be challenged on standing. Airlines' legal teams will refuse to sign enterprise agreements.
 

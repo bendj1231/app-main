@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { AlertCircle, CheckCircle, Wallet, Shield, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertCircle, CheckCircle, Wallet, Shield } from 'lucide-react';
 
 interface TruveraWalletSetupProps {
   pilotId: string;
@@ -108,7 +108,7 @@ export const TruveraWalletSetup: React.FC<TruveraWalletSetupProps> = ({
 
       setStep('complete');
       onWalletCreated(walletId);
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to store wallet reference');
       setStep('error');
     }

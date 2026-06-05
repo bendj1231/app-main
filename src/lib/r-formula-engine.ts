@@ -149,7 +149,7 @@ class RFormulaEngine {
     const qualityAdjustedScore = this.applyProgramQualityFactors(weightedScore, profile);
     const decayFactors = this.calculateDecayFactors(profile);
     const decayAdjustedScore = this.applyRecencyDecay(qualityAdjustedScore, decayFactors);
-    const readinessIndex = this.calculatePredictiveReadiness(profile, pathwayKey, decayAdjustedScore);
+    const readinessIndex = this.calculatePredictiveReadiness(profile, decayAdjustedScore, pathwayKey);
 
     return {
       user_id: profile.user_id,
@@ -170,7 +170,7 @@ class RFormulaEngine {
   /**
    * Calculate the base score from all profile components
    */
-  private calculateBaseScore(profile: PilotProfile, pathwayKey?: string) {
+  private calculateBaseScore(profile: PilotProfile, _pathwayKey?: string) {
     const hoursComponent = this.calculateHoursScore(profile);
     const programComponent = this.calculateProgramScore(profile);
     const behavioralComponent = this.calculateBehavioralScore(profile);
@@ -323,9 +323,9 @@ class RFormulaEngine {
   /**
    * Apply pathway-specific weights to the base score
    */
-  private applyPathwayWeights(breakdown: any, pathwayKey?: string): number {
+  private applyPathwayWeights(breakdown: Record<string, unknown>, pathwayKey?: string): number {
     if (!pathwayKey) {
-      return breakdown.total; // Return base score for overall recognition
+      return breakdown.total as number; // Return base score for overall recognition
     }
 
     const pathwayWeights = this.pathwayWeightsCache.get(pathwayKey) || [];
@@ -422,11 +422,11 @@ class RFormulaEngine {
   /**
    * Apply recency decay to the score
    */
-  private applyRecencyDecay(score: number, decayFactors: any): number {
-    const averageDecay = (decayFactors.flight_hours_decay + 
-                          decayFactors.program_decay + 
-                          decayFactors.medical_decay + 
-                          decayFactors.currency_decay) / 4;
+  private applyRecencyDecay(score: number, decayFactors: Record<string, unknown>): number {
+    const averageDecay = ((decayFactors.flight_hours_decay as number) + 
+                          (decayFactors.program_decay as number) + 
+                          (decayFactors.medical_decay as number) + 
+                          (decayFactors.currency_decay as number)) / 4;
     
     return Math.round(score * averageDecay * 100) / 100;
   }
@@ -434,7 +434,7 @@ class RFormulaEngine {
   /**
    * Calculate Predictive Readiness Index
    */
-  private calculatePredictiveReadiness(profile: PilotProfile, pathwayKey?: string, currentScore: number): number {
+  private calculatePredictiveReadiness(profile: PilotProfile, currentScore: number, _pathwayKey?: string): number {
     let readinessScore = currentScore * 0.7; // Base score contributes 70%
 
     // Forward-looking factors
@@ -683,7 +683,7 @@ class RFormulaEngine {
       if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "not found"
       
       return data;
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   }
@@ -691,7 +691,7 @@ class RFormulaEngine {
   /**
    * Get score trend data for dashboard
    */
-  public async getScoreTrend(userId: string, days: number = 30): Promise<any[]> {
+  public async getScoreTrend(userId: string, days: number = 30): Promise<unknown[]> {
     try {
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - days);

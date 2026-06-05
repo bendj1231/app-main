@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface ExaminationResultsDirectoryPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 const ExaminationResultsDirectoryPage: React.FC<ExaminationResultsDirectoryPageProps> = ({

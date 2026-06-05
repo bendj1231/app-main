@@ -9,7 +9,7 @@ import { supabase } from '@/src/lib/supabase';
 interface FoundationalVerificationPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 interface LogEntry {

@@ -5,7 +5,7 @@ import { TopNavbar } from '../TopNavbar';
 interface CadetProgramsPathwaysPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const CadetProgramsPathwaysPage: React.FC<CadetProgramsPathwaysPageProps> = ({ onBack, onNavigate, onLogin }) => {

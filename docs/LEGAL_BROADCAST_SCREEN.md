@@ -24,7 +24,7 @@
 ### 🟢 Verified
 
 ```
-CAPT. KARL VOGT
+CAPT. BENJAMIN BOWLER
 Total Hours: 4,200
 Status: 🟢 VERIFIED
 ```
@@ -86,7 +86,7 @@ Status: 🔴 NOT CURRENT
 
 **Operator sees:**
 ```
-🥇 Capt. Karl Vogt
+🥇 Capt. Benjamin Bowler
 4,200 hours | 🟢 VERIFIED
 [ASSIGN TO FLIGHT]
 ```

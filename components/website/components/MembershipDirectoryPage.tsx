@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface MembershipDirectoryPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
     isAdmin?: boolean;
 }
 

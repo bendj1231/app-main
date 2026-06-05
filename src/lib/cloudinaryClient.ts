@@ -27,7 +27,7 @@ const UPLOAD_PRESET = 'profile_avatars';
 // - f_auto: Automatically serve WebP/AVIF (smallest format)
 // - q_auto: Automatic quality optimization
 // - w_200,h_200,c_fill: Resize to exact display size (never serve original)
-const PROFILE_IMAGE_TRANSFORMATIONS = 'f_auto,q_auto,w_200,h_200,c_fill';
+// const PROFILE_IMAGE_TRANSFORMATIONS = 'f_auto,q_auto,w_200,h_200,c_fill';
 
 export interface CloudinaryUploadResult {
   success: boolean;
@@ -95,9 +95,9 @@ export async function uploadProfileImage(
       publicId: data.public_id,
     };
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[cloudinaryClient] Upload failed:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
@@ -288,7 +288,7 @@ export function revokeImageUrl(url: string): void {
  * Delete image from Cloudinary
  * Note: Requires signature or admin API - use edge function if needed
  */
-export async function deleteProfileImage(publicId: string): Promise<boolean> {
+export async function deleteProfileImage(_publicId: string): Promise<boolean> {
   // For deletion, you'd typically use an edge function
   // But for cost savings, you can set up a lifecycle policy in Cloudinary
   // or just leave old images (they're small and free tier is generous)

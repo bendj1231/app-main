@@ -85,27 +85,28 @@ export const RecognitionDashboard: React.FC = () => {
       </div>
 
       {/* Statistics */}
-      {statistics && (
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      {statistics && ((s: any) => (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Current Score</h3>
-            <p className="text-3xl font-bold text-blue-600">{statistics.currentScore}</p>
-            <p className="text-sm text-gray-500 mt-1">{statistics.scoreTier} Tier</p>
+            <p className="text-3xl font-bold text-blue-600">{s.currentScore}</p>
+            <p className="text-sm text-gray-500 mt-1">{s.scoreTier} Tier</p>
           </div>
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Global Rank</h3>
-            <p className="text-3xl font-bold text-purple-600">#{statistics.rank}</p>
+            <p className="text-3xl font-bold text-purple-600">#{s.rank}</p>
             <p className="text-sm text-gray-500 mt-1">Out of all pilots</p>
           </div>
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">90-Day Growth</h3>
-            <p className={`text-3xl font-bold ${statistics.growthRate >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {statistics.growthRate >= 0 ? '+' : ''}{statistics.growthRate}
+            <p className={`text-3xl font-bold ${s.growthRate >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {s.growthRate >= 0 ? '+' : ''}{s.growthRate}
             </p>
             <p className="text-sm text-gray-500 mt-1">Points gained/lost</p>
           </div>
         </div>
-      )}
+      ))(statistics)}
 
       {/* Leaderboard and Optimization */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

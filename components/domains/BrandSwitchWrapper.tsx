@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import { useState, useEffect, Suspense, lazy } from 'react';
 
 type DomainBrand = 'recognition' | 'shortage' | 'pilotterminal' | 'careerpathways';
 
-// Dynamic imports to avoid path resolution issues
-const ShortageLanding = dynamic(() => import('./shortage/ShortageLanding'), { ssr: false });
-const PilotTerminalHome = dynamic(() => import('./pilotterminal/PilotTerminalHome'), { ssr: false });
+// Lazy load page components for Vite compatibility
+const ShortageLanding = lazy(() => import('./shortage/ShortageLanding'));
+const PilotTerminalHome = lazy(() => import('./pilotterminal/PilotTerminalHome'));
 
 export default function BrandSwitchWrapper() {
   const [brand, setBrand] = useState<DomainBrand>('recognition');
@@ -21,8 +20,8 @@ export default function BrandSwitchWrapper() {
 
   if (!mounted) return null;
 
-  if (brand === 'shortage') return <ShortageLanding />;
-  if (brand === 'pilotterminal') return <PilotTerminalHome />;
+  if (brand === 'shortage') return <Suspense fallback={null}><ShortageLanding /></Suspense>;
+  if (brand === 'pilotterminal') return <Suspense fallback={null}><PilotTerminalHome /></Suspense>;
   // Note: careerpathways renders PilotShortageUCF, which should be handled server-side
 
   return null;

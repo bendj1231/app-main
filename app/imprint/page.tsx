@@ -3,7 +3,7 @@ import { MapPin, Mail, Phone, Building2, Globe } from 'lucide-react';
 
 export const metadata = {
   title: 'Legal Notice / Imprint — PilotRecognition',
-  description: 'Legal notice and imprint information for PilotRecognition.com, operated by Aviation Pathways Ltd.',
+  description: 'Legal notice and imprint information for PilotRecognition.com, operated by Benjamin Bowler pending incorporation of Aviation Pathways Ltd.',
 };
 
 export default function ImprintPage() {
@@ -34,16 +34,22 @@ export default function ImprintPage() {
               </div>
               <h2 className="text-lg font-bold text-slate-900">Platform Operator</h2>
             </div>
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-xs text-amber-800 leading-relaxed">
+              <strong>Entity Disclosure:</strong> PilotRecognition.com is currently operated by <strong>Benjamin Bowler</strong> as an individual entrepreneur. The incorporation of <strong>Aviation Pathways Ltd</strong> in the Republic of Mauritius is pending with the Companies and Business Registration Division (CBRD). All legal obligations, liabilities, and data controller responsibilities described herein are presently vested in Benjamin Bowler and shall be novated to Aviation Pathways Ltd upon issuance of the Certificate of Incorporation.
+            </div>
             <div className="space-y-3 text-sm text-slate-600">
-              <p><strong className="text-slate-800">Legal Name:</strong> Aviation Pathways Ltd</p>
+              <p><strong className="text-slate-800">Current Operator:</strong> Benjamin Bowler (individual entrepreneur)</p>
+              <p><strong className="text-slate-800">Pending Entity:</strong> Aviation Pathways Ltd (CBRD filing in progress)</p>
               <p><strong className="text-slate-800">Trade Name:</strong> PilotRecognition.com</p>
-              <p><strong className="text-slate-800">Jurisdiction:</strong> Republic of Mauritius</p>
-              <p><strong className="text-slate-800">Company Type:</strong> Private limited company — sole director and shareholder</p>
-              <p><strong className="text-slate-800">Registration:</strong> Companies and Business Registration Division (CBRD), Mauritius</p>
-              <p><strong className="text-slate-800">Managing Director / DPO:</strong> Benjamin Bowler</p>
-              <p><strong className="text-slate-800">Company Secretary:</strong> Benjamin Bowler</p>
+              <p><strong className="text-slate-800">Jurisdiction:</strong> Republic of Mauritius (pending registration)</p>
+              <p><strong className="text-slate-800">Company Type:</strong> Private limited company</p>
+              <p><strong className="text-slate-800">Registration:</strong> Pending — Companies and Business Registration Division (CBRD), Mauritius</p>
+              <p><strong className="text-slate-800">Managing Director:</strong> Marie Maureen Synthia Maya</p>
+              <p><strong className="text-slate-800">Non-Executive Director / Sole Shareholder:</strong> Benjamin Bowler</p>
+              <p><strong className="text-slate-800">Company Secretary:</strong> Benjamin Bowler (upon incorporation)</p>
+              <p><strong className="text-slate-800">Data Protection Officer:</strong> Benjamin Bowler (interim — pending independent appointment)</p>
               <p className="text-xs text-slate-500 pt-2 border-t border-slate-100 mt-2">
-                Aviation Pathways Ltd is a single-shareholder, single-director company. Benjamin Bowler holds all shares and serves as the sole director, company secretary, and appointed Data Protection Officer. All legal authority to sign contracts, make infrastructure decisions, and represent the company rests with the Managing Director.
+                Upon incorporation, Aviation Pathways Ltd will be a private limited company. Marie Maureen Synthia Maya will serve as Managing Director with executive authority for operations in Mauritius. Benjamin Bowler will hold all shares as sole shareholder and serve as Non-Executive Director and Company Secretary. The Managing Director holds legal authority to sign contracts and represent the company in Mauritius. Benjamin Bowler serves as interim Data Protection Officer pending appointment of an independent DPO.
               </p>
             </div>
           </section>
@@ -135,7 +141,7 @@ export default function ImprintPage() {
         {/* Footer */}
         <div className="text-center mt-10">
           <p className="text-xs text-slate-400">
-            Last updated: 02 June 2026 · Aviation Pathways Ltd · All rights reserved.
+            Last updated: 02 June 2026 · Benjamin Bowler (pending Aviation Pathways Ltd) · All rights reserved.
           </p>
         </div>
       </div>

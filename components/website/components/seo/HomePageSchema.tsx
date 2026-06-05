@@ -13,7 +13,7 @@ export const HomePageSchema: React.FC<HomePageSchemaProps> = ({ url = 'https://p
     alternateName: 'Pilotrecognition.com',
     url: url,
     logo: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png',
-    description: 'Aviation Industry\'s First Pilot Recognition-Based Platform operated by WM Pilot Group. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, and direct airline pathways.',
+    description: 'Aviation Industry\'s First Pilot Recognition-Based Platform operated by Benjamin Bowler pending incorporation of Aviation Pathways Ltd. Transform your aviation career with industry-accredited pilot recognition profiles, EBT CBTA training, and direct airline pathways.',
     foundingDate: '2025',
     address: {
       '@type': 'PostalAddress',
@@ -58,7 +58,7 @@ export const HomePageSchema: React.FC<HomePageSchemaProps> = ({ url = 'https://p
     },
     publisher: {
       '@type': 'Organization',
-      name: 'WM Pilot Group',
+      name: 'Benjamin Bowler (pending Aviation Pathways Ltd)',
       url: url
     }
   };

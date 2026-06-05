@@ -69,7 +69,7 @@ Airlines gain **total sovereignty** over proprietary financial data. Money is on
 ┌─────────────────────────────────────────┐
 │  INTERESTED PILOTS (3 Verified)         │
 │                                         │
-│  1. Capt. Karl Vogt                     │
+│  1. Capt. Benjamin Bowler             │
 │     • 6,200 hours (PIC)                │
 │     • B737, A320 Rated                   │
 │     • Veremark: ✅ Verified              │
@@ -111,7 +111,7 @@ Airlines gain **total sovereignty** over proprietary financial data. Money is on
 ```
 ┌─────────────────────────────────────────┐
 │  STAGE 2: FINANCIAL PACKAGE             │
-│  (Authorized for Capt. Karl Vogt only)  │
+│  (Authorized for Capt. Benjamin Bowler only)  │
 │                                         │
 │  DAILY RATE: $1,200/day                 │
 │  PER DIEM: $150/day                     │

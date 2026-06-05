@@ -59,8 +59,8 @@ const TransitionProgramPage = lazy(() => import('@/components/website/components
 const ProgramBenefitsPage = lazy(() => import('@/components/website/components/programs/ProgramBenefitsPage').then(m => ({ default: m.ProgramBenefitsPage })));
 const NewsUpdatesPage = lazy(() => import('@/components/website/components/programs/NewsUpdatesPage').then(m => ({ default: m.NewsUpdatesPage })));
 const ProgramsPathwaysPage = lazy(() => import('@/components/website/components/programs/ProgramsPathwaysPage').then(m => ({ default: m.ProgramsPathwaysPage })));
-const ProgramsPage = lazy(() => import('@/components/website/components/programs/ProgramsPage').then(m => ({ default: m.ProgramsPage })));
-const PlatformFoundationalProgramPage = lazy(() => import('@/components/website/components/programs/PlatformFoundationalProgramPage').then(m => ({ default: m.PlatformFoundationalProgramPage })));
+// const ProgramsPage = lazy(() => import('@/components/website/components/programs/ProgramsPage').then(m => ({ default: m.ProgramsPage })));
+// const PlatformFoundationalProgramPage = lazy(() => import('@/components/website/components/programs/PlatformFoundationalProgramPage').then(m => ({ default: m.PlatformFoundationalProgramPage })));
 const RecognitionPlusPage = lazy(() => import('@/app/recognition-plus/page'));
 const RecognitionPlusComparisonPage = lazy(() => import('@/app/recognition-plus-comparison/page'));
 const LearnAboutPage = lazy(() => import('@/app/learn-about/page'));
@@ -119,7 +119,7 @@ const OfficialExaminationBoardPage = lazy(() => import('@/components/website/com
 const DigitalLogbookDirectoryPage = lazy(() => import('@/components/website/components/DigitalLogbookDirectoryPage').then(m => ({ default: m.DigitalLogbookDirectoryPage })));
 const DigitalLogbookPage = lazy(() => import('@/components/website/components/pilot-recognition/DigitalLogbookPage').then(m => ({ default: m.DigitalLogbookPage })));
 const EBTCBTAPage = lazy(() => import('@/components/website/components/EBTCBTAPage').then(m => ({ default: m.EBTCBTAPage })));
-const AirlineExpectationsPage = lazy(() => import('@/components/website/components/AirlineExpectationsPage').then(m => ({ default: m.AirlineExpectationsPage })));
+// const AirlineExpectationsPage = lazy(() => import('@/components/website/components/AirlineExpectationsPage').then(m => ({ default: m.AirlineExpectationsPage })));
 const PortalAirlineExpectationsPage = lazy(() => import('@/portal/pages/PortalAirlineExpectationsPage').then(m => ({ default: m.PortalAirlineExpectationsPage })));
 const TypeRatingSearchPage = lazy(() => import('@/pages/TypeRatingSearchPage'));
 const JobListingsPage = lazy(() => import('@/pages/JobListingsPage'));
@@ -130,8 +130,8 @@ const SubscriptionPage = lazy(() => import('@/components/website/components/Subs
 const OnboardingPilotPortal = lazy(() => import('@/components/website/components/OnboardingPilotPortal').then(m => ({ default: m.OnboardingPilotPortal })));
 const OnboardingPrograms = lazy(() => import('@/components/website/components/OnboardingPrograms').then(m => ({ default: m.OnboardingPrograms })));
 const OnboardingRecognition = lazy(() => import('@/components/website/components/OnboardingRecognition').then(m => ({ default: m.OnboardingRecognition })));
-const DirectEnrollmentLoadingScreen = lazy(() => import('@/components/website/components/home/DirectEnrollmentLoadingScreen').then(m => ({ default: m.DirectEnrollmentLoadingScreen })));
-const DirectPlatformLoadingScreen = lazy(() => import('@/components/website/components/home/DirectPlatformLoadingScreen').then(m => ({ default: m.DirectPlatformLoadingScreen })));
+// const DirectEnrollmentLoadingScreen = lazy(() => import('@/components/website/components/home/DirectEnrollmentLoadingScreen').then(m => ({ default: m.DirectEnrollmentLoadingScreen })));
+// const DirectPlatformLoadingScreen = lazy(() => import('@/components/website/components/home/DirectPlatformLoadingScreen').then(m => ({ default: m.DirectPlatformLoadingScreen })));
 const PortalWrapper = lazy(() => import('@/components/website/components/portal/PortalWrapper').then(m => ({ default: m.PortalWrapper })));
 const PathwaysPageModern = lazy(() => import('@/portal/pages/PathwaysPageModern').then(m => ({ default: m.PathwaysPageModern })));
 const SpecializedPathwaysIndex = lazy(() => import('@/portal/pages/SpecializedPathwaysIndex'));
@@ -235,7 +235,8 @@ export const AppRoutes = () => {
 
     if (isDomain || isLocalDev) {
       localStorage.setItem('careerpathways_mode', 'true');
-      setCareerPathwaysMode(true);
+      const t = setTimeout(() => setCareerPathwaysMode(true), 0);
+      return () => clearTimeout(t);
     }
   }, [location]);
 
@@ -365,8 +366,8 @@ export const AppRoutes = () => {
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         {/* Home route */}
-        <Route path="/" element={<HomePage onJoinUs={() => navigate('/become-member')} onLogin={() => setIsLoginModalOpen(true)} onNavigate={handleNavigate} onLoginModalOpen={() => setIsLoginModalOpen(true)} />} />
-        <Route path="/home" element={<HomePage onJoinUs={() => navigate('/become-member')} onLogin={() => setIsLoginModalOpen(true)} onNavigate={handleNavigate} onLoginModalOpen={() => setIsLoginModalOpen(true)} />} />
+        <Route path="/" element={<HomePage onJoinUs={() => navigate('/become-member')} onLogin={() => setIsLoginModalOpen(true)} onNavigate={handleNavigate} onLoginModalOpen={() => setIsLoginModalOpen(true)} onGoToProgramDetail={() => navigate('/programs')} />} />
+        <Route path="/home" element={<HomePage onJoinUs={() => navigate('/become-member')} onLogin={() => setIsLoginModalOpen(true)} onNavigate={handleNavigate} onLoginModalOpen={() => setIsLoginModalOpen(true)} onGoToProgramDetail={() => navigate('/programs')} />} />
 
         {/* Auth routes */}
         <Route path="/callback" element={<OAuthCallback />} />
@@ -380,13 +381,13 @@ export const AppRoutes = () => {
         } />
 
         {/* Main website routes */}
-      <Route path="/about" element={<AboutPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
-      <Route path="/founder-story" element={<FounderStoryPage onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
-      <Route path="/about-industry" element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
-      <Route path="/technical-index" element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/about" element={<AboutPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/founder-story" element={<FounderStoryPage onNavigate={handleNavigate} />} />
+      <Route path="/about-industry" element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/technical-index" element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/faq" element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
-      <Route path="/pilot-shortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
-      <Route path="/pilotshortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/pilot-shortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/pilotshortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       {/* New pilotshortage.org sub-pages */}
       <Route path="/pilotshortage/about" element={<ShortageAboutPage />} />
       <Route path="/pilotshortage/advocacy" element={<ShortageAdvocacyPage />} />
@@ -395,13 +396,13 @@ export const AppRoutes = () => {
       <Route path="/pilotshortage/join" element={<ShortageJoinPage />} />
       <Route path="/pilotshortage/pilotgap" element={<ShortagePilotGapPage />} />
       <Route path="/pilotshortage/coalition" element={<ShortageCoalitionPage />} />
-      <Route path="/why-recognition" element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/why-recognition" element={<WhyRecognitionPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/mission-vision" element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/contact-support" element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
-      <Route path="/become-member" element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
-      <Route path="/terms-of-service" element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
-      <Route path="/issuer-policy" element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/become-member" element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/terms-of-service" element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/issuer-policy" element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/account-confirmation" element={<AccountConfirmationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/passkey-recovery" element={<PasskeyRecoveryPage onNavigate={handleNavigate} />} />
 
@@ -414,7 +415,7 @@ export const AppRoutes = () => {
       <Route path="/emirates-atpl" element={<EmiratesAtplPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/emerging-air-taxi" element={<EmergingAirTaxiPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/piloted-drones" element={<PilotedDronesPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
-      <Route path="/air-taxi-pathways" element={<AirTaxiPathwaysPage onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/air-taxi-pathways" element={<AirTaxiPathwaysPage onBack={() => handleBack('/pathways-modern')} onNavigate={handleNavigate} />} />
       <Route path="/cadet-pathways" element={<CadetProgramsPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/private-charter-pathways" element={<PrivateCharterPathwaysPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/cargo-transportation" element={<CargoTransportationPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
@@ -443,7 +444,7 @@ export const AppRoutes = () => {
       <Route path="/air-taxi-platform" element={<PlatformAirTaxiPage onNavigate={handleNavigate} />} />
       <Route path="/private-charter-platform" element={<PlatformPrivateCharterPage onNavigate={handleNavigate} />} />
       <Route path="/piloted-drones-platform" element={<PlatformPilotedDronesPage onNavigate={handleNavigate} />} />
-      <Route path="/foundational-verification" element={<FoundationalVerificationPage onBack={() => handleBack('/foundational-platform')} onNavigate={handleNavigate} onLogin={() => setIsLoginModalOpen(true)} />} />
+      <Route path="/foundational-verification" element={<FoundationalVerificationPage onBack={() => handleBack('/foundational-platform')} onNavigate={handleNavigate} />} />
 
       {/* Pilot recognition routes */}
       <Route

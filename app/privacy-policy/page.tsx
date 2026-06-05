@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 interface PrivacyPolicyPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: PrivacyPolicyPageProps) {
@@ -31,7 +31,13 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
 
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-10">
                     <p className="text-sm text-slate-700 leading-relaxed">
-                        This Privacy Policy explains how <strong>PilotRecognition.com</strong>, operated by <strong>Aviation Pathways Ltd</strong> ("we", "us", "our"), collects, uses, stores, and protects your personal information. It applies to all users of our platform, including pilots, aviation professionals, flight school administrators, and airline operators. By using PilotRecognition.com you agree to this Policy in full.
+                        This Privacy Policy explains how <strong>PilotRecognition.com</strong> collects, uses, stores, and protects your personal information. It applies to all users of our platform, including pilots, aviation professionals, flight school administrators, and airline operators. By using PilotRecognition.com you agree to this Policy in full.
+                    </p>
+                </div>
+
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-10">
+                    <p className="text-xs text-amber-800 leading-relaxed">
+                        <strong>Entity Disclosure:</strong> PilotRecognition.com is operated by <strong>Benjamin Bowler</strong> as Non-Executive Director and Sole Shareholder, pending incorporation of <strong>Aviation Pathways Ltd</strong> in the Republic of Mauritius. <strong>Marie Maureen Synthia Maya</strong> serves as Managing Director. The platform has not yet commenced user data processing. Aviation Pathways Ltd has applied for registration as a Data Controller with the Data Protection Office, Republic of Mauritius under the Data Protection Act 2017. Benjamin Bowler serves as the registered contact person for data protection matters. An independent Data Protection Officer under GDPR Article 37 will be appointed prior to processing personal data of data subjects within the European Economic Area at scale.
                     </p>
                 </div>
 
@@ -41,27 +47,27 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                     <section>
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">1. Who We Are — Data Controller vs. Data Owner</h2>
                         <p className="mb-3">
-                            PilotRecognition.com is operated by <strong>Aviation Pathways Ltd</strong>, a company registered in the Republic of Mauritius, as Data Controller under the Philippines Data Privacy Act of 2012 (RA 10173), the EU General Data Protection Regulation (GDPR), and the UAE Federal Decree-Law No. 45 of 2021 on Personal Data Protection.
+                            <strong>Aviation Pathways Ltd</strong> (pending incorporation, Republic of Mauritius) operates PilotRecognition.com. <strong>Benjamin Bowler</strong> serves as Non-Executive Director, Sole Shareholder, and registered contact person for data protection matters. <strong>Marie Maureen Synthia Maya</strong> serves as Managing Director. The Company has applied for registration as a Data Controller with the Data Protection Office, Republic of Mauritius under the Data Protection Act 2017. The platform has not yet commenced user data processing.
                         </p>
                         <div className="bg-indigo-50 border border-indigo-200 rounded-xl px-5 py-4 mb-4 text-sm">
                             <p className="font-semibold text-indigo-900 mb-2">Two distinct roles — both matter:</p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div className="bg-white rounded-lg px-4 py-3 border border-indigo-100">
-                                    <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide mb-1">We are the Data Controller</p>
-                                    <p className="text-slate-600 text-xs">We decide what infrastructure to use, which processors to engage, and how the platform operates. This is a legal role defined by GDPR — it cannot be delegated away by architecture alone.</p>
+                                    <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide mb-1">We are the Gateway Controller</p>
+                                    <p className="text-slate-600 text-xs">We provide the technical infrastructure that routes your data to appropriate third-party processors. We store only platform preferences, verification ticket stubs (binary status, check ID, timestamp), and subscription metadata. We do NOT store your email, phone number, password, raw identity documents, medical certificates, or flight logs — these are held by Auth0, Veremark, Stripe, and your Logbook Provider respectively.</p>
                                 </div>
                                 <div className="bg-white rounded-lg px-4 py-3 border border-indigo-100">
                                     <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide mb-1">You are the Data Owner</p>
-                                    <p className="text-slate-600 text-xs">You decide what to share, with whom, and when. Your Verifiable Credentials live in your own wallet and are retained server-side as signed records for revocation and pathway gating. Your sensitive fields are encrypted at rest using AES-256-GCM with keys derived from your Google identity and a server-side secret. You can delete your account and personal data at any time, except where legal obligations require retention (e.g., consent records, payment history).</p>
+                                    <p className="text-slate-600 text-xs">You decide what to share, with whom, and when. Your Verifiable Credentials live in your own wallet. Your sensitive identity documents are sent directly to your chosen verifier (Veremark) — we never see them. You can delete your account and personal data at any time, except where legal obligations require retention (e.g., consent records, payment history).</p>
                                 </div>
                             </div>
-                            <p className="text-xs text-indigo-700 mt-3">These roles are not in conflict. We control the infrastructure. You own the data. Both are true simultaneously.</p>
+                            <p className="text-xs text-indigo-700 mt-3">We control the gateway. You own the data. Third-party specialists handle the sensitive content. All three are true simultaneously.</p>
                         </div>
                         <p className="mb-3 text-sm">
                             <strong>Contact for data matters:</strong> <a href="mailto:privacy@pilotrecognition.com" className="text-blue-600 hover:underline">privacy@pilotrecognition.com</a>
                         </p>
                         <p className="text-sm text-slate-500">
-                            Aviation Pathways Ltd shall apply for registration with the Data Protection Office of the Republic of Mauritius as a Data Controller within 14 days of commencing data processing activities. Registration status available upon request to privacy@pilotrecognition.com.
+                            An independent Data Protection Officer under GDPR Article 37 will be appointed prior to processing personal data of data subjects within the European Economic Area at scale.
                         </p>
                     </section>
 
@@ -70,24 +76,29 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                         <h2 className="text-xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">2. What Data We Collect and Why</h2>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-4">2a. Account &amp; Identity Data</h3>
+                        <p className="text-sm mb-3"><strong>Held by Auth0 (not PilotRecognition):</strong> Email address, password, phone number, 2FA secrets, session tokens. Auth0 encrypts this data at rest and in transit. PilotRecognition stores only your stable Auth0 user identifier (UUID) — we never see your password, email, or phone number.</p>
+                        <p className="text-sm mb-3"><strong>Held by PilotRecognition:</strong> Voluntary display name, optional bio/profile description, optional profile photo, country of residence (for pathway matching), and platform preferences (settings, bookmarks).</p>
                         <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
-                            <li>Full name, email address, date of birth, nationality, country of residence</li>
+                            <li>Display name (voluntary, user-provided)</li>
                             <li>Profile photo (optional)</li>
-                            <li>Contact phone number</li>
+                            <li>Country of residence (for regional pathway matching)</li>
+                            <li>Auth0 user ID reference (UUID only)</li>
                         </ul>
                         <p className="text-sm mb-4"><strong>Legal basis:</strong> Contract performance (account creation); Legitimate interest (platform security).</p>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-4">2b. Aviation Credential Data</h3>
+                        <p className="text-sm mb-3"><strong>Held by Veremark (not PilotRecognition):</strong> Raw passport scans, pilot licence scans, medical certificate scans, radio licence scans, employment verification documents. These are uploaded directly to Veremark's encrypted infrastructure. Veremark sends the full detailed verification receipt directly to your email. PilotRecognition never sees, stores, or processes these raw documents.</p>
+                        <p className="text-sm mb-3"><strong>Held by Logbook Provider (not PilotRecognition):</strong> Total flight hours, aircraft ratings, type ratings, flight logs, ADS-B telemetry. PilotRecognition routes to your chosen Logbook Provider but does not store raw flight data.</p>
+                        <p className="text-sm mb-3"><strong>Held by PilotRecognition:</strong> Minimal structured verification outcomes (status: verified/pending/expired, check ID, timestamp) received from Veremark via webhook. These are used solely to issue your Verifiable Credential access ticket and enable pathway matching.</p>
                         <ul className="list-disc pl-6 space-y-1 mb-4 text-sm">
-                            <li>Pilot licence number, issuing authority, licence type, expiry date</li>
-                            <li>Medical certificate class and expiry</li>
-                            <li>Radio licence details</li>
-                            <li>Total flight hours, aircraft ratings, type ratings</li>
-                            <li>Employment history and professional experience</li>
+                            <li>Verification status (verified / pending / expired)</li>
+                            <li>Check ID reference (from Veremark)</li>
+                            <li>Timestamp of verification completion</li>
+                            <li>Cryptographically signed Verifiable Credential (for wallet issuance)</li>
                         </ul>
-                        <p className="text-sm mb-4"><strong>Legal basis:</strong> Explicit consent (you provide this voluntarily to build your verified profile).</p>
+                        <p className="text-sm mb-4"><strong>Legal basis:</strong> Explicit consent (you initiate verification voluntarily; the platform only stores the binary outcome).</p>
                         <p className="text-sm mb-4 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3">
-                            <strong>Encryption Notice:</strong> Sensitive credential fields (licence number, medical class, date of birth, contact number, expiry dates) are encrypted at rest using AES-256-GCM before storage. The encryption key is derived from your Google account identity and a server-side secret. Platform administrators cannot read these fields without your authenticated session. However, the platform retains the technical capability to access structured profile data for operational purposes (pathway matching, verification routing, and account support).
+                            <strong>Data Minimization Notice:</strong> PilotRecognition practices data minimization by design. We do not store your licence number, medical class, date of birth, or contact number. These remain with Auth0 (identity), Veremark (verification), or your Logbook Provider (flight data). The platform stores only: (a) platform preferences, (b) verification ticket stubs, (c) subscription metadata, and (d) your Auth0 UUID reference.
                         </p>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-4">2c. Verifiable Credential Data</h3>
@@ -395,7 +406,7 @@ export default function PrivacyPolicyPage({ onBack, onNavigate, onLogin }: Priva
                         <p className="text-sm mb-3">Payment processing is handled by Stripe. The Platform does not store card numbers or bank details. We retain only transaction IDs, amounts, and subscription status for accounting and customer support purposes.</p>
 
                         <h3 className="font-semibold text-slate-800 mb-2 mt-5">15d. Mauritius Data Protection Act 2017 Compliance</h3>
-                        <p className="text-sm mb-3">As a company incorporated in the Republic of Mauritius, Aviation Pathways Ltd is subject to the <strong>Data Protection Act 2017</strong> and shall apply for registration as a Data Controller with the Data Protection Office of Mauritius within 14 days of commencing data processing activities.</p>
+                        <p className="text-sm mb-3">Benjamin Bowler, pending incorporation of Aviation Pathways Ltd in the Republic of Mauritius, is subject to the <strong>Data Protection Act 2017</strong> and shall apply for registration as a Data Controller with the Data Protection Office of Mauritius within 14 days of CBRD issuance of the Certificate of Incorporation.</p>
                         <p className="text-sm mb-3">User confirmation via interface checkboxes constitutes valid <strong>electronic consent</strong> under the Mauritius Electronic Transactions Act 2000, legally equivalent to a physical signature for contractual purposes.</p>
 
                         <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-600 mb-4">

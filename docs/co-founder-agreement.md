@@ -1,5 +1,5 @@
 # Co-Founder Agreement
-## PilotRecognition.com — WM Pilot Group
+## PilotRecognition.com — Aviation Pathways Ltd
 **Date:** May 2026  
 **Version:** 1.0 — Draft for Review
 
@@ -14,9 +14,9 @@ Founder, Product & Technology
 Domicile: Dubai, UAE  
 Citizenship: Mauritius / British  
 
-**Party B — Karl Brian Vogt**  
-Co-Founder, Outreach & Business Development  
-Domicile: Germany  
+**Party B — Benjamin Bowler**  
+Founder, Product & Technology  
+Domicile: Dubai, UAE  
 
 Collectively referred to as "the Co-Founders."
 
@@ -24,7 +24,7 @@ Collectively referred to as "the Co-Founders."
 
 ## 1. The Venture
 
-The Co-Founders are jointly building and operating **PilotRecognition.com**, a pilot recognition and credential verification platform, operated under the trading name **AJBowler Consult**, registered as a sole trader in the Dubai Freezone.
+The Co-Founders are jointly building and operating **PilotRecognition.com**, a pilot recognition and credential verification platform, operated under the legal entity **Aviation Pathways Ltd**, registered in the Republic of Mauritius.
 
 The platform includes but is not limited to:
 - Pilot credential wallet and verification infrastructure
@@ -41,7 +41,7 @@ Upon formalisation of the business entity, equity shall be distributed as follow
 | Party | Equity Share |
 |-------|-------------|
 | Benjamin Tiger Bowler | 65% |
-| Karl Brian Vogt | 25% |
+| Benjamin Bowler | 25% |
 | Reserved (advisors, future hires) | 10% |
 
 **Rationale:**
@@ -62,7 +62,7 @@ Equity is subject to a **vesting schedule** as defined in Section 5.
 - Responsible for Supabase, Neon, MongoDB infrastructure
 - Manages third-party integrations (Veremark, Helio, Auth0)
 
-### Karl Brian Vogt
+### Benjamin Bowler
 - Full ownership of outreach, partnership development, and B2B relationships
 - Primary contact for flight schools, ATOs, airlines, aviation operators
 - Attends aviation events and career fairs as company representative
@@ -106,7 +106,7 @@ Until the business generates sufficient revenue, both Co-Founders operate on a *
 
 ## 7. Intellectual Property
 
-All intellectual property created for PilotRecognition.com — including but not limited to code, design, content, databases, brand assets, and business processes — is owned by the venture (AJBowler Consult / the future entity), not by either Co-Founder individually.
+All intellectual property created for PilotRecognition.com — including but not limited to code, design, content, databases, brand assets, and business processes — is owned by the venture (Aviation Pathways Ltd), not by either Co-Founder individually.
 
 Upon departure of either party, IP remains with the venture. The departing party retains only their vested equity stake.
 
@@ -177,10 +177,10 @@ Location: Dubai, UAE
 
 ---
 
-**Karl Brian Vogt**  
+**Benjamin Bowler**  
 Signature: ___________________________  
 Date: ___________________________  
-Location: Germany  
+Location: Dubai, UAE  
 
 ---
 

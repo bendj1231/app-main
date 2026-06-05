@@ -24,7 +24,7 @@ export { ProgramBenefitsPage } from '@/components/website/components/programs/Pr
 export { NewsUpdatesPage } from '@/components/website/components/programs/NewsUpdatesPage';
 export { ProgramsPathwaysPage } from '@/components/website/components/programs/ProgramsPathwaysPage';
 export { ProgramsPage } from '@/components/website/components/programs/ProgramsPage';
-export { PathwaysPage } from '@/components/website/components/pathways/PathwaysPage';
+export { PathwaysPageModern as PathwaysPage } from '@/portal/pages/PathwaysPageModern';
 
 // Platform pages
 export { PlatformFoundationalProgramPage } from '@/components/website/components/programs/PlatformFoundationalProgramPage';
@@ -54,7 +54,7 @@ export { MembershipDirectoryPage } from '@/components/website/components/Members
 export { HinfactPage } from '@/components/website/components/HinfactDirectoryPage';
 export { W1000SuitePage } from '@/components/website/components/W1000SuiteDirectoryPage';
 export { MembershipBenefitsPage } from '@/components/website/components/MembershipBenefitsDirectoryPage';
-export { ExaminationResultsDirectoryPage } from '@/components/website/components/ExaminationResultsDirectoryPage';
+export { default as ExaminationResultsDirectoryPage } from '@/components/website/components/ExaminationResultsDirectoryPage';
 export { DigitalLogbookDirectoryPage } from '@/components/website/components/DigitalLogbookDirectoryPage';
 
 // Other pages

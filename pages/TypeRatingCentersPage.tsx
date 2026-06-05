@@ -25,8 +25,8 @@ const CENTERS: RatingCenter[] = [
     shortName: 'CAE',
     location: 'Clark, Philippines',
     flag: '🇵🇭',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/CAE_Inc._logo.svg/1200px-CAE_Inc._logo.svg.png',
-    heroImg: 'https://www.cae.com/content/images/blog/Civil_Aviation/_webp/IMG_4783_Updated_.JPG_webp_40cd750bba9870f18aada2478b24840a.webp',
+    logo: '',
+    heroImg: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     website: 'https://www.cae.com',
     description: "CAE Clark is the Philippines' premier CAAP-approved type rating training center, offering full-flight simulator training for the Airbus A320 family and ATR 72-600. Located within Clark International Airport, it serves pilots from across Asia-Pacific.",
     typesOffered: ['Airbus A320 Family', 'ATR 72-600', 'Boeing 737 NG'],
@@ -46,8 +46,8 @@ const CENTERS: RatingCenter[] = [
     shortName: 'Airbus Training',
     location: 'Toulouse, France',
     flag: '🇫🇷',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
-    heroImg: 'https://i.ytimg.com/vi/kreOPxL7b9w/sddefault.jpg',
+    logo: '',
+    heroImg: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     website: 'https://www.airbus.com/en/products-services/commercial-aircraft/the-airbus-difference/airbus-services/airbus-training',
     description: "The Airbus Training Centre in Toulouse is the OEM-authorised centre of excellence for all Airbus type ratings. With the world's largest fleet of Airbus simulators, it offers the most comprehensive and authoritative type rating programs directly from the manufacturer.",
     typesOffered: ['Airbus A220', 'Airbus A320 Family', 'Airbus A330', 'Airbus A350', 'Airbus A380'],
@@ -67,8 +67,8 @@ const CENTERS: RatingCenter[] = [
     shortName: 'FlightSafety',
     location: 'Atlanta, USA',
     flag: '🇺🇸',
-    logo: 'https://i.ytimg.com/vi/0CAFr1Rojhw/maxresdefault.jpg',
-    heroImg: 'https://i.ytimg.com/vi/0CAFr1Rojhw/maxresdefault.jpg',
+    logo: '',
+    heroImg: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     website: 'https://www.flightsafety.com',
     description: "FlightSafety International is one of the world's largest aviation training organisations with 30+ locations globally. Their Atlanta Learning Center specialises in Airbus type ratings for the US market with FAA Part 142 approval.",
     typesOffered: ['Airbus A320 Type Rating', 'Boeing 737', 'Boeing 747', 'Cessna Citation', 'Bombardier Challenger'],
@@ -88,8 +88,8 @@ const CENTERS: RatingCenter[] = [
     shortName: 'Boeing',
     location: 'Miami, USA',
     flag: '🇺🇸',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Boeing_full_logo.svg/1200px-Boeing_full_logo.svg.png',
-    heroImg: 'https://services.boeing.com/bgsmedias/sys_master/migrated_images2/Migrated_images2/h8b/hed/8943855108126/8943855108126.jpg',
+    logo: '',
+    heroImg: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     website: 'https://www.boeing.com/commercial/services/flight-services',
     description: "Boeing Flight Services operates the world's largest OEM-direct type rating network for Boeing aircraft. The Miami location is the primary hub for B737 NG and MAX training, serving Latin American and North American operators.",
     typesOffered: ['Boeing 737 NG', 'Boeing 737 MAX', 'Boeing 777', 'Boeing 787 Dreamliner'],
@@ -109,8 +109,8 @@ const CENTERS: RatingCenter[] = [
     shortName: 'ATR Training',
     location: 'Toulouse, France',
     flag: '🇫🇷',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/ATR_Aircraft_logo.svg/1200px-ATR_Aircraft_logo.svg.png',
-    heroImg: 'https://www.atr-aircraft.com/wp-content/uploads/2020/06/ATR-71691MD-1024x682.jpg',
+    logo: '',
+    heroImg: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     website: 'https://www.atr-aircraft.com/services/training',
     description: "The ATR Training Centre is the OEM-authorised training organisation for all ATR turboprop type ratings. Located at Toulouse-Blagnac Airport, it provides the most authoritative ATR 42 and ATR 72 initial type rating and recurrency training worldwide.",
     typesOffered: ['ATR 42-500', 'ATR 42-600', 'ATR 72-500', 'ATR 72-600'],
@@ -130,8 +130,8 @@ const CENTERS: RatingCenter[] = [
     shortName: 'GTA',
     location: 'Manila, Philippines',
     flag: '🇵🇭',
-    logo: 'https://globaltrainingaviation.com/wp-content/uploads/2024/09/DSC_7096-15.png',
-    heroImg: 'https://globaltrainingaviation.com/wp-content/uploads/2024/09/DSC_7096-15.png',
+    logo: '',
+    heroImg: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     website: 'https://globaltrainingaviation.com',
     description: 'Global Training Aviation (GTA) Philippines is a Manila-based EASA-certified training organisation providing Airbus A320 type ratings for both local and international airline candidates. With EASA-certified instructors and a curriculum aligned to international standards, GTA bridges Filipino pilot talent with global airline requirements.',
     typesOffered: ['Airbus A320 Type Rating', 'MCC / JOC', 'Multi-crew Cooperation'],
@@ -151,8 +151,8 @@ const CENTERS: RatingCenter[] = [
     shortName: 'Ryanair TRTO',
     location: 'Dublin, Ireland',
     flag: '🇮🇪',
-    logo: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png',
-    heroImg: 'https://cdn.aviationa2z.com/wp-content/uploads/2024/01/image-25-1024x683.png',
+    logo: '',
+    heroImg: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80',
     website: 'https://careers.ryanair.com',
     description: "Ryanair operates its own EASA-approved TRTO in partnership with Atlantic Flight Training Academy (AFTA), offering B737 NG and MAX type ratings tailored for direct-entry and cadet pilots joining Ryanair's fleet with direct line training on actual routes.",
     typesOffered: ['Boeing 737 NG', 'Boeing 737 MAX'],
@@ -234,12 +234,7 @@ export default function TypeRatingCentersPage({ onBack, onNavigate }: Props) {
               </div>
               <div className="p-4">
                 <div className="flex items-center gap-2 mb-3 h-7">
-                  <img
-                    src={center.logo}
-                    alt={center.name}
-                    className="h-6 object-contain"
-                    onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
+                  <span className="text-sm font-bold text-slate-700">{center.shortName}</span>
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {center.typesOffered.slice(0, 3).map(t => (
@@ -272,12 +267,7 @@ export default function TypeRatingCentersPage({ onBack, onNavigate }: Props) {
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6 md:p-8">
                 <div className="flex items-center gap-3 mb-2">
-                  <img
-                    src={selected.logo}
-                    alt={selected.name}
-                    className="h-8 object-contain bg-white/20 backdrop-blur px-2 py-0.5 rounded"
-                    onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
+                  <span className="text-white font-bold text-lg">{selected.shortName}</span>
                   <span className="text-2xl">{selected.flag}</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-serif text-white mb-1">{selected.name}</h2>

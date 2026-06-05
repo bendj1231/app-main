@@ -5,7 +5,7 @@ import { TopNavbar } from './TopNavbar';
 interface ContactSupportPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const ContactSupportPage: React.FC<ContactSupportPageProps> = ({ onBack, onNavigate, onLogin }) => {

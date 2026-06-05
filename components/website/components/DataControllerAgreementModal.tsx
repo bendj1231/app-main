@@ -73,12 +73,16 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     className="flex-1 overflow-y-auto px-6 py-5 text-slate-600 text-sm leading-relaxed space-y-5"
                     style={{ minHeight: 0 }}
                 >
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-xs text-amber-800 leading-relaxed mb-3">
+                        <strong>Entity Disclosure:</strong> This agreement is currently entered into with Benjamin Bowler as an individual entrepreneur pending the incorporation of Aviation Pathways Ltd in the Republic of Mauritius. All obligations of the Infrastructure Controller shall be novated to Aviation Pathways Ltd upon CBRD issuance of the Certificate of Incorporation. Until such novation occurs, Benjamin Bowler is the legal Infrastructure Controller and Data Controller.
+                    </div>
+
                     <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-500 leading-relaxed">
-                        <strong className="text-slate-700">Data Controller Agreement — Aviation Pathways Ltd</strong><br />
+                        <strong className="text-slate-700">Data Controller Agreement — Benjamin Bowler (pending Aviation Pathways Ltd)</strong><br />
                         Document Reference: PR-DCA-001 · Version 1.7 · Effective: 02 June 2026<br />
                         This instrument constitutes a binding infrastructure and data governance agreement between the Data Subject
-                        (the Registrant, hereinafter the <em>Credential Custodian</em>) and Aviation Pathways Ltd (hereinafter the{' '}
-                        <em>Infrastructure Controller</em> or <em>the Platform</em>), effective immediately upon account creation in Terminal 1.
+                        (the Registrant, hereinafter the <em>Credential Custodian</em>) and Benjamin Bowler (hereinafter the{' '}
+                        <em>Infrastructure Controller</em> or <em>the Platform</em>), pending novation to Aviation Pathways Ltd upon incorporation, effective immediately upon account creation in Terminal 1.
                     </div>
 
                     {/* 1 */}
@@ -91,8 +95,8 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         </p>
                         <div className="space-y-2">
                             <div className="bg-white border border-slate-200 rounded-lg px-3 py-2">
-                                <p className="text-slate-800 font-bold text-xs mb-1">1. Infrastructure Controller (The Platform) — Aviation Pathways Ltd</p>
-                                <p className="text-slate-500 text-xs">Aviation Pathways Ltd acts as an <strong className="text-black">Independent Data Controller strictly for platform infrastructure, ecosystem routing, and gate governance</strong>. The Platform determines the purposes and means of processing only for: account creation, security session handling (Auth0), passkey synchronization, billing/payment orchestration, and the secure routing of encrypted API webhooks. The Platform operates as a zero-knowledge terminal — hosting only computationally infeasible ciphertext with zero technical or legal means to decrypt, read, or intercept raw credential payloads.</p>
+                                <p className="text-slate-800 font-bold text-xs mb-1">1. Infrastructure Controller (The Platform) — Benjamin Bowler (pending Aviation Pathways Ltd)</p>
+                                <p className="text-slate-500 text-xs">Benjamin Bowler, as individual entrepreneur pending incorporation of Aviation Pathways Ltd, acts as the <strong className="text-black">Independent Data Controller strictly for platform infrastructure, ecosystem routing, and gate governance</strong>. The Platform determines the purposes and means of processing only for: account creation, security session handling (Auth0), passkey synchronization, billing/payment orchestration, and the secure routing of encrypted API webhooks. The Platform operates as a zero-knowledge terminal — hosting only computationally infeasible ciphertext with zero technical or legal means to decrypt, read, or intercept raw credential payloads. All obligations hereunder shall novate to Aviation Pathways Ltd upon CBRD incorporation.</p>
                             </div>
                             <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2">
                                 <p className="text-red-700 font-bold text-xs mb-1">2. Credential Custodian — The Registrant</p>
@@ -230,8 +234,8 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     <section>
                         <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 9 — Mauritius Data Controller Registration</h3>
                         <p className="mb-2 text-xs leading-relaxed">
-                            <strong className="text-black">Aviation Pathways Ltd</strong> is registered as a Data Controller 
-                            with the Data Protection Office of Mauritius under the Data Protection Act 2017.
+                            <strong className="text-black">Benjamin Bowler</strong> (pending incorporation of Aviation Pathways Ltd) shall apply for registration as a Data Controller 
+                            with the Data Protection Office of Mauritius under the Data Protection Act 2017 upon CBRD issuance of the Certificate of Incorporation.
                         </p>
                         <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
                             <div className="bg-green-50 border border-green-200 rounded p-2">
@@ -259,7 +263,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                             {[
                                 ['Supabase Inc. / Google LLC (Firebase)', 'Distributed database infrastructure — hosting client-side AES-256-GCM ciphertext only.'],
                                 ['Auth0 by Okta Inc.', 'Identity federation and authentication routing — holds zero pilot profile payloads.'],
-                                ['walt.id GmbH', 'Verifiable Credential wallet framework — private key custody remains exclusively with the local device.'],
+                                ['walt.id GmbH', 'Digital identity framework — private key custody remains exclusively with the local device.'],
                             ].map(([proc, role]) => (
                                 <div key={proc} className="flex gap-2 items-start border-b border-slate-100 pb-1.5 last:border-0">
                                     <span className="text-red-600 font-semibold flex-shrink-0 w-44">{proc}</span>
@@ -316,7 +320,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     </section>
 
                     <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-xs text-slate-400">
-                        <span>PR-DCA-001 v1.7 — 02 June 2026 — Aviation Pathways Ltd</span>
+                        <span>PR-DCA-001 v1.7 — 02 June 2026 — Benjamin Bowler (pending Aviation Pathways Ltd)</span>
                         <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 underline transition-colors">
                             Full instrument ↗
                         </a>
@@ -339,7 +343,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                             className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-white accent-red-600 cursor-pointer"
                         />
                         <span className="text-slate-600 text-xs leading-relaxed group-hover:text-slate-900 transition-colors">
-                            I agree to the Data Controller Agreement (Ref: PR-DCA-001, v1.7). By creating an account, I acknowledge that I am the Pilot in Command (PIC) and primary Data Controller of my personal identity records, utilizing the platform's self-sovereign cryptographic architecture. I explicitly instruct Aviation Pathways Ltd, acting as my Infrastructure Controller and platform operator, to secure, host, and route my encrypted ciphertext according to the storage engine configuration (Single or Multi-Engine) and routing pathways I select.
+                            I agree to the Data Controller Agreement (Ref: PR-DCA-001, v1.7). By creating an account, I acknowledge that I am the Pilot in Command (PIC) and primary Data Controller of my personal identity records, utilizing the platform's self-sovereign cryptographic architecture. I explicitly instruct Benjamin Bowler (pending incorporation of Aviation Pathways Ltd), acting as my Infrastructure Controller and platform operator, to secure, host, and route my encrypted ciphertext according to the storage engine configuration (Single or Multi-Engine) and routing pathways I select.
                         </span>
                     </label>
 

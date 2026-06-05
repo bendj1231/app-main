@@ -42,14 +42,16 @@ export function Dialog({
     if (isOpen) {
       // Store previously focused element
       previousActiveElement.current = document.activeElement as HTMLElement;
-      setIsAnimating(true);
+      const t = setTimeout(() => setIsAnimating(true), 0);
       
       // Focus the dialog
-      setTimeout(() => {
+      const focusTimer = setTimeout(() => {
         dialogRef.current?.focus();
       }, 100);
+      return () => { clearTimeout(t); clearTimeout(focusTimer); };
     } else {
-      setIsAnimating(false);
+      const t = setTimeout(() => setIsAnimating(false), 0);
+      return () => clearTimeout(t);
     }
   }, [isOpen]);
 

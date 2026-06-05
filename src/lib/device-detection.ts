@@ -99,6 +99,7 @@ function getIPadModelLabel(ua: string): string {
  * Detects if device is any iOS device (for general iOS optimizations)
  */
 export function isIOS(): boolean {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
 }
 
@@ -130,6 +131,7 @@ export function getDevicePerformanceTier(): PerformanceTier {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
   const hardwareConcurrency = navigator.hardwareConcurrency || 2;
   // Safari caps deviceMemory at 8; undefined means unknown, assume 4GB
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const deviceMemory = (navigator as any).deviceMemory ?? 4;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -154,6 +156,7 @@ export function getDevicePerformanceTier(): PerformanceTier {
       if (gl) {
         const ext = gl.getExtension('WEBGL_debug_renderer_info') as WEBGL_debug_renderer_info | null;
         const renderer = ext ? (gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) as string).toLowerCase() : '';
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         const loseCtx = (gl as any).getExtension('WEBGL_lose_context');
         if (loseCtx) loseCtx.loseContext();
         c.remove();
@@ -207,6 +210,7 @@ export function hasGPU(): boolean {
   
   // Clean up the context and canvas to avoid WebGL context limit
   if (gl) {
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const loseContext = (gl as any).getExtension('WEBGL_lose_context');
     if (loseContext) {
       loseContext.loseContext();
@@ -328,6 +332,7 @@ function getGPURendererString(): string | null {
     if (!gl) return null;
     const ext = gl.getExtension('WEBGL_debug_renderer_info') as WEBGL_debug_renderer_info | null;
     const renderer = ext ? (gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) as string) : null;
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const loseCtx = (gl as any).getExtension('WEBGL_lose_context');
     if (loseCtx) loseCtx.loseContext();
     canvas.remove();
@@ -360,6 +365,7 @@ export function getHomepageGraphicsConfig(): HomepageGraphicsConfig {
   }
 
   const cores = navigator.hardwareConcurrency || 2;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const memory = (navigator as any).deviceMemory ?? 4; // Safari reports undefined; default 4GB
   const ua = navigator.userAgent.toLowerCase();
   const isMobile = /android|iphone|ipod/.test(ua);

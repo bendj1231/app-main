@@ -172,8 +172,8 @@ export function useEFBUpload() {
         });
 
       setStatus('success');
-    } catch (e: any) {
-      setUploadError(e?.message ?? 'Upload failed.');
+    } catch (e: unknown) {
+      setUploadError(e instanceof Error ? e.message : 'Upload failed.');
       setStatus('error');
     }
   }, [currentUser?.id]);

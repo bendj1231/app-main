@@ -4,14 +4,14 @@ const DB_VERSION = 1;
 const STORE_NAME = 'authSession';
 
 interface AuthSessionData {
-  session: any;
+  session: unknown;
   timestamp: number;
 }
 
 export const indexedDB = {
   async openDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = (window as any).indexedDB.open(DB_NAME, DB_VERSION);
+      const request = (window as unknown as { indexedDB: IDBFactory }).indexedDB.open(DB_NAME, DB_VERSION);
 
       request.onerror = () => reject(request.error);
       request.onsuccess = () => resolve(request.result);
@@ -25,7 +25,7 @@ export const indexedDB = {
     });
   },
 
-  async saveSession(session: any): Promise<void> {
+  async saveSession(session: unknown): Promise<void> {
     try {
       const db = await this.openDB();
       return new Promise((resolve, reject) => {
@@ -49,7 +49,7 @@ export const indexedDB = {
     }
   },
 
-  async getSession(): Promise<any | null> {
+  async getSession(): Promise<unknown | null> {
     try {
       const db = await this.openDB();
       return new Promise((resolve, reject) => {
@@ -75,7 +75,8 @@ export const indexedDB = {
     }
   },
 
-  async getSessionWithVerification(supabaseClient: any): Promise<any | null> {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  async getSessionWithVerification(supabaseClient: any): Promise<unknown | null> {
     try {
       const session = await this.getSession();
       if (!session) return null;

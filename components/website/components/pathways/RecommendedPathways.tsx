@@ -4,7 +4,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 
 interface RecommendedPathwaysProps {
     isAuthenticated: boolean;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const RecommendedPathways: React.FC<RecommendedPathwaysProps> = ({

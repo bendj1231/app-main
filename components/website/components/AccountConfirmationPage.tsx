@@ -5,7 +5,7 @@ import { TopNavbar } from './TopNavbar';
 interface AccountConfirmationPageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const AccountConfirmationPage: React.FC<AccountConfirmationPageProps> = ({ onBack, onNavigate, onLogin }) => {

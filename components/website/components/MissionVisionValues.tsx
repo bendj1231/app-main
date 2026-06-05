@@ -5,7 +5,7 @@ import { TopNavbar } from './TopNavbar';
 interface MissionVisionValuesProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const MissionVisionValues: React.FC<MissionVisionValuesProps> = ({ onBack, onNavigate, onLogin }) => {

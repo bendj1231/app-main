@@ -119,7 +119,8 @@ export function ATOVerificationRequestSection() {
       // Notify ATO admin (fire-and-forget)
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://gkbhgrozrzhalnjherfu.supabase.co';
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+        const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string;
         await fetch(`${supabaseUrl}/functions/v1/ato-notification`, {
           method: 'POST',
           headers: {

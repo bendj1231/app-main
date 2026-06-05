@@ -142,7 +142,7 @@ export interface AccordionItemProps {
   className?: string;
 }
 
-export function AccordionItemComponent2({ value, trigger, children, disabled = false, className = '' }: AccordionItemProps) {
+export function AccordionItemComponent2({ value: _value, trigger, children, disabled = false, className = '' }: AccordionItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

@@ -27,7 +27,9 @@ export const PROFILE_CLOUDINARY = {
 // MUST be different account from profiles (drcfmairy is for profiles only)
 // Set these in your .env file
 export const CONTENT_CLOUDINARY = {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CONTENT_CLOUDINARY_CLOUD_NAME 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     ? (import.meta as any).env.VITE_CONTENT_CLOUDINARY_CLOUD_NAME 
     : '', // Must be configured separately - drcfmairy is for profiles only
   uploadPreset: 'content_images',

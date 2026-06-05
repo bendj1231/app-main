@@ -2,7 +2,8 @@
 // This provides full control over Supabase resources including user management
 
 const SUPABASE_MANAGEMENT_API_URL = 'https://api.supabase.com/v1';
-const PROJECT_REF = 'gkbhgrozrzhalnjherfu';
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const PROJECT_REF = (import.meta as any).env?.VITE_SUPABASE_PROJECT_REF as string;
 
 interface ManagementAPIConfig {
   accessToken: string;
@@ -13,6 +14,9 @@ export class SupabaseManagementAPI {
 
   constructor(config: ManagementAPIConfig) {
     this.accessToken = config.accessToken;
+    if (!PROJECT_REF) {
+      throw new Error('VITE_SUPABASE_PROJECT_REF environment variable is required');
+    }
   }
 
   private async request<T>(
@@ -45,20 +49,20 @@ export class SupabaseManagementAPI {
   }
 
   // Get all users in the project
-  async getUsers(): Promise<any[]> {
-    const data = await this.request<{ users: any[] }>(
+  async getUsers(): Promise<unknown[]> {
+    const data = await this.request<{ users: unknown[] }>(
       `/projects/${PROJECT_REF}/auth/users`
     );
     return data.users;
   }
 
   // Get a specific user by ID
-  async getUser(userId: string): Promise<any> {
+  async getUser(userId: string): Promise<unknown> {
     return this.request(`/projects/${PROJECT_REF}/auth/users/${userId}`);
   }
 
   // Update user metadata
-  async updateUser(userId: string, metadata: Record<string, any>): Promise<any> {
+  async updateUser(userId: string, metadata: Record<string, unknown>): Promise<unknown> {
     return this.request(`/projects/${PROJECT_REF}/auth/users/${userId}`, {
       method: 'PUT',
       body: JSON.stringify({ user_metadata: metadata }),
@@ -66,8 +70,8 @@ export class SupabaseManagementAPI {
   }
 
   // List all Edge Functions
-  async listEdgeFunctions(): Promise<any[]> {
-    const data = await this.request<{ functions: any[] }>(
+  async listEdgeFunctions(): Promise<unknown[]> {
+    const data = await this.request<{ functions: unknown[] }>(
       `/projects/${PROJECT_REF}/functions`
     );
     return data.functions;
@@ -81,15 +85,15 @@ export class SupabaseManagementAPI {
   }
 
   // List all database migrations
-  async listMigrations(): Promise<any[]> {
-    const data = await this.request<{ migrations: any[] }>(
+  async listMigrations(): Promise<unknown[]> {
+    const data = await this.request<{ migrations: unknown[] }>(
       `/projects/${PROJECT_REF}/database/migrations`
     );
     return data.migrations;
   }
 
   // Apply a database migration
-  async applyMigration(sql: string): Promise<any> {
+  async applyMigration(sql: string): Promise<unknown> {
     return this.request(`/projects/${PROJECT_REF}/database/query`, {
       method: 'POST',
       body: JSON.stringify({ query: sql }),

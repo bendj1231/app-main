@@ -98,7 +98,7 @@ export default function StatisticsDashboard() {
                     style={{ width: `${Math.min((count as number) / (statistics.totalMessages || 1) * 100, 100)}%` }}
                   />
                 </div>
-                <span className="text-sm font-semibold">{count}</span>
+                <span className="text-sm font-semibold">{count as number}</span>
               </div>
             </div>
           ))}
@@ -130,7 +130,7 @@ export default function StatisticsDashboard() {
               {Object.entries(retentionReport.byTopic).map(([topic, count]) => (
                 <div key={topic} className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">{topic}</span>
-                  <span className="font-semibold">{count}</span>
+                  <span className="font-semibold">{count as number}</span>
                 </div>
               ))}
             </div>

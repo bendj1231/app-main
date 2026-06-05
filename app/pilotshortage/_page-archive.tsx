@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { useSearchParams, useLocation, Link } from 'react-router-dom';
 
 // Stub for AuthContext since this is used outside the main app router structure
 const useAuth = () => ({
@@ -94,7 +93,8 @@ function scrollTo(id: string) {
 
 export default function PilotShortagePage() {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
   const { user, isAdmin } = useAuth();
 
   useEffect(() => {
@@ -162,7 +162,7 @@ export default function PilotShortagePage() {
         className="desktop-nav"
       >
         <div style={{ marginBottom: '24px' }}>
-          <Link href="/" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 700, fontSize: '1.1rem' }}>
+          <Link to="/" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 700, fontSize: '1.1rem' }}>
             ← Back to Site
           </Link>
         </div>
@@ -285,7 +285,7 @@ export default function PilotShortagePage() {
         >
           <div style={{ maxWidth: '400px', margin: '0 auto' }}>
             <div style={{ marginBottom: '20px' }}>
-              <Link href="/" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 600 }}>
+              <Link to="/" style={{ textDecoration: 'none', color: '#60a5fa', fontWeight: 600 }}>
                 ← Back to Site
               </Link>
             </div>
@@ -906,12 +906,12 @@ export default function PilotShortagePage() {
           </p>
           <p style={{ fontSize: '0.75rem', color: '#475569', marginTop: '8px' }}>
             This document is part of the official UCF release. For questions or corrections,
-            contact the WM Pilot Group engineering team.
+            contact the Benjamin Bowler (pending Aviation Pathways Ltd) engineering team.
           </p>
         </footer>
       </main>
 
-      <style jsx>{`
+      <style>{`
         @media (min-width: 1024px) {
           .desktop-nav {
             display: block !important;

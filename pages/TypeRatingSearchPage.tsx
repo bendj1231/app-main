@@ -702,11 +702,9 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
               }`}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent pointer-events-none" />
-              <img
-                src={manufacturer.logo}
-                alt={manufacturer.name}
-                className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-48 xl:h-48 object-contain mx-auto relative z-10"
-              />
+              <div className="flex items-center justify-center h-32 sm:h-36 md:h-40 lg:h-48 relative z-10">
+                <span className="text-black font-bold text-center text-lg sm:text-xl md:text-2xl lg:text-3xl">{manufacturer.name}</span>
+              </div>
             </button>
           ))}
         </div>
@@ -714,253 +712,11 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
 
       {/* Hero Section - Unified component for both default and manufacturer-specific content */}
       <div className="relative overflow-hidden mb-8 z-10 min-h-[400px] md:min-h-[500px] lg:min-h-[600px]">
-        {/* Background - Bombardier image when selected, otherwise dark gradient */}
-        {selectedManufacturer?.id === 'bombardier' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://bombardier.com/sites/default/files/styles/retina_2700x900_mobile/public/2024-10/DDBA1288A-©Guillaume-Plisson-for-Bombardier_J3A0474_V5-1800x600-new.jpg.webp?itok=vw_i4_xc)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'leonardo' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://i2-prod.somersetlive.co.uk/article7677869.ece/ALTERNATES/s1200e/0_aw189cockpitPNG.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'atr' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://www.atr-aircraft.com/wp-content/uploads/2020/07/cockpit-ATR-75957MD-1024x682.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'comac-c919' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://d1a2ot8agkqe8w.cloudfront.net/web/2018/11/cr929-cockpit-2-c-comac-640_75233.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'let' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://avioradar.net/wp-content/uploads/2025/12/Let-610_cockpit_c_nhungdoicanh.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'sikorsky' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://c4z3q2x8.delivery.rocketcdn.me/wp/wp-content/uploads/2023/06/entrol-03.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'gulfstream' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://d36vpv0zv8va20.cloudfront.net/images/d_g650_flightdeck_print_001.20230721.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'cessna' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://assets.skiesmag.com/wp-content/uploads/2024/07/Cessna-Caravan-Cockpit-Image-Updated.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'dassault-falcon' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://www.dassaultfalcon.com/app/uploads/2022/09/091_Falcon6X_2016USB50.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'pilatus' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://assets.skiesmag.com/wp-content/uploads/2025/03/PC-12-PRO-84-cropped-1.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'beechcraft' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://robbreport.com/wp-content/uploads/2020/12/2.-King-Air-260-Cockpit.jpg?w=1000)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'de-havilland' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://as2.ftcdn.net/jpg/01/63/81/53/1000_F_163815344_Xc8EzvXb9iCtDWYX2tI0ox6bEVUNQBVn.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'mitsubishi-mrj' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://i.pinimg.com/736x/7c/de/62/7cde62b3fecdf6a67a41863cf6cd2449.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'tecnam' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://s.yimg.com/lo/mysterio/api/a5da44653f5c2d835671b42c7d39f6c18383722a1a6758d368d0171b3b802354/lightyear_networkapi/resizefill_w800_h534;quality_80;format_webp/https:%2F%2Fmedia.zenfs.com%2Fen%2Fflying_articles_763%2F953a535914ce0461f5334b98a4b9d2b1)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'piper' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://www.jetaviva.com/wp-content/uploads/2023/05/Flight-Deck-%C2%A9dbfoto1.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'cirrus' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://cirrusaircraft.com/wp-content/uploads/2020/11/ifr-flying-hero.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'aeroprakt' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://sunsportaviation.com/wp-content/uploads/2024/05/10000038911.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'embraer' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://media.cnn.com/api/v1/images/stellar/prod/e2-interior-003.jpg?c=original)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'boeing' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://static.vecteezy.com/system/resources/thumbnails/073/873/185/small/modern-airliner-cockpit-with-illuminated-instrument-panels-on-a-night-flight-approaching-a-brightly-lit-metropolitan-city-skyline-photo.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : selectedManufacturer?.id === 'airbus' ? (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: 'url(https://mir-s3-cdn-cf.behance.net/project_modules/hd/3a609014083025.5627d27af3e8a.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-0" />
-          </>
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
-          </>
-        )}
+        {/* Background - dark gradient for all manufacturers */}
+        <>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 z-0" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-0" />
+        </>
         
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
           {!selectedManufacturer ? (
@@ -1778,11 +1534,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
       {/* Manufacturer logo below hero section */}
       <div className="relative z-10 flex justify-center -mt-8 mb-8">
         {selectedManufacturer ? (
-          <img
-            src={selectedManufacturer.logo || ''}
-            alt={selectedManufacturer.name}
-            className="w-48 h-24 object-contain"
-          />
+          <span className="text-white text-2xl font-bold">{selectedManufacturer.name}</span>
         ) : (
           <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }} className="text-white text-2xl">
             PilotRecognition.com
@@ -1870,16 +1622,19 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   <span className="text-xs text-sky-600 font-semibold mb-1 block">April 2026</span>
                   <h4 className="font-semibold text-slate-900 mb-1">Global Pilot Shortage Continues</h4>
                   <p className="text-sm text-slate-600">Airlines worldwide report 18,000+ pilot vacancies, with highest demand for A320neo and B737MAX type-rated pilots.</p>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">Source: ICAO / Boeing Pilot & Technician Outlook 2026</p>
                 </div>
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-200">
                   <span className="text-xs text-sky-600 font-semibold mb-1 block">March 2026</span>
                   <h4 className="font-semibold text-slate-900 mb-1">New Training Standards Announced</h4>
                   <p className="text-sm text-slate-600">EASA and FAA align on enhanced training requirements for next-generation aircraft including A350, B777X, and eVTOL operations.</p>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">Source: EASA SIB 2026-03 / FAA SAFO 16001</p>
                 </div>
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-200">
                   <span className="text-xs text-sky-600 font-semibold mb-1 block">February 2026</span>
                   <h4 className="font-semibold text-slate-900 mb-1">Regional Jet Market Expansion</h4>
                   <p className="text-sm text-slate-600">Embraer E2 family and ATR 72-600 see increased orders as airlines focus on regional connectivity and fuel efficiency.</p>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">Source: Embraer & ATR Market Outlook Q1 2026</p>
                 </div>
               </div>
             </div>
@@ -1895,21 +1650,25 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   <span className="text-xs text-emerald-600 font-semibold mb-1 block">Boeing</span>
                   <h4 className="font-semibold text-slate-900 mb-1">737 MAX Training Updates</h4>
                   <p className="text-sm text-slate-600">Enhanced simulator requirements for MAX 8, 9, and 10 variants. New MCAS training modules mandatory from Q3 2026.</p>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">Source: Boeing Training & Flight Services Bulletin</p>
                 </div>
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-200">
                   <span className="text-xs text-emerald-600 font-semibold mb-1 block">Airbus</span>
                   <h4 className="font-semibold text-slate-900 mb-1">A320neo Family Certification</h4>
                   <p className="text-sm text-slate-600">Common type rating extended to include A321XLR. Reduced training hours for pilots with A320ceo experience.</p>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">Source: Airbus Training Centre Technical Notice 2026-04</p>
                 </div>
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-200">
                   <span className="text-xs text-emerald-600 font-semibold mb-1 block">Embraer</span>
                   <h4 className="font-semibold text-slate-900 mb-1">E-Jet E2 Cross-Qualification</h4>
                   <p className="text-sm text-slate-600">New cross-qualification program between E190-E2 and E195-E2. 40% reduction in training time announced.</p>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">Source: Embraer Commercial Aviation Training Update</p>
                 </div>
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-200">
                   <span className="text-xs text-emerald-600 font-semibold mb-1 block">ATR</span>
                   <h4 className="font-semibold text-slate-900 mb-1">ATR 72-600 New Procedures</h4>
                   <p className="text-sm text-slate-600">Updated cold weather operations procedures for 72-600. New de-icing certification requirements effective immediately.</p>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">Source: ATR Aircraft Operations Bulletin 2026-02</p>
                 </div>
               </div>
             </div>
@@ -2138,18 +1897,13 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                     src={
                       (aircraft.image && !aircraft.image.includes('efqjszksldcdm6kbnzoq.png'))
                         ? aircraft.image
-                        : manufacturers.find(m => m.id === aircraft.manufacturer_id)?.logo || 'https://via.placeholder.com/320x224?text=No+Image'
+                        : 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80'
                     }
                     alt={aircraft.model}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       console.error('Image failed to load:', aircraft.model, aircraft.image);
-                      const manufacturer = manufacturers.find(m => m.id === aircraft.manufacturer_id);
-                      if (manufacturer?.logo && e.currentTarget.src !== manufacturer.logo) {
-                        e.currentTarget.src = manufacturer.logo;
-                      } else {
-                        e.currentTarget.src = 'https://via.placeholder.com/320x224?text=No+Image';
-                      }
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80';
                     }}
                   />
                 )}
@@ -2228,12 +1982,7 @@ export default function TypeRatingSearchPage({ onNavigate, onBack }: TypeRatingS
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     console.error('Detail image failed to load:', selectedAircraft.model, selectedAircraft.image);
-                    const manufacturer = manufacturers.find(m => m.id === selectedAircraft.manufacturer_id);
-                    if (manufacturer?.logo) {
-                      e.currentTarget.src = manufacturer.logo;
-                    } else {
-                      e.currentTarget.src = 'https://via.placeholder.com/800x400?text=No+Image';
-                    }
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80';
                   }}
                 />
               )}

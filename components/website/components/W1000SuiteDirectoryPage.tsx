@@ -6,7 +6,7 @@ import { RevealOnScroll } from '../RevealOnScroll';
 interface W1000SuitePageProps {
     onBack: () => void;
     onNavigate: (page: string) => void;
-    onLogin: () => void;
+    onLogin?: () => void;
 }
 
 export const W1000SuitePage: React.FC<W1000SuitePageProps> = ({ onBack, onNavigate, onLogin }) => {

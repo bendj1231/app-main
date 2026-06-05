@@ -94,7 +94,7 @@ export const PathwaysSidebar: React.FC<PathwaysSidebarProps> = ({
       {/* Navigation Items - Directory (Moved to top) */}
       <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', flexShrink: 0 }}>
         {navItems.map((item) => {
-          const isVaultItem = item.isVault;
+          const isVaultItem = 'isVault' in item && item.isVault;
           const isActive = isVaultItem 
             ? activeSection === 'wallet' 
             : activeSection === item.id;
