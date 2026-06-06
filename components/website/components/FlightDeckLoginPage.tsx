@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
+import { getAuth0RedirectUri } from '@/src/lib/auth0';
 
 interface FlightDeckLoginPageProps {
     onNavigate: (page: string) => void;
@@ -39,7 +40,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         loginWithRedirect({
             authorizationParams: {
                 connection: 'google-oauth2',
-                redirect_uri: `${window.location.origin}/auth/callback`,
+                redirect_uri: getAuth0RedirectUri(),
             },
             appState: { returnTo: '/flight-deck-verify' },
         });
@@ -84,7 +85,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
             localStorage.setItem('pr_passkey_registered', 'true');
             await loginWithRedirect({
                 authorizationParams: {
-                    redirect_uri: `${window.location.origin}/auth/callback`,
+                    redirect_uri: getAuth0RedirectUri(),
                     ...(loginHint ? { login_hint: loginHint } : {}),
                 },
                 appState: { returnTo: '/platform' },

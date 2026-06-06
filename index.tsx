@@ -21,6 +21,7 @@ import { AuthProvider } from '@/src/contexts/AuthContext';
 import { ToastProvider } from '@/src/components/ui/toast';
 import { AppRoutes } from '@/src/routes/AppRoutes';
 import { ErrorBoundary } from '@/src/components/ErrorBoundary';
+import { getAuth0RedirectUri } from '@/src/lib/auth0';
 import './index.css';
 
 declare global {
@@ -59,7 +60,7 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
       domain={auth0Config.domain}
       clientId={auth0Config.clientId}
       authorizationParams={{
-        redirect_uri: `${window.location.origin}/auth/callback`,
+        redirect_uri: getAuth0RedirectUri(),
         ...(auth0Config.audience ? { audience: auth0Config.audience } : {}),
         scope: 'openid profile email',
       }}

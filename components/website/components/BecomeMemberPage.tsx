@@ -637,7 +637,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 authorizationParams: {
                     connection: 'google-oauth2',
                     screen_hint: 'signup',
-                    redirect_uri: `${window.location.origin}/auth/callback`,
+                    redirect_uri: getAuth0RedirectUri(),
                 },
             });
         } else if (pendingSignupMethod === 'apple') {
@@ -645,14 +645,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 authorizationParams: {
                     connection: 'apple',
                     screen_hint: 'signup',
-                    redirect_uri: `${window.location.origin}/auth/callback`,
+                    redirect_uri: getAuth0RedirectUri(),
                 },
             });
         } else {
             loginWithRedirect({
                 authorizationParams: {
                     screen_hint: 'signup',
-                    redirect_uri: `${window.location.origin}/auth/callback`,
+                    redirect_uri: getAuth0RedirectUri(),
                 },
             });
         }
