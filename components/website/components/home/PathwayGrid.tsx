@@ -156,16 +156,17 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'programs',
             image: '/program1.png',
-            title: 'Explore Programs',
-            subtitle: 'Explore global pathways from flight school to airline-ready professional.',
+            title: 'Discover Pilot Programs',
+            subtitle: 'Find structured flight training tracks that launch you from school to airline-ready status with verified progress and career-focused pathways.',
             icon: GraduationCap,
             badge: 'NEW',
             accentColor: 'from-amber-500/80 to-orange-400/80',
         },
+
         {
             id: 'pilot-recognition',
             image: '/images/pilotrecognitioncompoennt.png',
-            title: 'Get Recognition+',
+            title: 'Learn more about Recognition+',
             subtitle: 'Falsified hours are a liability airlines cannot afford. Our zero-knowledge pipeline tokenizes your licensing history.',
             icon: Compass,
             badge: 'NEW',
@@ -496,57 +497,6 @@ const heroSlides: HeroSlide[] = [
         rightDescription: "Align your profile with specific career paths. Discover posted expectations & requirements from manufacturers, airlines, and the wider aviation industry before submitting your interest in a pathway.",
         rightHighlightText: "Gain exclusive access to private and eVTOL pathways for serious pilots with Recognition+.",
         bgImage: "/123.png"
-    },
-    {
-        id: 1,
-        microHeader: "Verified Credentials",
-        microHeaderColor: "text-emerald-400",
-        title: "Your Flight Hours ",
-        titleHighlight: "Tokenized",
-        titleSuffix: "",
-        description: "Transform raw flight time into cryptographically verifiable credentials. Airlines, operators, and ATOs can instantly validate your experience against international standards — no paperwork, no delays, no doubt.",
-        primaryButtonText: "Verify Your Hours Now",
-        primaryButtonAction: "verification-service",
-        rightMicroHeader: "Enterprise Trust",
-        rightTitle: "Trusted By ",
-        rightTitleHighlight: "Industry",
-        rightDescription: "Leading carriers and training organizations rely on our verification pipeline to eliminate credential fraud and accelerate pilot onboarding.",
-        rightHighlightText: "Join 200+ operators using Recognition+ for instant pilot verification.",
-        bgImage: "/images/airline-operations.png"
-    },
-    {
-        id: 2,
-        microHeader: "Career Acceleration",
-        microHeaderColor: "text-amber-400",
-        title: "From Cadet to ",
-        titleHighlight: "Captain",
-        titleSuffix: "",
-        description: "Our pathway matching engine connects your verified profile with operator requirements in real-time. See exactly where you stand and what gaps to close — before you ever submit an application.",
-        primaryButtonText: "Explore Pathways",
-        primaryButtonAction: "pathways",
-        rightMicroHeader: "Live Matching",
-        rightTitle: "Profile ",
-        rightTitleHighlight: "Matched",
-        rightDescription: "Stop sending CVs into black holes. When operators search for pilots, your verified profile appears with competency scores, hours, and ratings — all cryptographically signed.",
-        rightHighlightText: "88% match accuracy for pilots with complete Recognition+ profiles.",
-        bgImage: "/pathway4.png"
-    },
-    {
-        id: 3,
-        microHeader: "Global Standard",
-        microHeaderColor: "text-violet-400",
-        title: "Built for ",
-        titleHighlight: "Aviation",
-        titleSuffix: "",
-        description: "EASA, FAA, and ICAO aligned. Our verification pipeline follows the strictest international standards, giving you a portable credential that travels across jurisdictions and operators.",
-        primaryButtonText: "View Compliance Standards",
-        primaryButtonAction: "framework",
-        rightMicroHeader: "International",
-        rightTitle: "Cross-Border ",
-        rightTitleHighlight: "Verified",
-        rightDescription: "Whether you're applying to Emirates in Dubai, Cathay in Hong Kong, or Ryanair in Dublin — your Recognition+ credentials are instantly readable and verifiable.",
-        rightHighlightText: "One verification. Global mobility.",
-        bgImage: "/images/pilotrecognitioncompoennt.png"
     }
 ];
 
@@ -712,34 +662,7 @@ const AccessPlatformCard: React.FC<{
                 </div>
             </div>
 
-            {/* Slide indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                {heroSlides.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                            index === currentSlide 
-                                ? 'bg-red-500 w-6' 
-                                : 'bg-white/30 hover:bg-white/50'
-                        }`}
-                    />
-                ))}
-            </div>
-
-            {/* Navigation arrows */}
-            <button
-                onClick={() => goToSlide((currentSlide - 1 + heroSlides.length) % heroSlides.length)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 z-20"
-            >
-                <ChevronLeft className="w-5 h-5 text-white" />
-            </button>
-            <button
-                onClick={() => goToSlide((currentSlide + 1) % heroSlides.length)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 z-20"
-            >
-                <ChevronRight className="w-5 h-5 text-white" />
-            </button>
+            {/* Static hero — indicators and navigation arrows removed */}
         </div>
     );
 };
@@ -1139,6 +1062,13 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             // When on Home view, clicking Pilot Recognition navigates to recognition-plus page
             if (currentViewKey === 'home' && card.id === 'pilot-recognition') {
                 onNavigate('recognition-plus');
+                return;
+            }
+            // External redirect: clicking the main pathways cards should go to pilotcareerpathways.com
+            if (card.id === 'pathways' || card.id === 'pilot-pathways') {
+                if (typeof window !== 'undefined') {
+                    window.location.assign('https://pilotcareerpathways.com');
+                }
                 return;
             }
             // Note: Removed the condition that switches to internal view for 'programs' and 'pathways' cards
@@ -1646,6 +1576,14 @@ const GridCard: React.FC<GridCardProps> = ({
 
     // Use dynamic subtitle if available, otherwise use display subtitle
     const finalDisplaySubtitle = currentDynamicSubtitle || displaySubtitle;
+
+    // Force exact same title and subtitle for the programs card
+    const displayTitleOverride = card.id === 'programs'
+        ? 'Discover Pilot Programs'
+        : finalDisplayTitle;
+    const displaySubtitleOverride = card.id === 'programs'
+        ? 'Find structured flight training tracks that launch you from school to airline-ready status with verified progress and career-focused pathways.'
+        : finalDisplaySubtitle;
     
     // Determine if we should use carousel for enrolled/logged in state
     const shouldUseEnrolledCarousel = isEnrolledInFoundation && card.isCarouselWhenEnrolled && card.enrolledImages;
@@ -1792,10 +1730,10 @@ const GridCard: React.FC<GridCardProps> = ({
                         {!(card.id === 'discover' && currentImageIndex === 0) && (
                             <>
                                 <h3 className="text-white font-serif text-sm md:text-base tracking-wide">
-                                    {finalDisplayTitle}
+                                    {displayTitleOverride}
                                 </h3>
                                 <p className="text-slate-300 text-xs md:text-sm leading-tight">
-                                    {finalDisplaySubtitle}
+                                    {displaySubtitleOverride}
                                 </p>
                             </>
                         )}
@@ -2028,7 +1966,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             <div className="flex items-center gap-1.5 mb-1">
                                 <span className={`text-xs md:text-sm font-bold ${card.isLightMode ? 'text-slate-700' : isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
                                 <h3 className={`text-xs md:text-sm font-bold uppercase tracking-wider ${card.isLightMode ? 'text-slate-900' : 'text-white'} ${card.id === 'credentials' ? 'text-black' : ''}`}>
-                                    {card.id === 'pilot-recognition' ? (<>Get <span className="text-red-600">Recognition+</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Pathways</span></>) : card.id === 'programs' ? (<>Explore <span className="text-red-500">Programs</span></>) : finalDisplayTitle}
+                                    {card.id === 'pilot-recognition' ? (<>Learn more about <span className="text-red-600">Recognition+</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Pathways</span></>) : card.id === 'programs' ? (<>Discover Pilot <span className="text-red-500">Programs</span></>) : finalDisplayTitle}
                                 </h3>
                             </div>
                             {/* Accent underline - gray for light mode, blue for dark */}

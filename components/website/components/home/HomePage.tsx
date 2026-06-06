@@ -1213,78 +1213,80 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* === BECOME A MEMBER BANNER === */}
             <div className="relative z-30 w-full px-4 md:px-8 py-10">
                 <div className="max-w-7xl mx-auto">
-                    <div className="relative overflow-hidden rounded-xl shadow-xl" style={{ backgroundColor: '#0d1b3e' }}>
-                        <div className="px-10 py-6 md:py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-full">
-                            <div>
-                                <h2 className="text-xl md:text-2xl font-semibold mb-2" style={{ color: '#ffffff' }}>
-                                    Become a <span style={{ color: '#dc2626' }}>Member</span> — It's Free
+                    <div className="relative overflow-hidden shadow-xl" style={{ backgroundColor: '#0d1b3e' }}>
+                        <div className="px-8 py-8 md:px-10 md:py-10 flex flex-col lg:flex-row items-center gap-8 min-h-[280px]">
+                            <div className="w-full lg:w-7/12">
+                                <h2 className="text-2xl md:text-4xl font-semibold mb-4 leading-tight" style={{ color: '#ffffff' }}>
+                                    Discover <span style={{ color: '#dc2626' }}>pathways</span>, align your profile with operator <span style={{ color: '#dc2626' }}>requirements and expectations</span>.
                                 </h2>
-                                <p className="text-sm leading-relaxed" style={{ color: '#ffffff', opacity: 0.85 }}>
-                                    Create your live pilot profile, access pathway cards matched to your recognition score, and get discovered by airlines and operators — at no cost.
+                                <p className="text-sm md:text-base leading-relaxed max-w-2xl" style={{ color: '#ffffff', opacity: 0.9 }}>
+                                    Create your pilot profile for free, and get verified with <span style={{ color: '#dc2626' }}>Recognition+</span>.
                                 </p>
+                                <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                                    <button
+                                        onClick={() => onNavigate?.('become-member')}
+                                        className="px-7 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 text-left"
+                                        style={{ backgroundColor: '#ffffff', color: '#0d1b3e' }}
+                                    >
+                                        <span className="block">Create free account</span>
+                                        <span className="block text-xs font-normal mt-1" style={{ color: '#475569' }}>
+                                            Get <span style={{ color: '#dc2626' }}>Recognition+</span> verified
+                                        </span>
+                                    </button>
+                                    <a
+                                        href="https://pilotcareerpathways.com"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="inline-flex items-center justify-center px-7 py-3 rounded-xl font-semibold text-sm transition-all border hover:bg-white/10"
+                                        style={{ backgroundColor: 'transparent', color: '#ffffff', borderColor: 'rgba(255,255,255,0.4)' }}
+                                    >
+                                        Visit pilotcareerpathways.com
+                                    </a>
+                                </div>
                             </div>
-                            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-                                <button
-                                    onClick={() => onNavigate?.('become-member')}
-                                    className="px-6 py-3 rounded-lg font-semibold text-sm transition-all hover:opacity-90"
-                                    style={{ backgroundColor: '#ffffff', color: '#0d1b3e' }}
-                                >
-                                    Join for free
-                                </button>
-                                <button
-                                    onClick={() => onNavigate?.('recognition-plus')}
-                                    className="px-6 py-3 rounded-lg font-semibold text-sm transition-all border hover:bg-white/10"
-                                    style={{ backgroundColor: 'transparent', color: '#ffffff', borderColor: 'rgba(255,255,255,0.4)' }}
-                                >
-                                    Get <span style={{ color: '#dc2626' }}>Recognition+</span>
-                                </button>
+                            <div className="w-full lg:w-5/12 flex items-center justify-center">
+                                <div className="w-full max-w-md overflow-hidden border border-white/10 shadow-2xl">
+                                    <img
+                                        src="/images/homepage-1.png"
+                                        alt="Pilot career pathways illustration"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* === SOCIAL PROOF STATS STRIP === */}
-            <div className="relative z-30 w-full bg-white border-b border-slate-100 px-4 md:px-8 py-5">
-                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
-                    <div className="flex items-center gap-6 sm:gap-12 flex-wrap justify-center sm:justify-start">
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                            <div>
-                                <p className="text-lg font-bold text-slate-900 leading-none">{(847).toLocaleString()}</p>
-                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Pilots registered</p>
-                            </div>
-                        </div>
-                        <div className="w-px h-8 bg-slate-200 hidden sm:block" />
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-2 h-2 rounded-full bg-blue-500" />
-                            <div>
-                                <p className="text-lg font-bold text-slate-900 leading-none">{(2341).toLocaleString()}</p>
-                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Pathway views today</p>
-                            </div>
-                        </div>
-                        <div className="w-px h-8 bg-slate-200 hidden sm:block" />
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-2 h-2 rounded-full bg-red-500" />
-                            <div>
-                                <p className="text-lg font-bold text-slate-900 leading-none">{312}</p>
-                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Profiles created this week</p>
-                            </div>
-                        </div>
-                        <div className="w-px h-8 bg-slate-200 hidden sm:block" />
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-2 h-2 rounded-full bg-amber-500" />
-                            <div>
-                                <p className="text-lg font-bold text-slate-900 leading-none">11</p>
-                                <p className="text-[10px] text-slate-500 uppercase tracking-wider">Airlines pulling profiles</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
-                        <span className="uppercase tracking-wider">Live data · updates every session</span>
+            {/* === INDUSTRY PARTNER HEADLINES === */}
+            <div className="relative z-30 w-full bg-white border-b border-slate-100 px-4 md:px-8 py-5 overflow-hidden">
+                <div className="max-w-7xl mx-auto mb-3 text-center">
+                    <h4
+                        className="text-2xl md:text-3xl text-slate-900 font-normal"
+                        style={{ fontFamily: 'Georgia, "Helvetica Neue", Arial, sans-serif' }}
+                    >
+                        Aviation industry first pilot <span className="text-red-500">recognition</span> platform built for
+                    </h4>
+                </div>
+                <div className="max-w-7xl mx-auto relative">
+                    <div className="absolute inset-y-0 left-0 w-16 pointer-events-none bg-gradient-to-r from-white to-transparent" />
+                    <div className="absolute inset-y-0 right-0 w-16 pointer-events-none bg-gradient-to-l from-white to-transparent" />
+                    <div className="flex gap-8 whitespace-nowrap animate-marquee text-slate-900 font-semibold text-sm md:text-base">
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">airlines</span>: trusted profiles matched to airline needs.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">ATOs</span>: training outcomes linked to verified career pathways.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">Civil Aviation Regulators</span>: transparent oversight for modern pilot standards.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">Charter & Private sector</span>: premium pilots aligned to private operator requirements.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">Humanitarian Flight Operations</span>: ready-to-deploy pilot profiles built for relief missions.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">airlines</span>: trusted profiles matched to airline needs.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">ATOs</span>: training outcomes linked to verified career pathways.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">Civil Aviation Regulators</span>: transparent oversight for modern pilot standards.</span>
+                        <span className="inline-flex items-center gap-1 border-r border-sky-950/30 pr-3 last:border-r-0">For <span className="text-red-500">Charter & Private sector</span>: premium pilots aligned to private operator requirements.</span>
+                        <span className="inline-flex items-center gap-1">For <span className="text-red-500">Humanitarian Flight Operations</span>: ready-to-deploy pilot profiles built for relief missions.</span>
                     </div>
                 </div>
+                <style>{`@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+                    .animate-marquee { animation: marquee 35s linear infinite; }
+                `}</style>
             </div>
 
             {/* === FULL IMAGE BANNER - Split Layout === */}
@@ -2439,7 +2441,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 Aviation's first pilot-owned career platform. The industry has never given pilots the infrastructure to prove who they are — only the paperwork to survive audits. PilotRecognition fixes that. You sync your logbook, verify your license, medical, and credentials through international verification providers, and build a recognition profile that reflects what you've actually done — not just what you claim. Your credentials are issued as sovereign W3C Verified Credential tokens to your own cryptographic wallet. The platform never retains your documents after verification. We receive the confirmation — not the paper.
                             </p>
                             <p className="text-slate-700 text-sm md:text-base leading-relaxed font-sans">
-                                It is not a job board. Job boards are push-based — you send a CV into a void and compete with everyone else who sent the same thing. PilotRecognition is a pulling system. Operators post pathway cards showing exactly what they need: hours, ratings, nationality requirements, type rating preferences, experience level. You align your profile against those requirements and submit interest. If an operator wants to move forward, they send you a consent message — free. They may include a confidential offer document that self-destructs within 5 days of inactivity. You read it, negotiate if needed, and decide. The only time an operator pays is when they are ready to formally progress a candidate — a $500 recognition fee that covers employment-grade verification checks. Pilots never pay for pre-employment checks. That cost belongs to the employer.
+                                It is not a job board but a professional networking platform—similar to LinkedIn for the aviation industry. Instead of pilots sending CVs into a void, operators post pathway cards showing exactly what they need: hours, ratings, nationality requirements, type rating preferences, experience level. You align your profile against those requirements and submit interest. If an operator wants to move forward, they send you a consent message — free. They may include a confidential offer document that self-destructs within 5 days of inactivity. You read it, negotiate if needed, and decide. Operators pay a flat annual subscription for advanced search tools; there are absolutely no success, connection, or placement fees for either side.
                             </p>
                             <p className="text-slate-700 text-sm md:text-base leading-relaxed font-sans">
                                 The Foundation Program builds the verified competency record operators look for. It covers 50 hours of logged mentorship, EBT CBTA-aligned industry education, type rating investment risk management, and a practical mentorship interview. Free to enter. Certification is $49 at completion. Everything you complete is appended to your profile and made available to operators with your consent.
