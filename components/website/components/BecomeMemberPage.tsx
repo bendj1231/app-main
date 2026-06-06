@@ -13,6 +13,7 @@ import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
 import { issueAndStoreCredential, issueAndStoreCredentialSelfHosted } from '../../../src/lib/wallet';
 import { getVaultKeyFromAuth0Token, encryptFields } from '../../../lib/vault';
 import { getRegionalSupabaseClient, getJurisdictionCode } from '../../../lib/regionalRouter';
+import { getAuth0RedirectUri } from '@/src/lib/auth0';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
@@ -223,6 +224,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
     const setupInitRef = React.useRef(false);
+    // Supabase session for Google-OAuth users (not Auth0)
+    const [supabaseUser, setSupabaseUser] = useState<{ id: string; email: string; name: string } | null>(null);
+    const [supabaseSessionLoading, setSupabaseSessionLoading] = useState(isSetup);
 
     // Run once on mount — clear flags that would block session restoration on OAuth redirect
     if (isSetup && !setupInitRef.current && typeof localStorage !== 'undefined') {
@@ -287,9 +291,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setEnableShader(shouldEnable3DEffects());
     }, []);
 
-    // ── DEBUG: Log all auth state changes ──
+    // ── Detect Supabase session (for Google OAuth users who bypass Auth0) ──
     useEffect(() => {
-    }, [isAuthenticated, isLoading, user]);
+        if (!isSetup) return;
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session?.user) {
+                const sbUser = {
+                    id: session.user.id,
+                    email: session.user.email || '',
+                    name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || '',
+                };
+                setSupabaseUser(sbUser);
+                // Pre-populate display name from Supabase user metadata
+                setDisplayName(sbUser.name);
+            }
+            setSupabaseSessionLoading(false);
+        });
+    }, [isSetup]);
 
     useEffect(() => {
         const ref = new URLSearchParams(window.location.search).get('ref');
@@ -315,8 +333,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             if (user.sub) {
                 sessionStorage.setItem('mfb_auth0_id', user.sub);
             }
-        } else if (isSetup && !user && !isLoading) {
-            console.warn('[DEBUG][BecomeMember] ⚠️ isSetup=true but no Auth0 user and not loading — auth0Id will be null');
         }
     }, [isSetup, user, isLoading]);
 
@@ -470,7 +486,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         if (isNaN(mins) || mins < 0 || mins > 59) { setSaveError('Minutes must be between 0 and 59.'); return; }
         const hours = wholeHrs + mins / 60;
         const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
-        if (!auth0Id) { setSaveError('Authentication error. Please sign in again.'); return; }
+        // For Supabase Google OAuth users, auth0Id may be null — use Supabase session user id directly
+        const sbUserId = dbgSession?.user?.id || supabaseUser?.id;
+        if (!auth0Id && !sbUserId) { setSaveError('Authentication error. Please sign in again.'); return; }
         setSaving(true);
         setSaveError('');
         try {
@@ -494,25 +512,60 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
             };
 
-            // Primary: update by auth0_id using regional Supabase client
-            const { error, data: updatedRows } = await regionalSupabase
-                .from('profiles')
-                .update(payload)
-                .eq('auth0_id', auth0Id)
-                .select('id');
-            if (error) { console.error('🔴 [handleSaveProfile] supabase error:', error); throw error; }
-
-            // Fallback: if auth0_id matched nothing, update by Supabase session user id
-            if (!updatedRows || updatedRows.length === 0) {
-                console.warn('🟡 [handleSaveProfile] auth0_id matched 0 rows — falling back to session user.id');
-                const sbUserId = dbgSession?.user?.id;
-                if (!sbUserId) throw new Error('No Supabase session user id available');
-                const { error: fbError } = await regionalSupabase
+            // Primary: update by auth0_id (Auth0 users)
+            let updatedRows: { id: string }[] | null = null;
+            let updateError: unknown = null;
+            if (auth0Id) {
+                const { error, data } = await regionalSupabase
                     .from('profiles')
-                    .update({ ...payload, auth0_id: auth0Id })
-                    .eq('id', sbUserId);
-                if (fbError) { console.error('🔴 [handleSaveProfile] fallback error:', fbError); throw fbError; }
-            } else {
+                    .update(payload)
+                    .eq('auth0_id', auth0Id)
+                    .select('id');
+                updatedRows = data;
+                updateError = error;
+                if (updateError) { console.error('🔴 [handleSaveProfile] supabase error:', updateError); throw updateError; }
+            }
+
+            // Fallback: update by Supabase session user id (Supabase Google OAuth users)
+            if (!updatedRows || updatedRows.length === 0) {
+                if (!sbUserId) throw new Error('No Supabase session user id available');
+                // Check if profile row already exists
+                const { data: existing } = await regionalSupabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('id', sbUserId)
+                    .maybeSingle();
+                if (existing) {
+                    // Update existing row
+                    const { error: fbError } = await regionalSupabase
+                        .from('profiles')
+                        .update({ ...payload, ...(auth0Id ? { auth0_id: auth0Id } : {}) })
+                        .eq('id', sbUserId);
+                    if (fbError) { console.error('🔴 [handleSaveProfile] update fallback error:', fbError); throw fbError; }
+                } else {
+                    // Insert new profile row for new Google OAuth user
+                    const userEmail = dbgSession?.user?.email || supabaseUser?.email || '';
+                    const { count } = await regionalSupabase
+                        .from('profiles')
+                        .select('id', { count: 'exact', head: true });
+                    const nextNum = (count ?? 2) + 1;
+                    const autoPilotId = `PR${String(nextNum).padStart(4, '0')}`;
+                    const { error: insertError } = await regionalSupabase
+                        .from('profiles')
+                        .insert({
+                            id: sbUserId,
+                            email: userEmail,
+                            role: 'mentee',
+                            status: 'active',
+                            pilot_id: autoPilotId,
+                            enrolled_programs: [],
+                            created_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString(),
+                            ...(auth0Id ? { auth0_id: auth0Id } : {}),
+                            ...payload,
+                        });
+                    if (insertError) { console.error('🔴 [handleSaveProfile] insert error:', insertError); throw insertError; }
+                }
             }
 
             // Issue self-hosted Verifiable Credential (Mauritius Data Controller framework)
@@ -661,8 +714,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
 
-    // ── While Auth0 rehydrates session (skip wait if returning from logbook sync) ─
-    if (isSetup && isLoading && !authTimedOut && !logbookSynced) {
+    // ── While session rehydrates (skip wait if returning from logbook sync) ─
+    if (isSetup && (isLoading || supabaseSessionLoading) && !authTimedOut && !logbookSynced) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -671,8 +724,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         );
     }
 
-    // ── Profile setup step (redirected here after Auth0 signup or logbook sync) ──
-    if (isSetup && (isAuthenticated || authTimedOut || (!isLoading && logbookSynced))) {
+    // ── Profile setup step (redirected here after Auth0 signup, Supabase OAuth, or logbook sync) ──
+    if (isSetup && (isAuthenticated || !!supabaseUser || authTimedOut || (!isLoading && logbookSynced))) {
         return (
             <>
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>

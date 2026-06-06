@@ -1395,15 +1395,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               } else {
                 setOauthAccountCheck({ checking: false, hasAccount: false });
                 // Create default profile
-                const defaultProfile = {
-                  id: session.user.id,
-                  user_id: session.user.id,
-                  email: session.user.email,
-                  created_at: new Date().toISOString(),
-                  enrolled_programs: [],
-                  appAccess: [],
-                };
-                setUserProfile(defaultProfile);
+                // No profile found; clear userProfile and indicate lack of account
+                setUserProfile(null);
+                setOauthAccountCheck({ checking: false, hasAccount: false });
               }
             }
           } catch (err) {
@@ -1512,25 +1506,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (profileData && !error) {
               await decryptAndSetUserProfile(profileData);
             } else {
-              const defaultProfile = {
-                user_id: session.user.id,
-                email: session.user.email,
-                created_at: new Date().toISOString(),
-                enrolled_programs: [],
-                appAccess: [],
-              };
-              setUserProfile(defaultProfile);
+              // No profile found; clear userProfile
+              setUserProfile(null);
             }
           } catch (err) {
             console.error('❌ Error fetching Supabase profile:', err);
-            const defaultProfile = {
-              user_id: session.user.id,
-              email: session.user.email,
-              created_at: new Date().toISOString(),
-              enrolled_programs: [],
-              appAccess: [],
-            };
-            setUserProfile(defaultProfile);
+            // On error, do not fabricate a profile — leave null so route guards work correctly
+            setUserProfile(null);
           }
         } else {
           // Check for Auth0 session in sessionStorage

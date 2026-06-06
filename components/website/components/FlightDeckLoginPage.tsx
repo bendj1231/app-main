@@ -29,7 +29,7 @@ interface FlightDeckLoginPageProps {
 
 export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavigate }) => {
   const navigate = useNavigate();
-  const { login, logout, currentUser } = useAuth();
+  const { login, currentUser } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,7 +46,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   };
 
   // Watch currentUser and verify they have a valid profile row in the database.
-  // If they logged in but have no profile row, log them out and redirect to become-member.
+  // If they logged in via Google OAuth but have no profile row, sign out silently
+  // and redirect to /become-member?setup=1 so they can register.
   useEffect(() => {
     if (!currentUser) return;
 
@@ -58,12 +59,13 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
       if (hasProfile) {
         setCheckingOAuth(false);
-        navigate('/platform');
+        navigate('/platform', { replace: true });
       } else {
-        // No profile row → log out to clean up global AuthContext state, then redirect
-        await logout();
+        // No profile row — sign out silently (avoids AuthContext side-effect loops)
+        // then send them to the membership registration form
+        await supabase.auth.signOut();
         setCheckingOAuth(false);
-        onNavigate('become-member');
+        navigate('/become-member?setup=1', { replace: true });
       }
     };
 
@@ -71,7 +73,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     return () => {
       active = false;
     };
-  }, [currentUser, navigate, logout, onNavigate]);
+  }, [currentUser]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
