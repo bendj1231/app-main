@@ -27,27 +27,23 @@ const INCLUDED = [
 const FAQS = [
   {
     q: 'Do airlines have to pay to use the platform?',
-    a: 'No. Airlines, flight schools, and manufacturers can search the verified pilot directory and view profiles for free. Basic talent scouting costs nothing. Enterprise is for operators who need Pull API access, advanced filtering, EBT video records, and custom recruitment pipelines — not for casual browsing.',
+    a: 'No. Airlines, flight schools, and manufacturers can search the verified pilot directory and view profiles for free. Basic talent scouting and networking cost nothing. Enterprise is for operators who need Pull API access, advanced filtering, EBT video records, and custom connection pipelines — not for casual browsing.',
   },
   {
     q: 'Who pays for what?',
-    a: 'Pilots pay subscriptions to build and verify their professional profiles, manage their career data, and unlock full pathway access. That is the primary revenue model — pilots invest in their own verified record. Operators who move beyond free scouting into active, high-volume recruitment pay $1,000/year for Pull API and data access. Corporate costs are for pipeline tools, not individual profile views.',
+    a: 'Pilots pay subscriptions to build and verify their professional profiles, manage their career data, and unlock full pathway access. That is the primary model — pilots invest in their own verified record. Operators who move beyond free scouting into active, high-volume networking pay $1,000/year for Pull API and data access. There are absolutely no success or placement fees.',
   },
   {
     q: 'Why $1,000/year and not monthly?',
     a: 'Annual commitment keeps the platform neutral. We\'re not incentivised to upsell you month-to-month. One flat fee, full access, no surprises.',
   },
   {
-    q: 'What\'s the $500 outcome fee?',
-    a: 'Charged only when a pilot engagement results in a confirmed placement through a pathway you listed. No outcome, no fee.',
-  },
-  {
     q: 'What is the Pull API?',
-    a: 'A REST API that lets you query the verified pilot database by criteria — hours, type ratings, recognition score, location, medical status. You pull the pilots you need rather than receiving hundreds of unsolicited applications. Free scouting uses the directory UI; the Pull API is for programmatic, high-volume, or integrated recruitment workflows.',
+    a: 'A REST API that lets you query the verified pilot database by criteria — hours, type ratings, recognition score, location, medical status. You pull the pilot connections you need rather than receiving hundreds of unsolicited applications. Free scouting uses the directory UI; the Pull API is for programmatic, high-volume, or integrated networking workflows.',
   },
   {
     q: 'How is this different from a job board?',
-    a: 'This is not a job board. Pilots own their profiles and pay to build and verify them. Operators list pathway requirements, not job postings. Pilots submit interest — you pull from a pre-verified, scored pool. The direction of information flow is reversed, and the data belongs to the pilot, not the platform.',
+    a: 'This is not a job board but a professional networking platform—similar to LinkedIn for the aviation industry. Instead of pilots sending CVs into a void, operators post pathway requirements. Pilots align their profiles and submit interest to connect directly. There are no hiring or placement commissions.',
   },
 ];
 
@@ -155,7 +151,7 @@ export default function EnterprisePricingPage() {
       <section className="px-6 py-16 sm:py-24 max-w-4xl mx-auto">
         <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3 text-center">Plans</p>
         <h2 className="text-3xl sm:text-4xl font-bold mb-10 text-center">Start free. Scale when ready.</h2>
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-2 gap-5 max-w-2xl mx-auto">
 
           {/* Free */}
           <div className="border border-slate-200 rounded-2xl p-6">
@@ -165,7 +161,7 @@ export default function EnterprisePricingPage() {
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex gap-2"><span className="text-slate-300">•</span>Public pathway card listing</li>
               <li className="flex gap-2"><span className="text-slate-300">•</span>Pilot interest inbox</li>
-              <li className="flex gap-2"><span className="text-slate-300">•</span>Basic outcome dashboard</li>
+              <li className="flex gap-2"><span className="text-slate-300">•</span>Basic dashboard</li>
               <li className="flex gap-2"><span className="text-slate-400 line-through text-xs">Pull API</span></li>
               <li className="flex gap-2"><span className="text-slate-400 line-through text-xs">Recognition Score access</span></li>
             </ul>
@@ -188,7 +184,7 @@ export default function EnterprisePricingPage() {
               <li className="flex gap-2"><span className="text-emerald-400">✓</span>Recognition Score per pilot</li>
               <li className="flex gap-2"><span className="text-emerald-400">✓</span>EBT video access</li>
               <li className="flex gap-2"><span className="text-emerald-400">✓</span>Live profile feed</li>
-              <li className="flex gap-2"><span className="text-emerald-400">✓</span>Placement tracking</li>
+              <li className="flex gap-2"><span className="text-emerald-400">✓</span>Connection tracking</li>
             </ul>
             <button
               onClick={() => navigate('/enterprise-access/learn-more')}
@@ -196,20 +192,6 @@ export default function EnterprisePricingPage() {
             >
               Request access
             </button>
-          </div>
-
-          {/* Outcome */}
-          <div className="border border-slate-200 rounded-2xl p-6">
-            <p className="text-emerald-600 text-xs uppercase tracking-widest font-semibold mb-2">Outcome Fee</p>
-            <p className="text-4xl font-bold text-slate-900 mb-1">$500<span className="text-lg text-slate-500 font-normal">/placement</span></p>
-            <p className="text-slate-500 text-sm mb-5">Only when it works</p>
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li className="flex gap-2"><span className="text-emerald-500">•</span>Charged on confirmed placement</li>
-              <li className="flex gap-2"><span className="text-emerald-500">•</span>Tracked through pathway interaction</li>
-              <li className="flex gap-2"><span className="text-emerald-500">•</span>Attribution proven before billing</li>
-              <li className="flex gap-2"><span className="text-emerald-500">•</span>No outcome = no fee</li>
-            </ul>
-            <p className="mt-6 text-xs text-slate-400 text-center">Added to Enterprise plan only</p>
           </div>
 
         </div>

@@ -49,15 +49,15 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
             content: [
                 {
                     title: "Program Overview",
-                    description: "The Transition Program provides industry readiness with full EBT CBTA assessment for pilots transitioning from graduate flight school to airline environment. Includes 9 core competencies full implementation, EBT CBTA competency video assessment, ATLAS Aviation CV formatting, EBT video assessment with behavioral markers and cognitive indicators evaluation, internship, and competency verification. Foundation graduates unlock at graduate pricing ($99, a $50 discount from $149)."
+                    description: "The Transition Program provides industry readiness and alignment for pilots transitioning from graduate flight school to airline environment. Includes EBT/CBTA-aligned assessment, a competency video assessment, ATLAS Aviation CV formatting, EBT video interview evaluation with behavioral markers and cognitive indicators, internship, and competency evidence packaging. Foundation graduates unlock at graduate pricing ($99, a $50 discount from $149)."
                 },
                 {
                     title: "EBT CBTA Full Assessment",
-                    description: "Full implementation of the 9 core competencies: Situational Awareness, Decision Making, Communication, Leadership & Teamwork, Workload Management, Application of Procedures, Flight Path Management, Knowledge, and Automation Management. This comprehensive assessment demonstrates your competency readiness for airline operations."
+                    description: "Assessment aligned to the 9 core competencies: Situational Awareness, Decision Making, Communication, Leadership & Teamwork, Workload Management, Application of Procedures, Flight Path Management, Knowledge, and Automation Management. This demonstrates your readiness alignment for airline operations."
                 },
                 {
                     title: "EBT CBTA Video Assessment",
-                    description: "Full EBT CBTA competency video assessment aligned with industry standards. This provides formal competency assessment that enhances your credibility with operators."
+                    description: "EBT/CBTA-aligned competency video assessment. This produces formal assessment evidence that enhances credibility with operators."
                 },
                 {
                     title: "ATLAS Aviation CV Formatting",
@@ -69,7 +69,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 },
                 {
                     title: "Internship & Competency Verification",
-                    description: "Complete an internship with our pathway providers (airlines, operators, manufacturers, ATOs) along with PilotRecognition.com to apply your competencies in real-world scenarios. Receive competency verification that demonstrates your professional readiness to operators. This verification is recognized by industry partners and enhances your pathway matching."
+                    description: "Complete an internship with our pathway providers (airlines, operators, manufacturers, ATOs) along with PilotRecognition.com to demonstrate your competencies in real-world scenarios. Receive competency evidence packaging that supports your professional readiness with operators and enhances pathway matching."
                 }
             ]
         },
@@ -102,7 +102,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 },
                 {
                     title: "Platform Access & Direct Engagement",
-                    description: "Operators can access the PilotRecognition platform to pull verified pilot competency data. With more than <strong>5000+ pilots</strong> on our platform, your operator requirements will match with verified competencies. This is a pulling system—not a job board. Pilots submit interest. You pull from live real-time competency profiles. Contact <strong>enterprise@pilotrecognition.com</strong> for platform access to pull verified competency data. Enterprise access: $1,000/month for pull API and unlimited access. Success fee: $500 per pilot hired."
+                    description: "Operators can access the PilotRecognition platform to pull verified pilot competency data. With more than <strong>5000+ pilots</strong> on our platform, your operator requirements will match with verified competencies. This is a pulling system—not a job board. Pilots submit interest. You pull from live real-time competency profiles. Contact <strong>enterprise@pilotrecognition.com</strong> for platform access to pull verified competency data. Enterprise access: $1,000/month for pull API and unlimited access."
                 }
             ]
         },
@@ -111,7 +111,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
             content: [
                 {
                     title: "Objective Assessment",
-                    description: "PilotRecognition provides <strong>data-driven assessment</strong> of pilot readiness. We evaluate specific competencies that operators assess, provide measurable feedback on gaps, and offer targeted development pathways. Our approach is based on operator standards and industry requirements, not motivational messaging."
+                    description: "PilotRecognition provides <strong>data-driven assessment</strong> of pilot readiness. We evaluate specific competencies that operators assess, provide measurable feedback on gaps, and offer targeted alignment pathways. Our approach is based on operator standards and industry requirements, not motivational messaging."
                 },
                 {
                     title: "Direct Communication",
@@ -119,7 +119,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
                 },
                 {
                     title: "Career Trajectory Analysis",
-                    description: "Each pilot receives an <strong>objective assessment</strong> of current professional standing and realistic career timeline based on industry data. We identify specific competency gaps, provide development recommendations, and align pilot development with operator requirements and market realities."
+                    description: "Each pilot receives an <strong>objective assessment</strong> of current professional standing and realistic career timeline based on industry data. We identify specific alignment gaps, provide recommendations, and align readiness with operator requirements and market realities."
                 }
             ]
         }
@@ -140,7 +140,7 @@ export const TechnicalIndexPage: React.FC<TechnicalIndexPageProps> = ({
         },
         {
             title: "Competency-Based Pathways",
-            description: "Your <strong>PilotRecognition Profile</strong> will automatically suggest pathways based on your <strong>Competency Score</strong> and match percentage. The score determines an overall assessment of your profile in comparison to pathway requirements, and you will be in greater favor if you possess a <strong>higher score</strong>. This <strong>intelligent matching system</strong> analyzes your flight hours, certifications, 9 core competencies, and recent activity to identify the <strong>most suitable career opportunities</strong> tailored to your professional development. Operators and airlines will access your profile based on your interests in their programs, evaluating your <strong>competency score</strong> and percentage match against pathway requirements."
+            description: "Your <strong>PilotRecognition Profile</strong> will automatically suggest pathways based on your <strong>Competency Score</strong> and match percentage. The score determines an overall assessment of your profile in comparison to pathway requirements, and you will be in greater favor if you possess a <strong>higher score</strong>. This <strong>intelligent matching system</strong> analyzes your flight hours, certifications, 9 core competencies, and recent activity to identify the <strong>most suitable career opportunities</strong> tailored to your goals. Operators and airlines will access your profile based on your interests in their programs, evaluating your <strong>competency score</strong> and percentage match against pathway requirements."
         },
         {
             title: "Initial Competency Profile",

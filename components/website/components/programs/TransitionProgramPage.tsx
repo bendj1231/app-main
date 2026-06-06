@@ -34,7 +34,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                         Shifting from Flight School to Airline Mindset
                     </h1>
                     <p className="max-w-3xl mx-auto text-base md:text-lg text-slate-700 mb-6">
-                        A structured bridge from fresh graduate to airline‑industry‑ready pilot. The Transition Program walks you through all nine EBT/CBTA core competencies using competency‑based assessment tools, aligns you with real airline expectations, and gives type‑rating insight before you commit tens of thousands to training.
+                        A structured bridge from fresh graduate to airline‑industry‑ready pilot. The Transition Program shows how airlines evaluate the nine EBT/CBTA core competencies, provides readiness and assessment tools, aligns you with real airline expectations, and gives type‑rating insight before you commit tens of thousands to training.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <div className="bg-blue-50 border border-blue-100 rounded-xl px-6 py-3">
@@ -63,11 +63,11 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                         There is a massive gap between a CPL/IR holder and a First Officer. Airlines don't just want stick-and-rudder skills; they want pilots who can manage automation, exercise sound judgment, and exhibit the KSA (Knowledge, Skills, and Attitudes) defined by ICAO's EBT standards.
                     </p>
                     <p className="text-base text-slate-700 leading-relaxed mb-6">
-                        Our program doesn't reteach you how to land; it teaches you how to think, prioritize, and manage resources like an airline Captain from day one.
+                        Our program doesn't reteach you how to land; it helps you align your existing training to airline decision-making, prioritization, and resource management expectations.
                     </p>
                     <div className="bg-blue-50 rounded-xl p-4 border border-blue-100 inline-block text-left">
                         <p className="text-sm text-slate-700">
-                            <strong className="text-blue-700">Already completed the Foundation Program?</strong> Your verified profile and mentorship hours carry forward. Transition Program is $149 for graduates — your competency record speaks for itself.
+                            <strong className="text-blue-700">Already completed the Foundation Program?</strong> Your verified profile and mentorship hours carry forward. Transition Program is $149 for graduates — your Foundation record carries forward.
                         </p>
                     </div>
                 </div>
@@ -85,7 +85,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                             <CheckCircle2 className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
                             <div>
                                 <span className="font-bold text-slate-900 block">EBT/CBTA Competency Assessment (Aligned with HINFACT Framework)</span>
-                                <span className="text-slate-600 text-sm">Train with our own competency-based assessment framework built to align with HINFACT and ICAO EBT/CBTA standards. Evaluate your own readiness without needing direct HINFACT access.</span>
+                                <span className="text-slate-600 text-sm">Use our competency-based assessment framework built to align with HINFACT and ICAO EBT/CBTA standards. Evaluate readiness without needing direct HINFACT access.</span>
                             </div>
                         </li>
                         <li className="flex items-start gap-3">
@@ -118,7 +118,7 @@ export const TransitionProgramPage: React.FC<TransitionProgramPageProps> = ({
                             Yes, you need 1,500 hours to be considered by most airlines. But what are they <em>really</em> evaluating when they review your profile and assess competencies? Industry data shows a clear pattern: <strong>it's about competency, not just time logged</strong>.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed">
-                            Airlines want pilots who demonstrate mastery of the <strong>9 core competencies</strong> defined by ICAO and adopted by EBT/CBTA frameworks worldwide. These competencies are what separate a pilot with 1,500 hours of pattern work from one with 1,500 hours of meaningful, competency-building experience.
+                            Airlines want pilots who demonstrate mastery of the <strong>9 core competencies</strong> defined by ICAO and adopted by EBT/CBTA frameworks worldwide. These competencies are what separate a pilot with 1,500 hours of pattern work from one with 1,500 hours of meaningful, operationally relevant experience.
                         </p>
                     </div>
                     <div className="md:w-1/2">

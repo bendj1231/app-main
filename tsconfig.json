@@ -35,6 +35,7 @@
     "external-references",
     "functions",
     "waltid-identity",
-    "supabase"
+    "supabase",
+    "aeron-analysis"
   ]
 }

@@ -91,7 +91,7 @@ const SECTORS: Sector[] = [
             'Compare type rating providers by cost, location, recognition outcomes',
             'Discover scholarships and funded pathways before paying out of pocket',
         ],
-        cta: 'Free to join. $1,000/yr Operator Access for full analytics, credential issuance, and airline contact visibility. Success fees go to PilotRecognition.',
+        cta: 'Free to join. $1,000/yr Operator Access for full analytics, credential issuance, and airline contact visibility. There are absolutely no success or placement fees.',
     },
     {
         id: 'insurance',
@@ -1455,17 +1455,17 @@ const EnterpriseAccessPage = () => {
                             {
                                 tier: 'Preferred Partner',
                                 color: 'blue',
-                                desc: 'Pull pilots, post pathway cards, run end-to-end recruitment with placement tracking.',
-                                items: ['Full Pull API access', 'Unlimited Pathway Cards', 'Placement outcome dashboards', 'Recognition Score insights'],
-                                price: '$1,000 / month + $500 success fee',
+                                desc: 'Pull pilots, post pathway cards, and build direct network connections.',
+                                items: ['Full Pull API access', 'Unlimited Pathway Cards', 'Connection tracking dashboards', 'Recognition Score insights'],
+                                price: '$1,000 / year',
                                 featured: true,
                             },
                             {
                                 tier: 'Pathway Partner',
                                 color: 'emerald',
-                                desc: 'List pathways for free. Pay only when a pilot is placed through your card. Best for ATOs, charter, niche operators.',
-                                items: ['Free pathway listings', 'Pay-on-placement only', 'Pilot interest waitlist', 'Performance dashboard'],
-                                price: 'Free + $500 / placement',
+                                desc: 'List pathways for free and connect with interested pilots. Best for flight schools, charter operators, and local carriers.',
+                                items: ['Free pathway listings', 'Pilot interest inbox', 'Basic analytics dashboard'],
+                                price: 'Free',
                             },
                         ].map(t => (
                             <div key={t.tier} className={`relative bg-slate-50 border rounded-2xl p-6 ${t.featured ? 'border-red-500 ring-1 ring-red-500/20' : 'border-slate-200'}`}>
@@ -1490,10 +1490,10 @@ const EnterpriseAccessPage = () => {
             <section id="pricing" className="py-10 sm:py-20 px-4 sm:px-6 border-b border-slate-200 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <p className="text-[11px] uppercase tracking-[0.3em] text-red-600 font-semibold mb-3">Enterprise Pricing</p>
-                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-900">Simple. Outcome-aligned.</h2>
-                    <p className="text-slate-600 text-sm sm:text-lg max-w-2xl mb-8 sm:mb-12">Pay when it works. We track every placement obsessively — you should only pay when a pilot is hired through a pathway you posted.</p>
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 text-slate-900">Simple. Transparent.</h2>
+                    <p className="text-slate-600 text-sm sm:text-lg max-w-2xl mb-8 sm:mb-12">Establish your presence in the professional aviation network. Flat rate access. Absolutely no connection or placement fees.</p>
 
-                    <div className="grid md:grid-cols-3 gap-5">
+                    <div className="grid md:grid-cols-2 gap-5 max-w-2xl mx-auto">
                         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
                             <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold mb-2">Free</p>
                             <p className="text-4xl font-bold text-slate-900 mb-1">$0</p>
@@ -1501,8 +1501,7 @@ const EnterpriseAccessPage = () => {
                             <ul className="space-y-2 text-sm text-slate-700">
                                 <li>• Public pathway card listing</li>
                                 <li>• Receive pilot interest submissions</li>
-                                <li>• Basic outcome dashboard</li>
-                                <li>• Pay only on placement</li>
+                                <li>• Basic dashboard</li>
                             </ul>
                         </div>
                         <div className="bg-red-50 border border-red-200 ring-1 ring-red-500/20 rounded-2xl p-6">
@@ -1515,18 +1514,7 @@ const EnterpriseAccessPage = () => {
                                 <li>• Recognition Score & EBT video access</li>
                                 <li>• Veremark-verified pilot filter</li>
                                 <li>• Live profile feed</li>
-                                <li>• Placement tracking dashboard</li>
-                            </ul>
-                        </div>
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <p className="text-emerald-600 text-xs uppercase tracking-widest font-semibold mb-2">Outcome Fee</p>
-                            <p className="text-4xl font-bold text-slate-900 mb-1">$500<span className="text-lg text-slate-500 font-normal">/outcome</span></p>
-                            <p className="text-slate-600 text-sm mb-5">When a pathway connection succeeds</p>
-                            <ul className="space-y-2 text-sm text-slate-700">
-                                <li>• Charged when pilot engagement succeeds</li>
-                                <li>• Tracked through pathway interaction</li>
-                                <li>• Outcome attribution proven</li>
-                                <li>• No outcome = no fee</li>
+                                <li>• Connection tracking dashboard</li>
                             </ul>
                         </div>
                     </div>

@@ -27,9 +27,9 @@ The liability of the members is limited to the amount unpaid on the shares held 
 
 ## 4. Share Capital
 
-The authorised share capital of the Company is **MUR 100,000** (One Hundred Thousand Mauritian Rupees) divided into **100,000 ordinary shares** of **MUR 1.00** each.
+The Company is authorised to issue **100,000 ordinary shares** of **no par value**.
 
-The initial issued share capital shall be **100 ordinary shares** of MUR 1.00 each, fully paid, allotted as follows:
+The initial issue of shares on incorporation shall be **100 ordinary shares**, fully paid, allotted as follows:
 
 | Shareholder | Shares Held | Percentage | Consideration |
 |-------------|-------------|------------|---------------|
@@ -61,8 +61,11 @@ The objects for which the Company is established are:
 6. **Online Education and Mentorship-Verified Program Delivery**
    - To design, market, and deliver online educational programmes and professional development courses for pilots and aviation professionals, excluding formal flight training regulated under FAA Part 141/142 or EASA equivalent. Program completion shall be certified only upon verified demonstration of applied learning, including but not limited to: logged mentorship hours assisting other pilots, documented peer advocacy missions, and submission of verifiable proof of assistance rendered, assessed against programme-specific competency rubrics.
 
-7. **Aviation Industry Association and Networking**
-   - To establish, operate, and maintain pilotshortage.org as an open-membership aviation industry association and networking platform welcoming all aviation industry participants — including pilots, airlines, approved training organisations (ATOs), flight schools, regulators, and the general public — to collaborate in addressing aviation workforce shortages, promoting pilot career development, and advancing awareness of the global pilot shortage. Such platforms shall be operated by the Company as an open, cause-driven industry body without separate legal personality, and shall not be established as a registered non-profit entity, charitable organisation, or independent association under any non-profit law. Membership shall be free and open to all interested parties. The Company may also establish and operate affiliated networking platforms under the same open membership model.
+7. **Aviation Industry Community Platform and Networking**
+   - To establish, operate, and maintain pilotshortage.org as an open community platform and networking initiative operated by the Company, welcoming aviation industry participants — including pilots, airlines, approved training organisations (ATOs), flight schools, regulators, and the general public — to collaborate in addressing aviation workforce shortages, promoting pilot career development, and advancing awareness of the global pilot shortage.
+   - This community platform is not constituted as, and shall not be represented as, an “association” within the meaning of the Registration of Associations Act, and shall not be operated as a separate legal person, independent membership body, registered non-profit entity, or charitable organisation.
+   - Participation shall be free and open. No membership fees, fundraising, donations, or contributions shall be collected under the pilotshortage.org community platform name. Any commercial revenue (if any) shall be generated only through the Company’s ordinary SaaS and enterprise activities and accounted for in the Company’s financial records.
+   - If the Company later decides to operate a formal membership organisation with separate governance or funding, it shall establish and register an appropriate legal entity and comply with all applicable requirements prior to commencing that activity.
 
 ### Ancillary Objects
 
@@ -104,7 +107,7 @@ In these Articles, unless the context otherwise requires:
 ## 2. Share Capital and Variation of Rights
 
 ### 2.1 Authorised and Issued Capital
-The share capital of the Company is MUR 100,000 divided into 100,000 ordinary shares of MUR 1.00 each. The initial issued share capital shall be 100 ordinary shares, fully paid.
+The Company is authorised to issue 100,000 ordinary shares of no par value. The initial issued share capital shall be 100 ordinary shares, fully paid.
 
 ### 2.2 Variation of Rights
 Subject to the Act, all rights attached to any class of shares may be varied with the written consent of the holders of not less than 75% of the issued shares of that class, or with the sanction of a special resolution passed at a separate general meeting of the holders of shares of that class.
@@ -131,9 +134,9 @@ In the case of the death of a member, the survivor or survivors where the deceas
 ### 4.1 Number of Directors
 The minimum number of directors shall be one (1) and the maximum number shall be five (5). The initial directors are:
 
-**Marie Maureen Synthia Maya** — Managing Director, appointed to satisfy Mauritian residency requirements for company operations and bank account opening. The Managing Director holds no shares. Notwithstanding the general removal power in Article 4.5, the Managing Director may be removed by ordinary resolution of the sole shareholder only if: (a) not less than thirty (30) days' prior written notice of the proposed resolution is given to the Managing Director; and (b) the resolution states the reasonable grounds for removal, which may include failure to fulfil statutory duties, breach of fiduciary obligation, or prolonged incapacity to act.
+**Marie Maureen Synthia Maya** — Managing Director, appointed to satisfy Mauritian residency requirements for company operations and bank account opening. The Managing Director holds no shares.
 
-**Benjamin Bowler** — Non-Executive Director, sole shareholder (100%), and Authorized Signatory and Representative of the Data Controller (Mauritius Data Protection Act 2017).
+**Benjamin Bowler** — Non-Executive Director, sole shareholder (100%), and Authorised Signatory and Representative of the Data Controller (Mauritius Data Protection Act 2017).
 
 ### 4.2 Powers of Directors
 The business and affairs of the Company shall be managed by the directors, who may exercise all such powers of the Company as are not, by the Act or by these Articles, required to be exercised by the Company in general meeting.
@@ -264,10 +267,10 @@ The Company may purchase and maintain insurance for the benefit of any director,
 ## 13. Data Protection and Compliance
 
 ### 13.1 Data Controller Registration
-The Company shall register as a Data Controller with the Data Protection Office of the Republic of Mauritius under the Data Protection Act 2017 prior to commencing any user data processing. As of the date of these Articles, the platform has not commenced user data processing. The 14-day registration obligation shall commence upon the platform's first user registration or first processing of personal data, whichever occurs first. The Company qualifies for the discounted registration and renewal fee applicable to enterprises with five (5) or fewer employees, currently set at Rs 1,000 for a three (3) year period. As the sole shareholder and Authorized Signatory of the Data Controller, Benjamin Bowler assumes full responsibility for implementing basic data security practices, including password-protected systems, secure deletion of data no longer required, and maintenance of records of processing activities, pending the appointment of an independent Data Protection Officer.
+The Company shall register as a Data Controller with the Data Protection Office of the Republic of Mauritius under the Data Protection Act 2017 prior to commencing the processing of personal data and shall maintain appropriate technical and organisational measures, including records of processing activities.
 
 ### 13.2 Data Protection Officer (Mauritius)
-The Company is the registered Data Controller. Benjamin Bowler (Non-Executive Director, Sole Shareholder) serves as the Authorized Signatory and Representative of the Data Controller for all filings and correspondence with the Mauritius Data Protection Office. Under the Mauritius Data Protection Act 2017, the Data Protection Officer must be independent from operational decision-making and shall not be the owner, sole shareholder, or executive director of the Data Controller. Accordingly, the Company acknowledges that Benjamin Bowler does not serve as, and cannot serve as, the Data Protection Officer under the Mauritius Data Protection Act 2017. The position of Data Protection Officer shall remain vacant until such time as the Company appoints an independent person to that role, which appointment shall occur no later than the commencement of processing activities or upon the Company exceeding the small enterprise threshold, whichever occurs first. The Company acknowledges that a separate independent Data Protection Officer under GDPR Article 37 shall also be appointed prior to processing personal data of data subjects within the European Economic Area at scale.
+The Company shall appoint a Data Protection Officer where required under the Data Protection Act 2017. Benjamin Bowler (Non-Executive Director, Sole Shareholder) serves as the Authorised Signatory and Representative of the Data Controller for filings and correspondence with the Mauritius Data Protection Office.
 
 ### 13.3 Records of Processing
 The Company shall maintain accurate and up-to-date records of all processing activities, including:
@@ -304,11 +307,6 @@ These Articles and all matters arising from them shall be governed by and constr
 
 # SCHEDULE A — INITIAL DIRECTOR AND SHAREHOLDER PARTICULARS
 
-> **⚠️ PRE-SUBMISSION CHECKLIST:** The following fields must be completed before submitting to CBRD:
-> - [ ] Passport numbers (both directors) — obtain from physical passports
-> - [ ] Qualification (Marie) — insert highest educational/professional certificate
-> - [ ] All `[Date of incorporation]` placeholders — fill after CBRD issues certificate
-
 ## Director 1 — Marie Maureen Synthia Maya (Managing Director)
 
 | Field | Details |
@@ -316,12 +314,12 @@ These Articles and all matters arising from them shall be governed by and constr
 | Full Name | Marie Maureen Synthia Maya |
 | Date of Birth | 28 April 1984 |
 | Nationality | Mauritian |
-| Passport Number | [To be inserted] |
+| Passport Number | _________________________ |
 | Residential Address | 24 Avenue Le Morne, Black Rock 2, Villa 24, Tamarin, Republic of Mauritius |
 | Occupation | Business Administrator |
-| Qualification | [To be inserted — highest educational/professional qualification, e.g., School Certificate, Diploma, or N/A if none] |
+| Qualification | _________________________ |
 | Role in Company | Managing Director, Company Secretary |
-| Date of Appointment | [Date of incorporation] |
+| Date of Appointment | _________________________ |
 
 ## Director 2 — Benjamin Bowler (Non-Executive Director)
 
@@ -330,22 +328,22 @@ These Articles and all matters arising from them shall be governed by and constr
 | Full Name | Benjamin Bowler |
 | Date of Birth | 30 July 2003 |
 | Nationality | Mauritian |
-| Passport Number | [To be inserted] |
-| Residential Address | Dacanay Boarding House, Apt 10, Rosario, La Union, Concepcion 2506, Philippines |
+| Passport Number | _________________________ |
+| Residential Address | 24 Avenue Le Morne, Black Rock 2, Villa 24, Tamarin, Republic of Mauritius |
 | Occupation | Commercial Pilot / Software Entrepreneur |
 | Qualification | Commercial Pilot Licence (CPL) Holder |
-| Role in Company | Non-Executive Director, Sole Shareholder, Authorized Signatory and Representative of the Data Controller (Mauritius Data Protection Act 2017) |
-| Date of Appointment | [Date of incorporation] |
+| Role in Company | Non-Executive Director, Sole Shareholder, Authorised Signatory and Representative of the Data Controller (Mauritius Data Protection Act 2017) |
+| Date of Appointment | _________________________ |
 
 ## Shareholder
 
 | Field | Details |
 |-------|---------|
 | Full Name | Benjamin Bowler |
-| Shares Held | 100 ordinary shares of MUR 1.00 |
+| Shares Held | 100 ordinary shares |
 | Percentage | 100% |
 | Consideration | Cash — MUR 100 (fully paid) |
-| Date of Allotment | [Date of incorporation] |
+| Date of Allotment | _________________________ |
 
 ## Company Secretary
 
@@ -353,7 +351,7 @@ These Articles and all matters arising from them shall be governed by and constr
 |-------|---------|
 | Full Name | Marie Maureen Synthia Maya |
 | Same as Director | Yes (same as Managing Director) |
-| Date of Appointment | [Date of incorporation] |
+| Date of Appointment | _________________________ |
 
 ---
 
@@ -362,13 +360,13 @@ These Articles and all matters arising from them shall be governed by and constr
 ## Registered Office
 
 **Address:** 24 Avenue Le Morne, Black Rock 2, Villa 24, Tamarin, Republic of Mauritius  
-**Effective Date:** [Date of incorporation]  
+**Effective Date:** _________________________  
 **Type:** Director's personal residence
 
 ## Service Address for Benjamin Bowler (Non-Executive Director)
 
-**Address:** Dacanay Boarding House, Apt 10, Rosario, La Union, Concepcion 2506, Philippines  
-**Country:** Philippines
+**Address:** 24 Avenue Le Morne, Black Rock 2, Villa 24, Tamarin, Republic of Mauritius  
+**Country:** Mauritius
 
 ---
 
@@ -400,6 +398,6 @@ In the presence of:
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 1.0 | 02 June 2026 | Benjamin Bowler | Initial draft for CBRD submission |
+| 1.0 | 02 June 2026 | Benjamin Bowler | CBRD submission clean version |
 
 **Next Review:** Upon admission of additional shareholder or director

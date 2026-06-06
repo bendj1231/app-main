@@ -86,7 +86,7 @@ const AirlinesOperatorsPage = () => {
             'No more blind applications — know where you fit before you apply',
             'Recognition Score gives you a target to work toward',
         ],
-        cta: 'Pricing: $1,000/year Enterprise + $500 success fee per pilot placed within 90 days.',
+        cta: 'Pricing: $1,000/year Enterprise flat. Absolutely no success or placement fees.',
         mission: 'For Airlines & Operators, our mission is to close the recognition gap between pilots and flight departments. We shift recruitment from a "push" model — where pilots submit applications without response or feedback — to a "pull" model where operators access pre-qualified interest. Pathway Cards force transparency, surfacing hidden competencies that generic job boards hide. The Fair View System gives you control: see broad interest from free members while prioritizing premium candidates with verified backgrounds. This is not a luxury job board — it is infrastructure. Credentials and needs are pre-aligned before the first conversation ever happens, eliminating the 80% of applications that are merely inquiries about expectations.',
     };
 
@@ -378,7 +378,7 @@ const AirlinesOperatorsPage = () => {
                             </ul>
                             <div className="bg-slate-50 rounded-lg p-3 mb-6">
                                 <p className="text-xs text-slate-600 text-center">
-                                    + <span className="font-semibold text-slate-900">$500</span> success fee per pilot placed within 90 days
+                                    Absolutely no success or placement fees.
                                 </p>
                             </div>
                             <button onClick={() => scrollTo('contact')} className="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-3 rounded-xl transition-colors">
@@ -389,7 +389,7 @@ const AirlinesOperatorsPage = () => {
 
                     <div className="mt-8 bg-emerald-50 border border-emerald-200 rounded-xl p-6 max-w-4xl mx-auto">
                         <p className="text-slate-800 text-sm text-center">
-                            <span className="font-semibold text-emerald-700">Cost Comparison:</span> Traditional agency placement for a G650 Captain averages <span className="font-semibold">$50,000</span>. With PilotRecognition Enterprise, your quarterly cost for the same placement is <span className="font-semibold text-red-600">$3,500</span>—a <span className="font-semibold">93% reduction</span>.
+                            <span className="font-semibold text-emerald-700">Cost Comparison:</span> Traditional agency placement for a G650 Captain averages <span className="font-semibold">$50,000</span>. With PilotRecognition Enterprise, your annual cost is just <span className="font-semibold text-red-600">$1,000</span>—a massive saving in search and networking costs.
                         </p>
                     </div>
                 </div>
@@ -530,7 +530,7 @@ const AirlinesOperatorsPage = () => {
                             <div className="space-y-3 mb-6">
                                 <div className="flex items-start gap-2">
                                     <span className="text-emerald-500 text-xs">✓</span>
-                                    <p className="text-slate-600 text-xs">$1,000/year + $500 success fee</p>
+                                    <p className="text-slate-600 text-xs">$1,000/year flat</p>
                                 </div>
                                 <div className="flex items-start gap-2">
                                     <span className="text-emerald-500 text-xs">✓</span>
@@ -1606,15 +1606,15 @@ const AirlinesOperatorsPage = () => {
                             <ul className="space-y-2 text-xs text-slate-700">
                                 <li className="flex items-start gap-2">
                                     <span className="text-amber-500">●</span>
-                                    $3,500 vs. $50,000 per placement
+                                    $1,000 vs. $50,000 per placement
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-amber-500">●</span>
-                                    Fixed annual + success fee model
+                                    Flat annual subscription model
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-amber-500">●</span>
-                                    93% cost reduction vs. agencies
+                                    98% cost reduction vs. agencies
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <span className="text-amber-500">●</span>
@@ -1909,7 +1909,7 @@ const AirlinesOperatorsPage = () => {
                             </ul>
                             <div className="bg-slate-50 rounded-lg p-3 mb-6">
                                 <p className="text-xs text-slate-600 text-center">
-                                    + <span className="font-semibold text-slate-900">$500</span> success fee per pilot placed within 90 days
+                                    Absolutely no success or placement fees.
                                 </p>
                             </div>
                             <button onClick={() => scrollTo('contact')} className="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-3 rounded-xl transition-colors">
@@ -1920,7 +1920,7 @@ const AirlinesOperatorsPage = () => {
 
                     <div className="mt-8 bg-emerald-50 border border-emerald-200 rounded-xl p-6 max-w-4xl mx-auto">
                         <p className="text-slate-800 text-sm text-center">
-                            <span className="font-semibold text-emerald-700">Cost Comparison:</span> Traditional agency placement for a G650 Captain averages <span className="font-semibold">$50,000</span>. With PilotRecognition Enterprise, your quarterly cost for the same placement is <span className="font-semibold text-red-600">$3,500</span>—a <span className="font-semibold">93% reduction</span>.
+                            <span className="font-semibold text-emerald-700">Cost Comparison:</span> Traditional agency placement for a G650 Captain averages <span className="font-semibold">$50,000</span>. With PilotRecognition Enterprise, your annual cost is just <span className="font-semibold text-red-600">$1,000</span>—a massive saving in search and networking costs.
                         </p>
                     </div>
                 </div>

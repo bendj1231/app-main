@@ -202,9 +202,9 @@ export const AboutIndustryPage: React.FC<AboutIndustryPageProps> = ({
                                 <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-red-400 mb-4">Enterprise</h3>
                                 <div className="text-4xl font-bold mb-1">$1,000<span className="text-lg font-normal text-slate-400">/year</span></div>
                                 <p className="text-xs text-slate-400 mb-1">One flat rate. Every stakeholder.</p>
-                                <p className="text-xs text-slate-400 mb-6">+ $500 outcome fee per confirmed placement</p>
+                                <p className="text-xs text-slate-400 mb-6">Absolutely no success or placement fees</p>
                                 <ul className="space-y-3 text-sm text-slate-300 flex-1">
-                                    {['Everything in Free', 'Pull API — query verified pilot database', 'Recognition Score per pilot', 'EBT video assessment access', 'Live profile feed (not static CVs)', 'Placement tracking dashboard', 'Dedicated onboarding support'].map(f => (
+                                    {['Everything in Free', 'Pull API — query verified pilot database', 'Recognition Score per pilot', 'EBT video assessment access', 'Live profile feed (not static CVs)', 'Connection tracking dashboard', 'Dedicated onboarding support'].map(f => (
                                         <li key={f} className="flex items-start gap-2">
                                             <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
                                             {f}
