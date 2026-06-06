@@ -34,3 +34,5 @@ external-references/
 
 # Firebase functions
 functions/.env
+
+aeron-analysis/
