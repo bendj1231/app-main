@@ -50,12 +50,12 @@ export default async function handler(req: Request) {
 
     // Parse webhook event
     const event = JSON.parse(body);
-    
+
     // Handle email.received event
     if (event.type === 'email.received') {
       const emailData = event.data;
       const toAddress = emailData.to?.[0]?.email || emailData.to?.[0];
-      
+
       if (!toAddress) {
         console.error('No recipient address found in webhook');
         return new Response('Bad Request', { status: 400 });
@@ -63,9 +63,9 @@ export default async function handler(req: Request) {
 
       // Determine forwarding destination
       const destination = emailRouting[toAddress];
-      
+
       if (!destination) {
-        console.log(`No routing rule for ${toAddress}, skipping`);
+        console.warn(`No routing rule for ${toAddress}, skipping`);
         return new Response('OK', { status: 200 });
       }
 
@@ -78,28 +78,27 @@ export default async function handler(req: Request) {
 
       // Forward email to each destination
       for (const dest of destinations) {
-        const { data, error } = await resend.emails.receiving.forward({
+        const res = await resend.emails.receiving.forward({
           emailId: emailData.email_id,
           from: fromAddress,
           to: dest,
           passthrough: true, // Preserve formatting and attachments
         });
 
-        if (error) {
-          console.error(`Failed to forward email to ${dest}:`, error);
+        if (res.error) {
+          console.error(`Failed to forward email to ${dest}:`, res.error);
           return new Response('Failed to forward', { status: 500 });
         }
 
-        console.log(`Forwarded email from ${toAddress} to ${dest}`);
+        console.warn(`Forwarded email from ${toAddress} to ${dest}`);
       }
 
       return new Response('OK', { status: 200 });
     }
 
     // Handle other webhook events
-    console.log(`Received webhook event: ${event.type}`);
+    console.warn(`Received webhook event: ${event.type}`);
     return new Response('OK', { status: 200 });
-
   } catch (error) {
     console.error('Webhook handler error:', error);
     return new Response('Internal Server Error', { status: 500 });
@@ -107,5 +106,5 @@ export default async function handler(req: Request) {
 }
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 };

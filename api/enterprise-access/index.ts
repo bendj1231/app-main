@@ -58,25 +58,25 @@ Additional Information:
 
     if (error) {
       console.error('Resend API error:', error);
-      return new Response(JSON.stringify({ error: 'Failed to send email' }), { 
+      return new Response(JSON.stringify({ error: 'Failed to send email' }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    return new Response(JSON.stringify({ success: true, data }), { 
+    return new Response(JSON.stringify({ success: true, data }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.error('Error processing request:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), { 
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 }
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 };
