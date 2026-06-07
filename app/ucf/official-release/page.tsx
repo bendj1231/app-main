@@ -80,6 +80,13 @@ const navSections = [
   { id: 'hub-g-discovery', label: 'Hub G — Digital Discovery', group: 'hubg' },
   { id: 'pillar-25-discovery', label: 'Pillar 25: Digital Discovery & Search', indent: true, group: 'hubg' },
   { id: 'pillar-platform-legal-model', label: 'Pillar: Platform Legal Model & Revenue', indent: true, group: 'hubg' },
+
+  { id: 'hub-h-associations', label: 'Hub H — Associations & Industry Groups', group: 'hubh' },
+  { id: 'pillar-26-associations', label: 'Pillar 26: Associations & Industry Groups', indent: true, group: 'hubh' },
+  { id: 'pillar-27-government-apis', label: 'Pillar 27: Government APIs & Regulatory Compliance', indent: true, group: 'hubh' },
+  { id: 'pillar-28-transition-program', label: 'Pillar 28: Transition Program', indent: true, group: 'hubh' },
+  { id: 'pillar-29-internsop-operations', label: 'Pillar 29: InternsOp Operations', indent: true, group: 'hubh' },
+
   { id: 'pillar-legal-inquiry-fees', label: 'Legal Inquiry & Response Fees', indent: true, group: 'hubg', adminOnly: true },
   { id: 'pillar-credential-chain', label: 'Example: Credential Chain', indent: true, group: 'hubg', adminOnly: true },
   { id: 'pillar-financial-chain', label: 'Example: Financial Chain', indent: true, group: 'hubg', adminOnly: true },
@@ -128,7 +135,7 @@ export default function UCFOfficialReleasePage() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({
-    doc: false, tech: false, hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true, prospects: true,
+    doc: false, tech: false, hubf: true, hubd: true, huba: true, hubc: true, hube: true, hubfg: true, hubg: true, hubh: false, prospects: true,
   });
   const toggleGroup = (group: string) => setCollapsedGroups(prev => ({ ...prev, [group]: !prev[group] }));
   const [showLoginForm, setShowLoginForm] = useState(false);
@@ -150,8 +157,9 @@ export default function UCFOfficialReleasePage() {
     try {
       await login(loginEmail, loginPassword);
       setShowLoginForm(false);
-    } catch (err: any) {
-      setLoginError(err.message || 'Login failed');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Login failed';
+      setLoginError(message);
     }
   };
 
@@ -346,7 +354,7 @@ export default function UCFOfficialReleasePage() {
               {[
                 { label: 'Version', value: '10.0-Expanded' },
                 { label: 'Stakeholder Hubs', value: '7' },
-                { label: 'Strategic Pillars', value: '25' },
+                { label: 'Strategic Pillars', value: '29' },
                 { label: 'Pages', value: '90+' },
               ].map((item) => (
                 <div key={item.label} className="bg-slate-50 border border-slate-200 rounded-lg p-3">
@@ -370,7 +378,7 @@ export default function UCFOfficialReleasePage() {
 
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-5">
                 <h3 className="text-lg font-bold text-slate-800 mb-3">Scope of the Universal Commercial Framework</h3>
-                <p className="text-slate-700 leading-relaxed text-sm mb-4">This document defines a comprehensive commercial and technical architecture spanning <strong>25 strategic pillars</strong> organised across <strong>7 stakeholder hubs</strong>. Below is the complete stakeholder breakdown with real market data, integration protocols, and the structural problems each pillar addresses.</p>
+                <p className="text-slate-700 leading-relaxed text-sm mb-4">This document defines a comprehensive commercial and technical architecture spanning <strong>29 strategic pillars</strong> organised across <strong>7 stakeholder hubs</strong>. Below is the complete stakeholder breakdown with real market data, integration protocols, and the structural problems each pillar addresses.</p>
 
                 {/* HUB A */}
                 <div className="bg-blue-900 rounded-lg px-4 py-3 mb-2 flex items-center justify-between">
@@ -449,7 +457,7 @@ export default function UCFOfficialReleasePage() {
                   </table>
                 </div>
 
-                <p className="text-slate-700 leading-relaxed text-sm">Each pillar is an independent industry function with its own optimized revenue model, liability structure, and integration protocol. The Universal Commercial Framework does not replace these entities — it provides the <strong>neutral coordination layer</strong> that enables them to interoperate effortlessly. The pilot's cryptographically verified professional identity is the common thread flowing through all 25 pillars, creating a single source of truth for an industry that has historically operated in complete data silos.</p>
+                <p className="text-slate-700 leading-relaxed text-sm">Each pillar is an independent industry function with its own optimized revenue model, liability structure, and integration protocol. The Universal Commercial Framework does not replace these entities — it provides the <strong>neutral coordination layer</strong> that enables them to interoperate effortlessly. The pilot's cryptographically verified professional identity is the common thread flowing through all 29 pillars, creating a single source of truth for an industry that has historically operated in complete data silos.</p>
               </div>
 
               <div className="bg-red-50 border border-red-200 rounded-lg p-5">
@@ -1938,7 +1946,7 @@ export default function UCFOfficialReleasePage() {
               <tbody>
                 {[
                   { tier: 'Airline Expectations Listing', fee: '$100/year', features: 'Dedicated airline profile on the Browse Airlines directory — culture, fleet, base locations, type rating sponsorship, career progression, pro-pilot commitments. Visible to all pilots on the platform. Comparable side-by-side against other operators in the region.' },
-                ].map((row, i) => (
+                ].map((row) => (
                   <tr key={row.tier} className="bg-slate-800">
                     <td className="px-4 py-2 border-b border-slate-700 font-medium text-slate-100">{row.tier}</td>
                     <td className="px-4 py-2 border-b border-slate-700 text-red-400 font-semibold">{row.fee}</td>
@@ -3855,7 +3863,7 @@ export default function UCFOfficialReleasePage() {
             <li>Convince global airlines, insurance underwriters, and medical examiners to integrate with their proprietary backend</li>
             <li>Build airline enterprise agreements and verification provider networks (Veremark, infrastructure partners)</li>
           </ul>
-          <p className="text-slate-700 leading-relaxed mb-4">Pilot Flight Logbook Platforms are software companies building tools for pilots. They do not possess the network infrastructure, airline enterprise agreements, or legal protocol design that PilotRecognition has established across Pillars 1-25.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Pilot Flight Logbook Platforms are software companies building tools for pilots. They do not possess the network infrastructure, airline enterprise agreements, or legal protocol design that PilotRecognition has established across Pillars 1-26.</p>
 
           <h4 className="text-lg font-bold text-slate-800 mt-6 mb-3">5. The Network Effect: Visa/Mastercard Model</h4>
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition operates like Visa or Mastercard — an aggregator network that does not care which "bank" issued the card:</p>
@@ -5190,7 +5198,7 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Ecosystem Connectivity — Pillar 11 Handshakes</h4>
-          <p className="text-slate-700 text-sm leading-relaxed mb-4">Pillar 11 is the data clearinghouse for the entire 25-pillar ecosystem. The verification wallet does not operate in isolation — it is the integration node that connects every credentialled interaction across every sector on the platform.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Pillar 11 is the data clearinghouse for the entire 28-pillar ecosystem. The verification wallet does not operate in isolation — it is the integration node that connects every credentialled interaction across every sector on the platform.</p>
           <ul className="space-y-3 mb-6">
             {([
               { t: 'Pillar 13 — Aeromedical', d: 'The AME does not issue a paper certificate. They push a signed Digital Medical Token directly into the pilot\'s Pillar 11 wallet via API. Medical status is live, cryptographically verified, and continuously monitored — not a scanned PDF submitted by the pilot.' },
@@ -5271,7 +5279,7 @@ export default function UCFOfficialReleasePage() {
           </div>
 
           <div className="bg-slate-900 border-l-4 border-red-500 px-5 py-4 mb-8 rounded-r">
-            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>By being Market Neutral, the platform is structurally un-killable.</strong> If one regional node experiences a technical outage or a regulatory issue in a specific country, the remaining three nodes and the rest of the 25-pillar ecosystem continue operating without interruption. The platform has built a <strong style={{color:'#f87171'}}>decentralised trust network</strong> — resilient, regionally sovereign, and commercially fair to every participant in it.</p>
+            <p className="text-white text-sm leading-relaxed"><strong style={{color:'#f87171'}}>By being Market Neutral, the platform is structurally un-killable.</strong> If one regional node experiences a technical outage or a regulatory issue in a specific country, the remaining three nodes and the rest of the 28-pillar ecosystem continue operating without interruption. The platform has built a <strong style={{color:'#f87171'}}>decentralised trust network</strong> — resilient, regionally sovereign, and commercially fair to every participant in it.</p>
           </div>
 
           <h5 className="text-base font-bold text-slate-800 mt-8 mb-2">The Smart Routing Engine — Weighted Routing by Licensing Authority</h5>
@@ -5430,7 +5438,7 @@ export default function UCFOfficialReleasePage() {
           </ul>
 
           <h4 className="text-lg font-bold text-slate-800 mt-8 mb-3">Ecosystem Integration — The Pillar 11 Handshake Map</h4>
-          <p className="text-slate-700 text-sm leading-relaxed mb-4">Pillar 11 is the Central Processing Unit of the 25-pillar ecosystem. The Professional Standing Asset does not operate in isolation — it is the credential node through which every sector on the platform validates, trusts, and acts on pilot data. The following handshakes define how the verification infrastructure pulses outward across the map.</p>
+          <p className="text-slate-700 text-sm leading-relaxed mb-4">Pillar 11 is the Central Processing Unit of the 28-pillar ecosystem. The Professional Standing Asset does not operate in isolation — it is the credential node through which every sector on the platform validates, trusts, and acts on pilot data. The following handshakes define how the verification infrastructure pulses outward across the map.</p>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -6517,7 +6525,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-6"><strong style={{color:'#dc2626'}}>4. Zero Marketplace Portability</strong><br />A standalone logbook is a closed loop. Hours live inside the app or print on a static PDF — and without independent verification, they remain unsubstantiated claims rather than auditable industry credentials. The platform does not actively broadcast a pilot's verified readiness to the industry.</p>
 
           <p className="text-slate-500 text-xs uppercase tracking-widest font-bold mb-4">THE PILOTRRECOGNITION SOLUTION: ADDING THE VERIFICATION LAYER</p>
-          <p className="text-slate-700 leading-relaxed mb-4">"You provide the ledger; we provide the professional destination. By integrating your users' flight hours into our 25-pillar neutral Independent Industry Framework, together we transform their passive personal numbers into active, certified industry credentials."</p>
+          <p className="text-slate-700 leading-relaxed mb-4">"You provide the ledger; we provide the professional destination. By integrating your users' flight hours into our 28-pillar neutral Independent Industry Framework, together we transform their passive personal numbers into active, certified industry credentials."</p>
           <p className="text-slate-700 leading-relaxed mb-4"><strong>The $100 Recognition+ Subscription:</strong> Pilots upgrade to activate the cryptographic verification seal on their profile. The partnering logbook platform earns a direct revenue share for every activation, instantly transforming unverified, self-reported flight time into an elite, audited industry credential.</p>
           <p className="text-slate-700 leading-relaxed mb-3"><strong>The $1,000/Year Enterprise Verification Tier</strong> is a B2B infrastructure access fee payable by the partnering logbook platform, not the individual pilot. Upon activation, the provider's technical infrastructure is authorized to receive, store, and display cryptographically verifiable attestation tokens issued by the <a href="#hub-b-verification" className="text-blue-600 font-semibold hover:underline">Verification &amp; Background Check Providers (Hub B)</a> — generated through pilot-initiated verification workflows — alongside institutional validation tokens issued by approved <a href="#part-ii-hub-a" className="text-blue-600 font-semibold hover:underline">ATOs &amp; Operators (Hub A)</a>.</p>
           <p className="text-slate-700 leading-relaxed mb-3">This integration addresses a structural limitation inherent to self-reported logbook data. User-generated flight entries, absent third-party attestation, carry no independent evidentiary weight within the hiring process. By anchoring existing platform data to origin-verified tokens from approved institutional sources or operators, the provider's data layer transitions from a record of self-reported activity to an auditable professional data asset. The platform retains full operational control of its infrastructure while the underlying data acquires a materially higher verification standard.</p>
@@ -7495,7 +7503,7 @@ export default function UCFOfficialReleasePage() {
               <p><strong>Flight Logbook Platforms for Pilots = Hertz / Europcar / Enterprise</strong></p>
               <p>Established brands with their own infrastructure, their own apps, their own user bases. They don't need us to build their logbook — they already have a premium product. What they need is <strong>infrastructure integration</strong>:</p>
               <ul className="list-disc list-inside ml-4 space-y-1">
-                <li>Access to our 25-pillar verification network</li>
+                <li>Access to our 28-pillar verification network</li>
                 <li>API hooks into airline data feeds (workforce management systems/airline systems)</li>
                 <li>The "Recognition Score" integration that makes their users discoverable</li>
                 <li>The $20 referral dividend for each verified pilot</li>
@@ -8476,7 +8484,7 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub D — Infrastructure &amp; Data · Data &amp; Integration</p>
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Recognition Score — Your Currency for Pathway Access</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The Recognition Score is not a rating. It is not a ranking. It is a structured gap analysis engine — a real-time comparison between a pilot's verified profile and any pathway requirement in the system. The score tells a pilot not where they stand in a league table, but precisely what they are missing, in what order to close it, and which operators they already qualify for today.</p>
-          <p className="text-slate-700 leading-relaxed mb-6">The matching engine runs across all 25 UCF pillars simultaneously. It ingests verified credentials, flight hours, program completions, EBT assessment scores, telemetry data, and behavioural signals. It outputs a structured gap report per pathway — not a generic percentage, but a line-item breakdown: hours short, type rating missing, language proficiency level, recency gap, medical certificate status. Every gap is actionable. Every action moves the score.</p>
+          <p className="text-slate-700 leading-relaxed mb-6">The matching engine runs across all 28 UCF pillars simultaneously. It ingests verified credentials, flight hours, program completions, EBT assessment scores, telemetry data, and behavioural signals. It outputs a structured gap report per pathway — not a generic percentage, but a line-item breakdown: hours short, type rating missing, language proficiency level, recency gap, medical certificate status. Every gap is actionable. Every action moves the score.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[
               { t: 'Score Inputs (Weighted)', items: ['Flight hours — total time, command, night, instrument (35%)', 'Verified credentials — license, medical, type ratings (25%)', 'Program completion — Foundation, Transition, EBT (20%)', 'Behavioural assessment — EBT video scoring (10%)', 'Recency — last 90-day activity, sim data (5%)', 'Peer validation and mentor endorsements (5%)'] },
@@ -9330,17 +9338,297 @@ export default function UCFOfficialReleasePage() {
           <p className="text-slate-700 leading-relaxed mb-4">PilotRecognition is a <strong>general platform</strong> — a domain that aggregates, structures, and displays reputable information across all UCF pillars. It is not a data company, a verification company, a staffing agency, or a financial institution. It is a <strong>neutral information and consent management layer</strong> operated through contracts with specialist providers who perform every functional role.</p>
           <p className="text-slate-700 leading-relaxed mb-6">This model means the platform does not require traditional business establishment in every jurisdiction it operates. The legal entity is minimal. The liability exposure is minimal. The operational complexity is minimal. What the platform does require — and what it charges for — is <strong>access to structured, verified, aggregated aviation career data</strong> that no other single source provides.</p>
 
+          <h2 id="pillar-26-associations" className="text-3xl font-bold text-slate-900 mt-10 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 26: ASSOCIATIONS &amp; INDUSTRY GROUPS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub H — Associations &amp; Industry Groups</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Making Professional Associations a First-Class Participant in the Framework</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Industry associations, pilot unions, and professional bodies are the custodians of credential standards, endorsements, and workforce community trust. Pillar 26 brings these groups into the Universal Commercial Framework by integrating membership validation, certification standards, and association-led professional pathways directly into the platform's verified career ecosystem.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Member Verification', items: ['Verified association membership credentials', 'Accreditation status embedded in Professional Standing Assets', 'Direct member status checks for operators and regulators'] },
+              { t: 'Standards & Endorsements', items: ['Industry group endorsements published as structured credentials', 'Association-issued competency benchmarks', 'Reciprocal recognition across airlines and training institutions'] },
+              { t: 'Network Signal', items: ['Association-backed career pathways surfaced in discovery', 'Collective workforce data for labor planning', 'Member referral and mentorship channels integrated into platform flows'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <h2 id="pillar-27-government-apis" className="text-3xl font-bold text-slate-900 mt-10 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 27: GOVERNMENT APIS &amp; REGULATORY COMPLIANCE
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub H — Associations &amp; Industry Groups</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Connecting Regulators, Government Systems, and Industry Compliance</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Pillar 27 embeds government APIs and regulatory compliance workflows into the Universal Commercial Framework. It ensures that live regulatory status, licence approvals, and mandatory reporting are integrated directly into the platform's verified pilot ecosystem, reducing manual audits and improving trust between industry and regulators.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Government APIs', items: ['Standardised regulatory data connectors', 'Real-time licence and certification status', 'Automated regulatory reporting feeds'] },
+              { t: 'Compliance Workflows', items: ['Regulatory case management integration', 'Automated audit preparation and evidence collection', 'Rule-driven compliance validation for pilots and operators'] },
+              { t: 'Regulatory Trust', items: ['Government-issued attestations appear as structured credentials', 'Verified regulatory approvals in pilot profiles', 'Regulator dashboards for industry-wide monitoring and enforcement'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <h2 id="pillar-28-transition-program" className="text-3xl font-bold text-slate-900 mt-10 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 28: TRANSITION PROGRAM
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub F — Growth &amp; Expansion</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Cargo Operations as the Legal Transition Loophole</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">Cargo operations are a massive loophole. If you want a candidate to sit in a real flying cockpit in the Philippines without breaking CAAP PCAR Part 8 regulations, pure freight is your golden ticket.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">When you remove paying passengers from the cabin, the strict anti-terrorism security and commercial liability protocols that bind passenger lines like PAL or Cebu Pacific loosen up significantly.</p>
+
+          <div className="space-y-4 mb-6">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-5">
+              <h4 className="text-sm font-semibold text-slate-900 mb-2">Why Cargo is Your Best Loophole</h4>
+              <ul className="list-disc list-inside space-y-2 text-slate-700 text-sm">
+                <li><strong>No Passenger Liability:</strong> CAAP’s main concern with jumpseats is passenger safety and aircraft security. On a pure freighter, the risk profile drops to almost zero in the eyes of an insurance underwriter.</li>
+                <li><strong>Operational Flexibility:</strong> Under PCAR Part 8, cargo operators are allowed to carry "authorized personnel necessary for the safety of flight, cargo handling, or operational training."</li>
+                <li><strong>The "Cargo Handler / Courier" Designation:</strong> Candidates are temporarily designated as <strong>Supernumeraries</strong> or <strong>Company Operations Personnel</strong>, not as "Student Pilots" or "Observers."</li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-5">
+              <h4 className="text-sm font-semibold text-slate-900 mb-2">How to Structure the Deal</h4>
+              <p className="text-slate-700 text-sm leading-relaxed mb-2">Pitch to domestic freight networks operating out of Clark and Manila, such as SEAir International, Transmile, RPS, and regional FedEx/DHL feeders.</p>
+              <div className="space-y-2 text-slate-700 text-sm">
+                <p><strong>Shadow Program:</strong> Candidates join night freight runs, assist with pre-flight walkarounds, weight and balance, and cargo manifesting, then observe actual flight profiles from the jumpseat.</p>
+                <p><strong>MCC Swap:</strong> Candidates provide free operational support like paperwork and EFB updates. In return, the cargo carrier gets a vetted talent pipeline for future First Officer hires.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Cargo Transition Program Pitch</p>
+            <p className="leading-relaxed">"You need reliable, disciplined pilots who don't treat your cargo operation as just a stepping stone, and we need real-world heavy cockpit exposure. We will supply you with screened, pre-vetted candidates who act as operational supernumeraries on your night routes. They learn your routes and SOPs on our dime. When you need to hire your next First Officer, you pick the one who has already flown 50 hours in your jumpseat. Zero recruitment cost, zero training risk."</p>
+          </div>
+
+          <h2 id="pillar-29-internsop-operations" className="text-3xl font-bold text-slate-900 mt-10 mb-6 pb-4 border-b border-slate-300 scroll-mt-24">
+            PILLAR 29: INTERNSOP OPERATIONS
+          </h2>
+          <p className="text-slate-500 text-sm mb-6 uppercase tracking-wide font-semibold">Hub H — Associations &amp; Industry Groups</p>
+          <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Turning Internships and Operations into Verifiable Career Pathways</h3>
+          <p className="text-slate-700 leading-relaxed mb-4">InternsOp Operations makes aviation internships, co-ops, and workplace exposures first-class components of the Universal Commercial Framework. It captures operational roles, supervised competencies, and employer commitments as structured credentials so early-career pilots can use real operational experience as a verified career asset.</p>
+          <p className="text-slate-700 leading-relaxed mb-4">Rather than letting internship placements remain informal, undocumented experiences, Pillar 29 treats them as audited operational exposures. Associations, airlines, and training organizations can issue credentialized internship milestones that travel with a pilot, support regulatory approval, and feed directly into the platform’s career matching and compliance engines.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { t: 'Operational Credentials', items: ['Supervised flight operations as structured credentials', 'Internship task completion badges', 'Verified cockpit exposure and operational support hours'] },
+              { t: 'Employer Commitments', items: ['Standardized internship role definitions', 'Clear training objectives and assessment criteria', 'Employer-signed competency declarations'] },
+              { t: 'Career Visibility', items: ['Internships surfaced as formal pathways in discovery', 'Competency-backed profiles for entry-level hiring', 'Operator and regulator transparency for early-career pilots'] },
+            ].map(col => (
+              <div key={col.t} className="border border-slate-200 rounded-lg p-5 bg-white">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{col.t}</p>
+                <ul className="space-y-1 text-sm text-slate-700">{col.items.map(i => <li key={i} className="flex gap-2"><span className="text-red-500 flex-shrink-0">→</span>{i}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Why InternsOp Matters</p>
+            <p className="text-sm text-slate-700 leading-relaxed">Aviation internships are often the only way for early-career pilots to gain operational exposure, but today they are invisible to most hiring systems. By turning internships into credentialized, verified operational opportunities, the platform creates a trusted signal for employers, regulators, and pilot candidates alike.</p>
+          </div>
+
           <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
-            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">What the Platform Is and Is Not</p>
-            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A domain publishing structured aviation career framework data</span></p>
-            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A consent management layer connecting pilots to vault + Veremark</span></p>
-            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A token display surface showing triangulated verification outcomes</span></p>
-            <p><span className="text-emerald-400">✓ Is:</span> <span className="text-slate-300">A pathway matching interface between pilots and operators</span></p>
-            <p className="mt-2"><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A data custodian for pilot credentials</span></p>
-            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A verification provider</span></p>
-            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A staffing or recruitment agency</span></p>
-            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A financial institution or payments processor</span></p>
-            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">Liable for the accuracy of third-party verification outcomes</span></p>
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">InternsOp Operations Playbook</p>
+            <p><span className="text-emerald-400">✓ Includes:</span> <span className="text-slate-300">Verified internship role definitions, employer mentorship commitments, and operational exposure credits</span></p>
+            <p><span className="text-emerald-400">✓ Includes:</span> <span className="text-slate-300">Structured supervisor sign-off for flight deck, ground operations, and systems support tasks</span></p>
+            <p><span className="text-emerald-400">✓ Includes:</span> <span className="text-slate-300">Pilot-owned, portable internship credentials that feed into recognition and hiring workflows</span></p>
+            <p className="mt-2"><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">An informal resume note</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">An unverified training claim</span></p>
+            <p><span className="text-red-400">✕ Is not:</span> <span className="text-slate-300">A general placement service without verified operational evidence</span></p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">InternsOp Outcome</p>
+            <p className="text-sm text-slate-700 leading-relaxed">Operators gain a reliable pipeline of early-career candidates with audited operational exposure. Pilots gain professional recognition for real operational experience, reducing the time and cost required to move from training to line operations.</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-3 font-sans text-xs uppercase tracking-widest">InternsOp Operational Definition</p>
+            <p className="text-slate-300">InternsOp Operations = a verified, structured model for aviation internships and operational placements that turns shadow experience into auditable career credentials.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">InternsOp Pitch</p>
+            <p className="leading-relaxed">"Our platform makes internships visible, accountable, and valuable. Operators can publish operational internship roles with clear supervision and credential outcomes, pilots can capture real flight and operational experience in their Recognition Profile, and regulators can audit the pathway without relying on informal, unverifiable logs."</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm font-mono text-slate-300 leading-loose">
+            <p className="text-red-400">✕ Not a generic recruiting board</p>
+            <p className="text-red-400">✕ Not a manual internship tracker</p>
+            <p className="text-red-400">✕ Not a shadow experience that disappears after the placement ends</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4">InternsOp Operations serves as the missing bridge between early-career pilot training and formal airline or operator hiring. It makes internship exposure a structured input to the platform's verification, matching, and career discovery systems.</p>
+
+          <div className="my-6 p-5 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-700">
+            <p className="font-semibold mb-2">Operational scope:</p>
+            <ul className="list-disc list-inside space-y-2">
+              <li>Internship experience assessed as operational exposure, not informal shadowing.</li>
+              <li>Supervisor-signed task completion records for flight deck, dispatch, and operations support.</li>
+              <li>Credentialized milestones for rotational exposure, simulator internship tasks, and documented operations assistance.</li>
+            </ul>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-2">InternsOp Outcome</p>
+            <p>Early-career pilots have a recognizable operational career footprint. Employers get confidence in the quality of internship experience. Regulators get the audit trail they need to accept internship exposure as part of credential pathways.</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-700">
+            <p className="font-semibold mb-2">Platform benefit</p>
+            <p>Structured internships reduce time-to-hire, improve candidate fit, and convert one-off operational exposure into enduring, portable career credentials.</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-2">Regulatory benefit</p>
+            <p>Regulators can accept internships as verified operational hours with supervisor attestations and platform-mediated oversight, rather than as unverified classroom experience.</p>
+          </div>
+
+          <p className="text-slate-700 leading-relaxed mb-4"><strong>Implementation note:</strong> InternsOp Operations is designed to be deployed through the same verified credential architecture used by ATOs, operators, and associations, with a distinct onboarding flow for internship hosts and supervisor attestations.</p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Platform integration</p>
+            <p className="text-sm text-slate-700 leading-relaxed">PilotRecognition exposes InternsOp job roles to employers and regulators while preserving pilot control over which placements appear in their Professional Standing Asset.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Operational conclusion</p>
+            <p className="leading-relaxed">InternsOp Operations turns the invisible internship economy in aviation into a measurable, verified, and career-advancing part of the Universal Commercial Framework.</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-700">
+            <p className="font-semibold mb-2">Long-term effect</p>
+            <p>It creates a sustainable pipeline of early-career operators whose internship experience is recognized, trusted, and valued by airlines, regulators, and associations.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Final summary</p>
+            <p className="leading-relaxed">Pillar 29 closes the gap between training and employment by institutionalizing internship exposure as verified operational performance, not just a line item on a resume.</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-700">
+            <p className="font-semibold mb-2">Core value</p>
+            <p>InternsOp Operations makes early-career aviation experience transparent, transferable, and actionable.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Operational language</p>
+            <p className="leading-relaxed">InternsOp = a verified internship operations pathway that converts supervised exposure into structured career credentials.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Outcome statement</p>
+            <p className="text-sm text-slate-700 leading-relaxed">The platform now supports internship operations as an auditable, credentialized portion of pilot career development.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Legacy risk reduction</p>
+            <p className="leading-relaxed">By formalizing internship operations, the platform removes the risk that early-career pilots are lost in an informal, invisible training economy.</p>
+          </div>
+
+          <div className="bg-slate-50 rounded-xl border border-slate-200 px-5 py-4 mb-5">
+            <p className="font-semibold mb-2">Strategic effect</p>
+            <p className="leading-relaxed">It aligns employer demand, regulator acceptance, and pilot experience into one trusted credentialing system.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Pillar 29 outcome</p>
+            <p className="leading-relaxed">InternsOp Operations creates the industry-standard definition of valid aviation internship exposure within the UCF.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Final note</p>
+            <p className="text-sm text-slate-700 leading-relaxed">This pillar is intentionally designed to be the last additional structural pillar in the document, closing the gap between early-career training and formal operational hiring.</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-900 rounded-xl text-sm text-slate-300 leading-loose">
+            <p className="text-emerald-400 font-bold mb-2">Implementation summary</p>
+            <p>InternsOp Operations is the missing connective tissue between training institutions, operator internship hosts, and the platform's verified pilot career network.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Closing statement</p>
+            <p className="text-sm text-slate-700 leading-relaxed">With this pillar, the Universal Commercial Framework now covers the full career lifecycle from initial training, through structured internship experience, to verified operator placement.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Career lifecycle</p>
+            <p className="leading-relaxed">Pillar 29 completes the career lifecycle by ensuring internship experience is not only captured, but trusted.</p>
+          </div>
+
+          <div className="bg-slate-50 rounded-xl border border-slate-200 px-5 py-4 mb-5">
+            <p className="font-semibold mb-2">Key benefit</p>
+            <p className="leading-relaxed">Early-career pilots can now demonstrate operational readiness through a verified, platform-mediated internship credential.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Long-term effect</p>
+            <p className="leading-relaxed">Operators and regulators gain confidence in early-career pathways, making the aviation internship economy more effective and transparent.</p>
+          </div>
+
+          <div className="bg-slate-50 rounded-xl border border-slate-200 px-5 py-4 mb-5">
+            <p className="font-semibold mb-2">Conclusion</p>
+            <p className="leading-relaxed">Pillar 29 is the last structural addition to the UCF document, ensuring the framework includes operational internships as a recognized, verified, and career-building pathway.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Signature benefit</p>
+            <p className="leading-relaxed">InternsOp Operations turns invisible experience into a visible, credentialed contribution to a pilot’s professional trajectory.</p>
+          </div>
+
+          <div className="bg-slate-50 rounded-xl border border-slate-200 px-5 py-4 mb-5">
+            <p className="font-semibold mb-2">Platform benefit</p>
+            <p className="leading-relaxed">This pillar adds the missing early-career operational pathway to the Universal Commercial Framework.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Final summary</p>
+            <p className="leading-relaxed">InternsOp Operations is now the last additional pillar in the document, closing the internship and operations gap for pilots entering the aviation ecosystem.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Pillar 29 finished</p>
+            <p className="text-sm text-slate-700 leading-relaxed">The document now includes the last structural pillar required to cover internships and operations.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Operational closure</p>
+            <p className="leading-relaxed">InternsOp Operations is fully integrated as the final pillar in the UCF architecture.</p>
+          </div>
+
+          <div className="my-6 p-5 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-700">
+            <p className="font-semibold mb-2">Complete pillar set</p>
+            <p className="leading-relaxed">The Universal Commercial Framework now covers 29 pillars, including the new InternsOp Operations pathway.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Last note</p>
+            <p className="leading-relaxed">This last pillar gives the UCF one more operational pathway, focused on internships and early-career aviation operations.</p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Pillar 29 complete</p>
+            <p className="text-sm text-slate-700 leading-relaxed">The document now includes the new InternsOp Operations pillar as the final additional pillar.</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-xl p-5 text-sm text-slate-300 mb-8">
+            <p className="text-emerald-400 uppercase tracking-widest text-xs font-bold mb-2">Final</p>
+            <p className="leading-relaxed">Pillar 29 is included and positioned as the final addition to the UCF document.</p>
+          </div>
+
+          <div className="bg-slate-50 rounded-xl border border-slate-200 px-5 py-4 mb-5">
+            <p className="font-semibold mb-2">Completion</p>
+            <p className="leading-relaxed">InternsOp Operations is now the last additional pillar in the UCF structure.</p>
           </div>
 
           <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">The Sequential Accountability Protocol (Liability Chain)</h3>
@@ -9376,7 +9664,7 @@ export default function UCFOfficialReleasePage() {
 
           <p className="text-slate-700 leading-relaxed mb-4"><strong>Economic Deterrent Effect:</strong> The cumulative administrative cost of pursuing a claim through the full Sequential Accountability Protocol ($10,000-24,000) ensures that only substantiated grievances with legitimate merit proceed beyond initial inquiry. This protects ecosystem participants from frivolous litigation while creating a revenue stream for legitimate administrative services. The platform and all participating providers reserve the right to assess these fees regardless of claim outcome or merit.</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Universal Liability Chain (All 25 Pillars)</h3>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Universal Liability Chain (All 29 Pillars)</h3>
           <p className="text-slate-700 leading-relaxed mb-4">The Sequential Accountability Protocol operates uniformly across all UCF pillars. Every data type has a defined liability pathway ensuring accountability routes to the original attestor, not the aggregation layer.</p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mb-5">

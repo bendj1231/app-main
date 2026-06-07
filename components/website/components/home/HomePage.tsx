@@ -1199,12 +1199,12 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {deviceTier === 'low' ? (
                     // Lazy load PathwayGrid for low-end devices
                     <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading...</div>}>
-                        <div ref={pathwayGridRef} className="relative z-0 pt-16">
+                        <div ref={pathwayGridRef} className="relative z-0 pt-32 md:pt-36">
                             <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                         </div>
                     </React.Suspense>
                 ) : (
-                    <div ref={pathwayGridRef} className="relative z-0 pt-16">
+                    <div ref={pathwayGridRef} className="relative z-0 pt-32 md:pt-36">
                         <PathwayGrid slides={allSlides} onNavigate={onNavigate} onGoToProgramDetail={onGoToProgramDetail} onLogin={onLogin} isLoggedIn={isLoggedIn} isEnrolledInFoundation={isEnrolledInFoundation} />
                     </div>
                 )}

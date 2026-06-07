@@ -435,7 +435,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         {
-            name: 'Programs',
+            name: 'For Pilots',
             target: '/programs',
             subItems: [
                 { category: 'Core Programs', name: 'Foundational Program', target: '/foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
@@ -447,7 +447,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         {
-            name: 'Pilot Recognition',
+            name: 'Verify',
             target: pilotRecognitionTarget,
             subItems: [
                 { category: 'Learn About', name: 'What is Pilot Recognition?', target: '/learn-about?section=what-is-recognition', bullets: ['Platform overview', 'How it works', 'Why pilots need it'] },
@@ -462,7 +462,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Your Profile', name: 'Pilot Insurance', target: '/pilot-insurance?section=loss-of-license', bullets: ['Loss of license cover', 'Life insurance', 'Disability coverage'] },
             ]
         },
-        { name: 'Contact', target: 'contact-support' },
+        { name: 'Pricing', target: '/pricing' },
         { name: 'Enterprise', target: '__enterprise_modal__', isOrange: true },
     ];
 
@@ -601,6 +601,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         }, 100);
     }, []);
 
+    // Determine whether to render dark (black) text for light backgrounds
+    const useDarkText = Boolean(isLight) || (isDark && scrolled) || (!passedPathwayGrid && scrolled);
+
     return (
         <>
             <NavigationSchema
@@ -684,31 +687,21 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
 
             <nav
-                className={`fixed top-10 left-0 right-0 z-[200] transition-all duration-500 ${isLight
-                    ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 shadow-sm'
-                    : isDark
-                        ? '!bg-transparent backdrop-filter-none py-3 shadow-none'
-                        : scrolled
-                            ? passedPathwayGrid
-                                ? 'bg-gradient-to-b from-black/95 via-black/60 to-transparent backdrop-blur-sm py-3'
-                                : 'bg-white border-b border-slate-200 py-3'
-                            : 'bg-transparent py-6'
-                    }`}>
+                className="fixed top-10 left-0 right-0 z-[200] bg-white border-b border-slate-200 py-3 shadow-sm">
                 <div className={`flex justify-between items-center ${domainBrand === 'careerpathways' ? 'w-full' : 'max-w-[1800px] mx-auto px-6'}`}>
                     {/* Logo Section - Far Left Edge for careerpathways, centered for others */}
                     <div className={`flex items-center gap-4 group cursor-pointer ${domainBrand === 'careerpathways' ? 'pl-0' : ''}`} onClick={() => onNavigate('home')}>
                         <div className="flex items-baseline transition-all duration-300 group-hover:scale-105">
                             <span
-                                className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'
-                                    } text-2xl tracking-tight leading-none`}
+                                className={`text-black text-2xl tracking-tight leading-none`}
                                 style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                             >
                                 {domainBrand === 'shortage' ? (
                                     // pilotshortage.org branding
                                     <>
-                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilot</span>
+                                        <span className={`${useDarkText ? 'text-black' : 'text-white'}`}>pilot</span>
                                         <span className="text-blue-600">shortage</span>
-                                        <span className={`relative ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>
+                                        <span className={`relative ${useDarkText ? 'text-black' : 'text-white'}`}>
                                             .org
                                             <span className="ml-2 text-xs text-yellow-400 font-normal">🇵🇭 Philippines</span>
                                         </span>
@@ -716,19 +709,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 ) : domainBrand === 'careerpathways' ? (
                                     // pilotcareerpathways.com branding
                                     <>
-                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilotcareer</span>
+                                        <span className={`${useDarkText ? 'text-black' : 'text-white'}`}>pilotcareer</span>
                                         <span className="text-red-600">pathways</span>
-                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>.com</span>
+                                        <span className={`${useDarkText ? 'text-black' : 'text-white'}`}>.com</span>
                                     </>
                                 ) : (
                                     // pilotrecognition.com branding
                                     <>
-                                        <span className={`${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>pilot</span>
-                                        <span className="text-red-600">recognition</span>
-                                        <span className={`relative ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-black' : 'text-white'}`}>
+                                        <span className="text-black">Pilot</span>
+                                        <span className="text-red-600">Recognition</span>
+                                        <span className="relative text-black">
                                             .com
                                             {countryCode && (
-                                                <sup className={`absolute top-0 -right-2 text-[8px] font-bold leading-none ${(isLight && passedPathwayGrid) || (isDark && scrolled) || (!passedPathwayGrid && scrolled) ? 'text-slate-400' : 'text-white/50'}`}>
+                                                <sup className="absolute top-0 -right-2 text-[8px] font-bold leading-none text-slate-400">
                                                     {countryCode}
                                                 </sup>
                                             )}
@@ -750,19 +743,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             >
                                 <button
                                     onClick={() => handleNavClick(item.target)}
-                                    className={`text-[0.7rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-400 flex items-center gap-1 whitespace-nowrap ${item.target === 'home' && !forceScrolled
-                                        ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
-                                            ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
-                                            : 'text-blue-400 border-b-2 border-blue-400 pb-1 font-black'
+                                    className={`text-[0.7rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-600 flex items-center gap-1 whitespace-nowrap ${item.target === 'home' && !forceScrolled
+                                        ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
                                         : item.isOrange
                                             ? 'text-red-500 font-black'
                                             : item.isBlue
-                                            ? isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
-                                                ? 'text-blue-600 font-black'
-                                                : 'text-blue-400 font-black'
-                                            : isLight || (isDark && scrolled) || (!passedPathwayGrid && scrolled)
-                                                ? 'text-slate-900'
-                                                : 'text-white/80'
+                                            ? 'text-blue-600 font-black'
+                                            : 'text-black font-bold'
                                         }`}
                                 >
                                     {item.name}
@@ -816,18 +803,26 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             </div>
                         ) : (
                             <>
+                                {/* Contact button */}
+                                <button
+                                    onClick={() => onNavigate('contact-support')}
+                                    className="bg-slate-600 hover:bg-slate-700 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2 whitespace-nowrap"
+                                >
+                                    Contact
+                                </button>
+
                                 <button
                                     onClick={currentUser ? (e) => handleLogout(e) : () => onNavigate('become-member')}
-                                    className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-1.5 whitespace-nowrap`}
+                                    className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-2 whitespace-nowrap`}
                                 >
-                                    {currentUser ? 'Sign Out' : 'Get Recognition Free'}
+                                    {currentUser ? 'Sign Out' : 'Get Started'}
                                 </button>
 
                                 {/* Access Portal button - Only show when not logged in */}
                                 {!currentUser && (
                                     <button
                                         onClick={() => onNavigate('flight-deck-login')}
-                                        className="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-1.5 border border-slate-600"
+                                        className="bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2 border border-slate-600"
                                     >
                                         Login
                                     </button>
@@ -837,7 +832,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {currentUser && (
                                     <button
                                         onClick={() => onNavigate('access-portal-2')}
-                                        className="bg-black hover:bg-slate-800 text-white px-4 py-2.5 rounded-md text-xs font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-1.5"
+                                        className="bg-black hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2"
                                     >
                                         Access Portal
                                     </button>

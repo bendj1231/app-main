@@ -39,6 +39,7 @@ const LoginModal = lazy(() => import('@/components/website/components/LoginModal
 const HomePage = lazy(() => import('@/components/website/components/home/HomePage').then(m => ({ default: m.HomePage })));
 const AboutPage = lazy(() => import('@/components/website/components/AboutPage').then(m => ({ default: m.AboutPage })));
 const TechnicalIndexPage = lazy(() => import('@/components/website/components/TechnicalIndexPage').then(m => ({ default: m.TechnicalIndexPage })));
+const TechnicalArchitecturePage = lazy(() => import('@/app/technical-architecture/page'));
 const AboutIndustryPage = lazy(() => import('@/components/website/components/AboutIndustryPage').then(m => ({ default: m.AboutIndustryPage })));
 const FAQPage = lazy(() => import('@/components/website/components/FAQPage').then(m => ({ default: m.FAQPage })));
 const MissionVisionPage = lazy(() => import('@/components/website/components/MissionVisionPage').then(m => ({ default: m.MissionVisionPage })));
@@ -385,6 +386,7 @@ export const AppRoutes = () => {
       <Route path="/founder-story" element={<FounderStoryPage onNavigate={handleNavigate} />} />
       <Route path="/about-industry" element={<AboutIndustryPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/technical-index" element={<TechnicalIndexPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/technical-architecture" element={<TechnicalArchitecturePage />} />
       <Route path="/faq" element={<FAQPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/pilot-shortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/pilotshortage" element={<PilotShortagePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
