@@ -435,37 +435,6 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                     </RevealOnScroll>
                 </div>
 
-                {/* Accreditation and Recognition Logos - Marquee (Full Width) */}
-                <div className="relative w-full overflow-hidden bg-white pb-10">
-                    <div className="relative w-full pt-8">
-                        <div className="text-center relative z-10 mb-6">
-                            <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-blue-700 mb-2">
-                                RECOGNITION | ASSURANCE | SUPPORT
-                            </p>
-                            <p className="text-[11px] text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                                Strategic presence at the Etihad Museum UAE Career Fair, represented by leading aviation governing bodies.
-                            </p>
-                        </div>
-
-                        <div className="relative py-6 z-10 flex overflow-hidden group">
-                            {/* Gradient Masks for Fade/Glass Effect */}
-                            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-20"></div>
-                            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white via-white/80 to-transparent z-20"></div>
-
-                            <div className="flex gap-16 animate-marquee whitespace-nowrap min-w-full pl-4">
-                                {[...Array(4)].map((_, i) => (
-                                    <div key={i} className="flex gap-16 items-center shrink-0">
-                                        <img src={IMAGES.ACCREDITATION_1} alt="FAA" className="h-14 w-auto object-contain" />
-                                        <img src={IMAGES.ACCREDITATION_3} alt="GCAA" className="h-14 w-auto object-contain" />
-                                        <img src={IMAGES.ACCREDITATION_4} alt="Airbus" className="h-16 w-auto object-contain" />
-                                        <img src={IMAGES.ACCREDITATION_5} alt="WM Group" className="h-16 w-auto object-contain" />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Join The Network Section */}
                 <div className="relative py-8 md:py-12 px-4 md:px-6 bg-slate-900 overflow-hidden">
                     <div className="max-w-6xl mx-auto space-y-6">

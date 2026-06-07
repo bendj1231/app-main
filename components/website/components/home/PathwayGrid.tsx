@@ -121,7 +121,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'get-started-recognition',
             image: 'https://res.cloudinary.com/dridtecu6/image/upload/v1776948158/sedmmczhyibdw1okfcgx.png',
-            title: 'Get Started with Recognition',
+            title: 'Get Started with Recognition+',
             subtitle: 'Launch your Recognition Profile and begin building verified operator-ready credentials.',
             icon: Compass,
             badge: 'NEW',

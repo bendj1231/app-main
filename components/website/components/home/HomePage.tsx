@@ -1215,40 +1215,32 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <div className="relative overflow-hidden shadow-xl" style={{ backgroundColor: '#0d1b3e' }}>
                         <div className="px-8 py-8 md:px-10 md:py-10 flex flex-col lg:flex-row items-center gap-8 min-h-[280px]">
                             <div className="w-full lg:w-7/12">
-                                <h2 className="text-2xl md:text-4xl font-semibold mb-4 leading-tight" style={{ color: '#ffffff' }}>
-                                    Discover programs through <span style={{ color: '#dc2626' }}>pilotshortage.org</span> and align your profile for operator pathway access.
+                                        <h2 className="text-2xl md:text-4xl font-semibold mb-4 leading-tight" style={{ color: '#ffffff' }}>
+                                    Discover <span style={{ color: '#dc2626' }}>pathways</span>, align your profile with operator <span style={{ color: '#dc2626' }}>requirements and expectations</span>.
                                 </h2>
                                 <p className="text-sm md:text-base leading-relaxed max-w-2xl" style={{ color: '#ffffff', opacity: 0.9 }}>
-                                    The Foundation Program mission is aimed at aligning graduating pilots to mentor the next generation while building captain leadership, EBT/CBTA, and Airbus-aligned skills for airline readiness.
-                                </p>
-                                <p className="text-sm md:text-base leading-relaxed max-w-2xl mt-3" style={{ color: '#ffffff', opacity: 0.85 }}>
-                                    Prepare yourself with a pilot self-development program that feeds into our transition program, giving graduates a discount and access to EBT CBTA familiarization, sponsor internships, operations with selected operators, and industry interviews aligned to EBT fundamentals.
+                                    Create your pilot profile for free, and get verified with <span style={{ color: '#dc2626' }}>Recognition+</span>.
                                 </p>
                                 <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                                    <a
-                                        href="https://pilotshortage.org"
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                        className="px-7 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 text-center"
+                                    <button
+                                        onClick={() => onNavigate?.('become-member')}
+                                        className="px-7 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 text-left"
                                         style={{ backgroundColor: '#ffffff', color: '#0d1b3e' }}
                                     >
-                                        Become a member at pilotshortage.org
-                                    </a>
-                                    <button
-                                        onClick={() => onNavigate?.('foundation-program')}
-                                        className="px-7 py-3 rounded-xl font-semibold text-sm transition-all bg-red-500 hover:bg-red-600 text-white"
-                                    >
-                                        Enroll for Foundation Program
+                                        <span className="block">Create free account</span>
+                                        <span className="block text-xs font-normal mt-1" style={{ color: '#475569' }}>
+                                            Get <span style={{ color: '#dc2626' }}>Recognition+</span> verified
+                                        </span>
                                     </button>
-                                </div>
-                            </div>
-                            <div className="w-full lg:w-5/12 hidden lg:flex items-center justify-center">
-                                <div className="w-full max-w-md overflow-hidden border border-white/10 shadow-2xl">
-                                    <img
-                                        src="/images/homepage-1.png"
-                                        alt="Pilot career pathways illustration"
-                                        className="w-full h-full object-cover"
-                                    />
+                                    <a
+                                        href="https://pilotcareerpathways.com"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="inline-flex items-center justify-center px-7 py-3 rounded-xl font-semibold text-sm transition-all border hover:bg-white/10"
+                                        style={{ backgroundColor: 'transparent', color: '#ffffff', borderColor: 'rgba(255,255,255,0.4)' }}
+                                    >
+                                        Visit pilotcareerpathways.com
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -1265,6 +1257,14 @@ export const HomePage: React.FC<HomePageProps> = ({
                     >
                         Aviation industry first pilot <span className="text-red-500">recognition</span> platform built for
                     </h4>
+                    <div className="mt-5">
+                        <button
+                            onClick={() => onNavigate?.('enterprise-access')}
+                            className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition-colors"
+                        >
+                            Learn more for Aviation Industry
+                        </button>
+                    </div>
                 </div>
                 <div className="max-w-7xl mx-auto relative">
                     <div className="absolute inset-y-0 left-0 w-16 pointer-events-none bg-gradient-to-r from-white to-transparent" />

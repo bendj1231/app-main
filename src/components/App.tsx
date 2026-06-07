@@ -16,11 +16,6 @@ import { VeremarkPricing } from '@/src/components/admin/VeremarkPricing';
 
 const LOGO_URL = "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png";
 const LOGO_FALLBACK_URL = "/logo.png";
-const ACCREDITATION_URL = "/images/accreditation.png";
-const ACCREDITATION_2_URL = "/images/accreditation-2.png";
-const ACCREDITATION_3_URL = "/images/accreditation-3.png";
-const ACCREDITATION_4_URL = "/images/accreditation-4.png";
-const ACCREDITATION_5_URL = "/images/accreditation-5.png";
 
 // Initialize analytics services on app load
 initializeAnalyticsServices();
@@ -158,16 +153,6 @@ export const App = () => {
           <img src={LOGO_URL} alt="PilotRecognition Logo" className="loading-logo-main" onError={(e) => { (e.target as HTMLImageElement).src = LOGO_FALLBACK_URL; }} />
           <div className="loading-subtitle-blue">connecting pilots to recognition</div>
           <div className="loading-text">Bridging the Pilot Gap.</div>
-          <div className="accreditation-box">
-            <div className="accreditation-label">recognized & accredited by</div>
-            <div className="accreditation-logos-row">
-              <img src={ACCREDITATION_URL} alt="ICAO Recognized" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-              <img src={ACCREDITATION_2_URL} alt="CAAP Approved" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-              <img src={ACCREDITATION_3_URL} alt="EASA Compliant" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-              <img src={ACCREDITATION_4_URL} alt="FAA Registered" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-              <img src={ACCREDITATION_5_URL} alt="ISO 27001 Certified" className="accreditation-logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-            </div>
-          </div>
         </div>
       </div>
 
