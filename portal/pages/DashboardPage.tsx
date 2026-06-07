@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { Icons } from '../icons';
@@ -49,50 +50,119 @@ interface DashboardPageProps {
   } | null;
 }
 
-const CategorySection: React.FC<{ title: string; description?: string; children: React.ReactNode; isDarkMode?: boolean }> = ({ title, description, children, isDarkMode = false }) => (
+const CategorySection: React.FC<{
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  isDarkMode?: boolean;
+}> = ({ title, description, children, isDarkMode = false }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
     <div>
-      <p style={{ margin: 0, fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: isDarkMode ? '#94a3b8' : '#94a3b8', fontWeight: 600 }}>{title}</p>
-      {description && <p style={{ margin: '0.1rem 0 0', color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.7rem' }}>{description}</p>}
+      <p
+        style={{
+          margin: 0,
+          fontSize: '0.6rem',
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: isDarkMode ? '#94a3b8' : '#94a3b8',
+          fontWeight: 600,
+        }}
+      >
+        {title}
+      </p>
+      {description && (
+        <p
+          style={{
+            margin: '0.1rem 0 0',
+            color: isDarkMode ? '#cbd5e1' : '#475569',
+            fontSize: '0.7rem',
+          }}
+        >
+          {description}
+        </p>
+      )}
     </div>
     {children}
   </div>
 );
 
-const renderCard = (card: {
-  title: string;
-  description: string;
-  cta?: string;
-  filled?: boolean;
-  progress?: number;
-  onClick?: (() => void) | undefined;
-}, isDarkMode = false) => (
-  <div key={card.title} className="recognition-glass-card" style={{
-    background: isDarkMode
-      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-      : 'rgba(255, 255, 255, 0.9)',
-    borderRadius: '12px',
-    padding: '0.75rem',
-    boxShadow: isDarkMode
-      ? '0 20px 45px rgba(0,0,0,0.3)'
-      : '0 20px 45px rgba(15, 23, 42, 0.08)',
-    border: isDarkMode
-      ? '1px solid rgba(71,85,105,0.5)'
-      : '1px solid rgba(226,232,240,0.8)',
-    display: 'grid',
-    gridTemplateColumns: '1fr auto',
-    gap: '0.5rem',
-    alignItems: 'center'
-  }}>
+const renderCard = (
+  card: {
+    title: string;
+    description: string;
+    cta?: string;
+    filled?: boolean;
+    progress?: number;
+    onClick?: (() => void) | undefined;
+  },
+  isDarkMode = false
+) => (
+  <div
+    key={card.title}
+    className="recognition-glass-card"
+    style={{
+      background: isDarkMode
+        ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+        : 'rgba(255, 255, 255, 0.9)',
+      borderRadius: '12px',
+      padding: '0.75rem',
+      boxShadow: isDarkMode ? '0 20px 45px rgba(0,0,0,0.3)' : '0 20px 45px rgba(15, 23, 42, 0.08)',
+      border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(226,232,240,0.8)',
+      display: 'grid',
+      gridTemplateColumns: '1fr auto',
+      gap: '0.5rem',
+      alignItems: 'center',
+    }}
+  >
     <div>
-      <h3 style={{ margin: '0 0 0.2rem', fontWeight: 700, fontSize: '0.9rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{card.title}</h3>
-      <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#475569', fontSize: '0.75rem', lineHeight: 1.3 }}>{card.description}</p>
+      <h3
+        style={{
+          margin: '0 0 0.2rem',
+          fontWeight: 700,
+          fontSize: '0.9rem',
+          color: isDarkMode ? '#f8fafc' : '#0f172a',
+        }}
+      >
+        {card.title}
+      </h3>
+      <p
+        style={{
+          margin: 0,
+          color: isDarkMode ? '#cbd5e1' : '#475569',
+          fontSize: '0.75rem',
+          lineHeight: 1.3,
+        }}
+      >
+        {card.description}
+      </p>
       {card.progress !== undefined && (
         <div style={{ marginTop: '0.35rem' }}>
-          <div style={{ height: '3px', borderRadius: '999px', background: isDarkMode ? 'rgba(255,255,255,0.1)' : '#e2e8f0', overflow: 'hidden' }}>
-            <div style={{ width: `${card.progress}%`, height: '100%', background: 'linear-gradient(90deg, #34d399, #0ea5e9)' }} />
+          <div
+            style={{
+              height: '3px',
+              borderRadius: '999px',
+              background: isDarkMode ? 'rgba(255,255,255,0.1)' : '#e2e8f0',
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                width: `${card.progress}%`,
+                height: '100%',
+                background: 'linear-gradient(90deg, #34d399, #0ea5e9)',
+              }}
+            />
           </div>
-          <p style={{ margin: '0.15rem 0 0', fontSize: '0.65rem', color: isDarkMode ? '#94a3b8' : '#475569', fontWeight: 600 }}>{card.progress}% complete</p>
+          <p
+            style={{
+              margin: '0.15rem 0 0',
+              fontSize: '0.65rem',
+              color: isDarkMode ? '#94a3b8' : '#475569',
+              fontWeight: 600,
+            }}
+          >
+            {card.progress}% complete
+          </p>
         </div>
       )}
     </div>
@@ -101,11 +171,15 @@ const renderCard = (card: {
         style={{
           padding: '0.35rem 0.85rem',
           borderRadius: '999px',
-          border: card.filled ? 'none' : isDarkMode ? '1px solid rgba(71,85,105,0.8)' : '1px solid #cbd5e1',
+          border: card.filled
+            ? 'none'
+            : isDarkMode
+              ? '1px solid rgba(71,85,105,0.8)'
+              : '1px solid #cbd5e1',
           background: card.filled ? '#0ea5e9' : 'transparent',
           color: card.filled ? '#fff' : isDarkMode ? '#f8fafc' : '#0f172a',
           fontWeight: 600,
-          cursor: 'pointer'
+          cursor: 'pointer',
         }}
         onClick={card.onClick}
       >
@@ -116,7 +190,10 @@ const renderCard = (card: {
 );
 
 // Icon wrapper for safety
-const Icon: React.FC<{ name: keyof typeof Icons; style?: React.CSSProperties }> = ({ name, style }) => {
+const Icon: React.FC<{ name: keyof typeof Icons; style?: React.CSSProperties }> = ({
+  name,
+  style,
+}) => {
   try {
     const IconComponent = Icons[name];
     if (IconComponent) {
@@ -126,10 +203,19 @@ const Icon: React.FC<{ name: keyof typeof Icons; style?: React.CSSProperties }> 
     console.warn(`Icon ${name} failed:`, error);
   }
   const fallbacks: Record<string, string> = {
-    ArrowLeft: '←', ArrowRight: '→', Award: '🏆', CheckCircle: '✓',
-    Activity: '📊', Clock: '⏱', BookOpen: '📖', FileText: '📄',
-    ChevronRight: '›', TrendingUp: '📈', MessageSquare: '💬',
-    Clipboard: '📋', Users: '👥'
+    ArrowLeft: '←',
+    ArrowRight: '→',
+    Award: '🏆',
+    CheckCircle: '✓',
+    Activity: '📊',
+    Clock: '⏱',
+    BookOpen: '📖',
+    FileText: '📄',
+    ChevronRight: '›',
+    TrendingUp: '📈',
+    MessageSquare: '💬',
+    Clipboard: '📋',
+    Users: '👥',
   };
   return <span style={style}>{fallbacks[name] || '•'}</span>;
 };
@@ -140,17 +226,42 @@ interface AirlinePassportProps {
 }
 
 const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
-  const { connections, loading, error, refreshConnections, connectAirline, syncAirlineData } = useAirlinePassport(userId);
+  const { connections, loading, error, refreshConnections, connectAirline, syncAirlineData } =
+    useAirlinePassport(userId);
 
   // Default airlines to show if no connections exist
   const defaultAirlines = [
-    { id: 'etihad', name: 'Etihad Airways', code: 'EY', logo: 'https://logo.clearbit.com/etihad.com', domain: 'etihad.com' },
-    { id: 'airbus', name: 'Airbus', code: 'AB', logo: 'https://logo.clearbit.com/airbus.com', domain: 'airbus.com' },
-    { id: 'emirates', name: 'Emirates', code: 'EK', logo: 'https://logo.clearbit.com/emirates.com', domain: 'emirates.com' },
-    { id: 'flydubai', name: 'flydubai', code: 'FZ', logo: 'https://logo.clearbit.com/flydubai.com', domain: 'flydubai.com' }
+    {
+      id: 'etihad',
+      name: 'Etihad Airways',
+      code: 'EY',
+      logo: 'https://logo.clearbit.com/etihad.com',
+      domain: 'etihad.com',
+    },
+    {
+      id: 'airbus',
+      name: 'Airbus',
+      code: 'AB',
+      logo: 'https://logo.clearbit.com/airbus.com',
+      domain: 'airbus.com',
+    },
+    {
+      id: 'emirates',
+      name: 'Emirates',
+      code: 'EK',
+      logo: 'https://logo.clearbit.com/emirates.com',
+      domain: 'emirates.com',
+    },
+    {
+      id: 'flydubai',
+      name: 'flydubai',
+      code: 'FZ',
+      logo: 'https://logo.clearbit.com/flydubai.com',
+      domain: 'flydubai.com',
+    },
   ];
 
-  const handleConnect = async (airline: typeof defaultAirlines[0]) => {
+  const handleConnect = async (airline: (typeof defaultAirlines)[0]) => {
     await connectAirline(airline.id, airline.name, airline.code, airline.logo);
   };
 
@@ -159,16 +270,14 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
   };
 
   // Combine real connections with default airlines for display
-  const displayAirlines = defaultAirlines.map(airline => {
-    const connection = connections.find(c => c.airline_id === airline.id);
+  const displayAirlines = defaultAirlines.map((airline) => {
+    const connection = connections.find((c) => c.airline_id === airline.id);
     return {
       ...airline,
       status: connection?.status || 'available',
-      lastSynced: connection?.last_synced_at 
-        ? formatTimeAgo(connection.last_synced_at)
-        : undefined,
+      lastSynced: connection?.last_synced_at ? formatTimeAgo(connection.last_synced_at) : undefined,
       matchPercentage: connection?.match_percentage || 0,
-      connectionId: connection?.id
+      connectionId: connection?.id,
     };
   });
 
@@ -187,26 +296,32 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
     return date.toLocaleDateString();
   }
   return (
-    <div style={{
-      background: 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.95) 100%)',
-      borderRadius: '24px',
-      padding: '2rem',
-      boxShadow: '0 20px 60px rgba(0,0,0, 0.3)',
-      border: '1px solid rgba(255,255,255,0.1)',
-      backdropFilter: 'blur(20px)'
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-        <div style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '12px',
-          background: 'linear-gradient(135deg, #f59e0b, #d97706)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontSize: '1.5rem'
-        }}>
+    <div
+      style={{
+        background: 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.95) 100%)',
+        borderRadius: '24px',
+        padding: '2rem',
+        boxShadow: '0 20px 60px rgba(0,0,0, 0.3)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        backdropFilter: 'blur(20px)',
+      }}
+    >
+      <div
+        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}
+      >
+        <div
+          style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontSize: '1.5rem',
+          }}
+        >
           🛂
         </div>
         <div>
@@ -220,35 +335,59 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
       </div>
 
       <p style={{ fontSize: '1rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-        Share your verified PilotRecognition Network data directly with airline recruiters. Sync flight hours, competencies, and achievements instantly.
+        Share your verified PilotRecognition Network data directly with airline recruiters. Sync
+        flight hours, competencies, and achievements instantly.
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '1rem',
+        }}
+      >
         {displayAirlines.map((airline) => (
-          <div key={airline.id} style={{
-            background: airline.status === 'connected' ? 'rgba(16, 185, 129, 0.1)' : 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(51,65,85,0.8))',
-            borderRadius: '16px',
-            padding: '1.25rem',
-            border: airline.status === 'connected' ? '2px solid #10b981' : '1px solid rgba(255,255,255,0.1)',
-            boxShadow: airline.status === 'connected' ? '0 4px 12px rgba(16, 185, 129, 0.2)' : '0 2px 8px rgba(0,0,0,0.3)',
-            transition: 'all 0.3s ease'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-              <div style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '12px',
-                background: airline.status === 'connected'
-                  ? 'linear-gradient(135deg, #10b981, #059669)'
-                  : 'linear-gradient(135deg, #64748b, #475569)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden'
-              }}>
+          <div
+            key={airline.id}
+            style={{
+              background:
+                airline.status === 'connected'
+                  ? 'rgba(16, 185, 129, 0.1)'
+                  : 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(51,65,85,0.8))',
+              borderRadius: '16px',
+              padding: '1.25rem',
+              border:
+                airline.status === 'connected'
+                  ? '2px solid #10b981'
+                  : '1px solid rgba(255,255,255,0.1)',
+              boxShadow:
+                airline.status === 'connected'
+                  ? '0 4px 12px rgba(16, 185, 129, 0.2)'
+                  : '0 2px 8px rgba(0,0,0,0.3)',
+              transition: 'all 0.3s ease',
+            }}
+          >
+            <div
+              style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}
+            >
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  background:
+                    airline.status === 'connected'
+                      ? 'linear-gradient(135deg, #10b981, #059669)'
+                      : 'linear-gradient(135deg, #64748b, #475569)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                }}
+              >
                 {airline.logo ? (
-                  <img 
-                    src={airline.logo} 
+                  <img
+                    src={airline.logo}
                     alt={airline.name}
                     style={{ width: '70%', height: '70%', objectFit: 'contain' }}
                     onError={(e) => {
@@ -256,43 +395,90 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
                     }}
                   />
                 ) : (
-                  <span style={{ color: 'white', fontSize: '1.25rem', fontWeight: 700 }}>{airline.code}</span>
+                  <span style={{ color: 'white', fontSize: '1.25rem', fontWeight: 700 }}>
+                    {airline.code}
+                  </span>
                 )}
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '1.125rem', fontWeight: 700, color: '#f1f5f9' }}>{airline.name}</div>
-                <div style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: airline.status === 'connected' ? '#34d399' : airline.status === 'pending' ? '#fbbf24' : '#94a3b8' }}>
-                  {airline.status === 'connected' ? '✓ Connected' : airline.status === 'pending' ? '⏳ Pending' : '○ Available'}
+                <div style={{ fontSize: '1.125rem', fontWeight: 700, color: '#f1f5f9' }}>
+                  {airline.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color:
+                      airline.status === 'connected'
+                        ? '#34d399'
+                        : airline.status === 'pending'
+                          ? '#fbbf24'
+                          : '#94a3b8',
+                  }}
+                >
+                  {airline.status === 'connected'
+                    ? '✓ Connected'
+                    : airline.status === 'pending'
+                      ? '⏳ Pending'
+                      : '○ Available'}
                 </div>
               </div>
             </div>
 
             {airline.status === 'connected' && airline.lastSynced && (
-              <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#34d399' }} />
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  color: '#94a3b8',
+                  marginBottom: '0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <span
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: '#34d399',
+                  }}
+                />
                 Last synced {airline.lastSynced}
               </div>
             )}
 
             {airline.matchPercentage > 0 && (
-              <div style={{ fontSize: '0.75rem', color: '#34d399', marginBottom: '0.75rem', fontWeight: 600 }}>
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  color: '#34d399',
+                  marginBottom: '0.75rem',
+                  fontWeight: 600,
+                }}
+              >
                 {airline.matchPercentage}% Profile Match
               </div>
             )}
 
             <button
-              onClick={() => airline.connectionId ? handleSync(airline.connectionId) : handleConnect(airline)}
+              onClick={() =>
+                airline.connectionId ? handleSync(airline.connectionId) : handleConnect(airline)
+              }
               disabled={airline.status === 'pending' || loading}
               style={{
                 width: '100%',
                 padding: '0.75rem',
                 borderRadius: '12px',
                 border: 'none',
-                background: airline.status === 'connected'
-                  ? 'linear-gradient(135deg, #10b981, #059669)'
-                  : airline.status === 'pending'
-                    ? '#e2e8f0'
-                    : 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+                background:
+                  airline.status === 'connected'
+                    ? 'linear-gradient(135deg, #10b981, #059669)'
+                    : airline.status === 'pending'
+                      ? '#e2e8f0'
+                      : 'linear-gradient(135deg, #0ea5e9, #0284c7)',
                 color: airline.status === 'pending' ? '#94a3b8' : 'white',
                 fontWeight: 600,
                 cursor: airline.status === 'pending' || loading ? 'not-allowed' : 'pointer',
@@ -301,7 +487,7 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
                 justifyContent: 'center',
                 gap: '0.5rem',
                 transition: 'all 0.2s ease',
-                opacity: loading ? 0.6 : 1
+                opacity: loading ? 0.6 : 1,
               }}
             >
               {loading ? (
@@ -322,7 +508,17 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
             </button>
 
             {airline.status === 'connected' && (
-              <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: 'rgba(16, 185, 129, 0.15)', borderRadius: '8px', fontSize: '0.75rem', color: '#34d399', textAlign: 'center' }}>
+              <div
+                style={{
+                  marginTop: '0.75rem',
+                  padding: '0.5rem',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  borderRadius: '8px',
+                  fontSize: '0.75rem',
+                  color: '#34d399',
+                  textAlign: 'center',
+                }}
+              >
                 Flight hours auto-synced to recruitment portal
               </div>
             )}
@@ -330,30 +526,53 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
         ))}
       </div>
 
-      <div style={{
-        marginTop: '1.5rem',
-        padding: '1rem',
-        background: 'rgba(30, 41, 59, 0.6)',
-        borderRadius: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '0.75rem'
-      }}>
+      <div
+        style={{
+          marginTop: '1.5rem',
+          padding: '1rem',
+          background: 'rgba(30, 41, 59, 0.6)',
+          borderRadius: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+        }}
+      >
         <div>
-          <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#f1f5f9' }}>Verified Data Passport</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#f1f5f9' }}>
+            Verified Data Passport
+          </div>
           <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.25rem' }}>
-            {displayAirlines.filter(a => a.status === 'connected').length} of {displayAirlines.length} airlines connected
+            {displayAirlines.filter((a) => a.status === 'connected').length} of{' '}
+            {displayAirlines.length} airlines connected
           </div>
         </div>
-        <div style={{ padding: '0.5rem 1rem', background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, color: 'white' }}>
+        <div
+          style={{
+            padding: '0.5rem 1rem',
+            background: 'linear-gradient(135deg, #0f172a, #1e293b)',
+            borderRadius: '999px',
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            color: 'white',
+          }}
+        >
           ✓ Verified by PilotRecognition
         </div>
       </div>
-      
+
       {error && (
-        <div style={{ marginTop: '1rem', padding: '0.75rem', background: 'rgba(220, 38, 38, 0.2)', borderRadius: '8px', color: '#f87171', fontSize: '0.875rem' }}>
+        <div
+          style={{
+            marginTop: '1rem',
+            padding: '0.75rem',
+            background: 'rgba(220, 38, 38, 0.2)',
+            borderRadius: '8px',
+            color: '#f87171',
+            fontSize: '0.875rem',
+          }}
+        >
           Error: {error}
         </div>
       )}
@@ -362,7 +581,7 @@ const AirlinePassport: React.FC<AirlinePassportProps> = ({ userId }) => {
 };
 
 // Competency Compass Component
-const CompetencyCompass: React.FC<{ 
+const CompetencyCompass: React.FC<{
   scores: {
     knowledge: number;
     recency: number;
@@ -381,7 +600,7 @@ const CompetencyCompass: React.FC<{
     { label: 'Program Progress', score: scores.progress, color: '#8b5cf6' },
     { label: 'Interview Impression', score: scores.interview, color: '#ef4444' },
     { label: 'Situational Awareness', score: scores.awareness, color: '#fb7185' },
-    { label: 'Resilience', score: scores.resilience, color: '#f97316' }
+    { label: 'Resilience', score: scores.resilience, color: '#f97316' },
   ];
 
   const centerX = 150;
@@ -395,96 +614,151 @@ const CompetencyCompass: React.FC<{
     const r = (score / 100) * radius;
     return {
       x: centerX + r * Math.cos(angle),
-      y: centerY + r * Math.sin(angle)
+      y: centerY + r * Math.sin(angle),
     };
   };
 
   // Generate data polygon points
   const dataPoints = competencies.map((comp, i) => getPoint(i, comp.score));
-  const dataPolygon = dataPoints.map(p => `${p.x},${p.y}`).join(' ');
+  const dataPolygon = dataPoints.map((p) => `${p.x},${p.y}`).join(' ');
 
   // Generate background pentagon points (max score)
   const bgPoints = Array.from({ length: competencies.length }, (_, i) => getPoint(i, 100));
-  const bgPolygon = bgPoints.map(p => `${p.x},${p.y}`).join(' ');
+  const bgPolygon = bgPoints.map((p) => `${p.x},${p.y}`).join(' ');
 
   // Generate intermediate grid lines (25%, 50%, 75%)
   const gridLevels = [25, 50, 75];
-  const gridPolygons = gridLevels.map(level => {
+  const gridPolygons = gridLevels.map((level) => {
     const points = Array.from({ length: competencies.length }, (_, i) => getPoint(i, level));
-    return points.map(p => `${p.x},${p.y}`).join(' ');
+    return points.map((p) => `${p.x},${p.y}`).join(' ');
   });
 
   // Calculate average score
   const avgScore = Math.round(
-    (scores.knowledge + scores.recency + scores.exams + scores.progress + scores.interview + scores.awareness + scores.resilience) /
-    competencies.length
+    (scores.knowledge +
+      scores.recency +
+      scores.exams +
+      scores.progress +
+      scores.interview +
+      scores.awareness +
+      scores.resilience) /
+      competencies.length
   );
 
   return (
-    <div style={{
-      background: isDarkMode 
-        ? 'linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.9) 100%)'
-        : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%)',
-      borderRadius: '24px',
-      padding: '2rem',
-      boxShadow: isDarkMode 
-        ? '0 20px 60px rgba(0, 0, 0, 0.3)'
-        : '0 20px 60px rgba(15, 23, 42, 0.12)',
-      border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(255,255,255,0.8)',
-      backdropFilter: 'blur(20px)'
-    }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem', alignItems: 'center' }}>
+    <div
+      style={{
+        background: isDarkMode
+          ? 'linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.9) 100%)'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%)',
+        borderRadius: '24px',
+        padding: '2rem',
+        boxShadow: isDarkMode
+          ? '0 20px 60px rgba(0, 0, 0, 0.3)'
+          : '0 20px 60px rgba(15, 23, 42, 0.12)',
+        border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(255,255,255,0.8)',
+        backdropFilter: 'blur(20px)',
+      }}
+    >
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 300px',
+          gap: '2rem',
+          alignItems: 'center',
+        }}
+      >
         {/* Left side - Info */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontSize: '1.5rem'
-            }}>
+          <div
+            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}
+          >
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: '1.5rem',
+              }}
+            >
               ★
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
+              <h3
+                style={{
+                  margin: 0,
+                  fontSize: '1.5rem',
+                  fontWeight: 700,
+                  color: isDarkMode ? '#f8fafc' : '#0f172a',
+                }}
+              >
                 Competency Compass
               </h3>
-              <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>
+              <p
+                style={{
+                  margin: '0.25rem 0 0',
+                  fontSize: '0.875rem',
+                  color: isDarkMode ? '#94a3b8' : '#64748b',
+                }}
+              >
                 Verified Competency Score
               </p>
             </div>
           </div>
 
-          <p style={{ fontSize: '1rem', color: isDarkMode ? '#cbd5e1' : '#475569', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-            Just as Uber shows your driver's rating, this radar now blends knowledge depth, training recency, exam performance,
-            overall program progress, and interview impressions into a single recruiter-facing score.
+          <p
+            style={{
+              fontSize: '1rem',
+              color: isDarkMode ? '#cbd5e1' : '#475569',
+              lineHeight: 1.6,
+              marginBottom: '1.5rem',
+            }}
+          >
+            Just as Uber shows your driver's rating, this radar now blends knowledge depth, training
+            recency, exam performance, overall program progress, and interview impressions into a
+            single recruiter-facing score.
           </p>
 
           {/* Score Breakdown */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
             {competencies.map((comp) => (
-              <div key={comp.label} style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                padding: '0.75rem',
-                background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(255,255,255,0.8)',
-                borderRadius: '12px',
-                border: isDarkMode ? '1px solid rgba(71,85,105,0.4)' : '1px solid rgba(226,232,240,0.8)'
-              }}>
-                <div style={{
-                  width: '10px',
-                  height: '10px',
-                  borderRadius: '50%',
-                  background: comp.color
-                }} />
+              <div
+                key={comp.label}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.75rem',
+                  background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(255,255,255,0.8)',
+                  borderRadius: '12px',
+                  border: isDarkMode
+                    ? '1px solid rgba(71,85,105,0.4)'
+                    : '1px solid rgba(226,232,240,0.8)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    background: comp.color,
+                  }}
+                />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <div
+                    style={{
+                      fontSize: '0.75rem',
+                      color: isDarkMode ? '#94a3b8' : '#64748b',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
                     {comp.label}
                   </div>
                   <div style={{ fontSize: '1.125rem', fontWeight: 700, color: comp.color }}>
@@ -496,30 +770,42 @@ const CompetencyCompass: React.FC<{
           </div>
 
           {/* Overall Score Badge */}
-          <div style={{
-            marginTop: '1.5rem',
-            padding: '1rem',
-            background: isDarkMode 
-              ? 'linear-gradient(135deg, #0f172a, #1e293b)'
-              : 'linear-gradient(135deg, #0f172a, #1e293b)',
-            borderRadius: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
+          <div
+            style={{
+              marginTop: '1.5rem',
+              padding: '1rem',
+              background: isDarkMode
+                ? 'linear-gradient(135deg, #0f172a, #1e293b)'
+                : 'linear-gradient(135deg, #0f172a, #1e293b)',
+              borderRadius: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             <div>
-              <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  color: '#94a3b8',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                }}
+              >
                 Overall Verified Score
               </div>
               <div style={{ fontSize: '0.875rem', color: '#cbd5e1', marginTop: '0.25rem' }}>
                 Your currency for pathway access
               </div>
             </div>
-            <div style={{
-              fontSize: '2.5rem',
-              fontWeight: 700,
-              color: avgScore >= 90 ? '#10b981' : avgScore >= 75 ? '#0ea5e9' : '#f59e0b'
-            }}>
+            <div
+              style={{
+                fontSize: '2.5rem',
+                fontWeight: 700,
+                color: avgScore >= 90 ? '#10b981' : avgScore >= 75 ? '#0ea5e9' : '#f59e0b',
+              }}
+            >
               {avgScore}
             </div>
           </div>
@@ -535,7 +821,7 @@ const CompetencyCompass: React.FC<{
                 <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0.2" />
               </linearGradient>
             </defs>
-            
+
             {/* Grid lines */}
             {gridPolygons.map((polygon, i) => (
               <polygon
@@ -547,15 +833,10 @@ const CompetencyCompass: React.FC<{
                 opacity="0.5"
               />
             ))}
-            
+
             {/* Background pentagon */}
-            <polygon
-              points={bgPolygon}
-              fill="none"
-              stroke="#cbd5e1"
-              strokeWidth="2"
-            />
-            
+            <polygon points={bgPolygon} fill="none" stroke="#cbd5e1" strokeWidth="2" />
+
             {/* Data polygon */}
             <polygon
               points={dataPolygon}
@@ -563,18 +844,13 @@ const CompetencyCompass: React.FC<{
               stroke="#0ea5e9"
               strokeWidth="2"
             />
-            
+
             {/* Labels */}
             {competencies.map((comp, i) => {
               const labelPoint = getPoint(i, 115);
               return (
                 <g key={comp.label}>
-                  <circle
-                    cx={labelPoint.x}
-                    cy={labelPoint.y}
-                    r="4"
-                    fill={comp.color}
-                  />
+                  <circle cx={labelPoint.x} cy={labelPoint.y} r="4" fill={comp.color} />
                   <text
                     x={labelPoint.x}
                     y={labelPoint.y - 10}
@@ -613,64 +889,100 @@ interface AirlineReadiness {
   metRequirements: string[];
 }
 
-const PilotRecognitionTicker: React.FC<{ 
-  flightHours: number; 
+const PilotRecognitionTicker: React.FC<{
+  flightHours: number;
   examPassRate: string;
   licenseType: string;
   airlineConnections: { name: string; status: string }[];
 }> = ({ flightHours, examPassRate, licenseType, airlineConnections }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   // Calculate readiness based on actual pilot data
   const calculateReadiness = (): AirlineReadiness[] => {
     const passRateNum = parseInt(examPassRate) || 0;
     const hours = flightHours || 0;
-    
-    return airlineConnections.map(conn => {
+
+    return airlineConnections.map((conn) => {
       const requirements: string[] = [];
       const met: string[] = [];
       let score = 0;
-      
+
       // Base requirements for any airline
       if (conn.name === 'Emirates') {
         requirements.push('3500+ flight hours', 'ATPL License', '90%+ exam scores', 'Type Rating');
-        if (hours >= 3500) { met.push('Flight hours'); score += 25; }
-        if (licenseType.includes('ATPL')) { met.push('ATPL License'); score += 25; }
-        if (passRateNum >= 90) { met.push('Exam scores'); score += 25; }
+        if (hours >= 3500) {
+          met.push('Flight hours');
+          score += 25;
+        }
+        if (licenseType.includes('ATPL')) {
+          met.push('ATPL License');
+          score += 25;
+        }
+        if (passRateNum >= 90) {
+          met.push('Exam scores');
+          score += 25;
+        }
         score += 25; // Assume type rating in progress
       } else if (conn.name === 'Etihad') {
         requirements.push('2000+ flight hours', 'CPL License', '85%+ exam scores');
-        if (hours >= 2000) { met.push('Flight hours'); score += 33; }
-        if (licenseType.includes('CPL') || licenseType.includes('ATPL')) { met.push('License'); score += 33; }
-        if (passRateNum >= 85) { met.push('Exam scores'); score += 34; }
+        if (hours >= 2000) {
+          met.push('Flight hours');
+          score += 33;
+        }
+        if (licenseType.includes('CPL') || licenseType.includes('ATPL')) {
+          met.push('License');
+          score += 33;
+        }
+        if (passRateNum >= 85) {
+          met.push('Exam scores');
+          score += 34;
+        }
       } else if (conn.name === 'Fly Dubai') {
         requirements.push('1500+ flight hours', 'CPL License', '80%+ exam scores');
-        if (hours >= 1500) { met.push('Flight hours'); score += 33; }
-        if (licenseType.includes('CPL') || licenseType.includes('ATPL')) { met.push('License'); score += 33; }
-        if (passRateNum >= 80) { met.push('Exam scores'); score += 34; }
+        if (hours >= 1500) {
+          met.push('Flight hours');
+          score += 33;
+        }
+        if (licenseType.includes('CPL') || licenseType.includes('ATPL')) {
+          met.push('License');
+          score += 33;
+        }
+        if (passRateNum >= 80) {
+          met.push('Exam scores');
+          score += 34;
+        }
       } else {
         requirements.push('1000+ flight hours', 'Valid License', '75%+ exam scores');
-        if (hours >= 1000) { met.push('Flight hours'); score += 33; }
-        if (!licenseType.includes('Student')) { met.push('License'); score += 33; }
-        if (passRateNum >= 75) { met.push('Exam scores'); score += 34; }
+        if (hours >= 1000) {
+          met.push('Flight hours');
+          score += 33;
+        }
+        if (!licenseType.includes('Student')) {
+          met.push('License');
+          score += 33;
+        }
+        if (passRateNum >= 75) {
+          met.push('Exam scores');
+          score += 34;
+        }
       }
-      
+
       let status: AirlineReadiness['status'] = 'not-ready';
       if (score >= 85) status = 'eligible';
       else if (score >= 60) status = 'developing';
-      
+
       return {
         airline: conn.name,
         status,
         matchScore: Math.min(score, 100),
         requirements,
-        metRequirements: met
+        metRequirements: met,
       };
     });
   };
-  
+
   const readinessData = calculateReadiness();
-  
+
   useEffect(() => {
     if (readinessData.length === 0) return;
     const timer = setInterval(() => {
@@ -681,16 +993,18 @@ const PilotRecognitionTicker: React.FC<{
 
   if (readinessData.length === 0) {
     return (
-      <div style={{
-        background: 'linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-        borderRadius: '20px',
-        padding: '1.25rem 1.75rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-        boxShadow: '0 15px 35px rgba(15, 23, 42, 0.2)',
-        border: '1px solid rgba(255,255,255,0.08)'
-      }}>
+      <div
+        style={{
+          background: 'linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+          borderRadius: '20px',
+          padding: '1.25rem 1.75rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+          boxShadow: '0 15px 35px rgba(15, 23, 42, 0.2)',
+          border: '1px solid rgba(255,255,255,0.08)',
+        }}
+      >
         <div style={{ color: '#94a3b8', fontSize: '0.9rem' }}>
           No airline connections. Add airlines to your profile to see recognition status.
         </div>
@@ -699,62 +1013,98 @@ const PilotRecognitionTicker: React.FC<{
   }
 
   const current = readinessData[currentIndex];
-  
+
   const statusConfig = {
     eligible: { color: '#22c55e', bgColor: 'rgba(34, 197, 94, 0.15)', label: 'Eligible' },
     developing: { color: '#f59e0b', bgColor: 'rgba(245, 158, 11, 0.15)', label: 'Developing' },
-    'not-ready': { color: '#ef4444', bgColor: 'rgba(239, 68, 68, 0.15)', label: 'Building' }
+    'not-ready': { color: '#ef4444', bgColor: 'rgba(239, 68, 68, 0.15)', label: 'Building' },
   };
-  
+
   const statusStyle = statusConfig[current.status];
 
   return (
-    <div style={{
-      background: 'linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-      borderRadius: '20px',
-      padding: '1.25rem 1.75rem',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '1rem',
-      boxShadow: '0 15px 35px rgba(15, 23, 42, 0.2)',
-      border: '1px solid rgba(255,255,255,0.08)'
-    }}>
-      <div style={{
+    <div
+      style={{
+        background: 'linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+        borderRadius: '20px',
+        padding: '1.25rem 1.75rem',
         display: 'flex',
         alignItems: 'center',
-        gap: '0.5rem',
-        padding: '0.5rem 0.9rem',
-        background: statusStyle.bgColor,
-        borderRadius: '999px',
-        border: `1px solid ${statusStyle.color}40`
-      }}>
-        <span style={{
-          width: '8px',
-          height: '8px',
-          borderRadius: '50%',
-          background: statusStyle.color
-        }} />
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: statusStyle.color, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        gap: '1rem',
+        boxShadow: '0 15px 35px rgba(15, 23, 42, 0.2)',
+        border: '1px solid rgba(255,255,255,0.08)',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 0.9rem',
+          background: statusStyle.bgColor,
+          borderRadius: '999px',
+          border: `1px solid ${statusStyle.color}40`,
+        }}
+      >
+        <span
+          style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            background: statusStyle.color,
+          }}
+        />
+        <span
+          style={{
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            color: statusStyle.color,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}
+        >
           {statusStyle.label}
         </span>
       </div>
 
       <div style={{ flex: 1, overflow: 'hidden' }}>
-        <div key={currentIndex} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', animation: 'slideIn 0.5s ease' }}>
+        <div
+          key={currentIndex}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            animation: 'slideIn 0.5s ease',
+          }}
+        >
           <span style={{ fontSize: '1.3rem' }}>🏆</span>
-          <span style={{ fontSize: '1rem', fontWeight: 600, color: 'white' }}>{current.airline}:</span>
+          <span style={{ fontSize: '1rem', fontWeight: 600, color: 'white' }}>
+            {current.airline}:
+          </span>
           <span style={{ fontSize: '1rem', color: '#cbd5f5' }}>
             {current.metRequirements.length}/{current.requirements.length} requirements met
           </span>
-          <span style={{
-            marginLeft: 'auto',
-            padding: '0.25rem 0.9rem',
-            background: current.matchScore >= 85 ? 'rgba(34, 197, 94, 0.2)' : current.matchScore >= 60 ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-            borderRadius: '999px',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            color: current.matchScore >= 85 ? '#22c55e' : current.matchScore >= 60 ? '#f59e0b' : '#ef4444'
-          }}>
+          <span
+            style={{
+              marginLeft: 'auto',
+              padding: '0.25rem 0.9rem',
+              background:
+                current.matchScore >= 85
+                  ? 'rgba(34, 197, 94, 0.2)'
+                  : current.matchScore >= 60
+                    ? 'rgba(245, 158, 11, 0.2)'
+                    : 'rgba(239, 68, 68, 0.2)',
+              borderRadius: '999px',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              color:
+                current.matchScore >= 85
+                  ? '#22c55e'
+                  : current.matchScore >= 60
+                    ? '#f59e0b'
+                    : '#ef4444',
+            }}
+          >
             {current.matchScore}% Match
           </span>
         </div>
@@ -772,13 +1122,14 @@ const PilotRecognitionTicker: React.FC<{
               border: 'none',
               padding: 0,
               background: i === currentIndex ? '#38bdf8' : 'rgba(255,255,255,0.3)',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           />
         ))}
       </div>
 
-      <style>{`
+      <style>
+        {`
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.4; }
@@ -795,9 +1146,30 @@ const PilotRecognitionTicker: React.FC<{
 // Job Matching Section Component - Now imported from JobMatchCard.tsx
 import { JobMatchingSection } from '../components/JobMatchCard';
 
-export const DashboardPage: React.FC<DashboardPageProps> = ({ 
-  onBack, onViewLogbook, onViewDigitalLogbook, onViewMentorLogbook, onViewAtlas, 
-  onViewRecognition, onViewPrograms, onViewPathways, onViewExamination, onViewExaminationPortal, onViewFoundationalProgram, onViewFoundationalPlatform, onViewFoundationalEnrollment, onViewLicensureExperience, onViewJobDatabase, onViewProgramProgress, onViewModule01, onViewModule02, onViewModule03, onViewPilotRecognitionConnect, onViewEBTCBTAInterview, userProfile, isDarkMode = false 
+export const DashboardPage: React.FC<DashboardPageProps> = ({
+  onBack,
+  onViewLogbook,
+  onViewDigitalLogbook,
+  onViewMentorLogbook,
+  onViewAtlas,
+  onViewRecognition,
+  onViewPrograms,
+  onViewPathways,
+  onViewExamination,
+  onViewExaminationPortal,
+  onViewFoundationalProgram,
+  onViewFoundationalPlatform,
+  onViewFoundationalEnrollment,
+  onViewLicensureExperience,
+  onViewJobDatabase,
+  onViewProgramProgress,
+  onViewModule01,
+  onViewModule02,
+  onViewModule03,
+  onViewPilotRecognitionConnect,
+  onViewEBTCBTAInterview,
+  userProfile,
+  isDarkMode = false,
 }) => {
   const [competencyScores] = useState({
     knowledge: 86,
@@ -806,33 +1178,42 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     progress: 68,
     interview: 81,
     awareness: 88,
-    resilience: 84
+    resilience: 84,
   });
   const [airlineAffiliations, setAirlineAffiliations] = useState([
-    { id: 'etihad', name: 'Etihad Airways', logo: 'EY', status: 'connected' as const, lastSynced: '2 hours ago' },
-    { id: 'airbus', name: 'Airbus', logo: 'AB', status: 'connected' as const, lastSynced: '1 day ago' },
+    {
+      id: 'etihad',
+      name: 'Etihad Airways',
+      logo: 'EY',
+      status: 'connected' as const,
+      lastSynced: '2 hours ago',
+    },
+    {
+      id: 'airbus',
+      name: 'Airbus',
+      logo: 'AB',
+      status: 'connected' as const,
+      lastSynced: '1 day ago',
+    },
     { id: 'emirates', name: 'Emirates', logo: 'EK', status: 'pending' as const },
-    { id: 'flydubai', name: 'flydubai', logo: 'FZ', status: 'available' as const }
+    { id: 'flydubai', name: 'flydubai', logo: 'FZ', status: 'available' as const },
   ]);
   const { score: recognitionScore, loading: scoreLoading } = useRecognitionScore();
   const baseCardStyle: React.CSSProperties = {
-    background: isDarkMode 
+    background: isDarkMode
       ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
       : 'linear-gradient(135deg, rgba(255,255,255,0.88), rgba(241,245,249,0.75))',
     borderRadius: '20px',
     padding: '1.5rem',
-    boxShadow: isDarkMode 
-      ? '0 20px 45px rgba(0,0,0,0.3)'
-      : '0 20px 45px rgba(15,23,42,0.08)',
-    border: isDarkMode 
-      ? '1px solid rgba(71,85,105,0.5)'
-      : '1px solid rgba(255,255,255,0.45)',
+    boxShadow: isDarkMode ? '0 20px 45px rgba(0,0,0,0.3)' : '0 20px 45px rgba(15,23,42,0.08)',
+    border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(255,255,255,0.45)',
     backdropFilter: 'blur(14px)',
-    WebkitBackdropFilter: 'blur(14px)'
+    WebkitBackdropFilter: 'blur(14px)',
   };
   const [pilotData, setPilotData] = useState({
     name: `${userProfile?.firstName || 'Benjamin'} ${userProfile?.lastName || 'Bowler'}`,
-    initials: `${(userProfile?.firstName || 'Benjamin')[0]}${(userProfile?.lastName || 'Bowler')[0]}`.toUpperCase(),
+    initials:
+      `${(userProfile?.firstName || 'Benjamin')[0]}${(userProfile?.lastName || 'Bowler')[0]}`.toUpperCase(),
     role: 'STUDENT PILOT',
     base: 'EGLL (London Heathrow)',
     studyHours: 2,
@@ -849,7 +1230,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     foundationalProgress: 'FOUNDATIONAL PROGRAM IN PROGRESS',
     radioLicenseNumber: 'N/A',
     radioLicenseExpiry: 'TBD',
-    lastFlownDate: 'Not yet logged'
+    lastFlownDate: 'Not yet logged',
   });
   const [flightLogs, setFlightLogs] = useState<FlightLogEntry[]>([]);
   const [flightLogsLoading, setFlightLogsLoading] = useState(false);
@@ -857,41 +1238,44 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [latestLogbookHours, setLatestLogbookHours] = useState(0);
   const [foundationalPlatformLoading, setFoundationalPlatformLoading] = useState(false);
   const { portfolio, updatePortfolio } = usePilotPortfolio(userProfile?.uid);
-  
+
   // New state variables for redesigned portfolio
   const [progress, setProgress] = useState({ foundational: 0 });
   const [stats, setStats] = useState({ awards: 0, certifications: 0 });
   const [isFoundationalEnrolled, setIsFoundationalEnrolled] = useState<boolean | null>(null);
   const completedCount = 0;
   const totalCount = 7;
-  
+
   // Module progress state - tracks mentorship modules status
   const [moduleProgress, setModuleProgress] = useState({
-    module1: { 
-      completed: true, 
-      name: 'Industry Familiarization & Indoctrination', 
-      description: 'Introduction to the pilot gap analysis framework. Understand your current position and identify key areas for development in your aviation career.',
+    module1: {
+      completed: true,
+      name: 'Industry Familiarization & Indoctrination',
+      description:
+        'Introduction to the pilot gap analysis framework. Understand your current position and identify key areas for development in your aviation career.',
       duration: '45 min',
-      current: false 
+      current: false,
     },
-    module2: { 
-      completed: false, 
-      name: 'Psychology of Mentorship & Practical Application', 
-      description: 'Advanced mentorship techniques and practical application of the PilotRecognition methodology. Build actionable strategies for career advancement.',
+    module2: {
+      completed: false,
+      name: 'Psychology of Mentorship & Practical Application',
+      description:
+        'Advanced mentorship techniques and practical application of the PilotRecognition methodology. Build actionable strategies for career advancement.',
       duration: '60 min',
-      current: true 
+      current: true,
     },
-    module3: { 
-      completed: false, 
-      name: 'Pilot Risk Management & Pilot Pathways', 
-      description: 'Comprehensive integration of concepts from previous modules. Focus on portfolio development, examination preparation, and mentorship consolidation.',
+    module3: {
+      completed: false,
+      name: 'Pilot Risk Management & Pilot Pathways',
+      description:
+        'Comprehensive integration of concepts from previous modules. Focus on portfolio development, examination preparation, and mentorship consolidation.',
       duration: '75 min',
       current: false,
       locked: false,
-      lockedReason: ''
-    }
+      lockedReason: '',
+    },
   });
-  
+
   // Mentorship enrollment state from Supabase
   const [mentorshipEnrolled, setMentorshipEnrolled] = useState(true);
   const [mentorshipHoursRemaining, setMentorshipHoursRemaining] = useState(50);
@@ -909,7 +1293,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     aircraft_ratings?: { aircraftType: string; ratingDate: string; isCurrent: boolean }[];
     languages?: string;
     english_proficiency?: string;
-    job_experiences?: { company: string; position: string; fromDate: string; toDate: string; description: string }[];
+    job_experiences?: {
+      company: string;
+      position: string;
+      fromDate: string;
+      toDate: string;
+      description: string;
+    }[];
     current_occupation?: string;
     current_employer?: string;
     current_position?: string;
@@ -921,7 +1311,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Separate useEffect for enrollment check - runs on mount and when userProfile changes
   useEffect(() => {
     const checkEnrollment = async () => {
-      
       if (!userProfile?.email) {
         setIsFoundationalEnrolled(false);
         return;
@@ -934,30 +1323,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         return;
       }
 
-      
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('enrolled_programs, email, id')
         .eq('email', userProfile.email)
         .single();
-      
-      
+
       if (profileError) {
         console.error('❌ Profile lookup error:', profileError);
         setIsFoundationalEnrolled(false);
       } else if (profileData && profileData.enrolled_programs) {
         const enrolledPrograms = profileData.enrolled_programs;
-        
+
         if (Array.isArray(enrolledPrograms)) {
-          const hasMentorship = enrolledPrograms.some((p: string) => 
-            p.toLowerCase().includes('mentor') || p.toLowerCase().includes('mentorship')
+          const hasMentorship = enrolledPrograms.some(
+            (p: string) =>
+              p.toLowerCase().includes('mentor') || p.toLowerCase().includes('mentorship')
           );
-          
-          const hasFoundational = enrolledPrograms.some((p: string) => 
-            p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')
+
+          const hasFoundational = enrolledPrograms.some(
+            (p: string) =>
+              p.toLowerCase().includes('foundational') || p.toLowerCase().includes('foundation')
           );
           setIsFoundationalEnrolled(hasFoundational);
-          
+
           if (hasMentorship) {
             setMentorshipEnrolled(true);
           }
@@ -986,7 +1375,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       try {
         const userId = userProfile?.id || userProfile?.uid;
         if (!userId) throw new Error('No user ID available');
-        
+
         // Fetch study sessions from Supabase
         const { data: studyData, error: studyError } = await supabase
           .from('study_sessions')
@@ -1027,7 +1416,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           }
           if (exam.passed) passedCount++;
         });
-        
+
         const avgRating = examCount > 0 ? `${Math.round(totalScore / examCount)}%` : '0%';
         const passRate = examCount > 0 ? `${Math.round((passedCount / examCount) * 100)}%` : '0%';
 
@@ -1052,12 +1441,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             aircraft: log.aircraft_type || log.aircraft,
             route: log.route,
             hours: Number(log.hours),
-            remarks: log.remarks || ''
+            remarks: log.remarks || '',
           };
         });
 
         if (entries[0]?.date) {
-          lastEntryDate = new Date(entries[0].date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+          lastEntryDate = new Date(entries[0].date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+          });
         }
 
         let licenseType = pilotData.licenseType;
@@ -1126,7 +1519,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             mentorData.forEach((session) => {
               mentorMinutes += session.duration || 0;
             });
-            totalMentorHours = Math.round(mentorMinutes / 60 * 10) / 10; // Round to 1 decimal
+            totalMentorHours = Math.round((mentorMinutes / 60) * 10) / 10; // Round to 1 decimal
             setMentorHoursLabel(`${totalMentorHours} hr`);
             // Update remaining hours countdown (50 hrs total)
             setMentorshipHoursRemaining(Math.max(0, 50 - Math.round(totalMentorHours)));
@@ -1151,7 +1544,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           foundationalProgress,
           radioLicenseNumber: updatedRadioNumber,
           radioLicenseExpiry: updatedRadioExpiry,
-          lastFlownDate: lastEntryDate
+          lastFlownDate: lastEntryDate,
         }));
         setLatestLogbookHours(logbookHoursRounded);
         setFlightLogs(entries);
@@ -1201,7 +1594,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             job_experiences: data.job_experiences || [],
             current_occupation: data.current_occupation,
             current_employer: data.current_employer,
-            current_position: data.current_position
+            current_position: data.current_position,
           });
         }
       } catch (error) {
@@ -1215,14 +1608,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }, [userProfile?.uid]);
 
   return (
-    <div className="dashboard-container animate-fade-in pilot-profile-page" style={{ backgroundColor: '#eef4fb', paddingBottom: '1rem', padding: '0.4rem', maxWidth: '1200px', margin: '0 auto', minHeight: 'auto', zoom: 0.9 }}>
+    <div
+      className="dashboard-container animate-fade-in pilot-profile-page"
+      style={{
+        backgroundColor: '#eef4fb',
+        paddingBottom: '1rem',
+        padding: '0.4rem',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        minHeight: 'auto',
+        zoom: 0.9,
+      }}
+    >
       <main
         style={{
           position: 'relative',
           width: '100%',
           maxWidth: '100%',
           margin: '0 auto',
-          minHeight: 'auto'
+          minHeight: 'auto',
         }}
       >
         {/* Foundation Program Platform Loading Screen */}
@@ -1252,7 +1656,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '2rem',
-                animation: 'fadeIn 0.4s ease-out'
+                animation: 'fadeIn 0.4s ease-out',
               }}
             >
               {/* Logo */}
@@ -1261,7 +1665,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 alt="PilotRecognition"
                 style={{
                   width: '150px',
-                  height: 'auto'
+                  height: 'auto',
                 }}
               />
 
@@ -1274,7 +1678,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     fontWeight: 700,
                     color: '#0f172a',
                     textAlign: 'center',
-                    letterSpacing: '-0.02em'
+                    letterSpacing: '-0.02em',
                   }}
                 >
                   Loading Screen
@@ -1284,7 +1688,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     margin: '0.75rem 0 0',
                     fontSize: '1rem',
                     color: '#64748b',
-                    textAlign: 'center'
+                    textAlign: 'center',
                   }}
                 >
                   Foundational Program Platform
@@ -1300,7 +1704,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   border: '4px solid #e2e8f0',
                   borderTopColor: '#0ea5e9',
                   borderRightColor: '#0ea5e9',
-                  animation: 'spin 1s linear infinite'
+                  animation: 'spin 1s linear infinite',
                 }}
               />
 
@@ -1310,13 +1714,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '0.875rem',
-                  width: '100%'
+                  width: '100%',
                 }}
               >
                 {[
                   'Verifying enrollment status',
                   'Loading training modules',
-                  'Preparing simulator scenarios'
+                  'Preparing simulator scenarios',
                 ].map((step, index) => (
                   <div
                     key={step}
@@ -1326,7 +1730,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       gap: '1rem',
                       fontSize: '0.8rem',
                       color: '#475569',
-                      padding: '0.5rem 0'
+                      padding: '0.5rem 0',
                     }}
                   >
                     <div
@@ -1341,7 +1745,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         color: 'white',
                         fontSize: '0.75rem',
                         fontWeight: 700,
-                        flexShrink: 0
+                        flexShrink: 0,
                       }}
                     >
                       {index + 1}
@@ -1358,7 +1762,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   height: '8px',
                   background: '#e2e8f0',
                   borderRadius: '999px',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
                 }}
               >
                 <div
@@ -1367,7 +1771,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     height: '100%',
                     background: 'linear-gradient(90deg, #0ea5e9, #0284c7)',
                     borderRadius: '999px',
-                    animation: 'loadingProgress 2.5s ease-in-out infinite'
+                    animation: 'loadingProgress 2.5s ease-in-out infinite',
                   }}
                 />
               </div>
@@ -1392,16 +1796,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         )}
 
         {/* Header - Matching News & Updates Style */}
-        <header className="pilot-profile-header" style={{
-          padding: '0rem 4rem',
-          marginTop: '-1rem',
-          background: isDarkMode
-            ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
-            : 'linear-gradient(180deg, #fff 0%, #f0f4fb 100%)',
-          position: 'relative',
-          textAlign: 'center',
-          borderBottom: isDarkMode ? '1px solid #334155' : '1px solid #e2e8f0'
-        }}>
+        <header
+          className="pilot-profile-header"
+          style={{
+            padding: '0rem 4rem',
+            marginTop: '-1rem',
+            background: isDarkMode
+              ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
+              : 'linear-gradient(180deg, #fff 0%, #f0f4fb 100%)',
+            position: 'relative',
+            textAlign: 'center',
+            borderBottom: isDarkMode ? '1px solid #334155' : '1px solid #e2e8f0',
+          }}
+        >
           <button
             onClick={onBack}
             style={{
@@ -1417,7 +1824,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               gap: '0.5rem',
               fontSize: '0.875rem',
               fontWeight: 500,
-              color: isDarkMode ? '#94a3b8' : '#475569'
+              color: isDarkMode ? '#94a3b8' : '#475569',
             }}
           >
             <Icon name="ArrowLeft" style={{ width: 16, height: 16 }} />
@@ -1425,53 +1832,102 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </button>
 
           <div style={{ marginBottom: '0.25rem', marginTop: '0.5rem' }}>
-            <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+            <img
+              src="/logo.png"
+              alt="PilotRecognition Logo"
+              style={{
+                maxWidth: '260px',
+                height: 'auto',
+                objectFit: 'contain',
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            />
           </div>
 
-          <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.25rem' }}>
+          <div
+            style={{
+              color: '#2563eb',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              marginBottom: '0.25rem',
+            }}
+          >
             Connecting Pilots to the Industry
           </div>
 
-          <h1 style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: 'clamp(2rem, 5vw, 3.25rem)',
-            fontWeight: 400,
-            color: isDarkMode ? '#f8fafc' : '#0f172a',
-            marginBottom: '0.25rem',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.15
-          }}>
+          <h1
+            style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+              fontWeight: 400,
+              color: isDarkMode ? '#f8fafc' : '#0f172a',
+              marginBottom: '0.25rem',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.15,
+            }}
+          >
             Dashboard
           </h1>
-          
-          <p style={{ 
-            color: isDarkMode ? '#94a3b8' : '#64748b', 
-            fontSize: '1.15rem', 
-            lineHeight: 1.7, 
-            maxWidth: '36rem', 
-            margin: '0 auto',
-            padding: '0 1rem'
-          }}>
-            Your central hub for flight logs, training records, program progress, and career development resources.
+
+          <p
+            style={{
+              color: isDarkMode ? '#94a3b8' : '#64748b',
+              fontSize: '1.15rem',
+              lineHeight: 1.7,
+              maxWidth: '36rem',
+              margin: '0 auto',
+              padding: '0 1rem',
+            }}
+          >
+            Your central hub for flight logs, training records, program progress, and career
+            development resources.
           </p>
         </header>
 
         <section style={{ padding: '2rem clamp(1.5rem, 4vw, 3.5rem) 3rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-            
             {/* 1. Pilot Programs Progress */}
             <div style={{ marginBottom: '3rem' }}>
               {/* Section Header */}
               <div style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontFamily: 'Georgia, serif', margin: '0 0 0.5rem', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 400, color: isDarkMode ? '#f8fafc' : '#0f172a', letterSpacing: '-0.02em' }}>
+                <h2
+                  style={{
+                    fontFamily: 'Georgia, serif',
+                    margin: '0 0 0.5rem',
+                    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+                    fontWeight: 400,
+                    color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    letterSpacing: '-0.02em',
+                  }}
+                >
                   Programs
                 </h2>
-                <p style={{ margin: '0', color: isDarkMode ? '#94a3b8' : '#64748b', lineHeight: 1.6, fontSize: '0.95rem', maxWidth: '500px' }}>
-                  Track your training progress and program enrollment across all PilotRecognition programs
+                <p
+                  style={{
+                    margin: '0',
+                    color: isDarkMode ? '#94a3b8' : '#64748b',
+                    lineHeight: 1.6,
+                    fontSize: '0.95rem',
+                    maxWidth: '500px',
+                  }}
+                >
+                  Track your training progress and program enrollment across all PilotRecognition
+                  programs
                 </p>
               </div>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', alignItems: 'stretch' }}>
+
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '0.75rem',
+                  alignItems: 'stretch',
+                }}
+              >
                 {/* Foundational Program Card - Clickable */}
                 <div
                   onClick={() => {
@@ -1485,14 +1941,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                   style={{
                     background: isDarkMode
-                      ? (isFoundationalEnrolled === null ? 'linear-gradient(135deg, rgba(71,85,105,0.6), rgba(51,65,85,0.5))' : 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))')
-                      : (isFoundationalEnrolled === null ? 'rgba(148, 163, 184, 0.3)' : 'rgba(255, 255, 255, 0.7)'),
+                      ? isFoundationalEnrolled === null
+                        ? 'linear-gradient(135deg, rgba(71,85,105,0.6), rgba(51,65,85,0.5))'
+                        : 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                      : isFoundationalEnrolled === null
+                        ? 'rgba(148, 163, 184, 0.3)'
+                        : 'rgba(255, 255, 255, 0.7)',
                     borderRadius: '12px',
                     padding: '0.75rem',
-                    boxShadow: isDarkMode 
+                    boxShadow: isDarkMode
                       ? '0 20px 45px rgba(0,0,0,0.3)'
                       : '0 20px 45px rgba(15,23,42,0.08)',
-                    border: isDarkMode 
+                    border: isDarkMode
                       ? '1px solid rgba(71,85,105,0.5)'
                       : '1px solid rgba(255, 255, 255, 0.8)',
                     backdropFilter: 'blur(20px)',
@@ -1502,34 +1962,61 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     height: '100%',
-                    opacity: isFoundationalEnrolled === null ? 0.7 : 1
+                    opacity: isFoundationalEnrolled === null ? 0.7 : 1,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = isDarkMode 
+                    e.currentTarget.style.background = isDarkMode
                       ? 'linear-gradient(135deg, rgba(30,41,59,1), rgba(15,23,42,0.95))'
                       : 'rgba(255, 255, 255, 0.9)';
                     e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.boxShadow = isDarkMode 
+                    e.currentTarget.style.boxShadow = isDarkMode
                       ? '0 25px 50px rgba(0,0,0,0.4)'
                       : '0 25px 50px rgba(15,23,42,0.12)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = isDarkMode 
+                    e.currentTarget.style.background = isDarkMode
                       ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
                       : 'rgba(255, 255, 255, 0.7)';
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = isDarkMode 
+                    e.currentTarget.style.boxShadow = isDarkMode
                       ? '0 20px 45px rgba(0,0,0,0.3)'
                       : '0 20px 45px rgba(15,23,42,0.08)';
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '0.6rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Core Training</span>
-                    <h3 style={{ margin: '0.1rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Foundational Program</h3>
+                    <span
+                      style={{
+                        fontSize: '0.6rem',
+                        color: isDarkMode ? '#94a3b8' : '#64748b',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Core Training
+                    </span>
+                    <h3
+                      style={{
+                        margin: '0.1rem 0 0',
+                        fontSize: '0.9rem',
+                        fontWeight: 700,
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                      }}
+                    >
+                      Foundational Program
+                    </h3>
                   </div>
 
-                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.75rem', lineHeight: 1.3, flex: 1 }}>
-                    Master core aviation fundamentals, instrument procedures, and CRM techniques through structured simulator training.
+                  <p
+                    style={{
+                      margin: 0,
+                      color: isDarkMode ? '#cbd5e1' : '#64748b',
+                      fontSize: '0.75rem',
+                      lineHeight: 1.3,
+                      flex: 1,
+                    }}
+                  >
+                    Master core aviation fundamentals, instrument procedures, and CRM techniques
+                    through structured simulator training.
                   </p>
 
                   <div
@@ -1538,16 +2025,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       padding: '0.4rem 0.85rem',
                       borderRadius: '12px',
                       border: 'none',
-                      background: isFoundationalEnrolled === null ? '#94a3b8' : isFoundationalEnrolled ? 'rgba(14, 165, 233, 0.9)' : '#10b981',
+                      background:
+                        isFoundationalEnrolled === null
+                          ? '#94a3b8'
+                          : isFoundationalEnrolled
+                            ? 'rgba(14, 165, 233, 0.9)'
+                            : '#10b981',
                       color: '#fff',
                       fontWeight: 600,
                       fontSize: '0.8rem',
                       textAlign: 'center',
                       backdropFilter: 'blur(10px)',
-                      cursor: isFoundationalEnrolled === null ? 'wait' : 'pointer'
+                      cursor: isFoundationalEnrolled === null ? 'wait' : 'pointer',
                     }}
                   >
-                    {isFoundationalEnrolled === null ? 'Loading...' : isFoundationalEnrolled ? 'Access Platform →' : 'Enroll Now →'}
+                    {isFoundationalEnrolled === null
+                      ? 'Loading...'
+                      : isFoundationalEnrolled
+                        ? 'Access Platform →'
+                        : 'Enroll Now →'}
                   </div>
                 </div>
 
@@ -1568,14 +2064,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         : 'rgba(255, 255, 255, 0.3)',
                     borderRadius: '12px',
                     padding: '0.75rem',
-                    boxShadow: isDarkMode 
+                    boxShadow: isDarkMode
                       ? isFoundationalEnrolled
                         ? '0 20px 45px rgba(0,0,0,0.3)'
                         : '0 20px 45px rgba(0,0,0,0.1)'
                       : isFoundationalEnrolled
                         ? '0 20px 45px rgba(15,23,42,0.08)'
                         : '0 20px 45px rgba(15,23,42,0.02)',
-                    border: isDarkMode 
+                    border: isDarkMode
                       ? '1px solid rgba(71,85,105,0.5)'
                       : '1px solid rgba(255, 255, 255, 0.8)',
                     backdropFilter: 'blur(20px)',
@@ -1585,34 +2081,62 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     cursor: isFoundationalEnrolled ? 'pointer' : 'not-allowed',
                     transition: 'all 0.3s ease',
                     height: '100%',
-                    opacity: isFoundationalEnrolled ? 1 : 0.5
+                    opacity: isFoundationalEnrolled ? 1 : 0.5,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = isDarkMode 
+                    e.currentTarget.style.background = isDarkMode
                       ? 'linear-gradient(135deg, rgba(30,41,59,1), rgba(15,23,42,0.95))'
                       : 'rgba(255, 255, 255, 0.9)';
                     e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.boxShadow = isDarkMode 
+                    e.currentTarget.style.boxShadow = isDarkMode
                       ? '0 25px 50px rgba(0,0,0,0.4)'
                       : '0 25px 50px rgba(15,23,42,0.12)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = isDarkMode 
+                    e.currentTarget.style.background = isDarkMode
                       ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
                       : 'rgba(255, 255, 255, 0.7)';
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = isDarkMode 
+                    e.currentTarget.style.boxShadow = isDarkMode
                       ? '0 20px 45px rgba(0,0,0,0.3)'
                       : '0 20px 45px rgba(15,23,42,0.08)';
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '0.6rem', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.1em', textTransform: 'uppercase' }}>AIRBUS Aligned</span>
-                    <h3 style={{ margin: '0.1rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>EBT CBTA Initial Pilot Recognition Interview</h3>
+                    <span
+                      style={{
+                        fontSize: '0.6rem',
+                        color: isDarkMode ? '#94a3b8' : '#64748b',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      AIRBUS Aligned
+                    </span>
+                    <h3
+                      style={{
+                        margin: '0.1rem 0 0',
+                        fontSize: '0.9rem',
+                        fontWeight: 700,
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                      }}
+                    >
+                      EBT CBTA Initial Pilot Recognition Interview
+                    </h3>
                   </div>
 
-                  <p style={{ margin: 0, color: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: '0.75rem', lineHeight: 1.3, flex: 1 }}>
-                    AIRBUS-aligned Evidence-Based Training and Competency-Based Training & Assessment interview for initial pilot recognition and industry placement readiness.
+                  <p
+                    style={{
+                      margin: 0,
+                      color: isDarkMode ? '#cbd5e1' : '#64748b',
+                      fontSize: '0.75rem',
+                      lineHeight: 1.3,
+                      flex: 1,
+                    }}
+                  >
+                    AIRBUS-aligned Evidence-Based Training and Competency-Based Training &
+                    Assessment interview for initial pilot recognition and industry placement
+                    readiness.
                   </p>
 
                   <div
@@ -1626,7 +2150,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       fontWeight: 600,
                       fontSize: '0.8rem',
                       textAlign: 'center',
-                      backdropFilter: 'blur(10px)'
+                      backdropFilter: 'blur(10px)',
                     }}
                   >
                     Access Interview →
@@ -1650,7 +2174,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     flexDirection: 'column',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    height: '100%'
+                    height: '100%',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(15, 23, 42, 1)';
@@ -1662,15 +2186,51 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <img src="/images/accessportal.png" alt="Examination Portal" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }} />
+                    <img
+                      src="/images/accessportal.png"
+                      alt="Examination Portal"
+                      style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '10px',
+                        objectFit: 'cover',
+                      }}
+                    />
                     <div>
-                      <span style={{ fontSize: '0.6rem', color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Assessments</span>
-                      <h3 style={{ margin: '0.1rem 0 0', fontSize: '0.9rem', fontWeight: 700, color: '#f8fafc' }}>Examination Portal</h3>
+                      <span
+                        style={{
+                          fontSize: '0.6rem',
+                          color: '#94a3b8',
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        Assessments
+                      </span>
+                      <h3
+                        style={{
+                          margin: '0.1rem 0 0',
+                          fontSize: '0.9rem',
+                          fontWeight: 700,
+                          color: '#f8fafc',
+                        }}
+                      >
+                        Examination Portal
+                      </h3>
                     </div>
                   </div>
 
-                  <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.75rem', lineHeight: 1.3, flex: 1 }}>
-                    Access your examination portal, view results, and track your assessment progress across all modules.
+                  <p
+                    style={{
+                      margin: 0,
+                      color: '#94a3b8',
+                      fontSize: '0.75rem',
+                      lineHeight: 1.3,
+                      flex: 1,
+                    }}
+                  >
+                    Access your examination portal, view results, and track your assessment progress
+                    across all modules.
                   </p>
 
                   <button
@@ -1684,7 +2244,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       fontWeight: 600,
                       cursor: 'pointer',
                       fontSize: '0.8rem',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.2s ease',
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -1702,81 +2262,198 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Program Stats Card - Glassy Grey Style */}
-                <div style={{
-                  background: isDarkMode 
-                    ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                    : 'rgba(255, 255, 255, 0.7)',
-                  borderRadius: '24px',
-                  padding: '1.75rem',
-                  boxShadow: isDarkMode 
-                    ? '0 20px 45px rgba(0,0,0,0.3)'
-                    : '0 20px 45px rgba(15,23,42,0.08)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(71,85,105,0.5)'
-                    : '1px solid rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  color: isDarkMode ? '#f8fafc' : '#0f172a',
-                  gridColumn: '1 / -1'
-                }}>
-                  <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 600, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Program Overview</h3>
+                <div
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                      : 'rgba(255, 255, 255, 0.7)',
+                    borderRadius: '24px',
+                    padding: '1.75rem',
+                    boxShadow: isDarkMode
+                      ? '0 20px 45px rgba(0,0,0,0.3)'
+                      : '0 20px 45px rgba(15,23,42,0.08)',
+                    border: isDarkMode
+                      ? '1px solid rgba(71,85,105,0.5)'
+                      : '1px solid rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    gridColumn: '1 / -1',
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: '0 0 1rem',
+                      fontSize: '1.1rem',
+                      fontWeight: 600,
+                      color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    }}
+                  >
+                    Program Overview
+                  </h3>
                   {isFoundationalEnrolled ? (
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between' }}>
-                      <div style={{ 
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(248, 250, 252, 0.8)', 
-                        borderRadius: '12px', 
-                        padding: '1rem', 
-                        textAlign: 'center', 
-                        flex: 1, 
-                        border: isDarkMode ? '1px solid rgba(71,85,105,0.3)' : '1px solid rgba(226,232,240,0.5)' 
-                      }}>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#94a3b8' : '#64748b' }}>{completedCount}</div>
-                        <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#64748b' : '#94a3b8', marginTop: '0.25rem' }}>Modules Completed</div>
+                      <div
+                        style={{
+                          background: isDarkMode
+                            ? 'rgba(15,23,42,0.6)'
+                            : 'rgba(248, 250, 252, 0.8)',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                          flex: 1,
+                          border: isDarkMode
+                            ? '1px solid rgba(71,85,105,0.3)'
+                            : '1px solid rgba(226,232,240,0.5)',
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          {completedCount}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                            marginTop: '0.25rem',
+                          }}
+                        >
+                          Modules Completed
+                        </div>
                       </div>
-                      <div style={{ 
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(248, 250, 252, 0.8)', 
-                        borderRadius: '12px', 
-                        padding: '1rem', 
-                        textAlign: 'center', 
-                        flex: 1, 
-                        border: isDarkMode ? '1px solid rgba(71,85,105,0.3)' : '1px solid rgba(226,232,240,0.5)' 
-                      }}>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#94a3b8' : '#64748b' }}>{competencyScores.exams}%</div>
-                        <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#64748b' : '#94a3b8', marginTop: '0.25rem' }}>Latest Exam Score</div>
+                      <div
+                        style={{
+                          background: isDarkMode
+                            ? 'rgba(15,23,42,0.6)'
+                            : 'rgba(248, 250, 252, 0.8)',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                          flex: 1,
+                          border: isDarkMode
+                            ? '1px solid rgba(71,85,105,0.3)'
+                            : '1px solid rgba(226,232,240,0.5)',
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          {competencyScores.exams}%
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                            marginTop: '0.25rem',
+                          }}
+                        >
+                          Latest Exam Score
+                        </div>
                       </div>
-                      <div style={{ 
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(248, 250, 252, 0.8)', 
-                        borderRadius: '12px', 
-                        padding: '1rem', 
-                        textAlign: 'center', 
-                        flex: 1, 
-                        border: isDarkMode ? '1px solid rgba(71,85,105,0.3)' : '1px solid rgba(226,232,240,0.5)' 
-                      }}>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#94a3b8' : '#64748b' }}>{competencyScores.recency}%</div>
-                        <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#64748b' : '#94a3b8', marginTop: '0.25rem' }}>FAA Recency Score</div>
+                      <div
+                        style={{
+                          background: isDarkMode
+                            ? 'rgba(15,23,42,0.6)'
+                            : 'rgba(248, 250, 252, 0.8)',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                          flex: 1,
+                          border: isDarkMode
+                            ? '1px solid rgba(71,85,105,0.3)'
+                            : '1px solid rgba(226,232,240,0.5)',
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          {competencyScores.recency}%
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                            marginTop: '0.25rem',
+                          }}
+                        >
+                          FAA Recency Score
+                        </div>
                       </div>
-                      <div style={{ 
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(248, 250, 252, 0.8)', 
-                        borderRadius: '12px', 
-                        padding: '1rem', 
-                        textAlign: 'center', 
-                        flex: 1, 
-                        border: isDarkMode ? '1px solid rgba(71,85,105,0.3)' : '1px solid rgba(226,232,240,0.5)' 
-                      }}>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#94a3b8' : '#64748b' }}>{mentorshipHoursRemaining} hrs</div>
-                        <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#64748b' : '#94a3b8', marginTop: '0.25rem' }}>Mentorship Hours Left</div>
+                      <div
+                        style={{
+                          background: isDarkMode
+                            ? 'rgba(15,23,42,0.6)'
+                            : 'rgba(248, 250, 252, 0.8)',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                          flex: 1,
+                          border: isDarkMode
+                            ? '1px solid rgba(71,85,105,0.3)'
+                            : '1px solid rgba(226,232,240,0.5)',
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          {mentorshipHoursRemaining} hrs
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                            marginTop: '0.25rem',
+                          }}
+                        >
+                          Mentorship Hours Left
+                        </div>
                       </div>
                     </div>
                   ) : (
-                    <div style={{ 
-                      background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(248, 250, 252, 0.8)', 
-                      borderRadius: '12px', 
-                      padding: '1.5rem', 
-                      textAlign: 'center',
-                      border: isDarkMode ? '1px solid rgba(71,85,105,0.3)' : '1px solid rgba(226,232,240,0.5)' 
-                    }}>
-                      <div style={{ fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#94a3b8' : '#64748b' }}>N/A</div>
-                      <div style={{ fontSize: '0.875rem', color: isDarkMode ? '#64748b' : '#94a3b8', marginTop: '0.5rem' }}>
+                    <div
+                      style={{
+                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(248, 250, 252, 0.8)',
+                        borderRadius: '12px',
+                        padding: '1.5rem',
+                        textAlign: 'center',
+                        border: isDarkMode
+                          ? '1px solid rgba(71,85,105,0.3)'
+                          : '1px solid rgba(226,232,240,0.5)',
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: '1.5rem',
+                          fontWeight: 700,
+                          color: isDarkMode ? '#94a3b8' : '#64748b',
+                        }}
+                      >
+                        N/A
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '0.875rem',
+                          color: isDarkMode ? '#64748b' : '#94a3b8',
+                          marginTop: '0.5rem',
+                        }}
+                      >
                         Enroll to access overview
                       </div>
                     </div>
@@ -1796,7 +2473,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         cursor: 'pointer',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '0.25rem'
+                        gap: '0.25rem',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.textDecoration = 'underline';
@@ -1811,35 +2488,80 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Mentorship Logbook Card - Glassy Grey Style */}
-                <div style={{
-                  background: isDarkMode 
-                    ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                    : 'rgba(255, 255, 255, 0.7)',
-                  borderRadius: '24px',
-                  padding: '1.75rem',
-                  boxShadow: isDarkMode 
-                    ? '0 20px 45px rgba(0,0,0,0.3)'
-                    : '0 20px 45px rgba(15,23,42,0.08)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(71,85,105,0.5)'
-                    : '1px solid rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  color: isDarkMode ? '#f8fafc' : '#0f172a',
-                  gridColumn: '1 / -1'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                <div
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                      : 'rgba(255, 255, 255, 0.7)',
+                    borderRadius: '24px',
+                    padding: '1.75rem',
+                    boxShadow: isDarkMode
+                      ? '0 20px 45px rgba(0,0,0,0.3)'
+                      : '0 20px 45px rgba(15,23,42,0.08)',
+                    border: isDarkMode
+                      ? '1px solid rgba(71,85,105,0.5)'
+                      : '1px solid rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    gridColumn: '1 / -1',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap',
+                      gap: '1rem',
+                    }}
+                  >
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Mentorship Logbook</h3>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Track your mentorship sessions and hours</p>
+                      <h3
+                        style={{
+                          margin: 0,
+                          fontSize: '1.25rem',
+                          fontWeight: 700,
+                          color: isDarkMode ? '#f8fafc' : '#0f172a',
+                        }}
+                      >
+                        Mentorship Logbook
+                      </h3>
+                      <p
+                        style={{
+                          margin: '0.25rem 0 0',
+                          fontSize: '0.875rem',
+                          color: isDarkMode ? '#94a3b8' : '#64748b',
+                        }}
+                      >
+                        Track your mentorship sessions and hours
+                      </p>
                     </div>
-                    
+
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: 700, color: isFoundationalEnrolled ? (isDarkMode ? '#94a3b8' : '#64748b') : (isDarkMode ? '#64748b' : '#94a3b8') }}>
+                        <div
+                          style={{
+                            fontSize: '2rem',
+                            fontWeight: 700,
+                            color: isFoundationalEnrolled
+                              ? isDarkMode
+                                ? '#94a3b8'
+                                : '#64748b'
+                              : isDarkMode
+                                ? '#64748b'
+                                : '#94a3b8',
+                          }}
+                        >
                           {isFoundationalEnrolled ? mentorHoursLabel : '0 hr'}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#64748b' : '#94a3b8', marginTop: '0.25rem' }}>
+                        <div
+                          style={{
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                            marginTop: '0.25rem',
+                          }}
+                        >
                           Total Mentor Hours
                         </div>
                       </div>
@@ -1851,25 +2573,45 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         style={{
                           padding: '0.75rem 1.5rem',
                           borderRadius: '12px',
-                          border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(100, 116, 139, 0.3)',
-                          background: isFoundationalEnrolled 
-                            ? (isDarkMode ? 'rgba(30,41,59,0.6)' : 'rgba(255, 255, 255, 0.5)') 
-                            : (isDarkMode ? 'rgba(15,23,42,0.4)' : 'rgba(255, 255, 255, 0.3)'),
-                          color: isFoundationalEnrolled ? (isDarkMode ? '#f8fafc' : '#0f172a') : (isDarkMode ? '#94a3b8' : '#64748b'),
+                          border: isDarkMode
+                            ? '1px solid rgba(71,85,105,0.5)'
+                            : '1px solid rgba(100, 116, 139, 0.3)',
+                          background: isFoundationalEnrolled
+                            ? isDarkMode
+                              ? 'rgba(30,41,59,0.6)'
+                              : 'rgba(255, 255, 255, 0.5)'
+                            : isDarkMode
+                              ? 'rgba(15,23,42,0.4)'
+                              : 'rgba(255, 255, 255, 0.3)',
+                          color: isFoundationalEnrolled
+                            ? isDarkMode
+                              ? '#f8fafc'
+                              : '#0f172a'
+                            : isDarkMode
+                              ? '#94a3b8'
+                              : '#64748b',
                           fontWeight: 600,
                           cursor: 'pointer',
                           fontSize: '0.8rem',
-                          transition: 'all 0.2s ease'
+                          transition: 'all 0.2s ease',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = isFoundationalEnrolled 
-                            ? (isDarkMode ? 'rgba(30,41,59,0.8)' : 'rgba(255, 255, 255, 0.8)') 
-                            : (isDarkMode ? 'rgba(15,23,42,0.6)' : 'rgba(255, 255, 255, 0.5)');
+                          e.currentTarget.style.background = isFoundationalEnrolled
+                            ? isDarkMode
+                              ? 'rgba(30,41,59,0.8)'
+                              : 'rgba(255, 255, 255, 0.8)'
+                            : isDarkMode
+                              ? 'rgba(15,23,42,0.6)'
+                              : 'rgba(255, 255, 255, 0.5)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = isFoundationalEnrolled 
-                            ? (isDarkMode ? 'rgba(30,41,59,0.6)' : 'rgba(255, 255, 255, 0.5)') 
-                            : (isDarkMode ? 'rgba(15,23,42,0.4)' : 'rgba(255, 255, 255, 0.3)');
+                          e.currentTarget.style.background = isFoundationalEnrolled
+                            ? isDarkMode
+                              ? 'rgba(30,41,59,0.6)'
+                              : 'rgba(255, 255, 255, 0.5)'
+                            : isDarkMode
+                              ? 'rgba(15,23,42,0.4)'
+                              : 'rgba(255, 255, 255, 0.3)';
                         }}
                       >
                         {isFoundationalEnrolled ? 'Access Logbook' : 'Enroll Now'}
@@ -1879,40 +2621,88 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* PilotRecognition Network Card - Glassy Grey Style */}
-                <div style={{
-                  background: isDarkMode 
-                    ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                    : 'rgba(255, 255, 255, 0.7)',
-                  borderRadius: '24px',
-                  padding: '1.75rem',
-                  boxShadow: isDarkMode 
-                    ? '0 20px 45px rgba(0,0,0,0.3)'
-                    : '0 20px 45px rgba(15,23,42,0.08)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(71,85,105,0.5)'
-                    : '1px solid rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  color: isDarkMode ? '#f8fafc' : '#0f172a',
-                  gridColumn: '1 / -1'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                <div
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                      : 'rgba(255, 255, 255, 0.7)',
+                    borderRadius: '24px',
+                    padding: '1.75rem',
+                    boxShadow: isDarkMode
+                      ? '0 20px 45px rgba(0,0,0,0.3)'
+                      : '0 20px 45px rgba(15,23,42,0.08)',
+                    border: isDarkMode
+                      ? '1px solid rgba(71,85,105,0.5)'
+                      : '1px solid rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    gridColumn: '1 / -1',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap',
+                      gap: '1rem',
+                    }}
+                  >
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>PilotRecognition Network</h3>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Connect with fellow pilots and mentors in your aviation journey</p>
+                      <h3
+                        style={{
+                          margin: 0,
+                          fontSize: '1.25rem',
+                          fontWeight: 700,
+                          color: isDarkMode ? '#f8fafc' : '#0f172a',
+                        }}
+                      >
+                        PilotRecognition Network
+                      </h3>
+                      <p
+                        style={{
+                          margin: '0.25rem 0 0',
+                          fontSize: '0.875rem',
+                          color: isDarkMode ? '#94a3b8' : '#64748b',
+                        }}
+                      >
+                        Connect with fellow pilots and mentors in your aviation journey
+                      </p>
                     </div>
-                    
+
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: 700, color: isDarkMode ? '#60a5fa' : '#2563eb' }}>
-                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <div
+                          style={{
+                            fontSize: '2rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#60a5fa' : '#2563eb',
+                          }}
+                        >
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
                             <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                           </svg>
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: isDarkMode ? '#64748b' : '#94a3b8', marginTop: '0.25rem' }}>
+                        <div
+                          style={{
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                            marginTop: '0.25rem',
+                          }}
+                        >
                           Community
                         </div>
                       </div>
@@ -1921,19 +2711,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         style={{
                           padding: '0.75rem 1.5rem',
                           borderRadius: '12px',
-                          border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(100, 116, 139, 0.3)',
+                          border: isDarkMode
+                            ? '1px solid rgba(71,85,105,0.5)'
+                            : '1px solid rgba(100, 116, 139, 0.3)',
                           background: isDarkMode ? 'rgba(37,99,235,0.2)' : 'rgba(37,99,235,0.1)',
                           color: isDarkMode ? '#60a5fa' : '#2563eb',
                           fontWeight: 600,
                           cursor: 'pointer',
                           fontSize: '0.8rem',
-                          transition: 'all 0.2s ease'
+                          transition: 'all 0.2s ease',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = isDarkMode ? 'rgba(37,99,235,0.3)' : 'rgba(37,99,235,0.2)';
+                          e.currentTarget.style.background = isDarkMode
+                            ? 'rgba(37,99,235,0.3)'
+                            : 'rgba(37,99,235,0.2)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = isDarkMode ? 'rgba(37,99,235,0.2)' : 'rgba(37,99,235,0.1)';
+                          e.currentTarget.style.background = isDarkMode
+                            ? 'rgba(37,99,235,0.2)'
+                            : 'rgba(37,99,235,0.1)';
                         }}
                       >
                         Access Network
@@ -1943,61 +2739,116 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Modules Access Card - Glassy Grey Style */}
-                <div style={{
-                  background: isDarkMode 
-                    ? isFoundationalEnrolled
-                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                      : 'linear-gradient(135deg, rgba(30,41,59,0.4), rgba(15,23,42,0.3))'
-                    : isFoundationalEnrolled
-                      ? 'rgba(255, 255, 255, 0.7)'
-                      : 'rgba(255, 255, 255, 0.3)',
-                  borderRadius: '24px',
-                  padding: '1.75rem',
-                  boxShadow: isDarkMode 
-                    ? isFoundationalEnrolled
-                      ? '0 20px 45px rgba(0,0,0,0.3)'
-                      : '0 20px 45px rgba(0,0,0,0.1)'
-                    : isFoundationalEnrolled
-                      ? '0 20px 45px rgba(15,23,42,0.08)'
-                      : '0 20px 45px rgba(15,23,42,0.02)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(71,85,105,0.5)'
-                    : '1px solid rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  color: isDarkMode ? '#f8fafc' : '#0f172a',
-                  gridColumn: '1 / -1',
-                  opacity: isFoundationalEnrolled ? 1 : 0.5
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-                    <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
+                <div
+                  style={{
+                    background: isDarkMode
+                      ? isFoundationalEnrolled
+                        ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                        : 'linear-gradient(135deg, rgba(30,41,59,0.4), rgba(15,23,42,0.3))'
+                      : isFoundationalEnrolled
+                        ? 'rgba(255, 255, 255, 0.7)'
+                        : 'rgba(255, 255, 255, 0.3)',
+                    borderRadius: '24px',
+                    padding: '1.75rem',
+                    boxShadow: isDarkMode
+                      ? isFoundationalEnrolled
+                        ? '0 20px 45px rgba(0,0,0,0.3)'
+                        : '0 20px 45px rgba(0,0,0,0.1)'
+                      : isFoundationalEnrolled
+                        ? '0 20px 45px rgba(15,23,42,0.08)'
+                        : '0 20px 45px rgba(15,23,42,0.02)',
+                    border: isDarkMode
+                      ? '1px solid rgba(71,85,105,0.5)'
+                      : '1px solid rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    gridColumn: '1 / -1',
+                    opacity: isFoundationalEnrolled ? 1 : 0.5,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: '1.5rem',
+                      flexWrap: 'wrap',
+                      gap: '1rem',
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: '1.25rem',
+                        fontWeight: 700,
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                      }}
+                    >
                       Modules Access
                       {!isFoundationalEnrolled && ' (Locked)'}
                     </h3>
                   </div>
-                  
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                      gap: '1rem',
+                    }}
+                  >
                     {/* Module 1 */}
                     <div
                       style={{
-                        background: moduleProgress.module1.completed 
-                          ? (isDarkMode ? 'rgba(16, 185, 129, 0.15)' : 'rgba(236, 253, 245, 0.6)')
-                          : (isDarkMode ? 'rgba(30, 41, 59, 0.6)' : 'rgba(248, 250, 252, 0.6)'),
+                        background: moduleProgress.module1.completed
+                          ? isDarkMode
+                            ? 'rgba(16, 185, 129, 0.15)'
+                            : 'rgba(236, 253, 245, 0.6)'
+                          : isDarkMode
+                            ? 'rgba(30, 41, 59, 0.6)'
+                            : 'rgba(248, 250, 252, 0.6)',
                         borderRadius: '16px',
                         padding: '1.5rem',
-                        border: isDarkMode ? '1px solid rgba(71,85,105,0.4)' : '1px solid rgba(226,232,240,0.5)',
+                        border: isDarkMode
+                          ? '1px solid rgba(71,85,105,0.4)'
+                          : '1px solid rgba(226,232,240,0.5)',
                         transition: 'all 0.2s ease',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.75rem'
+                        gap: '0.75rem',
                       }}
                     >
                       <div>
-                        <span style={{ fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Module 1</span>
-                        <h4 style={{ margin: '0.5rem 0 0', fontSize: '1rem', fontWeight: 600, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{moduleProgress.module1.name}</h4>
+                        <span
+                          style={{
+                            fontSize: '0.875rem',
+                            fontWeight: 600,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          Module 1
+                        </span>
+                        <h4
+                          style={{
+                            margin: '0.5rem 0 0',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          {moduleProgress.module1.name}
+                        </h4>
                       </div>
                       <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
-                        <p style={{ margin: '0 0 0.75rem', fontSize: '0.8rem', color: isDarkMode ? '#64748b' : '#94a3b8' }}>{moduleProgress.module1.duration}</p>
+                        <p
+                          style={{
+                            margin: '0 0 0.75rem',
+                            fontSize: '0.8rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                          }}
+                        >
+                          {moduleProgress.module1.duration}
+                        </p>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -2016,7 +2867,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             fontWeight: 600,
                             cursor: isFoundationalEnrolled ? 'pointer' : 'not-allowed',
                             transition: 'all 0.2s ease',
-                            opacity: isFoundationalEnrolled ? 1 : 0.7
+                            opacity: isFoundationalEnrolled ? 1 : 0.7,
                           }}
                           onMouseEnter={(e) => {
                             if (isFoundationalEnrolled) {
@@ -2024,10 +2875,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isFoundationalEnrolled ? '#2563eb' : '#94a3b8';
+                            e.currentTarget.style.background = isFoundationalEnrolled
+                              ? '#2563eb'
+                              : '#94a3b8';
                           }}
                         >
-                          {isFoundationalEnrolled ? (moduleProgress.module1.completed ? 'Recap' : 'Launch Module') : 'Locked'}
+                          {isFoundationalEnrolled
+                            ? moduleProgress.module1.completed
+                              ? 'Recap'
+                              : 'Launch Module'
+                            : 'Locked'}
                         </button>
                       </div>
                     </div>
@@ -2035,31 +2892,75 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     {/* Module 2 */}
                     <div
                       style={{
-                        background: moduleProgress.module2.current 
-                          ? (isDarkMode ? 'rgba(37, 99, 235, 0.15)' : 'rgba(240, 249, 255, 0.6)')
-                          : (isDarkMode ? 'rgba(30, 41, 59, 0.6)' : 'rgba(248, 250, 252, 0.6)'),
+                        background: moduleProgress.module2.current
+                          ? isDarkMode
+                            ? 'rgba(37, 99, 235, 0.15)'
+                            : 'rgba(240, 249, 255, 0.6)'
+                          : isDarkMode
+                            ? 'rgba(30, 41, 59, 0.6)'
+                            : 'rgba(248, 250, 252, 0.6)',
                         borderRadius: '16px',
                         padding: '1.5rem',
-                        border: moduleProgress.module2.current 
-                          ? (isDarkMode ? '1px solid rgba(37, 99, 235, 0.4)' : '1px solid rgba(37, 99, 235, 0.3)')
-                          : (isDarkMode ? '1px solid rgba(71,85,105,0.4)' : '1px solid rgba(226,232,240,0.5)'),
+                        border: moduleProgress.module2.current
+                          ? isDarkMode
+                            ? '1px solid rgba(37, 99, 235, 0.4)'
+                            : '1px solid rgba(37, 99, 235, 0.3)'
+                          : isDarkMode
+                            ? '1px solid rgba(71,85,105,0.4)'
+                            : '1px solid rgba(226,232,240,0.5)',
                         transition: 'all 0.2s ease',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.75rem'
+                        gap: '0.75rem',
                       }}
                     >
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Module 2</span>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginBottom: '0.5rem',
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: '0.875rem',
+                              fontWeight: 600,
+                              color: isDarkMode ? '#f8fafc' : '#0f172a',
+                            }}
+                          >
+                            Module 2
+                          </span>
                           {moduleProgress.module2.current && (
-                            <span style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 600 }}>Current</span>
+                            <span
+                              style={{ fontSize: '0.75rem', color: '#2563eb', fontWeight: 600 }}
+                            >
+                              Current
+                            </span>
                           )}
                         </div>
-                        <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{moduleProgress.module2.name}</h4>
+                        <h4
+                          style={{
+                            margin: 0,
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          {moduleProgress.module2.name}
+                        </h4>
                       </div>
                       <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
-                        <p style={{ margin: '0 0 0.75rem', fontSize: '0.8rem', color: isDarkMode ? '#64748b' : '#94a3b8' }}>{moduleProgress.module2.duration}</p>
+                        <p
+                          style={{
+                            margin: '0 0 0.75rem',
+                            fontSize: '0.8rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                          }}
+                        >
+                          {moduleProgress.module2.duration}
+                        </p>
                         <button
                           onClick={() => {
                             if (isFoundationalEnrolled) {
@@ -2077,7 +2978,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             fontWeight: 600,
                             cursor: isFoundationalEnrolled ? 'pointer' : 'not-allowed',
                             transition: 'all 0.2s ease',
-                            opacity: isFoundationalEnrolled ? 1 : 0.7
+                            opacity: isFoundationalEnrolled ? 1 : 0.7,
                           }}
                           onMouseEnter={(e) => {
                             if (isFoundationalEnrolled) {
@@ -2085,7 +2986,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isFoundationalEnrolled ? '#2563eb' : '#94a3b8';
+                            e.currentTarget.style.background = isFoundationalEnrolled
+                              ? '#2563eb'
+                              : '#94a3b8';
                           }}
                         >
                           {isFoundationalEnrolled ? 'Open Module' : 'Locked'}
@@ -2101,32 +3004,76 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         }
                       }}
                       style={{
-                        background: isDarkMode ? 'rgba(30, 41, 59, 0.6)' : 'rgba(248, 250, 252, 0.6)',
+                        background: isDarkMode
+                          ? 'rgba(30, 41, 59, 0.6)'
+                          : 'rgba(248, 250, 252, 0.6)',
                         borderRadius: '16px',
                         padding: '1.5rem',
-                        border: isDarkMode ? '1px solid rgba(71,85,105,0.4)' : '1px solid rgba(226,232,240,0.5)',
+                        border: isDarkMode
+                          ? '1px solid rgba(71,85,105,0.4)'
+                          : '1px solid rgba(226,232,240,0.5)',
                         opacity: isFoundationalEnrolled ? 1 : 0.7,
                         transition: 'all 0.2s ease',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '0.75rem',
-                        cursor: isFoundationalEnrolled ? 'pointer' : 'not-allowed'
+                        cursor: isFoundationalEnrolled ? 'pointer' : 'not-allowed',
                       }}
                     >
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Module 3</span>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginBottom: '0.5rem',
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: '0.875rem',
+                              fontWeight: 600,
+                              color: isDarkMode ? '#f8fafc' : '#0f172a',
+                            }}
+                          >
+                            Module 3
+                          </span>
                           {isFoundationalEnrolled && (
-                            <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>Available</span>
+                            <span
+                              style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}
+                            >
+                              Available
+                            </span>
                           )}
                           {!isFoundationalEnrolled && (
-                            <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Locked</span>
+                            <span
+                              style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}
+                            >
+                              Locked
+                            </span>
                           )}
                         </div>
-                        <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{moduleProgress.module3.name}</h4>
+                        <h4
+                          style={{
+                            margin: 0,
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          {moduleProgress.module3.name}
+                        </h4>
                       </div>
                       <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
-                        <p style={{ margin: '0 0 0.75rem', fontSize: '0.8rem', color: isDarkMode ? '#64748b' : '#94a3b8' }}>{moduleProgress.module3.duration}</p>
+                        <p
+                          style={{
+                            margin: '0 0 0.75rem',
+                            fontSize: '0.8rem',
+                            color: isDarkMode ? '#64748b' : '#94a3b8',
+                          }}
+                        >
+                          {moduleProgress.module3.duration}
+                        </p>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -2145,7 +3092,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             fontWeight: 600,
                             cursor: isFoundationalEnrolled ? 'pointer' : 'not-allowed',
                             transition: 'all 0.2s ease',
-                            opacity: isFoundationalEnrolled ? 1 : 0.7
+                            opacity: isFoundationalEnrolled ? 1 : 0.7,
                           }}
                           onMouseEnter={(e) => {
                             if (isFoundationalEnrolled) {
@@ -2153,7 +3100,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = isFoundationalEnrolled ? '#2563eb' : '#94a3b8';
+                            e.currentTarget.style.background = isFoundationalEnrolled
+                              ? '#2563eb'
+                              : '#94a3b8';
                           }}
                         >
                           {isFoundationalEnrolled ? 'Open Module' : 'Locked'}
@@ -2168,53 +3117,131 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* 2. Pilot Recognition */}
             <div style={{ marginBottom: '3rem' }}>
               {/* Section Header - Centered with Logo */}
-              <div style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div
+                style={{
+                  textAlign: 'center',
+                  marginBottom: '2rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <div style={{ marginBottom: '1.5rem' }}>
-                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                  <img
+                    src="/logo.png"
+                    alt="PilotRecognition Logo"
+                    style={{
+                      maxWidth: '260px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      display: 'block',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                    }}
+                  />
                 </div>
-                
-                <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
+
+                <div
+                  style={{
+                    color: '#2563eb',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.2em',
+                    marginBottom: '0.75rem',
+                  }}
+                >
                   Your Pilot Digital Footprint to Pathways
                 </div>
-                
-                <h2 style={{ fontFamily: 'Georgia, serif', margin: '0 0 0.75rem', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 400, color: isDarkMode ? '#f8fafc' : '#0f172a', letterSpacing: '-0.02em' }}>
+
+                <h2
+                  style={{
+                    fontFamily: 'Georgia, serif',
+                    margin: '0 0 0.75rem',
+                    fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+                    fontWeight: 400,
+                    color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    letterSpacing: '-0.02em',
+                  }}
+                >
                   Pilot Recognition & Achievements
                 </h2>
-                
-                <p style={{ margin: '0', color: isDarkMode ? '#94a3b8' : '#64748b', lineHeight: 1.6, fontSize: '1rem', maxWidth: '600px' }}>
-                  View your awards, flight hours, certifications, and professional milestones earned through your training journey.
+
+                <p
+                  style={{
+                    margin: '0',
+                    color: isDarkMode ? '#94a3b8' : '#64748b',
+                    lineHeight: 1.6,
+                    fontSize: '1rem',
+                    maxWidth: '600px',
+                  }}
+                >
+                  View your awards, flight hours, certifications, and professional milestones earned
+                  through your training journey.
                 </p>
               </div>
             </div>
-
 
             {/* Official Documentation Section */}
             <div style={{ marginBottom: '3rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Pilot Recognition Credentials</h2>
-                    <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: isDarkMode ? '#64748b' : '#94a3b8', textTransform: 'uppercase' }}>Awards, certifications & achievements</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '0.5rem',
+                      flexWrap: 'wrap',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <h2
+                      style={{
+                        margin: 0,
+                        fontSize: '1.2rem',
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                      }}
+                    >
+                      Pilot Recognition Credentials
+                    </h2>
+                    <span
+                      style={{
+                        fontSize: '0.8rem',
+                        letterSpacing: '0.2em',
+                        color: isDarkMode ? '#64748b' : '#94a3b8',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Awards, certifications & achievements
+                    </span>
                   </div>
-                  {[{
-                    title: 'Examination Results',
-                    description: 'Dive into your latest verified exam scores and subcategory breakdowns.',
-                    cta: 'View Examination Directory',
-                    filled: false,
-                    onClick: onViewExamination
-                  }, {
-                    title: 'Digital Flight Logbook',
-                    description: 'View your complete collection of licenses, flight hours, certifications, and professional milestones.',
-                    cta: 'View Logbook',
-                    filled: false,
-                    onClick: onViewDigitalLogbook
-                  }, {
-                    title: 'Pilot Licensure & Experience Data Entry',
-                    description: 'Access your comprehensive digital flight log with detailed flight records, aircraft types, and operational experience.',
-                    cta: 'Open Data Entry',
-                    filled: true,
-                    onClick: onViewLicensureExperience
-                  }].map((card, index) => (
+                  {[
+                    {
+                      title: 'Examination Results',
+                      description:
+                        'Dive into your latest verified exam scores and subcategory breakdowns.',
+                      cta: 'View Examination Directory',
+                      filled: false,
+                      onClick: onViewExamination,
+                    },
+                    {
+                      title: 'Digital Flight Logbook',
+                      description:
+                        'View your complete collection of licenses, flight hours, certifications, and professional milestones.',
+                      cta: 'View Logbook',
+                      filled: false,
+                      onClick: onViewDigitalLogbook,
+                    },
+                    {
+                      title: 'Pilot Licensure & Experience Data Entry',
+                      description:
+                        'Access your comprehensive digital flight log with detailed flight records, aircraft types, and operational experience.',
+                      cta: 'Open Data Entry',
+                      filled: true,
+                      onClick: onViewLicensureExperience,
+                    },
+                  ].map((card, index) => (
                     <div key={card.title} style={{ marginBottom: index < 2 ? '1rem' : 0 }}>
                       {renderCard(card, isDarkMode)}
                     </div>
@@ -2227,48 +3254,130 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div style={{ marginBottom: '3rem' }}>
               {/* Section Header */}
               <div style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontFamily: 'Georgia, serif', margin: '0 0 0.5rem', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 400, color: isDarkMode ? '#f8fafc' : '#0f172a', letterSpacing: '-0.02em' }}>
+                <h2
+                  style={{
+                    fontFamily: 'Georgia, serif',
+                    margin: '0 0 0.5rem',
+                    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+                    fontWeight: 400,
+                    color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    letterSpacing: '-0.02em',
+                  }}
+                >
                   Atlas Resume
                 </h2>
-                <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+                <p
+                  style={{
+                    letterSpacing: '0.2em',
+                    color: '#2563eb',
+                    fontWeight: 600,
+                    fontSize: '0.75rem',
+                    marginBottom: '0.5rem',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   ATS - (AI screening) ATLAS CV Format
                 </p>
-                <p style={{ margin: '0', color: isDarkMode ? '#94a3b8' : '#64748b', lineHeight: 1.6, fontSize: '0.9rem', maxWidth: '600px' }}>
-                  The Atlas CV format is the industry-standard resume format used across aviation. Airlines and recruiters use AI-powered ATS (Applicant Tracking Systems) to screen candidates automatically—your experience matters, but if your CV isn't ATS-optimized, you may never be seen.
+                <p
+                  style={{
+                    margin: '0',
+                    color: isDarkMode ? '#94a3b8' : '#64748b',
+                    lineHeight: 1.6,
+                    fontSize: '0.9rem',
+                    maxWidth: '600px',
+                  }}
+                >
+                  The Atlas CV format is the industry-standard resume format used across aviation.
+                  Airlines and recruiters use AI-powered ATS (Applicant Tracking Systems) to screen
+                  candidates automatically—your experience matters, but if your CV isn't
+                  ATS-optimized, you may never be seen.
                 </p>
               </div>
 
               {/* Atlas Resume Content */}
               <section style={{ marginBottom: '1.5rem' }}>
-                <div style={{
-                  background: isDarkMode 
-                    ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                    : 'white',
-                  borderRadius: '24px',
-                  padding: '1.75rem',
-                  boxShadow: isDarkMode 
-                    ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
-                    : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                  border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                      : 'white',
+                    borderRadius: '24px',
+                    padding: '1.75rem',
+                    boxShadow: isDarkMode
+                      ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
+                      : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexWrap: 'wrap',
+                      gap: '1rem',
+                    }}
+                  >
                     <div>
-                      <div style={{ fontSize: '0.8rem', letterSpacing: '0.25em', color: isDarkMode ? '#64748b' : '#94a3b8', textTransform: 'uppercase' }}>Candidate</div>
-                      <h2 style={{ margin: '0.35rem 0 0', fontSize: '1.75rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>{userProfile?.firstName && userProfile?.lastName ? `${userProfile.firstName} ${userProfile.lastName}` : 'Benjamin Bowler'}</h2>
-                      <p style={{ margin: '0.2rem 0 0', color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}>PilotRecognition Recognition Portfolio</p>
+                      <div
+                        style={{
+                          fontSize: '0.8rem',
+                          letterSpacing: '0.25em',
+                          color: isDarkMode ? '#64748b' : '#94a3b8',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        Candidate
+                      </div>
+                      <h2
+                        style={{
+                          margin: '0.35rem 0 0',
+                          fontSize: '1.75rem',
+                          color: isDarkMode ? '#f8fafc' : '#0f172a',
+                        }}
+                      >
+                        {userProfile?.firstName && userProfile?.lastName
+                          ? `${userProfile.firstName} ${userProfile.lastName}`
+                          : 'Benjamin Bowler'}
+                      </h2>
+                      <p
+                        style={{
+                          margin: '0.2rem 0 0',
+                          color: isDarkMode ? '#94a3b8' : '#64748b',
+                          fontSize: '0.9rem',
+                        }}
+                      >
+                        PilotRecognition Recognition Portfolio
+                      </p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: isDarkMode ? '#64748b' : '#94a3b8', textTransform: 'uppercase' }}>Share link</div>
-                      <button style={{
-                        padding: '0.6rem 1.2rem',
-                        borderRadius: '12px',
-                        border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #cbd5e1',
-                        background: 'transparent',
-                        color: isDarkMode ? '#f8fafc' : '#0f172a',
-                        fontWeight: 600,
-                        cursor: 'pointer'
-                      }}
-                        onClick={() => navigator.clipboard.writeText('https://wingmentor.app/resume/' + (userProfile?.uid || 'demo'))}
+                      <div
+                        style={{
+                          fontSize: '0.8rem',
+                          letterSpacing: '0.2em',
+                          color: isDarkMode ? '#64748b' : '#94a3b8',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        Share link
+                      </div>
+                      <button
+                        style={{
+                          padding: '0.6rem 1.2rem',
+                          borderRadius: '12px',
+                          border: isDarkMode
+                            ? '1px solid rgba(71,85,105,0.5)'
+                            : '1px solid #cbd5e1',
+                          background: 'transparent',
+                          color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() =>
+                          navigator.clipboard.writeText(
+                            'https://wingmentor.app/resume/' + (userProfile?.uid || 'demo')
+                          )
+                        }
                       >
                         Copy shareable resume URL
                       </button>
@@ -2278,84 +3387,220 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </section>
 
               <section style={{ marginBottom: '2rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gap: '1.25rem',
+                  }}
+                >
                   {/* Pilot Credentials Card */}
-                  <div style={{
-                    background: isDarkMode 
-                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                      : 'white',
-                    borderRadius: '20px',
-                    padding: '1.5rem',
-                    boxShadow: isDarkMode 
-                      ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
-                      : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                    border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0'
-                  }}>
-                    <h3 style={{ margin: 0, fontSize: '1.1rem', color: isDarkMode ? '#f8fafc' : '#0f172a', marginBottom: '0.25rem', fontWeight: 700 }}>Pilot Credentials</h3>
-                    <p style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Licensing, hours, and access pass</p>
-                    
+                  <div
+                    style={{
+                      background: isDarkMode
+                        ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                        : 'white',
+                      borderRadius: '20px',
+                      padding: '1.5rem',
+                      boxShadow: isDarkMode
+                        ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
+                        : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                      border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0',
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: '1.1rem',
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                        marginBottom: '0.25rem',
+                        fontWeight: 700,
+                      }}
+                    >
+                      Pilot Credentials
+                    </h3>
+                    <p
+                      style={{
+                        margin: '0 0 1rem',
+                        fontSize: '0.9rem',
+                        color: isDarkMode ? '#94a3b8' : '#64748b',
+                      }}
+                    >
+                      Licensing, hours, and access pass
+                    </p>
+
                     {/* Stats Grid */}
-                    <div style={{ 
-                      display: 'grid', 
-                      gridTemplateColumns: 'repeat(2, 1fr)', 
-                      gap: '0.75rem',
-                      marginBottom: '1rem'
-                    }}>
-                      <div style={{
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        textAlign: 'center'
-                      }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Dual XC hrs</p>
-                        <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>0</p>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gap: '0.75rem',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          Dual XC hrs
+                        </p>
+                        <p
+                          style={{
+                            margin: '0.25rem 0 0',
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          0
+                        </p>
                       </div>
-                      <div style={{
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        textAlign: 'center'
-                      }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Dual LOC</p>
-                        <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>0</p>
+                      <div
+                        style={{
+                          background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          Dual LOC
+                        </p>
+                        <p
+                          style={{
+                            margin: '0.25rem 0 0',
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          0
+                        </p>
                       </div>
-                      <div style={{
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        textAlign: 'center'
-                      }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>PIC LOC</p>
-                        <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>0</p>
+                      <div
+                        style={{
+                          background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          PIC LOC
+                        </p>
+                        <p
+                          style={{
+                            margin: '0.25rem 0 0',
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          0
+                        </p>
                       </div>
-                      <div style={{
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        textAlign: 'center'
-                      }}>
-                        <p style={{ margin: 0, fontSize: '0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>LOC XC</p>
-                        <p style={{ margin: '0.25rem 0 0', fontSize: '1.5rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>0</p>
+                      <div
+                        style={{
+                          background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: '0.75rem',
+                            color: isDarkMode ? '#94a3b8' : '#64748b',
+                          }}
+                        >
+                          LOC XC
+                        </p>
+                        <p
+                          style={{
+                            margin: '0.25rem 0 0',
+                            fontSize: '1.5rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          0
+                        </p>
                       </div>
                     </div>
-                    
+
                     {/* Type & Status */}
-                    <div style={{
-                      background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
-                      borderRadius: '12px',
-                      padding: '1rem',
-                      marginBottom: '1rem'
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                        <span style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Type</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Student Pilot</span>
+                    <div
+                      style={{
+                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : '#f8fafc',
+                        borderRadius: '12px',
+                        padding: '1rem',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          marginBottom: '0.5rem',
+                        }}
+                      >
+                        <span
+                          style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}
+                        >
+                          Type
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '0.9rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          Student Pilot
+                        </span>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Status</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 700, color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Pending Verification</span>
+                        <span
+                          style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}
+                        >
+                          Status
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '0.9rem',
+                            fontWeight: 700,
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                          }}
+                        >
+                          Pending Verification
+                        </span>
                       </div>
                     </div>
-                    
+
                     {/* Link */}
                     <button
                       onClick={onViewDigitalLogbook}
@@ -2367,7 +3612,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         fontWeight: 600,
                         cursor: 'pointer',
                         textDecoration: 'underline',
-                        padding: 0
+                        padding: 0,
                       }}
                     >
                       View Flight Digital Logbook →
@@ -2375,53 +3620,116 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Certifications & Training Card */}
-                  <div style={{
-                    background: isDarkMode 
-                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                      : 'white',
-                    borderRadius: '20px',
-                    padding: '1.5rem',
-                    boxShadow: isDarkMode 
-                      ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
-                      : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                    border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0'
-                  }}>
-                    <h3 style={{ margin: 0, fontSize: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a', marginBottom: '0.75rem', fontWeight: 700 }}>Training</h3>
+                  <div
+                    style={{
+                      background: isDarkMode
+                        ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                        : 'white',
+                      borderRadius: '20px',
+                      padding: '1.5rem',
+                      boxShadow: isDarkMode
+                        ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
+                        : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                      border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0',
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: '1rem',
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                        marginBottom: '0.75rem',
+                        fontWeight: 700,
+                      }}
+                    >
+                      Training
+                    </h3>
                     {licensureLoading ? (
-                      <div style={{ color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}>Loading...</div>
+                      <div
+                        style={{ color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}
+                      >
+                        Loading...
+                      </div>
                     ) : licensureData ? (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#cbd5e1' : '#475569',
+                          }}
+                        >
                           <span>License</span>
                           <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
                             {licensureData.current_license?.join(', ') || 'Not specified'}
                           </strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#cbd5e1' : '#475569',
+                          }}
+                        >
                           <span>License Country</span>
                           <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
                             {licensureData.license_country_of_issue || 'Not specified'}
                           </strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#cbd5e1' : '#475569',
+                          }}
+                        >
                           <span>Medical</span>
                           <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
-                            {licensureData.medical_class ? `${licensureData.medical_class} – ${licensureData.medical_expiry ? new Date(licensureData.medical_expiry).toLocaleDateString('en-US', { month: '2-digit', year: '2-digit' }) : 'Valid'}` : 'Not specified'}
+                            {licensureData.medical_class
+                              ? `${licensureData.medical_class} – ${licensureData.medical_expiry ? new Date(licensureData.medical_expiry).toLocaleDateString('en-US', { month: '2-digit', year: '2-digit' }) : 'Valid'}`
+                              : 'Not specified'}
                           </strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#cbd5e1' : '#475569',
+                          }}
+                        >
                           <span>Type Ratings</span>
                           <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
-                            {licensureData.aircraft_ratings?.filter(r => r.isCurrent).map(r => r.aircraftType).join(', ') || 'None added'}
+                            {licensureData.aircraft_ratings
+                              ?.filter((r) => r.isCurrent)
+                              .map((r) => r.aircraftType)
+                              .join(', ') || 'None added'}
                           </strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#cbd5e1' : '#475569',
+                          }}
+                        >
                           <span>English Proficiency</span>
                           <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
                             {licensureData.english_proficiency || 'Not specified'}
                           </strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: isDarkMode ? '#cbd5e1' : '#475569' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#cbd5e1' : '#475569',
+                          }}
+                        >
                           <span>Languages</span>
                           <strong style={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
                             {licensureData.languages || 'Not specified'}
@@ -2429,7 +3737,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <div style={{ color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}>
+                      <div
+                        style={{ color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}
+                      >
                         <p style={{ margin: '0 0 0.5rem' }}>No licensure data found.</p>
                         <button
                           onClick={onViewLicensureExperience}
@@ -2440,7 +3750,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             border: 'none',
                             cursor: 'pointer',
                             textDecoration: 'underline',
-                            padding: 0
+                            padding: 0,
                           }}
                         >
                           Add your pilot licensure data →
@@ -2450,65 +3760,126 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Pilot Licensure Card */}
-                  <div style={{
-                    background: isDarkMode 
-                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                      : '#f8fafc',
-                    borderRadius: '20px',
-                    padding: '1.5rem',
-                    boxShadow: isDarkMode 
-                      ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
-                      : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                    border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0'
-                  }}>
-                    <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', letterSpacing: '0.2em', color: isDarkMode ? '#64748b' : '#94a3b8', textTransform: 'uppercase' }}>Readiness Snapshot</p>
-                    <h3 style={{ margin: '0 0 1rem', fontSize: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a', fontWeight: 700 }}>Resource & Availability</h3>
-                    
+                  <div
+                    style={{
+                      background: isDarkMode
+                        ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                        : '#f8fafc',
+                      borderRadius: '20px',
+                      padding: '1.5rem',
+                      boxShadow: isDarkMode
+                        ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
+                        : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                      border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0',
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: '0 0 0.5rem',
+                        fontSize: '0.75rem',
+                        letterSpacing: '0.2em',
+                        color: isDarkMode ? '#64748b' : '#94a3b8',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Readiness Snapshot
+                    </p>
+                    <h3
+                      style={{
+                        margin: '0 0 1rem',
+                        fontSize: '1rem',
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                        fontWeight: 700,
+                      }}
+                    >
+                      Resource & Availability
+                    </h3>
+
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                      <div style={{
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'white',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                      }}>
-                        <span style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Medical Certificate</span>
-                        <strong style={{ fontSize: '0.9rem', color: isDarkMode ? '#f8fafc' : '#0f172a', textAlign: 'right' }}>
-                          {licensureData?.medical_class 
-                            ? `${licensureData.medical_class} – ${licensureData.medical_expiry 
-                                ? new Date(licensureData.medical_expiry).toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' }) 
-                                : 'Valid'}`
+                      <div
+                        style={{
+                          background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'white',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span
+                          style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}
+                        >
+                          Medical Certificate
+                        </span>
+                        <strong
+                          style={{
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                            textAlign: 'right',
+                          }}
+                        >
+                          {licensureData?.medical_class
+                            ? `${licensureData.medical_class} – ${
+                                licensureData.medical_expiry
+                                  ? new Date(licensureData.medical_expiry).toLocaleDateString(
+                                      'en-US',
+                                      { month: '2-digit', year: 'numeric' }
+                                    )
+                                  : 'Valid'
+                              }`
                             : 'Not specified'}
                         </strong>
                       </div>
-                      <div style={{
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'white',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                      }}>
-                        <span style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>Radio License</span>
-                        <strong style={{ fontSize: '0.9rem', color: isDarkMode ? '#f8fafc' : '#0f172a', textAlign: 'right' }}>
-                          {licensureData?.radio_license_expiry 
+                      <div
+                        style={{
+                          background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'white',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span
+                          style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}
+                        >
+                          Radio License
+                        </span>
+                        <strong
+                          style={{
+                            fontSize: '0.9rem',
+                            color: isDarkMode ? '#f8fafc' : '#0f172a',
+                            textAlign: 'right',
+                          }}
+                        >
+                          {licensureData?.radio_license_expiry
                             ? `Expires ${new Date(licensureData.radio_license_expiry).toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' })}`
                             : 'Not specified'}
                         </strong>
                       </div>
-                      <div style={{
-                        background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'white',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                      }}>
-                        <span style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}>License Expiry</span>
-                        <strong style={{ fontSize: '0.9rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>
-                          {licensureData?.license_expiry 
-                            ? new Date(licensureData.license_expiry).toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' })
+                      <div
+                        style={{
+                          background: isDarkMode ? 'rgba(15,23,42,0.6)' : 'white',
+                          borderRadius: '12px',
+                          padding: '1rem',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span
+                          style={{ fontSize: '0.9rem', color: isDarkMode ? '#94a3b8' : '#64748b' }}
+                        >
+                          License Expiry
+                        </span>
+                        <strong
+                          style={{ fontSize: '0.9rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}
+                        >
+                          {licensureData?.license_expiry
+                            ? new Date(licensureData.license_expiry).toLocaleDateString('en-US', {
+                                month: '2-digit',
+                                year: 'numeric',
+                              })
                             : 'Not specified'}
                         </strong>
                       </div>
@@ -2518,19 +3889,38 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </section>
 
               <section style={{ marginBottom: '2rem' }}>
-                <div style={{
-                  background: isDarkMode 
-                    ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                    : 'white',
-                  borderRadius: '24px',
-                  padding: '1.5rem',
-                  boxShadow: isDarkMode 
-                    ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
-                    : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                  border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h3 style={{ margin: 0, fontSize: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Recent Job Experience & Industry Aligned Accredited Programs</h3>
+                <div
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                      : 'white',
+                    borderRadius: '24px',
+                    padding: '1.5rem',
+                    boxShadow: isDarkMode
+                      ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
+                      : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '0.75rem',
+                      flexWrap: 'wrap',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: '1rem',
+                        color: isDarkMode ? '#f8fafc' : '#0f172a',
+                      }}
+                    >
+                      Recent Job Experience & Industry Aligned Accredited Programs
+                    </h3>
                     <button
                       onClick={onViewLicensureExperience}
                       style={{
@@ -2541,34 +3931,68 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         borderRadius: '6px',
                         padding: '0.25rem 0.5rem',
                         cursor: 'pointer',
-                        fontWeight: 600
+                        fontWeight: 600,
                       }}
                     >
                       Edit Experience →
                     </button>
                   </div>
-                  
+
                   {licensureLoading ? (
-                    <p style={{ margin: 0, color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}>Loading experience data...</p>
+                    <p
+                      style={{
+                        margin: 0,
+                        color: isDarkMode ? '#94a3b8' : '#64748b',
+                        fontSize: '0.9rem',
+                      }}
+                    >
+                      Loading experience data...
+                    </p>
                   ) : licensureData?.job_experiences && licensureData.job_experiences.length > 0 ? (
-                    <ul style={{ margin: 0, paddingLeft: '1.25rem', color: isDarkMode ? '#cbd5e1' : '#475569', lineHeight: 1.7 }}>
+                    <ul
+                      style={{
+                        margin: 0,
+                        paddingLeft: '1.25rem',
+                        color: isDarkMode ? '#cbd5e1' : '#475569',
+                        lineHeight: 1.7,
+                      }}
+                    >
                       {licensureData.job_experiences.map((job, index) => (
                         <li key={index}>
-                          <strong>{job.position}</strong> – {job.company} – {job.fromDate} to {job.toDate || 'Present'}
-                          {job.description && <span style={{ display: 'block', fontSize: '0.85rem', color: isDarkMode ? '#94a3b8' : '#64748b', marginTop: '0.25rem' }}>{job.description}</span>}
+                          <strong>{job.position}</strong> – {job.company} – {job.fromDate} to{' '}
+                          {job.toDate || 'Present'}
+                          {job.description && (
+                            <span
+                              style={{
+                                display: 'block',
+                                fontSize: '0.85rem',
+                                color: isDarkMode ? '#94a3b8' : '#64748b',
+                                marginTop: '0.25rem',
+                              }}
+                            >
+                              {job.description}
+                            </span>
+                          )}
                         </li>
                       ))}
                       {licensureData.current_occupation && (
                         <li style={{ marginTop: '0.5rem' }}>
                           <strong>Current Status:</strong> {licensureData.current_occupation}
-                          {licensureData.current_employer && ` at ${licensureData.current_employer}`}
+                          {licensureData.current_employer &&
+                            ` at ${licensureData.current_employer}`}
                           {licensureData.current_position && ` – ${licensureData.current_position}`}
                         </li>
                       )}
                     </ul>
                   ) : (
                     <div>
-                      <p style={{ margin: '0 0 0.75rem', color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '0.9rem' }}>
+                      <p
+                        style={{
+                          margin: '0 0 0.75rem',
+                          color: isDarkMode ? '#94a3b8' : '#64748b',
+                          fontSize: '0.9rem',
+                        }}
+                      >
                         No job experience data added yet.
                       </p>
                       <button
@@ -2580,7 +4004,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           border: 'none',
                           cursor: 'pointer',
                           textDecoration: 'underline',
-                          padding: 0
+                          padding: 0,
                         }}
                       >
                         Add your job experience →
@@ -2591,23 +4015,40 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </section>
 
               <section>
-                <div style={{
-                  background: isDarkMode 
-                    ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
-                    : 'white',
-                  borderRadius: '24px',
-                  padding: '1.5rem',
-                  boxShadow: isDarkMode 
-                    ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
-                    : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                  border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem'
-                }}>
-                  <h3 style={{ margin: 0, fontSize: '1rem', color: isDarkMode ? '#f8fafc' : '#0f172a' }}>Export & Verification</h3>
-                  <p style={{ margin: 0, color: isDarkMode ? '#94a3b8' : '#475569', fontSize: '0.9rem' }}>
-                    Download a PDF copy of your Atlas-formatted resume or share the verification link directly with airline recruiters.
+                <div
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.85))'
+                      : 'white',
+                    borderRadius: '24px',
+                    padding: '1.5rem',
+                    boxShadow: isDarkMode
+                      ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)'
+                      : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid #e2e8f0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem',
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontSize: '1rem',
+                      color: isDarkMode ? '#f8fafc' : '#0f172a',
+                    }}
+                  >
+                    Export & Verification
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      color: isDarkMode ? '#94a3b8' : '#475569',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    Download a PDF copy of your Atlas-formatted resume or share the verification
+                    link directly with airline recruiters.
                   </p>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                     <button
@@ -2618,7 +4059,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         background: '#0ea5e9',
                         color: '#fff',
                         fontWeight: 600,
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       }}
                       onClick={onViewAtlas}
                     >
@@ -2632,7 +4073,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         background: 'transparent',
                         color: isDarkMode ? '#f8fafc' : '#0f172a',
                         fontWeight: 600,
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       }}
                       onClick={() => alert('Live verification feed coming soon')}
                     >
@@ -2646,36 +4087,69 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Pilot Pathways Section */}
             <div style={{ marginBottom: '3rem' }}>
               {/* Section Header with Logo - Styled like Dashboard */}
-              <div style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div
+                style={{
+                  textAlign: 'center',
+                  marginBottom: '2rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <div style={{ marginBottom: '2rem', marginTop: '0.5rem' }}>
-                  <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '260px', height: 'auto', objectFit: 'contain', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                  <img
+                    src="/logo.png"
+                    alt="PilotRecognition Logo"
+                    style={{
+                      maxWidth: '260px',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      display: 'block',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                    }}
+                  />
                 </div>
-                
-                <div style={{ color: '#2563eb', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>
+
+                <div
+                  style={{
+                    color: '#2563eb',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.2em',
+                    marginBottom: '1rem',
+                  }}
+                >
                   Lead towards pilot pathways
                 </div>
-                
-                <h1 style={{ 
-                  fontFamily: 'Georgia, serif', 
-                  fontSize: 'clamp(2rem, 5vw, 3.25rem)', 
-                  fontWeight: 400, 
-                  color: '#0f172a', 
-                  marginBottom: '1rem', 
-                  letterSpacing: '-0.02em', 
-                  lineHeight: 1.15 
-                }}>
+
+                <h1
+                  style={{
+                    fontFamily: 'Georgia, serif',
+                    fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+                    fontWeight: 400,
+                    color: '#0f172a',
+                    marginBottom: '1rem',
+                    letterSpacing: '-0.02em',
+                    lineHeight: 1.15,
+                  }}
+                >
                   Pilot Pathways
                 </h1>
-                
-                <p style={{ 
-                  color: '#64748b', 
-                  fontSize: '1.15rem', 
-                  lineHeight: 1.7, 
-                  maxWidth: '36rem', 
-                  margin: '0 auto',
-                  padding: '0 1rem'
-                }}>
-                  Where your Pilot Recognition opens many doors towards various pathways. Explore ATPL pathway, Emerging air taxi sector pathway, private sector pathways.
+
+                <p
+                  style={{
+                    color: '#64748b',
+                    fontSize: '1.15rem',
+                    lineHeight: 1.7,
+                    maxWidth: '36rem',
+                    margin: '0 auto',
+                    padding: '0 1rem',
+                  }}
+                >
+                  Where your Pilot Recognition opens many doors towards various pathways. Explore
+                  ATPL pathway, Emerging air taxi sector pathway, private sector pathways.
                 </p>
               </div>
 
@@ -2685,92 +4159,136 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   style={{
                     position: 'relative',
                     opacity: isFoundationalEnrolled ? 1 : 0.5,
-                    pointerEvents: isFoundationalEnrolled ? 'auto' : 'none'
+                    pointerEvents: isFoundationalEnrolled ? 'auto' : 'none',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '1rem',
+                      flexWrap: 'wrap',
+                      gap: '0.5rem',
+                    }}
+                  >
                     <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>
                       Foundation Program Direct Entry pathways
                       {!isFoundationalEnrolled && ' (Locked)'}
                     </h2>
-                    <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>
+                    <span
+                      style={{
+                        fontSize: '0.8rem',
+                        letterSpacing: '0.2em',
+                        color: '#94a3b8',
+                        textTransform: 'uppercase',
+                      }}
+                    >
                       ATPL Pathway
                     </span>
                   </div>
-                  
+
                   <div style={{ position: 'relative' }}>
                     <PathwaysCarousel
-                      cards={[{
-                        id: 'atpl-direct',
-                        title: 'ATPL Direct Entry',
-                        description: 'Fast-track your career with direct entry into Airline Transport Pilot License program through our foundation partnership.',
-                        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop',
-                        cta: 'Explore ATPL Pathway',
-                        onClick: onViewPathways
-                      }, {
-                        id: 'foundation',
-                        title: 'Foundation Program Entry',
-                        description: 'Start your aviation journey with comprehensive foundation training and CPL license preparation through certified academies.',
-                        image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop',
-                        cta: 'View Foundation Program',
-                        onClick: onViewPathways
-                      }, {
-                        id: 'type-rating',
-                        title: 'Type Rating Sponsorship',
-                        description: 'Secure airline-sponsored type ratings with guaranteed interview opportunities upon successful completion.',
-                        image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=1200&auto=format&fit=crop',
-                        cta: 'View Type Rating Options',
-                        onClick: onViewPathways
-                      }, {
-                        id: 'air-taxi',
-                        title: 'Emerging Air Taxi Sector',
-                        description: 'Join the future of aviation with eVTOL and urban air mobility opportunities in the rapidly growing air taxi market.',
-                        image: 'https://images.unsplash.com/photo-1483304528321-0674f0040030?q=80&w=1200&auto=format&fit=crop',
-                        cta: 'Explore Air Taxi Pathway',
-                        onClick: onViewPathways
-                      }, {
-                        id: 'private-aviation',
-                        title: 'Private Aviation Pathway',
-                        description: 'Build a career in business aviation with corporate flight departments and private charter operations.',
-                        image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?q=80&w=1200&auto=format&fit=crop',
-                        cta: 'View Private Sector',
-                        onClick: onViewPathways
-                      }, {
-                        id: 'instructor',
-                        title: 'Flight Instructor Pathway',
-                        description: 'Develop your skills as a certified flight instructor while building hours toward airline requirements.',
-                        image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop',
-                        cta: 'Explore Instructor Path',
-                        onClick: onViewPathways
-                      }]}
+                      cards={[
+                        {
+                          id: 'atpl-direct',
+                          title: 'ATPL Direct Entry',
+                          description:
+                            'Fast-track your career with direct entry into Airline Transport Pilot License program through our foundation partnership.',
+                          image:
+                            'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop',
+                          cta: 'Explore ATPL Pathway',
+                          onClick: onViewPathways,
+                        },
+                        {
+                          id: 'foundation',
+                          title: 'Foundation Program Entry',
+                          description:
+                            'Start your aviation journey with comprehensive foundation training and CPL license preparation through certified academies.',
+                          image:
+                            'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop',
+                          cta: 'View Foundation Program',
+                          onClick: onViewPathways,
+                        },
+                        {
+                          id: 'type-rating',
+                          title: 'Type Rating Sponsorship',
+                          description:
+                            'Secure airline-sponsored type ratings with guaranteed interview opportunities upon successful completion.',
+                          image:
+                            'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=1200&auto=format&fit=crop',
+                          cta: 'View Type Rating Options',
+                          onClick: onViewPathways,
+                        },
+                        {
+                          id: 'air-taxi',
+                          title: 'Emerging Air Taxi Sector',
+                          description:
+                            'Join the future of aviation with eVTOL and urban air mobility opportunities in the rapidly growing air taxi market.',
+                          image:
+                            'https://images.unsplash.com/photo-1483304528321-0674f0040030?q=80&w=1200&auto=format&fit=crop',
+                          cta: 'Explore Air Taxi Pathway',
+                          onClick: onViewPathways,
+                        },
+                        {
+                          id: 'private-aviation',
+                          title: 'Private Aviation Pathway',
+                          description:
+                            'Build a career in business aviation with corporate flight departments and private charter operations.',
+                          image:
+                            'https://images.unsplash.com/photo-1529074963764-98f45c47344b?q=80&w=1200&auto=format&fit=crop',
+                          cta: 'View Private Sector',
+                          onClick: onViewPathways,
+                        },
+                        {
+                          id: 'instructor',
+                          title: 'Flight Instructor Pathway',
+                          description:
+                            'Develop your skills as a certified flight instructor while building hours toward airline requirements.',
+                          image:
+                            'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop',
+                          cta: 'Explore Instructor Path',
+                          onClick: onViewPathways,
+                        },
+                      ]}
                       autoPlay={true}
                       autoPlayInterval={6000}
                     />
-                    
+
                     {!isFoundationalEnrolled && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        background: 'white',
-                        padding: '2rem 2.5rem',
-                        borderRadius: '16px',
-                        textAlign: 'center',
-                        zIndex: 10,
-                        border: '1px solid rgba(226, 232, 240, 0.8)',
-                        boxShadow: '0 20px 45px rgba(15, 23, 42, 0.15)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '1rem'
-                      }}>
-                        <img 
-                          src="/logo.png" 
-                          alt="PilotRecognition Logo" 
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          background: 'white',
+                          padding: '2rem 2.5rem',
+                          borderRadius: '16px',
+                          textAlign: 'center',
+                          zIndex: 10,
+                          border: '1px solid rgba(226, 232, 240, 0.8)',
+                          boxShadow: '0 20px 45px rgba(15, 23, 42, 0.15)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '1rem',
+                        }}
+                      >
+                        <img
+                          src="/logo.png"
+                          alt="PilotRecognition Logo"
                           style={{ maxWidth: '180px', height: 'auto', objectFit: 'contain' }}
                         />
-                        <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
+                        <div
+                          style={{
+                            fontSize: '1.25rem',
+                            fontWeight: 700,
+                            color: '#0f172a',
+                            marginBottom: '0.25rem',
+                          }}
+                        >
                           Enroll to Gain Benefits
                         </div>
                         <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
@@ -2783,66 +4301,135 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Section Header - Recognition-Based Approach - Moved below Foundation Program */}
                 <div style={{ textAlign: 'left', marginBottom: '0.25rem', marginTop: '1rem' }}>
-                  <h2 style={{ fontFamily: 'Georgia, serif', margin: '0 0 0.5rem', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 400, color: '#0f172a', letterSpacing: '-0.02em' }}>
+                  <h2
+                    style={{
+                      fontFamily: 'Georgia, serif',
+                      margin: '0 0 0.5rem',
+                      fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+                      fontWeight: 400,
+                      color: '#0f172a',
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
                     A Recognition-Based Approach to Career Pathways
                   </h2>
-                  <p style={{ letterSpacing: '0.2em', color: '#2563eb', fontWeight: 600, fontSize: '0.75rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+                  <p
+                    style={{
+                      letterSpacing: '0.2em',
+                      color: '#2563eb',
+                      fontWeight: 600,
+                      fontSize: '0.75rem',
+                      marginBottom: '0.5rem',
+                      textTransform: 'uppercase',
+                    }}
+                  >
                     From Collected Data to Structured Pathways
                   </p>
-                  <p style={{ margin: '0', color: '#64748b', lineHeight: 1.6, fontSize: '0.95rem', maxWidth: '500px' }}>
-                    Transform your pilot recognition profile into actionable career pathways with AI-powered strategy and personalized recommendations.
+                  <p
+                    style={{
+                      margin: '0',
+                      color: '#64748b',
+                      lineHeight: 1.6,
+                      fontSize: '0.95rem',
+                      maxWidth: '500px',
+                    }}
+                  >
+                    Transform your pilot recognition profile into actionable career pathways with
+                    AI-powered strategy and personalized recommendations.
                   </p>
                 </div>
 
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>AI-Powered Pathway Strategy</h2>
-                    <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Profile Matched</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '1rem',
+                      flexWrap: 'wrap',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>
+                      AI-Powered Pathway Strategy
+                    </h2>
+                    <span
+                      style={{
+                        fontSize: '0.8rem',
+                        letterSpacing: '0.2em',
+                        color: '#94a3b8',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Profile Matched
+                    </span>
                   </div>
                   <PathwayStrategyCarousel
-                    cards={[{
-                      id: 'atpl-strategy',
-                      title: 'ATPL Fast-Track Strategy',
-                      subtitle: 'Complete Airline Transport Pilot License in 18 months with our accelerated pathway.',
-                      description: 'Fast-track your career with our comprehensive ATPL program designed for ambitious pilots seeking rapid career advancement.',
-                      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop',
-                      advantages: [
-                        { text: 'Fast-track to First Officer position', highlight: 'First Officer' },
-                        { text: 'Full tuition reimbursement program', highlight: 'Full Tuition' },
-                        { text: 'Direct airline placement guarantee', highlight: 'Direct Placement' },
-                        { text: 'Mentorship from current airline captains' }
-                      ],
-                      cta: 'Discover Pathway',
-                      onClick: onViewPathways
-                    }, {
-                      id: 'partnership-strategy',
-                      title: 'Emirates Partnership Track',
-                      subtitle: 'Exclusive recruitment pathway with Emirates Airlines for qualified pilots.',
-                      description: 'Join our exclusive partnership program with Emirates Airlines and secure your position with one of the world\'s leading carriers.',
-                      image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=1200&auto=format&fit=crop',
-                      advantages: [
-                        { text: 'Guaranteed interview opportunity', highlight: 'Guaranteed Interview' },
-                        { text: 'Type rating sponsorship', highlight: 'Sponsorship' },
-                        { text: 'Housing allowance included', highlight: 'Housing Allowance' },
-                        { text: 'Tax-free salary package' }
-                      ],
-                      cta: 'Discover Pathway',
-                      onClick: onViewPathways
-                    }, {
-                      id: 'transition-strategy',
-                      title: 'Career Transition Blueprint',
-                      subtitle: 'Structured program for pilots transitioning to professional aviation roles.',
-                      description: 'Comprehensive career transition support to help you navigate from training to your first professional aviation role.',
-                      image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop',
-                      advantages: [
-                        { text: 'CV optimization for airlines', highlight: 'CV Optimization' },
-                        { text: 'Interview preparation coaching', highlight: 'Interview Prep' },
-                        { text: 'Network building events access', highlight: 'Network Access' },
-                        { text: 'Personal branding strategy' }
-                      ],
-                      cta: 'Discover Pathway',
-                      onClick: onViewPathways
-                    }]}
+                    cards={[
+                      {
+                        id: 'atpl-strategy',
+                        title: 'ATPL Fast-Track Strategy',
+                        subtitle:
+                          'Complete Airline Transport Pilot License in 18 months with our accelerated pathway.',
+                        description:
+                          'Fast-track your career with our comprehensive ATPL program designed for ambitious pilots seeking rapid career advancement.',
+                        image:
+                          'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop',
+                        advantages: [
+                          {
+                            text: 'Fast-track to First Officer position',
+                            highlight: 'First Officer',
+                          },
+                          { text: 'Full tuition reimbursement program', highlight: 'Full Tuition' },
+                          {
+                            text: 'Direct airline placement guarantee',
+                            highlight: 'Direct Placement',
+                          },
+                          { text: 'Mentorship from current airline captains' },
+                        ],
+                        cta: 'Discover Pathway',
+                        onClick: onViewPathways,
+                      },
+                      {
+                        id: 'partnership-strategy',
+                        title: 'Emirates Partnership Track',
+                        subtitle:
+                          'Exclusive recruitment pathway with Emirates Airlines for qualified pilots.',
+                        description:
+                          "Join our exclusive partnership program with Emirates Airlines and secure your position with one of the world's leading carriers.",
+                        image:
+                          'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=1200&auto=format&fit=crop',
+                        advantages: [
+                          {
+                            text: 'Guaranteed interview opportunity',
+                            highlight: 'Guaranteed Interview',
+                          },
+                          { text: 'Type rating sponsorship', highlight: 'Sponsorship' },
+                          { text: 'Housing allowance included', highlight: 'Housing Allowance' },
+                          { text: 'Tax-free salary package' },
+                        ],
+                        cta: 'Discover Pathway',
+                        onClick: onViewPathways,
+                      },
+                      {
+                        id: 'transition-strategy',
+                        title: 'Career Transition Blueprint',
+                        subtitle:
+                          'Structured program for pilots transitioning to professional aviation roles.',
+                        description:
+                          'Comprehensive career transition support to help you navigate from training to your first professional aviation role.',
+                        image:
+                          'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop',
+                        advantages: [
+                          { text: 'CV optimization for airlines', highlight: 'CV Optimization' },
+                          { text: 'Interview preparation coaching', highlight: 'Interview Prep' },
+                          { text: 'Network building events access', highlight: 'Network Access' },
+                          { text: 'Personal branding strategy' },
+                        ],
+                        cta: 'Discover Pathway',
+                        onClick: onViewPathways,
+                      },
+                    ]}
                     autoPlay={true}
                     autoPlayInterval={8000}
                   />
@@ -2850,81 +4437,140 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Job Matching Component - Pilot Career Opportunities */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>Available Jobs Matching Your Credentials</h2>
-                    <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Live Job Database</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '0.5rem',
+                      flexWrap: 'wrap',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>
+                      Available Jobs Matching Your Credentials
+                    </h2>
+                    <span
+                      style={{
+                        fontSize: '0.8rem',
+                        letterSpacing: '0.2em',
+                        color: '#94a3b8',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Live Job Database
+                    </span>
                   </div>
-                  <JobMatchingSection userProfile={userProfile} onViewJobDatabase={onViewJobDatabase} />
+                  <JobMatchingSection
+                    userProfile={userProfile}
+                    onViewJobDatabase={onViewJobDatabase}
+                  />
                 </div>
 
                 {/* Industry Expectations Carousel - Aligning Pilots with Industry Standards */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>Aligning Pilots with Industry Provided Expectations</h2>
-                    <span style={{ fontSize: '0.8rem', letterSpacing: '0.2em', color: '#94a3b8', textTransform: 'uppercase' }}>Industry Standards</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '1rem',
+                      flexWrap: 'wrap',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>
+                      Aligning Pilots with Industry Provided Expectations
+                    </h2>
+                    <span
+                      style={{
+                        fontSize: '0.8rem',
+                        letterSpacing: '0.2em',
+                        color: '#94a3b8',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Industry Standards
+                    </span>
                   </div>
                   <IndustryExpectationsCarousel
-                    cards={[{
-                      id: 'airline-expectations',
-                      title: 'Airline Selection Criteria',
-                      subtitle: 'Beyond Flight Hours – What Airlines Really Look For',
-                      description: 'Modern airlines evaluate pilots on competency-based metrics aligned with EBT/CBTA standards. Flight hours alone are no longer the sole determinant of candidate quality.',
-                      image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop',
-                      expectations: [
-                        'Evidence-Based Training (EBT) competency scores',
-                        'Competency-Based Training Assessment (CBTA) alignment',
-                        'CRM and TEM performance metrics',
-                        'Continuous professional development record'
-                      ]
-                    }, {
-                      id: 'private-jet-expectations',
-                      title: 'Private Aviation Standards',
-                      subtitle: 'VIP Service Excellence & Professional Demeanor',
-                      description: 'Private jet charter operators seek pilots who embody discretion, professionalism, and exceptional customer service alongside technical proficiency.',
-                      image: 'https://images.unsplash.com/photo-1529074963764-98f45c47344b?q=80&w=1200&auto=format&fit=crop',
-                      expectations: [
-                        'Impeccable personal presentation and grooming',
-                        'Discretion and confidentiality excellence',
-                        'Cultural awareness and etiquette mastery',
-                        'Flexible schedule availability and adaptability'
-                      ]
-                    }, {
-                      id: 'ebt-cbta-alignment',
-                      title: 'EBT/CBTA Global Standards',
-                      subtitle: 'Competency-Based Assessment Framework',
-                      description: 'The aviation industry has shifted from purely regulatory compliance to competency-based evaluation systems that measure actual pilot performance.',
-                      image: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=1200&auto=format&fit=crop',
-                      expectations: [
-                        'Core competency demonstration across all flight phases',
-                        'Evidence of continuous learning and improvement',
-                        'Psychometric assessment alignment',
-                        'Simulator evaluation performance benchmarks'
-                      ]
-                    }, {
-                      id: 'attitude-self-image',
-                      title: 'Professional Identity',
-                      subtitle: 'Attitude, Self-Image & Industry Alignment',
-                      description: 'Your professional persona matters. Airlines and operators assess how you present yourself, your confidence, and your alignment with organizational culture.',
-                      image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop',
-                      expectations: [
-                        'Professional communication and interpersonal skills',
-                        'Leadership presence and decisiveness',
-                        'Team collaboration and conflict resolution',
-                        'Crisis management composure and adaptability'
-                      ]
-                    }, {
-                      id: 'informed-applicant',
-                      title: 'The Informed Pilot Applicant',
-                      subtitle: 'Know Before You Submit Interest',
-                      description: 'Understanding operator expectations before application saves time and demonstrates your commitment to professional preparation and industry awareness.',
-                      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop',
-                      expectations: [
-                        'Research operator culture and values alignment',
-                        'Understand specific fleet requirements',
-                        'Know training investment expectations',
-                        'Prepare for competency-based interviews'
-                      ]
-                    }]}
+                    cards={[
+                      {
+                        id: 'airline-expectations',
+                        title: 'Airline Selection Criteria',
+                        subtitle: 'Beyond Flight Hours – What Airlines Really Look For',
+                        description:
+                          'Modern airlines evaluate pilots on competency-based metrics aligned with EBT/CBTA standards. Flight hours alone are no longer the sole determinant of candidate quality.',
+                        image:
+                          'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop',
+                        expectations: [
+                          'Evidence-Based Training (EBT) competency scores',
+                          'Competency-Based Training Assessment (CBTA) alignment',
+                          'CRM and TEM performance metrics',
+                          'Continuous professional development record',
+                        ],
+                      },
+                      {
+                        id: 'private-jet-expectations',
+                        title: 'Private Aviation Standards',
+                        subtitle: 'VIP Service Excellence & Professional Demeanor',
+                        description:
+                          'Private jet charter operators seek pilots who embody discretion, professionalism, and exceptional customer service alongside technical proficiency.',
+                        image:
+                          'https://images.unsplash.com/photo-1529074963764-98f45c47344b?q=80&w=1200&auto=format&fit=crop',
+                        expectations: [
+                          'Impeccable personal presentation and grooming',
+                          'Discretion and confidentiality excellence',
+                          'Cultural awareness and etiquette mastery',
+                          'Flexible schedule availability and adaptability',
+                        ],
+                      },
+                      {
+                        id: 'ebt-cbta-alignment',
+                        title: 'EBT/CBTA Global Standards',
+                        subtitle: 'Competency-Based Assessment Framework',
+                        description:
+                          'The aviation industry has shifted from purely regulatory compliance to competency-based evaluation systems that measure actual pilot performance.',
+                        image:
+                          'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=1200&auto=format&fit=crop',
+                        expectations: [
+                          'Core competency demonstration across all flight phases',
+                          'Evidence of continuous learning and improvement',
+                          'Psychometric assessment alignment',
+                          'Simulator evaluation performance benchmarks',
+                        ],
+                      },
+                      {
+                        id: 'attitude-self-image',
+                        title: 'Professional Identity',
+                        subtitle: 'Attitude, Self-Image & Industry Alignment',
+                        description:
+                          'Your professional persona matters. Airlines and operators assess how you present yourself, your confidence, and your alignment with organizational culture.',
+                        image:
+                          'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop',
+                        expectations: [
+                          'Professional communication and interpersonal skills',
+                          'Leadership presence and decisiveness',
+                          'Team collaboration and conflict resolution',
+                          'Crisis management composure and adaptability',
+                        ],
+                      },
+                      {
+                        id: 'informed-applicant',
+                        title: 'The Informed Pilot Applicant',
+                        subtitle: 'Know Before You Submit Interest',
+                        description:
+                          'Understanding operator expectations before application saves time and demonstrates your commitment to professional preparation and industry awareness.',
+                        image:
+                          'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop',
+                        expectations: [
+                          'Research operator culture and values alignment',
+                          'Understand specific fleet requirements',
+                          'Know training investment expectations',
+                          'Prepare for competency-based interviews',
+                        ],
+                      },
+                    ]}
                     autoPlay={true}
                     autoPlayInterval={10000}
                   />
@@ -2933,8 +4579,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* 4. Applications & Quick Links */}
-            <CategorySection title="Applications" description="Quick access to examination portal and external resources">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            <CategorySection
+              title="Applications"
+              description="Quick access to examination portal and external resources"
+            >
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '1rem',
+                }}
+              >
                 {/* Examination Portal */}
                 <button
                   onClick={onViewExaminationPortal}
@@ -2949,12 +4604,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     textAlign: 'center',
-                    gap: '0.75rem'
+                    gap: '0.75rem',
                   }}
                 >
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>Examinations</h4>
-                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>Portal & Results</p>
+                    <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>
+                      Examinations
+                    </h4>
+                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>
+                      Portal & Results
+                    </p>
                   </div>
                 </button>
 
@@ -2967,7 +4626,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                   disabled={!isFoundationalEnrolled}
                   style={{
-                    background: isFoundationalEnrolled 
+                    background: isFoundationalEnrolled
                       ? 'linear-gradient(135deg, #0ea5e9, #0284c7)'
                       : 'linear-gradient(135deg, #94a3b8, #64748b)',
                     borderRadius: '16px',
@@ -2984,7 +4643,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     textAlign: 'center',
-                    gap: '0.75rem'
+                    gap: '0.75rem',
                   }}
                 >
                   <div>
@@ -2992,7 +4651,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       EBT CBTA Interview
                       {!isFoundationalEnrolled && ' (Locked)'}
                     </h4>
-                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: 'rgba(255,255,255,0.9)' }}>
+                    <p
+                      style={{
+                        margin: '0.25rem 0 0',
+                        fontSize: '0.8rem',
+                        color: 'rgba(255,255,255,0.9)',
+                      }}
+                    >
                       AIRBUS Aligned
                       {!isFoundationalEnrolled && ' • Requires Enrollment'}
                     </p>
@@ -3016,34 +4681,52 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     flexDirection: 'column',
                     alignItems: 'center',
                     textAlign: 'center',
-                    gap: '0.75rem'
+                    gap: '0.75rem',
                   }}
                 >
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>Website</h4>
-                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>wmpilotnetwork.vercel.app</p>
+                    <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>
+                      Website
+                    </h4>
+                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>
+                      wmpilotnetwork.vercel.app
+                    </p>
                   </div>
                 </a>
               </div>
             </CategorySection>
 
             {/* Applications Section Footer */}
-            <div style={{
-              background: isDarkMode 
-                ? 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.9) 100%)'
-                : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-              borderRadius: '24px',
-              padding: '2.5rem 2rem',
-              marginTop: '2rem',
-              boxShadow: isDarkMode 
-                ? '0 20px 60px rgba(0,0,0,0.3)'
-                : '0 20px 60px rgba(15,23,42,0.08)',
-              border: isDarkMode ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(226,232,240,0.8)',
-              textAlign: 'center'
-            }}>
+            <div
+              style={{
+                background: isDarkMode
+                  ? 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.9) 100%)'
+                  : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                borderRadius: '24px',
+                padding: '2.5rem 2rem',
+                marginTop: '2rem',
+                boxShadow: isDarkMode
+                  ? '0 20px 60px rgba(0,0,0,0.3)'
+                  : '0 20px 60px rgba(15,23,42,0.08)',
+                border: isDarkMode
+                  ? '1px solid rgba(71,85,105,0.5)'
+                  : '1px solid rgba(226,232,240,0.8)',
+                textAlign: 'center',
+              }}
+            >
               {/* PilotRecognition Logo */}
               <div style={{ marginBottom: '1.5rem' }}>
-                <img src="/logo.png" alt="PilotRecognition Logo" style={{ maxWidth: '200px', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+                <img
+                  src="/logo.png"
+                  alt="PilotRecognition Logo"
+                  style={{
+                    maxWidth: '200px',
+                    height: 'auto',
+                    display: 'block',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                  }}
+                />
               </div>
 
               {/* Contact Support Button */}
@@ -3060,7 +4743,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   cursor: 'pointer',
                   marginBottom: '1.5rem',
                   boxShadow: '0 4px 15px rgba(14, 165, 233, 0.35)',
-                  transition: 'all 0.2s ease'
+                  transition: 'all 0.2s ease',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
@@ -3075,23 +4758,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </button>
 
               {/* Support Text */}
-              <p style={{
-                margin: '0 0 1rem',
-                color: isDarkMode ? '#94a3b8' : '#64748b',
-                fontSize: '0.9rem',
-                lineHeight: 1.6
-              }}>
+              <p
+                style={{
+                  margin: '0 0 1rem',
+                  color: isDarkMode ? '#94a3b8' : '#64748b',
+                  fontSize: '0.9rem',
+                  lineHeight: 1.6,
+                }}
+              >
                 Need help with your training program? Our support team is here to assist you.
               </p>
 
               {/* Contact Info Grid */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                gap: '2rem',
-                flexWrap: 'wrap',
-                marginBottom: '1.5rem'
-              }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '2rem',
+                  flexWrap: 'wrap',
+                  marginBottom: '1.5rem',
+                }}
+              >
                 {/* Email */}
                 <a
                   href="mailto:contact@pilotrecognition.com"
@@ -3103,7 +4790,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     textDecoration: 'none',
                     fontSize: '0.85rem',
                     fontWeight: 500,
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = isDarkMode ? '#93c5fd' : '#1d4ed8';
@@ -3112,7 +4799,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     e.currentTarget.style.color = isDarkMode ? '#60a5fa' : '#2563eb';
                   }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
@@ -3130,7 +4826,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     textDecoration: 'none',
                     fontSize: '0.85rem',
                     fontWeight: 500,
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = isDarkMode ? '#93c5fd' : '#1d4ed8';
@@ -3139,7 +4835,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     e.currentTarget.style.color = isDarkMode ? '#60a5fa' : '#2563eb';
                   }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                   </svg>
                   +63 967 048 1890
@@ -3158,7 +4863,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     textDecoration: 'none',
                     fontSize: '0.85rem',
                     fontWeight: 500,
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = isDarkMode ? '#93c5fd' : '#1d4ed8';
@@ -3168,23 +4873,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                   </svg>
                   PilotRecognition Support
                 </a>
               </div>
 
               {/* Copyright */}
-              <p style={{
-                margin: '0',
-                color: isDarkMode ? '#64748b' : '#94a3b8',
-                fontSize: '0.75rem',
-                letterSpacing: '0.05em'
-              }}>
-                © 2024 PilotRecognition Network. All rights reserved.
+              <p
+                style={{
+                  margin: '0',
+                  color: isDarkMode ? '#64748b' : '#94a3b8',
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                © 2026 PilotRecognition Network. All rights reserved.
               </p>
             </div>
-
           </div>
         </section>
       </main>
