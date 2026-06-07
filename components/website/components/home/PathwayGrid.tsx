@@ -156,7 +156,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
         {
             id: 'programs',
             image: '/program1.png',
-            title: 'Our Mission @ Pilotshortage.org',
+            title: 'Our Mission Pilotshortage.org',
             subtitle: 'Find structured flight training tracks that launch you from school to airline-ready status with verified progress and career-focused pathways.',
             icon: GraduationCap,
             badge: 'NEW',
@@ -1083,7 +1083,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 'type-rating-search': 'platform?tab=pathways',
                 'airline-expectations': 'platform?tab=airlines',
                 'recognition-pathways': 'platform?tab=profile',
-                'programs': 'discover-programs',
+                'programs': 'https://pilotshortage.org',
                 'pilot-recognition': 'recognition-plus',
                 'get-started-recognition': 'recognition-plus',
                 'pathways': 'discover-pathways',
@@ -1120,6 +1120,19 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
                 if (target === 'foundational-platform') {
                     setFoundationNavTarget('access-portal-2?tab=programs');
                     setShowFoundationLoading(true);
+                    return;
+                }
+                // External URL -> open in new tab
+                if (typeof target === 'string' && (target.startsWith('http://') || target.startsWith('https://'))) {
+                    if (typeof window !== 'undefined') {
+                        // For the 'programs' (Our Mission) card perform a same-tab redirect
+                        if (card.id === 'programs') {
+                            window.location.assign(target);
+                        } else {
+                            // Other external links open in a new tab
+                            window.open(target, '_blank');
+                        }
+                    }
                     return;
                 }
                 onNavigate(target);
@@ -1625,7 +1638,7 @@ const GridCard: React.FC<GridCardProps> = ({
 
         if (card.id === 'pilot-recognition') {
             return (
-                <>Recognition Profile <span className="text-red-600">Learn More</span></>
+                <>Recognition Profile <span className="text-red-600 underline underline-offset-2 decoration-[1px] decoration-red-600 hover:decoration-red-700 transition-all">Learn More</span></>
             );
         }
 
@@ -2070,19 +2083,20 @@ const GridCard: React.FC<GridCardProps> = ({
 
                 {/* MSFS Style Content Area - Bottom section with conditional light/dark styling */}
                 {isLargeCard && (
-                    <div className={`absolute bottom-0 left-0 right-0 p-3 md:p-4 z-20 transition-colors duration-300 ${card.isLightMode ? 'bg-white border-t border-slate-200' : isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'} ${card.id === 'w1000-suite' ? 'pb-12' : ''}`}>
-                        <div className="flex flex-col">
+                    <div className={`absolute bottom-0 left-0 right-0 p-2 pr-10 md:p-2 md:pr-12 z-20 transition-colors duration-300 ${card.isLightMode ? 'bg-white border-t border-slate-200' : isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'} ${card.id === 'w1000-suite' ? 'pb-10' : ''}`}
+                    >
+                        <div className="flex flex-col justify-between min-h-[68px] md:min-h-[74px] lg:min-h-[80px]">
                             {/* Title row with double chevrons - MSFS style */}
-                            <div className="flex items-center gap-1.5 mb-1">
-                                <span className={`text-xs md:text-sm font-bold ${card.isLightMode ? 'text-slate-700' : isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
-                                <h3 className={`text-base md:text-lg font-bold uppercase tracking-wider ${card.isLightMode ? 'text-slate-900' : 'text-white'} ${card.id === 'credentials' ? 'text-black' : ''}`}>
-                                    {card.id === 'pilot-recognition' ? (<>Recognition Profile <span className="text-red-600">Learn More</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Career Pathways</span></>) : card.id === 'programs' ? (<>Our Mission @ <span className="text-red-500">Pilotshortage.org</span></>) : finalDisplayTitle}
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                                <span className={`text-[10px] md:text-[11px] font-bold ${card.isLightMode ? 'text-slate-700' : isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
+                                <h3 className={`text-sm font-bold uppercase tracking-[0.12em] ${card.isLightMode ? 'text-slate-900' : 'text-white'} ${card.id === 'credentials' ? 'text-black' : ''}`}>
+                                    {card.id === 'pilot-recognition' ? (<>Recognition Profile <span className="text-red-600 underline underline-offset-2 decoration-[1px] decoration-red-600 hover:decoration-red-700 transition-all">Learn More</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Career Pathways</span></>) : card.id === 'programs' ? (<>Our Mission <span className="text-red-500">Pilotshortage.org</span></>) : finalDisplayTitle}
                                 </h3>
                             </div>
                             {/* Accent underline - gray for light mode, blue for dark */}
-                            <div className={`w-full max-w-[120px] h-1 mb-2 ${card.isLightMode ? 'bg-gradient-to-r from-slate-400 to-transparent' : isMsfsSelected ? 'bg-gradient-to-r from-white to-transparent' : 'bg-gradient-to-r from-[#00b4d8] to-transparent'}`} />
+                            <div className={`w-full max-w-[80px] h-0.5 mb-1.5 ${card.isLightMode ? 'bg-gradient-to-r from-slate-400 to-transparent' : isMsfsSelected ? 'bg-gradient-to-r from-white to-transparent' : 'bg-gradient-to-r from-[#00b4d8] to-transparent'}`} />
                             {/* Description - dark text for light mode, light text for dark */}
-                            <p className={`text-[10px] md:text-xs leading-tight line-clamp-2 ${card.isLightMode ? 'text-slate-600' : isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                            <p className={`text-[9px] leading-snug line-clamp-2 ${card.isLightMode ? 'text-slate-600' : isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
                                 {finalDisplaySubtitle}
                             </p>
                             {/* Red Glassy Enroll Button - for Foundation Program Enroll card */}
@@ -2101,9 +2115,33 @@ const GridCard: React.FC<GridCardProps> = ({
                                             onNavigate('foundational-verification');
                                         }
                                     }}
-                                    className="absolute bottom-4 right-4 px-2 py-0.5 bg-red-600/70 backdrop-blur-md border border-red-400/50 text-white text-[8px] md:text-[9px] font-bold uppercase tracking-wider rounded hover:bg-red-600/90 hover:border-red-400 transition-all shadow-lg shadow-red-500/20 z-30"
+                                    className="absolute bottom-2 right-2 px-2 py-0.5 bg-red-600/70 backdrop-blur-md border border-red-400/50 text-white text-[8px] font-bold uppercase tracking-wider rounded hover:bg-red-600/90 hover:border-red-400 transition-all shadow-lg shadow-red-500/20 z-30"
                                 >
                                     {!isLoggedIn ? 'Enroll Now' : isEnrolledInFoundation ? 'Access Foundation Program' : 'Enroll Now'}
+                                </button>
+                            )}
+                            {/* External redirect icon for specific cards */}
+                            {(card.id === 'programs' || card.id === 'pathways') && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                            if (typeof window !== 'undefined') {
+                                            const url = card.id === 'programs' ? 'https://pilotshortage.org' : 'https://pilotcareerpathways.com';
+                                            if (card.id === 'programs') {
+                                                window.location.assign(url);
+                                            } else {
+                                                window.open(url, '_blank');
+                                            }
+                                        }
+                                    }}
+                                    aria-label="Open external"
+                                    className={`absolute bottom-2 right-2 p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all`}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 3h6v6" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14L21 3" />
+                                    </svg>
                                 </button>
                             )}
                         </div>
@@ -2141,7 +2179,7 @@ const GridCard: React.FC<GridCardProps> = ({
                     <div className="absolute bottom-0 left-0 right-0">
                         <div className={`
                             relative
-                            px-3 py-1.5 md:px-4 md:py-2 transition-all duration-300
+                            px-3 py-1.5 pr-10 md:px-4 md:py-2 md:pr-12 transition-all duration-300
                             ${isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'}
                         `}>
                             {/* Blue accent line at top */}
@@ -2158,6 +2196,30 @@ const GridCard: React.FC<GridCardProps> = ({
                                         {finalDisplaySubtitle}
                                     </p>
                                 </div>
+                                {/* External redirect icon for small cards */}
+                                {(card.id === 'programs' || card.id === 'pathways') && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (typeof window !== 'undefined') {
+                                                const url = card.id === 'programs' ? 'https://pilotshortage.org' : 'https://pilotcareerpathways.com';
+                                                if (card.id === 'programs') {
+                                                    window.location.assign(url);
+                                                } else {
+                                                    window.open(url, '_blank');
+                                                }
+                                            }
+                                        }}
+                                        aria-label="Open external"
+                                        className="ml-2 flex-none p-2 rounded-full bg-white/8 backdrop-blur-sm border border-white/10 text-white hover:bg-white/20 transition-all"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 3h6v6" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14L21 3" />
+                                        </svg>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>

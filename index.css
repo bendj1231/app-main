@@ -9,6 +9,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hide accreditation / partner logos when requested */
+img[src*="accreditation-"] , img[src*="Airbus_Logo_2017"], img[alt="FAA"], img[alt="GCAA"], img[alt="Airbus"], img[alt="WM Group"] {
+  display: none !important;
+}
+
 @keyframes marquee {
   0% {
     transform: translateX(0);

@@ -1538,21 +1538,24 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 py-4 md:py-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="overflow-hidden rounded-[2rem] bg-white ring-1 ring-slate-200 shadow-2xl">
-                        <div className="px-5 py-5 sm:px-7 sm:py-6 border-b border-slate-200">
-                            <div className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs uppercase tracking-[0.24em] font-semibold text-red-600">
+                        <div className="px-5 py-4 sm:px-7 sm:py-5 rounded-t-[2rem] bg-red-600 text-white">
+                            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs uppercase tracking-[0.24em] font-semibold text-white border border-white/20">
                                 Platform Updates
                             </div>
-                            <h3 className="mt-4 text-xl sm:text-2xl font-semibold text-slate-950">
+                            <h3 className="mt-4 text-xl sm:text-2xl font-semibold text-white">
                                 Latest platform stories shaping pilot progression
                             </h3>
-                            <p className="mt-2 text-sm sm:text-base text-slate-700 max-w-2xl">
+                        </div>
+                        <div className="px-5 pb-5 sm:px-7 sm:pb-6 bg-white">
+                            <p className="text-sm sm:text-base text-slate-700 max-w-2xl">
                                 Stay current with platform-specific updates from Pilot Pathways, PilotShortage.org, and Pilot Terminal.
                             </p>
                         </div>
 
-                        <div className="relative overflow-hidden p-4 sm:p-5">
-                            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${activeBillboardSlide * 100}%)` }}>
-                                <article className="min-w-full rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm ring-1 ring-slate-100">
+                        <div className="relative overflow-hidden p-4 sm:p-5 bg-slate-100/20 backdrop-blur-xl border border-white/20 shadow-2xl shadow-slate-900/10 rounded-[1.75rem]">
+                            <div className="absolute inset-0 bg-slate-200/20 backdrop-blur-xl pointer-events-none" />
+                            <div className="relative flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${activeBillboardSlide * 100}%)` }}>
+                                <article className="min-w-full rounded-[1.7rem] border border-white/30 bg-white/70 backdrop-blur-xl p-5 shadow-xl shadow-slate-900/10 ring-1 ring-white/30">
                                     <div className="flex items-start justify-between gap-3">
                                         <div>
                                             <p className="text-xs uppercase tracking-[0.24em] font-semibold text-red-600">Pilot Pathways</p>
