@@ -1225,7 +1225,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
                     {/* Mobile Menu Button */}
                     <button 
-                        className={`lg:hidden ${isLight || (isDark && scrolled) ? 'text-slate-900' : 'text-white'} p-2 rounded-lg hover:bg-white/10 transition-colors`}
+                        className="lg:hidden text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
                         aria-expanded={isMenuOpen}

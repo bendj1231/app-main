@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X, ShieldCheck, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TopNavbar } from '../TopNavbar';
+import { HomeLabel } from './HomeLabel';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
 import { IMAGES } from '../../../../src/lib/website-constants';
@@ -622,10 +623,10 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [platformImageIndex, setPlatformImageIndex] = useState(0);
     const platformImages = ['/typeratingsearch.png', '/AE.png', '/DP.png'];
 
-    // Auto-advance news feed carousel every 5 seconds
+    // Auto-advance platform news cards every 5 seconds
     useEffect(() => {
         const interval = setInterval(() => {
-            setActiveBillboardSlide(prev => (prev + 1) % 5);
+            setActiveBillboardSlide(prev => (prev + 1) % 3);
         }, 5000);
         return () => clearInterval(interval);
     }, []);
@@ -1008,9 +1009,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 currentPage="home"
             />
 
-
-
-
+            <HomeLabel />
 
             {/* Enrollment Confirmation Modal */}
             <AnimatePresence>
@@ -1217,34 +1216,33 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="px-8 py-8 md:px-10 md:py-10 flex flex-col lg:flex-row items-center gap-8 min-h-[280px]">
                             <div className="w-full lg:w-7/12">
                                 <h2 className="text-2xl md:text-4xl font-semibold mb-4 leading-tight" style={{ color: '#ffffff' }}>
-                                    Discover <span style={{ color: '#dc2626' }}>pathways</span>, align your profile with operator <span style={{ color: '#dc2626' }}>requirements and expectations</span>.
+                                    Discover programs through <span style={{ color: '#dc2626' }}>pilotshortage.org</span> and align your profile for operator pathway access.
                                 </h2>
                                 <p className="text-sm md:text-base leading-relaxed max-w-2xl" style={{ color: '#ffffff', opacity: 0.9 }}>
-                                    Create your pilot profile for free, and get verified with <span style={{ color: '#dc2626' }}>Recognition+</span>.
+                                    The Foundation Program mission is aimed at aligning graduating pilots to mentor the next generation while building captain leadership, EBT/CBTA, and Airbus-aligned skills for airline readiness.
+                                </p>
+                                <p className="text-sm md:text-base leading-relaxed max-w-2xl mt-3" style={{ color: '#ffffff', opacity: 0.85 }}>
+                                    Prepare yourself with a pilot self-development program that feeds into our transition program, giving graduates a discount and access to EBT CBTA familiarization, sponsor internships, operations with selected operators, and industry interviews aligned to EBT fundamentals.
                                 </p>
                                 <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                                    <button
-                                        onClick={() => onNavigate?.('become-member')}
-                                        className="px-7 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 text-left"
-                                        style={{ backgroundColor: '#ffffff', color: '#0d1b3e' }}
-                                    >
-                                        <span className="block">Create free account</span>
-                                        <span className="block text-xs font-normal mt-1" style={{ color: '#475569' }}>
-                                            Get <span style={{ color: '#dc2626' }}>Recognition+</span> verified
-                                        </span>
-                                    </button>
                                     <a
-                                        href="https://pilotcareerpathways.com"
+                                        href="https://pilotshortage.org"
                                         target="_blank"
                                         rel="noreferrer noopener"
-                                        className="inline-flex items-center justify-center px-7 py-3 rounded-xl font-semibold text-sm transition-all border hover:bg-white/10"
-                                        style={{ backgroundColor: 'transparent', color: '#ffffff', borderColor: 'rgba(255,255,255,0.4)' }}
+                                        className="px-7 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 text-center"
+                                        style={{ backgroundColor: '#ffffff', color: '#0d1b3e' }}
                                     >
-                                        Visit pilotcareerpathways.com
+                                        Become a member at pilotshortage.org
                                     </a>
+                                    <button
+                                        onClick={() => onNavigate?.('foundation-program')}
+                                        className="px-7 py-3 rounded-xl font-semibold text-sm transition-all bg-red-500 hover:bg-red-600 text-white"
+                                    >
+                                        Enroll for Foundation Program
+                                    </button>
                                 </div>
                             </div>
-                            <div className="w-full lg:w-5/12 flex items-center justify-center">
+                            <div className="w-full lg:w-5/12 hidden lg:flex items-center justify-center">
                                 <div className="w-full max-w-md overflow-hidden border border-white/10 shadow-2xl">
                                     <img
                                         src="/images/homepage-1.png"
@@ -1328,6 +1326,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         src="/recognition-unlock.png"
                         alt="Recognition+ Unlocks"
                         className="w-full h-full object-cover"
+                        style={{ objectPosition: '20% center' }}
                         onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=1600&q=80'; }}
                     />
                     {/* Gradient fade from left (slate-950) to transparent */}
@@ -1336,86 +1335,85 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             {/* === DISCOVER PILOT RECOGNITION === */}
-            <div className="relative z-10 bg-white w-full px-4 md:px-8 py-12">
-                <div className="max-w-7xl mx-auto">
-                    {/* Section Header */}
-                    <div className="mb-8 text-center">
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-red-500">Pilot Recognition</span></h2>
-                        <p className="text-slate-600 text-sm md:text-base">Your live profile that operators pull from — not a résumé you send into a black hole</p>
-                    </div>
-                    {/* Feature Highlights */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div className="bg-slate-900 rounded-2xl p-6 border border-slate-700">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-3">Recognition Score</p>
-                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Your Readiness Currency</h4>
-                            <p className="text-sm text-slate-300 leading-relaxed">
-                                A single number that measures your profile against industry standards. Airlines filter and sort by this score. It updates live as you gain hours, complete programs, and earn endorsements. No more guessing if you qualify.
+            <div className="relative z-10 bg-white w-full py-12 md:py-16 overflow-hidden">
+                <div className="absolute inset-y-0 right-0 hidden md:block w-[48vw] lg:w-[50vw] xl:w-[52vw]">
+                    <div
+                        className="absolute inset-0 bg-contain bg-right bg-no-repeat bg-white"
+                        style={{ backgroundImage: "url('/recog6.png')" }}
+                    />
+                </div>
+
+                <div className="relative">
+                    <div className="grid grid-cols-1 md:grid-cols-[minmax(0,40%)_minmax(0,60%)] gap-8 md:gap-12 items-start">
+                        {/* Left Side - Text Content */}
+                        <div className="relative z-10 pl-4 md:pl-10 pr-4 md:pr-0">
+                            <p className="text-[12px] font-bold tracking-[0.2em] uppercase text-red-500 mb-4">Recognition Dashboard</p>
+                            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 leading-tight">
+                                Keeping your profile <span className="text-red-500">compliant, current,</span> and operator-ready
+                            </h2>
+                            <p className="text-slate-600 text-sm md:text-base mb-8 leading-relaxed">
+                                Keeps regulators and operators aligned with your latest verified status. This live pilot profile tracks last flown time, synced logbook hours, and credential expiry so your profile stays safe and operator-ready.
                             </p>
-                        </div>
-                        <div className="bg-slate-900 rounded-2xl p-6 border border-slate-700">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-3">Gap Analysis</p>
-                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>See Exactly What You Are Missing</h4>
-                            <p className="text-sm text-slate-300 leading-relaxed">
-                                Compare your profile against any airline pathway card. Instantly see which requirements you meet, which you are close to, and which need work. Target your training spend instead of wasting money on irrelevant ratings.
-                            </p>
-                        </div>
-                        <div className="bg-slate-900 rounded-2xl p-6 border border-slate-700">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-3">Operator Pull</p>
-                            <h4 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Airlines Come to You</h4>
-                            <p className="text-sm text-slate-300 leading-relaxed">
-                                Operators with enterprise access pull directly from the verified database. Your live profile is visible to recruiters with the right permissions. No applications. No cover letters. Just verified data speaking for itself.
-                            </p>
-                        </div>
-                    </div>
-                    {/* Tier Comparison */}
-                    <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden mb-8">
-                        <div className="p-6 border-b border-white/10">
-                            <h4 className="text-xl text-white mb-1" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>Profile Tiers</h4>
-                            <p className="text-sm text-slate-400">Start free. Upgrade when you are ready to unlock full pathway matching.</p>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                            <div className="p-6 border-b md:border-b-0 md:border-r border-white/10">
-                                <div className="flex items-center gap-3 mb-4">
+
+                            <div className="md:hidden mb-6">
+                                <div className="relative w-full h-[200px] overflow-hidden rounded-[28px] bg-slate-100">
+                                    <img
+                                        src="/recog6.png"
+                                        alt="Recognition dashboard"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Three Key Features */}
+                            <div className="space-y-4 mb-6">
+                                <div className="flex gap-3 items-start rounded-3xl bg-slate-100/80 border border-slate-200 p-4 md:p-5">
+                                    <div className="flex-shrink-0 w-11 h-11 md:w-14 md:h-14 rounded-3xl bg-slate-900/5 border border-slate-200 shadow-sm flex items-center justify-center text-slate-900">
+                                        <ShieldCheck className="w-5 h-5 md:w-6 md:h-6" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-bold tracking-tight">
-                                            <span className="text-white">Recognition</span><span className="text-slate-400"> — Free</span>
-                                        </p>
-                                        <p className="text-slate-400 text-xs">Platform access at no cost</p>
+                                        <h3 className="font-bold text-slate-900 text-base md:text-lg mb-1">Recognition Status</h3>
+                                        <p className="text-sm md:text-sm text-slate-600 leading-snug">Real-time status for your credentials, last flown hours, and logbook sync so you always know when your profile is ready for operator review.</p>
                                     </div>
                                 </div>
-                                <ul className="space-y-2 text-sm text-slate-300">
-                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Basic profile matching (shows 2 gaps)</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>3 pathway views per month</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Public pathway browsing</li>
-                                    <li className="flex items-start gap-2"><span className="text-blue-400 mt-1">•</span>Standard ATLAS CV format</li>
-                                </ul>
-                            </div>
-                            <div className="p-6">
-                                <div className="flex items-center gap-3 mb-4">
+                                
+                                <div className="flex gap-3 items-start rounded-3xl bg-slate-100/80 border border-slate-200 p-4 md:p-5">
+                                    <div className="flex-shrink-0 w-11 h-11 md:w-14 md:h-14 rounded-3xl bg-slate-900/5 border border-slate-200 shadow-sm flex items-center justify-center text-slate-900">
+                                        <Clock className="w-5 h-5 md:w-6 md:h-6" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-bold tracking-tight">
-                                            <span className="text-red-500">Recognition</span><span className="text-white"> Plus</span>
-                                        </p>
-                                        <p className="text-slate-400 text-xs">$99/year — full pathway intelligence</p>
+                                        <h3 className="font-bold text-slate-900 text-base md:text-lg mb-1">Gap Analysis</h3>
+                                        <p className="text-sm md:text-sm text-slate-600 leading-snug">See where your synced logbook hours, expiring licenses, and training credentials align with airline pathways so you can fix gaps before operators evaluate your profile.</p>
                                     </div>
                                 </div>
-                                <ul className="space-y-2 text-sm text-slate-300">
-                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Full profile comparison against all pathways</li>
-                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Unlimited pathway views and matching</li>
-                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Priority operator pull visibility</li>
-                                    <li className="flex items-start gap-2"><span className="text-red-400 mt-1">•</span>Advanced analytics and benchmarking</li>
-                                </ul>
+                                
+                                <div className="flex gap-3 items-start rounded-3xl bg-slate-100/80 border border-slate-200 p-4 md:p-5">
+                                    <div className="flex-shrink-0 w-11 h-11 md:w-14 md:h-14 rounded-3xl bg-slate-900/5 border border-slate-200 shadow-sm flex items-center justify-center text-slate-900">
+                                        <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-bold text-slate-900 text-base md:text-lg mb-1">Operator Pull</h3>
+                                        <p className="text-sm md:text-sm text-slate-600 leading-snug">Operators with enterprise access pull directly from the verified system, and we automatically restrict submissions when credentials are about to expire to protect safety and compliance.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* CTA Buttons */}
+                            <div className="flex flex-wrap gap-3">
+                                <button
+                                    onClick={() => onNavigate?.('pilot-recognition-profile')}
+                                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold uppercase tracking-wider transition-colors"
+                                >
+                                    Build Your Profile
+                                </button>
+                                <button
+                                    onClick={() => onNavigate?.('pilot-recognition')}
+                                    className="px-6 py-3 border border-slate-300 hover:border-slate-900 text-slate-900 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors"
+                                >
+                                    Learn More
+                                </button>
                             </div>
                         </div>
-                    </div>
-                    {/* CTA */}
-                    <div className="flex items-center justify-center gap-3">
-                        <button
-                            onClick={() => onNavigate('pilot-recognition-profile')}
-                            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold uppercase tracking-wider transition-colors"
-                        >
-                            Build Your Profile
-                        </button>
                     </div>
                 </div>
             </div>
@@ -1435,7 +1433,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         {/* Card 1 - Pilot Terminal */}
                         <div
                             onClick={() => window.open('https://pilotterminal.com', '_blank', 'noopener,noreferrer')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 order-3 md:order-1 h-[220px] sm:h-auto sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
                             <img
@@ -1466,7 +1464,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         {/* Card 2 - Pilot Shortage */}
                         <div
                             onClick={() => window.open('https://pilotshortage.org', '_blank', 'noopener,noreferrer')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 order-2 md:order-2 h-[220px] sm:h-auto sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Full Background Image */}
                             <img
@@ -1497,7 +1495,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         {/* Card 3 - Pilot Pathways */}
                         <div
                             onClick={() => onNavigate?.('discover-pathways')}
-                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 aspect-[3/4] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
+                            className="group relative overflow-hidden rounded-xl cursor-pointer border border-slate-700 hover:border-blue-500/50 transition-all duration-300 order-1 md:order-3 h-[220px] sm:h-auto sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[480px]"
                         >
                             {/* Shuffling Background Images */}
                             <AnimatePresence mode="wait">
@@ -1536,168 +1534,90 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
             </div>
 
-            {/* === PATHWAY NEWS FEED CAROUSEL === */}
-            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 py-2 md:py-3">
+            {/* === PLATFORM NEWS UPDATES === */}
+            <div className="relative z-30 w-full px-3 sm:px-4 md:px-8 py-4 md:py-6">
                 <div className="max-w-7xl mx-auto">
-                    <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-blue-700 to-slate-800 shadow-lg" style={{ minHeight: 'clamp(100px, 18vw, 140px)' }}>
+                    <div className="overflow-hidden rounded-[2rem] bg-white ring-1 ring-slate-200 shadow-2xl">
+                        <div className="px-5 py-5 sm:px-7 sm:py-6 border-b border-slate-200">
+                            <div className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs uppercase tracking-[0.24em] font-semibold text-red-600">
+                                Platform Updates
+                            </div>
+                            <h3 className="mt-4 text-xl sm:text-2xl font-semibold text-slate-950">
+                                Latest platform stories shaping pilot progression
+                            </h3>
+                            <p className="mt-2 text-sm sm:text-base text-slate-700 max-w-2xl">
+                                Stay current with platform-specific updates from Pilot Pathways, PilotShortage.org, and Pilot Terminal.
+                            </p>
+                        </div>
 
-                        {/* Right-side image — changes per slide */}
-                        {(() => {
-                            const slideIdx = activeBillboardSlide || 0;
-                            type SlideConfig = { src?: string; contain: boolean; invert: boolean; whiteBg?: boolean; prLogo?: boolean };
-                            const slides: SlideConfig[] = [
-                                { src: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&q=80', contain: true, invert: false, whiteBg: true },
-                                { src: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=800&q=80', contain: true, invert: false, whiteBg: true },
-                                { src: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80', contain: true, invert: false, whiteBg: true },
-                                { src: '/images/foundational-program.png', contain: false, invert: false },
-                                { contain: true, invert: false, whiteBg: true, prLogo: true },
-                            ];
-                            const slide = slides[slideIdx] || slides[0];
-                            const isWhiteBg = !!slide.whiteBg;
-                            return (
-                                <div className="absolute inset-y-0 right-0 w-2/5 z-0 hidden md:block" style={{ backgroundColor: isWhiteBg ? '#ffffff' : 'rgba(10,20,60,0.7)' }}>
-                                    {!slide.prLogo ? (
-                                        <img
-                                            key={slide.src}
-                                            src={slide.src!}
-                                            alt=""
-                                            className="w-full h-full"
-                                            style={{
-                                                objectFit: isWhiteBg ? 'contain' : 'cover',
-                                                padding: isWhiteBg ? '2.5rem' : '0',
-                                                filter: slide.invert ? 'brightness(0) invert(1)' : 'none',
-                                                transition: 'opacity 0.5s ease',
-                                            }}
-                                            onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center px-8">
-                                            <span style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif', fontSize: '2rem', lineHeight: 1, letterSpacing: '-0.02em' }}>
-                                                <span style={{ color: '#0f172a' }}>pilot</span>
-                                                <span style={{ color: '#dc2626' }}>recognition</span>
-                                                <span style={{ color: '#0f172a' }}>.com</span>
-                                            </span>
+                        <div className="relative overflow-hidden p-4 sm:p-5">
+                            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${activeBillboardSlide * 100}%)` }}>
+                                <article className="min-w-full rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm ring-1 ring-slate-100">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="text-xs uppercase tracking-[0.24em] font-semibold text-red-600">Pilot Pathways</p>
+                                            <h4 className="mt-3 text-xl font-semibold text-slate-950">New expectations from 10+ airlines</h4>
                                         </div>
-                                    )}
-                                    {!isWhiteBg && (
-                                        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, #2563eb 0%, rgba(37,99,235,0.85) 20%, rgba(37,99,235,0.2) 65%, transparent 100%)' }} />
-                                    )}
-                                </div>
-                            );
-                        })()}
-
-                        {/* Carousel Content */}
-                        <div className="relative z-10">
-                            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${(activeBillboardSlide || 0) * 100}%)` }}>
-
-                                {/* Slide 1: A320 Type Rating */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
-                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-500/20 border border-amber-500/30 rounded-full mb-2">
-                                            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                                            <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
-                                        </div>
-                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                                            Airbus A320 Type Rating Requirements Revised
-                                        </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
-                                            EASA updated minimum hours for A320 type rating entry. Pathway cards have been recalculated. Check your gap score now.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            View Updated Pathways
-                                        </button>
+                                        <Globe className="h-7 w-7 text-red-600" />
                                     </div>
-                                </div>
+                                    <p className="mt-4 text-sm leading-6 text-slate-700">
+                                        Updated requirements and expectation changes from more than 10 airlines and operators are now reflected across the pathways guidance.
+                                    </p>
+                                    <button
+                                        onClick={() => onNavigate?.('pathways-modern')}
+                                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                                    >
+                                        Review pathway updates
+                                    </button>
+                                </article>
 
-                                {/* Slide 2: B737 Type Rating */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
-                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-500/20 border border-amber-500/30 rounded-full mb-2">
-                                            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                                            <span className="text-[10px] font-semibold text-amber-300 uppercase tracking-wider">Type Rating Update</span>
+                                <article className="min-w-full rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm ring-1 ring-slate-100">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="text-xs uppercase tracking-[0.24em] font-semibold text-red-600">pilotshortage.org</p>
+                                            <h4 className="mt-3 text-xl font-semibold text-slate-950">Foundation program mentorship grows</h4>
                                         </div>
-                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                                            Boeing 737 Type Rating Requirements Revised
-                                        </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
-                                            FAA &amp; EASA revised simulator hour requirements for B737 type rating. Updated pathway cards now reflect the new minimums.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            View Updated Pathways
-                                        </button>
+                                        <Zap className="h-7 w-7 text-red-600" />
                                     </div>
-                                </div>
+                                    <p className="mt-4 text-sm leading-6 text-slate-700">
+                                        The platform now features a 50-pilot mentorship foundation program that pairs experienced crew with aspiring aviators.
+                                    </p>
+                                    <button
+                                        onClick={() => onNavigate?.('foundation-program')}
+                                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                                    >
+                                        Explore the mentorship program
+                                    </button>
+                                </article>
 
-                                {/* Slide 3: Etihad Added */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
-                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-green-500/20 border border-green-500/30 rounded-full mb-2">
-                                            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                                            <span className="text-[10px] font-semibold text-green-300 uppercase tracking-wider">New Airline</span>
+                                <article className="min-w-full rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm ring-1 ring-slate-100">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="text-xs uppercase tracking-[0.24em] font-semibold text-red-600">Pilot Terminal</p>
+                                            <h4 className="mt-3 text-xl font-semibold text-slate-950">Discussion on Boeing 797 progression</h4>
                                         </div>
-                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                                            Etihad Airways Airline Expectations Now Live
-                                        </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
-                                            Etihad's full expectation profile has been added — minimum hours, license requirements, and EBT standards. Match your profile today.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('airline-expectations')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            View Etihad Expectations
-                                        </button>
+                                        <Layers className="h-7 w-7 text-red-600" />
                                     </div>
-                                </div>
-
-                                {/* Slide 4: Foundation Program Enrollment */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
-                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-red-500/20 border border-red-500/30 rounded-full mb-2">
-                                            <span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
-                                            <span className="text-[10px] font-semibold text-red-300 uppercase tracking-wider">Enrollment Open</span>
-                                        </div>
-                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                                            Foundation Program — Now Accepting Enrollments
-                                        </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
-                                            50+ hours of structured mentorship. Foundational knowledge, leadership, and behavioural frameworks. Limited spots available.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('foundation-program')} className="px-3 py-1.5 bg-white text-blue-700 hover:bg-blue-50 text-xs font-semibold rounded-lg transition-colors shadow">
-                                            Enroll Now
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Slide 5: Pathway Cards */}
-                                <div className="w-full flex-shrink-0">
-                                    <div className="px-4 sm:px-5 md:px-8 py-3 sm:py-4 md:py-5 w-full md:w-3/5">
-                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-violet-500/20 border border-violet-500/30 rounded-full mb-2">
-                                            <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
-                                            <span className="text-[10px] font-semibold text-violet-300 uppercase tracking-wider">Pathway Cards</span>
-                                        </div>
-                                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                                            26 New Pathway Cards Added This Month
-                                        </h3>
-                                        <p className="text-xs text-blue-100 max-w-md mb-2 sm:mb-3 hidden sm:block">
-                                            Cargo, charter, and cadet pathways updated with live airline data. Your recognition score unlocks which pathways you can access.
-                                        </p>
-                                        <button onClick={() => onNavigate?.('pathways-modern')} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-semibold rounded-lg transition-colors">
-                                            Browse Pathways
-                                        </button>
-                                    </div>
-                                </div>
+                                    <p className="mt-4 text-sm leading-6 text-slate-700">
+                                        Pilot Terminal conversations now explore the new Boeing 797 and how future type ratings will be impacted.
+                                    </p>
+                                    <button
+                                        onClick={() => onNavigate?.('pilot-recognition-profile')}
+                                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                                    >
+                                        See the latest terminal news
+                                    </button>
+                                </article>
                             </div>
 
-                            {/* Progress Dots */}
-                            <div className="absolute bottom-0 left-0 px-6 md:px-10 pb-3">
-                                <div className="flex gap-2">
-                                    {[0, 1, 2, 3, 4].map((index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setActiveBillboardSlide(index)}
-                                            className="h-1 rounded-full transition-all duration-300"
-                                            style={{ width: (activeBillboardSlide || 0) === index ? '32px' : '16px', backgroundColor: (activeBillboardSlide || 0) === index ? 'white' : 'rgba(255,255,255,0.3)' }}
-                                        />
-                                    ))}
-                                </div>
+                            <div className="mt-4 flex justify-center gap-2">
+                                {[0, 1, 2].map((index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setActiveBillboardSlide(index)}
+                                        className={`h-1.5 rounded-full transition-all duration-300 ${activeBillboardSlide === index ? 'w-10 bg-red-600' : 'w-6 bg-slate-300'}`}
+                                    />
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -1856,14 +1776,18 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     <h3 className="text-xl font-serif font-normal text-slate-900 mb-1">{selectedCarouselPathway.title}</h3>
                                     <p className="text-sm text-slate-600 mb-2">{selectedCarouselPathway.company} · {selectedCarouselPathway.location}</p>
                                     <p className="text-sm text-slate-500 mb-4">{selectedCarouselPathway.tags?.[0] || 'Explore this pathway'}</p>
-                                    <button
-                                        onClick={() => onNavigate('pathways-modern')}
-                                        className="px-8 py-3 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition-all"
+                                    <a
+                                        href="https://pilotcareerpathways.com"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="inline-flex px-8 py-3 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition-all"
                                     >
-                                        Submit Interest for Pathway
-                                    </button>
-                                    <p className="text-xs uppercase tracking-widest text-slate-400 mt-4">Requirements & Profile Alignment</p>
-                                    <p className="text-xs text-slate-400 mt-1">Updated: {new Date().toLocaleDateString()}</p>
+                                        Visit pilotcareerpathways.com
+                                    </a>
+                                    <p className="mt-4 text-sm font-semibold text-slate-900">Your Recognition Profile auto syncs for pathway submissions.</p>
+                                    <p className="mt-2 text-xs leading-relaxed text-slate-500">
+                                        This is not a job board but a pooling of interest system posted by the operator to receive insights and network with pilots through fair, two-way private communications between pilot and industry.
+                                    </p>
                                 </div>
                                 <button
                                     onClick={() => navigateCarousel('next')}
@@ -1886,7 +1810,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                             className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 cursor-pointer hover:text-red-600 transition-colors inline-block"
                             onClick={() => onNavigate('discover-programs')}
                         >
-                            Discover <span className="text-red-500">Programs</span>
+                            Discover programs through <span className="text-red-500">pilotshortage.org</span>
                         </h2>
                         <p className="text-slate-600 text-sm md:text-base">Structured training pathways from flight school to airline-ready professional</p>
                     </div>
@@ -1907,36 +1831,30 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 <h3 className="text-2xl md:text-3xl text-slate-900 mb-4" style={{ fontFamily: 'Georgia, serif', fontWeight: 'normal' }}>
                                     Complete the Foundation Program
                                 </h3>
-                                <p className="text-sm text-slate-600 leading-relaxed mb-5">
+                                <p className="text-sm text-slate-600 leading-relaxed mb-4">
                                     50 hours of verified mentorship with industry professionals. EBT CBTA-aligned competency assessment that measures your readiness against real airline standards. Upon completion, your Recognition Profile is elevated with verified credentials.
                                 </p>
-                                <div className="space-y-3 mb-6">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
-                                        <span className="text-sm text-slate-600">Certificate of Completion with industry endorsement</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
-                                        <span className="text-sm text-slate-600">Recognition Score boost upon verified completion</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
-                                        <span className="text-sm text-slate-600">Direct pathway access to airline placements</span>
-                                    </div>
-                                </div>
+                                <p className="text-sm text-slate-600 leading-relaxed mb-5">
+                                    The Foundation Program mission is aimed at aligning graduating pilots to mentor the next generation while building captain leadership, EBT/CBTA, and Airbus-aligned skills needed to traverse into the airline industry.
+                                </p>
+                                <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                    Prepare yourself with a pilot self-development program that can continue into our Transition Program with a graduate discount, including EBT CBTA familiarization, sponsor internships, operations with selected operators, and industry-connected interviews aligned to EBT fundamentals.
+                                </p>
                                 <div className="flex flex-wrap gap-3 mb-3">
-                                    <button
-                                        onClick={() => onNavigate('foundation-program')}
+                                    <a
+                                        href="https://pilotshortage.org"
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
+                                    >
+                                        Become a member at pilotshortage.org
+                                    </a>
+                                    <a
+                                        href="/foundation-program"
                                         className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition-all hover:scale-105"
                                     >
-                                        Enroll Now
-                                    </button>
-                                    <button
-                                        onClick={() => onNavigate('discover-programs')}
-                                        className="px-6 py-3 border border-slate-300 hover:border-slate-500 text-slate-700 hover:text-slate-900 rounded-lg text-sm font-bold transition-all"
-                                    >
-                                        Explore All Programs
-                                    </button>
+                                        Enroll for Foundation Program
+                                    </a>
                                 </div>
                                 <p className="text-[10px] text-slate-400 italic">
                                     Certification of completion and verification charges apply
