@@ -806,7 +806,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Contact button */}
                                 <button
                                     onClick={() => onNavigate('contact-support')}
-                                    className="bg-slate-600 hover:bg-slate-700 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2 whitespace-nowrap"
+                                    className="bg-white text-black border border-black hover:bg-slate-100 px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2 whitespace-nowrap"
                                 >
                                     Contact
                                 </button>

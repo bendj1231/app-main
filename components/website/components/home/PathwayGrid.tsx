@@ -1588,11 +1588,61 @@ const GridCard: React.FC<GridCardProps> = ({
 
     // Force exact same title and subtitle for the programs card
     const displayTitleOverride = card.id === 'programs'
-        ? 'Discover Pilot Programs'
+        ? 'Our Mission @ Pilotshortage.org'
         : finalDisplayTitle;
     const displaySubtitleOverride = card.id === 'programs'
         ? 'Find structured flight training tracks that launch you from school to airline-ready status with verified progress and career-focused pathways.'
         : finalDisplaySubtitle;
+
+    // Utility to truncate text without cutting words
+    const truncateText = (text: string, max = 110) => {
+        if (!text) return '';
+        if (text.length <= max) return text;
+        const truncated = text.slice(0, max);
+        const lastSpace = truncated.lastIndexOf(' ');
+        return (lastSpace > 40 ? truncated.slice(0, lastSpace) : truncated) + '…';
+    };
+
+    // Mobile-only simplified subtitle mapping for specific cards
+    const mobileShortMap: Record<string, string> = {
+        'programs': 'Find verified training tracks that take you from school to airline-ready status.',
+        'pathways': 'Career pathways from student to captain — simplified overview.',
+        'pilot-recognition': 'Create your Recognition Profile and get verified credentials.',
+        'get-started-recognition': 'Create a free profile and get Recognition+ verified.'
+    };
+
+    // Choose mobile subtitle when on small screens to ensure readability
+    const mobileSubtitle = isMobileViewCard
+        ? (mobileShortMap[card.id] || truncateText(finalDisplaySubtitle || displaySubtitleOverride || '', 110))
+        : finalDisplaySubtitle;
+
+    const renderMobileTitle = (title: string) => {
+        if (card.id === 'get-started-recognition') {
+            return (
+                <>Get Started with <span className="text-red-600">Recognition</span></>
+            );
+        }
+
+        if (card.id === 'pilot-recognition') {
+            return (
+                <>Recognition Profile <span className="text-red-600">Learn More</span></>
+            );
+        }
+
+        if (card.id === 'pathways') {
+            return (
+                <>Discover <span className="text-red-500">Career Pathways</span></>
+            );
+        }
+
+        if (card.id === 'programs') {
+            return (
+                <>OUR MISSION @ <span className="text-red-500">PILOTSHORTAGE.ORG</span></>
+            );
+        }
+
+        return title;
+    };
     
     // Determine if we should use carousel for enrolled/logged in state
     const shouldUseEnrolledCarousel = isEnrolledInFoundation && card.isCarouselWhenEnrolled && card.enrolledImages;
@@ -1722,39 +1772,47 @@ const GridCard: React.FC<GridCardProps> = ({
             onMouseLeave={onLeave}
             onClick={handleCardClick}
         >
-            {/* MOBILE DIRECTORY-STYLE CARD - Text overlay on image with white filter */}
+            {/* MOBILE DIRECTORY-STYLE CARD - Text on left with right-side image wallpaper */}
             {isMobileViewCard && (
                 <div className={`
-                    relative w-full h-full rounded-lg overflow-hidden
-                    bg-black/10 cursor-pointer
+                    relative w-full h-full rounded-xl overflow-hidden
+                    bg-white cursor-pointer
                     transition-all duration-300
-                    flex items-center justify-between px-4
+                    shadow-sm border border-slate-200
                 `}>
-                    {/* Background Image with White Overlay */}
-                    <div className="absolute inset-0 -z-10">
+                    <div className="relative z-10 flex items-start h-full px-4 py-4 pr-[44%] md:pr-[52%]">
+                        {/* Text Content - reserve right space on mobile so image doesn't overlap */}
+                        <div className="relative z-20 w-full max-w-[56%] md:max-w-[52%]">
+                            <h3 className="text-slate-900 font-bold text-base md:text-lg mb-2 leading-tight">
+                                {renderMobileTitle(displayTitleOverride)}
+                            </h3>
+                            <p className="text-slate-700 text-sm md:text-sm leading-7 line-clamp-3 md:line-clamp-none">
+                                {mobileSubtitle}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Right-side image wallpaper with gradient fade - visible on mobile but offset to avoid overlap */}
+                    <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden block md:block">
                         <img
                             src={currentImage || displayImage}
                             alt={card.title}
-                            className="w-full h-full object-cover"
+                            className="absolute inset-0 w-full h-full object-cover"
                         />
-                        {/* White Filter Overlay */}
-                        <div className="absolute inset-0 bg-white/35 backdrop-blur-[2px]" />
+                        <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent" />
                     </div>
-                    
-                    {/* Text Content Overlay */}
-                    <div className="flex flex-col justify-center flex-1 z-10">
-                        <h3 className="text-slate-900 font-bold text-sm md:text-base mb-1 leading-tight">
-                            {displayTitleOverride}
-                        </h3>
-                        <p className="text-slate-800 text-xs leading-tight line-clamp-2">
-                            {displaySubtitleOverride}
-                        </p>
-                    </div>
-                    
-                    {/* Right Arrow Indicator */}
-                    <div className="flex items-center justify-center ml-3 z-10">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/40 backdrop-blur-sm hover:bg-white/60 transition-all">
-                            <svg className="w-5 h-5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+
+                    {/* Overlay text + right arrow on image area */}
+                    <div className="absolute right-4 bottom-4 z-20 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full border border-slate-200 shadow-sm">
+                        <span className="text-slate-900 uppercase font-semibold text-xs tracking-[0.2em]">
+                            {card.id === 'get-started-recognition'
+                                ? 'get started'
+                                : card.id === 'pilot-recognition'
+                                    ? 'learn more'
+                                    : 'discover'}
+                        </span>
+                        <div className="w-9 h-9 rounded-full bg-[#1e3a8a] flex items-center justify-center text-white">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                         </div>
@@ -2017,7 +2075,7 @@ const GridCard: React.FC<GridCardProps> = ({
                             {/* Title row with double chevrons - MSFS style */}
                             <div className="flex items-center gap-1.5 mb-1">
                                 <span className={`text-xs md:text-sm font-bold ${card.isLightMode ? 'text-slate-700' : isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
-                                <h3 className={`text-xs md:text-sm font-bold uppercase tracking-wider ${card.isLightMode ? 'text-slate-900' : 'text-white'} ${card.id === 'credentials' ? 'text-black' : ''}`}>
+                                <h3 className={`text-base md:text-lg font-bold uppercase tracking-wider ${card.isLightMode ? 'text-slate-900' : 'text-white'} ${card.id === 'credentials' ? 'text-black' : ''}`}>
                                     {card.id === 'pilot-recognition' ? (<>Recognition Profile <span className="text-red-600">Learn More</span></>) : card.id === 'pathways' ? (<>Discover <span className="text-red-500">Career Pathways</span></>) : card.id === 'programs' ? (<>Our Mission @ <span className="text-red-500">Pilotshortage.org</span></>) : finalDisplayTitle}
                                 </h3>
                             </div>

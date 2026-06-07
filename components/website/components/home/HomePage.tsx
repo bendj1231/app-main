@@ -1443,13 +1443,22 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 alt="Pilot Terminal Background"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                             {/* Content */}
                             <div className="relative z-10 flex flex-col h-full">
+                                <div className="absolute top-4 left-4 z-20 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-100">
+                                    Connect
+                                </div>
+
+                                <div className="absolute inset-x-4 top-24 z-20 text-white text-sm font-semibold leading-snug">
+                                    One profile that connects crew, training, and operational tools.
+                                </div>
+
                                 {/* Bottom Text Bar */}
-                                <div className="mt-auto bg-black/90 px-4 py-4">
-                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">pilot <span className="text-red-500">terminal</span></h4>
-                                    <p className="text-slate-400 text-xs mt-1">Professional pilot network and flight deck tools</p>
+                                <div className="mt-auto bg-white/95 px-4 py-4">
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot <span className="text-red-500">terminal</span></h4>
+                                    <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Professional pilot network and flight deck tools</p>
                                 </div>
                             </div>
                         </div>
@@ -1465,13 +1474,22 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 alt="Pilot Shortage Background"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                             {/* Content */}
                             <div className="relative z-10 flex flex-col h-full">
+                                <div className="absolute top-4 left-4 z-20 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-100">
+                                    Serve communities
+                                </div>
+
+                                <div className="absolute inset-x-4 top-24 z-20 text-white text-sm font-semibold leading-snug">
+                                    Insights, data, and trends that keep pilot supply visible.
+                                </div>
+
                                 {/* Bottom Text Bar */}
-                                <div className="mt-auto bg-black/90 px-4 py-4">
-                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">pilot<span className="text-red-500">shortage</span>.org</h4>
-                                    <p className="text-slate-400 text-xs mt-1">Global pilot shortage analytics and industry insights</p>
+                                <div className="mt-auto bg-white/95 px-4 py-4">
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot<span className="text-red-500">shortage</span>.org</h4>
+                                    <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Global pilot shortage analytics and industry insights</p>
                                 </div>
                             </div>
                         </div>
@@ -1494,13 +1512,22 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     transition={{ duration: 0.6, ease: 'easeInOut' }}
                                 />
                             </AnimatePresence>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                             {/* Content */}
                             <div className="relative z-10 flex flex-col h-full">
+                                <div className="absolute top-4 left-4 z-20 rounded-full bg-slate-950/80 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-100">
+                                    Save lives
+                                </div>
+
+                                <div className="absolute inset-x-4 top-24 z-20 text-white text-sm font-semibold leading-snug">
+                                    Match your experience to pathways that move you toward command.
+                                </div>
+
                                 {/* Bottom Text Bar */}
-                                <div className="mt-auto bg-black/90 px-4 py-4">
-                                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">pilot <span className="text-red-500">pathways</span></h4>
-                                    <p className="text-slate-400 text-xs mt-1">Career pathways from student to captain</p>
+                                <div className="mt-auto bg-white/95 px-4 py-4">
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot <span className="text-red-500">pathways</span></h4>
+                                    <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Career pathways from student to captain</p>
                                 </div>
                             </div>
                         </div>

@@ -916,7 +916,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           updated_at: new Date().toISOString(),
         };
         const licensurePayload = vaultKey
-          ? /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          ?  
             await encryptFields(
               rawLicensurePayload,
               PILOT_LICENSURE_SENSITIVE_FIELDS as any,
@@ -1555,7 +1555,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     } = await supabase.auth.getSession();
                     if (s?.access_token && auth0UserId) {
                       const vKey = await getVaultKey(auth0UserId, s.access_token);
-                      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+                       
                       displayData = await decryptFields(
                         profileData,
                         PROFILE_SENSITIVE_FIELDS as any,
