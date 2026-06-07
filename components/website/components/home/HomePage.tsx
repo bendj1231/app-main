@@ -1449,9 +1449,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     Connect
                                 </div>
 
-                                <div className="absolute inset-x-4 top-24 z-20 text-white text-sm font-semibold leading-snug">
-                                    One profile that connects crew, training, and operational tools.
-                                </div>
+                                
 
                                 {/* Bottom Text Bar */}
                                 <div className="mt-auto bg-white/95 px-4 py-4">
@@ -1468,8 +1466,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                         >
                             {/* Full Background Image */}
                             <img
-                                src="/shortage1.png"
-                                alt="Pilot Shortage Background"
+                                src="/event.png"
+                                alt="Pilot Shortage Event"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -1480,9 +1478,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     Serve communities
                                 </div>
 
-                                <div className="absolute inset-x-4 top-24 z-20 text-white text-sm font-semibold leading-snug">
-                                    Insights, data, and trends that keep pilot supply visible.
-                                </div>
+                                
 
                                 {/* Bottom Text Bar */}
                                 <div className="mt-auto bg-white/95 px-4 py-4">
@@ -1518,9 +1514,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     Save lives
                                 </div>
 
-                                <div className="absolute inset-x-4 top-24 z-20 text-white text-sm font-semibold leading-snug">
-                                    Match your experience to pathways that move you toward command.
-                                </div>
+                                
 
                                 {/* Bottom Text Bar */}
                                 <div className="mt-auto bg-white/95 px-4 py-4">
