@@ -124,7 +124,7 @@ export const WhyRecognitionPage: React.FC<WhyRecognitionPageProps> = ({ onBack, 
                                     Join the Global Registry
                                 </button>
                                 <button 
-                                    onClick={() => onNavigate('recognition-plus')}
+                                    onClick={() => onNavigate('become-member')}
                                     className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-slate-900 font-semibold rounded-lg hover:bg-slate-100 transition-colors"
                                 >
                                     <Award className="w-4 h-4" />

@@ -1425,7 +1425,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                             {/* CTA Buttons */}
                             <div className="flex flex-wrap gap-3">
                                 <button
-                                    onClick={() => onNavigate?.('pilot-recognition-profile')}
+                                    onClick={() => onNavigate?.('become-member')}
                                     className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold uppercase tracking-wider transition-colors"
                                 >
                                     Build Your Profile
