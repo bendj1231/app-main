@@ -48,6 +48,7 @@ const MissionVisionPage = lazy(() => import('@/components/website/components/Mis
 const IndustryStewardshipPage = lazy(() => import('@/components/website/components/IndustryStewardshipPage').then(m => ({ default: m.IndustryStewardshipPage })));
 const ContactSupportPage = lazy(() => import('@/components/website/components/ContactSupportPage').then(m => ({ default: m.ContactSupportPage })));
 const BecomeMemberPage = lazy(() => import('@/components/website/components/BecomeMemberPage').then(m => ({ default: m.BecomeMemberPage })));
+const BecomeMemberConfirmPage = lazy(() => import('@/components/website/components/BecomeMemberConfirmPage').then(m => ({ default: m.BecomeMemberConfirmPage })));
 const AccountConfirmationPage = lazy(() => import('@/components/website/components/AccountConfirmationPage').then(m => ({ default: m.AccountConfirmationPage })));
 const PasskeyRecoveryPage = lazy(() => import('@/components/website/components/PasskeyRecoveryPage').then(m => ({ default: m.PasskeyRecoveryPage })));
 const EmiratesAtplPage = lazy(() => import('@/components/website/components/pathways/EmiratesAtplPage').then(m => ({ default: m.EmiratesAtplPage })));
@@ -421,6 +422,7 @@ export const AppRoutes = () => {
       <Route path="/mission-vision" element={<MissionVisionPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/industry-stewardship" element={<IndustryStewardshipPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/contact-support" element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
+      <Route path="/become-member/confirm" element={<BecomeMemberConfirmPage />} />
       <Route path="/become-member" element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/terms-of-service" element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
       <Route path="/issuer-policy" element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />

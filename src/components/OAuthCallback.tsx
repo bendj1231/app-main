@@ -80,18 +80,18 @@ export const OAuthCallback = () => {
           }
 
           setProfileCreated(true);
-          const target = isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1';
+          const target = isPilotTerminal ? '/' : '/become-member/confirm?setup=1';
           try {
             const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
             dbg.push({ ts: Date.now(), step: 'oauth_redirect', target, supabaseUid: session?.user?.id || null });
             sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
           } catch {}
-          // Redirect: pilotterminal -> home, careerpathways -> become-member for setup, otherwise -> become-member
+          // Redirect: pilotterminal -> home, otherwise -> become-member confirm page
           navigate(target);
         } else if (!existing.display_name) {
           // Profile exists but setup not completed
           setProfileCreated(true);
-          const target = isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1';
+          const target = isPilotTerminal ? '/' : '/become-member/confirm?setup=1';
           console.debug('[OAuthCallback] profile exists but has no display_name; redirecting to', target, { existing });
           try {
             const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
