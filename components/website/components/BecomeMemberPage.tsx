@@ -1748,14 +1748,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <button
                         onClick={() => safeRedirect('/')}
                         aria-label="Go back to Home"
-                        className="absolute top-4 left-4 z-[400] px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold shadow-sm hover:bg-white/20 transition-all"
+                        className="absolute top-4 left-4 z-[400] px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold shadow-sm hover:bg-white/20 transition-all flex items-center gap-2"
                     >
-                        Go back to Home
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span>Go back to Home</span>
                     </button>
                 </div>
 
-                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden">
-                    <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-16">
+                <div className="relative z-10 flex-1 flex items-start justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden">
+                    <div className="w-full max-w-6xl flex flex-col md:flex-row items-start gap-8 md:gap-16">
 
                         {/* Left: Hero text */}
                         <div className="flex-1 text-left">
@@ -1766,7 +1769,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <p className="text-slate-300 text-sm mb-8">Free access to Programs, Pathways &amp; Pilot Recognition</p>
 
                             {/* Recognition+ upsell */}
-                            <div className="border border-white/20 bg-white/5 rounded-xl p-5 max-w-sm">
+                            <div className="border border-white/20 bg-white/5 rounded-xl p-5 max-w-lg">
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="text-red-500 text-xs font-black tracking-widest uppercase">Recognition+</span>
                                 </div>
