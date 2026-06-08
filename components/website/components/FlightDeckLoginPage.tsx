@@ -29,13 +29,15 @@ interface FlightDeckLoginPageProps {
 
 export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavigate }) => {
   const navigate = useNavigate();
-  const { login, currentUser } = useAuth();
+  const { login, currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [checkingOAuth, setCheckingOAuth] = useState(false);
+  const [checkingAccount, setCheckingAccount] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [passkeyLoading, setPasskeyLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -49,7 +51,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   // If they logged in via Google OAuth but have no profile row, sign out silently
   // and redirect to /become-member?setup=1 so they can register.
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser || oauthAccountCheck.checking || oauthAccountCheck.hasAccount !== null) return;
 
     let active = true;
     const verifyUserAccount = async () => {
@@ -61,8 +63,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         setCheckingOAuth(false);
         navigate('/platform', { replace: true });
       } else {
-        // No profile row — sign out silently (avoids AuthContext side-effect loops)
-        // then send them to the membership registration form
         await supabase.auth.signOut();
         setCheckingOAuth(false);
         navigate('/become-member?setup=1', { replace: true });
@@ -73,13 +73,32 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     return () => {
       active = false;
     };
-  }, [currentUser]);
+  }, [currentUser, oauthAccountCheck.checking, oauthAccountCheck.hasAccount, navigate]);
+
+  useEffect(() => {
+    if (oauthAccountCheck.checking || oauthAccountCheck.hasAccount === null) return;
+
+    const handleOAuthResult = async () => {
+      if (oauthAccountCheck.hasAccount) {
+        resetOauthAccountCheck();
+        navigate('/platform', { replace: true });
+      } else {
+        await supabase.auth.signOut();
+        resetOauthAccountCheck();
+        navigate('/become-member?setup=1', { replace: true });
+      }
+    };
+
+    handleOAuthResult();
+  }, [oauthAccountCheck, navigate, resetOauthAccountCheck]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) return;
     setSubmitting(true);
+    setCheckingAccount(true);
     setError('');
+
     try {
       // 1. Check if pilot has a profile before attempting login
       const { data: profile } = await supabase
@@ -101,18 +120,25 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
       setError(err instanceof Error ? err.message : 'Incorrect password. Please try again.');
     } finally {
       setSubmitting(false);
+      setCheckingAccount(false);
     }
   };
 
   const handleGoogleLogin = async () => {
     setError('');
+    setGoogleLoading(true);
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/flight-deck-login`,
       },
     });
-    if (error) setError(error.message || 'Google sign-in failed');
+
+    if (error) {
+      setError(error.message || 'Google sign-in failed');
+      setGoogleLoading(false);
+    }
   };
 
   const handlePasskeyLogin = async () => {
@@ -191,7 +217,16 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
   const hasPasskey = localStorage.getItem('pr_passkey_registered') === 'true';
 
-  if (checkingOAuth) {
+  const oauthInProgress = googleLoading || checkingOAuth || oauthAccountCheck.checking || checkingAccount;
+  const oauthStatusText = googleLoading
+    ? 'Redirecting to Google for sign in…'
+    : checkingAccount
+    ? 'Checking if account exists…'
+    : oauthAccountCheck.checking
+    ? 'Checking your Supabase account…'
+    : 'Verifying account credentials...';
+
+  if (oauthInProgress) {
     return (
       <div
         style={{
@@ -217,7 +252,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
               margin: '0 auto 16px',
             }}
           />
-          Verifying account credentials...
+          {oauthStatusText}
           <style>{`
                         @keyframes spin {
                             0% { transform: rotate(0deg); }
@@ -458,24 +493,33 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         {/* Google Sign In — via Supabase OAuth */}
         <button
           onClick={handleGoogleLogin}
+          disabled={googleLoading || checkingOAuth || oauthAccountCheck.checking}
           style={{
             width: '100%',
             padding: '10px 14px',
-            background: 'rgba(255,255,255,0.08)',
+            background: googleLoading || checkingOAuth || oauthAccountCheck.checking ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
             border: '1px solid rgba(255,255,255,0.18)',
             borderRadius: 6,
             fontSize: 14,
             fontWeight: 500,
             color: 'rgba(255,255,255,0.9)',
-            cursor: 'pointer',
+            cursor: googleLoading || checkingOAuth || oauthAccountCheck.checking ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 10,
             marginBottom: 10,
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
+          onMouseEnter={(e) => {
+            if (!googleLoading && !checkingOAuth && !oauthAccountCheck.checking) {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!googleLoading && !checkingOAuth && !oauthAccountCheck.checking) {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+            }
+          }}
         >
           <svg width="18" height="18" viewBox="0 0 18 18">
             <path

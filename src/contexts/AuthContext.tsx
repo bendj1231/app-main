@@ -244,6 +244,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('oauthModalShown', 'true');
   };
 
+  // If OAuth signed-in user has no linked profile, ensure app redirects to become-member
+  useEffect(() => {
+    if (oauthAccountCheck.hasAccount === false) {
+      const target = '/become-member?setup=1';
+      if (window.location.pathname !== target) {
+        window.location.assign(target);
+      }
+    }
+  }, [oauthAccountCheck.hasAccount]);
+
   // Article 5 — Keep logoutRef current so idle timer always calls latest logout
   useEffect(() => {
     logoutRef.current = logout;

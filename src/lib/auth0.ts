@@ -1,6 +1,11 @@
 export function getAuth0RedirectUri() {
   const rawCallbackUrl = import.meta.env.VITE_AUTH0_CALLBACK_URL as string | undefined;
 
+  // During local development, always use the current origin for Auth0 callbacks.
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return `${window.location.origin}/callback`;
+  }
+
   if (!rawCallbackUrl) {
     return `${window.location.origin}/callback`;
   }
