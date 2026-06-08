@@ -1346,6 +1346,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // Debug: record auth state change event
+      try {
+        const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+        dbg.push({ ts: Date.now(), event, sessionUserId: session?.user?.id || null });
+        sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+        console.debug('[AuthContext] onAuthStateChange', { event, sessionUserId: session?.user?.id });
+      } catch (e) {
+        console.debug('[AuthContext] debug log write failed', e);
+      }
+
       if (event === 'SIGNED_IN' && session?.user) {
         // User signed in via OAuth
 
@@ -1398,20 +1408,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .select('*')
                 .eq('user_id', session.user.id)
                 .maybeSingle();
+              console.debug('[AuthContext] SIGNED_IN profileData fetched', { profileData, error, pilotData, pilotError });
 
               if (pilotData && !pilotError) {
+                console.debug('[AuthContext] pilot_licensure_experience found', pilotData);
                 await decryptAndSetUserProfile(pilotData);
                 setOauthAccountCheck({ checking: false, hasAccount: true });
               } else {
+                console.warn('[AuthContext] No profile or pilot data found for OAuth user', { userId: session.user.id });
+                try {
+                  const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+                  dbg.push({ ts: Date.now(), step: 'no_profile_found', userId: session.user.id });
+                  sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+                } catch {}
                 setOauthAccountCheck({ checking: false, hasAccount: false });
-                // Create default profile
                 // No profile found; clear userProfile and indicate lack of account
                 setUserProfile(null);
-                setOauthAccountCheck({ checking: false, hasAccount: false });
               }
             }
           } catch (err) {
             console.error('❌ Error checking profile for OAuth user:', err);
+            try {
+              const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+              dbg.push({ ts: Date.now(), step: 'profile_check_error', err: err instanceof Error ? err.message : String(err) });
+              sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+            } catch {}
             setOauthAccountCheck({ checking: false, hasAccount: false });
           }
 

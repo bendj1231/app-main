@@ -13,6 +13,12 @@ export const OAuthCallback = () => {
 
     const createSupabaseProfile = async () => {
       try {
+        // Debug trace
+        try {
+          const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+          dbg.push({ ts: Date.now(), step: 'oauth_callback_start', auth0Sub: user?.sub || null, email: user?.email || null });
+          sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+        } catch {}
         const { supabase } = await import('@/src/lib/supabase');
 
         const { data: { session: _cbSession } } = await supabase.auth.getSession();
@@ -48,6 +54,7 @@ export const OAuthCallback = () => {
           (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('product') === 'careerpathways');
         
         if (!existing) {
+          console.debug('[OAuthCallback] no existing profile found', { auth0Sub: user.sub, email: user.email });
           const { data: { session } } = await supabase.auth.getSession();
           const supabaseUid = session?.user?.id;
 
@@ -63,6 +70,7 @@ export const OAuthCallback = () => {
             }, { onConflict: 'auth0_id' }).select('id').maybeSingle();
 
             if (newProfile?.id) {
+              console.debug('[OAuthCallback] created profile via upsert', newProfile);
               await supabase.functions.invoke('generate-profile-token', {
                 body: { userId: newProfile.id }
               }).catch(() => {});
@@ -72,19 +80,43 @@ export const OAuthCallback = () => {
           }
 
           setProfileCreated(true);
+          const target = isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1';
+          try {
+            const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+            dbg.push({ ts: Date.now(), step: 'oauth_redirect', target, supabaseUid: session?.user?.id || null });
+            sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+          } catch {}
           // Redirect: pilotterminal -> home, careerpathways -> become-member for setup, otherwise -> become-member
-          navigate(isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1');
+          navigate(target);
         } else if (!existing.display_name) {
           // Profile exists but setup not completed
           setProfileCreated(true);
-          navigate(isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1');
+          const target = isPilotTerminal ? '/' : isCareerPathways ? '/become-member?setup=1' : '/become-member?setup=1';
+          console.debug('[OAuthCallback] profile exists but has no display_name; redirecting to', target, { existing });
+          try {
+            const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+            dbg.push({ ts: Date.now(), step: 'oauth_redirect_missing_display_name', target, existing });
+            sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+          } catch {}
+          navigate(target);
         } else {
           setProfileCreated(true);
+          const target = isPilotTerminal ? '/' : isCareerPathways ? '/' : '/platform';
+          try {
+            const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+            dbg.push({ ts: Date.now(), step: 'oauth_redirect_existing_profile', target, existing });
+            sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+          } catch {}
           // Redirect: pilotterminal -> home, careerpathways -> home (pathways page), otherwise -> platform
-          navigate(isPilotTerminal ? '/' : isCareerPathways ? '/' : '/platform');
+          navigate(target);
         }
       } catch (err) {
         console.error('Profile creation error:', err);
+        try {
+          const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+          dbg.push({ ts: Date.now(), step: 'oauth_callback_error', err: err instanceof Error ? err.message : String(err) });
+          sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+        } catch {}
         navigate('/');
       }
     };
