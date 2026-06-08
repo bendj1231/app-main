@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-
 import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
 import { LogbookCallback } from '@/src/components/LogbookCallback';
+import OauthDebugDrawer from '@/components/OauthDebugDrawer';
 
 // External redirect component for full URLs — validates before navigation
 const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
@@ -601,6 +602,8 @@ export const AppRoutes = () => {
       </Routes>
 
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onNavigate={handleNavigate} />
+      {/* OAuth debug drawer (always present) */}
+      <OauthDebugDrawer />
     </Suspense>
   );
 };
