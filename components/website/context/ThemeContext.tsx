@@ -6,7 +6,7 @@ type ThemeContextType = {
     toggleTheme: () => void;
 };
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -15,6 +15,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
 
     useEffect(() => {
+        console.log('[ThemeContext] isDarkMode changed:', isDarkMode);
         localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         if (isDarkMode) {
             document.documentElement.classList.add('dark');
@@ -23,7 +24,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     }, [isDarkMode]);
 
-    const toggleTheme = () => setIsDarkMode(prev => !prev);
+    const toggleTheme = () => {
+        console.log('[ThemeContext] toggleTheme called. current isDarkMode:', isDarkMode);
+        setIsDarkMode(prev => {
+            const next = !prev;
+            console.log('[ThemeContext] toggling theme to:', next ? 'dark' : 'light');
+            return next;
+        });
+    };
 
     return (
         <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>

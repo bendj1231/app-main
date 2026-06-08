@@ -25,7 +25,7 @@ const navItems = [
 const slides = [
   {
     id: 1,
-    bgImage: '/event.png',
+    bgImage: '/event2.png',
     tagline: 'The End to the Shortage',
     headline: 'Connecting Pilots',
     headlineAccent: 'to the Industry',

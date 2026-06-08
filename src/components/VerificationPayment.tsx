@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { RevenueShare } from './RevenueShare';
-import { HelioPaywall } from './HelioPaywall';
 
 interface VerificationPaymentProps {
   pilotId?: string;
@@ -57,41 +56,19 @@ export const VerificationPayment: React.FC<VerificationPaymentProps> = ({
     );
   }
 
+  // The pay step is no longer required — verification is free.
   if (step === 'pay') {
     return (
-      <div className="max-w-lg mx-auto space-y-4">
+      <div className="max-w-lg mx-auto space-y-4 text-center">
+        <p className="text-slate-700">
+          Verification is now free. Proceed to confirmation.
+        </p>
         <button
-          onClick={() => setStep('review')}
-          className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"
+          onClick={() => setStep('success')}
+          className="w-full py-3 rounded-xl bg-red-600 text-white font-bold text-sm hover:bg-red-700 transition-all"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to review
+          Continue
         </button>
-        <HelioPaywall
-          amount={verificationAmount}
-          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-          recipientWallet={(window as any).ENV?.PLATFORM_WALLET || 'YOUR_WALLET'}
-          paymentType="recognition_plus"
-          userId={pilotId}
-          userEmail={pilotEmail}
-          onSuccess={() => {
-            // Record the split
-            fetch('/api/payment-splitter', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                pilotId,
-                amount: verificationAmount,
-                paymentId: `helio_${Date.now()}`,
-                paymentProvider: 'helio',
-              }),
-            });
-            setStep('success');
-          }}
-          onError={(err) => console.error('Payment failed:', err)}
-        />
       </div>
     );
   }

@@ -341,7 +341,22 @@ CREATE POLICY "Authors can delete own topics" ON forum_topics
 
 CREATE POLICY "Admins can moderate" ON forum_topics
     FOR ALL TO authenticated
-    USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('admin', 'moderator', 'super_admin')));
+    USING (
+        auth.uid() IS NOT NULL AND
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = auth.uid() 
+            AND role IN ('admin', 'moderator', 'super_admin')
+        )
+    )
+    WITH CHECK (
+        auth.uid() IS NOT NULL AND
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = auth.uid() 
+            AND role IN ('admin', 'moderator', 'super_admin')
+        )
+    );
 
 -- Forum Posts
 ALTER TABLE forum_posts ENABLE ROW LEVEL SECURITY;
@@ -360,7 +375,22 @@ CREATE POLICY "Authors can delete own posts" ON forum_posts
 
 CREATE POLICY "Admins can moderate posts" ON forum_posts
     FOR ALL TO authenticated
-    USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('admin', 'moderator', 'super_admin')));
+    USING (
+        auth.uid() IS NOT NULL AND
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = auth.uid() 
+            AND role IN ('admin', 'moderator', 'super_admin')
+        )
+    )
+    WITH CHECK (
+        auth.uid() IS NOT NULL AND
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = auth.uid() 
+            AND role IN ('admin', 'moderator', 'super_admin')
+        )
+    );
 
 -- Reactions
 ALTER TABLE forum_reactions ENABLE ROW LEVEL SECURITY;

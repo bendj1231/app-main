@@ -213,36 +213,10 @@ export default function RecognitionPlusPage() {
         }
     };
 
-    const handleCheckout = async (priceId: string, planName: string, trialPeriodDays?: number) => {
-        setProcessing(true);
-        try {
-            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-            const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-            const response = await fetch(`${supabaseUrl}/functions/v1/stripe-checkout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${supabaseAnonKey}`
-                },
-                body: JSON.stringify({
-                    priceId,
-                    trialPeriodDays
-                }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.details || errorData.error || 'Failed to create checkout session');
-            }
-
-            const { url: checkoutUrl } = await response.json();
-            safeRedirect(checkoutUrl);
-        } catch (error: any) {
-            console.error('Checkout error:', error);
-            alert(`Failed to start checkout: ${error.message}`);
-        } finally {
-            setProcessing(false);
-        }
+    const handleCheckout = async (_priceId: string, _planName: string, _trialPeriodDays?: number) => {
+        // Paid Recognition+ plans are no longer offered. Direct users to the free tier instead.
+        alert('Recognition Plus is now free — please create a free account at /become-member.');
+        setProcessing(false);
     };
 
     return (

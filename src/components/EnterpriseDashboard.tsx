@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAccountTier } from '../hooks/useAccountTier';
 import { Paywall } from './Paywall';
-import { HelioPaywall } from './HelioPaywall';
 
 // Example enterprise dashboard page
 export const EnterpriseDashboard: React.FC = () => {
@@ -86,7 +85,7 @@ export const EnterpriseDashboard: React.FC = () => {
     );
   }
 
-  // If showing Helio paywall option
+  // Crypto / Helio paywall option is retired.
   if (showHelio) {
     return (
       <div className="max-w-xl mx-auto p-6">
@@ -96,19 +95,12 @@ export const EnterpriseDashboard: React.FC = () => {
         >
           ← Back to options
         </button>
-        <HelioPaywall
-          amount={1000}
-          recipientWallet="YOUR_USDC_WALLET_ADDRESS"
-          paymentType="enterprise_monthly"
-          userId={currentUser?.id}
-          userEmail={currentUser?.email}
-          onSuccess={(_paymentId) => {
-            window.location.reload();
-          }}
-          onError={(error) => {
-            console.error('Payment error:', error);
-          }}
-        />
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 text-center">
+          <p className="text-slate-700">
+            Crypto payments are no longer available. Enterprise access is handled through
+            your organization administrator.
+          </p>
+        </div>
       </div>
     );
   }

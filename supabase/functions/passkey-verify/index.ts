@@ -49,6 +49,18 @@ function bufferToBase64url(buffer: ArrayBuffer): string {
 }
 
 /**
+ * Generate a cryptographically secure random token for single-use operations.
+ * Used for delete-intent verification (C-4 security fix).
+ * 
+ * @param bytes Number of random bytes to generate (e.g., 32 for 256-bit token)
+ * @returns Base64-URL-safe token string
+ */
+function generateSecureToken(bytes: number): string {
+  const buffer = crypto.getRandomValues(new Uint8Array(bytes));
+  return bufferToBase64url(buffer.buffer);
+}
+
+/**
  * Parse a COSE-encoded EC public key (alg -7 = ES256) into SubtleCrypto format.
  * COSE key map for EC2: { 1: kty=2, 3: alg=-7, -1: crv=1(P-256), -2: x, -3: y }
  */
@@ -334,12 +346,38 @@ import { getCorsHeaders } from '../_shared/cors.ts';
       .update({ sign_count: signCount, last_used_at: new Date().toISOString() })
       .eq('id', passkey.id);
 
-    // ── 9. Return success with userId ────────────────────────────────────────
+    // ── 9. SECURITY: Issue delete-intent token (C-4 fix) ──────────────────────
+    // This token proves the user successfully verified with their passkey.
+    // It MUST be included when calling delete-account to prevent custom clients
+    // from bypassing passkey verification for irreversible account deletion.
+    const deleteIntentToken = generateSecureToken(32); // 256-bit random token
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+    const { error: tokenError } = await supabase
+      .from('delete_intent_tokens')
+      .insert({
+        user_id: passkey.user_id,
+        token: deleteIntentToken,
+        expires_at: expiresAt.toISOString(),
+        ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+        user_agent: req.headers.get('user-agent') || 'unknown'
+      });
+
+    if (tokenError) {
+      console.error('[passkey-verify] Failed to issue delete-intent token:', tokenError);
+      // Don't fail the verification — token issuance is best-effort
+      // Fall through and return success anyway
+    }
+
+    // ── 10. Return success with userId and delete-intent token ────────────────
     // The client uses this userId to call Auth0 silently or use existing session.
     // Auth0 remains the session authority — passkey is an additional verification layer.
     return new Response(JSON.stringify({
       verified: true,
       userId: passkey.user_id,
+      deleteIntentToken: deleteIntentToken, // Use this in X-Delete-Intent-Token header for delete-account
+      deleteIntentExpiresAt: expiresAt.toISOString(),
+      deleteIntentExpiresIn: '5 minutes'
     }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

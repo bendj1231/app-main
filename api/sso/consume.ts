@@ -4,10 +4,15 @@ import * as crypto from 'crypto';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const COOKIE_SECRET = process.env.COOKIE_SECRET || process.env.NEXT_PUBLIC_COOKIE_SECRET;
+const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
+// CRITICAL: COOKIE_SECRET must NOT come from NEXT_PUBLIC_ (which would be public)
 if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
   console.error('Supabase configuration missing for SSO consume function');
+}
+
+if (!COOKIE_SECRET) {
+  throw new Error('COOKIE_SECRET environment variable must be set (not NEXT_PUBLIC_COOKIE_SECRET). Rotate if previously exposed.');
 }
 
 const supabase = createClient(SUPABASE_URL || '', SERVICE_ROLE_KEY || '');
@@ -51,12 +56,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // 7 days
     };
 
-    if (!COOKIE_SECRET) {
-      console.error('COOKIE_SECRET not set');
-      res.status(500).json({ error: 'server misconfiguration' });
-      return;
-    }
-
     const signed = signPayload(payload, COOKIE_SECRET);
 
     // Set HttpOnly, Secure cookie for pilotcareerpathways.com
@@ -72,8 +71,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     res.setHeader('Set-Cookie', cookieParts.join('; '));
 
-    // Redirect to provided path or to root
-    const target = typeof redirect === 'string' && redirect ? redirect : '/';
+    // Validate redirect target — must be a relative path or allowlisted domain
+    const REDIRECT_ALLOWLIST = ['/', '/dashboard', '/profile', '/onboarding'];
+    const target = (() => {
+      if (!redirect || typeof redirect !== 'string') return '/';
+      
+      // Only allow relative paths or allowlisted paths
+      if (redirect.startsWith('/')) {
+        const pathname = redirect.split('?')[0]; // strip query params
+        if (REDIRECT_ALLOWLIST.includes(pathname)) {
+          return redirect;
+        }
+      }
+      
+      // For any disallowed redirect, return root
+      console.warn('Blocked open redirect attempt', { redirect, userAgent: req.headers.get('user-agent') });
+      return '/';
+    })();
+    
     res.writeHead(302, { Location: target });
     res.end();
   } catch (err) {

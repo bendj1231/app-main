@@ -8,6 +8,7 @@ import { CookieConsent } from '@/components/CookieConsent';
 import { PasskeyPrompt } from '@/components/website/components/PasskeyPrompt';
 import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
 import ChatWidget from '@/portal/components/w1000/ChatWidget';
+import { ThemeProvider } from '@/components/website/context/ThemeContext';
 // Admin components
 import { MoaExecutiveSummary } from '@/src/components/admin/MoaExecutiveSummary';
 import { InvestorPitch } from '@/src/components/admin/InvestorPitch';
@@ -156,22 +157,23 @@ export const App = () => {
         </div>
       </div>
 
-      {/* Admin Pages - Only show for admin users */}
-      {currentUser && (
-        userProfile?.account_tier === 'enterprise_admin' ||
-        currentUser?.email === import.meta.env.VITE_ADMIN_EMAIL
-      ) && (
-        <>
-          {currentPage === 'moa-executive-summary' && <MoaExecutiveSummary />}
-          {currentPage === 'investor-pitch' && <InvestorPitch />}
-          {currentPage === 'government-promotion' && <GovernmentPromotion />}
-          {currentPage === 'veremark-pricing' && <VeremarkPricing />}
-        </>
-      )}
+      <ThemeProvider>
+        {/* Admin Pages - Only show for admin users */}
+        {currentUser && (
+          userProfile?.account_tier === 'enterprise_admin' ||
+          currentUser?.email === import.meta.env.VITE_ADMIN_EMAIL
+        ) && (
+          <>
+            {currentPage === 'moa-executive-summary' && <MoaExecutiveSummary />}
+            {currentPage === 'investor-pitch' && <InvestorPitch />}
+            {currentPage === 'government-promotion' && <GovernmentPromotion />}
+            {currentPage === 'veremark-pricing' && <VeremarkPricing />}
+          </>
+        )}
 
-      {/* Home Page */}
-      {!['moa-executive-summary', 'investor-pitch', 'government-promotion', 'veremark-pricing'].includes(currentPage) && (
-        <HomePage
+        {/* Home Page */}
+        {!['moa-executive-summary', 'investor-pitch', 'government-promotion', 'veremark-pricing'].includes(currentPage) && (
+          <HomePage
         onJoinUs={() => navigateTo('become-member')}
         onLogin={() => setIsLoginModalOpen(true)}
         onNavigate={navigateTo}
@@ -216,6 +218,7 @@ export const App = () => {
           onNavigate={navigateTo}
         />
       )}
+      </ThemeProvider>
 
       {/* Passkey registration prompt — shown once after first Google login */}
       {showPasskeyPrompt && currentUser && (

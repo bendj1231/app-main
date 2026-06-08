@@ -448,9 +448,9 @@ function buildResponse(
     ...headers
   })
 
-  // Set security headers
+  // Set security headers (defense-in-depth on API/JSON responses; main CSP is set in vercel.json)
   responseHeaders.set('Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none';"
+    "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests"
   )
   responseHeaders.set('X-Frame-Options', 'DENY')
   responseHeaders.set('X-Content-Type-Options', 'nosniff')

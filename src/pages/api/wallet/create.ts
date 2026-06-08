@@ -1,53 +1,42 @@
-// Next.js API route — TODO: Convert to Supabase Edge Function for Vite
+/**
+ * DEPRECATED — Use Supabase Edge Function instead
+ * 
+ * ⚠️ This route is deprecated as of 2026-06-08 for security reasons:
+ * - Had zero authentication (anyone could create wallets for any pilot)
+ * - Had permissive CORS (Allow-Origin: * + Credentials: true)
+ * - Accepted pilotId from request body (no server-side validation)
+ * 
+ * Migration:
+ * Replace calls to POST /api/wallet/create with:
+ *   supabase.functions.invoke('wallet-create', {
+ *     body: { email, password, issuers }
+ *     // pilotId is now server-side derived from authenticated user
+ *   })
+ * 
+ * New endpoint validates JWT and enforces CORS allowlist.
+ */
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type NextApiRequest = any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type NextApiResponse = any;
 
-interface CreateWalletRequest {
-  pilotId: string;
-  email: string;
-  password: string;
-  issuers: {
-    name: string;
-    did: string;
-    approved: boolean;
-  }[];
-}
-
-interface TruveraWalletResponse {
-  walletId: string;
-  did: string;
-  createdAt: string;
-}
-
-const TRUVERA_API_URL = process.env.TRUVERA_API_URL;
-const TRUVERA_API_KEY = process.env.TRUVERA_API_KEY;
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  // Redirect to new Edge Function
+  return res.status(410).json({
+    error: 'Gone: This endpoint is deprecated',
+    message: 'Use the Supabase Edge Function wallet-create instead',
+    migration: 'https://docs.pilotrecognition.com/wallet-api (internal docs)'
+  });
+}
 
-  try {
-    const { pilotId, email, password, issuers }: CreateWalletRequest = req.body;
-
-    // Validate input
-    if (!pilotId || !email || !password) {
-      return res.status(400).json({ 
-        error: 'Missing required fields',
-        required: ['pilotId', 'email', 'password']
-      });
-    }
-
-    if (password.length < 8) {
-      return res.status(400).json({ 
-        error: 'Password must be at least 8 characters'
-      });
-    }
+/*
+// OLD CODE — REMOVED FOR SECURITY
+// See git history for previous implementation
+// Do not resurrect without adding authentication and CORS fixes
 
     // Step 1: Create wallet in Truvera
     const walletResponse = await fetch(`${TRUVERA_API_URL}/wallets`, {

@@ -28,7 +28,8 @@ import { DigitalLogbookPage } from './DigitalLogbookPage';
 import { MentorLogbookPage } from './MentorLogbookPage';
 import { DigitalLogbookDirectoryPage } from '../../components/website/components/DigitalLogbookDirectoryPage';
 import { PathwayCarousel } from '../components/PathwayCarousel';
-import SubscriptionDashboard from '../../components/SubscriptionDashboard';
+// SubscriptionDashboard was retired when paid plans were removed.
+// import SubscriptionDashboard from '../../components/SubscriptionDashboard';
 import AtlasResumeBuilder from '../../components/AtlasResumeBuilder';
 import { getUserTrack, getTrackConfig, canAccessPage, getRedirectPage } from '../config/accessControl';
 import { getEnrollmentStatus, supabase } from '../lib/supabase-auth';

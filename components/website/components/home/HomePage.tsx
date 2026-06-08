@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Globe, User, CheckCircle2, Zap, Briefcase, Navigation, Cpu, Layers, ChevronDown, Home as HomeIcon, X, ShieldCheck, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TopNavbar } from '../TopNavbar';
+import { ThemeContext } from '../../context/ThemeContext';
 import { HomeLabel } from './HomeLabel';
 import { RevealOnScroll } from '../RevealOnScroll';
 import { AirlineExpectationsCarousel } from '../AirlineExpectationsCarousel';
@@ -13,8 +14,8 @@ import { PilotRecognitionOpportunities } from './PilotRecognitionOpportunities';
 import { BreadcrumbSchema } from '../seo/BreadcrumbSchema';
 import { HomePageSchema } from '../seo/HomePageSchema';
 import { getDevicePerformanceTier, shouldEnable3DEffects, getAnimationDurationMultiplier, getHomepageGraphicsConfig, setGraphicsOverride, type HomepageGraphicsConfig } from '@/src/lib/device-detection';
-import StripePaymentSection from './StripePaymentSection';
 import { NewsroomModal } from '../NewsroomModal';
+import { RecognitionATC } from '../RecognitionATC';
 
 interface HomePageProps {
     onJoinUs: () => void;
@@ -606,6 +607,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     >('all');
     const scrollPositionRef = useRef(0);
     const pathwayGridRef = useRef<HTMLDivElement>(null);
+    const themeContext = useContext(ThemeContext);
+    const isDarkMode = themeContext?.isDarkMode ?? false;
 
     // Automatic device detection for performance optimization
     const [deviceTier, setDeviceTier] = useState<'low' | 'medium' | 'high'>('high');
@@ -621,7 +624,9 @@ export const HomePage: React.FC<HomePageProps> = ({
     const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
     const [activeBillboardSlide, setActiveBillboardSlide] = useState(0);
     const [platformImageIndex, setPlatformImageIndex] = useState(0);
+    const [pilotShortageImageIndex, setPilotShortageImageIndex] = useState(0);
     const platformImages = ['/typeratingsearch.png', '/AE.png', '/DP.png'];
+    const pilotShortageImages = ['/worker.png', '/event2.png'];
 
     // Auto-advance platform news cards every 5 seconds
     useEffect(() => {
@@ -639,7 +644,13 @@ export const HomePage: React.FC<HomePageProps> = ({
         return () => clearInterval(interval);
     }, []);
 
-
+    // Auto-shuffle pilotshortage card image every 3 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPilotShortageImageIndex(prev => (prev + 1) % pilotShortageImages.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
 
     // Check for enrollment success and show confirmation modal
     useEffect(() => {
@@ -1177,20 +1188,33 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {graphicsConfig?.enableMeshGradient ? (
                         <MeshGradient
                             className="w-full h-full"
-                            colors={[
-                                "#dbeafe",
-                                "#94a3b8",
-                                "#64748b",
-                                "#475569",
-                                "#334155",
-                                "#1e3a5f",
-                                "#1e3a8a",
-                                "#0f172a"
+                            colors={isDarkMode ? [
+                                '#020617',
+                                '#0f172a',
+                                '#1e293b',
+                                '#1e3a5f',
+                                '#111827'
+                            ] : [
+                                '#dbeafe',
+                                '#94a3b8',
+                                '#64748b',
+                                '#475569',
+                                '#334155',
+                                '#1e3a5f',
+                                '#1e3a8a',
+                                '#0f172a'
                             ]}
                             speed={graphicsConfig.meshGradientSpeed}
                         />
                     ) : (
-                        <div className="w-full h-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)' }} />
+                        <div
+                            className="w-full h-full"
+                            style={{
+                                background: isDarkMode
+                                    ? 'linear-gradient(160deg, #020617 0%, #0f172a 40%, #111827 100%)'
+                                    : 'linear-gradient(160deg, #0f172a 0%, #1e3a5f 40%, #0f172a 100%)'
+                            }}
+                        />
                     )}
                 </div>
 
@@ -1437,7 +1461,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         >
                             {/* Full Background Image */}
                             <img
-                                src="/terminal1.png"
+                                src="/terminal.png"
                                 alt="Pilot Terminal Background"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
@@ -1466,7 +1490,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         >
                             {/* Full Background Image */}
                             <img
-                                src="/event.png"
+                                src={pilotShortageImages[pilotShortageImageIndex]}
                                 alt="Pilot Shortage Event"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
@@ -2468,7 +2492,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                         <div className="text-center mb-12">
                                 <AnimatedHeader />
                         </div>
-                        <StripePaymentSection onNavigate={onNavigate} />
                     </div>
                 </div>
 
@@ -2584,6 +2607,9 @@ export const HomePage: React.FC<HomePageProps> = ({
 
 
             </div>{/* end white background wrapper */}
+
+            {/* Recognition ATC Chat Widget */}
+            <RecognitionATC />
         </div>
         </>
     );

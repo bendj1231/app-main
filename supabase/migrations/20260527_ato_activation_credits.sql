@@ -361,12 +361,27 @@ CREATE POLICY "Admins can view all credits"
         )
     );
 
--- System can insert credits (via edge functions)
+-- System can insert credits (via edge functions with service role)
 CREATE POLICY "System can create credits"
     ON ato_activation_credits
     FOR INSERT
-    TO authenticated
-    WITH CHECK (true); -- Edge function validates
+    TO service_role
+    WITH CHECK (true);
+
+-- System can update credits
+CREATE POLICY "System can update credits"
+    ON ato_activation_credits
+    FOR UPDATE
+    TO service_role
+    USING (true)
+    WITH CHECK (true);
+
+-- System can delete credits
+CREATE POLICY "System can delete credits"
+    ON ato_activation_credits
+    FOR DELETE
+    TO service_role
+    USING (true);
 
 -- ============================================
 -- 9. COMMENTS FOR DOCUMENTATION

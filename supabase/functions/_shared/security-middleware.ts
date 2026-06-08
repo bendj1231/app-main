@@ -339,7 +339,22 @@ export class SecurityMiddleware {
     }
 
     // Use timing-safe comparison to prevent timing attacks
-    return csrfToken === cookieToken
+    // Convert both to buffers for constant-time comparison
+    try {
+      const csrfBuffer = new TextEncoder().encode(csrfToken)
+      const cookieBuffer = new TextEncoder().encode(cookieToken)
+      
+      // Buffers must be same length for timingSafeEqual
+      if (csrfBuffer.length !== cookieBuffer.length) {
+        return false
+      }
+      
+      // Use constant-time comparison
+      return crypto.timingSafeEqual(csrfBuffer, cookieBuffer)
+    } catch {
+      // If comparison fails, deny access (safer default)
+      return false
+    }
   }
 
   // Set CSRF cookie
@@ -393,15 +408,14 @@ export class SecurityMiddleware {
 
   // Set security headers
   static setSecurityHeaders(response: Response, isHttps: boolean = true): void {
-    // Content Security Policy
+    // Content Security Policy (defense-in-depth on API/JSON responses; main CSP is set in vercel.json)
     response.headers.set('Content-Security-Policy',
-      "default-src 'self'; " +
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-      "style-src 'self' 'unsafe-inline'; " +
-      "img-src 'self' data: https:; " +
-      "font-src 'self' data:; " +
-      "connect-src 'self'; " +
-      "frame-ancestors 'none';"
+      "default-src 'none'; " +
+      "frame-ancestors 'none'; " +
+      "base-uri 'none'; " +
+      "form-action 'none'; " +
+      "object-src 'none'; " +
+      "upgrade-insecure-requests"
     )
 
     // Prevent clickjacking

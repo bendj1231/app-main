@@ -19,9 +19,17 @@ serve(async (req) => {
   try {
     Logger.info('Signup request started', { method: req.method }, requestId)
     
-    // Rate limiting check
+    // CSRF protection for POST requests — check BEFORE any DB operations
+    if (req.method === 'POST') {
+      if (!SecurityMiddleware.validateCSRFToken(req)) {
+        Logger.warn('Invalid CSRF token', {}, requestId)
+        return SecurityMiddleware.createErrorResponse('Invalid CSRF token', 403, requestId)
+      }
+    }
+    
+    // Rate limiting check — done after CSRF validation
     const clientId = SecurityMiddleware.getClientIdentifier(req)
-    const rateLimitResult = SecurityMiddleware.checkRateLimit(
+    const rateLimitResult = await SecurityMiddleware.checkRateLimit(
       `signup:${clientId}`,
       RATE_LIMIT_CONFIGS.signup
     )
@@ -32,14 +40,6 @@ serve(async (req) => {
         error: 'Too many signup attempts. Please try again later.',
         retryAfter: rateLimitResult.resetTime
       }, 429, { 'Retry-After': '3600' })
-    }
-
-    // CSRF protection for POST requests
-    if (req.method === 'POST') {
-      if (!SecurityMiddleware.validateCSRFToken(req)) {
-        Logger.warn('Invalid CSRF token', {}, requestId)
-        return SecurityMiddleware.createErrorResponse('Invalid CSRF token', 403, requestId)
-      }
     }
 
     const { email, password, userData } = await req.json()

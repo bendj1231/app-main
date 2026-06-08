@@ -103,61 +103,14 @@ export function ATODashboardPage({ onBack, onNavigate }: Props) {
   const [billingLoading, setBillingLoading] = useState(false);
   const [viewCredentialId, setViewCredentialId] = useState<string | null>(null);
 
-  // Issue token form
-  async function handleUpgrade(tier: 'analytics' | 'enterprise') {
-    if (!ato || billingLoading) return;
-    setBillingLoading(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/ato-stripe-checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token ?? ''}`,
-        },
-        body: JSON.stringify({
-          atoInstitutionId: ato.id,
-          tier,
-        }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        safeRedirect(data.url);
-      } else {
-        alert(data.error || 'Failed to start checkout');
-      }
-    } catch (e: any) {
-      alert(e?.message || 'Checkout failed');
-    } finally {
-      setBillingLoading(false);
-    }
+  // Billing is no longer self-serve — Stripe flow is retired.
+  // ATOs contact the platform admin to enable enterprise tier manually.
+  function handleUpgrade(_tier: 'analytics' | 'enterprise') {
+    alert('Self-serve billing has been retired. Please contact the platform team to enable enterprise features for your institution.');
   }
 
-  async function handleCancel() {
-    if (!ato || billingLoading) return;
-    if (!window.confirm('Cancel your subscription? You will keep access until the end of the billing period.')) return;
-    setBillingLoading(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/ato-stripe-cancel`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token ?? ''}`,
-        },
-        body: JSON.stringify({ atoInstitutionId: ato.id }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        await load();
-      } else {
-        alert(data.error || 'Failed to cancel');
-      }
-    } catch (e: any) {
-      alert(e?.message || 'Cancel failed');
-    } finally {
-      setBillingLoading(false);
-    }
+  function handleCancel() {
+    alert('Self-serve billing has been retired. No active subscription to cancel.');
   }
 
   const [issueForm, setIssueForm] = useState({

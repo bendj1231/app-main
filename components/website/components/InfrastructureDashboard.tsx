@@ -42,8 +42,6 @@ interface InfraStats {
   vcFlagged: number;
   vcExpired: number;
   vcManuallyOverridden: number;
-  // Stripe
-  stripeCheckoutsTotal: number;
   // Cloudinary (profile images)
   profilesWithImages: number;
   // Notifications (Firebase writes tracked via Supabase)
@@ -61,9 +59,6 @@ interface InfraStats {
   logbookConnectionsTotal: number;
   logbookConnectionsActive: number;
   connectedProviders: string[];
-  // Helio (crypto payments)
-  helioTokensTotal: number;
-  paymentSplitsTotal: number;
   // Pilot Wallet / DID
   pilotDids: number;
   pilotWalletsActive: number;
@@ -176,7 +171,6 @@ export const InfrastructureDashboard: React.FC = () => {
         vcFailedRes, vcFlaggedRes, vcExpiredRes, vcOverriddenRes,
         auth0TodayRes, auth0TotalRes,
         logbookTotalRes, logbookActiveRes, logbookProvidersRes,
-        helioRes, paymentSplitsRes,
         pilotDidsRes, pilotWalletsRes,
         emailsRes, ipfsPinsRes,
         mfaRes, passkeysRes, pilotDocsRes, payoutsPendingRes,
@@ -220,9 +214,6 @@ export const InfrastructureDashboard: React.FC = () => {
         supabase.from('pilot_platform_connections').select('*', { count: 'exact', head: true }),
         supabase.from('pilot_platform_connections').select('*', { count: 'exact', head: true }).eq('connection_status', 'active'),
         supabase.from('pilot_platform_connections').select('provider_name'),
-        // Helio
-        supabase.from('ato_issued_tokens').select('*', { count: 'exact', head: true }),
-        supabase.from('payment_splits').select('*', { count: 'exact', head: true }),
         // Pilot Wallet
         supabase.from('pilot_dids').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).not('wallet_id', 'is', null),
@@ -273,7 +264,6 @@ export const InfrastructureDashboard: React.FC = () => {
         vcFlagged: vcFlaggedRes.count ?? 0,
         vcExpired: vcExpiredRes.count ?? 0,
         vcManuallyOverridden: vcOverriddenRes.count ?? 0,
-        stripeCheckoutsTotal: enrollRes.count ?? 0,
         profilesWithImages: imagesRes.count ?? 0,
         notificationsToday: notifTodayRes.count ?? 0,
         notificationsTotal: notifTotalRes.count ?? 0,
@@ -285,8 +275,6 @@ export const InfrastructureDashboard: React.FC = () => {
         logbookConnectionsTotal: logbookTotalRes.count ?? 0,
         logbookConnectionsActive: logbookActiveRes.count ?? 0,
         connectedProviders,
-        helioTokensTotal: helioRes.count ?? 0,
-        paymentSplitsTotal: paymentSplitsRes.count ?? 0,
         pilotDids: pilotDidsRes.count ?? 0,
         pilotWalletsActive: pilotWalletsRes.count ?? 0,
         emailsSentTotal: emailsRes.count ?? 0,
@@ -686,17 +674,6 @@ export const InfrastructureDashboard: React.FC = () => {
         )}
       </ServiceBlock>
 
-      {/* ── HELIO ──────────────────────────────────────────────── */}
-      <ServiceBlock title="Helio — Crypto Payments (USDC)" status={stats.helioTokensTotal > 0 ? 'live' : 'partial'} icon={Zap} color="#a855f7">
-        <div className="grid grid-cols-2 gap-2">
-          <StatCard icon={Zap} label="ATO Tokens Issued" value={stats.helioTokensTotal} color="#a855f7" sub="Via helio-webhook" />
-          <StatCard icon={CreditCard} label="Payment Splits" value={stats.paymentSplitsTotal} color="#c084fc" sub="3-way: Veremark / ATO / Platform" />
-        </div>
-        {stats.helioTokensTotal === 0 && (
-          <p className="text-[9px] text-white/30 mt-2">No Helio payments processed yet — webhook: /helio-webhook</p>
-        )}
-      </ServiceBlock>
-
       {/* ── PILOT WALLET / DID ──────────────────────────────────────── */}
       <ServiceBlock title="Pilot Wallet — DID / Verifiable Credential Issuer" status={stats.pilotWalletsActive > 0 ? 'live' : 'partial'} icon={Lock} color="#6366f1">
         <div className="grid grid-cols-2 gap-2">
@@ -744,7 +721,7 @@ export const InfrastructureDashboard: React.FC = () => {
 
       {/* Footer */}
       <div className="text-[9px] text-white/20 text-center pt-2 border-t border-white/5">
-        Supabase-queryable: Groq AI, Cloudinary, Veremark, Stripe, Logbook connections, Helio, Pilot Wallet, IPFS
+        Supabase-queryable: Groq AI, Cloudinary, Veremark, Logbook connections, Pilot Wallet, IPFS
         &nbsp;·&nbsp; External consoles needed: Auth0, Firebase, Neon, MongoDB, Sentry, Resend, Backblaze
         &nbsp;·&nbsp; Auto-refresh every 30s
       </div>

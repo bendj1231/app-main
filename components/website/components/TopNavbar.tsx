@@ -1,11 +1,22 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, memo, useContext } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { supabase } from '@/src/lib/supabase';
-import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink } from 'lucide-react';
+import { Menu, X, ChevronLeft, ChevronDown, User, Settings, Camera, Award, Clock, Edit, Monitor, Bell, CheckCircle, XCircle, AlertCircle, Info, ExternalLink, Moon, Sun } from 'lucide-react';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import { NavigationSchema } from './seo/NavigationSchema';
 import { GraphicsSettingsModal } from './GraphicsSettingsModal';
 import { sanitizeHtml } from '@/src/lib/sanitize-html';
+import { ThemeContext } from '../context/ThemeContext';
+
+// Safe hook that handles missing ThemeProvider
+const useSafeTheme = () => {
+    try {
+        const context = useContext(ThemeContext);
+        return context || { isDarkMode: false, toggleTheme: () => {} };
+    } catch {
+        return { isDarkMode: false, toggleTheme: () => {} };
+    }
+};
 
 interface TopNavbarProps {
     onNavigate: (page: string) => void;
@@ -46,7 +57,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
     currentPage = '',
     pathwayGridRef,
 }) => {
+    const { isDarkMode, toggleTheme } = useSafeTheme();
     const { currentUser, userProfile, logout, loading: authLoading, signupInProgress } = useAuth();
+    const onToggleThemeClick = () => {
+        console.log('[TopNavbar] toggleTheme click, current isDarkMode:', isDarkMode);
+        toggleTheme();
+    };
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(forceScrolled);
     const [passedPathwayGrid, setPassedPathwayGrid] = useState(false);
@@ -601,8 +617,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         }, 100);
     }, []);
 
-    // Determine whether to render dark (black) text for light backgrounds
-    const useDarkText = Boolean(isLight) || (isDark && scrolled) || (!passedPathwayGrid && scrolled);
+    // Logo text color: white in dark mode, black in light mode or on light-mode-specific pages.
+    // Simplified logic: dark text ONLY if NOT in dark mode OR if explicitly on a light page.
+    const useDarkText = !isDarkMode || isLight;
 
     return (
         <>
@@ -687,13 +704,13 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
 
             <nav
-                className="fixed top-10 left-0 right-0 z-[200] bg-white border-b border-slate-200 py-3 shadow-sm">
+                className={`fixed top-10 left-0 right-0 z-[200] py-3 ${isDarkMode ? 'bg-slate-950/95 border-slate-800 shadow-black/40 shadow-lg' : 'bg-white border-b border-slate-200 shadow-sm'}`}>
                 <div className={`flex justify-between items-center ${domainBrand === 'careerpathways' ? 'w-full' : 'max-w-[1800px] mx-auto px-6'}`}>
                     {/* Logo Section - Far Left Edge for careerpathways, centered for others */}
                     <div className={`flex items-center gap-4 group cursor-pointer ${domainBrand === 'careerpathways' ? 'pl-0' : ''}`} onClick={() => onNavigate('home')}>
                         <div className="flex items-baseline transition-all duration-300 group-hover:scale-105">
                             <span
-                                className={`text-black text-2xl tracking-tight leading-none`}
+                                className={`text-2xl tracking-tight leading-none ${useDarkText ? 'text-black' : 'text-white'}`}
                                 style={{ fontFamily: 'Arial Black, Helvetica Neue, sans-serif' }}
                             >
                                 {domainBrand === 'shortage' ? (
@@ -716,9 +733,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 ) : (
                                     // pilotrecognition.com branding
                                     <>
-                                        <span className="text-black">Pilot</span>
+                                        <span className={`${useDarkText ? 'text-black' : 'text-white'}`}>Pilot</span>
                                         <span className="text-red-600">Recognition</span>
-                                        <span className="relative text-black">
+                                        <span className={`relative ${useDarkText ? 'text-black' : 'text-white'}`}>
                                             .com
                                             {countryCode && (
                                                 <sup className="absolute top-0 -right-2 text-[8px] font-bold leading-none text-slate-400">
@@ -749,7 +766,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                             ? 'text-red-500 font-black'
                                             : item.isBlue
                                             ? 'text-blue-600 font-black'
-                                            : 'text-black font-bold'
+                                            : `${isDarkMode ? 'text-white font-bold' : 'text-black font-bold'}`
                                         }`}
                                 >
                                     {item.name}
@@ -806,14 +823,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 {/* Contact button */}
                                 <button
                                     onClick={() => onNavigate('contact-support')}
-                                    className="bg-white text-black border border-black hover:bg-slate-100 px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2 whitespace-nowrap"
+                                    className={`${isDarkMode ? 'bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 hover:border-slate-600 shadow-black/30' : 'bg-white text-black border border-black hover:bg-slate-100 shadow-lg hover:shadow-slate-500/20'} px-5 py-3 rounded-md text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap`}
                                 >
                                     Contact
                                 </button>
 
                                 <button
                                     onClick={currentUser ? (e) => handleLogout(e) : () => onNavigate('become-member')}
-                                    className={`${currentUser ? 'bg-slate-700 hover:bg-slate-800' : 'bg-red-600 hover:bg-red-700'} text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-2 whitespace-nowrap`}
+                                    className={`${currentUser ? (isDarkMode ? 'bg-slate-700 hover:bg-slate-600 shadow-black/20' : 'bg-slate-700 hover:bg-slate-800 shadow-lg hover:shadow-slate-500/20') : 'bg-red-600 hover:bg-red-700 shadow-lg hover:shadow-red-500/20'} text-white px-5 py-3 rounded-md text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap`}
                                 >
                                     {currentUser ? 'Sign Out' : 'Get Started'}
                                 </button>
@@ -843,7 +860,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     <div className="relative">
                                         <button
                                             onClick={() => setIsGraphicsModalOpen(true)}
-                                            className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all relative"
+                                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all relative ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
                                             title="Graphics Settings"
                                         >
                                             <Monitor className="w-5 h-5" />
@@ -864,6 +881,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                         )}
                                     </div>
                                 </div>
+
+                                {/* Dark/Light Mode Toggle */}
+                                <button
+                                    onClick={onToggleThemeClick}
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
+                                    title="Toggle dark mode"
+                                >
+                                    {isDarkMode ? (
+                                        <Sun className="w-5 h-5" />
+                                    ) : (
+                                        <Moon className="w-5 h-5" />
+                                    )}
+                                </button>
                             </>
                         )}
 

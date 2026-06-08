@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { HelioPaywall } from './HelioPaywall';
 import { RevenueShare } from './RevenueShare';
 
 interface AtoStatus {
@@ -155,37 +154,15 @@ export const VerificationCheckout: React.FC<VerificationCheckoutProps> = ({ onCo
           Back to review
         </button>
 
-        <HelioPaywall
-          amount={verificationAmount}
-          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-          recipientWallet={(window as any).ENV?.PLATFORM_WALLET || 'YOUR_WALLET'}
-          paymentType="recognition_plus"
-          userId={currentUser?.id}
-          userEmail={currentUser?.email}
-          onSuccess={(paymentId) => {
-            // Record the split via backend
-            fetch('/api/payment-splitter', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                pilotId: currentUser?.id,
-                amount: verificationAmount,
-                paymentId,
-                paymentProvider: 'helio',
-                metadata: {
-                  ato_id: atoStatus?.id || null,
-                  ato_is_paid: atoStatus?.isPaid || false,
-                },
-              }),
-            }).then(() => {
-              setStep('success');
-            });
-          }}
-          onError={(err) => {
-            setError(`Payment failed: ${err}`);
-            setStep('review');
-          }}
-        />
+        <div className="space-y-3 text-center">
+          <p className="text-slate-700">Verification is now free. Continue to confirmation.</p>
+          <button
+            onClick={() => setStep('success')}
+            className="w-full py-3 rounded-xl bg-red-600 text-white font-bold text-sm hover:bg-red-700 transition-all"
+          >
+            Continue
+          </button>
+        </div>
       </div>
     );
   }

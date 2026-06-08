@@ -1,4 +1,19 @@
 /// <reference lib="deno.ns" />
+/**
+ * delete-account — CRITICAL: Requires server-side passkey/MFA verification (C-4 fix)
+ * 
+ * Security Flow:
+ * 1. Client calls passkey-verify with WebAuthn assertion
+ * 2. Server verifies passkey cryptographically
+ * 3. Server issues short-lived delete-intent token (5-min expiry, single-use)
+ * 4. Client calls delete-account with both JWT + delete-intent token
+ * 5. Server verifies BOTH before irreversibly deleting account
+ * 
+ * This prevents:
+ * - Custom clients from bypassing passkey verification
+ * - Unauthorized account deletion via compromised JWT alone
+ */
+
 import "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { getCorsHeaders } from '../_shared/cors.ts';
@@ -20,11 +35,13 @@ Deno.serve(async (req: Request) => {
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-    // Verify JWT signature via Supabase auth
+    // ──────────────────────────────────────────────────────────────────────────
+    // SECURITY STEP 1: Verify JWT signature via Supabase auth
+    // ──────────────────────────────────────────────────────────────────────────
     const authHeader = req.headers.get('Authorization') || '';
     const jwt = authHeader.replace(/^Bearer\s+/i, '');
     if (!jwt) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      return new Response(JSON.stringify({ error: 'Unauthorized: Missing JWT' }), {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -57,6 +74,50 @@ Deno.serve(async (req: Request) => {
     }
 
     const userId = profile.id;
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // SECURITY STEP 2: Verify delete-intent token (CRITICAL C-4 FIX)
+    // Requires proof of server-side passkey/MFA verification
+    // ──────────────────────────────────────────────────────────────────────────
+    const deleteIntentToken = req.headers.get('X-Delete-Intent-Token');
+    if (!deleteIntentToken) {
+      console.warn(`[SECURITY] Account deletion attempted without delete-intent token for user ${userId}`);
+      return new Response(JSON.stringify({
+        error: 'Authorization failed: Passkey verification required',
+        code: 'PASSKEY_VERIFICATION_REQUIRED',
+        details: 'This operation requires re-verification. Call passkey-verify first to obtain a delete-intent token.'
+      }), {
+        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Verify the delete-intent token is valid, not expired, and matches this user
+    const { data: deleteIntentRecord, error: tokenLookupError } = await supabase
+      .from('delete_intent_tokens')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('token', deleteIntentToken)
+      .eq('consumed', false)
+      .gt('expires_at', new Date().toISOString())
+      .single();
+
+    if (tokenLookupError || !deleteIntentRecord) {
+      console.warn(`[SECURITY] Invalid/expired delete-intent token attempted for user ${userId}`);
+      return new Response(JSON.stringify({
+        error: 'Authorization failed: Token invalid, expired, or already used',
+        code: 'INVALID_DELETE_INTENT_TOKEN'
+      }), {
+        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Mark token as consumed (single-use)
+    await supabase
+      .from('delete_intent_tokens')
+      .update({ consumed: true, consumed_at: new Date().toISOString() })
+      .eq('id', deleteIntentRecord.id);
+
+    console.info(`[AUDIT] Account deletion authorized for user ${userId} via valid delete-intent token`);
 
     // Delete pilot documents from storage
     const { data: docs } = await supabase

@@ -22,6 +22,7 @@ import { ToastProvider } from '@/src/components/ui/toast';
 import { AppRoutes } from '@/src/routes/AppRoutes';
 import { ErrorBoundary } from '@/src/components/ErrorBoundary';
 import { getAuth0RedirectUri } from '@/src/lib/auth0';
+import { ThemeProvider } from '@/components/website/context/ThemeContext';
 import './index.css';
 
 declare global {
@@ -120,7 +121,9 @@ root.render(
         <ToastProvider>
           <Styles />
           <ErrorBoundary>
-            <AppRoutes />
+            <ThemeProvider>
+              <AppRoutes />
+            </ThemeProvider>
           </ErrorBoundary>
         </ToastProvider>
       </AuthProvider>
