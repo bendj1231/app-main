@@ -1366,7 +1366,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const modalShownInStorage = localStorage.getItem('oauthModalShown') === 'true';
         const isNewUser = !currentUserRef.current || currentUserRef.current.id !== session.user.id;
 
-        if (!oauthModalShownRef.current && !modalShownInStorage && isNewUser) {
+        const isOauthRedirectPath = window.location.pathname === '/auth/callback' || window.location.pathname === '/callback';
+        const shouldRunAccountCheck = isOauthRedirectPath || (!oauthModalShownRef.current && !modalShownInStorage && isNewUser);
+
+        if (shouldRunAccountCheck) {
           setOauthModalShown(true);
 
           // Start account check
@@ -1483,6 +1486,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const isSetupPage = new URLSearchParams(window.location.search).get('setup') === '1';
         if (isOAuthCallback || isSetupPage) {
           setExplicitLogoutInStorage(false);
+          setOauthModalShown(false);
+          oauthModalShownRef.current = false;
+          localStorage.removeItem('oauthModalShown');
         }
       }
       // Check if user explicitly logged out - prevent session restoration
