@@ -1102,7 +1102,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                     {/* Card 2: Build Your Profile */}
                                     <button
-                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('pilot-recognition-profile'); }}
+                                        onClick={() => { setShowEnrollmentModal(false); onNavigate('become-member'); }}
                                         className="group relative text-left overflow-hidden border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/30"
                                     >
                                         <div className="relative aspect-[9/16] overflow-hidden">
