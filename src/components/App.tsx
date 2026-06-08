@@ -9,15 +9,15 @@ import { PasskeyPrompt } from '@/components/website/components/PasskeyPrompt';
 import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
 import ChatWidget from '@/portal/components/w1000/ChatWidget';
 import { ThemeProvider } from '@/components/website/context/ThemeContext';
-import OauthDebugDrawer from '@/components/OauthDebugDrawer';
 // Admin components
 import { MoaExecutiveSummary } from '@/src/components/admin/MoaExecutiveSummary';
 import { InvestorPitch } from '@/src/components/admin/InvestorPitch';
 import { GovernmentPromotion } from '@/src/components/admin/GovernmentPromotion';
 import { VeremarkPricing } from '@/src/components/admin/VeremarkPricing';
 
-const LOGO_URL = "https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png";
-const LOGO_FALLBACK_URL = "/logo.png";
+const LOGO_URL =
+  'https://res.cloudinary.com/dridtecu6/image/upload/v1776997648/general/efqjszksldcdm6kbnzoq.png';
+const LOGO_FALLBACK_URL = '/logo.png';
 
 // Initialize analytics services on app load
 initializeAnalyticsServices();
@@ -35,9 +35,14 @@ export const App = () => {
   const [examinationScore, setExaminationScore] = useState(0);
   const [overallRecognitionScore, setOverallRecognitionScore] = useState(0);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
-  const { currentUser, logout: _logout, showPasskeyPrompt, dismissPasskeyPrompt, userProfile } = useAuth();
+  const {
+    currentUser,
+    logout: _logout,
+    showPasskeyPrompt,
+    dismissPasskeyPrompt,
+    userProfile,
+  } = useAuth();
 
-  
   // Fetch user's enrollment status from Supabase
   useEffect(() => {
     const fetchEnrollmentStatus = async () => {
@@ -82,7 +87,9 @@ export const App = () => {
         return;
       }
       // Skip if uid is an Auth0 sub (not a Supabase UUID) — profile query would 400
-      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(currentUser.uid);
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        currentUser.uid
+      );
       if (!isUUID) {
         setIsProfileLoading(false);
         return;
@@ -92,7 +99,9 @@ export const App = () => {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('pilot_id, profile_image_url, total_flight_hours, last_flown, mentorship_hours, foundation_progress, examination_score, overall_recognition_score, enrolled_programs')
+          .select(
+            'pilot_id, profile_image_url, total_flight_hours, last_flown, mentorship_hours, foundation_progress, examination_score, overall_recognition_score, enrolled_programs'
+          )
           .eq('id', currentUser.uid)
           .maybeSingle();
 
@@ -126,8 +135,12 @@ export const App = () => {
 
   const navigateTo = useCallback((page: string, _data?: unknown) => {
     // Admin routes - render admin components directly, update state only
-    if (page === 'moa-executive-summary' || page === 'investor-pitch' || 
-        page === 'government-promotion' || page === 'veremark-pricing') {
+    if (
+      page === 'moa-executive-summary' ||
+      page === 'investor-pitch' ||
+      page === 'government-promotion' ||
+      page === 'veremark-pricing'
+    ) {
       setCurrentPage(page);
       return;
     }
@@ -152,7 +165,14 @@ export const App = () => {
       {/* Global Loading Overlay */}
       <div className={`loading-overlay ${!loading ? 'hidden' : ''}`}>
         <div className="loading-content">
-          <img src={LOGO_URL} alt="PilotRecognition Logo" className="loading-logo-main" onError={(e) => { (e.target as HTMLImageElement).src = LOGO_FALLBACK_URL; }} />
+          <img
+            src={LOGO_URL}
+            alt="PilotRecognition Logo"
+            className="loading-logo-main"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = LOGO_FALLBACK_URL;
+            }}
+          />
           <div className="loading-subtitle-blue">connecting pilots to recognition</div>
           <div className="loading-text">Bridging the Pilot Gap.</div>
         </div>
@@ -160,65 +180,70 @@ export const App = () => {
 
       <ThemeProvider>
         {/* Admin Pages - Only show for admin users */}
-        {currentUser && (
-          userProfile?.account_tier === 'enterprise_admin' ||
-          currentUser?.email === import.meta.env.VITE_ADMIN_EMAIL
-        ) && (
-          <>
-            {currentPage === 'moa-executive-summary' && <MoaExecutiveSummary />}
-            {currentPage === 'investor-pitch' && <InvestorPitch />}
-            {currentPage === 'government-promotion' && <GovernmentPromotion />}
-            {currentPage === 'veremark-pricing' && <VeremarkPricing />}
-          </>
-        )}
+        {currentUser &&
+          (userProfile?.account_tier === 'enterprise_admin' ||
+            currentUser?.email === import.meta.env.VITE_ADMIN_EMAIL) && (
+            <>
+              {currentPage === 'moa-executive-summary' && <MoaExecutiveSummary />}
+              {currentPage === 'investor-pitch' && <InvestorPitch />}
+              {currentPage === 'government-promotion' && <GovernmentPromotion />}
+              {currentPage === 'veremark-pricing' && <VeremarkPricing />}
+            </>
+          )}
 
         {/* Home Page */}
-        {!['moa-executive-summary', 'investor-pitch', 'government-promotion', 'veremark-pricing'].includes(currentPage) && (
+        {![
+          'moa-executive-summary',
+          'investor-pitch',
+          'government-promotion',
+          'veremark-pricing',
+        ].includes(currentPage) && (
           <HomePage
-        onJoinUs={() => navigateTo('become-member')}
-        onLogin={() => setIsLoginModalOpen(true)}
-        onNavigate={navigateTo}
-        isLoggedIn={!!currentUser}
-        onLoginModalOpen={() => setIsLoginModalOpen(true)}
-        isEnrolledInFoundation={isEnrolledInFoundation}
-        pilotId={pilotId}
-        totalHours={totalHours}
-        lastFlown={lastFlown}
-        mentorshipHours={mentorshipHours}
-        foundationProgress={foundationProgress}
-        examinationScore={examinationScore}
-        overallRecognitionScore={overallRecognitionScore}
-        userDisplayName={currentUser?.displayName}
-        userEmail={currentUser?.email}
-        onGoToProgramDetail={(slide) => {
-          const routeMap: Record<string, string> = {
-            'Emirates ATPL Pilot Pathways': 'emirates-atpl',
-            'Emerging Air Taxi Sector': 'emerging-air-taxi',
-            'Air Taxi Pilot Pathways': 'air-taxi-pathways',
-            'Private Charter Pathways': 'private-charter-pathways',
-            'EBT CBTA familiarization': 'ebt-cbta',
-            'Unmanned Drones Pathways': 'piloted-drones',
-            'What is the Pilot Gap?': 'pilot-gap',
-            'Transition Program': 'transition-program',
-            'Pilot Database Recognition System': 'pilot-recognition',
-            'Foundational Program': 'foundational-program',
-          };
-          const route = routeMap[slide?.title || ''];
-          if (route) navigateTo(route);
-          else navigateTo('about-programs');
-        }}
-      />)}
+            onJoinUs={() => navigateTo('become-member')}
+            onLogin={() => setIsLoginModalOpen(true)}
+            onNavigate={navigateTo}
+            isLoggedIn={!!currentUser}
+            onLoginModalOpen={() => setIsLoginModalOpen(true)}
+            isEnrolledInFoundation={isEnrolledInFoundation}
+            pilotId={pilotId}
+            totalHours={totalHours}
+            lastFlown={lastFlown}
+            mentorshipHours={mentorshipHours}
+            foundationProgress={foundationProgress}
+            examinationScore={examinationScore}
+            overallRecognitionScore={overallRecognitionScore}
+            userDisplayName={currentUser?.displayName}
+            userEmail={currentUser?.email}
+            onGoToProgramDetail={(slide) => {
+              const routeMap: Record<string, string> = {
+                'Emirates ATPL Pilot Pathways': 'emirates-atpl',
+                'Emerging Air Taxi Sector': 'emerging-air-taxi',
+                'Air Taxi Pilot Pathways': 'air-taxi-pathways',
+                'Private Charter Pathways': 'private-charter-pathways',
+                'EBT CBTA familiarization': 'ebt-cbta',
+                'Unmanned Drones Pathways': 'piloted-drones',
+                'What is the Pilot Gap?': 'pilot-gap',
+                'Transition Program': 'transition-program',
+                'Pilot Database Recognition System': 'pilot-recognition',
+                'Foundational Program': 'foundational-program',
+              };
+              const route = routeMap[slide?.title || ''];
+              if (route) navigateTo(route);
+              else navigateTo('about-programs');
+            }}
+          />
+        )}
 
-      {/* Login Modal */}
-      {isLoginModalOpen && (
-        <LoginModal
-          key="login-modal"
-          isOpen={isLoginModalOpen}
-          onClose={() => setIsLoginModalOpen(false)}
-          onLogin={navigateToPortal}
-          onNavigate={navigateTo}
-        />
-      )}
+        {/* Login Modal */}
+        {isLoginModalOpen && (
+          <LoginModal
+            key="login-modal"
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+            onLogin={navigateToPortal}
+            onNavigate={navigateTo}
+          />
+        )}
       </ThemeProvider>
 
       {/* Passkey registration prompt — shown once after first Google login */}
@@ -232,9 +257,6 @@ export const App = () => {
 
       {/* Cookie Consent */}
       <CookieConsent />
-
-      {/* OAuth debug drawer (sessionStorage.oauth_debug_log) */}
-      <OauthDebugDrawer />
 
       {/* Chat Bot - Only on Home Page */}
       {currentPage === 'home' && !isProfileLoading && <ChatWidget />}
