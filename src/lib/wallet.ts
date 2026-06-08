@@ -39,7 +39,6 @@ export async function createClientWallet(
         user: { id: userId, name: auth0Id, displayName: 'Pilot Wallet' },
         pubKeyCredParams: [{ type: 'public-key', alg: -7 }], // ES256
         authenticatorSelection: {
-          authenticatorAttachment: 'platform', // Forces device credential (FaceID/Touch/Google PM)
           residentKey: 'preferred',
           userVerification: 'preferred',
         },

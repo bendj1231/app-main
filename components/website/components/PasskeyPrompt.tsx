@@ -76,9 +76,8 @@ export const PasskeyPrompt: React.FC<PasskeyPromptProps> = ({ userId, userEmail,
                         { alg: -257, type: 'public-key' },  // RS256 (fallback)
                     ],
                     authenticatorSelection: {
-                        authenticatorAttachment: 'platform', // device-bound only
-                        userVerification: 'required',         // biometric/PIN gate
-                        residentKey: 'required',              // discoverable credential
+                        residentKey: 'preferred',              // allow platform or roaming authenticator
+                        userVerification: 'preferred',         // broader compatibility
                     },
                     timeout: 60000,
                     attestation: 'none',
