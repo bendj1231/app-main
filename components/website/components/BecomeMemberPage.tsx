@@ -1757,8 +1757,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     </button>
                 </div>
 
-                <div className="relative z-10 flex-1 flex items-start justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden">
-                    <div className="w-full max-w-6xl flex flex-col md:flex-row items-start gap-8 md:gap-16">
+                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden">
+                    <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-16">
 
                         {/* Left: Hero text */}
                         <div className="flex-1 text-left">
