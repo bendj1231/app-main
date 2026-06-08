@@ -5,6 +5,7 @@ import { ProtectedRoute } from '@/src/components/ProtectedRoute';
 import { OAuthCallback } from '@/src/components/OAuthCallback';
 import { LogbookCallback } from '@/src/components/LogbookCallback';
 import OauthDebugDrawer from '@/components/OauthDebugDrawer';
+import { useAuth } from '@/src/contexts/AuthContext';
 
 // External redirect component for full URLs — validates before navigation
 const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
@@ -212,6 +213,23 @@ const CareerPathwaysLoadingFallback = () => (
 );
 
 export const AppRoutes = () => {
+  const { oauthAccountCheck } = useAuth();
+
+  // If we're currently checking an OAuth account, show a full-screen loading overlay
+  // to avoid briefly rendering the Home page before redirecting to /become-member.
+  if (oauthAccountCheck && oauthAccountCheck.checking) {
+    return (
+      <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold">Signing in</h2>
+            <p className="text-sm mt-2 text-slate-500">Checking your account and preparing your profile</p>
+          </div>
+        </div>
+        <OauthDebugDrawer />
+      </>
+    );
+  }
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
