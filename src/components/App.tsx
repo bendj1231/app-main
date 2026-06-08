@@ -9,6 +9,7 @@ import { PasskeyPrompt } from '@/components/website/components/PasskeyPrompt';
 import { initializeAnalyticsServices } from '@/src/lib/analytics-config';
 import ChatWidget from '@/portal/components/w1000/ChatWidget';
 import { ThemeProvider } from '@/components/website/context/ThemeContext';
+import OauthDebugDrawer from '@/components/OauthDebugDrawer';
 // Admin components
 import { MoaExecutiveSummary } from '@/src/components/admin/MoaExecutiveSummary';
 import { InvestorPitch } from '@/src/components/admin/InvestorPitch';
@@ -231,6 +232,9 @@ export const App = () => {
 
       {/* Cookie Consent */}
       <CookieConsent />
+
+      {/* OAuth debug drawer (sessionStorage.oauth_debug_log) */}
+      <OauthDebugDrawer />
 
       {/* Chat Bot - Only on Home Page */}
       {currentPage === 'home' && !isProfileLoading && <ChatWidget />}
