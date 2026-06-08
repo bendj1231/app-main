@@ -4,7 +4,7 @@ import { safeRedirect } from '@/src/lib/url-validator';
 import { createPortal } from 'react-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
-import { TopNavbar } from './TopNavbar';
+// TopNavbar removed for a focused create-account experience
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
 import { DataControllerAgreementModal } from './DataControllerAgreementModal';
@@ -1745,7 +1745,13 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 </div>
 
                 <div className="relative z-[300]">
-                <TopNavbar onNavigate={onNavigate} onLogin={onLogin} onLoginModalOpen={onLogin} forceScrolled={true} />
+                    <button
+                        onClick={() => safeRedirect('/')}
+                        aria-label="Go back to Home"
+                        className="absolute top-4 left-4 z-[400] px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold shadow-sm hover:bg-white/20 transition-all"
+                    >
+                        Go back to Home
+                    </button>
                 </div>
 
                 <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden">
