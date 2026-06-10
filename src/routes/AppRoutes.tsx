@@ -159,6 +159,9 @@ const ProgramsPathwaysPage = lazy(() =>
 // const ProgramsPage = lazy(() => import('@/components/website/components/programs/ProgramsPage').then(m => ({ default: m.ProgramsPage })));
 // const PlatformFoundationalProgramPage = lazy(() => import('@/components/website/components/programs/PlatformFoundationalProgramPage').then(m => ({ default: m.PlatformFoundationalProgramPage })));
 const RecognitionPlusPage = lazy(() => import('@/app/recognition-plus/page'));
+const RecognitionPlusFreePage = lazy(() => import('@/app/recognition-plus/free/page'));
+const RecognitionPlusVerifiedPage = lazy(() => import('@/app/recognition-plus/verified/page'));
+const RecognitionPlusLiveTalkPage = lazy(() => import('@/app/recognition-plus/livetalk/page'));
 const RecognitionPlusComparisonPage = lazy(() => import('@/app/recognition-plus-comparison/page'));
 const LearnAboutPage = lazy(() => import('@/app/learn-about/page'));
 const GeneralPage = lazy(() => import('@/app/general/page'));
@@ -653,14 +656,6 @@ export const AppRoutes = () => {
     );
   }
 
-  const handleNavigate = (page: string) => {
-    navigate(`/${page}`);
-  };
-
-  const handleBack = (fallback: string = '/') => {
-    navigate(fallback);
-  };
-
   // DEV MODE: Show domain selector on localhost:3000 with no query params
   const isLocalhost =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -1113,6 +1108,9 @@ export const AppRoutes = () => {
           }
         />
         <Route path="/recognition-plus" element={<RecognitionPlusPage />} />
+        <Route path="/recognition-plus/free" element={<RecognitionPlusFreePage />} />
+        <Route path="/recognition-plus/verified" element={<RecognitionPlusVerifiedPage />} />
+        <Route path="/recognition-plus/livetalk" element={<RecognitionPlusLiveTalkPage />} />
         <Route path="/recognition-plus-comparison" element={<RecognitionPlusComparisonPage />} />
         <Route
           path="/pilot-recognition-profile"

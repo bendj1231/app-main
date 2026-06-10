@@ -137,12 +137,12 @@ const cardVariants: any = {
 
 const HomeTab: React.FC<{
   profile: any; walletChecks: any[]; onNavigate: (p: string) => void; setTab: (t: TabId) => void;
-  enrolledInFoundation: boolean; airlines: any[]; auth0User?: any;
+  enrolledInFoundation: boolean; airlines: any[]; auth0User?: any; currentUser?: any;
   avatarInputRef?: React.RefObject<HTMLInputElement | null>;
   avatarUploading?: boolean;
   avatarError?: string;
   handleAvatarUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User, avatarInputRef, avatarUploading, avatarError, handleAvatarUpload }) => {
+}> = ({ profile, walletChecks, onNavigate, setTab, enrolledInFoundation, airlines, auth0User, currentUser, avatarInputRef, avatarUploading, avatarError, handleAvatarUpload }) => {
   const [visible, setVisible] = React.useState(false);
   const [welcomeDismissed, setWelcomeDismissed] = React.useState(() => {
     try { return localStorage.getItem('welcome_dismissed') === '1'; } catch { return false; }
@@ -245,7 +245,9 @@ const HomeTab: React.FC<{
   const hours   = profile?.total_flight_hours ?? 0;
   const isCiphertext = (v: any) => typeof v === 'string' && v.trim().startsWith('{"iv"');
   const rawName = profile?.display_name || profile?.full_name || profile?.first_name;
-  const name    = (rawName && !isCiphertext(rawName)) ? rawName : (auth0User?.name || auth0User?.nickname || auth0User?.email?.split('@')[0] || 'Pilot');
+  const auth0Name = auth0User?.name || auth0User?.nickname || auth0User?.email?.split('@')[0];
+  const currentUserName = currentUser?.display_name || currentUser?.displayName || currentUser?.email?.split('@')[0];
+  const name    = (rawName && !isCiphertext(rawName)) ? rawName : (auth0Name || currentUserName || 'Pilot');
   const rawLevel = profile?.current_occupation;
   const level   = (rawLevel && !isCiphertext(rawLevel)) ? rawLevel : 'Student Pilot';
   const initials = name.charAt(0).toUpperCase();
@@ -255,6 +257,8 @@ const HomeTab: React.FC<{
   const progressPct = Math.min((hours / hoursForNext) * 100, 100);
   const expiredChecks = walletChecks.filter(c => c.status === 'expired');
 
+  const isAuthenticated = Boolean(profile || auth0User?.sub || currentUser?.id);
+  const isAuthenticatedWithoutProfile = isAuthenticated && !profile;
   const steps = [
     { step: 1, label: 'Complete Profile',    sublabel: 'Name, hours & occupation',  done: !!profile,                                          tab: 'profile'   as TabId, icon: User,     highlight: false },
     { step: 2, label: 'Log Flight Hours',    sublabel: 'Add your first flight hour', done: hours > 0,                                          tab: 'logbook'   as TabId, icon: Clock,    highlight: false },
@@ -483,17 +487,17 @@ const HomeTab: React.FC<{
                   <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Pilot Platform</p>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-tight leading-tight mb-3">
-                  Discover Pathways
+                  Coming Soon
                 </h2>
                 <div className="w-8 h-[2px] bg-cyan-400 mb-4" />
                 <p className="text-sm text-slate-300 max-w-sm leading-relaxed mb-6">
-                  Browse airline, cargo, and private aviation operator requirements. Match your profile against live pathway eligibility.
+                  Stay up to date with PilotRecognition &amp; PilotShortage.org news.
                 </p>
                 
                 {/* CTAs */}
                 <div className="flex items-center gap-3">
                   <button className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-600/25">
-                    Explore Operators
+                    Stay updated
                   </button>
                   <span className="text-xs text-slate-400">{airlines.length}+ Airlines</span>
                 </div>
@@ -675,15 +679,32 @@ const HomeTab: React.FC<{
               <User size={28} className="text-white/30" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-black text-white mb-1">Welcome Aboard</p>
-              <p className="text-[10px] text-white/30 leading-snug">Sign in to activate your pilot profile.</p>
+              <p className="text-sm font-black text-white mb-1">{isAuthenticatedWithoutProfile ? `Welcome, ${name}` : 'Welcome Aboard'}</p>
+              <p className="text-[10px] text-white/30 leading-snug">
+                {isAuthenticatedWithoutProfile
+                  ? 'You are signed in. Complete your pilot profile to activate your account.'
+                  : 'Sign in to activate your pilot profile.'}
+              </p>
             </div>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: '#dc2626' }}>
-              Get Recognition Free
-            </button>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.7)', border: '1px solid rgba(96,165,250,0.3)' }}>
-              Pilot Sign In
-            </button>
+            {isAuthenticatedWithoutProfile ? (
+              <>
+                <button onClick={() => setTab('profile')} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: '#2563eb' }}>
+                  Complete Profile
+                </button>
+                <button onClick={() => setTab('settings' as TabId)} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.7)', border: '1px solid rgba(96,165,250,0.3)' }}>
+                  Account Settings
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: '#dc2626' }}>
+                  Get Recognition Free
+                </button>
+                <button onClick={() => window.dispatchEvent(new CustomEvent('open-login-modal'))} className="w-full py-2.5 text-sm font-black tracking-wide text-white rounded-xl transition-all hover:brightness-110" style={{ background: 'rgba(37,99,235,0.7)', border: '1px solid rgba(96,165,250,0.3)' }}>
+                  Pilot Sign In
+                </button>
+              </>
+            )}
           </div>
         )}
 
@@ -4733,7 +4754,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} avatarInputRef={avatarInputRef} avatarUploading={avatarUploading} avatarError={avatarError} handleAvatarUpload={handleAvatarUpload} />;
+      case 'home':          return <HomeTab profile={profileData} walletChecks={walletChecks} onNavigate={onNavigate} setTab={setTab} enrolledInFoundation={false} airlines={airlines} auth0User={auth0User} currentUser={currentUser} avatarInputRef={avatarInputRef} avatarUploading={avatarUploading} avatarError={avatarError} handleAvatarUpload={handleAvatarUpload} />;
       case 'profile':       return <ProfileTab onNavigate={onNavigate} profile={profileData} walletChecks={walletChecks} />;
       case 'score':         return <ScoreTab profile={profileData} setTab={setTab} />;
       case 'cockpit':       return <CockpitTab profile={profileData} onNavigate={onNavigate} />;

@@ -1448,7 +1448,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="max-w-7xl mx-auto">
                     {/* Section Header - Centered */}
                     <div className="mb-6 text-center">
-                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-red-500">Connected Platforms</span></h2>
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Discover <span className="text-black">PilotTerminal.com</span> <span className="text-black">Pilot pathways</span></h2>
                         <p className="text-slate-600 text-sm md:text-base">One profile across three platforms</p>
                     </div>
 
@@ -1477,7 +1477,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 {/* Bottom Text Bar */}
                                 <div className="mt-auto bg-white/95 px-4 py-4">
-                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot <span className="text-red-500">terminal</span></h4>
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">Pilot<span className="text-red-500">Terminal</span><span className="text-black">.com</span></h4>
                                     <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Professional pilot network and flight deck tools</p>
                                 </div>
                             </div>
@@ -1542,7 +1542,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                                 {/* Bottom Text Bar */}
                                 <div className="mt-auto bg-white/95 px-4 py-4">
-                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot <span className="text-red-500">pathways</span></h4>
+                                    <h4 className="text-black font-bold text-lg sm:text-base uppercase tracking-[0.15em]">pilot<span className="text-black">career</span><span className="text-red-500">pathways</span><span className="text-black">.coim</span></h4>
                                     <p className="text-slate-600 text-xs sm:text-[11px] mt-1">Career pathways from student to captain</p>
                                 </div>
                             </div>
