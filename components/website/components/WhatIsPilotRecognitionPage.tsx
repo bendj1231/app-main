@@ -261,32 +261,35 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                 </div>
             </div>
 
-            {/* ── OUR SERVICES — alternating split layout ── */}
-            <div className="relative z-30 w-full bg-slate-950 px-4 md:px-8 py-16 md:py-20">
+            {/* ── OUR SERVICES — white background ── */}
+            <div className="relative z-30 w-full bg-white px-4 md:px-8 py-16 md:py-24 border-t border-slate-100">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-12">
-                        <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-500 mb-4">Our Services</p>
-                        <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight max-w-2xl">
+                        <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-red-500 mb-4">Our Services</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight max-w-2xl">
                             What verification actually gives you
                         </h2>
+                        <p className="text-slate-500 text-base mt-3 max-w-xl">
+                            Four things happen the moment your credentials are confirmed. Each one builds your visibility inside the industry.
+                        </p>
                     </div>
 
                     <div className="space-y-4">
                         {SERVICES.map((s, i) => (
                             <div
                                 key={s.number}
-                                className="relative w-full h-[280px] md:h-[320px] overflow-hidden rounded-2xl flex"
+                                className="relative w-full h-[280px] md:h-[320px] overflow-hidden rounded-2xl flex border border-slate-100 shadow-sm"
                                 style={{ flexDirection: i % 2 === 1 ? 'row-reverse' : 'row' }}
                             >
                                 {/* Text half */}
-                                <div className="w-full md:w-1/2 flex items-center bg-slate-900 px-8 md:px-14 py-10 flex-shrink-0">
+                                <div className="w-full md:w-1/2 flex items-center bg-white px-8 md:px-14 py-10 flex-shrink-0">
                                     <div>
                                         <div className="flex items-center gap-3 mb-4">
                                             <span className="text-red-500 font-black text-[10px] tracking-[0.2em]">{s.number}</span>
-                                            <span className="text-white/25 text-[10px] uppercase tracking-widest">{s.tag}</span>
+                                            <span className="text-slate-400 text-[10px] uppercase tracking-widest">{s.tag}</span>
                                         </div>
-                                        <h3 className="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">{s.title}</h3>
-                                        <p className="text-slate-400 text-sm leading-relaxed max-w-sm">{s.body}</p>
+                                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3 leading-tight">{s.title}</h3>
+                                        <p className="text-slate-500 text-sm leading-relaxed max-w-sm">{s.body}</p>
                                     </div>
                                 </div>
                                 {/* Image half */}
@@ -296,8 +299,8 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                                         className="absolute inset-0"
                                         style={{
                                             background: i % 2 === 1
-                                                ? 'linear-gradient(to left, #0f172a 0%, rgba(15,23,42,0.5) 30%, transparent 65%)'
-                                                : 'linear-gradient(to right, #0f172a 0%, rgba(15,23,42,0.5) 30%, transparent 65%)',
+                                                ? 'linear-gradient(to left, #ffffff 0%, rgba(255,255,255,0.4) 30%, transparent 65%)'
+                                                : 'linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.4) 30%, transparent 65%)',
                                         }}
                                     />
                                 </div>
@@ -307,18 +310,18 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                 </div>
             </div>
 
-            {/* ── WHY VERIFY WITH US — dark grid ── */}
-            <div className="relative z-30 w-full bg-black px-4 md:px-8 py-16 md:py-20">
+            {/* ── WHY VERIFY WITH US — white ── */}
+            <div className="relative z-30 w-full bg-white px-4 md:px-8 py-16 md:py-24 border-t border-slate-100">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
                         <div>
-                            <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-500 mb-4">Why PilotRecognition</p>
-                            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                            <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-red-500 mb-4">Why PilotRecognition</p>
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
                                 Why verify with us?
                             </h2>
                         </div>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
-                            Not every verification platform is built for pilots. Ours is — and it's built around protecting you, not just ticking a compliance box for an airline.
+                            Not every verification platform is built for pilots. Ours is — built around protecting you, not just ticking a compliance box for an airline.
                         </p>
                     </div>
 
@@ -326,11 +329,10 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                         {WHY_POINTS.map((p, i) => (
                             <div
                                 key={p.title}
-                                className="border border-white/5 hover:border-red-500/20 rounded-2xl p-8 transition-all"
-                                style={{ background: 'rgba(255,255,255,0.03)' }}
+                                className="border border-slate-100 hover:border-slate-200 hover:shadow-md rounded-2xl p-8 transition-all bg-slate-50"
                             >
                                 <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-red-500 mb-4">0{i + 1}</span>
-                                <h3 className="text-lg font-bold text-white mb-3">{p.title}</h3>
+                                <h3 className="text-lg font-bold text-slate-900 mb-3">{p.title}</h3>
                                 <p className="text-slate-500 text-sm leading-relaxed">{p.body}</p>
                             </div>
                         ))}
@@ -339,25 +341,25 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                     {/* Photo strip */}
                     <div className="grid grid-cols-3 gap-3 md:gap-4">
                         {[
-                            { src: 'https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&q=80&fit=crop', span: 'col-span-1' },
-                            { src: 'https://images.unsplash.com/photo-1520437358207-323b43b50729?w=800&q=80&fit=crop', span: 'col-span-1' },
-                            { src: 'https://images.unsplash.com/photo-1602452920335-6a132309c7c8?w=800&q=80&fit=crop', span: 'col-span-1' },
-                        ].map((img, i) => (
-                            <div key={i} className={`${img.span} relative rounded-xl overflow-hidden h-36 md:h-52`}>
-                                <img src={img.src} alt="" className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/25" />
+                            'https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=800&q=80&fit=crop',
+                            'https://images.unsplash.com/photo-1520437358207-323b43b50729?w=800&q=80&fit=crop',
+                            'https://images.unsplash.com/photo-1602452920335-6a132309c7c8?w=800&q=80&fit=crop',
+                        ].map((src, i) => (
+                            <div key={i} className="relative rounded-2xl overflow-hidden h-36 md:h-52">
+                                <img src={src} alt="" className="w-full h-full object-cover" />
                             </div>
+
                         ))}
                     </div>
                 </div>
             </div>
 
-            {/* ── PATHWAY FLOW — mirrors HomePage banner style ── */}
-            <div className="relative z-30 w-full bg-slate-950 px-4 md:px-8 py-16 md:py-20">
+            {/* ── PATHWAY FLOW — white ── */}
+            <div className="relative z-30 w-full bg-white px-4 md:px-8 py-16 md:py-24 border-t border-slate-100">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
-                        <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-red-500 mb-4">The Journey</p>
-                        <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                        <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-red-500 mb-4">The Journey</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
                             Verification unlocks pathways
                         </h2>
                         <p className="text-slate-500 text-sm mt-3 max-w-md mx-auto">
@@ -367,7 +369,7 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
 
                     {/* 4 step cards */}
                     <div className="grid md:grid-cols-4 gap-4 relative">
-                        <div className="hidden md:block absolute top-12 left-[14%] right-[14%] h-px bg-gradient-to-r from-transparent via-red-600/40 to-transparent" />
+                        <div className="hidden md:block absolute top-12 left-[14%] right-[14%] h-px bg-gradient-to-r from-transparent via-red-400/40 to-transparent" />
                         {[
                             { step: '1', label: 'Create Profile', sub: 'Free account, basic info, flight hours', img: 'https://images.unsplash.com/photo-1569982175971-d92b01cf8694?w=400&q=80&fit=crop', active: false },
                             { step: '2', label: 'Verify Credentials', sub: 'Licence, medical & logbook independently audited', img: 'https://images.unsplash.com/photo-1583202735974-b4a6f49b8e5c?w=400&q=80&fit=crop', active: true },
@@ -376,13 +378,19 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                         ].map((item) => (
                             <div
                                 key={item.step}
-                                className={`relative rounded-2xl overflow-hidden border transition-all ${item.active ? 'border-red-500/50 shadow-lg shadow-red-500/10' : 'border-white/5'}`}
+                                className={`relative rounded-2xl overflow-hidden border transition-all ${
+                                    item.active
+                                        ? 'border-red-200 shadow-lg shadow-red-100'
+                                        : 'border-slate-100 shadow-sm'
+                                }`}
                             >
                                 {/* Image */}
                                 <div className="h-36 relative">
                                     <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
-                                    <div className={`absolute inset-0 ${item.active ? 'bg-red-600/30' : 'bg-black/50'}`} />
-                                    <div className={`absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center text-xs font-black ${item.active ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-300'}`}>
+                                    <div className={`absolute inset-0 ${item.active ? 'bg-red-600/20' : 'bg-black/30'}`} />
+                                    <div className={`absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center text-xs font-black ${
+                                        item.active ? 'bg-red-600 text-white' : 'bg-white text-slate-700'
+                                    }`}>
                                         {item.step}
                                     </div>
                                     {item.active && (
@@ -392,8 +400,8 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                                     )}
                                 </div>
                                 {/* Text */}
-                                <div className={`p-5 ${item.active ? 'bg-slate-900' : 'bg-slate-900/60'}`}>
-                                    <h4 className="text-white font-bold text-sm mb-1">{item.label}</h4>
+                                <div className={`p-5 ${item.active ? 'bg-red-50' : 'bg-white'}`}>
+                                    <h4 className={`font-bold text-sm mb-1 ${item.active ? 'text-red-700' : 'text-slate-900'}`}>{item.label}</h4>
                                     <p className="text-slate-500 text-xs leading-relaxed">{item.sub}</p>
                                 </div>
                             </div>
