@@ -247,7 +247,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // If OAuth signed-in user has no linked profile, ensure app redirects to become-member
   useEffect(() => {
     if (oauthAccountCheck.hasAccount === false) {
-      const target = '/become-member/confirm?setup=1';
+      const onboarding = window.location.pathname.startsWith('/become-member');
+      if (onboarding) return;
+      const target = '/become-member?setup=1';
       if (window.location.pathname !== target) {
         window.location.assign(target);
       }
@@ -1367,7 +1369,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const isNewUser = !currentUserRef.current || currentUserRef.current.id !== session.user.id;
 
         const isOauthRedirectPath = window.location.pathname === '/auth/callback' || window.location.pathname === '/callback';
-        const shouldRunAccountCheck = isOauthRedirectPath || (!oauthModalShownRef.current && !modalShownInStorage && isNewUser);
+        const isOnboarding = window.location.pathname.startsWith('/become-member');
+        const shouldRunAccountCheck = !isOnboarding && (isOauthRedirectPath || (!oauthModalShownRef.current && !modalShownInStorage && isNewUser));
 
         if (shouldRunAccountCheck) {
           setOauthModalShown(true);

@@ -274,7 +274,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [walletStorageChoice, setWalletStorageChoice] = useState<string>('both');
     const [showWalletStorage, setShowWalletStorage] = useState(false);
     const [walletCreating, setWalletCreating] = useState<'idle' | 'generating' | 'syncing' | 'active'>('idle');
-    const [consentChecked, setConsentChecked] = useState(false);
     const [showBiometricNotice, setShowBiometricNotice] = useState(false);
     const [passkeyContext, setPasskeyContext] = useState<{ userId: string; email: string; name: string } | null>(null);
     const passkeyRegistrationRef = React.useRef<(() => Promise<void>) | null>(null);
@@ -678,6 +677,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setShowDCAModal(true);
     };
 
+    const handleGoogleOAuth = async () => {
+        const redirectTo = `${window.location.origin}/become-member?setup=1`;
+        await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: { redirectTo },
+        });
+    };
+
     const handleAppleSignup = () => {
         setPendingSignupMethod('apple');
         setShowDCAModal(true);
@@ -685,15 +692,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     const handleDCAAgree = () => {
         setShowDCAModal(false);
-        if (pendingSignupMethod === 'google') {
-            loginWithRedirect({
-                authorizationParams: {
-                    connection: 'google-oauth2',
-                    screen_hint: 'signup',
-                    redirect_uri: getAuth0RedirectUri(),
-                },
-            });
-        } else if (pendingSignupMethod === 'apple') {
+        const method = pendingSignupMethod;
+        setPendingSignupMethod(null);
+        if (method === 'google') {
+            handleGoogleOAuth();
+        } else if (method === 'apple') {
             loginWithRedirect({
                 authorizationParams: {
                     connection: 'apple',
@@ -709,7 +712,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 },
             });
         }
-        setPendingSignupMethod(null);
     };
 
     const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
@@ -1766,40 +1768,30 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 Connecting Pilots<br />
                                 <span className="text-red-500">to the Industry.</span>
                             </h1>
-                            <p className="text-slate-300 text-sm mb-8">Free access to Programs, Pathways &amp; Pilot Recognition</p>
+                            <p className="text-white/70 text-sm font-light mb-6">One <span className="text-red-500">account</span> across all platforms. Access your pilot profile, pathways, and recognition credentials wherever you fly.</p>
 
-                            {/* Recognition+ upsell */}
-                            <div className="border border-white/20 bg-white/5 rounded-xl p-5 max-w-lg">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-red-500 text-xs font-black tracking-widest uppercase">Recognition+</span>
+                            {/* Platform bullets */}
+                            <div className="flex flex-col gap-3 mb-8">
+                                <div>
+                                    <p className="text-white text-base font-bold leading-tight">
+                                        pilot<span className="text-red-500">career</span>pathways.com
+                                    </p>
+                                    <p className="text-slate-400 text-sm mt-1">Career Recognition</p>
                                 </div>
-                                <p className="text-white font-bold text-sm mb-1">Get the Recognition Your Training, Logbook, and Pilot Career Deserves</p>
-                                <p className="text-white/75 text-xs leading-relaxed mb-3">
-                                    Secure and verify your Pilot Identity Credentials (PIC) for Priority Recognition.
-                                </p>
-                                <ul className="space-y-2.5 mb-4">
-                                    {[
-                                        { bold: 'Global Standard Verification:', body: 'Direct outreach matching international standards. Full licensure and qualification audits for CPL, PPL, IR, ME, and ATPL handled seamlessly through regional verification providers.' },
-                                        { bold: 'Medical & Logbook Auditing:', body: 'Comprehensive checks on Medical Class 1, 2, and 3. Rigorous flight logbook hour validation and flagged notation capture executed natively via regional flight logbook providers and civil aviation authority handling.' },
-                                        { bold: 'Fast-Track Placement:', body: 'Gain an immediate competitive edge with priority listing on our automated Pathway Interest Pooling.' },
-                                        { bold: 'Exclusive Tier Access:', body: 'Unlock premium, direct connections to Private Charter and Business Aviation Pathways for serious pilots.' },
-                                    ].map((point) => (
-                                        <li key={point.bold} className="flex items-start gap-2 text-xs text-white/90">
-                                            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
-                                            <span><span className="font-bold text-red-500">{point.bold}</span> {point.body}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button
-                                    onClick={() => onNavigate('recognition-plus')}
-                                    className="w-full py-2.5 text-xs font-black tracking-widest text-white rounded-lg bg-red-600 hover:bg-red-700 transition-all"
-                                >
-                                    UPGRADE NOW — $99/YEAR
-                                </button>
-                                <p className="text-white/40 text-[10px] text-center mt-2 leading-snug">
-                                    Processing infrastructure fees are distributed securely on-chain via a decentralized gateway to our respective integration nodes.
-                                </p>
+                                <div>
+                                    <p className="text-white text-base font-bold leading-tight">
+                                        pilot<span className="text-red-500">shortage</span>.org
+                                    </p>
+                                    <p className="text-slate-400 text-sm mt-1">Association</p>
+                                </div>
+                                <div>
+                                    <p className="text-white text-base font-bold leading-tight">
+                                        pilot<span className="text-red-500">recognition</span>.com
+                                    </p>
+                                    <p className="text-slate-400 text-sm mt-1">Verification</p>
+                                </div>
                             </div>
+
                         </div>
 
                         {/* Right: Signup card */}
@@ -1810,27 +1802,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         {/* Card */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
 
-                            {/* Consent checkbox */}
-                            <label className="flex items-start gap-3 mb-4 cursor-pointer group">
-                                <input
-                                    type="checkbox"
-                                    checked={consentChecked}
-                                    onChange={e => setConsentChecked(e.target.checked)}
-                                    className="mt-0.5 w-4 h-4 accent-red-600 flex-shrink-0 cursor-pointer"
-                                />
-                                <span className="text-xs text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                                    I am 16 or older and I agree to the{' '}
-                                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-white underline">Terms of Service</a>,{' '}
-                                    <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-white underline">Privacy Policy</a>, and{' '}
-                                    <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-white underline">Data Controller Agreement</a>.
-                                </span>
-                            </label>
-
                             {/* Google signup */}
                             <button
                                 onClick={handleGoogleSignup}
-                                disabled={!consentChecked}
-                                className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 font-semibold rounded-xl transition-all duration-200 mb-3 shadow-sm"
+                                className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 text-slate-800 font-semibold rounded-xl transition-all duration-200 mb-3 shadow-sm"
                             >
                                 <GoogleIcon />
                                 Sign up with Google
@@ -1859,11 +1834,18 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {/* Email/password signup via Auth0 Universal Login */}
                             <button
                                 onClick={handleEmailSignup}
-                                disabled={!consentChecked}
-                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 text-sm tracking-wide shadow-lg shadow-blue-600/20"
+                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-200 text-sm tracking-wide shadow-lg shadow-blue-600/20"
                             >
                                 Sign up with Email
                             </button>
+
+                            {/* Passive consent statement */}
+                            <p className="text-white/40 text-[11px] text-center mt-3 leading-relaxed">
+                                By continuing you confirm you are 16+ and agree to our{' '}
+                                <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/70 transition-colors">Terms of Service</a>,{' '}
+                                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/70 transition-colors">Privacy Policy</a>, and{' '}
+                                <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/70 transition-colors">Data Controller Agreement</a>.
+                            </p>
 
                             {/* Divider */}
                             <div className="relative my-6">
@@ -1875,16 +1857,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             {/* What you get */}
                             <ul className="space-y-2.5 mb-6">
                                 {[
-                                    'Free pilot recognition profile',
-                                    'Access to airline pathway cards',
-                                    'Programs & training roadmaps',
-                                    'ATLAS CV builder',
+                                    { label: 'Verified Recognition Profile', tip: 'Authenticate your flight hours, licenses, and credentials to establish a high-trust professional identity.' },
+                                    { label: 'Pathway Alignment & Mapping', tip: 'Align your profile with active industry pathways to signal your readiness and career availability.' },
+                                    { label: 'Direct Network Connections', tip: 'Allow verified network partners to request direct professional contact with your profile.' },
+                                    { label: 'ATLAS Professional CV Builder', tip: 'Standardize your aviation metrics and competencies into a clean, consultant-grade portfolio.' },
                                 ].map((item) => (
-                                    <li key={item} className="flex items-center gap-2.5 text-sm text-white">
+                                    <li key={item.label} className="group relative flex items-center gap-2.5 text-sm text-white cursor-default">
                                         <span className="w-4 h-4 rounded-full bg-[#00b4d8]/20 flex items-center justify-center flex-shrink-0">
                                             <span className="w-1.5 h-1.5 rounded-full bg-[#00b4d8]" />
                                         </span>
-                                        {item}
+                                        {item.label}
+                                        {/* Tooltip */}
+                                        <div className="pointer-events-none absolute left-0 bottom-full mb-2 w-64 bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-xs text-white/70 leading-relaxed shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                                            {item.tip}
+                                            <div className="absolute left-3 top-full w-2 h-2 bg-slate-800 border-r border-b border-white/10 rotate-45 -translate-y-1" />
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
@@ -1949,22 +1936,48 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 onAgree={handleDCAAgree}
             />
 
-            {/* Biometric / Passkey Notice Modal */}
+            {/* Passkey Save Modal */}
             {showBiometricNotice && createPortal(
-                <div style={{ position: 'fixed', inset: 0, zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}>
-                    <div style={{ width: '100%', maxWidth: '400px', background: '#fff', borderRadius: '16px', padding: '28px 24px', boxShadow: '0 25px 60px rgba(0,0,0,0.4)' }}>
-                        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-                            <span style={{ fontSize: '36px' }}>🔑</span>
+                <div style={{ position: 'fixed', inset: 0, zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)' }}>
+                    <div style={{ width: '100%', maxWidth: '420px', background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '32px 28px', boxShadow: '0 32px 80px rgba(0,0,0,0.6)' }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
+                            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <span style={{ fontSize: '22px' }}>🔑</span>
+                            </div>
+                            <div>
+                                <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', margin: 0, lineHeight: 1.2 }}>Save your Passkey</p>
+                                <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', margin: '3px 0 0' }}>Used for identification &amp; login</p>
+                            </div>
                         </div>
-                        <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', textAlign: 'center', margin: '0 0 10px' }}>Your browser will ask to save a Passkey</h3>
-                        <p style={{ fontSize: '12px', color: '#475569', lineHeight: 1.6, margin: '0 0 14px' }}>
-                            A <strong>passkey</strong> uses your device's biometrics (Touch ID, Face ID, or Windows Hello) or your password manager (Google, iCloud Keychain) to securely identify you. <strong>No biometric data leaves your device.</strong>
+
+                        {/* What it is */}
+                        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, margin: '0 0 16px' }}>
+                            Your passkey is how you'll <strong style={{ color: '#fff' }}>identify yourself and log back in</strong> to your PilotRecognition account. It uses your device's biometrics — Touch ID, Face ID, or Windows Hello — so no password is ever needed.
                         </p>
-                        <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '12px', marginBottom: '18px' }}>
-                            <p style={{ fontSize: '11px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
-                                By clicking <strong>"Got it — Continue"</strong> you consent to your browser storing a passkey credential on this device. This is used solely to authenticate you to your PilotRecognition wallet.
-                            </p>
+
+                        {/* How it works bullets */}
+                        <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '14px 16px', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            {[
+                                ['🛡', 'Replaces your password — no credentials to forget or leak'],
+                                ['✈️', 'Tied to your Pilot Identity Credential (PIC)'],
+                                ['🔒', 'No biometric data leaves your device — ever'],
+                            ].map(([icon, text]) => (
+                                <div key={text} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                                    <span style={{ fontSize: '14px', flexShrink: 0, marginTop: '1px' }}>{icon}</span>
+                                    <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 }}>{text}</span>
+                                </div>
+                            ))}
                         </div>
+
+                        {/* Browser prompt preview */}
+                        <p style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 10px' }}>Your browser will show one of these:</p>
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
+                            <img src="/PASS.png" alt="Safari passkey prompt" style={{ width: '50%', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }} />
+                            <img src="/CHROME.png" alt="Chrome passkey prompt" style={{ width: '50%', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }} />
+                        </div>
+
+                        {/* CTA */}
                         <button
                             onClick={async () => {
                                 setShowBiometricNotice(false);
@@ -2007,14 +2020,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         console.warn('⚠️ [Passkey] skipped:', pe?.name, pe?.message);
                                     }
                                 }
-                                setTimeout(() => onNavigate('platform'), 300);
+                                window.location.href = '/platform';
                             }}
-                            style={{ width: '100%', padding: '12px', borderRadius: '10px', border: 'none', background: '#0f172a', color: '#fff', fontSize: '14px', fontWeight: 700, cursor: 'pointer' }}
+                            style={{ width: '100%', padding: '14px', borderRadius: '12px', border: 'none', background: '#dc2626', color: '#fff', fontSize: '15px', fontWeight: 700, cursor: 'pointer', letterSpacing: '-0.01em' }}
                         >
-                            Got it — Continue
+                            Save Passkey &amp; Enter Platform →
                         </button>
-                        <p style={{ fontSize: '10px', color: '#94a3b8', textAlign: 'center', margin: '10px 0 0' }}>
-                            Covered under GDPR Art. 9 · Illinois BIPA · PDPA
+                        <button
+                            onClick={() => { setShowBiometricNotice(false); window.location.href = '/platform'; }}
+                            style={{ width: '100%', marginTop: '10px', padding: '11px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: 'rgba(255,255,255,0.35)', fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}
+                        >
+                            Skip for now — I'll save it later
+                        </button>
+                        <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', textAlign: 'center', margin: '12px 0 0' }}>
+                            GDPR Art. 9 · Illinois BIPA · PDPA · No biometric data stored server-side
                         </p>
                     </div>
                 </div>
@@ -2069,7 +2088,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 disabled={!recoveryCopied}
                                 onClick={() => {
                                     setShowPasskeyCancelled(false);
-                                    onNavigate('platform');
+                                    window.location.href = '/platform';
                                 }}
                                 style={{ flex: 1, padding: '11px', borderRadius: '10px', border: 'none', background: recoveryCopied ? '#dc2626' : 'rgba(255,255,255,0.05)', color: recoveryCopied ? '#fff' : 'rgba(255,255,255,0.2)', fontSize: '12px', fontWeight: 700, cursor: recoveryCopied ? 'pointer' : 'not-allowed', transition: 'all 0.2s' }}
                             >

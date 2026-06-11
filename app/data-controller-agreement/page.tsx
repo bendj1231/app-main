@@ -67,20 +67,23 @@ export default function DataControllerAgreementPage() {
             <div className="flex items-start gap-4">
               <span className="text-2xl font-black text-indigo-600 leading-none">2</span>
               <div className="flex-1">
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 2 — Cryptographic Isolation & Data Coupling</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 2 — The Recognition+ Verification & Subscription Flow</h2>
                 <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                  All personal data fields are encrypted <strong className="text-slate-800">at rest using AES-256-GCM</strong> within the Platform's
-                  Supabase-hosted PostgreSQL database. Data in transit is protected via TLS 1.3. The Platform issues and signs
-                  W3C Verifiable Credentials (VCs) under its <code>did:web:pilotrecognition.com</code> DID, which act as cryptographic
-                  access tickets for verified pilots. These VCs are stored both in the user's self-custodied wallet and retained
-                  server-side as signed records for revocation purposes.
+                  The Platform operates on a pure signal-and-response routing architecture. The processing flow is defined as follows:
                 </p>
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800">
-                  <strong>Data Hosting:</strong> The Platform stores structured user profile data, verification outcomes, and signed VC records
-                  in encrypted database environments. Raw scanned documents uploaded for verification are forwarded directly to the
-                  user-selected third-party verifier and are deleted from Platform infrastructure within 24 hours. The Platform
-                  does not have the technical ability to decrypt or read raw documents forwarded to external verifiers.
-                </div>
+                <ol className="space-y-2 mb-3">
+                  {[
+                    ['Document Upload', 'The Credential Custodian selects an approved regional verification provider and uploads all required medicals, licences, and logbooks directly to that provider\'s secure external portal. The Platform never touches or views these documents.'],
+                    ['Subscription Invoice Trigger & Fee Allocation', 'Upon secure notification from the provider that the document payload has been successfully received for auditing, the Platform activates the user\'s Recognition+ status and processes the $100/year subscription fee. This fee is immediately allocated across network infrastructure, payment processing overhead, and third-party audit reservations, rendering it subject to the structured refund provisions outlined in Article 6.'],
+                    ['The Status Signal', 'The verification provider transmits a detailed verification report directly to the pilot\'s email and simultaneously passes a binary all-clear verification signal to the Platform.'],
+                    ['VC Issuance', 'Upon receiving the all-clear confirmation, the Platform cryptographically signs the account with a Verifiable Credential (VC) badge, permitting the pilot to submit to premium career pathways on pilotcareerpathways.com.'],
+                  ].map(([title, detail], i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm">
+                      <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 font-bold flex items-center justify-center flex-shrink-0 mt-0.5 text-xs">{i + 1}</span>
+                      <span><strong className="text-slate-800">{title}:</strong> <span className="text-slate-600">{detail}</span></span>
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
           </section>
@@ -157,13 +160,13 @@ export default function DataControllerAgreementPage() {
             <div className="flex items-start gap-4">
               <span className="text-2xl font-black text-indigo-600 leading-none">6</span>
               <div className="flex-1">
-                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 6 — System Lifecycle & Data Subject Rights</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-2">Article 6 — Subscription Renewals, Cancellations & Audit Refunds</h2>
                 <p className="text-xs text-slate-500 mb-3">
                   Because data is bound to a decentralised credential, rights under GDPR Chapter III,
                   RA 10173 Sections 16–18, and UAE Federal Decree-Law No. 45/2021 Art. 14 are natively
                   integrated into the user interface for self-execution.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
                   {[
                     { right: 'Right to Erasure (Art. 17 GDPR)', detail: 'Triggers a permanent, unrecoverable purge of ciphertext rows from all database environments via the user dashboard.' },
                     { right: 'Right to Portability (Art. 20 GDPR)', detail: 'Natively fulfilled via portability of the W3C Verifiable Credential — exportable to any compatible SSI wallet framework.' },
@@ -176,6 +179,29 @@ export default function DataControllerAgreementPage() {
                       <p className="text-xs text-slate-600">{detail}</p>
                     </div>
                   ))}
+                </div>
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-3">
+                  <p className="text-amber-800 font-bold text-sm">Audit Non-Compliance — Failed Verification Fee Split</p>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    If the selected regional verification provider discovers structural issues, discrepancies, or safety non-compliance in the submitted documentation, a cryptographic VC badge will not be issued. In this event, the account will be temporarily downgraded and the user's processing case handled under the following remediation protocol:
+                  </p>
+                  <div className="space-y-2">
+                    <div className="bg-white border border-amber-200 rounded-xl p-3">
+                      <p className="font-bold text-slate-800 text-xs mb-1">1 — Financial Settlement</p>
+                      <p className="text-xs text-slate-600">The user will receive a <strong className="text-slate-800">65% refund ($65.00)</strong> of the initial subscription fee. The remaining 35% is permanently retained — 20% ($20.00) to the independent third-party verification provider for executing the document audit, and 15% ($15.00) to the Platform to cover non-recoverable payment processing gateway fees, administrative review time, and cryptographic network routing orchestration.</p>
+                    </div>
+                    <div className="bg-white border border-amber-200 rounded-xl p-3">
+                      <p className="font-bold text-slate-800 text-xs mb-1">2 — Diagnostic Report Delivery</p>
+                      <p className="text-xs text-slate-600">The Verification Controller will transmit a comprehensive audit discrepancy report directly to the pilot's secure email, explicitly outlining the precise licensing, medical, or logbook gaps that caused the non-compliance.</p>
+                    </div>
+                    <div className="bg-white border border-amber-200 rounded-xl p-3">
+                      <p className="font-bold text-slate-800 text-xs mb-1">3 — Resolution & Re-Application</p>
+                      <p className="text-xs text-slate-600">The Credential Custodian retains the right to resolve the identified discrepancies independently. Once the underlying compliance issues are rectified, the user may initiate a completely new verification round via <strong className="text-slate-700">pilotrecognition.com</strong>. Any subsequent round constitutes a fresh operational lifecycle and requires a new $100/year subscription activation.</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed border-t border-amber-200 pt-3">
+                    <strong className="text-slate-700">User Agreement to Third-Party Terms:</strong> By initiating the audit, the Credential Custodian explicitly acknowledges that the third-party verification provider's operational assessment is independent. The 35% aggregate retention fee applies the moment processing begins, regardless of whether the audit concludes with a pass, fail, or conditional flag.
+                  </p>
                 </div>
               </div>
             </div>

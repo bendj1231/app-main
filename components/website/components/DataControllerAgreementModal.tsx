@@ -47,7 +47,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         <ShieldCheck className="text-red-600" size={20} />
                         <div>
                             <p className="text-slate-900 font-bold text-sm tracking-tight">Data Controller Agreement</p>
-                            <p className="text-slate-400 text-xs">You are PIC of your data — PR-DCA-001 v1.7</p>
+                            <p className="text-slate-400 text-xs">You are PIC of your data — PR-DCA-001 v2.0</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="text-slate-400 hover:text-slate-900 transition-colors">
@@ -73,128 +73,112 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                     className="flex-1 overflow-y-auto px-6 py-5 text-slate-600 text-sm leading-relaxed space-y-5"
                     style={{ minHeight: 0 }}
                 >
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-xs text-amber-800 leading-relaxed mb-3">
-                        <strong>Entity Disclosure:</strong> This agreement is currently entered into with Benjamin Bowler as an individual entrepreneur pending the incorporation of Aviation Pathways Ltd in the Republic of Mauritius. All obligations of the Infrastructure Controller shall be novated to Aviation Pathways Ltd upon CBRD issuance of the Certificate of Incorporation. Until such novation occurs, Benjamin Bowler is the legal Infrastructure Controller and Data Controller.
-                    </div>
-
                     <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-500 leading-relaxed">
-                        <strong className="text-slate-700">Data Controller Agreement — Benjamin Bowler (pending Aviation Pathways Ltd)</strong><br />
-                        Document Reference: PR-DCA-001 · Version 1.7 · Effective: 02 June 2026<br />
-                        This instrument constitutes a binding infrastructure and data governance agreement between the Data Subject
-                        (the Registrant, hereinafter the <em>Credential Custodian</em>) and Benjamin Bowler (hereinafter the{' '}
-                        <em>Infrastructure Controller</em> or <em>the Platform</em>), pending novation to Aviation Pathways Ltd upon incorporation, effective immediately upon account creation in Terminal 1.
+                        <strong className="text-slate-700">Data Controller Agreement (Ref: PR-DCA-001 v3.0)</strong><br />
+                        Document Reference: PR-DCA-001 · Version 3.0 · Effective: 02 June 2026<br />
+                        This agreement is entered into by the Registrant (hereinafter the <strong className="text-slate-700">Credential Custodian</strong>) and the <strong className="text-slate-700">Promoters of Aviation Pathways Ltd</strong> (operating provisionally via registered sole trader consultancy infrastructure in the Republic of Mauritius, pending formal corporate novation immediately upon issuance of the Certificate of Incorporation).
                     </div>
 
-                    {/* 1 */}
+                    {/* Article 1 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 1 — Decentralized Credential Architecture & Roles</h3>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 1 — Decentralized Trust Architecture & Roles</h3>
                         <p className="mb-3 text-xs leading-relaxed">
-                            Pursuant to GDPR Art. 4(7), RA 10173 s.3(h), and UAE Federal Decree-Law No. 45/2021 Art. 1,
-                            this platform operates on a <strong className="text-black">Self-Sovereign Identity (SSI) framework using W3C Decentralized Identifiers (DIDs) and Verifiable Credentials (VCs)</strong>.
-                            Data processing roles within this ecosystem are strictly bifurcated across independent parties:
+                            This platform operates strictly as a cryptographic <strong className="text-black">Trust Broker</strong> using a Self-Sovereign Identity (SSI) framework with W3C Decentralized Identifiers (DIDs) and Verifiable Credentials (VCs). Applicable compliance frameworks: Mauritius Data Protection Act 2017 (DPA 2017), EU GDPR, and Philippines RA 10173.
                         </p>
                         <div className="space-y-2">
                             <div className="bg-white border border-slate-200 rounded-lg px-3 py-2">
-                                <p className="text-slate-800 font-bold text-xs mb-1">1. Infrastructure Controller (The Platform) — Benjamin Bowler (pending Aviation Pathways Ltd)</p>
-                                <p className="text-slate-500 text-xs">Benjamin Bowler, as individual entrepreneur pending incorporation of Aviation Pathways Ltd, acts as the <strong className="text-black">Independent Data Controller strictly for platform infrastructure, ecosystem routing, and gate governance</strong>. The Platform determines the purposes and means of processing only for: account creation, security session handling (Auth0), passkey synchronization, billing/payment orchestration, and the secure routing of encrypted API webhooks. The Platform operates as a zero-knowledge terminal — hosting only computationally infeasible ciphertext with zero technical or legal means to decrypt, read, or intercept raw credential payloads. All obligations hereunder shall novate to Aviation Pathways Ltd upon CBRD incorporation.</p>
+                                <p className="text-slate-800 font-bold text-xs mb-1">1. Infrastructure Controller — The Platform</p>
+                                <p className="text-slate-500 text-xs">Acts as an Independent Data Controller strictly for platform uptime, subscription billing orchestration, and ecosystem routing gates. The Platform does not collect, host, store, or parse raw pilot credentials.</p>
                             </div>
                             <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-                                <p className="text-red-700 font-bold text-xs mb-1">2. Credential Custodian — The Registrant</p>
-                                <p className="text-slate-500 text-xs">The Registrant natively holds, owns, and controls their master cryptographic identity credential via their local device hardware. The Registrant acts as the primary Data Controller of their personal identity records, determines the lifecycle of their data, and must explicitly initiate all verification and sharing pathways.</p>
+                                <p className="text-red-700 font-bold text-xs mb-1">2. Credential Custodian — You</p>
+                                <p className="text-slate-500 text-xs">You natively hold and control your own identity. You are the primary Data Controller of your personal records and must explicitly initiate all verification and sharing actions.</p>
                             </div>
                             <div className="bg-white border border-slate-200 rounded-lg px-3 py-2">
-                                <p className="text-slate-700 font-bold text-xs mb-1">3. Verification Controllers — Third-Party Verification Providers & Regional IDPs</p>
-                                <p className="text-slate-500 text-xs">When the Registrant initiates a verification flow to enter Terminal 3, they establish a direct, independent consent agreement with the selected third-party provider (e.g., Veremark Ltd.). These parties act as <strong className="text-black">Independent Data Controllers</strong> for the purpose of querying and verifying raw credential data against civil aviation authorities and ATOs. The Platform merely routes the user-directed transaction and accepts no liability for these external operations.</p>
+                                <p className="text-slate-700 font-bold text-xs mb-1">3. Verification Controllers — Regional Third-Party Providers</p>
+                                <p className="text-slate-500 text-xs">Independent entities (e.g., Veremark Ltd.) that you contract with directly under their independent Terms & Conditions to verify your physical documents. The Platform is not party to that relationship.</p>
                             </div>
                             <div className="bg-white border border-slate-200 rounded-lg px-3 py-2">
-                                <p className="text-slate-700 font-bold text-xs mb-1">4. Ecosystem Operators & Airlines — Destination Terminals</p>
-                                <p className="text-slate-500 text-xs">When the Registrant explicitly routes their profile to an operator lounge (Terminal 2) or an enterprise airline gate (Terminal 3), the receiving airline or operator assumes the role of an <strong className="text-black">Independent Data Controller</strong> the instant they access the data. The Platform acts solely as the connecting skybridge and accepts no liability for subsequent employer processing, hiring decisions, or data retention by the destination terminal.</p>
+                                <p className="text-slate-700 font-bold text-xs mb-1">4. Ecosystem Operators & Airlines</p>
+                                <p className="text-slate-500 text-xs">Third-party aviation entities that become independent Data Controllers the moment you explicitly route your verified badge to them.</p>
                             </div>
                         </div>
                     </section>
 
-                    {/* 2 */}
+                    {/* Article 2 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 2 — Cryptographic Isolation & Data Coupling</h3>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            All personal data fields are subjected to <strong className="text-black">client-side AES-256-GCM encryption</strong> before
-                            leaving the user's device. The resulting ciphertext is bound to the Credential Custodian's decentralized W3C credential.
-                            Any attempt by the Platform or underlying servers to alter the data structure would break the cryptographic signature,
-                            invalidating the credential. <strong className="text-black">The W3C VC standard — not the Platform — dictates data structure.</strong>
-                        </p>
-                        <p className="text-xs border border-amber-200 rounded-lg px-3 py-2 bg-amber-50 text-amber-800 leading-relaxed">
-                            <strong className="text-amber-900">Zero-Knowledge Hosting:</strong> While the Platform holds administrative access to the
-                            underlying cloud infrastructure accounts, the data stored within those environments exists solely as computationally infeasible ciphertext.
-                            The Platform lacks the technical ability to view, alter, parse, or mine any personal data without the Credential Custodian
-                            initiating an active, authenticated cryptographic session.
-                        </p>
-                    </section>
-
-                    {/* 3 */}
-                    <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 3 — Multi-Engine Storage Redundancy Configuration</h3>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            The Platform provides two isolated, independent database environments: the <strong className="text-black">Supabase Inc.</strong> infrastructure environment
-                            and the <strong className="text-black">Google LLC (Firebase)</strong> infrastructure environment (both listed as approved technical sub-processors in Article 9).
-                        </p>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            To ensure system availability and disaster recovery compliance under GDPR Article 32, the Platform provides a <strong className="text-black">"Multi-Engine" configuration</strong> enabling
-                            simultaneous active-active mirroring of encrypted ciphertext to both environments. The Credential Custodian retains absolute freedom of choice to select a single-engine
-                            or multi-engine configuration via their account settings.
-                        </p>
-                        <p className="text-xs border border-amber-200 rounded-lg px-3 py-2 bg-amber-50 text-amber-800 leading-relaxed">
-                            <strong className="text-amber-900">Operational Risk Notice:</strong> If the Credential Custodian manually de-selects the recommended Multi-Engine setup and elects a
-                            single-database configuration, they assume all operational risks regarding localized infrastructure vendor outages or downtime for that engine.
-                        </p>
-                    </section>
-
-                    {/* 4 */}
-                    <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 4 — User-Initiated Airspace & Routing Pathways</h3>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            <strong className="text-slate-900">The Platform does not select, mandate, or default the Credential Custodian to any specific employment or verification pipeline.</strong>{' '}
-                            The platform interface is divided into two distinct destination lanes:
-                        </p>
-                        <ul className="space-y-1.5 mb-2">
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 2 — The Recognition+ Verification & Subscription Flow</h3>
+                        <p className="mb-2 text-xs leading-relaxed text-slate-500">The Platform operates on a pure signal-and-response routing architecture. The processing flow is defined as follows:</p>
+                        <ol className="space-y-2">
                             {[
-                                ['Terminal 2 — The Open/Free Lounge', 'A pass-through corridor where the Credential Custodian may route unverified, self-declared digital resumes and logbooks to regional operators or flight schools. The Platform does not verify this cargo; the receiving operator assumes full Independent Controller status and sole verification liability upon receipt.'],
-                                ['Terminal 3 — The International Standards Zone', 'A premium, firewalled lounge restricted to candidates with fully verified compliance profiles. To open enterprise airline gates, the Credential Custodian must issue an explicit, paid instruction to launch a verification flight via Veremark Ltd. to poll designated civil aviation authorities and ATOs. The Platform never intercepts raw data; it receives only a cryptographically signed verification status displayed as an objective profile completeness index (Pilot Miles Score).'],
-                            ].map(([title, detail]) => (
-                                <li key={title} className="flex items-start gap-2 text-xs">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
+                                ['Document Upload', <>The Credential Custodian selects an approved regional verification provider via <span className="font-mono text-red-600">pilotrecognition.com</span> and uploads all required medicals, licences, and logbooks directly to that provider's secure external portal. <strong className="text-slate-700">The Platform never touches or views these documents.</strong></>],
+                                ['Subscription Invoice Trigger & Fee Allocation', 'Upon secure notification from the provider that the document payload has been successfully received for auditing, the Platform activates the user\'s Recognition+ status and processes the $100/year subscription fee. This fee is immediately allocated across network infrastructure, payment processing overhead, and third-party audit reservations, rendering it subject to the structured refund provisions outlined in Article 6.'],
+                                ['The Status Signal', 'The verification provider transmits a detailed verification report directly to the pilot\'s email and simultaneously passes a binary all-clear verification signal to the Platform.'],
+                                ['VC Issuance', <>Upon receiving the all-clear confirmation, the Platform cryptographically signs the account with a Verifiable Credential (VC) badge, permitting the pilot to submit to premium career pathways on <span className="font-mono text-red-600">pilotcareerpathways.com</span>.</>],
+                            ].map(([title, detail], i) => (
+                                <li key={i} className="flex items-start gap-2 text-xs">
+                                    <span className="w-4 h-4 rounded-full bg-red-100 text-red-600 font-bold flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px]">{i + 1}</span>
                                     <span><strong className="text-slate-800">{title}:</strong> <span className="text-slate-500">{detail}</span></span>
                                 </li>
                             ))}
-                        </ul>
+                        </ol>
                     </section>
 
-                    {/* 5 */}
+                    {/* Article 3 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 5 — Passkey & Credential Custody (The Passport Issuer)</h3>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            Private cryptographic keys are generated exclusively on the Credential Custodian's local device within its Trusted Platform Module (TPM) or Secure Enclave.
-                            Account access and key recovery are tethered to the user's federated ecosystem provider (Google Passkey & 2-Factor Authentication via Auth0).{' '}
-                            <strong className="text-slate-900">The Platform does not, at any point in the data lifecycle, have custody of, access to, or the ability to replicate or reset any private key material.</strong>
-                        </p>
-                        <p className="text-xs border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 text-slate-500 leading-relaxed">
-                            Google LLC acts as the Passport Issuer. If the Credential Custodian loses access to their federated Google account, recovery must be handled via the Issuer.
-                            The Platform cannot override a cryptographic lockout.
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 3 — Zero-Data Posture & Liabilities</h3>
+                        <p className="text-xs leading-relaxed border border-amber-200 rounded-lg px-3 py-2 bg-amber-50 text-amber-800">
+                            Because the Platform maintains a <strong className="text-amber-900">zero-data posture</strong> regarding raw aviation credentials, the Platform accepts no technical or legal liability for data breaches, leaks, or processing errors occurring within the networks of regional verification providers, civil aviation authorities, or destination airlines. All data subject rights regarding modification or deletion of raw verification documents must be executed directly with the respective third-party Verification Controller.
                         </p>
                     </section>
 
-                    {/* 6 */}
+                    {/* Article 4 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 6 — System Lifecycle & Data Subject Rights</h3>
-                        <p className="text-xs text-slate-400 mb-2">
-                            Rights under GDPR Chapter III, RA 10173 Sections 16–18, and UAE Federal Decree-Law No. 45/2021 Art. 14 are natively integrated into the user interface for self-execution.
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 4 — Domain Deployment & Routing Pathways</h3>
+                        <p className="mb-3 text-xs leading-relaxed text-slate-700">
+                            The Platform functions strictly as a professional networking infrastructure and strategic corporate advisory utility, and does not operate as a labor placement or recruitment agency. The architecture is split across two domains:
                         </p>
-                        <ul className="space-y-1.5">
+                        <div className="space-y-2">
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5">
+                                <p className="text-slate-800 font-bold text-xs mb-1">1. The Identity Layer — <span className="font-mono text-red-600">pilotrecognition.com</span></p>
+                                <p className="text-slate-500 text-xs leading-relaxed">The secure interface where you trigger regional verification requests, manage your subscription billing, and hold your issued cryptographic VC badges.</p>
+                            </div>
+                            <div className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5">
+                                <p className="text-slate-800 font-bold text-xs mb-1">2. The Routing Layer — <span className="font-mono text-red-600">pilotcareerpathways.com</span></p>
+                                <p className="text-slate-500 text-xs leading-relaxed mb-2">The network directory interface hosting career milestones and airline connection gates, divided into two compliance tiers:</p>
+                                <div className="space-y-1.5 pl-2 border-l-2 border-slate-200">
+                                    <div>
+                                        <p className="text-slate-700 font-semibold text-xs">Open Pathway Tier (Self-Declared)</p>
+                                        <p className="text-slate-500 text-xs leading-relaxed">A pass-through corridor for routing unverified, self-declared profiles to regional flight schools or operators. The receiving entity assumes full verification liability upon receipt.</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-slate-700 font-semibold text-xs">International Standards Tier (Verified Baseline)</p>
+                                        <p className="text-slate-500 text-xs leading-relaxed">A firewalled environment restricted to Recognition+ members holding a signed VC badge, allowing secure transmission of compliance status to premium international airlines and private charter companies.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Article 5 */}
+                    <section>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 5 — Passkey & Credential Custody</h3>
+                        <p className="text-xs leading-relaxed">
+                            Account access is secured via hardware-backed passkeys and federated authentication routers (Auth0). <strong className="text-slate-900">The Platform does not have custody of, access to, or the ability to replicate or reset any private cryptographic keys or master security credentials.</strong>
+                        </p>
+                    </section>
+
+                    {/* Article 6 */}
+                    <section>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 6 — Subscription Renewals, Cancellations & Audit Refunds</h3>
+                        <p className="mb-2 text-xs text-slate-500">Rights under the Mauritius Data Protection Act 2017 and GDPR are natively integrated for self-execution:</p>
+                        <ul className="space-y-1.5 mb-4">
                             {[
-                                ['Right to Erasure (Art. 17 GDPR)', 'Triggers a permanent, unrecoverable purge of ciphertext rows from all active database engines via the user dashboard.'],
-                                ['Right to Portability (Art. 20 GDPR)', 'Natively fulfilled via portability of the W3C Verifiable Credential — exportable to any compatible SSI wallet framework.'],
-                                ['Right of Access & Rectification', 'Real-time visibility and management of all data holdings through the user terminal interface.'],
-                                ['Right to Object (Art. 21 GDPR)', 'Withdrawal of consent for non-essential processing. Objection to essential processing results in account being placed on review or hold with non-refundable status.'],
-                                ['Right to Restriction (Art. 18 GDPR)', 'Suspension of active processing pending dispute resolution.'],
+                                ['Right to Erasure', 'Triggers a permanent deletion of your account footprint and subscription record from the routing database.'],
+                                ['Right to Portability', 'Fulfilled via the exportable nature of the W3C Verifiable Credential badge to any compatible external SSI wallet of your choice.'],
+                                ['Right of Access & Rectification', 'Real-time visibility and management of your account and subscription data via the user dashboard.'],
+                                ['Right to Object', 'Withdrawal of consent for non-essential processing at any time.'],
+                                ['Right to Restriction', 'Suspension of active processing pending dispute resolution.'],
                             ].map(([right, detail]) => (
                                 <li key={right} className="flex items-start gap-2 text-xs">
                                     <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
@@ -202,102 +186,52 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                                 </li>
                             ))}
                         </ul>
-                    </section>
-
-                    {/* 7 */}
-                    <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 7 — Infrastructure Liability Limitations</h3>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            The Platform accepts liability solely for the server-side uptime of its routing code, the baseline security configuration of its database layers,
-                            and the architectural correctness of its public credential verification registry.
-                        </p>
-                        <p className="text-xs leading-relaxed">
-                            The Platform explicitly accepts <strong className="text-slate-900">no liability</strong> for:
-                            (i) <strong className="text-slate-900">Infrastructure vendor breaches</strong> — global security incidents, data leaks, or outages originating within the separate networks of Supabase Inc. or Google LLC;
-                            (ii) <strong className="text-slate-900">Third-party verification & IDP failures</strong> — security incidents or compliance failures within the independent networks of the user-selected third-party verification provider, civil aviation authorities, or user-nominated ATOs;
-                            (iii) <strong className="text-slate-900">Employment actions</strong> — hiring decisions, data retention misconduct, or labour disputes arising after an airline or operator accesses a profile via Terminal 2 or Terminal 3.
-                        </p>
-                    </section>
-
-                    {/* 8 */}
-                    <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 8 — Mandatory Aviation Safety Registry Updates</h3>
-                        <p className="text-xs leading-relaxed">
-                            The Platform reserves the right to publish a technical revocation or suspension status flag on its <strong className="text-black">public verification registry</strong> upon receiving
-                            an authenticated, legally binding directive from a competent civil aviation authority (CAAP, GCAA, EASA, FAA, or equivalent).
-                            This is an automated aviation safety compliance obligation.{' '}
-                            <strong className="text-slate-900">It does not modify, decrypt, or alter the ciphertext stored within the Credential Custodian's private, zero-knowledge database environments.</strong>
-                        </p>
-                    </section>
-
-                    {/* 9 */}
-                    <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 9 — Mauritius Data Controller Registration</h3>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            <strong className="text-black">Benjamin Bowler</strong> (pending incorporation of Aviation Pathways Ltd) shall apply for registration as a Data Controller 
-                            with the Data Protection Office of Mauritius under the Data Protection Act 2017 upon CBRD issuance of the Certificate of Incorporation.
-                        </p>
-                        <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
-                            <div className="bg-green-50 border border-green-200 rounded p-2">
-                                <p className="font-bold text-green-800">Registration</p>
-                                <p className="text-slate-600">Data Protection Office, Mauritius</p>
-                            </div>
-                            <div className="bg-green-50 border border-green-200 rounded p-2">
-                                <p className="font-bold text-green-800">Annual Fee</p>
-                                <p className="text-slate-600">MUR 1,000 (~USD 22)</p>
-                            </div>
-                        </div>
-                        <p className="text-xs text-slate-500 leading-relaxed">
-                            This registration lawfully entitles the Platform to custody Verifiable Credentials (VCs) 
-                            on behalf of pilots with explicit consent for infrastructure custody.
-                        </p>
-                    </section>
-
-                    {/* 11 */}
-                    <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 11 — Approved Technical Sub-Processors (GDPR Art. 28(2))</h3>
-                        <p className="mb-2 text-xs text-slate-400 leading-relaxed">
-                            To maintain the core routing infrastructure, the Platform utilises the following technical sub-processors:
-                        </p>
-                        <div className="space-y-1.5 text-xs">
-                            {[
-                                ['Supabase Inc. / Google LLC (Firebase)', 'Distributed database infrastructure — hosting client-side AES-256-GCM ciphertext only.'],
-                                ['Auth0 by Okta Inc.', 'Identity federation and authentication routing — holds zero pilot profile payloads.'],
-                                ['walt.id GmbH', 'Digital identity framework — private key custody remains exclusively with the local device.'],
-                            ].map(([proc, role]) => (
-                                <div key={proc} className="flex gap-2 items-start border-b border-slate-100 pb-1.5 last:border-0">
-                                    <span className="text-red-600 font-semibold flex-shrink-0 w-44">{proc}</span>
-                                    <span className="text-slate-500">{role}</span>
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-3 space-y-2">
+                            <p className="text-amber-800 font-bold text-xs uppercase tracking-wide">Audit Non-Compliance — Failed Verification Fee Split</p>
+                            <p className="text-xs text-slate-600 leading-relaxed">
+                                If the selected regional verification provider discovers structural issues, discrepancies, or safety non-compliance in the submitted documentation, a cryptographic VC badge will not be issued. In this event, the account will be temporarily downgraded and the user's processing case handled under the following remediation protocol:
+                            </p>
+                            <div className="space-y-1.5">
+                                <div className="flex items-start gap-2 text-xs">
+                                    <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px]">1</span>
+                                    <span><strong className="text-slate-800">Financial Settlement:</strong> The user will receive a <strong className="text-slate-800">65% refund ($65.00)</strong>. The remaining 35% is permanently retained — 20% ($20.00) to the third-party verification provider for executing the audit, and 15% ($15.00) to the Platform for payment processing, administrative review, and network routing overhead.</span>
                                 </div>
-                            ))}
+                                <div className="flex items-start gap-2 text-xs">
+                                    <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px]">2</span>
+                                    <span><strong className="text-slate-800">Diagnostic Report Delivery:</strong> The Verification Controller will transmit a comprehensive audit discrepancy report directly to the pilot's secure email, explicitly outlining the precise licensing, medical, or logbook gaps that caused the non-compliance.</span>
+                                </div>
+                                <div className="flex items-start gap-2 text-xs">
+                                    <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-bold flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px]">3</span>
+                                    <span><strong className="text-slate-800">Resolution & Re-Application:</strong> The Credential Custodian retains the right to resolve the identified discrepancies independently. Once rectified, the user may initiate a completely new verification round via pilotrecognition.com. Any subsequent round constitutes a fresh operational lifecycle and requires a new $100/year subscription activation.</span>
+                                </div>
+                            </div>
+                            <p className="text-xs text-slate-500 leading-relaxed border-t border-amber-200 pt-2">
+                                <strong className="text-slate-700">User Agreement to Third-Party Terms:</strong> By initiating the audit, the Credential Custodian explicitly acknowledges that the third-party verification provider's operational assessment is independent. The 35% aggregate retention applies the moment processing begins, regardless of whether the audit concludes with a pass, fail, or conditional flag.
+                            </p>
                         </div>
                     </section>
 
-                    {/* 11 */}
+                    {/* Article 7 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 11 — B2B Co-Marketplace Agreements</h3>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 7 — Aviation Safety Registry</h3>
                         <p className="text-xs leading-relaxed">
-                            The Credential Custodian acknowledges that third-party digital logbook providers, flight schools, and operators may function as nodes within the platform network.
-                            Commercial transaction structures, gate-activation fees, or affiliation credits exchanged between the Platform and external entities
-                            (e.g., a 5% integration credit for verified logbook streams) are strictly <strong className="text-black">operational B2B infrastructure agreements</strong>.
-                            They do not grant third parties unauthorized access to the Credential Custodian's encrypted vault,
-                            nor do they bypass the user-directed presentation model.
+                            The Platform reserves the right to toggle a technical revocation flag on its public verification registry upon receiving an authenticated, legally binding directive from a competent civil aviation authority (CAAP, GCAA, EASA, FAA, or equivalent). <strong className="text-slate-900">This governs platform-side visibility only and does not access or alter any external third-party data records.</strong>
                         </p>
                     </section>
 
-                    {/* 12 */}
+                    {/* Article 8 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 12 — Age & Operational Gate Restrictions</h3>
-                        <p className="mb-2 text-xs leading-relaxed">
-                            Pursuant to international aviation standards and jurisdictional child privacy statutory rules — including GDPR Art. 8, Republic Act No. 10173 s.12 (Philippines), and UAE Federal Decree-Law No. 45/2021 Art. 6 — special operational constraints apply to legal minors (under 18 years of age) and holders of a Student Pilot License (or equivalent Student Pilot Authorization):
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 8 — Age & Operational Ecosystem Restrictions</h3>
+                        <p className="mb-2 text-xs leading-relaxed text-slate-500">
+                            Pursuant to the Mauritius DPA 2017, GDPR Art. 8, Republic Act No. 10173 (Philippines), special operational constraints apply to legal minors (under 18 years of age) and holders of a Student Pilot License:
                         </p>
                         <ul className="space-y-1.5">
                             {[
-                                ['View-Only Access', 'Minor and Student Pilot accounts are fully permitted to navigate Terminal 1, view available career pathways, and utilise logbook tracking infrastructure.'],
-                                ['Terminal 3 Firewall', 'Minor and Student Pilot accounts are structurally restricted from launching third-party verification flights or submitting profiles to premium international airline gates within Terminal 3.'],
-                                ['Terminal 2 Routing', 'Eligible Student Pilots may be routed to designated flight school lounges or cadet-track pathways within Terminal 2 that accept unverified or self-declared training data.'],
+                                ['View-Only Access', <>Minor and Student Pilot accounts may navigate the public tracking frameworks of <span className="font-mono text-red-600">pilotcareerpathways.com</span>, view career roadmaps, and use unverified logbook tracking tools.</>],
+                                ['Ecosystem Firewall', <>Accounts under 18 are structurally restricted from initiating third-party verification audits via <span className="font-mono text-red-600">pilotrecognition.com</span>, purchasing a Recognition+ subscription, or submitting credentials to premium international airline gates.</>],
+                                ['Open Pathway Routing', <>Eligible Student Pilots may route self-declared profiles exclusively to designated flight school lounges or cadet-track pathways within the unverified tiers of <span className="font-mono text-red-600">pilotcareerpathways.com</span>.</>],
                             ].map(([title, detail]) => (
-                                <li key={title} className="flex items-start gap-2 text-xs">
+                                <li key={title as string} className="flex items-start gap-2 text-xs">
                                     <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
                                     <span><strong className="text-slate-800">{title}:</strong> <span className="text-slate-500">{detail}</span></span>
                                 </li>
@@ -305,22 +239,22 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                         </ul>
                     </section>
 
-                    {/* 13 */}
+                    {/* Article 9 */}
                     <section>
-                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 13 — Governing Law & Dispute Resolution</h3>
+                        <h3 className="text-red-600 font-bold text-xs mb-2 uppercase tracking-widest">Article 9 — Governing Law & Dispute Resolution</h3>
                         <p className="text-xs leading-relaxed">
-                            This Agreement is governed by the laws of the <strong className="text-black">United Arab Emirates</strong>,
-                            with supplementary application of EU Regulation 2016/679 (GDPR) for EU/EEA residents
-                            and Republic Act No. 10173 for Philippine nationals or residents.
-                            Any dispute arising from this Agreement or its technical architecture shall be referred to and finally resolved
-                            by binding arbitration under the DIAC Arbitration Rules, with the administrative seat in Dubai, UAE.
-                            Data protection enquiries:{' '}
+                            This Agreement is governed by the laws of the <strong className="text-black">Republic of Mauritius</strong>, including the Data Protection Act 2017 and the Companies Act 2001. Any dispute shall be referred to and finally resolved by binding arbitration under the rules of the <strong className="text-black">MARC Arbitration Centre (Mauritius)</strong>, seat in Port Louis, Republic of Mauritius. Supplementary application of GDPR applies for EU/EEA residents and RA 10173 for Philippine nationals.{' '}
                             <span className="text-red-600">privacy@pilotrecognition.com</span>
                         </p>
                     </section>
 
+                    {/* Entity disclosure */}
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-xs text-amber-800 leading-relaxed">
+                        <strong>Entity Disclosure:</strong> This agreement is entered into with the Promoters of Aviation Pathways Ltd, operating provisionally via registered sole trader consultancy infrastructure in the Republic of Mauritius under the Companies Act 2001. All data controller rights, duties, and liabilities shall automatically transfer to Aviation Pathways Ltd upon CBRD issuance of its Certificate of Incorporation.
+                    </div>
+
                     <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-xs text-slate-400">
-                        <span>PR-DCA-001 v1.7 — 02 June 2026 — Benjamin Bowler (pending Aviation Pathways Ltd)</span>
+                        <span>PR-DCA-001 v3.0 — 02 June 2026 — Promoters of Aviation Pathways Ltd (pre-incorporation)</span>
                         <a href="/data-controller-agreement" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 underline transition-colors">
                             Full instrument ↗
                         </a>
@@ -329,13 +263,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
 
                 {/* Footer */}
                 <div className="px-6 py-4 border-t border-slate-200 flex-shrink-0 space-y-3 bg-white rounded-b-2xl">
-                    {!hasScrolledToBottom && (
-                        <p className="text-red-600 text-xs text-center font-medium">
-                            Please scroll to the bottom to read the full agreement before agreeing.
-                        </p>
-                    )}
-
-                    <label className={`flex items-start gap-3 cursor-pointer group ${!hasScrolledToBottom ? 'opacity-40 pointer-events-none' : ''}`}>
+                    <label className={`flex items-start gap-3 cursor-pointer group transition-opacity duration-300 ${!hasScrolledToBottom ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
                         <input
                             type="checkbox"
                             checked={agreed}
@@ -343,7 +271,7 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                             className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-white accent-red-600 cursor-pointer"
                         />
                         <span className="text-slate-600 text-xs leading-relaxed group-hover:text-slate-900 transition-colors">
-                            I agree to the Data Controller Agreement (Ref: PR-DCA-001, v1.7). By creating an account, I acknowledge that I am the Pilot in Command (PIC) and primary Data Controller of my personal identity records, utilizing the platform's self-sovereign cryptographic architecture. I explicitly instruct Benjamin Bowler (pending incorporation of Aviation Pathways Ltd), acting as my Infrastructure Controller and platform operator, to secure, host, and route my encrypted ciphertext according to the storage engine configuration (Single or Multi-Engine) and routing pathways I select.
+                            I agree to the Data Controller Agreement (Ref: PR-DCA-001). I acknowledge that I am the Pilot in Command (PIC) of my data, and I explicitly authorize the platform to secure, host, and route my encrypted records based on the pathways I select.
                         </span>
                     </label>
 
