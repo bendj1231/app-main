@@ -82,75 +82,96 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                 onLoginModalOpen={() => setIsLoginModalOpen(true)}
             />
 
-            {/* ── HERO ── */}
-            <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
-                {/* Background image stack */}
-                <div className="absolute inset-0">
-                    <img
-                        src={HERO_IMAGES[0]}
-                        alt="Aviation hero"
-                        className="w-full h-full object-cover"
-                    />
-                    {/* Deep gradient overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
+            {/* ── HERO — Rolex style ── */}
+            <section className="relative h-screen w-full overflow-hidden">
+
+                {/* Full-bleed image — the hero IS the image */}
+                <img
+                    src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=2400&q=90&fit=crop&crop=center"
+                    alt="Pilot in command"
+                    className="absolute inset-0 w-full h-full object-cover object-center"
+                    style={{ transform: 'scale(1.02)' }}
+                />
+
+                {/* Single, barely-there bottom vignette — lets text lift off the photo cleanly */}
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 38%, transparent 65%)',
+                    }}
+                />
+
+                {/* Brand mark — dead center top, Rolex-style */}
+                <div className="absolute top-0 left-0 right-0 flex justify-center pt-8 z-20 pointer-events-none">
+                    <p
+                        className="text-white/80 text-[10px] font-bold tracking-[0.45em] uppercase"
+                        style={{ letterSpacing: '0.45em' }}
+                    >
+                        Pilot Recognition &nbsp;·&nbsp; Verification
+                    </p>
                 </div>
 
-                {/* Floating image strip — top right */}
-                <div className="absolute top-24 right-0 hidden lg:flex flex-col gap-3 pr-8 z-10">
-                    <img
-                        src={HERO_IMAGES[1]}
-                        alt=""
-                        className="w-56 h-32 object-cover rounded-xl opacity-70 shadow-2xl"
-                    />
-                    <img
-                        src={HERO_IMAGES[2]}
-                        alt=""
-                        className="w-56 h-32 object-cover rounded-xl opacity-60 shadow-2xl"
-                    />
+                {/* Copy — bottom left, sparse, cinematic */}
+                <div className="absolute bottom-0 left-0 right-0 z-20 px-8 md:px-16 pb-20 md:pb-24">
+                    <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+
+                        {/* Headline — large, light weight, minimal */}
+                        <div>
+                            <h1
+                                className="text-white leading-[1.05] mb-5"
+                                style={{
+                                    fontSize: 'clamp(2.8rem, 6.5vw, 6rem)',
+                                    fontWeight: 300,
+                                    letterSpacing: '-0.02em',
+                                }}
+                            >
+                                Verification is<br />
+                                <em style={{ fontStyle: 'italic', fontWeight: 300 }}>the first step</em><br />
+                                to the industry.
+                            </h1>
+                            {/* Single understated CTA — all-caps, small, no border-radius */}
+                            <button
+                                onClick={onJoinUs}
+                                className="group flex items-center gap-3 text-white transition-all"
+                                style={{ letterSpacing: '0.18em' }}
+                            >
+                                <span className="text-[11px] font-semibold uppercase tracking-[0.18em]">Begin Verification</span>
+                                <span
+                                    className="block h-px bg-white transition-all duration-500"
+                                    style={{ width: '32px' }}
+                                    onMouseEnter={e => (e.currentTarget.style.width = '56px')}
+                                    onMouseLeave={e => (e.currentTarget.style.width = '32px')}
+                                />
+                            </button>
+                        </div>
+
+                        {/* Right side — one line caption */}
+                        <p
+                            className="text-white/45 text-sm leading-relaxed max-w-xs md:text-right hidden md:block"
+                            style={{ fontWeight: 300 }}
+                        >
+                            Connecting pilots to the aviation industry through a single, verified credential.
+                        </p>
+                    </div>
                 </div>
 
-                {/* Hero content */}
-                <div className="relative z-10 max-w-6xl mx-auto px-6 pb-24 pt-40 w-full">
-                    <p className="text-red-400 text-xs font-bold tracking-[0.3em] uppercase mb-5">
-                        pilotrecognition.com — verification unlocks pathways
-                    </p>
-                    <h1 className="text-5xl md:text-7xl font-black text-white leading-[1.0] mb-6 max-w-3xl">
-                        Verification is the<br />
-                        <span className="text-red-500">first step</span> to<br />
-                        the industry.
-                    </h1>
-                    <p className="text-white/60 text-lg leading-relaxed max-w-xl mb-10">
-                        We are connecting pilots to the aviation industry through a single verified identity credential — the universal key that opens airline gates, cargo routes, and operator pathways worldwide.
-                    </p>
-                    <div className="flex flex-wrap gap-4">
-                        <button
-                            onClick={onJoinUs}
-                            className="px-8 py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl transition-all text-sm tracking-wide shadow-lg shadow-red-600/30"
-                        >
-                            Start Verification →
-                        </button>
-                        <button
-                            onClick={() => onNavigate('recognition-plus')}
-                            className="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold rounded-xl transition-all text-sm tracking-wide backdrop-blur-sm"
-                        >
-                            View Recognition+
-                        </button>
+                {/* Scroll indicator — thin animated line, bottom center */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+                    <div className="w-px bg-white/20 overflow-hidden" style={{ height: '48px' }}>
+                        <div
+                            className="w-full bg-white/70"
+                            style={{
+                                height: '50%',
+                                animation: 'scrollLine 1.8s ease-in-out infinite',
+                            }}
+                        />
                     </div>
-
-                    {/* Stats strip */}
-                    <div className="flex flex-wrap gap-10 mt-16 pt-10 border-t border-white/10">
-                        {[
-                            ['3-Party Audit', 'Every credential independently verified'],
-                            ['W3C Standard', 'Cryptographically signed VC badge'],
-                            ['1 Verification', 'Opens every airline & operator gate'],
-                        ].map(([stat, label]) => (
-                            <div key={stat}>
-                                <p className="text-white font-black text-xl mb-1">{stat}</p>
-                                <p className="text-white/40 text-xs">{label}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <style>{`
+                        @keyframes scrollLine {
+                            0%   { transform: translateY(-100%); }
+                            100% { transform: translateY(200%); }
+                        }
+                    `}</style>
                 </div>
             </section>
 
