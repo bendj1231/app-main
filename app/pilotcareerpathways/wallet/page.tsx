@@ -1,21 +1,21 @@
 /**
- * pilotcareerpathways.com/wallet - Career Wallet for Job Applications
+ * pilotcareerpathways.com/verification-status — Pilot Verification Status
  * 
- * This page allows pilots to manage their verified credentials
- * and share them with airlines when applying to pathways.
+ * Displays the pilot's cryptographic verification status linked from pilotrecognition.com.
+ * Drives access to pathway tiers and airline gate matching.
  */
 
 'use client';
 
-import { PathwaysWalletPage } from '../../../components/domains/careerpathways/PathwaysWalletPage';
+import { VerificationStatusPage } from '../../../components/domains/careerpathways/VerificationStatusPage';
 import { DataCustodyExplainer } from '../../../components/website/components/DataCustodyExplainer';
 
 export const metadata = {
-  title: 'Verified Career Wallet | Pilot Career Pathways',
-  description: 'Exclusive verified pilot wallet for career pathways. Verification required.',
+  title: 'Verification Status | Pilot Career Pathways',
+  description: 'Your cryptographic verification status — powered by pilotrecognition.com. Unlocks pathway tiers and airline gate access.',
 };
 
-export default function WalletPage() {
+export default function VerificationStatusRoutePage() {
   // TODO: Wire up client-side auth check (useAuth hook + useNavigate)
   // Previously: server-side auth + redirect via Next.js
   const profile = { id: '', auth0_id: '' };
@@ -33,7 +33,7 @@ export default function WalletPage() {
               </div>
               <div>
                 <h1 className="text-slate-900 font-bold">Pilot Career Pathways</h1>
-                <p className="text-slate-500 text-sm">Verified Career Wallet</p>
+                <p className="text-slate-500 text-sm">Verification Status</p>
               </div>
             </div>
             <div className="hidden md:flex items-center gap-2 bg-cyan-50 px-3 py-1.5 rounded-lg border border-cyan-200">
@@ -45,7 +45,7 @@ export default function WalletPage() {
             <nav className="flex gap-4 text-sm">
               <a href="/" className="text-slate-600 hover:text-cyan-600">Pathways</a>
               <a href="/programs" className="text-slate-600 hover:text-cyan-600">Programs</a>
-              <a href="/wallet" className="text-cyan-600 font-medium">Wallet</a>
+              <a href="/verification-status" className="text-cyan-600 font-medium">Verification Status</a>
             </nav>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function WalletPage() {
               PR
             </div>
             <div>
-              <p className="text-slate-900 font-semibold">Pilot Wallet</p>
+              <p className="text-slate-900 font-semibold">Verification Status</p>
               <p className="text-slate-500 text-sm">powered by pilotrecognition.com</p>
             </div>
           </div>
@@ -82,11 +82,10 @@ export default function WalletPage() {
 
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-slate-900 mb-2">
-            Your Career Credentials
+            Your Verification Status
           </h2>
           <p className="text-slate-600 max-w-2xl">
-            Store your verified pilot credentials in your personal wallet. 
-            Share them instantly with airlines when applying to pathways — no repeated verification needed.
+            Your cryptographic verification status from pilotrecognition.com controls which pathway tiers and airline gates you can access on pilotcareerpathways.com.
           </p>
         </div>
 
@@ -104,7 +103,7 @@ export default function WalletPage() {
         </div>
 
         {profile ? (
-          <PathwaysWalletPage 
+          <VerificationStatusPage 
             auth0Id={profile.auth0_id || user.id} 
             profileId={profile.id} 
           />

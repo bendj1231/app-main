@@ -41,6 +41,7 @@ const navItems = [
     { name: 'About', target: 'about' },
     { name: 'Pathways', target: 'about_programs' },
     { name: 'Accreditation', target: 'accreditation' },
+    { name: 'Profile', target: 'profile' },
     { name: 'Contact', target: 'dashboard' },
 ];
 

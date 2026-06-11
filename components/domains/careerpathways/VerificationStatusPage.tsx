@@ -1,15 +1,15 @@
 /**
- * PathwaysWalletPage - Pilot Wallet for pilotcareerpathways.com
+ * VerificationStatusPage - Verification Status for pilotcareerpathways.com
  * 
- * Career-focused wallet that connects verified credentials to pathway applications.
- * Pilots can present their wallet to airlines when applying through pathways.
+ * Displays the pilot's cryptographic verification status and matched pathways.
+ * Pilots can present their verified status to airlines when applying through pathways.
  */
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../src/lib/supabase';
 import { issueAndStoreCredentialSelfHosted, getOrCreateClientWallet, getWalletCredentials } from '../../../src/lib/wallet';
 import { generateEnclaveKey, getEnclaveStatus } from '../../../lib/wallet/enclave';
-import { Wallet, Plane, Briefcase, Award, Share2, CheckCircle, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Plane, Briefcase, Award, Share2, CheckCircle, AlertCircle } from 'lucide-react';
 import { CookieConsent } from '../../../components/CookieConsent';
 
 interface PathwaysWalletPageProps {
@@ -26,7 +26,7 @@ interface PathwayMatch {
   missing: string[];
 }
 
-export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id, profileId }) => {
+export const VerificationStatusPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id, profileId }) => {
   const [walletState, setWalletState] = useState<'loading' | 'no-wallet' | 'ready'>('loading');
   const [did, setDid] = useState<string | null>(null);
   const [credentials, setCredentials] = useState<any[]>([]);
@@ -188,20 +188,19 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
         {!showSetup ? (
           <div className="text-center">
             <div className="bg-cyan-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Wallet className="w-8 h-8 text-cyan-600" />
+              <ShieldCheck className="w-8 h-8 text-cyan-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">
-              Create Your Career PIC
+              Set Up Verification Status
             </h2>
             <p className="text-slate-600 mb-6 max-w-md mx-auto">
-              Store your verified credentials and apply to airline pathways with one click. 
-              Your PIC proves your qualifications without repeated verification.
+              Link your verified credentials from pilotrecognition.com to unlock pathway access and airline gate matching.
             </p>
             <button
               onClick={() => setShowSetup(true)}
               className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium px-6 py-3 rounded-xl transition-colors"
             >
-              Setup PIC
+              Begin Verification
             </button>
           </div>
         ) : (
@@ -382,15 +381,15 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
 
   return (
     <div className="space-y-6">
-      {/* Wallet Header */}
+      {/* Verification Status Header */}
       <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="bg-cyan-100 p-3 rounded-xl">
-              <Wallet className="w-6 h-6 text-cyan-600" />
+              <ShieldCheck className="w-6 h-6 text-cyan-600" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-900">Career PIC</h2>
+              <h2 className="text-xl font-bold text-slate-900">Verification Status</h2>
               <p className="text-slate-500 text-sm">DID: {did?.slice(0, 25)}...</p>
             </div>
           </div>
@@ -405,7 +404,7 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
       <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h3 className="font-semibold text-slate-900">Your Data</h3>
+            <h3 className="font-semibold text-slate-900">Your Verification Data</h3>
             <p className="text-sm text-slate-500">Exercise your rights under GDPR Article 20 and Article 17.</p>
           </div>
           <div className="flex gap-3">
@@ -424,7 +423,7 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <Award className="w-5 h-5 text-cyan-600" />
-            <h3 className="font-semibold text-slate-900">Your Credentials</h3>
+            <h3 className="font-semibold text-slate-900">Verified Credentials</h3>
           </div>
 
           {credentials.length === 0 ? (
@@ -446,6 +445,7 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
                     <button
                       onClick={() => shareCredential(cred.id)}
                       className="text-cyan-600 hover:text-cyan-700"
+                      title="Share verification link"
                     >
                       <Share2 className="w-4 h-4" />
                     </button>
@@ -514,7 +514,7 @@ export const PathwaysWalletPage: React.FC<PathwaysWalletPageProps> = ({ auth0Id,
             <a href="/dpo" className="hover:text-cyan-600 transition-colors">DPO Contact</a>
           </div>
           <p className="text-xs text-slate-400">
-            pilotcareerpathways.com · A PilotRecognition Platform
+            pilotcareerpathways.com · Verification powered by pilotrecognition.com
           </p>
         </div>
       </div>

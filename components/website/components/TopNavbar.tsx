@@ -478,6 +478,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Your Profile', name: 'Pilot Insurance', target: '/pilot-insurance?section=loss-of-license', bullets: ['Loss of license cover', 'Life insurance', 'Disability coverage'] },
             ]
         },
+        { name: 'Profile', target: '/profile' },
         { name: 'Pricing', target: '/recognition-plus' },
         { name: 'Enterprise', target: '__enterprise_modal__', isOrange: true },
     ];
