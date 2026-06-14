@@ -335,6 +335,77 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
     }, [isSetup, user, isLoading]);
 
+    // ── Check profile existence after authentication and redirect accordingly ──
+    const [profileCheckComplete, setProfileCheckComplete] = useState(false);
+    const [profileExists, setProfileExists] = useState<boolean | null>(null);
+
+    // Check profile for Auth0 users
+    useEffect(() => {
+        if (!isSetup || (!isAuthenticated || !user) || profileCheckComplete) return;
+
+        const checkProfile = async () => {
+            const userId = user.sub;
+            console.log('[DEBUG][BecomeMember] Checking profile for Auth0 user:', userId);
+            const exists = await checkUserProfileExists(userId);
+            console.log('[DEBUG][BecomeMember] Profile exists:', exists);
+            setProfileExists(exists);
+            setProfileCheckComplete(true);
+        };
+
+        checkProfile();
+    }, [isSetup, isAuthenticated, user, profileCheckComplete]);
+
+    // Check profile for Supabase OAuth users (Google OAuth)
+    useEffect(() => {
+        if (!isSetup || !supabaseUser || profileCheckComplete) return;
+
+        const checkProfile = async () => {
+            const userId = supabaseUser.id;
+            console.log('[DEBUG][BecomeMember] Checking profile for Supabase user:', userId);
+            const exists = await checkUserProfileExists(userId);
+            console.log('[DEBUG][BecomeMember] Profile exists:', exists);
+            setProfileExists(exists);
+            setProfileCheckComplete(true);
+        };
+
+        checkProfile();
+    }, [isSetup, supabaseUser, profileCheckComplete]);
+
+    // Redirect based on profile existence
+    useEffect(() => {
+        if (!profileCheckComplete || !isSetup) return;
+
+        if (profileExists) {
+            console.log('[DEBUG][BecomeMember] Profile exists, redirecting to unified platform');
+            // Redirect to unified platform
+            window.location.href = 'https://platform.pilotrecognition.com/';
+        }
+        // If profile doesn't exist, stay on the page to complete onboarding
+    }, [profileCheckComplete, profileExists, isSetup]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const hideBrowserUi = () => {
+            if (window.scrollY <= 1) {
+                window.scrollTo(0, 1);
+            }
+        };
+
+        hideBrowserUi();
+        const timers = [250, 500, 1000, 2000].map((delay) =>
+            window.setTimeout(hideBrowserUi, delay)
+        );
+
+        window.addEventListener('resize', hideBrowserUi, { passive: true });
+        window.addEventListener('orientationchange', hideBrowserUi, { passive: true });
+
+        return () => {
+            timers.forEach(window.clearTimeout);
+            window.removeEventListener('resize', hideBrowserUi);
+            window.removeEventListener('orientationchange', hideBrowserUi);
+        };
+    }, []);
 
     // Issue verifiable credential via PilotRecognition issuer
     const issueFlightHoursCredential = async (hours: number, auth0Id: string) => {
@@ -690,7 +761,27 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         setShowDCAModal(true);
     };
 
-    const handleDCAAgree = () => {
+    // Check if user has an existing profile in the database
+    const checkUserProfileExists = async (userId: string): Promise<boolean> => {
+        try {
+            const regionalSupabase = getRegionalSupabaseClient('CAAP');
+            const { data, error } = await regionalSupabase
+                .from('profiles')
+                .select('id')
+                .eq('id', userId)
+                .maybeSingle();
+            if (error) {
+                console.error('Error checking profile:', error);
+                return false;
+            }
+            return !!data;
+        } catch (err) {
+            console.error('Error checking profile:', err);
+            return false;
+        }
+    };
+
+    const handleDCAAgree = async () => {
         setShowDCAModal(false);
         const method = pendingSignupMethod;
         setPendingSignupMethod(null);
@@ -718,6 +809,19 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
     // ── While session rehydrates (skip wait if returning from logbook sync) ─
     if (isSetup && (isLoading || supabaseSessionLoading) && !authTimedOut && !logbookSynced) {
+        return (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
+                <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
+
+    // ── While checking profile existence ─-
+    // For Auth0 users: check when authenticated
+    // For Supabase users: check when supabaseUser is set
+    // For authTimedOut case: check if supabaseUser exists (Google OAuth flow)
+    if (isSetup && !profileCheckComplete && ((isAuthenticated && user) || supabaseUser || (authTimedOut && !!supabaseUser))) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -1759,7 +1863,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     </button>
                 </div>
 
-                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden">
+                <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-12 lg:px-16 py-8 overflow-hidden" style={{ minHeight: 'calc(100vh + 1px)' }}>
                     <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-16">
 
                         {/* Left: Hero text */}

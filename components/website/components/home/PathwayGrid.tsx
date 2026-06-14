@@ -161,6 +161,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             icon: GraduationCap,
             badge: 'NEW',
             accentColor: 'from-amber-500/80 to-orange-400/80',
+            isLightMode: true,
         },
 
         {
@@ -171,6 +172,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             icon: Compass,
             badge: 'NEW',
             accentColor: 'from-violet-500/80 to-purple-400/80',
+            isLightMode: true,
         },
         {
             id: 'pathways',
@@ -178,6 +180,7 @@ const getViewCards = (isLoggedIn: boolean, isEnrolledInFoundation: boolean = fal
             title: 'Discover Career Pathways',
             subtitle: 'Hiring and career opportunities posted by operators — flight schools, manufacturers, and mainline airlines — searched daily by verified pilots.',
             icon: ShoppingBag,
+            isLightMode: true,
             badge: 'NEW',
             accentColor: 'from-rose-500/80 to-pink-400/80',
         },
@@ -2070,7 +2073,7 @@ const GridCard: React.FC<GridCardProps> = ({
                         {currentImageIndex === 0 ? 'NOW OPEN' : currentImageIndex === 1 ? 'DISCOVER' : ''}
                     </div>
                 ) : (card.id === 'pathways' || card.id === 'pilot-recognition' || card.id === 'programs') ? (
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-[#ff9f1c] text-black text-xs font-bold uppercase tracking-wider">
+                    <div className={`absolute top-4 right-4 px-3 py-1 text-xs font-bold uppercase tracking-wider ${card.isLightMode ? 'bg-slate-200 text-slate-700' : 'bg-[#ff9f1c] text-black'}`}>
                         NEW
                     </div>
                 ) : (isEnrolledInFoundation ? card.enrolledBadge : card.badge) && (
@@ -2135,7 +2138,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                         }
                                     }}
                                     aria-label="Open external"
-                                    className={`absolute bottom-2 right-2 p-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all`}
+                                    className={`absolute bottom-2 right-2 p-2 rounded-full backdrop-blur-sm transition-all ${card.isLightMode ? 'bg-slate-200/50 border border-slate-300 text-slate-700 hover:bg-slate-300/50' : 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20'}`}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h6" />
@@ -2180,19 +2183,19 @@ const GridCard: React.FC<GridCardProps> = ({
                         <div className={`
                             relative
                             px-3 py-1.5 pr-10 md:px-4 md:py-2 md:pr-12 transition-all duration-300
-                            ${isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'}
+                            ${card.isLightMode ? 'bg-white border-t border-slate-200' : isMsfsSelected ? 'bg-[#00b4d8]' : 'bg-[#111827]'}
                         `}>
                             {/* Blue accent line at top */}
-                            <div className={`absolute top-0 left-0 w-10 h-[2px] ${isMsfsSelected ? 'bg-white' : 'bg-[#00b4d8]'}`} />
+                            <div className={`absolute top-0 left-0 w-10 h-[2px] ${card.isLightMode ? 'bg-slate-400' : isMsfsSelected ? 'bg-white' : 'bg-[#00b4d8]'}`} />
                             <div className="flex items-center gap-2">
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-1 mb-0.5">
-                                        <span className={`text-[10px] md:text-xs font-bold ${isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
-                                        <h3 className="font-bold text-white text-xs md:text-sm truncate uppercase tracking-wider">
+                                        <span className={`text-[10px] md:text-xs font-bold ${card.isLightMode ? 'text-slate-700' : isMsfsSelected ? 'text-white' : 'text-white/80'}`}>&#8811;</span>
+                                        <h3 className={`font-bold text-xs md:text-sm truncate uppercase tracking-wider ${card.isLightMode ? 'text-slate-900' : 'text-white'}`}>
                                             {displayTitle}
                                         </h3>
                                     </div>
-                                    <p className={`text-[9px] md:text-[10px] line-clamp-3 leading-tight ${isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
+                                    <p className={`text-[9px] md:text-[10px] line-clamp-3 leading-tight ${card.isLightMode ? 'text-slate-600' : isMsfsSelected ? 'text-white/85' : 'text-slate-300'}`}>
                                         {finalDisplaySubtitle}
                                     </p>
                                 </div>
@@ -2211,7 +2214,7 @@ const GridCard: React.FC<GridCardProps> = ({
                                             }
                                         }}
                                         aria-label="Open external"
-                                        className="ml-2 flex-none p-2 rounded-full bg-white/8 backdrop-blur-sm border border-white/10 text-white hover:bg-white/20 transition-all"
+                                        className={`ml-2 flex-none p-2 rounded-full backdrop-blur-sm transition-all ${card.isLightMode ? 'bg-slate-200/50 border border-slate-300 text-slate-700 hover:bg-slate-300/50' : 'bg-white/8 backdrop-blur-sm border border-white/10 text-white hover:bg-white/20'}`}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h6" />

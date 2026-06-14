@@ -39,14 +39,14 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
     return (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-            <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="relative w-full max-w-2xl bg-white border border-slate-200 shadow-2xl flex flex-col max-h-[90vh]">
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 flex-shrink-0">
                     <div className="flex items-center gap-3">
                         <ShieldCheck className="text-red-600" size={20} />
                         <div>
-                            <p className="text-slate-900 font-bold text-sm tracking-tight">Data Controller Agreement</p>
+                            <p className="text-slate-900 font-bold text-sm tracking-tight">Terms and Conditions</p>
                             <p className="text-slate-400 text-xs">You are PIC of your data — PR-DCA-001 v2.0</p>
                         </div>
                     </div>
@@ -262,25 +262,25 @@ export const DataControllerAgreementModal: React.FC<DataControllerAgreementModal
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-slate-200 flex-shrink-0 space-y-3 bg-white rounded-b-2xl">
+                <div className="px-6 py-4 border-t border-slate-200 flex-shrink-0 space-y-3 bg-white">
                     <label className={`flex items-start gap-3 cursor-pointer group transition-opacity duration-300 ${!hasScrolledToBottom ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
                         <input
                             type="checkbox"
                             checked={agreed}
                             onChange={e => setAgreed(e.target.checked)}
-                            className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-white accent-red-600 cursor-pointer"
+                            className="mt-0.5 w-4 h-4 border-slate-300 bg-white accent-red-600 cursor-pointer"
                         />
                         <span className="text-slate-600 text-xs leading-relaxed group-hover:text-slate-900 transition-colors">
-                            I agree to the Data Controller Agreement (Ref: PR-DCA-001). I acknowledge that I am the Pilot in Command (PIC) of my data, and I explicitly authorize the platform to secure, host, and route my encrypted records based on the pathways I select.
+                            I agree to the Terms and Conditions. I acknowledge that I am the Pilot in Command (PIC) of my data, and I explicitly authorize the platform to secure, host, and route my encrypted records based on the pathways I select.
                         </span>
                     </label>
 
                     <button
                         onClick={onAgree}
                         disabled={!agreed || !hasScrolledToBottom}
-                        className="w-full py-3 rounded-xl font-bold text-sm tracking-wide transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow-red-200 hover:shadow-lg"
+                        className="w-full py-3 font-bold text-sm tracking-wide transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow-red-200 hover:shadow-lg"
                     >
-                        Clear for Departure — Create My Account
+                        ACCEPT Terms and Conditions
                     </button>
                 </div>
             </div>

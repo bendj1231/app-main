@@ -665,6 +665,8 @@ export const AppRoutes = () => {
     searchParams.get('shortage') ||
     searchParams.get('wallet') ||
     searchParams.get('domain');
+  const isLocalOnboardingPath =
+    isLocalhost && window.location.pathname.startsWith('/become-member');
 
   if (isLocalhost && !hasDomainParam && window.location.pathname === '/') {
     return (
@@ -756,8 +758,12 @@ export const AppRoutes = () => {
 
   // Domain routing for careerpathways.pilotrecognition.com or pilotcareerpathways.com
   // NOTE: Using careerPathwaysMode state which is updated by useEffect on location change
+  const isAuthCallbackPath = ['/callback', '/auth/callback', '/auth/logbook/callback'].includes(
+    window.location.pathname
+  );
+  const shouldRenderCareerPathways = careerPathwaysMode && !isLocalOnboardingPath && !isAuthCallbackPath;
 
-  if (careerPathwaysMode) {
+  if (shouldRenderCareerPathways) {
     return (
       <Suspense fallback={<CareerPathwaysLoadingFallback />}>
         <CareerPathwaysApp onLogin={() => setIsLoginModalOpen(true)} />
@@ -1505,6 +1511,7 @@ export const AppRoutes = () => {
         <Route path="/learn-about" element={<LearnAboutPage />} />
         <Route path="/general" element={<GeneralPage />} />
         <Route path="/professional-profile" element={<ProfessionalProfilePage />} />
+        <Route path="/profile" element={<Navigate to="/professional-profile" replace />} />
         <Route path="/background-check" element={<BackgroundCheckPage />} />
         <Route path="/pilot-insurance" element={<PilotInsurancePage />} />
         <Route path="/banking-finance" element={<BankingFinancePage />} />

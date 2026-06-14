@@ -171,7 +171,7 @@ export const RecommendedPathwaysDynamic: React.FC<RecommendedPathwaysDynamicProp
             desc: "Preparing pilots for the emerging eVTOL and Urban Air Mobility (UAM) sectors.",
             target: "emerging-air-taxi",
             icon: TrendingUp,
-            color: "text-purple-600",
+            color: "text-white",
             bg: "bg-purple-50"
         },
         {
@@ -179,7 +179,7 @@ export const RecommendedPathwaysDynamic: React.FC<RecommendedPathwaysDynamicProp
             desc: "Direct links to private jet operators and specialized business aviation training.",
             target: "private-charter-pathways",
             icon: Briefcase,
-            color: "text-amber-600",
+            color: "text-white",
             bg: "bg-amber-50"
         },
         {
@@ -187,7 +187,7 @@ export const RecommendedPathwaysDynamic: React.FC<RecommendedPathwaysDynamicProp
             desc: "Supply chain resilience and heavy logistics for the global feeder network.",
             target: "about_programs",
             icon: Plane,
-            color: "text-zinc-600",
+            color: "text-white",
             bg: "bg-zinc-50"
         }
     ];

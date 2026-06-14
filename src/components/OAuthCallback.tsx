@@ -86,7 +86,7 @@ export const OAuthCallback = () => {
             dbg.push({ ts: Date.now(), step: 'oauth_redirect', target, supabaseUid: session?.user?.id || null });
             sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
           } catch {}
-          navigate(target);
+          navigate(target, { replace: true });
         } else if (!existing.display_name) {
           // Profile exists but setup not completed
           setProfileCreated(true);
@@ -97,7 +97,7 @@ export const OAuthCallback = () => {
             dbg.push({ ts: Date.now(), step: 'oauth_redirect_missing_display_name', target, existing });
             sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
           } catch {}
-          navigate(target);
+          navigate(target, { replace: true });
         } else {
           setProfileCreated(true);
           const target = isPilotTerminal ? '/' : isCareerPathways ? '/' : '/platform';
@@ -107,7 +107,7 @@ export const OAuthCallback = () => {
             sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
           } catch {}
           // Redirect: pilotterminal -> home, careerpathways -> home (pathways page), otherwise -> platform
-          navigate(target);
+          navigate(target, { replace: true });
         }
       } catch (err) {
         console.error('Profile creation error:', err);

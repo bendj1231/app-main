@@ -410,7 +410,7 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
             </div>
 
             {/* ── CTA ── */}
-            <div className="relative z-30 w-full px-4 md:px-8 py-10">
+            <div className="relative z-30 w-full px-4 md:px-8 py-10 bg-white border-t border-slate-100">
                 <div className="max-w-7xl mx-auto">
                     <div className="relative overflow-hidden shadow-xl rounded-2xl" style={{ backgroundColor: '#0d1b3e' }}>
                         <div className="absolute inset-0 hidden md:block">
@@ -450,6 +450,48 @@ const WhatIsPilotRecognitionPage: React.FC<WhatIsPilotRecognitionPageProps> = ({
                     </div>
                 </div>
             </div>
+
+            {/* ── FOOTER ── */}
+            <footer className="relative z-10 mt-auto bg-slate-900 text-white py-12 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-4 gap-8 mb-8">
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">PilotRecognition</h3>
+                            <p className="text-slate-400 text-sm">The Aviation Industry's First Pilot Recognition-Based Platform</p>
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">Platform</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><button onClick={() => onNavigate('recognition-plus')} className="hover:text-white cursor-pointer transition-colors text-left">Pilot Recognition</button></li>
+                                <li><button onClick={() => onNavigate('recognition-career-matches')} className="hover:text-white cursor-pointer transition-colors text-left">Pathways</button></li>
+                                <li><button onClick={() => onNavigate('programs')} className="hover:text-white cursor-pointer transition-colors text-left">Programs</button></li>
+                                <li><button onClick={() => onNavigate('airline-expectations')} className="hover:text-white cursor-pointer transition-colors text-left">Airline Expectations</button></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">Programs</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><button onClick={() => onNavigate('foundational-program')} className="hover:text-white cursor-pointer transition-colors text-left">Foundation Program</button></li>
+                                <li><button onClick={() => onNavigate('transition-program')} className="hover:text-white cursor-pointer transition-colors text-left">Transition Program</button></li>
+                                <li><button onClick={() => onNavigate('airbus-aligned-ebt-cbta-programs')} className="hover:text-white cursor-pointer transition-colors text-left">EBT CBTA</button></li>
+                                <li><button onClick={() => onNavigate('become-member')} className="hover:text-white cursor-pointer transition-colors text-left">Become a Member</button></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-lg mb-4">Legal</h3>
+                            <ul className="space-y-2 text-slate-400 text-sm">
+                                <li><button onClick={() => onNavigate('privacy-policy')} className="hover:text-white cursor-pointer transition-colors text-left">Privacy Policy</button></li>
+                                <li><button onClick={() => onNavigate('terms-of-service')} className="hover:text-white cursor-pointer transition-colors text-left">Terms of Service</button></li>
+                                <li><button onClick={() => onNavigate('cookie-policy')} className="hover:text-white cursor-pointer transition-colors text-left">Cookie Policy</button></li>
+                                <li><a href="mailto:contact@pilotrecognition.com" className="hover:text-white cursor-pointer transition-colors">contact@pilotrecognition.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="border-t border-slate-800 pt-8 text-center text-slate-400 text-sm">
+                        <p>&copy; 2024 PilotRecognition — Benjamin Bowler (pending Aviation Pathways Ltd). All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
 
             <LoginModal
                 isOpen={isLoginModalOpen}

@@ -451,7 +451,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         {
-            name: 'For Pilots',
+            name: 'Pathways',
             target: '/programs',
             subItems: [
                 { category: 'Core Programs', name: 'Foundational Program', target: '/foundational-program', bullets: ['20HR Guided Mentorship', 'Pilot Profile Build', 'Global Talent Registry'] },
@@ -463,7 +463,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
             ]
         },
         {
-            name: 'Verify',
+            name: 'Verification',
             target: pilotRecognitionTarget,
             subItems: [
                 { category: 'Learn About', name: 'What is Pilot Recognition?', target: '/learn-about?section=what-is-recognition', bullets: ['Platform overview', 'How it works', 'Why pilots need it'] },
@@ -478,7 +478,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 { category: 'Your Profile', name: 'Pilot Insurance', target: '/pilot-insurance?section=loss-of-license', bullets: ['Loss of license cover', 'Life insurance', 'Disability coverage'] },
             ]
         },
-        { name: 'Profile', target: '/profile' },
+        { name: 'Compliance', target: 'profile' },
         { name: 'Pricing', target: '/recognition-plus' },
         { name: 'Enterprise', target: '__enterprise_modal__', isOrange: true },
     ];
