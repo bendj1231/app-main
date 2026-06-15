@@ -749,20 +749,20 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
     }, [currentViewIndex, isAnimating]);
 
     const goToNext = useCallback(() => {
-        if (isAnimating) return;
+        if (isAnimating || currentViewIndex === 0) return;
         setIsAnimating(true);
         setDirection(1);
         setCurrentViewIndex((prev) => (prev + 1) % viewKeys.length);
         setTimeout(() => setIsAnimating(false), 500);
-    }, [isAnimating, viewKeys.length]);
+    }, [isAnimating, viewKeys.length, currentViewIndex]);
 
     const goToPrevious = useCallback(() => {
-        if (isAnimating) return;
+        if (isAnimating || currentViewIndex === 0) return;
         setIsAnimating(true);
         setDirection(-1);
         setCurrentViewIndex((prev) => (prev - 1 + viewKeys.length) % viewKeys.length);
         setTimeout(() => setIsAnimating(false), 500);
-    }, [isAnimating, viewKeys.length]);
+    }, [isAnimating, viewKeys.length, currentViewIndex]);
 
     useEffect(() => {
         const element = gridInteractionRef.current;
@@ -776,6 +776,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         };
 
         const handleTouchMove = (e: TouchEvent) => {
+            if (currentViewIndex === 0) return; // allow native scroll on home
             if (e.touches.length < 1 || touchStartXRef.current === null || touchStartYRef.current === null) return;
 
             touchCurrentXRef.current = e.touches[0].clientX;
@@ -788,6 +789,12 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         };
 
         const handleTouchEnd = () => {
+            if (currentViewIndex === 0) {
+                touchStartXRef.current = null;
+                touchStartYRef.current = null;
+                touchCurrentXRef.current = null;
+                return;
+            }
             const startX = touchStartXRef.current;
             const endX = touchCurrentXRef.current;
             if (startX === null || endX === null) return;
@@ -813,6 +820,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         };
 
         const handleWheel = (e: WheelEvent) => {
+            if (currentViewIndex === 0) return; // allow native scroll on home
             const horizontalDelta = Math.abs(e.deltaX);
             const verticalDelta = Math.abs(e.deltaY);
             const dominantDelta = e.shiftKey ? e.deltaY : e.deltaX;
@@ -852,10 +860,11 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
             element.removeEventListener('touchcancel', handleTouchCancel, true);
             element.removeEventListener('wheel', handleWheel, true);
         };
-    }, [goToNext, goToPrevious]);
+    }, [goToNext, goToPrevious, currentViewIndex]);
 
     useEffect(() => {
         const handleWindowWheel = (e: WheelEvent) => {
+            if (currentViewIndex === 0) return; // allow native scroll on home
             if (!isGridHoveredRef.current) return;
 
             const horizontalDelta = Math.abs(e.deltaX);
@@ -889,7 +898,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
         return () => {
             window.removeEventListener('wheel', handleWindowWheel, true);
         };
-    }, [goToNext, goToPrevious]);
+    }, [goToNext, goToPrevious, currentViewIndex]);
 
     const handleGridMouseEnter = useCallback(() => {
         isGridHoveredRef.current = true;
