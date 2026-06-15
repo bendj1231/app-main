@@ -1678,16 +1678,18 @@ const GridCard: React.FC<GridCardProps> = ({
             ? card.loggedInImage
             : card.image;
 
-    // For discover card, respect the isCarouselWhenLoggedIn flag
-    const shouldUseCarousel = (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn)
+    // Disable carousel entirely on the home page — show static cards only
+    const shouldUseCarousel = currentViewKey === 'home'
         ? false
-        : (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn)
-            ? !!carouselImages
-            : shouldUseLoggedInCarousel
+        : (card.id === 'discover' && isLoggedIn && !card.isCarouselWhenLoggedIn)
+            ? false
+            : (card.id === 'discover' && isLoggedIn && !isEnrolledInFoundation && card.isCarouselWhenLoggedIn)
                 ? !!carouselImages
-                : shouldUseEnrolledCarousel
+                : shouldUseLoggedInCarousel
                     ? !!carouselImages
-                    : card.isCarousel && card.images;
+                    : shouldUseEnrolledCarousel
+                        ? !!carouselImages
+                        : card.isCarousel && card.images;
 
     // Auto-rotate carousel images
     useEffect(() => {
@@ -2152,7 +2154,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 )}
 
                 {/* Glassy Arrows for carousel cards */}
-                {card.hasArrows && card.images && card.images.length > 1 && (
+                {card.hasArrows && shouldUseCarousel && card.images && card.images.length > 1 && (
                     <>
                         {/* Left Arrow */}
                         <button
@@ -2235,7 +2237,7 @@ const GridCard: React.FC<GridCardProps> = ({
                 `} />
 
                 {/* Carousel Indicator Bar - Segmented Bar (At Bottom of Card) */}
-                {card.hasArrows && card.images && card.images.length > 1 && (
+                {card.hasArrows && shouldUseCarousel && card.images && card.images.length > 1 && (
                     <div className="absolute bottom-0 left-0 right-0 z-30 flex gap-1 px-3 py-2">
                         {card.images.map((_, index) => (
                             <div
