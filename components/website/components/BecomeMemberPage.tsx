@@ -271,7 +271,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [showPasskeyCancelled, setShowPasskeyCancelled] = useState(false);
     const [backupRecoveryKey, setBackupRecoveryKey] = useState('');
     const [recoveryCopied, setRecoveryCopied] = useState(false);
-    const [activeInstrument, setActiveInstrument] = useState(1);
+    const [setupStage, setSetupStage] = useState(1);
     const [showWalletFirst, setShowWalletFirst] = useState(false);
     const [walletStorageChoice, setWalletStorageChoice] = useState<string>('both');
     const [showWalletStorage, setShowWalletStorage] = useState(false);
@@ -468,7 +468,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setSelectedWallet(savedWallet);
             // Unlock Commit card if we have logbook + wallet
             if (logbookSynced || sessionStorage.getItem('mfb_total_hours')) {
-                setActiveInstrument(6);
+                setSetupStage(3);
             }
         }
 
@@ -479,9 +479,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             setSelectedProvider(mfbProvider);
             setProviderConnected(true);
 
-            // If returning from logbook OAuth, land on Wallet step (4)
+            // If returning from logbook OAuth, land on Stage 3 (Hours + PIC)
             if (logbookSynced) {
-                setActiveInstrument(4);
+                setSetupStage(3);
             }
 
             const vcUrl = sessionStorage.getItem('vc_credential_offer_url');
@@ -861,7 +861,23 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         {/* Unified Profile Card */}
                         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ maxWidth: '720px', margin: '0 auto' }}>
                             <div className="p-6 md:p-8">
+                                {/* Stage indicator */}
+                                <div className="mb-6">
+                                    <div className="flex gap-2 mb-3">
+                                        {[1, 2, 3].map(s => (
+                                            <div key={s} className={`flex-1 h-1.5 rounded-full transition-all duration-300 ${setupStage >= s ? 'bg-red-500' : 'bg-slate-200'}`} />
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Step {setupStage} of 3</span>
+                                        <span className="text-xs font-medium text-slate-400">
+                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : 'Flight Hours & PIC'}
+                                        </span>
+                                    </div>
+                                </div>
 
+                                {setupStage === 1 && (
+                                <>
                                 {/* ── SECTION 1: Identity ── */}
                                 <div className="border-b border-slate-200 pb-6 mb-6">
                                     <h3 className="text-lg font-bold text-slate-900 mb-4">Identity</h3>
@@ -910,7 +926,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         </div>
                                     </div>
                                 </div>{/* end Section 1 */}
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                </div>
+                                </>
+                                )}
 
+                                {setupStage === 2 && (
+                                <>
                                 {/* ── SECTION 2: Classification ── */}
                                 <div className="border-b border-slate-200 pb-6 mb-6">
 
@@ -925,7 +948,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             className="fic-select"
                                             value={occupation}
                                             onChange={e => setOccupation(e.target.value)}
-                                            disabled={activeInstrument < 2}
+                                            
                                             style={{ colorScheme: 'light' }}
                                         >
                                             <option value="" disabled>Select current licence tier...</option>
@@ -951,7 +974,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             className="fic-select"
                                             value={issuingAuthority}
                                             onChange={e => setIssuingAuthority(e.target.value)}
-                                            disabled={activeInstrument < 2}
+                                            
                                             style={{ colorScheme: 'light' }}
                                         >
                                             <option value="" disabled>Select issuing authority...</option>
@@ -1089,7 +1112,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                         }
                                                     }}
                                                     placeholder="e.g. A320, B737, ATR72 — press Enter"
-                                                    disabled={activeInstrument < 2}
+                                                    
                                                     style={{ flex: 1 }}
                                                 />
                                                 <button
@@ -1138,16 +1161,24 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Licence tier and operational capabilities are <strong>client-side encrypted</strong> before cloud routing under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
                                 </div>
                                 </div>{/* end Section 2 */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(1)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(3)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                </div>
+                                </>
+                                )}
 
+                                {setupStage === 3 && (
+                                <>
                                 {/* ── SECTION 3: Flight Hours & Logbook ── */}
                                 <div className="border-b border-slate-200 pb-6 mb-6">
                                     <h3 className="text-lg font-bold text-slate-900 mb-4">Flight Hours &amp; Logbook</h3>
 
                                     <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '2px' }}>Estimated Total Flight Hours <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none', fontSize: '10px' }}>(optional — you can skip)</span></div>
                                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => setHoursWhole(e.target.value)} placeholder="250" disabled={activeInstrument < 3} />
+                                    <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => setHoursWhole(e.target.value)} placeholder="250" />
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>HRS</span>
-                                    <input className="fic-input" type="number" min="0" max="59" value={hoursMinutes} onChange={e => setHoursMinutes(e.target.value)} placeholder="00" disabled={activeInstrument < 3} style={{ maxWidth: '70px', textAlign: 'center' }} />
+                                    <input className="fic-input" type="number" min="0" max="59" value={hoursMinutes} onChange={e => setHoursMinutes(e.target.value)} placeholder="00" style={{ maxWidth: '70px', textAlign: 'center' }} />
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>MIN</span>
                                 </div>
                                 {/* Claim disclaimer */}
@@ -1166,8 +1197,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <button
                                         type="button"
                                         onClick={() => setShowLogbookModal(true)}
-                                        disabled={activeInstrument < 3}
-                                        style={{ width: '100%', padding: '9px 8px', background: providerConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: activeInstrument < 3 ? 'not-allowed' : 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
+
+                                        style={{ width: '100%', padding: '9px 8px', background: providerConnected ? '#f0fdf4' : '#f8fafc', border: `1px solid ${providerConnected ? '#86efac' : '#cbd5e1'}`, borderRadius: '8px', color: providerConnected ? '#16a34a' : '#475569', fontSize: '12px', fontWeight: 600, cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' }}>
                                         {providerConnected ? '✓ Logbook Connected' : 'Connect Digital Logbook'}
                                     </button>
                                     {/* Confirm — hours are optional, user can skip */}
@@ -1208,7 +1239,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                 <button
                                     type="button"
-                                    disabled={activeInstrument < 4 || walletCreating === 'generating' || walletCreating === 'syncing'}
+                                    disabled={walletCreating === 'generating' || walletCreating === 'syncing'}
                                     onClick={async () => {
                                         if (walletConnected && !showPasskeyCancelled) { onNavigate('platform'); return; }
                                         const { data: { session } } = await supabase.auth.getSession();
@@ -1297,6 +1328,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <span style={{ fontSize: '10px', color: '#00b4d8', fontWeight: 600 }}>PilotRecognition PIC</span>
                                 </div>
                                 </div>{/* end Section 4 */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                </div>
+                                </>
+                                )}
                             </div>{/* end card inner */}
                         </div>{/* end card outer */}
 
@@ -1714,7 +1750,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         setVcCredentialUrl(credentialUrl);
                                         setWalletConnected(true);
                                         setSelectedWallet('pilot');
-                                        setActiveInstrument(6);
+                                        setSetupStage(3);
                                         setShowWalletFirst(false);
                                     }}
                                 />
