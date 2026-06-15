@@ -81,6 +81,11 @@ const BecomeMemberPage = lazy(() =>
     default: m.BecomeMemberPage,
   }))
 );
+const DataControllerAgreementPage = lazy(() =>
+  import('@/components/website/pages/DataControllerAgreementPage').then((m) => ({
+    default: m.DataControllerAgreementPage,
+  }))
+);
 const BecomeMemberConfirmPage = lazy(() =>
   import('@/components/website/components/BecomeMemberConfirmPage').then((m) => ({
     default: m.BecomeMemberConfirmPage,
@@ -867,6 +872,7 @@ export const AppRoutes = () => {
           path="/contact-support"
           element={<ContactSupportPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
         />
+        <Route path="/become-member-stage1" element={<BecomeMemberPage onBack={() => handleBack()} onNavigate={handleNavigate} />} />
         <Route path="/become-member/confirm" element={<BecomeMemberConfirmPage />} />
         <Route
           path="/become-member"
@@ -879,6 +885,10 @@ export const AppRoutes = () => {
         <Route
           path="/issuer-policy"
           element={<IssuerPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+        />
+        <Route
+          path="/data-controller-agreement"
+          element={<DataControllerAgreementPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
         />
         <Route
           path="/account-confirmation"

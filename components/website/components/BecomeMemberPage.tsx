@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { createPortal } from 'react-dom';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -7,13 +7,11 @@ import { MeshGradient } from '@paper-design/shaders-react';
 // TopNavbar removed for a focused create-account experience
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
 import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
-import { DataControllerAgreementModal } from './DataControllerAgreementModal';
 import { supabase } from '../../../src/lib/supabase';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
 import { issueAndStoreCredential, issueAndStoreCredentialSelfHosted } from '../../../src/lib/wallet';
 import { getVaultKeyFromAuth0Token, encryptFields } from '../../../lib/vault';
 import { getRegionalSupabaseClient, getJurisdictionCode } from '../../../lib/regionalRouter';
-import { getAuth0RedirectUri } from '@/src/lib/auth0';
 
 const COUNTRIES = [
     'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
@@ -229,12 +227,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [supabaseSessionLoading, setSupabaseSessionLoading] = useState(isSetup);
 
     // Run once on mount — clear flags that would block session restoration on OAuth redirect
-    if (isSetup && !setupInitRef.current && typeof localStorage !== 'undefined') {
-        setupInitRef.current = true;
-        localStorage.removeItem('explicitLogout');
-        sessionStorage.removeItem('wallet_claimed_provider');
-        sessionStorage.removeItem('wallet_did');
-    }
+    useEffect(() => {
+        if (isSetup && !setupInitRef.current && typeof localStorage !== 'undefined') {
+            setupInitRef.current = true;
+            localStorage.removeItem('explicitLogout');
+            sessionStorage.removeItem('wallet_claimed_provider');
+            sessionStorage.removeItem('wallet_did');
+        }
+    }, [isSetup]);
 
     // Setup form state
     const [firstName, setFirstName] = useState('');
@@ -735,17 +735,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         }
     };
 
-    const [showDCAModal, setShowDCAModal] = useState(false);
-    const [pendingSignupMethod, setPendingSignupMethod] = useState<'email' | 'google' | 'apple' | null>(null);
-
     const handleEmailSignup = () => {
-        setPendingSignupMethod('email');
-        setShowDCAModal(true);
+        onNavigate('data-controller-agreement?signup=email');
     };
 
     const handleGoogleSignup = () => {
-        setPendingSignupMethod('google');
-        setShowDCAModal(true);
+        onNavigate('data-controller-agreement?signup=google');
     };
 
     const handleGoogleOAuth = async () => {
@@ -757,8 +752,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     };
 
     const handleAppleSignup = () => {
-        setPendingSignupMethod('apple');
-        setShowDCAModal(true);
+        onNavigate('data-controller-agreement?signup=apple');
     };
 
     // Check if user has an existing profile in the database
@@ -778,30 +772,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         } catch (err) {
             console.error('Error checking profile:', err);
             return false;
-        }
-    };
-
-    const handleDCAAgree = async () => {
-        setShowDCAModal(false);
-        const method = pendingSignupMethod;
-        setPendingSignupMethod(null);
-        if (method === 'google') {
-            handleGoogleOAuth();
-        } else if (method === 'apple') {
-            loginWithRedirect({
-                authorizationParams: {
-                    connection: 'apple',
-                    screen_hint: 'signup',
-                    redirect_uri: getAuth0RedirectUri(),
-                },
-            });
-        } else {
-            loginWithRedirect({
-                authorizationParams: {
-                    screen_hint: 'signup',
-                    redirect_uri: getAuth0RedirectUri(),
-                },
-            });
         }
     };
 
@@ -1069,7 +1039,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             <div style={{ width: '260px', flexShrink: 0, paddingTop: '8px' }}>
                                 <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>Step 1 of 6</p>
                                 <p style={{ fontSize: '34px', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: 1.2, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
-                                    Your first step towards recognition
+                                    Your first step to getting{' '}
+                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>free recognition</span>
                                 </p>
                                 <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 16px 0' }}>
                                     Enter your name and callsign to begin.
@@ -2032,12 +2003,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     </div>
                 )}
             </div>
-
-            <DataControllerAgreementModal
-                isOpen={showDCAModal}
-                onClose={() => { setShowDCAModal(false); setPendingSignupMethod(null); }}
-                onAgree={handleDCAAgree}
-            />
 
             {/* Passkey Save Modal */}
             {showBiometricNotice && createPortal(
