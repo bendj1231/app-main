@@ -71,8 +71,28 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-800/50 to-slate-950/70" />
             </div>
 
+            <style>{`
+                @keyframes glassMaterialize {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.92) translateY(20px);
+                        filter: blur(12px);
+                    }
+                    60% {
+                        opacity: 1;
+                        transform: scale(1.01) translateY(-2px);
+                        filter: blur(2px);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: scale(1) translateY(0);
+                        filter: blur(0px);
+                    }
+                }
+            `}</style>
+
             {/* Content card */}
-            <div className="relative z-10 w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div className="relative z-10 w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ animation: 'glassMaterialize 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards' }}>
                 <div className="p-6 md:p-8">
                     <div className="flex items-center justify-between mb-6">
                         <div>
