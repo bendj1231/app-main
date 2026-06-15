@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
+import { supabase } from '../../../src/lib/supabase';
 
 interface CollapsibleSectionProps {
     title: string;
@@ -35,9 +36,22 @@ interface DataControllerAgreementPageProps {
 
 export const DataControllerAgreementPage: React.FC<DataControllerAgreementPageProps> = ({ _onBack, _onNavigate }) => {
     const navigate = useNavigate();
-    const handleAgreeAndContinue = () => {
-        // Store consent timestamp for compliance
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const signupMethod = searchParams.get('signup');
+
+    const handleAgreeAndContinue = async () => {
         sessionStorage.setItem('dca_consent_timestamp', Date.now().toString());
+
+        if (signupMethod === 'google') {
+            const redirectTo = `${window.location.origin}/become-member?setup=1`;
+            await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo },
+            });
+            return;
+        }
+
         navigate('/become-member?setup=1');
     };
 
