@@ -512,6 +512,7 @@ const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
 const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
+const PrivacyPolicyPage = lazy(() => import('@/app/privacy-policy/page'));
 const IssuerPolicyPage = lazy(() => import('@/app/issuer-policy/page'));
 const EnterpriseVerificationDashboard = lazy(
   () => import('@/app/enterprise/verification-dashboard/page')
@@ -881,6 +882,10 @@ export const AppRoutes = () => {
         <Route
           path="/terms-of-service"
           element={<TermsOfServicePage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+        />
+        <Route
+          path="/privacy-policy"
+          element={<PrivacyPolicyPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
         />
         <Route
           path="/issuer-policy"

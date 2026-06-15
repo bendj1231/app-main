@@ -777,7 +777,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         <div style={{ marginBottom: '40px' }}>
                             <p style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>Account Created</p>
                             <h2 style={{ fontSize: '32px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 8px 0' }}>Complete your pilot profile</h2>
-                            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>4 steps — takes about 2 minutes</p>
+                            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>Set up your profile to unlock pathway access</p>
                         </div>
 
                         <style>{`
@@ -858,151 +858,64 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             .fic-dot-commit { background: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.2); animation: dotPulse 1s ease-in-out infinite; }
                         `}</style>
 
-                        {/* Progress strip */}
-                        <div style={{ display: 'flex', gap: '6px', marginBottom: '32px' }}>
-                            {[1,2,3,4].map(n => (
-                                <div key={n} style={{ flex: 1, height: '3px', borderRadius: '9999px', background: activeInstrument > n ? '#22c55e' : activeInstrument === n ? '#dc2626' : 'rgba(255,255,255,0.1)', transition: 'background 0.4s' }} />
-                            ))}
-                        </div>
+                        {/* Unified Profile Card */}
+                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ maxWidth: '720px', margin: '0 auto' }}>
+                            <div className="p-6 md:p-8">
 
-                        {/* Steps — vertical flow */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                {/* ── SECTION 1: Identity ── */}
+                                <div className="border-b border-slate-200 pb-6 mb-6">
+                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Identity</h3>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <input className="fic-input" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="First name" />
+                                        <input className="fic-input" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Last name" />
+                                    </div>
+                                    <input className="fic-input" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Callsign / nickname" />
+                                    <div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                            Date of Birth
+                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#dc2626', border: '1px solid #b91c1c', borderRadius: '4px', padding: '1px 5px', fontSize: '9px', fontWeight: 700, color: '#ffffff', letterSpacing: '0.06em', textTransform: 'uppercase' }}>🛃 Verified under Article 11</span>
+                                        </div>
+                                        <input type="date" value={dob} onChange={e => setDob(e.target.value)} max={new Date().toISOString().split('T')[0]} style={{ width: '100%', padding: '10px 12px', background: '#f8fafc', border: `1px solid ${dob && (new Date().getFullYear() - new Date(dob).getFullYear() - (new Date() < new Date(new Date(dob).setFullYear(new Date(dob).getFullYear() + (new Date().getFullYear() - new Date(dob).getFullYear()))) ? 1 : 0)) < 18 ? '#fca5a5' : '#cbd5e1'}`, borderRadius: '8px', fontSize: '13px', color: '#0f172a', colorScheme: 'light', boxSizing: 'border-box' }} />
+                                        {(() => {
+                                            if (!dob) return null;
+                                            const today = new Date();
+                                            const birth = new Date(dob);
+                                            let age = today.getFullYear() - birth.getFullYear();
+                                            const m = today.getMonth() - birth.getMonth();
+                                            if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+                                            if (age >= 18) return null;
+                                            return (
+                                                <p style={{ margin: '6px 0 0 0', fontSize: '11px', color: '#dc2626', fontWeight: 600, lineHeight: 1.5 }}>
+                                                    ⚠ You are restricted from submitting pathway applications until you reach 18 years of age. You may still build your profile and explore the platform.{' '}
+                                                    <a href="/data-controller-agreement#article-11" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', fontWeight: 600, textDecoration: 'underline', cursor: 'pointer', whiteSpace: 'nowrap' }}>Learn more →</a>
+                                                </p>
+                                            );
+                                        })()}
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Nationality</div>
+                                        <select value={nationality} onChange={e => setNationality(e.target.value)} style={{ width: '100%', padding: '10px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '13px', color: nationality ? '#0f172a' : '#94a3b8', colorScheme: 'light', boxSizing: 'border-box', appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}>
+                                            <option value="" disabled>Select nationality...</option>
+                                            {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+                                        </select>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', padding: '10px 12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                                            <span style={{ fontSize: '12px', flexShrink: 0 }}>🔓</span>
+                                            <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Callsign is <strong>public</strong> and visible to other operators.</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                                            <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
+                                            <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Real name, date of birth, and nationality are <strong>client-side encrypted</strong> and fully hidden under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
+                                        </div>
+                                    </div>
+                                </div>{/* end Section 1 */}
 
-                            {/* ── STEP 1: Identity ── */}
-                            {activeInstrument === 1 && (<>
-                            <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
-                            <div className="step-card step-card-active" style={{ flex: 1 }}>
-                                <span className={`fic-status-dot ${activeInstrument > 1 ? 'fic-dot-done' : activeInstrument === 1 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div>
-                                    <div className="fic-title fic-title-red">Identity</div>
-                                </div>
-                                <div style={{ display: 'flex', gap: '8px' }}>
-                                    <input
-                                        className="fic-input"
-                                        type="text"
-                                        value={firstName}
-                                        onChange={e => setFirstName(e.target.value)}
-                                        placeholder="First name"
-                                        disabled={activeInstrument < 1}
-                                    />
-                                    <input
-                                        className="fic-input"
-                                        type="text"
-                                        value={lastName}
-                                        onChange={e => setLastName(e.target.value)}
-                                        placeholder="Last name"
-                                        disabled={activeInstrument < 1}
-                                    />
-                                </div>
-                                <input
-                                    className="fic-input"
-                                    type="text"
-                                    value={displayName}
-                                    onChange={e => setDisplayName(e.target.value)}
-                                    placeholder="Callsign / nickname"
-                                    disabled={activeInstrument < 1}
-                                />
-                                <div>
-                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                        Date of Birth
-                                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#dc2626', border: '1px solid #b91c1c', borderRadius: '4px', padding: '1px 5px', fontSize: '9px', fontWeight: 700, color: '#ffffff', letterSpacing: '0.06em', textTransform: 'uppercase' }}>🛃 Verified under Article 11</span>
-                                    </div>
-                                    <input
-                                        type="date"
-                                        value={dob}
-                                        onChange={e => setDob(e.target.value)}
-                                        max={new Date().toISOString().split('T')[0]}
-                                        disabled={activeInstrument < 1}
-                                        style={{ width: '100%', padding: '10px 12px', background: '#f8fafc', border: `1px solid ${dob && (new Date().getFullYear() - new Date(dob).getFullYear() - (new Date() < new Date(new Date(dob).setFullYear(new Date(dob).getFullYear() + (new Date().getFullYear() - new Date(dob).getFullYear()))) ? 1 : 0)) < 18 ? '#fca5a5' : '#cbd5e1'}`, borderRadius: '8px', fontSize: '13px', color: '#0f172a', colorScheme: 'light', boxSizing: 'border-box' }}
-                                    />
-                                    {(() => {
-                                        if (!dob) return null;
-                                        const today = new Date();
-                                        const birth = new Date(dob);
-                                        let age = today.getFullYear() - birth.getFullYear();
-                                        const m = today.getMonth() - birth.getMonth();
-                                        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-                                        if (age >= 18) return null;
-                                        return (
-                                            <p style={{ margin: '6px 0 0 0', fontSize: '11px', color: '#dc2626', fontWeight: 600, lineHeight: 1.5 }}>
-                                                ⚠ You are restricted from submitting pathway applications until you reach 18 years of age. You may still build your profile and explore the platform.{' '}
-                                                <a href="/data-controller-agreement#article-11" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', fontWeight: 600, textDecoration: 'underline', cursor: 'pointer', whiteSpace: 'nowrap' }}>Learn more →</a>
-                                            </p>
-                                        );
-                                    })()}
-                                </div>
-                                <div>
-                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Nationality</div>
-                                    <select
-                                        value={nationality}
-                                        onChange={e => setNationality(e.target.value)}
-                                        disabled={activeInstrument < 1}
-                                        style={{ width: '100%', padding: '10px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '13px', color: nationality ? '#0f172a' : '#94a3b8', colorScheme: 'light', boxSizing: 'border-box', appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
-                                    >
-                                        <option value="" disabled>Select nationality...</option>
-                                        {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                                    </select>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={() => { if (firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && dob && nationality) { setActiveInstrument(i => Math.max(i, 2)); savePartialProfile({ display_name: displayName.trim(), full_name: `${firstName.trim()} ${lastName.trim()}`.trim(), date_of_birth: dob || null, nationality: nationality || null }); } }}
-                                    disabled={firstName.trim().length < 1 || lastName.trim().length < 1 || displayName.trim().length < 2 || !dob || !nationality}
-                                    style={{
-                                        width: '100%', padding: '12px 16px',
-                                        background: firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && !!dob && !!nationality ? '#0f172a' : '#f1f5f9',
-                                        border: 'none', borderRadius: '8px',
-                                        color: firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && !!dob && !!nationality ? '#ffffff' : '#94a3b8',
-                                        fontSize: '14px', fontWeight: 600,
-                                        cursor: firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && !!dob && !!nationality ? 'pointer' : 'not-allowed',
-                                        transition: 'all 0.2s',
-                                    }}
-                                    onMouseEnter={e => { const ok = firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && !!dob && !!nationality; if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#1e293b'; }}
-                                    onMouseLeave={e => { const ok = firstName.trim().length >= 1 && lastName.trim().length >= 1 && displayName.trim().length >= 2 && !!dob && !!nationality; if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#0f172a'; }}
-                                >
-                                    {activeInstrument > 1 ? '✓ Identity Confirmed' : 'Confirm Identity →'}
-                                </button>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', padding: '10px 12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
-                                        <span style={{ fontSize: '12px', flexShrink: 0 }}>🔓</span>
-                                        <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Callsign is <strong>public</strong> and visible to other operators.</span>
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
-                                        <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
-                                        <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Real name, date of birth, and nationality are <strong>client-side encrypted</strong> and fully hidden under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Step 1 right-side text */}
-                            <div style={{ width: '260px', flexShrink: 0, paddingTop: '8px' }}>
-                                <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>Step 1 of 6</p>
-                                <p style={{ fontSize: '34px', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: 1.2, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
-                                    Your first step to getting{' '}
-                                    <span style={{ color: '#ef4444', fontWeight: 700 }}>free recognition</span>
-                                </p>
-                                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 16px 0' }}>
-                                    Enter your name and callsign to begin.
-                                </p>
-                                <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '10px', padding: '12px 14px' }}>
-                                    <p style={{ fontSize: '10px', fontWeight: 800, color: '#ef4444', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 5px 0' }}>⬆ Recognition+</p>
-                                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, margin: 0 }}>
-                                        Upgrade to <strong style={{ color: 'rgba(255,255,255,0.8)' }}>Recognition+</strong> for a detailed profile build — document uploads, license verification, medical status, and full credential issuance for airline visibility.
-                                    </p>
-                                </div>
-                            </div>
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-                                <button type="button" disabled style={{ flex: 1, background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px', padding: '10px 0', cursor: 'not-allowed', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.02em' }}>← Back</button>
-                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 2))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
-                            </div>
-                            </>)}{/* end step-1 */}
+                                {/* ── SECTION 2: Classification ── */}
+                                <div className="border-b border-slate-200 pb-6 mb-6">
 
-                            {/* ── STEP 2: Classification ── */}
-                            {activeInstrument === 2 && (<>
-                            <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
-                            <div className="step-card step-card-active" style={{ flex: 1, minWidth: '480px' }}>
-                                <span className={`fic-status-dot ${activeInstrument > 2 ? 'fic-dot-done' : activeInstrument === 2 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">ATC: Identify Yourself</div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Classification</h3>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                     {/* ── LICENCE DETAILS ── */}
                                     <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9' }}>Licence Details</div>
                                     {/* Pilot licence */}
@@ -1219,88 +1132,18 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </p>
                                 </div>
                                 {/* Confirm button */}
-                                {(() => {
-                                    const ok = !!occupation && !!issuingAuthority;
-                                    return (
-                                        <button
-                                            type="button"
-                                            onClick={() => { if (ok) { setActiveInstrument(i => Math.max(i, 3)); const cleanRatings = ratings.filter(r => r !== '__none__'); savePartialProfile({ current_occupation: occupation, license_issuing_authority: issuingAuthority || null, country_of_license: issuingAuthority || null, license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null), aircraft_types: aircraftTypes.length > 0 ? aircraftTypes : null, ratings: cleanRatings.length > 0 ? cleanRatings : null, elp_level: elpLevel || null }); } }}
-                                            disabled={!ok}
-                                            style={{
-                                                width: '100%', padding: '11px 16px',
-                                                background: ok ? '#0f172a' : '#f1f5f9',
-                                                border: 'none', borderRadius: '8px',
-                                                color: ok ? '#ffffff' : '#94a3b8',
-                                                fontSize: '14px', fontWeight: 600,
-                                                cursor: ok ? 'pointer' : 'not-allowed',
-                                                transition: 'all 0.2s',
-                                            }}
-                                            onMouseEnter={e => { if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#1e293b'; }}
-                                            onMouseLeave={e => { if (ok) (e.currentTarget as HTMLButtonElement).style.background = '#0f172a'; }}
-                                        >
-                                            {activeInstrument > 2 ? '✓ Classification Confirmed' : 'Confirm Classification →'}
-                                        </button>
-                                    );
-                                })()}
                                 {/* Security stamp */}
                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', padding: '8px 12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                                     <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
                                     <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Licence tier and operational capabilities are <strong>client-side encrypted</strong> before cloud routing under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
                                 </div>
-                                <button type="button" onClick={() => setActiveInstrument(1)} style={{ alignSelf: 'flex-start', background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.13)', borderRadius: '8px', padding: '6px 14px', cursor: 'pointer', fontSize: '12px', fontWeight: 500, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.02em', transition: 'background 0.2s, color 0.2s' }}>← Back</button>
-                            </div>
-                            {/* Step 2 right-side text */}
-                            {activeInstrument === 2 && (
-                                <div style={{ width: '260px', flexShrink: 0, paddingTop: '8px' }}>
-                                    <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 16px 0' }}>ATC Calling…</p>
-                                    <p style={{ fontSize: '30px', fontWeight: 400, color: 'rgba(255,255,255,0.95)', lineHeight: 1.2, letterSpacing: '-0.02em', margin: '0 0 14px 0' }}>
-                                        Identify yourself,{' '}
-                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>pilot</span>
-                                        {' '}— and your{' '}
-                                        <span style={{ color: '#ef4444', fontWeight: 700 }}>aircraft</span>
-                                    </p>
-                                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, margin: '0 0 16px 0' }}>
-                                        State your licence, issuing authority, and aircraft category. Squawk ident to unlock your pathway access level.
-                                    </p>
-                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px 12px', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)', borderRadius: '10px', marginBottom: '16px' }}>
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '1px' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6 }}>
-                                            All uploaded documents are stored in <strong style={{ color: 'rgba(255,255,255,0.8)' }}>end-to-end encrypted storage</strong>, provisioned exclusively through your <strong style={{ color: '#ef4444' }}>Recognition+</strong> subscription. Your files are never shared without your explicit consent.
-                                        </p>
-                                    </div>
-                                    {occupation && (() => {
-                                        const msg: Record<string, { headline: string; sub: string }> = {
-                                            'Student Pilot':              { headline: 'Able to submit interest to cadet & flight school pathways.', sub: 'Aimed towards active students and enrolled trainees building their first 50 hours.' },
-                                            'Cadet':                      { headline: 'Able to submit interest to ab-initio and cadet programme pathways.', sub: 'Aimed towards cadets currently within a structured ab-initio programme.' },
-                                            'Private Pilot (PPL)':        { headline: 'Able to submit interest to regional operator and PPL-aimed pathways.', sub: 'Aimed towards PPL holders building hours towards CPL conversion or recreational endorsements.' },
-                                            'Commercial Pilot (CPL)':     { headline: 'Able to submit interest to all airline, cargo, and operator gates.', sub: 'Aimed towards CPL holders actively seeking first-officer or type-rating opportunities.' },
-                                            'Airline Transport (ATPL)':   { headline: 'Able to submit interest to all airline captain and senior operator pathways.', sub: 'Aimed towards ATPL holders pursuing command upgrades or international transitions.' },
-                                            'Flight Instructor (CFI/FI)': { headline: 'Able to submit interest to ATO instructor and check-airman pathways.', sub: 'Aimed towards certified instructors seeking ATO, simulator, or senior examiner roles.' },
-                                        };
-                                        const m = msg[occupation];
-                                        if (!m) return null;
-                                        return (
-                                            <>
-                                                <p style={{ fontSize: '14px', fontWeight: 700, color: '#ef4444', lineHeight: 1.4, margin: '0 0 8px 0' }}>{m.headline}</p>
-                                                <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, margin: 0 }}>{m.sub}</p>
-                                            </>
-                                        );
-                                    })()}
-                                </div>
-                            )}
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-                                <button type="button" onClick={() => setActiveInstrument(1)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
-                                <button type="button" onClick={() => setActiveInstrument(i => Math.max(i, 3))} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
-                            </div>
-                            </>)}{/* end step-2 row */}
+                                </div>{/* end Section 2 */}
 
-                            {/* ── STEP 3: Flight Hours & Logbook ── */}
-                            {activeInstrument === 3 && (<>
-                            <div className="step-card step-card-active">
-                                <span className={`fic-status-dot ${activeInstrument > 3 ? 'fic-dot-done' : activeInstrument === 3 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">Flight Hours &amp; Logbook</div>
-                                <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '2px' }}>Estimated Total Flight Hours <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none', fontSize: '10px' }}>(optional — you can skip)</span></div>
+                                {/* ── SECTION 3: Flight Hours & Logbook ── */}
+                                <div className="border-b border-slate-200 pb-6 mb-6">
+                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Flight Hours &amp; Logbook</h3>
+
+                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '2px' }}>Estimated Total Flight Hours <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none', fontSize: '10px' }}>(optional — you can skip)</span></div>
                                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                     <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => setHoursWhole(e.target.value)} placeholder="250" disabled={activeInstrument < 3} />
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>HRS</span>
@@ -1328,35 +1171,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         {providerConnected ? '✓ Logbook Connected' : 'Connect Digital Logbook'}
                                     </button>
                                     {/* Confirm — hours are optional, user can skip */}
-                                    {(() => {
-                                        const hasHours = !!hoursWhole && parseFloat(hoursWhole) > 0;
-                                        return (
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveInstrument(i => Math.max(i, 4))}
-                                                style={{ width: '100%', padding: '10px', background: '#0f172a', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', marginTop: '4px' }}>
-                                                {hasHours ? 'Confirm Flight Hours →' : 'Skip for Now →'}
-                                            </button>
-                                        );
-                                    })()}
                                 </div>
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-                                <button type="button" onClick={() => setActiveInstrument(2)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
-                                {(() => {
-                                    const ok = (selectedProvider !== null || providerConnected);
-                                    return (
-                                        <button type="button" onClick={() => { if (ok) setActiveInstrument(i => Math.max(i, 4)); }} style={{ flex: 1, background: ok ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: `1px solid ${ok ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.07)'}`, borderRadius: '10px', padding: '10px 0', cursor: ok ? 'pointer' : 'not-allowed', fontSize: '13px', fontWeight: 500, color: ok ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.25)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>Next →</button>
-                                    );
-                                })()}
-                            </div>
-                            </>)}{/* end step-3 */}
+                                </div>{/* end Section 3 */}
 
-                            {/* ── STEP 4: Your PIC ── */}
-                            {activeInstrument === 4 && (<>
-                            <div className="step-card step-card-active">
-                                <span className={`fic-status-dot ${walletConnected ? 'fic-dot-done' : activeInstrument === 4 ? 'fic-dot-active' : 'fic-dot-idle'}`} />
-                                <div className="fic-title">Your PIC</div>
+                                {/* ── SECTION 4: Your PIC ── */}
+                                <div className="pb-6 mb-6">
+                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Your PIC</h3>
                                 <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '14px' }}>
                                     We automatically create a secure digital ID for you — like a passport that lives inside your profile. It holds your verified credentials and lets airlines confirm your qualifications instantly, with no paperwork.
                                 </div>
@@ -1476,15 +1296,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <span style={{ fontSize: '10px', color: '#cbd5e1' }}>·</span>
                                     <span style={{ fontSize: '10px', color: '#00b4d8', fontWeight: 600 }}>PilotRecognition PIC</span>
                                 </div>
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-                                <button type="button" onClick={() => setActiveInstrument(3)} style={{ flex: 1, background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '10px 0', cursor: 'pointer', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.02em', transition: 'background 0.2s' }}>← Back</button>
-                            </div>
-                            </>)}
+                                </div>{/* end Section 4 */}
+                            </div>{/* end card inner */}
+                        </div>{/* end card outer */}
 
-                            {saveError && <p style={{ color: '#dc2626', fontSize: '11px', margin: '8px 0 0', textAlign: 'center' }}>{saveError}</p>}
-
-                        </div>{/* end steps column */}
+                        {saveError && <p style={{ color: '#dc2626', fontSize: '11px', margin: '8px 0 0', textAlign: 'center' }}>{saveError}</p>}
 
                         {/* Footer */}
                         <div style={{ marginTop: '48px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
