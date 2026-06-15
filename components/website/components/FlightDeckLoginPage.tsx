@@ -4,25 +4,6 @@ import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/src/lib/supabase';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
-
-function base64urlToBuffer(base64url: string): ArrayBuffer {
-  const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
-  const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
-  const binary = atob(padded);
-  const buffer = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) buffer[i] = binary.charCodeAt(i);
-  return buffer.buffer;
-}
-
-function bufferToBase64url(buffer: ArrayBuffer): string {
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  bytes.forEach((b) => (binary += String.fromCharCode(b)));
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-}
-
 interface FlightDeckLoginPageProps {
   onNavigate: (page: string) => void;
 }
@@ -40,7 +21,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   const [checkingOAuth, setCheckingOAuth] = useState(false);
   const [checkingAccount, setCheckingAccount] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [passkeyLoading, setPasskeyLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Helper: check if a profile row exists for a given user id
@@ -168,82 +148,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
       setGoogleLoading(false);
     }
   };
-
-  const handlePasskeyLogin = async () => {
-    const credentialId = localStorage.getItem('pr_passkey_credential_id');
-    if (!credentialId) {
-      setError('No passkey found on this device. Please log in with email first.');
-      return;
-    }
-    setPasskeyLoading(true);
-    setError('');
-    try {
-      // 1. Get a server-issued challenge from Supabase
-      const challengeRes = await fetch(`${SUPABASE_URL}/functions/v1/passkey-challenge`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', apikey: SUPABASE_ANON_KEY },
-        body: JSON.stringify({ credentialId }),
-      });
-      if (!challengeRes.ok) throw new Error('Could not get challenge');
-      const { challenge } = await challengeRes.json();
-
-      // 2. Ask device to sign the challenge
-      const assertion = (await navigator.credentials.get({
-        publicKey: {
-          challenge: base64urlToBuffer(challenge),
-          allowCredentials: [{ id: base64urlToBuffer(credentialId), type: 'public-key' }],
-          userVerification: 'required',
-          timeout: 60000,
-        },
-      })) as PublicKeyCredential | null;
-
-      if (!assertion) throw new Error('No assertion returned');
-
-      const response = assertion.response as AuthenticatorAssertionResponse;
-
-      // 3. Verify with Supabase edge function
-      const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/passkey-verify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', apikey: SUPABASE_ANON_KEY },
-        body: JSON.stringify({
-          credentialId: assertion.id,
-          authenticatorData: bufferToBase64url(response.authenticatorData),
-          clientDataJSON: bufferToBase64url(response.clientDataJSON),
-          signature: bufferToBase64url(response.signature),
-          userHandle: response.userHandle ? bufferToBase64url(response.userHandle) : null,
-        }),
-      });
-
-      const verifyData = await verifyRes.json();
-      if (!verifyRes.ok || !verifyData.verified) {
-        throw new Error(verifyData.error || 'Passkey verification failed');
-      }
-
-      // Verify they have a profile before logging in
-      if (verifyData.userId) {
-        const hasProfile = await profileExists(verifyData.userId);
-        if (!hasProfile) {
-          await supabase.auth.signOut();
-          onNavigate('become-member');
-          return;
-        }
-      }
-
-      navigate('/platform');
-    } catch (err: unknown) {
-      const errorMsg =
-        err instanceof Error ? err.message : 'Passkey sign-in failed. Try email/password instead.';
-      if (err instanceof Error && err.name === 'NotAllowedError') {
-        setError('Passkey sign-in was cancelled.');
-      } else {
-        setError(errorMsg);
-      }
-    } finally {
-      setPasskeyLoading(false);
-    }
-  };
-
-  const hasPasskey = localStorage.getItem('pr_passkey_registered') === 'true';
 
   const oauthInProgress = googleLoading || checkingOAuth || oauthAccountCheck.checking || checkingAccount;
   const oauthStatusText = googleLoading
@@ -559,45 +463,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
           </svg>
           Continue with Google
         </button>
-
-        {/* Passkey option — only shown if registered on this device */}
-        {hasPasskey && (
-          <>
-            <button
-              onClick={handlePasskeyLogin}
-              disabled={passkeyLoading}
-              style={{
-                width: '100%',
-                padding: '10px 14px',
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                borderRadius: 6,
-                fontSize: 14,
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.9)',
-                cursor: passkeyLoading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 10,
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
-            >
-              {/* Apple/Touch ID icon */}
-              <svg
-                width="16"
-                height="20"
-                viewBox="0 0 814 1000"
-                fill="currentColor"
-                style={{ flexShrink: 0 }}
-              >
-                <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-42.3-150.3-109.7C55 556.8 17 429.7 17 309.2c0-190.5 123.3-291.5 245.5-291.5 63.2 0 115.9 41.7 155.5 41.7 38.3 0 98.1-44.2 170.7-44.2 26.9 0 109.1 2.6 168.4 87.3zm-180.3-141.9c30.7-36.4 52.4-86.7 52.4-136.7 0-6.8-.6-13.7-1.9-19.2-49.1 1.9-106.9 32.7-141.2 74.1-27.5 31.3-52.4 81.6-52.4 132.3 0 7.4 1.3 14.8 1.9 17.1 3.2.6 8.4 1.3 13.6 1.3 44.2 0 96.2-29.4 127.6-68.9z" />
-              </svg>
-              {passkeyLoading ? 'Verifying...' : 'Sign in with Passkey (Touch ID)'}
-            </button>
-          </>
-        )}
 
         {/* Sign up + Forgot password links */}
         <div style={{ marginTop: 20, textAlign: 'center' }}>
