@@ -42,25 +42,29 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    // Upsert profile
+    // Map frontend field names to actual DB column names
+    const profileData: Record<string, any> = {
+      id: userId,
+      updated_at: new Date().toISOString(),
+    }
+
+    if (email !== undefined) profileData.email = email
+    if (displayName !== undefined) profileData.display_name = displayName
+    if (firstName || lastName) profileData.full_name = `${firstName || ''} ${lastName || ''}`.trim() || null
+    if (occupation !== undefined) profileData.track = occupation
+    if (dob !== undefined) profileData.date_of_birth = dob || null
+    if (totalHours !== undefined) profileData.total_flight_hours = totalHours || 0
+    if (aircraftTypes !== undefined) profileData.aircraft_rated_on = Array.isArray(aircraftTypes) ? aircraftTypes.join(', ') : aircraftTypes
+    if (issuingAuthority !== undefined) profileData.country_of_license = issuingAuthority
+    if (licenseTypes !== undefined) profileData.license_id = Array.isArray(licenseTypes) ? licenseTypes.join(', ') : licenseTypes
+    if (ratings !== undefined) profileData.ratings = Array.isArray(ratings) ? ratings : (ratings ? [ratings] : null)
+    if (elpLevel !== undefined) profileData.english_proficiency_level = elpLevel
+
+    console.log('[create-wallet] upserting profileData keys:', Object.keys(profileData))
+
     const { error: upsertError } = await supabase
       .from('profiles')
-      .upsert({
-        id: userId,
-        email: email || null,
-        display_name: displayName || null,
-        first_name: firstName || null,
-        last_name: lastName || null,
-        occupation: occupation || null,
-        dob: dob || null,
-        total_hours: totalHours || null,
-        aircraft_types: aircraftTypes || null,
-        issuing_authority: issuingAuthority || null,
-        license_types: licenseTypes || null,
-        ratings: ratings || null,
-        elp_level: elpLevel || null,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'id' })
+      .upsert(profileData, { onConflict: 'id' })
 
     if (upsertError) {
       console.error('[create-wallet] upsert error:', upsertError)
