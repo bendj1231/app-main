@@ -846,8 +846,18 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     </button>
                                 )}
 
-                                {/* Access Portal 2 button - Only show when logged in */}
-                                {currentUser && (
+                                {/* Go to Platform button when logged in on home page */}
+                                {currentUser && currentPage === 'home' && (
+                                    <button
+                                        onClick={() => onNavigate('platform')}
+                                        className="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center gap-2"
+                                    >
+                                        Go to Platform
+                                    </button>
+                                )}
+
+                                {/* Access Portal button - Only show when logged in and NOT on home page */}
+                                {currentUser && currentPage !== 'home' && (
                                     <button
                                         onClick={() => onNavigate('access-portal-2')}
                                         className="bg-black hover:bg-slate-800 text-white px-5 py-3 rounded-md text-sm font-bold transition-all shadow-lg hover:shadow-slate-500/20 flex items-center gap-2"
@@ -898,7 +908,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             </>
                         )}
 
-                        {currentUser && (
+                        {currentUser && currentPage !== 'home' && (
                             <>
                                 {/* Notification Bell */}
                                 <div className="relative" ref={notificationDropdownRef}>
@@ -1301,10 +1311,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                     </button>
 
                                     <button
-                                        onClick={currentUser ? () => onNavigate('portal') : () => onNavigate('flight-deck-login')}
-                                        className={`${currentUser ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg text-sm font-bold uppercase tracking-widest shadow-xl`}
+                                        onClick={currentUser ? () => { onNavigate(currentPage === 'home' ? 'platform' : 'portal'); setIsMenuOpen(false); } : () => { onNavigate('flight-deck-login'); setIsMenuOpen(false); }}
+                                        className={`${currentUser ? (currentPage === 'home' ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-600 hover:bg-emerald-700') : 'bg-blue-600 hover:bg-blue-700'} text-white w-full py-4 min-h-[52px] rounded-lg text-sm font-bold uppercase tracking-widest shadow-xl`}
                                     >
-                                        {currentUser ? 'Access Portal' : 'Login'}
+                                        {currentUser ? (currentPage === 'home' ? 'Go to Platform' : 'Access Portal') : 'Login'}
                                     </button>
                                 </div>
                             )}

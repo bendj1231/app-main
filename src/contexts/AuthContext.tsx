@@ -1058,7 +1058,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   async function sendOtp(email: string) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { shouldCreateUser: true },
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/flight-deck-login` : undefined,
+      },
     });
     if (error) {
       console.error('sendOtp error:', error);
