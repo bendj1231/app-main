@@ -35,6 +35,12 @@ interface DataControllerAgreementPageProps {
 
 export const DataControllerAgreementPage: React.FC<DataControllerAgreementPageProps> = ({ _onBack, _onNavigate }) => {
     const navigate = useNavigate();
+    const handleAgreeAndContinue = () => {
+        // Store consent timestamp for compliance
+        sessionStorage.setItem('dca_consent_timestamp', Date.now().toString());
+        navigate('/become-member?setup=1');
+    };
+
     const handleBackToSignup = () => {
         navigate('/become-member');
     };
@@ -140,8 +146,14 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
                     </div>
 
                     <button
+                        onClick={handleAgreeAndContinue}
+                        className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors text-sm tracking-wide shadow-lg shadow-red-600/20"
+                    >
+                        Agree to Terms & Conditions
+                    </button>
+                    <button
                         onClick={handleBackToSignup}
-                        className="w-full py-3 px-4 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg transition-colors text-sm tracking-wide shadow-lg"
+                        className="w-full mt-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition-colors"
                     >
                         ← Back to Sign Up
                     </button>
