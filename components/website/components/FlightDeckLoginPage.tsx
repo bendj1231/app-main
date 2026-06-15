@@ -440,77 +440,44 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
           </div>
 
           {otpSent && (
-            <div>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: 'rgba(255,255,255,0.85)',
-                  marginBottom: 6,
-                }}
-              >
-                Verification Code
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                maxLength={6}
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                placeholder="123456"
-                required
-                autoFocus
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  borderRadius: 6,
-                  fontSize: 14,
-                  color: '#ffffff',
-                  background: 'rgba(255,255,255,0.08)',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                  letterSpacing: '0.15em',
-                  textAlign: 'center',
-                }}
-              />
-              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>
-                We sent a 6-digit code to {email}. Enter it above.
+            <div style={{ textAlign: 'center', padding: '8px 0' }}>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)', fontWeight: 600, marginBottom: 8 }}>
+                Check your email
+              </p>
+              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', lineHeight: 1.5 }}>
+                We sent a magic link to <strong style={{ color: 'rgba(255,255,255,0.7)' }}>{email}</strong>.<br />
+                Click the link in your inbox to sign in.
               </p>
             </div>
           )}
 
           <button
             type="submit"
-            disabled={otpSent ? verifyLoading || otp.length < 6 : otpLoading || !email.trim()}
+            disabled={otpSent ? true : otpLoading || !email.trim()}
             style={{
               width: '100%',
               padding: '11px',
-              background: (otpSent ? verifyLoading || otp.length < 6 : otpLoading || !email.trim()) ? '#fca5a5' : '#dc2626',
+              background: (otpSent ? true : otpLoading || !email.trim()) ? '#fca5a5' : '#dc2626',
               color: '#fff',
               border: 'none',
               borderRadius: 6,
               fontSize: 14,
               fontWeight: 600,
-              cursor: (otpSent ? verifyLoading || otp.length < 6 : otpLoading || !email.trim()) ? 'not-allowed' : 'pointer',
+              cursor: (otpSent ? true : otpLoading || !email.trim()) ? 'not-allowed' : 'pointer',
               transition: 'background 0.15s',
               marginTop: 4,
             }}
           >
             {otpSent
-              ? verifyLoading
-                ? 'Verifying...'
-                : 'Verify Code →'
+              ? 'Magic Link Sent ✓'
               : otpLoading
-                ? 'Sending code...'
-                : 'Send Code →'}
+                ? 'Sending magic link...'
+                : 'Send Magic Link →'}
           </button>
 
           {otpSent && resendTimer > 0 && (
             <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', textAlign: 'center' }}>
-              Resend code in {resendTimer}s
+              Resend link in {resendTimer}s
             </p>
           )}
 
