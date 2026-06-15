@@ -1167,7 +1167,7 @@ export const PathwayGrid: React.FC<PathwayGridProps> = ({
 
             <div
                 ref={gridInteractionRef}
-                className="relative w-full max-w-[600px] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1400px]"
+                className="relative w-full max-w-[600px] sm:max-w-[720px] md:max-w-[900px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1400px] mx-auto"
                 onMouseEnter={handleGridMouseEnter}
                 onMouseLeave={handleGridMouseLeave}
                 style={{ touchAction: 'pan-y', cursor: 'grab', overscrollBehaviorX: 'contain' }}
