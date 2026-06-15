@@ -845,7 +845,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <div className="flex justify-between items-center">
                                         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Step {setupStage} of 4</span>
                                         <span className="text-xs font-medium text-slate-400">
-                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : setupStage === 3 ? 'Flight Hours' : 'Your PIC'}
+                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : setupStage === 3 ? 'Flight Hours' : 'Create Profile'}
                                         </span>
                                     </div>
                                 </div>
@@ -1184,9 +1184,9 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
 
                                 {setupStage === 4 && (
                                 <>
-                                {/* ── SECTION 4: Your PIC ── */}
+                                {/* ── SECTION 4: Create Pilot Recognition Profile ── */}
                                 <div className="pb-6 mb-6">
-                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Your PIC</h3>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Create Pilot Recognition Profile</h3>
                                 <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '14px' }}>
                                     We automatically create a secure digital ID for you — like a passport that lives inside your profile. It holds your verified credentials and lets airlines confirm your qualifications instantly, with no paperwork.
                                 </div>
@@ -1206,12 +1206,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         <img
                                             src="/PASS.png"
                                             alt="Safari passkey prompt"
-                                            style={{ width: '50%', maxWidth: '220px', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
+                                            style={{ width: '50%', maxWidth: '220px', aspectRatio: '4/5', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
                                         />
                                         <img
                                             src="/CHROME.png"
                                             alt="Chrome passkey prompt"
-                                            style={{ width: '50%', maxWidth: '220px', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
+                                            style={{ width: '50%', maxWidth: '220px', aspectRatio: '4/5', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}
                                         />
                                     </div>
                                 </div>
