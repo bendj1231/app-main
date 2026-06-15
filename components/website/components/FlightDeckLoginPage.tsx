@@ -209,6 +209,36 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         overflow: 'hidden',
       }}
     >
+      <style>{`
+        @keyframes glassMaterialize {
+          0% {
+            opacity: 0;
+            transform: scale(0.92) translateY(20px);
+            filter: blur(12px);
+          }
+          60% {
+            opacity: 1;
+            transform: scale(1.01) translateY(-2px);
+            filter: blur(2px);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0px);
+          }
+        }
+        @keyframes borderGlow {
+          0% {
+            box-shadow: 0 0 0 rgba(255,255,255,0), inset 0 1px 0 rgba(255,255,255,0);
+            border-color: rgba(255,255,255,0.05);
+          }
+          100% {
+            box-shadow: 0 8px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.15);
+          }
+        }
+      `}</style>
+
       {/* Animated mesh gradient background */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
         <MeshGradient
@@ -251,7 +281,15 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
       </div>
 
       {/* Logo + title */}
-      <div style={{ textAlign: 'center', marginBottom: 32, position: 'relative', zIndex: 1 }}>
+      <div
+        style={{
+          textAlign: 'center',
+          marginBottom: 32,
+          position: 'relative',
+          zIndex: 1,
+          animation: 'glassMaterialize 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+        }}
+      >
         <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 6 }}>
           <span style={{ color: '#ffffff' }}>pilot</span>
           <span style={{ color: '#ef4444' }}>recognition</span>
@@ -285,6 +323,8 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
           boxShadow: '0 8px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
           position: 'relative',
           zIndex: 1,
+          animation: 'glassMaterialize 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards, borderGlow 1.2s ease-out 0.3s forwards',
+          opacity: 0,
         }}
       >
         {error && (
