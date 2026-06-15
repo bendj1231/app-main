@@ -605,7 +605,19 @@ const HomeTab: React.FC<{
                 <Camera size={9} /> Upload Photo
               </p>
               <p className="text-[10px] text-white/40 text-center truncate w-full mt-0.5">{profile?.email || '—'}</p>
-              <p className="text-[10px] font-semibold uppercase tracking-wide mt-0.5" style={{ color: '#f97316' }}>{level}</p>
+              {(() => {
+                const hasVerified = walletChecks.some((c: any) => c.status === 'verified');
+                const hasPending = walletChecks.some((c: any) => c.status === 'pending');
+                const status = hasVerified ? 'Verified' : hasPending ? 'Pending' : 'Unverified';
+                const color = hasVerified ? '#10b981' : hasPending ? '#f59e0b' : '#ef4444';
+                return (
+                  <div className="flex items-center justify-center gap-1 mt-1">
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
+                    <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color }}>{status}</span>
+                  </div>
+                );
+              })()}
+              <p className="text-[10px] font-semibold uppercase tracking-wide mt-1" style={{ color: '#f97316' }}>{level}</p>
             </div>
 
             {/* Quick info row */}
