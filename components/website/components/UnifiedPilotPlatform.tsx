@@ -601,7 +601,24 @@ const HomeTab: React.FC<{
                 </div>
               </div>
               <p className="text-sm font-black text-white text-center truncate w-full">{name}</p>
+              <p className="text-[9px] text-white/25 text-center truncate w-full mt-0.5 flex items-center justify-center gap-1 cursor-pointer" onClick={() => !avatarUploading && avatarInputRef?.current?.click()}>
+                <Camera size={9} /> Upload Photo
+              </p>
+              <p className="text-[10px] text-white/40 text-center truncate w-full mt-0.5">{profile?.email || '—'}</p>
               <p className="text-[10px] font-semibold uppercase tracking-wide mt-0.5" style={{ color: '#f97316' }}>{level}</p>
+            </div>
+
+            {/* Quick info row */}
+            <div className="flex items-center justify-center gap-4 px-4 mb-3">
+              <div className="text-center">
+                <p className="text-[8px] text-white/30 uppercase tracking-widest font-bold">Total Hours</p>
+                <p className="text-sm font-black text-white">{hours || '—'}</p>
+              </div>
+              <div className="w-px h-6 bg-white/10" />
+              <div className="text-center">
+                <p className="text-[8px] text-white/30 uppercase tracking-widest font-bold">Last Flown</p>
+                <p className="text-sm font-black text-white">{profile?.last_flown || profile?.last_flight_date || 'N/A'}</p>
+              </div>
             </div>
 
             {/* Stats grid */}
