@@ -853,15 +853,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {setupStage === 1 && (
                                 <>
                                 {/* ── SECTION 1: Identity ── */}
-                                <div className="border-b border-slate-200 pb-6 mb-6">
-                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Identity</h3>
+                                <div className="border-b border-slate-200 pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-0">Identity</h3>
                                     <div style={{ display: 'flex', gap: '8px' }}>
                                         <input className="fic-input" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="First name" />
                                         <input className="fic-input" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Last name" />
                                     </div>
                                     <input className="fic-input" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Callsign / nickname" />
                                     <div>
-                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                             Date of Birth
                                             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#dc2626', border: '1px solid #b91c1c', borderRadius: '4px', padding: '1px 5px', fontSize: '9px', fontWeight: 700, color: '#ffffff', letterSpacing: '0.06em', textTransform: 'uppercase' }}>🛃 Verified under Article 11</span>
                                         </div>
@@ -912,7 +912,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <div className="border-b border-slate-200 pb-6 mb-6">
 
                                     <h3 className="text-lg font-bold text-slate-900 mb-4">Classification</h3>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                     {/* ── LICENCE DETAILS ── */}
                                     <div style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(100,116,139,0.5)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px', borderBottom: '1px solid #f1f5f9' }}>Licence Details</div>
                                     {/* Pilot licence */}
@@ -1127,7 +1127,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 {/* Confirm button */}
                                 {/* Security stamp */}
-                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', padding: '8px 12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', padding: '12px 14px', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                                     <span style={{ fontSize: '12px', flexShrink: 0 }}>🔒</span>
                                     <span style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>Licence tier and operational capabilities are <strong>client-side encrypted</strong> before cloud routing under <a href="/data-controller-agreement#article-2" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Article 2</a>.</span>
                                 </div>
@@ -1142,10 +1142,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {setupStage === 3 && (
                                 <>
                                 {/* ── SECTION 3: Flight Hours & Logbook ── */}
-                                <div className="border-b border-slate-200 pb-6 mb-6">
-                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Flight Hours &amp; Logbook</h3>
+                                <div className="border-b border-slate-200 pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">Flight Hours &amp; Logbook</h3>
 
-                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '2px' }}>Estimated Total Flight Hours <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none', fontSize: '10px' }}>(optional — you can skip)</span></div>
+                                    <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Estimated Total Flight Hours <span style={{ color: '#cbd5e1', fontWeight: 400, textTransform: 'none', fontSize: '10px' }}>(optional — you can skip)</span></div>
                                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                     <input className="fic-input" type="number" min="0" max="99999" value={hoursWhole} onChange={e => setHoursWhole(e.target.value)} placeholder="250" />
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>HRS</span>
@@ -1153,7 +1153,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     <span style={{ color: 'rgba(100,116,139,0.6)', fontSize: '11px', fontFamily: 'monospace', flexShrink: 0 }}>MIN</span>
                                 </div>
                                 {/* Claim disclaimer */}
-                                <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '8px', padding: '8px 10px', display: 'flex', gap: '7px', alignItems: 'flex-start' }}>
+                                <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '8px', padding: '12px 14px', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                                     <span style={{ fontSize: '13px', flexShrink: 0 }}>⚠️</span>
                                     <span style={{ fontSize: '11px', color: '#92400e', lineHeight: 1.5 }}>
                                         Total hours entered here are a <strong>self-declared claim</strong> and are not verified. Hours will remain unverified until audit under <strong>Recognition+</strong>.
@@ -1185,20 +1185,20 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {setupStage === 4 && (
                                 <>
                                 {/* ── SECTION 4: Create Pilot Recognition Profile ── */}
-                                <div className="pb-6 mb-6">
-                                    <h3 className="text-lg font-bold text-slate-900 mb-4">Create Pilot Recognition Profile</h3>
-                                <div style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '14px' }}>
+                                <div className="pb-6 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-0">Create Pilot Recognition Profile</h3>
+                                <div style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.6 }}>
                                     We automatically create a secure digital ID for you — like a passport that lives inside your profile. It holds your verified credentials and lets airlines confirm your qualifications instantly, with no paperwork.
                                 </div>
 
                                 {/* Passkey warning */}
-                                <div style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.35)', borderRadius: '10px', padding: '12px 14px', marginBottom: '14px' }}>
+                                <div style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(226,232,240,0.8)', borderRadius: '12px', padding: '16px', marginBottom: '14px', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
                                     <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '12px' }}>
                                         <span style={{ fontSize: '16px', lineHeight: 1, flexShrink: 0 }}>🔐</span>
                                         <div>
-                                            <p style={{ fontSize: '12px', fontWeight: 700, color: '#ef4444', margin: '0 0 4px' }}>Your browser will prompt you to save a passkey</p>
-                                            <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.5 }}>
-                                                Without this key you will lose access to your PIC and be unable to retrieve your data. Save it to Touch ID, Face ID, or Google Password Manager when prompted.
+                                            <p style={{ fontSize: '12px', fontWeight: 700, color: '#dc2626', margin: '0 0 6px' }}>Your browser will prompt you to save a passkey</p>
+                                            <p style={{ fontSize: '11px', color: '#64748b', margin: 0, lineHeight: 1.5 }}>
+                                                Without this key you will lose access to your profile credentials. Save it to Touch ID, Face ID, or Google Password Manager when prompted.
                                             </p>
                                         </div>
                                     </div>
@@ -1223,8 +1223,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         if (walletConnected && !showPasskeyCancelled) { onNavigate('platform'); return; }
                                         const { data: { session } } = await supabase.auth.getSession();
                                         const sbUserId = session?.user?.id || supabaseUser?.id || null;
+                                        console.log('[DEBUG][Wallet] sbUserId:', sbUserId, 'session?.user?.id:', session?.user?.id, 'supabaseUser?.id:', supabaseUser?.id);
                                         if (!sbUserId) {
                                             setSaveError('Authentication error. Please sign in again.');
+                                            console.error('[DEBUG][Wallet] No sbUserId found');
                                             return;
                                         }
                                         const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
@@ -1233,14 +1235,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
                                         try {
                                             setWalletCreating('generating');
+                                            setSaveError('');
                                             await new Promise(r => setTimeout(r, 900));
                                             setWalletCreating('syncing');
                                             setSaving(true);
 
                                             const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
                                             const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string;
+                                            console.log('[DEBUG][Wallet] SUPABASE_URL:', SUPABASE_URL ? 'defined' : 'MISSING', 'ANON_KEY:', ANON_KEY ? 'defined' : 'MISSING');
                                             const requestToken = btoa(`${sbUserId}:ts:${Date.now()}`);
 
+                                            console.log('[DEBUG][Wallet] Calling create-wallet with userId:', sbUserId, 'email:', session?.user?.email || supabaseUser?.email || '');
                                             const res = await fetch(`${SUPABASE_URL}/functions/v1/create-wallet`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY },
@@ -1263,9 +1268,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                                 }),
                                             });
                                             const walletData = await res.json();
+                                            console.log('[DEBUG][Wallet] create-wallet response:', res.status, walletData);
                                             if (!res.ok || !walletData.success) {
                                                 console.error('[DEBUG][Wallet] create-wallet failed:', walletData);
-                                                throw new Error(walletData.error || 'Wallet creation failed');
+                                                throw new Error(walletData.error || `Wallet creation failed (HTTP ${res.status})`);
                                             }
                                             sessionStorage.setItem('wallet_did', walletData.did || '');
                                             sessionStorage.setItem('wallet_claimed_provider', 'PilotRecognition Wallet');
@@ -1275,13 +1281,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setSelectedWallet('Pilot Wallet');
                                             setWalletConnected(true);
                                             setSaving(false);
-                                            const pkCtxId = session?.user?.id || sbUserId;
-                                            const pkCtxEmail = session?.user?.email || supabaseUser?.email || pkCtxId;
-                                            const pkCtxName = displayName.trim().slice(0, 80) || pkCtxEmail;
-                                            setPasskeyContext({ userId: pkCtxId, email: pkCtxEmail, name: pkCtxName });
-                                            setShowBiometricNotice(true);
+                                            console.log('[DEBUG][Wallet] Success — walletCreated, redirecting to platform in 1.2s');
+                                            setTimeout(() => {
+                                                onNavigate('platform');
+                                            }, 1200);
                                         } catch (e) {
-                                            console.error('Wallet creation error:', e);
+                                            console.error('[DEBUG][Wallet] Wallet creation error:', e);
                                             setWalletCreating('idle');
                                             setSaving(false);
                                             setSaveError('Failed to create PIC. Please try again.');
@@ -1298,7 +1303,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 >
                                     {walletCreating === 'generating' && '⏳ Generating Secure Keys...'}
                                     {walletCreating === 'syncing' && '🔄 Registering Account & Issuing Credential...'}
-                                    {(walletCreating === 'active' || walletConnected) && '🎉 PIC Active — Redirecting to Dashboard...'}
+                                    {(walletCreating === 'active' || walletConnected) && '🎉 Profile Created — Entering Platform...'}
                                     {walletCreating === 'idle' && '🔐 Create PIC & Enter Platform →'}
                                 </button>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '8px' }}>
