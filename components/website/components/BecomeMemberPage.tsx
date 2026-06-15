@@ -1560,6 +1560,36 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%)' }} />
                 </div>
 
+                <style>{`
+                    @keyframes glassMaterialize {
+                        0% {
+                            opacity: 0;
+                            transform: scale(0.92) translateY(20px);
+                            filter: blur(12px);
+                        }
+                        60% {
+                            opacity: 1;
+                            transform: scale(1.01) translateY(-2px);
+                            filter: blur(2px);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: scale(1) translateY(0);
+                            filter: blur(0px);
+                        }
+                    }
+                    @keyframes borderGlow {
+                        0% {
+                            box-shadow: 0 0 0 rgba(255,255,255,0), inset 0 1px 0 rgba(255,255,255,0);
+                            border-color: rgba(255,255,255,0.05);
+                        }
+                        100% {
+                            box-shadow: 0 8px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+                            border-color: rgba(255,255,255,0.15);
+                        }
+                    }
+                `}</style>
+
                 <div className="relative z-[300]">
                     <button
                         onClick={() => safeRedirect('/')}
@@ -1577,7 +1607,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                     <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-16">
 
                         {/* Left: Hero text */}
-                        <div className="flex-1 text-left">
+                        <div className="flex-1 text-left" style={{ animation: 'glassMaterialize 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards' }}>
                             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] mb-3 text-white">
                                 Connecting Pilots<br />
                                 <span className="text-red-500">to the Industry.</span>
@@ -1609,12 +1639,12 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                         </div>
 
                         {/* Right: Signup card */}
-                        <div className="w-full md:w-[400px] flex-shrink-0">
+                        <div className="w-full md:w-[400px] flex-shrink-0" style={{ animation: 'glassMaterialize 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards', opacity: 0 }}>
 
                         <p className="text-white font-bold text-base mb-3 text-center">Create a Free Account</p>
 
                         {/* Card */}
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm" style={{ animation: 'borderGlow 1.2s ease-out 0.3s forwards' }}>
 
                             {/* Google signup */}
                             <button
