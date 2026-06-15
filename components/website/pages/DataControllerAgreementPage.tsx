@@ -1,8 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
-import { getAuth0RedirectUri } from '@/src/lib/auth0';
+import { useNavigate } from 'react-router-dom';
 import { MeshGradient } from '@paper-design/shaders-react';
 
 interface CollapsibleSectionProps {
@@ -37,31 +35,8 @@ interface DataControllerAgreementPageProps {
 
 export const DataControllerAgreementPage: React.FC<DataControllerAgreementPageProps> = ({ _onBack, _onNavigate }) => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const { loginWithRedirect } = useAuth0();
-    const searchParams = new URLSearchParams(location.search);
-    const signupMethod = searchParams.get('signup');
-
-    const handleAgreeAndContinue = async () => {
-        if (signupMethod === 'google') {
-            await loginWithRedirect({
-                authorizationParams: {
-                    connection: 'google-oauth2',
-                    screen_hint: 'signup',
-                    redirect_uri: getAuth0RedirectUri(),
-                },
-            });
-        } else if (signupMethod === 'apple') {
-            await loginWithRedirect({
-                authorizationParams: {
-                    connection: 'apple',
-                    screen_hint: 'signup',
-                    redirect_uri: getAuth0RedirectUri(),
-                },
-            });
-        } else {
-            navigate('/become-member?setup=1');
-        }
+    const handleBackToSignup = () => {
+        navigate('/become-member');
     };
 
     return (
@@ -165,10 +140,10 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
                     </div>
 
                     <button
-                        onClick={handleAgreeAndContinue}
-                        className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors text-sm tracking-wide shadow-lg shadow-red-600/20"
+                        onClick={handleBackToSignup}
+                        className="w-full py-3 px-4 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg transition-colors text-sm tracking-wide shadow-lg"
                     >
-                        Agree to Terms & Conditions
+                        ← Back to Sign Up
                     </button>
                 </div>
             </div>

@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { createPortal } from 'react-dom';
-import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 // TopNavbar removed for a focused create-account experience
 import { BreadcrumbSchema } from './seo/BreadcrumbSchema';
@@ -10,7 +9,6 @@ import { shouldEnable3DEffects } from '../../../src/lib/device-detection';
 import { supabase } from '../../../src/lib/supabase';
 import { WalletFirstCredentialFlow } from './WalletFirstCredentialFlow';
 import { issueAndStoreCredential, issueAndStoreCredentialSelfHosted } from '../../../src/lib/wallet';
-import { getVaultKeyFromAuth0Token, encryptFields } from '../../../lib/vault';
 import { getRegionalSupabaseClient, getJurisdictionCode } from '../../../lib/regionalRouter';
 
 const COUNTRIES = [
@@ -218,12 +216,17 @@ const LockedUpload: React.FC<{ label: string }> = ({ label }) => (
 
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
-    const { loginWithRedirect, user, isAuthenticated, isLoading, getIdTokenClaims } = useAuth0();
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
     const setupInitRef = React.useRef(false);
     // Supabase session for Google-OAuth users (not Auth0)
     const [supabaseUser, setSupabaseUser] = useState<{ id: string; email: string; name: string } | null>(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showEmailForm, setShowEmailForm] = useState(false);
+    const [authError, setAuthError] = useState('');
+    const [authLoading, setAuthLoading] = useState(false);
     const [supabaseSessionLoading, setSupabaseSessionLoading] = useState(isSetup);
 
     // Run once on mount — clear flags that would block session restoration on OAuth redirect
@@ -261,7 +264,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [showLogbookModal, setShowLogbookModal] = useState(false);
     const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
     const [providerConnected, setProviderConnected] = useState(false);
-    const [authTimedOut, setAuthTimedOut] = useState(false);
     const [vcCredentialUrl, setVcCredentialUrl] = useState<string | null>(null);
     const [showWalletSelector, setShowWalletSelector] = useState(false);
     const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
@@ -316,46 +318,16 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }, []);
 
     useEffect(() => {
-        if (isSetup && isLoading) {
-            const t = setTimeout(() => {
-                console.warn('[DEBUG][BecomeMember] ⚠️ Auth0 timed out after 3s — forcing render with authTimedOut=true');
-                setAuthTimedOut(true);
-            }, 3000);
-            return () => clearTimeout(t);
+        if (isSetup && supabaseUser) {
+            setDisplayName(supabaseUser.name || supabaseUser.email?.split('@')[0] || '');
         }
-    }, [isSetup, isLoading]);
-
-    useEffect(() => {
-        if (isSetup && user) {
-            setDisplayName(user.name || user.email?.split('@')[0] || '');
-            // Cache so wallet button can resolve it even if hook re-renders slowly
-            if (user.sub) {
-                sessionStorage.setItem('mfb_auth0_id', user.sub);
-            }
-        }
-    }, [isSetup, user, isLoading]);
+    }, [isSetup, supabaseUser]);
 
     // ── Check profile existence after authentication and redirect accordingly ──
     const [profileCheckComplete, setProfileCheckComplete] = useState(false);
     const [profileExists, setProfileExists] = useState<boolean | null>(null);
 
-    // Check profile for Auth0 users
-    useEffect(() => {
-        if (!isSetup || (!isAuthenticated || !user) || profileCheckComplete) return;
-
-        const checkProfile = async () => {
-            const userId = user.sub;
-            console.log('[DEBUG][BecomeMember] Checking profile for Auth0 user:', userId);
-            const exists = await checkUserProfileExists(userId);
-            console.log('[DEBUG][BecomeMember] Profile exists:', exists);
-            setProfileExists(exists);
-            setProfileCheckComplete(true);
-        };
-
-        checkProfile();
-    }, [isSetup, isAuthenticated, user, profileCheckComplete]);
-
-    // Check profile for Supabase OAuth users (Google OAuth)
+    // Check profile for Supabase users
     useEffect(() => {
         if (!isSetup || !supabaseUser || profileCheckComplete) return;
 
@@ -480,18 +452,18 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         const mfbHours = sessionStorage.getItem('mfb_total_hours');
         const mfbProvider = sessionStorage.getItem('mfb_provider');
         const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
-        const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+        const sbUserId = supabaseUser?.id;
 
         // Restore wallet state only if it belongs to the current user
         const savedWallet = sessionStorage.getItem('wallet_claimed_provider');
-        const savedAuth0Id = sessionStorage.getItem('mfb_auth0_id');
+        const savedUserId = sessionStorage.getItem('pr_user_id');
         // Clear stale wallet state if a different user is now logged in
-        if (auth0Id && savedAuth0Id && savedAuth0Id !== auth0Id) {
+        if (sbUserId && savedUserId && savedUserId !== sbUserId) {
             sessionStorage.removeItem('wallet_claimed_provider');
             sessionStorage.removeItem('wallet_did');
-            sessionStorage.removeItem('mfb_auth0_id');
+            sessionStorage.removeItem('pr_user_id');
         }
-        if (savedWallet && auth0Id && savedAuth0Id === auth0Id) {
+        if (savedWallet && sbUserId && savedUserId === sbUserId) {
             setWalletConnected(true);
             setSelectedWallet(savedWallet);
             // Unlock Commit card if we have logbook + wallet
@@ -524,17 +496,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     // Silent partial save — called after each step confirm so data is never lost even if user drops off
     const savePartialProfile = async (fields: Record<string, any>) => {
         try {
-            const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
-            if (!auth0Id) return;
             const { data: { session } } = await supabase.auth.getSession();
             const sbUserId = session?.user?.id;
-
-            // Try auth0_id first
-            const { data: updatedRows } = await supabase.from('profiles').update(fields)
-                .eq('auth0_id', auth0Id).select('id');
-            if ((!updatedRows || updatedRows.length === 0) && sbUserId) {
-                await supabase.from('profiles').update({ ...fields, auth0_id: auth0Id }).eq('id', sbUserId);
-            }
+            if (!sbUserId) return;
+            await supabase.from('profiles').update(fields).eq('id', sbUserId);
         } catch (e) {
             console.warn('[BecomeMember] partial save failed (non-blocking):', e);
         }
@@ -555,10 +520,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         if (hoursWhole && (isNaN(wholeHrs) || wholeHrs < 0 || wholeHrs > 99999)) { setSaveError('Please enter valid flight hours.'); return; }
         if (isNaN(mins) || mins < 0 || mins > 59) { setSaveError('Minutes must be between 0 and 59.'); return; }
         const hours = wholeHrs + mins / 60;
-        const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
-        // For Supabase Google OAuth users, auth0Id may be null — use Supabase session user id directly
         const sbUserId = dbgSession?.user?.id || supabaseUser?.id;
-        if (!auth0Id && !sbUserId) { setSaveError('Authentication error. Please sign in again.'); return; }
+        if (!sbUserId) { setSaveError('Authentication error. Please sign in again.'); return; }
         setSaving(true);
         setSaveError('');
         try {
@@ -582,60 +545,39 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 license_types: typeRatings.length > 0 ? typeRatings : (occupation ? [occupation] : null),
             };
 
-            // Primary: update by auth0_id (Auth0 users)
-            let updatedRows: { id: string }[] | null = null;
-            let updateError: unknown = null;
-            if (auth0Id) {
-                const { error, data } = await regionalSupabase
+            // Upsert profile by Supabase user id
+            const { data: existing } = await regionalSupabase
+                .from('profiles')
+                .select('id')
+                .eq('id', sbUserId)
+                .maybeSingle();
+            if (existing) {
+                const { error: fbError } = await regionalSupabase
                     .from('profiles')
                     .update(payload)
-                    .eq('auth0_id', auth0Id)
-                    .select('id');
-                updatedRows = data;
-                updateError = error;
-                if (updateError) { console.error('🔴 [handleSaveProfile] supabase error:', updateError); throw updateError; }
-            }
-
-            // Fallback: update by Supabase session user id (Supabase Google OAuth users)
-            if (!updatedRows || updatedRows.length === 0) {
-                if (!sbUserId) throw new Error('No Supabase session user id available');
-                // Check if profile row already exists
-                const { data: existing } = await regionalSupabase
+                    .eq('id', sbUserId);
+                if (fbError) { console.error('🔴 [handleSaveProfile] update error:', fbError); throw fbError; }
+            } else {
+                const userEmail = dbgSession?.user?.email || supabaseUser?.email || '';
+                const { count } = await regionalSupabase
                     .from('profiles')
-                    .select('id')
-                    .eq('id', sbUserId)
-                    .maybeSingle();
-                if (existing) {
-                    // Update existing row
-                    const { error: fbError } = await regionalSupabase
-                        .from('profiles')
-                        .update({ ...payload, ...(auth0Id ? { auth0_id: auth0Id } : {}) })
-                        .eq('id', sbUserId);
-                    if (fbError) { console.error('🔴 [handleSaveProfile] update fallback error:', fbError); throw fbError; }
-                } else {
-                    // Insert new profile row for new Google OAuth user
-                    const userEmail = dbgSession?.user?.email || supabaseUser?.email || '';
-                    const { count } = await regionalSupabase
-                        .from('profiles')
-                        .select('id', { count: 'exact', head: true });
-                    const nextNum = (count ?? 2) + 1;
-                    const autoPilotId = `PR${String(nextNum).padStart(4, '0')}`;
-                    const { error: insertError } = await regionalSupabase
-                        .from('profiles')
-                        .insert({
-                            id: sbUserId,
-                            email: userEmail,
-                            role: 'mentee',
-                            status: 'active',
-                            pilot_id: autoPilotId,
-                            enrolled_programs: [],
-                            created_at: new Date().toISOString(),
-                            updated_at: new Date().toISOString(),
-                            ...(auth0Id ? { auth0_id: auth0Id } : {}),
-                            ...payload,
-                        });
-                    if (insertError) { console.error('🔴 [handleSaveProfile] insert error:', insertError); throw insertError; }
-                }
+                    .select('id', { count: 'exact', head: true });
+                const nextNum = (count ?? 2) + 1;
+                const autoPilotId = `PR${String(nextNum).padStart(4, '0')}`;
+                const { error: insertError } = await regionalSupabase
+                    .from('profiles')
+                    .insert({
+                        id: sbUserId,
+                        email: userEmail,
+                        role: 'mentee',
+                        status: 'active',
+                        pilot_id: autoPilotId,
+                        enrolled_programs: [],
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                        ...payload,
+                    });
+                if (insertError) { console.error('🔴 [handleSaveProfile] insert error:', insertError); throw insertError; }
             }
 
             // Issue self-hosted Verifiable Credential (Mauritius Data Controller framework)
@@ -644,19 +586,17 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                 const { data: profileData } = await supabase
                     .from('profiles')
                     .select('id, license_id, license_type, license_expiry, country_of_license')
-                    .eq('auth0_id', auth0Id)
+                    .eq('id', sbUserId)
                     .single();
-                
+
                 if (profileData?.id) {
-                    
-                    // Use license data if available, otherwise use placeholder for demo
-                    const licenseNum = profileData.license_id || `TEMP-${auth0Id.slice(-8)}`;
+                    const licenseNum = profileData.license_id || `TEMP-${sbUserId.slice(-8)}`;
                     const licenseType = profileData.license_type || occupation || 'Pilot';
                     const licenseExpiry = profileData.license_expiry || null;
                     const issuingAuth = profileData.country_of_license || nationality || 'CAAP';
-                    
+
                     const vcResult = await issueAndStoreCredentialSelfHosted(
-                        auth0Id,
+                        sbUserId,
                         profileData.id,
                         licenseNum,
                         licenseType,
@@ -679,8 +619,8 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
             if (window.PublicKeyCredential) {
                 try {
                     const { data: { session: sbSession } } = await supabase.auth.getSession();
-                    const userId = sbSession?.user?.id || auth0Id;
-                    const userEmail = sbSession?.user?.email || user?.email || auth0Id;
+                    const userId = sbSession?.user?.id || sbUserId;
+                    const userEmail = sbSession?.user?.email || supabaseUser?.email || sbUserId;
                     const challengeBytes = new Uint8Array(32);
                     crypto.getRandomValues(challengeBytes);
                     const userIdBytes = new TextEncoder().encode(userId);
@@ -778,7 +718,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const logbookSynced = new URLSearchParams(window.location.search).get('logbook') === 'synced';
 
     // ── While session rehydrates (skip wait if returning from logbook sync) ─
-    if (isSetup && (isLoading || supabaseSessionLoading) && !authTimedOut && !logbookSynced) {
+    if (isSetup && supabaseSessionLoading && !logbookSynced) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -788,10 +728,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }
 
     // ── While checking profile existence ─-
-    // For Auth0 users: check when authenticated
-    // For Supabase users: check when supabaseUser is set
-    // For authTimedOut case: check if supabaseUser exists (Google OAuth flow)
-    if (isSetup && !profileCheckComplete && ((isAuthenticated && user) || supabaseUser || (authTimedOut && !!supabaseUser))) {
+    if (isSetup && !profileCheckComplete && supabaseUser) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a' }}>
                 <div style={{ width: 48, height: 48, border: '4px solid #00b4d8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
@@ -801,7 +738,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     }
 
     // ── Profile setup step (redirected here after Auth0 signup, Supabase OAuth, or logbook sync) ──
-    if (isSetup && (isAuthenticated || !!supabaseUser || authTimedOut || (!isLoading && logbookSynced))) {
+    if (isSetup && (!!supabaseUser || logbookSynced)) {
         return (
             <>
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
@@ -1454,11 +1391,11 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     disabled={activeInstrument < 4 || walletCreating === 'generating' || walletCreating === 'syncing'}
                                     onClick={async () => {
                                         if (walletConnected && !showPasskeyCancelled) { onNavigate('platform'); return; }
-                                        // Resolve auth0Id — try Auth0 hook, then Supabase session sub, then sessionStorage
-                                        let auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id') || null;
-                                        if (!auth0Id) {
-                                            const { data: { session } } = await supabase.auth.getSession();
-                                            auth0Id = (session?.user?.user_metadata?.sub as string) || session?.user?.id || null;
+                                        const { data: { session } } = await supabase.auth.getSession();
+                                        const sbUserId = session?.user?.id || supabaseUser?.id || null;
+                                        if (!sbUserId) {
+                                            setSaveError('Authentication error. Please sign in again.');
+                                            return;
                                         }
                                         const cleanFirst = firstName.trim().replace(/<[^>]*>/g, '').slice(0, 50);
                                         const cleanLast = lastName.trim().replace(/<[^>]*>/g, '').slice(0, 80);
@@ -1470,54 +1407,21 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             setWalletCreating('syncing');
                                             setSaving(true);
 
-                                            if (!auth0Id) {
-                                                console.error('[DEBUG][Wallet] ❌ auth0Id is null — cannot create wallet');
-                                                setSaveError('Authentication error. Please sign in again.');
-                                                setWalletCreating('idle');
-                                                setSaving(false);
-                                                return;
-                                            }
-
                                             const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL as string;
                                             const ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string;
+                                            const requestToken = btoa(`${sbUserId}:ts:${Date.now()}`);
 
-                                            // Time-bound token: base64(auth0Id + ':ts:' + timestamp) — verified server-side within 5-min window
-                                            const requestToken = btoa(`${auth0Id}:ts:${Date.now()}`);
-
-                                            // Encrypt sensitive fields client-side before sending to edge function
-                                            // Edge function stores only ciphertext — unreadable server-side
-                                            let encryptedPayload: Record<string, any> = {
-                                                displayName: cleanName,
-                                                firstName: cleanFirst,
-                                                lastName: cleanLast,
-                                                occupation,
-                                                dob: dob || null,
-                                            };
-                                            try {
-                                                const claims = await getIdTokenClaims?.();
-                                                const idToken = claims?.__raw;
-                                                if (idToken) {
-                                                    const vaultKey = await getVaultKeyFromAuth0Token(auth0Id, idToken);
-                                                    encryptedPayload = await encryptFields(
-                                                        encryptedPayload,
-                                                        ['firstName', 'lastName'],
-                                                        vaultKey
-                                                    );
-                                                } else {
-                                                    console.warn('[DEBUG][Wallet] ⚠️ No idToken — skipping vault encryption');
-                                                }
-                                            } catch (vaultErr) {
-                                                console.warn('[vault] Encryption unavailable, proceeding with plaintext:', vaultErr);
-                                            }
-
-                                            // Edge function handles upsert — creates profile if missing, updates if exists
                                             const res = await fetch(`${SUPABASE_URL}/functions/v1/create-wallet`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY },
                                                 body: JSON.stringify({
-                                                    auth0Id,
-                                                    email: user?.email || '',
-                                                    ...encryptedPayload,
+                                                    userId: sbUserId,
+                                                    email: session?.user?.email || supabaseUser?.email || '',
+                                                    displayName: cleanName,
+                                                    firstName: cleanFirst,
+                                                    lastName: cleanLast,
+                                                    occupation,
+                                                    dob: dob || null,
                                                     totalHours: hrs,
                                                     aircraftTypes,
                                                     issuingAuthority: issuingAuthority || null,
@@ -1530,20 +1434,19 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             });
                                             const walletData = await res.json();
                                             if (!res.ok || !walletData.success) {
-                                                console.error('[DEBUG][Wallet] ❌ create-wallet failed:', walletData);
+                                                console.error('[DEBUG][Wallet] create-wallet failed:', walletData);
                                                 throw new Error(walletData.error || 'Wallet creation failed');
                                             }
                                             sessionStorage.setItem('wallet_did', walletData.did || '');
                                             sessionStorage.setItem('wallet_claimed_provider', 'PilotRecognition Wallet');
+                                            sessionStorage.setItem('pr_user_id', sbUserId);
 
                                             setWalletCreating('active');
                                             setSelectedWallet('Pilot Wallet');
                                             setWalletConnected(true);
                                             setSaving(false);
-                                            // Stash context for passkey modal — must be triggered by direct user click
-                                            const { data: { session: pkSess } } = await supabase.auth.getSession();
-                                            const pkCtxId = pkSess?.user?.id || user?.sub || sessionStorage.getItem('mfb_auth0_id') || 'pilot-user';
-                                            const pkCtxEmail = pkSess?.user?.email || user?.email || pkCtxId;
+                                            const pkCtxId = session?.user?.id || sbUserId;
+                                            const pkCtxEmail = session?.user?.email || supabaseUser?.email || pkCtxId;
                                             const pkCtxName = displayName.trim().slice(0, 80) || pkCtxEmail;
                                             setPasskeyContext({ userId: pkCtxId, email: pkCtxEmail, name: pkCtxName });
                                             setShowBiometricNotice(true);
@@ -1589,7 +1492,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                 <span style={{ color: '#4ade80', fontSize: '11px', fontWeight: 600 }}>Secure Connection</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
-                                <span style={{ color: '#7dd3fc', fontSize: '11px', fontWeight: 600 }}>Powered by Auth0</span>
+                                <span style={{ color: '#7dd3fc', fontSize: '11px', fontWeight: 600 }}>Powered by Supabase</span>
                                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
                                 <span style={{ color: '#ef4444', fontSize: '11px', fontWeight: 600 }}>PIC by PilotRecognition</span>
                             </div>
@@ -1724,17 +1627,18 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             
                                             // For Pilot Wallet, issue + store in Supabase (hashed) — no external redirect
                                             if (w.id === 'pilot') {
-                                                const auth0Id = user?.sub || sessionStorage.getItem('mfb_auth0_id');
+                                                const { data: { session: wSess } } = await supabase.auth.getSession();
+                                                const pilotUserId = wSess?.user?.id || supabaseUser?.id;
                                                 const hrs = parseFloat(hoursWhole) + (parseFloat(hoursMinutes || '0') / 60);
-                                                if (auth0Id && hrs > 0) {
+                                                if (pilotUserId && hrs > 0) {
                                                     const { data: profile } = await supabase
                                                         .from('profiles')
                                                         .select('id')
-                                                        .eq('auth0_id', auth0Id)
+                                                        .eq('id', pilotUserId)
                                                         .maybeSingle();
                                                     const result = await issueAndStoreCredential(
-                                                        auth0Id,
-                                                        profile?.id || auth0Id,
+                                                        pilotUserId,
+                                                        profile?.id || pilotUserId,
                                                         hrs,
                                                         walletStorageChoice as 'supabase' | 'firebase' | 'both'
                                                     );
@@ -1989,7 +1893,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                             
                             <div className="p-6">
                                 <WalletFirstCredentialFlow
-                                    auth0Id={user?.sub || ''}
+                                    auth0Id={supabaseUser?.id || ''}
                                     onCredentialClaimed={(credentialUrl) => {
                                         setVcCredentialUrl(credentialUrl);
                                         setWalletConnected(true);
