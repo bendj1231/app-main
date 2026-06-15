@@ -188,32 +188,6 @@ const OCCUPATIONS = [
     'Other',
 ];
 
-const LockIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-    </svg>
-);
-
-const FolderIcon = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-    </svg>
-);
-
-const LockedUpload: React.FC<{ label: string }> = ({ label }) => (
-    <div style={{ position: 'relative', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
-        <button disabled style={{ width: '100%', padding: '10px 12px', background: '#f1f5f9', border: '1px dashed #cbd5e1', borderRadius: '8px', color: '#94a3b8', fontSize: '12px', fontWeight: 600, cursor: 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-            <FolderIcon />
-            {label}
-        </button>
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', cursor: 'not-allowed', background: 'rgba(241,245,249,0.6)', backdropFilter: 'blur(1px)', borderRadius: '8px' }}>
-            <LockIcon />
-            <span style={{ fontSize: '10px', fontWeight: 600, color: '#64748b' }}>{label}</span>
-        </div>
-    </div>
-);
-
 export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNavigate, onLogin }) => {
 
     const [enableShader, setEnableShader] = useState(false);
@@ -864,14 +838,14 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 {/* Stage indicator */}
                                 <div className="mb-6">
                                     <div className="flex gap-2 mb-3">
-                                        {[1, 2, 3].map(s => (
+                                        {[1, 2, 3, 4].map(s => (
                                             <div key={s} className={`flex-1 h-1.5 rounded-full transition-all duration-300 ${setupStage >= s ? 'bg-red-500' : 'bg-slate-200'}`} />
                                         ))}
                                     </div>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Step {setupStage} of 3</span>
+                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Step {setupStage} of 4</span>
                                         <span className="text-xs font-medium text-slate-400">
-                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : 'Flight Hours & PIC'}
+                                            {setupStage === 1 ? 'Identity' : setupStage === 2 ? 'Classification' : setupStage === 3 ? 'Flight Hours' : 'Your PIC'}
                                         </span>
                                     </div>
                                 </div>
@@ -966,7 +940,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                         )}
                                     </div>
                                     {/* Pilot licence upload slot */}
-                                    <LockedUpload label="Upload Pilot Licence" />
                                     {/* Issuing Authority */}
                                     <div>
                                         <div style={{ fontSize: '10px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Issuing Authority / State of Issue</div>
@@ -981,7 +954,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             {['CAAP (Philippines)', 'FAA (USA)', 'EASA (Europe)', 'GCAA (UAE)', 'CASA (Australia)', 'CAA (UK)', 'DGCA (India)', 'TCCA (Canada)', 'SACAA (South Africa)', 'JCAB (Japan)', 'CAAS (Singapore)', 'CAAT (Thailand)', 'DGAC (France)', 'LBA (Germany)', 'ENAC (Italy)', 'Other'].map(a => <option key={a} value={a}>{a}</option>)}
                                         </select>
                                         {/* Medical certificate upload slot */}
-                                        <div style={{ marginTop: '6px' }}><LockedUpload label="Upload Medical Certificate" /></div>
                                     </div>
                                     {/* ── AIRCRAFT & PRIVILEGES — progressive disclosure ── */}
                                     {occupation && issuingAuthority && (
@@ -1146,7 +1118,6 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     </select>
                                 </div>
                                 {/* ELP upload slot — Radio/NTC licence */}
-                                <LockedUpload label="Upload Radio / NTC Licence" />
                                 {/* Single eligibility notice */}
                                 <div style={{ padding: '10px 12px', background: '#fafafa', border: '1px solid #f1f5f9', borderRadius: '8px', textAlign: 'center' }}>
                                     <p style={{ fontSize: '11px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0' }}>Unlock document verification with <span style={{ color: '#ef4444' }}>Recognition+</span></p>
@@ -1204,7 +1175,15 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     {/* Confirm — hours are optional, user can skip */}
                                 </div>
                                 </div>{/* end Section 3 */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(4)} className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-sm transition-colors">Next →</button>
+                                </div>
+                                </>
+                                )}
 
+                                {setupStage === 4 && (
+                                <>
                                 {/* ── SECTION 4: Your PIC ── */}
                                 <div className="pb-6 mb-6">
                                     <h3 className="text-lg font-bold text-slate-900 mb-4">Your PIC</h3>
@@ -1329,7 +1308,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                 </div>
                                 </div>{/* end Section 4 */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
-                                    <button type="button" onClick={() => setSetupStage(2)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
+                                    <button type="button" onClick={() => setSetupStage(3)} className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg text-sm transition-colors">← Back</button>
                                 </div>
                                 </>
                                 )}
