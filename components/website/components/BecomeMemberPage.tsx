@@ -1289,7 +1289,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                             console.error('[DEBUG][Wallet] Wallet creation error:', e);
                                             setWalletCreating('idle');
                                             setSaving(false);
-                                            setSaveError('Failed to create PIC. Please try again.');
+                                            setSaveError('Failed to create profile. Please try again.');
                                         }
                                     }}
                                     style={{
@@ -1304,7 +1304,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
                                     {walletCreating === 'generating' && '⏳ Generating Secure Keys...'}
                                     {walletCreating === 'syncing' && '🔄 Registering Account & Issuing Credential...'}
                                     {(walletCreating === 'active' || walletConnected) && '🎉 Profile Created — Entering Platform...'}
-                                    {walletCreating === 'idle' && '🔐 Create PIC & Enter Platform →'}
+                                    {walletCreating === 'idle' && '🔐 Create Recognition Profile →'}
                                 </button>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '8px' }}>
                                     <span style={{ fontSize: '10px', color: '#94a3b8' }}>Decentralised identity</span>
