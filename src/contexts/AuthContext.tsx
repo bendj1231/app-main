@@ -85,6 +85,8 @@ interface AuthContextType {
     userData: Record<string, string | string[] | undefined>
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  sendOtp: (email: string) => Promise<void>;
+  verifyOtp: (email: string, token: string) => Promise<void>;
   logout: () => Promise<void>;
   deleteAccount: (userId: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
@@ -989,84 +991,93 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  async function login(email: string, password: string) {
+  // Shared post-login setup (set user, fetch profile, log activity)
+  async function handlePostLogin(user: any, session: any, emailAddress: string) {
+    setExplicitLogoutInStorage(false);
+    await logLogin(user.id);
+
+    const supabaseUser: SupabaseUser = {
+      id: user.id,
+      uid: user.id,
+      email: user.email || '',
+      display_name: user.email?.split('@')[0],
+      displayName: user.email?.split('@')[0],
+      email_confirmed_at: user.email_confirmed_at || new Date().toISOString(),
+      created_at: user.created_at || new Date().toISOString(),
+      updated_at: user.updated_at || new Date().toISOString(),
+    };
+
+    setCurrentUser(supabaseUser);
+    window.scrollTo(0, 0);
+
     try {
-      // Use Supabase client directly for login
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
 
-      if (error) {
-        console.error('Supabase login error:', error);
-        throw new Error(error.message || 'Login failed');
-      }
-
-      if (!data.user || !data.session) {
-        throw new Error('Login failed: No user or session returned');
-      }
-
-      // Clear explicit logout flag on successful login
-      setExplicitLogoutInStorage(false);
-
-      // Log login activity
-      await logLogin(data.user.id);
-
-      // Set currentUser state with Supabase user data
-      const supabaseUser: SupabaseUser = {
-        id: data.user.id,
-        uid: data.user.id,
-        email: data.user.email || '',
-        display_name: data.user.email?.split('@')[0],
-        displayName: data.user.email?.split('@')[0],
-        email_confirmed_at: data.user.email_confirmed_at || new Date().toISOString(),
-        created_at: data.user.created_at || new Date().toISOString(),
-        updated_at: data.user.updated_at || new Date().toISOString(),
-      };
-
-      setCurrentUser(supabaseUser);
-
-      // Scroll to top after successful login
-      window.scrollTo(0, 0);
-
-      // Fetch user profile from Supabase
-      try {
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
+      if (profileData && !profileError) {
+        await decryptAndSetUserProfile(profileData);
+      } else {
+        const { data: pilotData, error: pilotError } = await supabase
+          .from('pilot_licensure_experience')
           .select('*')
-          .eq('id', data.user.id)
+          .eq('user_id', user.id)
           .maybeSingle();
 
-        if (profileData && !profileError) {
-          await decryptAndSetUserProfile(profileData);
+        if (pilotData && !pilotError) {
+          await decryptAndSetUserProfile(pilotData);
         } else {
-          // Try pilot_licensure_experience as fallback
-          const { data: pilotData, error: pilotError } = await supabase
-            .from('pilot_licensure_experience')
-            .select('*')
-            .eq('user_id', data.user.id)
-            .maybeSingle();
-
-          if (pilotData && !pilotError) {
-            await decryptAndSetUserProfile(pilotData);
-          } else {
-            // Create minimal profile from auth data
-            const newProfile = {
-              id: data.user.id,
-              user_id: data.user.id,
-              email: email,
-              created_at: new Date().toISOString(),
-              last_login: new Date().toISOString(),
-            };
-            setUserProfile(newProfile);
-          }
+          setUserProfile({
+            id: user.id,
+            user_id: user.id,
+            email: emailAddress,
+            created_at: new Date().toISOString(),
+            last_login: new Date().toISOString(),
+          });
         }
-      } catch (profileError) {
-        console.error('Error fetching user profile from Supabase:', profileError);
-        // Non-critical error, proceed with auth only
       }
+    } catch (profileError) {
+      console.error('Error fetching user profile from Supabase:', profileError);
+    }
+  }
+
+  async function login(email: string, password: string) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw new Error(error.message || 'Login failed');
+      if (!data.user || !data.session) throw new Error('Login failed: No user or session returned');
+      await handlePostLogin(data.user, data.session, email);
     } catch (error) {
       console.error('Login failed:', error);
+      throw error;
+    }
+  }
+
+  async function sendOtp(email: string) {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: true },
+    });
+    if (error) {
+      console.error('sendOtp error:', error);
+      throw new Error(error.message || 'Failed to send code. Please try again.');
+    }
+  }
+
+  async function verifyOtp(email: string, token: string) {
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'email',
+      });
+      if (error) throw new Error(error.message || 'Invalid code. Please try again.');
+      if (!data.user || !data.session) throw new Error('Verification failed. Please try again.');
+      await handlePostLogin(data.user, data.session, email);
+    } catch (error) {
+      console.error('verifyOtp failed:', error);
       throw error;
     }
   }
@@ -1653,6 +1664,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signupInProgress,
     signup,
     login,
+    sendOtp,
+    verifyOtp,
     logout,
     deleteAccount,
     resetPassword,

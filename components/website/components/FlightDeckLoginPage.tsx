@@ -29,12 +29,14 @@ interface FlightDeckLoginPageProps {
 
 export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavigate }) => {
   const navigate = useNavigate();
-  const { login, currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
+  const { sendOtp, verifyOtp, currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
   const [checkingOAuth, setCheckingOAuth] = useState(false);
   const [checkingAccount, setCheckingAccount] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -92,34 +94,60 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     handleOAuthResult();
   }, [oauthAccountCheck, navigate, resetOauthAccountCheck]);
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const startResendTimer = () => {
+    setResendTimer(60);
+    const interval = setInterval(() => {
+      setResendTimer((prev) => {
+        if (prev <= 1) { clearInterval(interval); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) return;
-    setSubmitting(true);
+    if (!email.trim()) return;
+    setOtpLoading(true);
+    setError('');
+
+    try {
+      await sendOtp(email.trim());
+      setOtpSent(true);
+      startResendTimer();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to send code. Please try again.');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !otp.trim()) return;
+    setVerifyLoading(true);
     setCheckingAccount(true);
     setError('');
 
     try {
-      // 1. Check if pilot has a profile before attempting login
+      await verifyOtp(email.trim(), otp.trim());
+
+      // After verifyOtp, currentUser is set by AuthContext.
+      // Check if profile exists — if not, send to become-member.
       const { data: profile } = await supabase
         .from('profiles')
         .select('id')
         .eq('email', email.trim().toLowerCase())
         .maybeSingle();
 
-      if (!profile) {
-        // No account found → send to sign up
+      if (profile) {
+        navigate('/platform');
+      } else {
         onNavigate('become-member');
-        return;
       }
-
-      // 2. Profile exists — attempt Supabase login
-      await login(email.trim(), password);
-      navigate('/platform');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Incorrect password. Please try again.');
+      setError(err instanceof Error ? err.message : 'Invalid code. Please try again.');
     } finally {
-      setSubmitting(false);
+      setVerifyLoading(false);
       setCheckingAccount(false);
     }
   };
@@ -371,9 +399,9 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
           </div>
         )}
 
-        {/* Email + Password form */}
+        {/* Email OTP form */}
         <form
-          onSubmit={handleEmailLogin}
+          onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}
           style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
         >
           <div>
@@ -395,6 +423,7 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
               placeholder="Pilot@pilotrecognition.com"
               required
               autoComplete="email"
+              disabled={otpSent}
               style={{
                 width: '100%',
                 padding: '10px 12px',
@@ -402,36 +431,40 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                 borderRadius: 6,
                 fontSize: 14,
                 color: '#ffffff',
-                background: 'rgba(255,255,255,0.08)',
+                background: otpSent ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
                 outline: 'none',
                 boxSizing: 'border-box',
+                cursor: otpSent ? 'not-allowed' : 'text',
               }}
             />
           </div>
 
-          <div>
-            <label
-              style={{
-                display: 'block',
-                fontSize: 13,
-                fontWeight: 600,
-                color: 'rgba(255,255,255,0.85)',
-                marginBottom: 6,
-              }}
-            >
-              Password
-            </label>
-            <div style={{ position: 'relative' }}>
+          {otpSent && (
+            <div>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: 'rgba(255,255,255,0.85)',
+                  marginBottom: 6,
+                }}
+              >
+                Verification Code
+              </label>
               <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={6}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                placeholder="123456"
                 required
-                autoComplete="current-password"
+                autoFocus
                 style={{
                   width: '100%',
-                  padding: '10px 40px 10px 12px',
+                  padding: '10px 12px',
                   border: '1px solid rgba(255,255,255,0.2)',
                   borderRadius: 6,
                   fontSize: 14,
@@ -439,48 +472,66 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
                   background: 'rgba(255,255,255,0.08)',
                   outline: 'none',
                   boxSizing: 'border-box',
+                  letterSpacing: '0.15em',
+                  textAlign: 'center',
                 }}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  color: 'rgba(255,255,255,0.4)',
-                  cursor: 'pointer',
-                  fontSize: 12,
-                  padding: 0,
-                }}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </button>
+              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>
+                We sent a 6-digit code to {email}. Enter it above.
+              </p>
             </div>
-          </div>
+          )}
 
           <button
             type="submit"
-            disabled={submitting || !email.trim() || !password.trim()}
+            disabled={otpSent ? verifyLoading || otp.length < 6 : otpLoading || !email.trim()}
             style={{
               width: '100%',
               padding: '11px',
-              background: submitting || !email.trim() || !password.trim() ? '#fca5a5' : '#dc2626',
+              background: (otpSent ? verifyLoading || otp.length < 6 : otpLoading || !email.trim()) ? '#fca5a5' : '#dc2626',
               color: '#fff',
               border: 'none',
               borderRadius: 6,
               fontSize: 14,
               fontWeight: 600,
-              cursor: submitting || !email.trim() || !password.trim() ? 'not-allowed' : 'pointer',
+              cursor: (otpSent ? verifyLoading || otp.length < 6 : otpLoading || !email.trim()) ? 'not-allowed' : 'pointer',
               transition: 'background 0.15s',
               marginTop: 4,
             }}
           >
-            {submitting ? 'Signing in...' : 'Sign In →'}
+            {otpSent
+              ? verifyLoading
+                ? 'Verifying...'
+                : 'Verify Code →'
+              : otpLoading
+                ? 'Sending code...'
+                : 'Send Code →'}
           </button>
+
+          {otpSent && resendTimer > 0 && (
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', textAlign: 'center' }}>
+              Resend code in {resendTimer}s
+            </p>
+          )}
+
+          {otpSent && resendTimer === 0 && (
+            <button
+              type="button"
+              onClick={() => { setOtpSent(false); setOtp(''); setError(''); }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#ef4444',
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: 'pointer',
+                padding: 0,
+                textAlign: 'center',
+              }}
+            >
+              Use a different email
+            </button>
+          )}
         </form>
 
         {/* Divider */}
