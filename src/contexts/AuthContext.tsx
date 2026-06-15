@@ -85,7 +85,7 @@ interface AuthContextType {
     userData: Record<string, string | string[] | undefined>
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  sendOtp: (email: string) => Promise<void>;
+  sendOtp: (email: string, redirectTo?: string) => Promise<void>;
   verifyOtp: (email: string, token: string) => Promise<void>;
   logout: () => Promise<void>;
   deleteAccount: (userId: string) => Promise<void>;
@@ -1055,12 +1055,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  async function sendOtp(email: string) {
+  async function sendOtp(email: string, redirectTo?: string) {
+    const defaultRedirect = typeof window !== 'undefined' ? `${window.location.origin}/flight-deck-login` : undefined;
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         shouldCreateUser: true,
-        emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/flight-deck-login` : undefined,
+        emailRedirectTo: redirectTo || defaultRedirect,
       },
     });
     if (error) {

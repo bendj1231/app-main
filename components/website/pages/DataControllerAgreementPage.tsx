@@ -52,7 +52,7 @@ export const DataControllerAgreementPage: React.FC<DataControllerAgreementPagePr
             return;
         }
 
-        navigate('/become-member?setup=1');
+        navigate('/email-confirmation');
     };
 
     const handleBackToSignup = () => {

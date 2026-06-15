@@ -86,6 +86,11 @@ const DataControllerAgreementPage = lazy(() =>
     default: m.DataControllerAgreementPage,
   }))
 );
+const EmailSignupConfirmPage = lazy(() =>
+  import('@/components/website/pages/EmailSignupConfirmPage').then((m) => ({
+    default: m.EmailSignupConfirmPage,
+  }))
+);
 const BecomeMemberConfirmPage = lazy(() =>
   import('@/components/website/components/BecomeMemberConfirmPage').then((m) => ({
     default: m.BecomeMemberConfirmPage,
@@ -893,7 +898,11 @@ export const AppRoutes = () => {
         />
         <Route
           path="/data-controller-agreement"
-          element={<DataControllerAgreementPage onBack={() => handleBack()} onNavigate={handleNavigate} />}
+          element={<DataControllerAgreementPage _onBack={() => handleBack()} _onNavigate={handleNavigate} />}
+        />
+        <Route
+          path="/email-confirmation"
+          element={<EmailSignupConfirmPage onNavigate={handleNavigate} />}
         />
         <Route
           path="/account-confirmation"
