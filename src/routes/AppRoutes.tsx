@@ -567,8 +567,38 @@ const PilotTerminalHome = lazy(() =>
 );
 
 const LoadingFallback = () => (
-  <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
-    Loading...
+  <div className="min-h-screen bg-[#0f172a] flex flex-col items-center justify-center">
+    <style>{`
+      @keyframes loaderFadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      @keyframes loaderPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      @keyframes loaderBar {
+        0% { width: 0%; left: 0; }
+        50% { width: 60%; left: 20%; }
+        100% { width: 0%; left: 100%; }
+      }
+    `}</style>
+    <div style={{ animation: 'loaderFadeIn 0.3s ease-out forwards' }} className="flex flex-col items-center gap-6">
+      <div className="text-2xl font-black tracking-tight">
+        <span className="text-white">pilot</span>
+        <span className="text-red-500">recognition</span>
+        <span className="text-white">.com</span>
+      </div>
+      <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden relative">
+        <div
+          className="absolute top-0 h-full bg-red-500 rounded-full"
+          style={{ animation: 'loaderBar 1.5s ease-in-out infinite' }}
+        />
+      </div>
+      <p className="text-white/40 text-xs uppercase tracking-widest font-medium" style={{ animation: 'loaderPulse 1.5s ease-in-out infinite' }}>
+        Loading
+      </p>
+    </div>
   </div>
 );
 

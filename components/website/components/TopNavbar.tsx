@@ -517,13 +517,43 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         }
     };
 
+    // Preload lazy chunks on hover for common routes
+    const preloadPage = (target: string) => {
+        if (typeof window === 'undefined') return;
+        const map: Record<string, () => Promise<unknown>> = {
+            '/about': () => import('@/components/website/components/AboutPage'),
+            '/faq': () => import('@/components/website/components/FAQPage'),
+            '/foundational-program': () => import('@/components/website/components/programs/FoundationalProgramPage'),
+            '/transition-program': () => import('@/components/website/components/programs/TransitionProgramPage'),
+            '/programs': () => import('@/components/website/components/programs/ProgramsPathwaysPage'),
+            '/learn-about': () => import('@/app/learn-about/page'),
+            '/recognition-plus': () => import('@/app/recognition-plus/page'),
+            '/professional-profile': () => import('@/app/professional-profile/page'),
+            '/background-check': () => import('@/app/background-check/page'),
+            '/pilot-insurance': () => import('@/app/pilot-insurance/page'),
+            '/banking-finance': () => import('@/app/banking-finance/page'),
+            '/career-tools': () => import('@/app/career-tools/page'),
+            '/applications-systems': () => import('@/components/website/components/ApplicationsSystemsDirectoryPage'),
+            '/examination-results': () => import('@/components/website/components/ExaminationResultsDirectoryPage'),
+            '/membership-benefits': () => import('@/components/website/components/MembershipBenefitsDirectoryPage'),
+            '/digital-logbook': () => import('@/components/website/components/DigitalLogbookDirectoryPage'),
+            '/w1000-suite': () => import('@/components/website/components/W1000SuiteDirectoryPage'),
+            '/settings': () => import('@/components/website/components/SettingsDirectoryPage'),
+        };
+        const base = target.split('?')[0];
+        if (map[base]) {
+            map[base]().catch(() => {});
+        }
+    };
+
     // Memoized dropdown item component for performance
-    const DropdownItem = memo(({ subItem, isActive, onNavigate: nav, setDropdown, onHover }: { 
-        subItem: NavSubItem; 
-        isActive: boolean; 
+    const DropdownItem = memo(({ subItem, isActive, onNavigate: nav, setDropdown, onHover, preload }: {
+        subItem: NavSubItem;
+        isActive: boolean;
         onNavigate: (target: string) => void;
         setDropdown: (val: string | null) => void;
         onHover?: (name: string | null) => void;
+        preload?: (target: string) => void;
     }) => (
         <button
             onClick={(e) => {
@@ -531,7 +561,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                 nav(subItem.target);
                 setDropdown(null);
             }}
-            onMouseEnter={() => onHover?.(subItem.name)}
+            onMouseEnter={() => { onHover?.(subItem.name); preload?.(subItem.target); }}
             onMouseLeave={() => onHover?.(null)}
             className={`w-full text-left px-3 py-2 rounded transition-all flex flex-col gap-0.5 ${isActive
                 ? subItem.isYellow ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-700'
@@ -761,6 +791,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                             >
                                 <button
                                     onClick={() => handleNavClick(item.target)}
+                                    onMouseEnter={() => preloadPage(item.target)}
                                     className={`text-[0.7rem] font-bold uppercase tracking-[0.1em] transition-all hover:text-blue-600 flex items-center gap-1 whitespace-nowrap ${item.target === 'home' && !forceScrolled
                                         ? 'text-blue-600 border-b-2 border-blue-600 pb-1 font-black'
                                         : item.isOrange
@@ -799,6 +830,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                                 onNavigate={onNavigate}
                                                                 setDropdown={setActiveDropdown}
                                                                 onHover={setActiveSubItem}
+                                                                preload={preloadPage}
                                                             />
                                                         ))}
                                                     </div>
@@ -1323,6 +1355,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                 <div key={item.name} className="flex flex-col items-center gap-3">
                                     <button
                                         onClick={() => { handleNavClick(item.target); setIsMenuOpen(false); }}
+                                        onMouseEnter={() => preloadPage(item.target)}
                                         className="text-2xl md:text-3xl font-bold text-white uppercase tracking-widest hover:text-blue-400 transition-colors py-3 px-6 min-h-[48px] min-w-[200px]"
                                     >
                                         {item.name}
@@ -1333,6 +1366,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                                                 <button
                                                     key={`${subItem.name}-${subItem.target}`}
                                                     onClick={() => { handleNavClick(subItem.target); setIsMenuOpen(false); }}
+                                                    onMouseEnter={() => preloadPage(subItem.target)}
                                                     className={`text-sm md:text-base font-medium uppercase tracking-widest transition-colors flex items-center justify-center gap-2 py-3 px-4 min-h-[44px] w-full ${subItem.isYellow ? 'text-yellow-400' : 'text-white/40 hover:text-blue-300'}`}
                                                 >
                                                     {subItem.isYellow && <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>}
