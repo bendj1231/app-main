@@ -65,7 +65,10 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
         ...(auth0Config.audience ? { audience: auth0Config.audience } : {}),
         scope: 'openid profile email',
       }}
-      onRedirectCallback={() => {
+      onRedirectCallback={(appState) => {
+        if (appState?.returnTo) {
+          sessionStorage.setItem('auth0_return_to', appState.returnTo);
+        }
         navigate('/auth/callback', { replace: true });
       }}
       skipRedirectCallback={

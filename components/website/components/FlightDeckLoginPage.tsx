@@ -556,6 +556,27 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
       >
         ← Back to Home
       </button>
+
+      {/* Admin portal */}
+      <button
+        onClick={() => navigate('/admin')}
+        style={{
+          marginTop: 8,
+          background: 'none',
+          border: 'none',
+          color: 'rgba(255,255,255,0.25)',
+          fontSize: 11,
+          cursor: 'pointer',
+          zIndex: 1,
+          position: 'relative',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.25)'; }}
+      >
+        Admin Portal
+      </button>
     </div>
   );
 };

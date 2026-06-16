@@ -514,8 +514,24 @@ const FrameworkFullPage = lazy(() => import('@/app/framework/full/page'));
 const UCFPage = lazy(() => import('@/app/ucf/page'));
 const UCFOfficialReleasePage = lazy(() => import('@/app/ucf/official-release/page'));
 const ReferralLandingPage = lazy(() => import('@/app/ref/[code]/page'));
+const AdminDashboardPage = lazy(() => import('@/app/admin/page'));
 const AdminVerificationQueue = lazy(() => import('@/app/admin/verification/page'));
+const AdminObjectivesPage = lazy(() => import('@/app/admin/objectives/page'));
+const AdminEmailsPage = lazy(() => import('@/app/admin/emails/page'));
+const AdminMeetingsPage = lazy(() => import('@/app/admin/meetings/page'));
+const AdminPlanningPage = lazy(() => import('@/app/admin/planning/page'));
+const AdminBotPage = lazy(() => import('@/app/admin/bot/page'));
+const AdminMessagesPage = lazy(() => import('@/app/admin/messages/page'));
+const AdminSupportPage = lazy(() => import('@/app/admin/support/page'));
+const AdminBlogsPage = lazy(() => import('@/app/admin/blogs/page'));
+const AdminProspectsPage = lazy(() => import('@/app/admin/prospects/page'));
+const AdminPilotsPage = lazy(() => import('@/app/admin/pilots/page'));
+const AdminEnterprisesPage = lazy(() => import('@/app/admin/enterprises/page'));
+const AdminEventsPage = lazy(() => import('@/app/admin/events/page'));
+const AdminSettingsPage = lazy(() => import('@/app/admin/settings/page'));
+const AdminVerificationManagementPage = lazy(() => import('@/app/admin/verification-management/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
+const AdminVerificationQueuePage = lazy(() => import('@/app/admin/verification/page'));
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
 const PrivacyPolicyPage = lazy(() => import('@/app/privacy-policy/page'));
 const IssuerPolicyPage = lazy(() => import('@/app/issuer-policy/page'));
@@ -1594,7 +1610,23 @@ export const AppRoutes = () => {
         <Route path="/auth/logbook/callback" element={<LogbookCallback />} />
 
         {/* Admin routes */}
+        <Route path="/admin" element={<AdminDashboardPage />} />
         <Route path="/admin/verification" element={<AdminVerificationQueue />} />
+        <Route path="/admin/objectives" element={<AdminObjectivesPage />} />
+        <Route path="/admin/emails" element={<AdminEmailsPage />} />
+        <Route path="/admin/meetings" element={<AdminMeetingsPage />} />
+        <Route path="/admin/planning" element={<AdminPlanningPage />} />
+        <Route path="/admin/bot" element={<AdminBotPage />} />
+        <Route path="/admin/messages" element={<AdminMessagesPage />} />
+        <Route path="/admin/support" element={<AdminSupportPage />} />
+        <Route path="/admin/blogs" element={<AdminBlogsPage />} />
+        <Route path="/admin/prospects" element={<AdminProspectsPage />} />
+        <Route path="/admin/pilots" element={<AdminPilotsPage />} />
+        <Route path="/admin/enterprises" element={<AdminEnterprisesPage />} />
+        <Route path="/admin/events" element={<AdminEventsPage />} />
+        <Route path="/admin/settings" element={<AdminSettingsPage />} />
+        <Route path="/admin/verification-management" element={<AdminVerificationManagementPage />} />
+        <Route path="/admin/verification" element={<AdminVerificationQueuePage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />

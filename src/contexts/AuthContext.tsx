@@ -70,6 +70,7 @@ interface UserProfile {
   recognitionTier?: string;
   tier?: string;
   subscription_tier?: string;
+  admin_permissions?: Record<string, any>;
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   [key: string]: any;
 }
@@ -247,8 +248,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // If OAuth signed-in user has no linked profile, ensure app redirects to become-member
+  // Skip this for admin users (super_admin or admin role)
   useEffect(() => {
     if (oauthAccountCheck.hasAccount === false) {
+      const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
+      if (isAdmin) return; // Admins bypass onboarding
+
       const onboarding = window.location.pathname.startsWith('/become-member');
       if (onboarding) return;
       const target = '/become-member?setup=1';
@@ -256,7 +261,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         window.location.assign(target);
       }
     }
-  }, [oauthAccountCheck.hasAccount]);
+  }, [oauthAccountCheck.hasAccount, userProfile?.role]);
 
   // Article 5 — Keep logoutRef current so idle timer always calls latest logout
   useEffect(() => {
@@ -993,6 +998,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Shared post-login setup (set user, fetch profile, log activity)
   async function handlePostLogin(user: any, session: any, emailAddress: string) {
+    console.log('[AuthContext] handlePostLogin() userId:', user.id);
     setExplicitLogoutInStorage(false);
     await logLogin(user.id);
 
@@ -1011,20 +1017,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     window.scrollTo(0, 0);
 
     try {
+      console.log('[AuthContext] Querying profiles for id:', user.id);
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .maybeSingle();
+      console.log('[AuthContext] profiles query:', { profileData, profileError: profileError?.message });
 
       if (profileData && !profileError) {
         await decryptAndSetUserProfile(profileData);
       } else {
+        console.log('[AuthContext] Querying pilot_licensure_experience...');
         const { data: pilotData, error: pilotError } = await supabase
           .from('pilot_licensure_experience')
           .select('*')
           .eq('user_id', user.id)
           .maybeSingle();
+        console.log('[AuthContext] pilot_licensure_experience query:', { pilotData, pilotError: pilotError?.message });
 
         if (pilotData && !pilotError) {
           await decryptAndSetUserProfile(pilotData);
@@ -1039,18 +1049,75 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     } catch (profileError) {
-      console.error('Error fetching user profile from Supabase:', profileError);
+      console.error('[AuthContext] Error fetching user profile from Supabase:', profileError);
     }
   }
 
   async function login(email: string, password: string) {
+    console.log('[AuthContext] login() called with email:', email);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      console.log('[AuthContext] signInWithPassword result:', { hasUser: !!data.user, hasSession: !!data.session, error: error?.message });
       if (error) throw new Error(error.message || 'Login failed');
       if (!data.user || !data.session) throw new Error('Login failed: No user or session returned');
       await handlePostLogin(data.user, data.session, email);
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch (error: any) {
+      const errMsg = error?.message || String(error);
+      console.log('[AuthContext] signInWithPassword failed:', errMsg);
+      
+      // Fallback: use custom admin_login RPC when Supabase Auth service is broken
+      if (errMsg.includes('Database error querying schema') || errMsg.includes('Load failed')) {
+        console.log('[AuthContext] Trying admin_login RPC fallback...');
+        try {
+          const { data: adminData, error: adminError } = await supabase.rpc('admin_login', {
+            check_email: email,
+            check_password: password
+          });
+          console.log('[AuthContext] admin_login RPC result:', { adminData, adminError: adminError?.message });
+          
+          if (adminError || !adminData || adminData.length === 0) {
+            throw new Error('Invalid email or password');
+          }
+          
+          const user = adminData[0];
+          // Manually create a session-like object for admin users
+          const mockUser = {
+            id: user.id,
+            email: user.email,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            email_confirmed_at: new Date().toISOString(),
+            user_metadata: { display_name: user.display_name, role: user.role }
+          };
+          const mockSession = { access_token: 'admin-fallback-token', refresh_token: '' };
+          
+          // Store a local flag to indicate admin fallback login
+          localStorage.setItem('adminFallbackLogin', JSON.stringify({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            display_name: user.display_name,
+            timestamp: Date.now()
+          }));
+          
+          await handlePostLogin(mockUser, mockSession, email);
+          // Restore admin role since handlePostLogin may overwrite userProfile
+          setUserProfile({
+            id: user.id,
+            email: user.email,
+            display_name: user.display_name,
+            role: user.role,
+            created_at: new Date().toISOString(),
+          });
+          console.log('[AuthContext] Admin fallback login succeeded for:', user.email);
+          return;
+        } catch (fallbackError: any) {
+          console.error('[AuthContext] Admin fallback login failed:', fallbackError);
+          throw new Error(fallbackError?.message || 'Login failed');
+        }
+      }
+      
+      console.error('[AuthContext] Login failed:', error);
       throw error;
     }
   }

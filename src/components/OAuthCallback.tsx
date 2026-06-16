@@ -80,6 +80,12 @@ export const OAuthCallback = () => {
           }
 
           setProfileCreated(true);
+          const returnTo = sessionStorage.getItem('auth0_return_to');
+          if (returnTo) {
+            sessionStorage.removeItem('auth0_return_to');
+            navigate(returnTo, { replace: true });
+            return;
+          }
           const target = isPilotTerminal ? '/' : '/become-member?setup=1';
           try {
             const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
@@ -90,6 +96,12 @@ export const OAuthCallback = () => {
         } else if (!existing.display_name) {
           // Profile exists but setup not completed
           setProfileCreated(true);
+          const returnTo2 = sessionStorage.getItem('auth0_return_to');
+          if (returnTo2) {
+            sessionStorage.removeItem('auth0_return_to');
+            navigate(returnTo2, { replace: true });
+            return;
+          }
           const target = isPilotTerminal ? '/' : '/become-member?setup=1';
           console.debug('[OAuthCallback] profile exists but has no display_name; redirecting to', target, { existing });
           try {
@@ -100,6 +112,12 @@ export const OAuthCallback = () => {
           navigate(target, { replace: true });
         } else {
           setProfileCreated(true);
+          const returnTo3 = sessionStorage.getItem('auth0_return_to');
+          if (returnTo3) {
+            sessionStorage.removeItem('auth0_return_to');
+            navigate(returnTo3, { replace: true });
+            return;
+          }
           const target = isPilotTerminal ? '/' : isCareerPathways ? '/' : '/platform';
           try {
             const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
