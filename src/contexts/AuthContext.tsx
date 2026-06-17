@@ -1448,6 +1448,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   useEffect(() => {
+    // Guard: prevent duplicate SIGNED_IN processing within 5 seconds
+    let lastSignedInAt = 0;
+    const SIGNED_IN_DEBOUNCE_MS = 5000;
+
+    /** Retry helper for resilient Supabase calls inside auth handler */
+    async function authRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
+      for (let i = 0; i <= retries; i++) {
+        try {
+          return await fn();
+        } catch (err) {
+          const status = (err as any)?.status || (err as any)?.code;
+          const isRetryable = status === 522 || status === 503 || status === 'timeout';
+          if (!isRetryable || i === retries) throw err;
+          await new Promise(r => setTimeout(r, 500 * (i + 1)));
+        }
+      }
+      throw new Error('unreachable');
+    }
+
     // Listen for auth state changes from Supabase (handles OAuth redirects)
     const {
       data: { subscription },
@@ -1463,6 +1482,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (event === 'SIGNED_IN' && session?.user) {
+        // DEBOUNCE: skip if we processed SIGNED_IN recently (prevents cascade from tab focus / token refresh)
+        const now = Date.now();
+        if (now - lastSignedInAt < SIGNED_IN_DEBOUNCE_MS) {
+          console.debug('[AuthContext] SIGNED_IN debounced — skipping duplicate');
+          return;
+        }
+        lastSignedInAt = now;
+
         // User signed in via OAuth
         console.log('[AuthContext] SIGNED_IN event — userId:', session.user.id, 'email:', session.user.email, 'path:', window.location.pathname);
 
@@ -1503,51 +1530,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Scroll to top after successful login
           window.scrollTo(0, 0);
 
-          // Check if user has an existing account profile
+          // Check if user has an existing account profile (with retry + graceful failure)
+          let profileFound = false;
           try {
-            const { data: profileData, error } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', session.user.id)
-              .maybeSingle();
+            const profileResult = await authRetry(() =>
+              Promise.resolve(
+                supabase.from('profiles').select('*').eq('id', session!.user.id).maybeSingle()
+              )
+            );
+            const profileData = profileResult.data;
 
-            if (profileData && !error) {
+            if (profileData) {
               console.log('[AuthContext] Profile found in profiles table for OAuth user');
               await decryptAndSetUserProfile(profileData);
+              profileFound = true;
               setOauthAccountCheck({ checking: false, hasAccount: true });
             } else {
-              // Try pilot_licensure_experience as fallback
-              const { data: pilotData, error: pilotError } = await supabase
-                .from('pilot_licensure_experience')
-                .select('*')
-                .eq('user_id', session.user.id)
-                .maybeSingle();
-              console.debug('[AuthContext] SIGNED_IN profileData fetched', { profileData, error, pilotData, pilotError });
+              // Try pilot_licensure_experience as fallback (with retry)
+              const pilotResult = await authRetry(() =>
+                Promise.resolve(
+                  supabase.from('pilot_licensure_experience').select('*').eq('user_id', session!.user.id).maybeSingle()
+                )
+              );
+              const pilotData = pilotResult.data;
+              console.debug('[AuthContext] SIGNED_IN fallback fetched', { pilotData });
 
-              if (pilotData && !pilotError) {
+              if (pilotData) {
                 console.log('[AuthContext] pilot_licensure_experience found — treating as existing account');
                 await decryptAndSetUserProfile(pilotData);
+                profileFound = true;
                 setOauthAccountCheck({ checking: false, hasAccount: true });
-              } else {
-                console.warn('[AuthContext] No profile or pilot data found for OAuth user — new user flow', { userId: session.user.id });
-                try {
-                  const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
-                  dbg.push({ ts: Date.now(), step: 'no_profile_found', userId: session.user.id });
-                  sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
-                } catch {}
-                setOauthAccountCheck({ checking: false, hasAccount: false });
-                // No profile found; clear userProfile and indicate lack of account
-                setUserProfile(null);
               }
             }
           } catch (err) {
-            console.error('❌ Error checking profile for OAuth user:', err);
+            console.warn('[AuthContext] Profile lookup failed (Supabase may be throttled):', err);
             try {
               const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
-              dbg.push({ ts: Date.now(), step: 'profile_check_error', err: err instanceof Error ? err.message : String(err) });
+              dbg.push({ ts: Date.now(), step: 'profile_check_error_resilient', err: err instanceof Error ? err.message : String(err) });
               sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
             } catch {}
+          }
+
+          if (!profileFound) {
+            console.warn('[AuthContext] No profile found — new user flow', { userId: session.user.id });
             setOauthAccountCheck({ checking: false, hasAccount: false });
+            setUserProfile(null);
           }
 
           setLoading(false);
@@ -1570,6 +1597,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setLoading(false);
         }
       } else if (event === 'SIGNED_OUT') {
+        lastSignedInAt = 0; // reset debounce on logout
         setCurrentUserWithRef(null);
         setUserProfile(null);
         setLoading(false);
