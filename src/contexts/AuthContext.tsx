@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { supabase } from '../lib/supabase';
 // import { indexedDB } from '../lib/indexedDB';
@@ -127,6 +127,7 @@ export function useAuth() {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isEnterprise =
     location.pathname.startsWith('/enterprise') || window.location.hostname.includes('enterprise');
   const auth0Context = useAuth0();
@@ -262,6 +263,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
   }, [oauthAccountCheck.hasAccount, userProfile?.role]);
+
+  // If OAuth signed-in user has a linked profile, redirect to /platform from
+  // common landing pages (handles Supabase redirect URL fallback to Site URL /)
+  useEffect(() => {
+    if (oauthAccountCheck.hasAccount === true && !oauthAccountCheck.checking) {
+      const path = window.location.pathname;
+      if (path === '/' || path === '/flight-deck-login') {
+        navigate('/platform', { replace: true });
+      }
+    }
+  }, [oauthAccountCheck.hasAccount, oauthAccountCheck.checking, navigate]);
 
   // Article 5 — Keep logoutRef current so idle timer always calls latest logout
   useEffect(() => {
@@ -1174,6 +1186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCsrfToken(null); // Clear CSRF token
     setCurrentUser(null); // Clear current user
     setUserProfile(null); // Clear user profile
+    setOauthAccountCheck({ checking: false, hasAccount: null }); // Clear OAuth account check to prevent redirect effects
     clearVaultKey(); // Clear vault key from memory
 
     // Clear Auth0 session data from sessionStorage
@@ -1449,6 +1462,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (event === 'SIGNED_IN' && session?.user) {
         // User signed in via OAuth
+        console.log('[AuthContext] SIGNED_IN event — userId:', session.user.id, 'email:', session.user.email, 'path:', window.location.pathname);
 
         // Only check account if:
         // 1. We haven't already shown the modal in this session
@@ -1460,12 +1474,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const isOauthRedirectPath = window.location.pathname === '/auth/callback' || window.location.pathname === '/callback';
         const isOnboarding = window.location.pathname.startsWith('/become-member');
         const shouldRunAccountCheck = !isOnboarding && (isOauthRedirectPath || (!oauthModalShownRef.current && !modalShownInStorage && isNewUser));
+        console.log('[AuthContext] shouldRunAccountCheck:', shouldRunAccountCheck, { isOauthRedirectPath, isOnboarding, isNewUser, modalShownInStorage });
 
         if (shouldRunAccountCheck) {
           setOauthModalShown(true);
 
           // Start account check
           setOauthAccountCheck({ checking: true, hasAccount: null });
+          console.log('[AuthContext] Starting profile check for OAuth user');
 
           const supabaseUser: SupabaseUser = {
             id: session.user.id,
@@ -1494,6 +1510,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               .maybeSingle();
 
             if (profileData && !error) {
+              console.log('[AuthContext] Profile found in profiles table for OAuth user');
               await decryptAndSetUserProfile(profileData);
               setOauthAccountCheck({ checking: false, hasAccount: true });
             } else {
@@ -1506,11 +1523,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               console.debug('[AuthContext] SIGNED_IN profileData fetched', { profileData, error, pilotData, pilotError });
 
               if (pilotData && !pilotError) {
-                console.debug('[AuthContext] pilot_licensure_experience found', pilotData);
+                console.log('[AuthContext] pilot_licensure_experience found — treating as existing account');
                 await decryptAndSetUserProfile(pilotData);
                 setOauthAccountCheck({ checking: false, hasAccount: true });
               } else {
-                console.warn('[AuthContext] No profile or pilot data found for OAuth user', { userId: session.user.id });
+                console.warn('[AuthContext] No profile or pilot data found for OAuth user — new user flow', { userId: session.user.id });
                 try {
                   const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
                   dbg.push({ ts: Date.now(), step: 'no_profile_found', userId: session.user.id });
@@ -1557,6 +1574,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Reset OAuth modal flag on logout
         setOauthModalShown(false);
         localStorage.removeItem('oauthModalShown');
+        setOauthAccountCheck({ checking: false, hasAccount: null });
       } else if (event === 'TOKEN_REFRESHED') {
         // Session is still valid, no action needed
       }
@@ -1753,7 +1771,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    verifySession();
+    // Guard: only run session verification if we don't already have a user
+    // This prevents loops when Vite Fast Refresh remounts the component
+    if (!currentUserRef.current) {
+      verifySession();
+    } else {
+      setLoading(false);
+    }
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
