@@ -21,7 +21,15 @@ export default function AdminDashboardPage() {
   const [pwLoading, setPwLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
+  const isAdmin = (() => {
+    if (userProfile?.role === 'super_admin' || userProfile?.role === 'admin') return true;
+    // Fallback: check admin fallback login stored in localStorage
+    try {
+      const fallback = JSON.parse(localStorage.getItem('adminFallbackLogin') || '{}');
+      if (fallback.role === 'super_admin' || fallback.role === 'admin') return true;
+    } catch { /* ignore */ }
+    return false;
+  })();
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -33,6 +41,26 @@ export default function AdminDashboardPage() {
     events: 0,
     loading: true,
   });
+
+  const [dodoStats, setDodoStats] = useState({
+    totalRevenue: 0,
+    revenueThisMonth: 0,
+    revenueLastMonth: 0,
+    mrr: 0,
+    activeSubscriptions: 0,
+    totalPayments: 0,
+    failedPayments: 0,
+    customers: 0,
+    products: 0,
+    loading: true,
+    source: 'supabase_fallback' as string,
+  });
+
+  const [inviteCodes, setInviteCodes] = useState<
+    { code: string; used_by: string | null; created_at: string; status: string }[]
+  >([]);
+  const [inviteCodeInput, setInviteCodeInput] = useState('');
+  const [showInviteManager, setShowInviteManager] = useState(false);
 
   const [dashboardData, setDashboardData] = useState({
     karlProfileId: '',
@@ -68,58 +96,140 @@ export default function AdminDashboardPage() {
 
     const fetchStats = async () => {
       try {
-        // Get current admin's profile
-        const { data: adminProfile } = await supabase
-          .from('profiles')
-          .select('id, referral_code, display_name')
-          .eq('id', currentUser?.id)
-          .single();
+        // Get current admin's profile (wrapped — profiles table sometimes 500s)
+        let adminProfileId = '';
+        let adminInviteCode = '';
+        try {
+          const { data: adminProfile } = await supabase
+            .from('profiles')
+            .select('id, referral_code, display_name')
+            .eq('id', currentUser?.id)
+            .single();
+          adminProfileId = adminProfile?.id || '';
+          adminInviteCode = adminProfile?.referral_code || '';
+        } catch { /* Supabase timeout on profiles */ }
 
-        const adminProfileId = adminProfile?.id || '';
-        const adminInviteCode = adminProfile?.referral_code || '';
-
-        // Count pilots referred by this admin
-        const { count: pilotsReferred } = await supabase
-          .from('referrals')
-          .select('id', { count: 'exact', head: true })
-          .eq('referrer_profile_id', adminProfileId)
-          .eq('status', 'credited');
+        // Count pilots referred by this admin (isolated catch)
+        let pilotsReferred = 0;
+        try {
+          const { count } = await supabase
+            .from('referrals')
+            .select('id', { count: 'exact', head: true })
+            .eq('referrer_profile_id', adminProfileId)
+            .eq('status', 'credited');
+          pilotsReferred = count || 0;
+        } catch { /* table may not exist */ }
 
         // Calculate referral revenue (assuming $50 per referred pilot who subscribed)
-        // TODO: Query actual subscription payments table when available
-        const referralRevenue = (pilotsReferred || 0) * 50;
+        const referralRevenue = pilotsReferred * 50;
 
-        // General platform stats
-        const [
-          { count: pilots },
-          { count: enterprises },
-          { count: verifiedPilots },
-          { count: pendingDocs },
-          { count: openTickets },
-          { count: upcomingMeetings },
-          { data: notifications },
-        ] = await Promise.all([
-          supabase.from('profiles').select('*', { count: 'exact', head: true }),
-          supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true }),
-          supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true),
-          supabase.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review'),
-          supabase.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved'),
-          supabase.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed'),
-          supabase
+        // Fetch each stat independently so one missing table doesn't break everything
+        let pilots = 0;
+        try {
+          const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+          pilots = count || 0;
+        } catch { /* Supabase timeout */ }
+
+        let enterprises = 0;
+        try {
+          const { count } = await supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true });
+          enterprises = count || 0;
+        } catch { /* table may not exist */ }
+
+        let verifiedPilots = 0;
+        try {
+          const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true);
+          verifiedPilots = count || 0;
+        } catch { /* Supabase timeout */ }
+
+        let pendingDocs = 0;
+        try {
+          const { count } = await supabase.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review');
+          pendingDocs = count || 0;
+        } catch { /* Supabase timeout */ }
+
+        let openTickets = 0;
+        try {
+          const { count } = await supabase.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved');
+          openTickets = count || 0;
+        } catch { /* Supabase timeout */ }
+
+        let upcomingMeetings = 0;
+        try {
+          const { count } = await supabase.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed');
+          upcomingMeetings = count || 0;
+        } catch { /* Supabase timeout */ }
+
+        let notifications: any[] = [];
+        try {
+          const { data } = await supabase
             .from('admin_notifications')
             .select('*')
             .eq('admin_id', adminProfileId)
             .order('created_at', { ascending: false })
-            .limit(10),
-        ]);
+            .limit(10);
+          notifications = data || [];
+        } catch { /* table may not exist */ }
 
         setStats({
-          pilots: pilots || 0,
-          enterprises: enterprises || 0,
-          verifications: verifiedPilots || 0,
-          events: upcomingMeetings || 0,
+          pilots,
+          enterprises,
+          verifications: verifiedPilots,
+          events: upcomingMeetings,
           loading: false,
         });
+
+        // Fetch Dodo Payments revenue stats
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          const dodoRes = await fetch(
+            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/dodo-payments-proxy`,
+            {
+              headers: {
+                'Authorization': `Bearer ${session?.access_token || ''}`,
+                'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+              },
+            }
+          );
+          if (dodoRes.ok) {
+            const dodo = await dodoRes.json();
+            setDodoStats({
+              totalRevenue: dodo.totalRevenue || 0,
+              revenueThisMonth: dodo.revenueThisMonth || 0,
+              revenueLastMonth: dodo.revenueLastMonth || 0,
+              mrr: dodo.mrr || 0,
+              activeSubscriptions: dodo.activeSubscriptions || 0,
+              totalPayments: dodo.totalPayments || 0,
+              failedPayments: dodo.failedPayments || 0,
+              customers: dodo.customers || 0,
+              products: dodo.products || 0,
+              loading: false,
+              source: dodo.source || 'supabase_fallback',
+            });
+          }
+        } catch (dodoErr) {
+          console.error('Dodo stats fetch error:', dodoErr);
+          setDodoStats((s) => ({ ...s, loading: false }));
+        }
+
+        // Fetch invite codes used by this admin's referrals
+        try {
+          const { data: referralsData } = await supabase
+            .from('referrals')
+            .select('referred_email, status, created_at, referrer_profile_id')
+            .eq('referrer_profile_id', adminProfileId)
+            .order('created_at', { ascending: false });
+          setInviteCodes(
+            (referralsData || []).map((r: any) => ({
+              code: dashboardData.karlInviteCode || adminInviteCode,
+              used_by: r.referred_email,
+              created_at: r.created_at,
+              status: r.status,
+            }))
+          );
+        } catch (refErr) {
+          console.error('Referrals fetch error:', refErr);
+        }
 
         setDashboardData((prev) => ({
           ...prev,
@@ -1054,6 +1164,30 @@ export default function AdminDashboardPage() {
                 sub: 'Need attention',
                 link: '/admin/support',
               },
+              {
+                label: 'Total Revenue',
+                value: dodoStats.loading ? '…' : `$${(dodoStats.totalRevenue / 100).toFixed(0)}`,
+                color: '#059669',
+                sub: dodoStats.source === 'dodo_api' ? 'Live from Dodo' : 'From subscriptions table',
+              },
+              {
+                label: 'MRR',
+                value: dodoStats.loading ? '…' : `$${(dodoStats.mrr / 100).toFixed(0)}`,
+                color: '#0891b2',
+                sub: 'Monthly recurring revenue',
+              },
+              {
+                label: 'Active Subs',
+                value: dodoStats.loading ? '…' : dodoStats.activeSubscriptions,
+                color: '#7c3aed',
+                sub: 'Paying customers',
+              },
+              {
+                label: 'This Month',
+                value: dodoStats.loading ? '…' : `$${(dodoStats.revenueThisMonth / 100).toFixed(0)}`,
+                color: '#2563eb',
+                sub: 'Revenue this month',
+              },
             ].map((stat) => (
               <div
                 key={stat.label}
@@ -1359,6 +1493,108 @@ export default function AdminDashboardPage() {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Invite Code Management */}
+          <div style={{ marginTop: 28, background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <div>
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', margin: '0 0 4px' }}>Invite Code Management</h3>
+                <p style={{ fontSize: 11, color: '#9ca3af', margin: 0 }}>Track referrals and manage partner invite codes</p>
+              </div>
+              <button
+                onClick={() => setShowInviteManager(!showInviteManager)}
+                style={{ padding: '6px 14px', background: '#1a1a1a', border: 'none', borderRadius: 6, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+              >
+                {showInviteManager ? 'Collapse' : 'Manage'}
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 16, marginBottom: 16 }}>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Your Code</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: '#1a1a1a' }}>{dashboardData.karlInviteCode || '—'}</div>
+                <button
+                  onClick={() => { if (dashboardData.karlInviteCode) navigator.clipboard.writeText(dashboardData.karlInviteCode); }}
+                  style={{ marginTop: 8, padding: '4px 10px', background: 'none', border: '1px solid #e5e7eb', borderRadius: 4, fontSize: 11, color: '#3b82f6', fontWeight: 600, cursor: 'pointer' }}
+                >
+                  Copy Code
+                </button>
+              </div>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Signups</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: '#3b82f6' }}>{dashboardData.pilotsReferred}</div>
+                <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>Via your code</div>
+              </div>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Conversion</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: '#10b981' }}>
+                  {dashboardData.pilotsReferred > 0 && dodoStats.totalPayments > 0
+                    ? `${((dodoStats.totalPayments / dashboardData.pilotsReferred) * 100).toFixed(1)}%`
+                    : '—'}
+                </div>
+                <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>Paid / referred</div>
+              </div>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>Est. Revenue</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: '#059669' }}>${dashboardData.referralRevenue}</div>
+                <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>From referrals</div>
+              </div>
+            </div>
+
+            {showInviteManager && (
+              <div style={{ marginTop: 16 }}>
+                <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+                  <input
+                    value={inviteCodeInput}
+                    onChange={(e) => setInviteCodeInput(e.target.value)}
+                    placeholder="Enter custom invite code (e.g. PR-CebuPacific)"
+                    style={{ flex: 1, padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: 13 }}
+                  />
+                  <button
+                    onClick={async () => {
+                      if (!inviteCodeInput.trim() || !currentUser?.id) return;
+                      try {
+                        await supabase.from('profiles').update({ referral_code: inviteCodeInput.trim() }).eq('id', currentUser.id);
+                        setDashboardData((prev) => ({ ...prev, karlInviteCode: inviteCodeInput.trim() }));
+                        setInviteCodeInput('');
+                      } catch (err) {
+                        console.error('Error updating invite code:', err);
+                      }
+                    }}
+                    style={{ padding: '8px 16px', background: '#1a1a1a', border: 'none', borderRadius: 6, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                  >
+                    Update Code
+                  </button>
+                </div>
+
+                <h4 style={{ fontSize: 12, fontWeight: 700, color: '#1a1a1a', margin: '0 0 8px' }}>Referral History</h4>
+                {inviteCodes.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: 20, color: '#9ca3af', fontSize: 13 }}>No referrals yet</div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {inviteCodes.map((ref, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <span style={{ fontSize: 11, fontWeight: 700, color: '#6b7280', background: '#f3f4f6', padding: '2px 8px', borderRadius: 4 }}>{ref.code}</span>
+                          <span style={{ fontSize: 12, color: '#1a1a1a' }}>{ref.used_by}</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <span style={{ fontSize: 11, color: '#9ca3af' }}>{new Date(ref.created_at).toLocaleDateString()}</span>
+                          <span style={{
+                            fontSize: 10, fontWeight: 700, textTransform: 'uppercase', padding: '2px 8px', borderRadius: 10,
+                            background: ref.status === 'credited' ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+                            color: ref.status === 'credited' ? '#10b981' : '#f59e0b',
+                          }}>
+                            {ref.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </main>

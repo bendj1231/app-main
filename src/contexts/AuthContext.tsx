@@ -1039,10 +1039,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (pilotData && !pilotError) {
           await decryptAndSetUserProfile(pilotData);
         } else {
+          // Preserve admin role from fallback login when profiles table is unreachable
+          let fallbackRole: string | undefined = undefined;
+          try {
+            const fallback = JSON.parse(localStorage.getItem('adminFallbackLogin') || '{}');
+            fallbackRole = fallback.role;
+          } catch { /* ignore */ }
           setUserProfile({
             id: user.id,
             user_id: user.id,
             email: emailAddress,
+            role: fallbackRole,
             created_at: new Date().toISOString(),
             last_login: new Date().toISOString(),
           });
