@@ -1,386 +1,422 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../../src/lib/supabase';
 
-type DocStatus = 'pending_review' | 'verified' | 'rejected' | 'expired';
+type AdminFlag = 'active' | 'pending' | 'suspicious' | 'contacted_support';
+type SubStatus = 'active' | 'canceled' | 'past_due' | 'unpaid' | 'trialing' | 'all';
 
-interface PilotDocument {
+interface Subscriber {
   id: string;
-  pilot_id: string;
-  doc_type: string;
-  file_name: string;
-  file_size_bytes: number | null;
-  storage_path: string;
-  storage_bucket: string;
-  status: DocStatus;
-  extracted_license_number: string | null;
-  extracted_expiry_date: string | null;
-  extracted_issue_date: string | null;
-  extracted_issuing_authority: string | null;
-  admin_notes: string | null;
-  reviewed_by: string | null;
-  reviewed_at: string | null;
-  uploaded_at: string;
-  pilot?: {
-    full_name: string | null;
-    email: string | null;
-    country: string | null;
-    verified_account: boolean | null;
-    license_number: string | null;
-  };
+  user_id: string;
+  email: string | null;
+  display_name: string | null;
+  status: string | null;
+  admin_flag: AdminFlag;
+  created_at: string;
+  current_period_end: string | null;
+  amount: number | null;
+  product_name: string | null;
+  dodo_customer_id: string | null;
+  dodo_payment_id: string | null;
+  receipt_url: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
 }
 
-const STATUS_COLORS: Record<DocStatus, string> = {
-  pending_review: 'bg-amber-50 text-amber-700 border-amber-200',
-  verified: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  rejected: 'bg-red-50 text-red-700 border-red-200',
-  expired: 'bg-slate-100 text-slate-500 border-slate-200',
+const FLAG_STYLES: Record<AdminFlag, { bg: string; color: string; label: string }> = {
+  active: { bg: '#10b98120', color: '#10b981', label: 'Active' },
+  pending: { bg: '#f59e0b20', color: '#f59e0b', label: 'Pending' },
+  suspicious: { bg: '#ef444420', color: '#ef4444', label: 'Suspicious' },
+  contacted_support: { bg: '#3b82f620', color: '#3b82f6', label: 'Contacted' },
 };
 
-const DOC_TYPE_LABELS: Record<string, string> = {
-  license: 'Pilot License',
-  medical: 'Medical Certificate',
-  rating: 'Type Rating',
-  logbook: 'Flight Logbook',
-  radio: 'Radio License',
-  other: 'Other',
+const STATUS_LABELS: Record<string, string> = {
+  active: 'Active',
+  canceled: 'Canceled',
+  past_due: 'Past Due',
+  unpaid: 'Unpaid',
+  trialing: 'Trialing',
+  incomplete: 'Incomplete',
 };
 
-export default function AdminVerificationQueue() {
-  const [docs, setDocs] = useState<PilotDocument[]>([]);
+export default function RecognitionPlusManagementPage() {
+  const navigate = useNavigate();
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filterStatus, setFilterStatus] = useState<DocStatus | 'all'>('pending_review');
-  const [selected, setSelected] = useState<PilotDocument | null>(null);
-  const [adminNotes, setAdminNotes] = useState('');
-  const [updating, setUpdating] = useState(false);
-  const [signedUrl, setSignedUrl] = useState<string | null>(null);
-  const [stats, setStats] = useState({ pending: 0, verified: 0, rejected: 0, total: 0 });
+  const [filterStatus, setFilterStatus] = useState<SubStatus>('all');
+  const [filterFlag, setFilterFlag] = useState<AdminFlag | 'all'>('all');
+  const [search, setSearch] = useState('');
+  const [stats, setStats] = useState({ total: 0, active: 0, pending: 0, suspicious: 0, revenue: 0 });
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  const loadDocs = useCallback(async () => {
+  const loadSubscribers = useCallback(async () => {
     setLoading(true);
-    let query = supabase
-      .from('pilot_documents')
-      .select(`
-        *,
-        pilot:profiles!pilot_id (
-          full_name, email, country, verified_account, license_number
-        )
-      `)
-      .order('uploaded_at', { ascending: true });
+    try {
+      let query = supabase
+        .from('subscriptions')
+        .select(`
+          id, user_id, status, admin_flag, created_at, current_period_end,
+          amount, product_name, dodo_customer_id, dodo_payment_id, receipt_url,
+          stripe_customer_id, stripe_subscription_id,
+          profiles!inner(email, display_name)
+        `)
+        .order('created_at', { ascending: false });
 
-    if (filterStatus !== 'all') query = query.eq('status', filterStatus);
+      if (filterStatus !== 'all') query = query.eq('status', filterStatus);
+      if (filterFlag !== 'all') query = query.eq('admin_flag', filterFlag);
 
-    const { data } = await query;
-    setDocs((data as PilotDocument[]) ?? []);
+      const { data, error } = await query;
+      if (error) throw error;
 
-    // Stats
-    const { data: allDocs } = await supabase
-      .from('pilot_documents')
-      .select('status');
-    if (allDocs) {
-      setStats({
-        pending: allDocs.filter((d: { status: string }) => d.status === 'pending_review').length,
-        verified: allDocs.filter((d: { status: string }) => d.status === 'verified').length,
-        rejected: allDocs.filter((d: { status: string }) => d.status === 'rejected').length,
-        total: allDocs.length,
-      });
-    }
-    setLoading(false);
-  }, [filterStatus]);
+      const rows = (data || []).map((row: any) => ({
+        id: row.id,
+        user_id: row.user_id,
+        email: row.profiles?.email,
+        display_name: row.profiles?.display_name,
+        status: row.status,
+        admin_flag: (row.admin_flag as AdminFlag) || 'active',
+        created_at: row.created_at,
+        current_period_end: row.current_period_end,
+        amount: row.amount,
+        product_name: row.product_name,
+        dodo_customer_id: row.dodo_customer_id,
+        dodo_payment_id: row.dodo_payment_id,
+        receipt_url: row.receipt_url,
+        stripe_customer_id: row.stripe_customer_id,
+        stripe_subscription_id: row.stripe_subscription_id,
+      })) as Subscriber[];
 
-  useEffect(() => { loadDocs(); }, [loadDocs]);
+      setSubscribers(rows);
 
-  const openDoc = async (doc: PilotDocument) => {
-    setSelected(doc);
-    setAdminNotes(doc.admin_notes ?? '');
-    setSignedUrl(null);
-    const { data } = await supabase.storage
-      .from(doc.storage_bucket)
-      .createSignedUrl(doc.storage_path, 300);
-    if (data?.signedUrl) setSignedUrl(data.signedUrl);
-  };
-
-  const updateStatus = async (newStatus: DocStatus) => {
-    if (!selected) return;
-    setUpdating(true);
-    const { data: { user } } = await supabase.auth.getUser();
-
-    const { error } = await supabase
-      .from('pilot_documents')
-      .update({
-        status: newStatus,
-        admin_notes: adminNotes || null,
-        reviewed_by: user?.id ?? null,
-        reviewed_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', selected.id);
-
-    if (error) { setUpdating(false); return; }
-
-    // If verified — check if ALL docs for this pilot are verified → flip verified_account = true
-    if (newStatus === 'verified') {
-      const { data: pilotDocs } = await supabase
-        .from('pilot_documents')
-        .select('id, status, doc_type')
-        .eq('pilot_id', selected.pilot_id);
-
-      const updatedStatuses = pilotDocs?.map((d: { id: string; status: string }) =>
-        d.id === selected.id ? newStatus : d.status
-      ) ?? [newStatus];
-
-      const allVerified = updatedStatuses.every((s: string) => s === 'verified');
-      const hasCritical = (pilotDocs ?? []).some((d: { doc_type: string }) =>
-        ['license', 'medical'].includes(d.doc_type)
-      );
-
-      if (allVerified && hasCritical) {
-        await supabase
-          .from('profiles')
-          .update({ verified_account: true, updated_at: new Date().toISOString() })
-          .eq('id', selected.pilot_id);
+      const { data: allSubs } = await supabase.from('subscriptions').select('status, admin_flag, amount');
+      if (allSubs) {
+        setStats({
+          total: allSubs.length,
+          active: allSubs.filter((s: any) => s.status === 'active').length,
+          pending: allSubs.filter((s: any) => s.admin_flag === 'pending').length,
+          suspicious: allSubs.filter((s: any) => s.admin_flag === 'suspicious').length,
+          revenue: allSubs
+            .filter((s: any) => s.status === 'active')
+            .reduce((sum: number, s: any) => sum + (s.amount || 0), 0),
+        });
       }
+    } catch (err) {
+      console.error('[Recognition+] Error loading subscribers:', err);
+    } finally {
+      setLoading(false);
     }
+  }, [filterStatus, filterFlag]);
 
-    // If rejected — ensure verified_account is false
-    if (newStatus === 'rejected') {
-      await supabase
-        .from('profiles')
-        .update({ verified_account: false, updated_at: new Date().toISOString() })
-        .eq('id', selected.pilot_id);
+  useEffect(() => { loadSubscribers(); }, [loadSubscribers]);
+
+  const updateFlag = async (id: string, flag: AdminFlag) => {
+    setUpdatingId(id);
+    try {
+      const { error } = await supabase
+        .from('subscriptions')
+        .update({ admin_flag: flag })
+        .eq('id', id);
+      if (error) throw error;
+      setSubscribers((prev) =>
+        prev.map((s) => (s.id === id ? { ...s, admin_flag: flag } : s))
+      );
+    } catch (err) {
+      console.error('[Recognition+] Error updating flag:', err);
+    } finally {
+      setUpdatingId(null);
     }
-
-    setUpdating(false);
-    setSelected(null);
-    loadDocs();
   };
 
-  const formatSize = (bytes: number | null) => {
-    if (!bytes) return '—';
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  };
+  const filtered = subscribers.filter(
+    (s) =>
+      !search.trim() ||
+      (s.email || '').toLowerCase().includes(search.toLowerCase()) ||
+      (s.display_name || '').toLowerCase().includes(search.toLowerCase()) ||
+      (s.dodo_customer_id || '').includes(search) ||
+      (s.stripe_customer_id || '').includes(search)
+  );
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
-        {/* Coded by Benjamin Bowler */}
+    <div style={{ minHeight: '100vh', background: '#ffffff', color: '#1a1a1a', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div style={{ borderBottom: '1px solid #e5e7eb', padding: '24px 32px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-semibold">Admin</p>
-            <h1 className="text-xl font-bold text-slate-900">Document Verification Queue</h1>
+            <h1 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 4px' }}>Recognition+ Management</h1>
+            <p style={{ fontSize: 13, color: '#9ca3af', margin: 0 }}>
+              Subscribers, payments, and manual account flags
+            </p>
           </div>
-          <div className="flex gap-5 text-center">
-            {[
-              { label: 'Pending', value: stats.pending, color: 'text-amber-600' },
-              { label: 'Verified', value: stats.verified, color: 'text-emerald-600' },
-              { label: 'Rejected', value: stats.rejected, color: 'text-red-600' },
-              { label: 'Total', value: stats.total, color: 'text-slate-700' },
-            ].map(s => (
-              <div key={s.label}>
-                <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-                <p className="text-xs text-slate-400 uppercase tracking-wider">{s.label}</p>
-              </div>
-            ))}
-          </div>
+          <button
+            onClick={() => navigate('/admin')}
+            style={{ padding: '8px 16px', background: 'none', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', color: '#6b7280' }}
+          >
+            ← Back to Dashboard
+          </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-6 flex gap-6">
-        {/* Queue list */}
-        <div className="flex-1 min-w-0">
-          {/* Filter tabs */}
-          <div className="flex gap-2 mb-4">
-            {(['pending_review', 'verified', 'rejected', 'all'] as const).map(s => (
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 32px' }}>
+        {/* Summary Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 28 }}>
+          {[
+            { label: 'Total Subscribers', value: stats.total, sub: 'All time', color: '#1a1a1a' },
+            { label: 'Active', value: stats.active, sub: 'Paying now', color: '#10b981' },
+            { label: 'Pending Review', value: stats.pending, sub: 'Flagged pending', color: '#f59e0b' },
+            { label: 'Suspicious', value: stats.suspicious, sub: 'Flagged suspicious', color: '#ef4444' },
+            { label: 'MRR', value: `$${stats.revenue.toLocaleString()}`, sub: 'Monthly recurring', color: '#8b5cf6' },
+          ].map((stat) => (
+            <div key={stat.label} style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>{stat.label}</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: stat.color, marginBottom: 4 }}>{stat.value}</div>
+              <div style={{ fontSize: 11, color: '#9ca3af' }}>{stat.sub}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Filters */}
+        <div style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search email, name, client ID..."
+            style={{ flex: 1, minWidth: 240, padding: '8px 14px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 13 }}
+          />
+          <div style={{ display: 'flex', gap: 8 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: '#6b7280', alignSelf: 'center' }}>Status:</span>
+            {[
+              { key: 'all' as const, label: 'All' },
+              { key: 'active' as const, label: 'Active' },
+              { key: 'canceled' as const, label: 'Canceled' },
+              { key: 'past_due' as const, label: 'Past Due' },
+            ].map((opt) => (
               <button
-                key={s}
-                onClick={() => setFilterStatus(s)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wide transition-colors ${
-                  filterStatus === s
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-400'
-                }`}
+                key={opt.key}
+                onClick={() => setFilterStatus(opt.key)}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 20,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  border: '1px solid',
+                  background: filterStatus === opt.key ? '#1a1a1a' : '#fff',
+                  color: filterStatus === opt.key ? '#fff' : '#6b7280',
+                  borderColor: filterStatus === opt.key ? '#1a1a1a' : '#e5e7eb',
+                }}
               >
-                {s === 'pending_review' ? 'Pending' : s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
+                {opt.label}
               </button>
             ))}
           </div>
-
-          {loading ? (
-            <div className="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-400 text-sm">
-              Loading...
-            </div>
-          ) : docs.length === 0 ? (
-            <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-              <p className="text-slate-400 text-sm">No documents in this queue.</p>
-            </div>
-          ) : (
-            <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
-              {docs.map(doc => (
-                <button
-                  key={doc.id}
-                  onClick={() => openDoc(doc)}
-                  className={`w-full text-left px-5 py-4 hover:bg-slate-50 transition-colors flex items-center gap-4 ${
-                    selected?.id === doc.id ? 'bg-slate-50' : ''
-                  }`}
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-semibold text-sm text-slate-900 truncate">
-                        {doc.pilot?.full_name ?? doc.pilot_id.slice(0, 8)}
-                      </span>
-                      <span className="text-slate-400 text-xs truncate">{doc.pilot?.email}</span>
-                      {doc.pilot?.verified_account && (
-                        <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-semibold">
-                          VERIFIED
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-slate-500">
-                      <span className="font-medium text-slate-700">
-                        {DOC_TYPE_LABELS[doc.doc_type] ?? doc.doc_type}
-                      </span>
-                      <span>•</span>
-                      <span className="truncate">{doc.file_name}</span>
-                      <span>•</span>
-                      <span>{formatSize(doc.file_size_bytes)}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className="text-xs text-slate-400">
-                      {new Date(doc.uploaded_at).toLocaleDateString()}
-                    </span>
-                    <span className={`text-[10px] font-semibold uppercase tracking-wide px-2 py-1 rounded border ${STATUS_COLORS[doc.status as DocStatus]}`}>
-                      {doc.status === 'pending_review' ? 'Pending' : doc.status}
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: '#6b7280', alignSelf: 'center' }}>Flag:</span>
+            {[
+              { key: 'all' as const, label: 'All' },
+              { key: 'active' as const, label: 'Active' },
+              { key: 'pending' as const, label: 'Pending' },
+              { key: 'suspicious' as const, label: 'Suspicious' },
+              { key: 'contacted_support' as const, label: 'Contacted' },
+            ].map((opt) => (
+              <button
+                key={opt.key}
+                onClick={() => setFilterFlag(opt.key)}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 20,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  border: '1px solid',
+                  background: filterFlag === opt.key ? '#1a1a1a' : '#fff',
+                  color: filterFlag === opt.key ? '#fff' : '#6b7280',
+                  borderColor: filterFlag === opt.key ? '#1a1a1a' : '#e5e7eb',
+                }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Review panel */}
-        {selected && (
-          <div className="w-96 flex-shrink-0">
-            <div className="bg-white rounded-xl border border-slate-200 sticky top-6">
-              <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-                <h2 className="font-semibold text-slate-900 text-sm">Review Document</h2>
-                <button
-                  onClick={() => setSelected(null)}
-                  className="text-slate-400 hover:text-slate-600 text-lg leading-none"
-                >×</button>
-              </div>
+        {/* Table */}
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: 60, color: '#9ca3af' }}>Loading subscribers...</div>
+        ) : filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: 60, background: '#f9fafb', borderRadius: 12, border: '1px solid #e5e7eb' }}>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>💳</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: '#6b7280', marginBottom: 4 }}>No subscribers found</div>
+            <div style={{ fontSize: 13, color: '#9ca3af' }}>Try adjusting filters or check Dodo Payments integration</div>
+          </div>
+        ) : (
+          <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden' }}>
+            {/* Header */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 1fr 1fr 1fr 1.5fr 200px',
+                gap: 16,
+                padding: '14px 20px',
+                background: '#fff',
+                borderBottom: '1px solid #e5e7eb',
+                fontSize: 11,
+                fontWeight: 700,
+                color: '#9ca3af',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
+              <div>Subscriber</div>
+              <div style={{ textAlign: 'right' }}>Subscribed</div>
+              <div style={{ textAlign: 'right' }}>Status</div>
+              <div style={{ textAlign: 'right' }}>Product</div>
+              <div style={{ textAlign: 'right' }}>Client ID / Receipt</div>
+              <div style={{ textAlign: 'center' }}>Actions</div>
+            </div>
 
-              <div className="p-5 space-y-4">
-                {/* Pilot info */}
-                <div className="bg-slate-50 rounded-lg p-3 space-y-1">
-                  <p className="font-semibold text-slate-900 text-sm">{selected.pilot?.full_name ?? '—'}</p>
-                  <p className="text-xs text-slate-500">{selected.pilot?.email}</p>
-                  <p className="text-xs text-slate-500">{selected.pilot?.country}</p>
-                  {selected.pilot?.license_number && (
-                    <p className="text-xs text-slate-600 font-mono">License: {selected.pilot.license_number}</p>
-                  )}
-                </div>
-
-                {/* Document info */}
-                <div className="space-y-1 text-xs text-slate-600">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Type</span>
-                    <span className="font-medium">{DOC_TYPE_LABELS[selected.doc_type]}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">File</span>
-                    <span className="font-mono truncate max-w-[180px]">{selected.file_name}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Uploaded</span>
-                    <span>{new Date(selected.uploaded_at).toLocaleString()}</span>
-                  </div>
-                  {selected.extracted_license_number && (
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">License #</span>
-                      <span className="font-mono">{selected.extracted_license_number}</span>
+            {/* Rows */}
+            {filtered.map((sub) => {
+              const flag = FLAG_STYLES[sub.admin_flag];
+              return (
+                <div
+                  key={sub.id}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '2fr 1fr 1fr 1fr 1.5fr 200px',
+                    gap: 16,
+                    padding: '14px 20px',
+                    alignItems: 'center',
+                    borderBottom: '1px solid #f3f4f6',
+                    background: '#fff',
+                  }}
+                >
+                  {/* Subscriber */}
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#1a1a1a' }}>
+                      {sub.display_name || '—'}
                     </div>
-                  )}
-                  {selected.extracted_expiry_date && (
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Expiry</span>
-                      <span className={new Date(selected.extracted_expiry_date) < new Date() ? 'text-red-600 font-semibold' : ''}>
-                        {selected.extracted_expiry_date}
-                      </span>
-                    </div>
-                  )}
-                </div>
+                    <div style={{ fontSize: 12, color: '#9ca3af' }}>{sub.email}</div>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        padding: '2px 8px',
+                        borderRadius: 20,
+                        background: flag.bg,
+                        color: flag.color,
+                      }}
+                    >
+                      {flag.label}
+                    </span>
+                  </div>
 
-                {/* Document viewer */}
-                <div className="rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
-                  {signedUrl ? (
-                    signedUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                      <img src={signedUrl} alt="Document" className="w-full object-contain max-h-64" />
-                    ) : (
+                  {/* Subscribed */}
+                  <div style={{ textAlign: 'right', fontSize: 13, color: '#6b7280' }}>
+                    {new Date(sub.created_at).toLocaleDateString()}
+                  </div>
+
+                  {/* Status */}
+                  <div style={{ textAlign: 'right' }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        padding: '4px 10px',
+                        borderRadius: 20,
+                        background: sub.status === 'active' ? '#10b98120' : '#6b728020',
+                        color: sub.status === 'active' ? '#10b981' : '#6b7280',
+                      }}
+                    >
+                      {STATUS_LABELS[sub.status || ''] || sub.status}
+                    </span>
+                  </div>
+
+                  {/* Product */}
+                  <div style={{ textAlign: 'right', fontSize: 13, color: '#6b7280' }}>
+                    {sub.product_name || 'Recognition+'}<br />
+                    <span style={{ fontSize: 11, color: '#9ca3af' }}>
+                      {sub.amount ? `$${sub.amount}` : '—'}
+                    </span>
+                  </div>
+
+                  {/* Client ID / Receipt */}
+                  <div style={{ textAlign: 'right', fontSize: 12 }}>
+                    <div style={{ fontFamily: 'monospace', color: '#6b7280', fontSize: 11 }}>
+                      {sub.dodo_customer_id || sub.stripe_customer_id || '—'}
+                    </div>
+                    {sub.receipt_url && (
                       <a
-                        href={signedUrl}
+                        href={sub.receipt_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center justify-center gap-2 p-6 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                        style={{ color: '#3b82f6', fontSize: 11, fontWeight: 600 }}
                       >
-                        Open PDF ↗
+                        Receipt ↗
                       </a>
-                    )
-                  ) : (
-                    <div className="p-6 text-center text-xs text-slate-400">Loading preview...</div>
-                  )}
-                </div>
+                    )}
+                  </div>
 
-                {/* Admin notes */}
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-1">
-                    Admin Notes
-                  </label>
-                  <textarea
-                    value={adminNotes}
-                    onChange={e => setAdminNotes(e.target.value)}
-                    rows={3}
-                    placeholder="Optional notes for this document..."
-                    className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 resize-none focus:outline-none focus:border-slate-400"
-                  />
+                  {/* Actions */}
+                  <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+                    <button
+                      onClick={() => updateFlag(sub.id, 'contacted_support')}
+                      disabled={updatingId === sub.id}
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        padding: '6px 10px',
+                        borderRadius: 6,
+                        background: '#3b82f620',
+                        color: '#3b82f6',
+                        border: '1px solid #3b82f640',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {updatingId === sub.id ? '…' : 'Contact'}
+                    </button>
+                    <button
+                      onClick={() => updateFlag(sub.id, 'suspicious')}
+                      disabled={updatingId === sub.id}
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        padding: '6px 10px',
+                        borderRadius: 6,
+                        background: '#ef444420',
+                        color: '#ef4444',
+                        border: '1px solid #ef444440',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {updatingId === sub.id ? '…' : 'Suspicious'}
+                    </button>
+                    <button
+                      onClick={() => updateFlag(sub.id, 'pending')}
+                      disabled={updatingId === sub.id}
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        padding: '6px 10px',
+                        borderRadius: 6,
+                        background: '#f59e0b20',
+                        color: '#f59e0b',
+                        border: '1px solid #f59e0b40',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {updatingId === sub.id ? '…' : 'Pending'}
+                    </button>
+                  </div>
                 </div>
-
-                {/* Actions */}
-                <div className="flex gap-2 pt-1">
-                  <button
-                    onClick={() => updateStatus('verified')}
-                    disabled={updating || selected.status === 'verified'}
-                    className="flex-1 bg-emerald-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-emerald-700 disabled:opacity-40 transition-colors"
-                  >
-                    {updating ? '...' : '✓ Verify'}
-                  </button>
-                  <button
-                    onClick={() => updateStatus('rejected')}
-                    disabled={updating || selected.status === 'rejected'}
-                    className="flex-1 bg-red-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-red-700 disabled:opacity-40 transition-colors"
-                  >
-                    {updating ? '...' : '✗ Reject'}
-                  </button>
-                  <button
-                    onClick={() => updateStatus('expired')}
-                    disabled={updating || selected.status === 'expired'}
-                    className="flex-1 bg-slate-200 text-slate-700 py-2.5 rounded-lg text-sm font-semibold hover:bg-slate-300 disabled:opacity-40 transition-colors"
-                  >
-                    Expired
-                  </button>
-                </div>
-
-                {selected.status === 'verified' && (
-                  <p className="text-xs text-emerald-600 text-center">
-                    ✓ Document verified{selected.pilot?.verified_account ? ' · Pilot account marked verified' : ''}
-                  </p>
-                )}
-              </div>
-            </div>
+              );
+            })}
           </div>
         )}
       </div>

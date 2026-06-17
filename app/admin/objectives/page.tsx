@@ -12,6 +12,7 @@ interface Employee {
   referral_revenue: number;
   performance_tier: 'top' | 'solid' | 'rising' | 'needs_attention';
   assignments: string[];
+  evaluation_status: 'none' | 'under_evaluation' | 'flagged' | 'cleared' | 'terminated';
 }
 
 export default function EmployeeObjectivesPage() {
@@ -22,9 +23,11 @@ export default function EmployeeObjectivesPage() {
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
+  const [evaluatingEmployee, setEvaluatingEmployee] = useState<Employee | null>(null);
+  const [showEvalModal, setShowEvalModal] = useState(false);
 
   const MODULES = [
-    'Verification Queue',
+    'Recognition+ Management',
     'Pilot Management',
     'Enterprise Accounts',
     'Support Inbox',
@@ -103,6 +106,7 @@ export default function EmployeeObjectivesPage() {
           referral_revenue: revenue,
           performance_tier: tier,
           assignments: empAssignments,
+          evaluation_status: (p as any).evaluation_status || 'none',
         });
       }
 
@@ -135,6 +139,14 @@ export default function EmployeeObjectivesPage() {
     needs_attention: { bg: '#ef444420', color: '#ef4444', label: 'Needs Attention' },
   };
 
+  const evalStyles: Record<string, { bg: string; color: string; label: string }> = {
+    none: { bg: 'transparent', color: '#9ca3af', label: '—' },
+    under_evaluation: { bg: '#f59e0b20', color: '#f59e0b', label: 'Under Evaluation' },
+    flagged: { bg: '#ef444420', color: '#ef4444', label: 'Flagged' },
+    cleared: { bg: '#10b98120', color: '#10b981', label: 'Cleared' },
+    terminated: { bg: '#1a1a1a', color: '#fff', label: 'Terminated' },
+  };
+
   const roleLabels: Record<string, string> = {
     super_admin: 'Super Admin',
     admin: 'Admin',
@@ -147,6 +159,30 @@ export default function EmployeeObjectivesPage() {
     setSelectedEmployee(emp);
     setSelectedModules(emp.assignments || []);
     setShowAssignModal(true);
+  };
+
+  const openEvalModal = (emp: Employee) => {
+    setEvaluatingEmployee(emp);
+    setShowEvalModal(true);
+  };
+
+  const saveEvaluation = async (status: Employee['evaluation_status']) => {
+    if (!evaluatingEmployee) return;
+    try {
+      await supabase
+        .from('profiles')
+        .update({ evaluation_status: status })
+        .eq('id', evaluatingEmployee.id);
+      setEmployees((prev) =>
+        prev.map((e) =>
+          e.id === evaluatingEmployee.id ? { ...e, evaluation_status: status } : e
+        )
+      );
+      setShowEvalModal(false);
+      setEvaluatingEmployee(null);
+    } catch (err) {
+      console.error('Error saving evaluation:', err);
+    }
   };
 
   const saveAssignments = async () => {
@@ -275,6 +311,7 @@ export default function EmployeeObjectivesPage() {
               <div style={{ textAlign: 'right' }}>Revenue</div>
               <div style={{ textAlign: 'right' }}>Since</div>
               <div>Status</div>
+              <div>Evaluation</div>
             </div>
 
             {/* Table Rows */}
@@ -285,7 +322,7 @@ export default function EmployeeObjectivesPage() {
                   key={emp.id}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 120px',
+                    gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 120px 120px',
                     gap: 16,
                     padding: '14px 20px',
                     background: i % 2 === 0 ? '#fff' : '#fafafa',
@@ -368,6 +405,26 @@ export default function EmployeeObjectivesPage() {
                       </div>
                     )}
                   </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <button
+                      onClick={() => openEvalModal(emp)}
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        padding: '4px 10px',
+                        borderRadius: 20,
+                        background: evalStyles[emp.evaluation_status].bg,
+                        color: evalStyles[emp.evaluation_status].color,
+                        border: emp.evaluation_status === 'none' ? '1px dashed #d1d5db' : 'none',
+                        cursor: 'pointer',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {evalStyles[emp.evaluation_status].label}
+                    </button>
+                  </div>
                 </div>
               );
             })}
@@ -384,7 +441,97 @@ export default function EmployeeObjectivesPage() {
             </div>
           ))}
         </div>
+        <div style={{ marginTop: 12, display: 'flex', gap: 20, alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af' }}>Evaluation:</span>
+          {Object.entries(evalStyles).filter(([k]) => k !== 'none').map(([key, style]) => (
+            <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: style.color }} />
+              <span style={{ fontSize: 11, color: '#6b7280' }}>{style.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Evaluation Modal */}
+      {showEvalModal && evaluatingEmployee && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+          onClick={() => setShowEvalModal(false)}
+        >
+          <div
+            style={{
+              background: '#fff',
+              border: '1px solid #e5e7eb',
+              borderRadius: 16,
+              padding: 28,
+              width: '100%',
+              maxWidth: 380,
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 4px' }}>
+              Evaluation Status
+            </h2>
+            <p style={{ fontSize: 13, color: '#9ca3af', margin: '0 0 20px' }}>
+              {evaluatingEmployee.display_name || evaluatingEmployee.email}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+              {([
+                { key: 'under_evaluation', label: 'Under Evaluation', desc: 'Investigating performance or conduct' },
+                { key: 'flagged', label: 'Flagged', desc: 'Suspicious activity or risk identified' },
+                { key: 'cleared', label: 'Cleared', desc: 'Investigation complete — no action' },
+                { key: 'terminated', label: 'Terminated', desc: 'Employment ended' },
+                { key: 'none', label: 'Remove Status', desc: 'Clear evaluation flag' },
+              ] as { key: Employee['evaluation_status']; label: string; desc: string }[]).map((opt) => (
+                <button
+                  key={opt.key}
+                  onClick={() => saveEvaluation(opt.key)}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    padding: '12px 14px',
+                    borderRadius: 10,
+                    border: '1px solid',
+                    background: evaluatingEmployee.evaluation_status === opt.key ? evalStyles[opt.key].bg : '#fff',
+                    borderColor: evaluatingEmployee.evaluation_status === opt.key ? evalStyles[opt.key].color : '#e5e7eb',
+                    color: evaluatingEmployee.evaluation_status === opt.key ? evalStyles[opt.key].color : '#1a1a1a',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 700 }}>{opt.label}</span>
+                  <span style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>{opt.desc}</span>
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowEvalModal(false)}
+              style={{
+                width: '100%',
+                padding: '10px 20px',
+                background: 'transparent',
+                border: '1px solid #e5e7eb',
+                borderRadius: 8,
+                color: '#6b7280',
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Assign Modules Modal */}
       {showAssignModal && selectedEmployee && (

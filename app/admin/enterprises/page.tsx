@@ -16,7 +16,7 @@ const sidebarNav: { label: string; path: string; icon: string; badge?: number }[
   { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
-  { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
+  { label: 'Recognition+ Management', path: '/admin/verification', icon: '◈' },
   { label: 'Pilot Management', path: '/admin/pilots', icon: '◉' },
   { label: 'Enterprise Accounts', path: '/admin/enterprises', icon: '◆' },
   { label: 'Event Management', path: '/admin/events', icon: '◈' },
