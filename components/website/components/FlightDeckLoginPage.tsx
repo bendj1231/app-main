@@ -20,7 +20,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   const [resendTimer, setResendTimer] = useState(0);
   const [checkingOAuth, setCheckingOAuth] = useState(false);
   const [checkingAccount, setCheckingAccount] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Helper: check if a profile row exists for a given user id
@@ -143,7 +142,6 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
   const handleGoogleLogin = async () => {
     setError('');
-    setGoogleLoading(true);
     console.log('[FlightDeckLogin] Google sign-in button clicked');
 
     const redirectTo = `${window.location.origin}/flight-deck-login`;
@@ -159,16 +157,13 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
     if (error) {
       console.error('[FlightDeckLogin] signInWithOAuth error:', error);
       setError(error.message || 'Google sign-in failed');
-      setGoogleLoading(false);
     } else {
       console.log('[FlightDeckLogin] signInWithOAuth initiated — browser will redirect to Google');
     }
   };
 
-  const oauthInProgress = googleLoading || checkingOAuth || oauthAccountCheck.checking || checkingAccount;
-  const oauthStatusText = googleLoading
-    ? 'Redirecting to Google for sign in…'
-    : checkingAccount
+  const oauthInProgress = checkingOAuth || oauthAccountCheck.checking || checkingAccount;
+  const oauthStatusText = checkingAccount
     ? 'Checking if account exists…'
     : oauthAccountCheck.checking
     ? 'Checking your Supabase account…'
@@ -471,17 +466,17 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         {/* Google Sign In — via Supabase OAuth */}
         <button
           onClick={handleGoogleLogin}
-          disabled={googleLoading || checkingOAuth || oauthAccountCheck.checking}
+          disabled={checkingOAuth || oauthAccountCheck.checking}
           style={{
             width: '100%',
             padding: '10px 14px',
-            background: googleLoading || checkingOAuth || oauthAccountCheck.checking ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
+            background: checkingOAuth || oauthAccountCheck.checking ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
             border: '1px solid rgba(255,255,255,0.18)',
             borderRadius: 6,
             fontSize: 14,
             fontWeight: 500,
             color: 'rgba(255,255,255,0.9)',
-            cursor: googleLoading || checkingOAuth || oauthAccountCheck.checking ? 'not-allowed' : 'pointer',
+            cursor: checkingOAuth || oauthAccountCheck.checking ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -489,12 +484,12 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
             marginBottom: 10,
           }}
           onMouseEnter={(e) => {
-            if (!googleLoading && !checkingOAuth && !oauthAccountCheck.checking) {
+            if (!checkingOAuth && !oauthAccountCheck.checking) {
               e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
             }
           }}
           onMouseLeave={(e) => {
-            if (!googleLoading && !checkingOAuth && !oauthAccountCheck.checking) {
+            if (!checkingOAuth && !oauthAccountCheck.checking) {
               e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
             }
           }}
