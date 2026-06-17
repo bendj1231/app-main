@@ -42,6 +42,18 @@ export default function AdminDashboardPage() {
     loading: true,
   });
 
+  const [overviewCounts, setOverviewCounts] = useState({
+    blogs: 0,
+    prospects: 0,
+    objectives: 0,
+    upcomingEvents: 0,
+    adminUsers: 0,
+    unreadMessages: 0,
+    emailCampaigns: 0,
+    aiConversations: 0,
+    planningTasks: 0,
+  });
+
   const [dodoStats, setDodoStats] = useState({
     totalRevenue: 0,
     revenueThisMonth: 0,
@@ -270,6 +282,55 @@ export default function AdminDashboardPage() {
         } else {
           console.log('[AdminDashboard] Skipping invite codes query — no adminProfileId');
         }
+
+        // ─── Overview counts for all admin sub-pages ───
+        let blogPosts = 0;
+        try {
+          const { count, error } = await supabase.from('blog_posts').select('*', { count: 'exact', head: true });
+          blogPosts = count || 0;
+          console.log('[AdminDashboard] blog_posts count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] blog_posts query failed'); }
+
+        let prospects = 0;
+        try {
+          const { count, error } = await supabase.from('prospects').select('*', { count: 'exact', head: true });
+          prospects = count || 0;
+          console.log('[AdminDashboard] prospects count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] prospects query failed'); }
+
+        let objectives = 0;
+        try {
+          const { count, error } = await supabase.from('employee_objectives').select('*', { count: 'exact', head: true });
+          objectives = count || 0;
+          console.log('[AdminDashboard] employee_objectives count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] employee_objectives query failed'); }
+
+        let upcomingEvents = 0;
+        try {
+          const { count, error } = await supabase.from('events').select('*', { count: 'exact', head: true }).gte('event_date', new Date().toISOString());
+          upcomingEvents = count || 0;
+          console.log('[AdminDashboard] events count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] events query failed'); }
+
+        let adminUsers = 0;
+        try {
+          const { count, error } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).in('role', ['admin', 'super_admin']);
+          adminUsers = count || 0;
+          console.log('[AdminDashboard] admin users count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] admin users query failed'); }
+
+        setOverviewCounts({
+          blogs: blogPosts,
+          prospects,
+          objectives,
+          upcomingEvents,
+          adminUsers,
+          unreadMessages: 0,
+          emailCampaigns: 0,
+          aiConversations: 0,
+          planningTasks: 0,
+        });
+        console.log('[AdminDashboard] setOverviewCounts:', { blogs: blogPosts, prospects, objectives, upcomingEvents, adminUsers });
 
         console.log('[AdminDashboard] Setting dashboard data...');
         setDashboardData((prev) => ({
@@ -1296,243 +1357,224 @@ export default function AdminDashboardPage() {
             ))}
           </div>
 
-          {/* Three-column layout */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px 280px', gap: 20 }}>
-            {/* Left: Activity + Messages tabs */}
+          {/* ─── Page Overview Grid ─── */}
+          <div style={{ marginTop: 4 }}>
+            <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', margin: '0 0 16px' }}>
+              Portal Overview
+            </h3>
             <div
               style={{
-                background: '#f9fafb',
-                border: '1px solid #e5e7eb',
-                borderRadius: 12,
-                padding: '20px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                gap: 16,
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: 16,
-                }}
-              >
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
-                  Recent Activity
-                </h3>
-                <span style={{ fontSize: 11, color: '#9ca3af' }}>Last 24 hours</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[
-                  {
-                    action: 'New pilot signup',
-                    detail: 'benjamintigerbowler@gmail.com',
-                    time: '2m ago',
-                    dot: '#3b82f6',
-                  },
-                  {
-                    action: 'Verification submitted',
-                    detail: 'CAAP License + Medical',
-                    time: '15m ago',
-                    dot: '#f59e0b',
-                  },
-                  {
-                    action: 'Enterprise onboarded',
-                    detail: 'Cebu Pacific Air',
-                    time: '1h ago',
-                    dot: '#10b981',
-                  },
-                  {
-                    action: 'Profile updated',
-                    detail: 'Flight hours uploaded',
-                    time: '3h ago',
-                    dot: '#8b5cf6',
-                  },
-                  {
-                    action: 'System check',
-                    detail: 'All services operational',
-                    time: '5h ago',
-                    dot: '#64748b',
-                  },
-                ].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        background: item.dot,
-                        marginTop: 5,
-                        flexShrink: 0,
-                      }}
-                    />
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 500, color: '#374151' }}>
-                        {item.action}
-                      </div>
-                      <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>
-                        {item.detail}
-                      </div>
-                    </div>
-                    <div style={{ fontSize: 11, color: '#9ca3af', whiteSpace: 'nowrap' }}>
-                      {item.time}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Middle: Recent Messages */}
-            <div
-              style={{
-                background: '#f9fafb',
-                border: '1px solid #e5e7eb',
-                borderRadius: 12,
-                padding: '20px',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: 16,
-                }}
-              >
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
-                  Messages
-                </h3>
-                <button
-                  onClick={() => navigate('/admin/messages')}
+              {[
+                {
+                  title: 'Verification Queue',
+                  path: '/admin/verification',
+                  metrics: [
+                    { label: 'Pending', value: dashboardData.pendingVerifications },
+                    { label: 'Total Pilots', value: stats.pilots },
+                  ],
+                  color: '#f59e0b',
+                  icon: '◈',
+                },
+                {
+                  title: 'Pilot Management',
+                  path: '/admin/pilots',
+                  metrics: [
+                    { label: 'Total', value: stats.pilots },
+                    { label: 'Verified', value: stats.verifications },
+                  ],
+                  color: '#3b82f6',
+                  icon: '◉',
+                },
+                {
+                  title: 'Enterprise Accounts',
+                  path: '/admin/enterprises',
+                  metrics: [
+                    { label: 'Partners', value: stats.enterprises },
+                    { label: 'Revenue', value: `$${(dodoStats.totalRevenue / 100).toFixed(0)}` },
+                  ],
+                  color: '#8b5cf6',
+                  icon: '◆',
+                },
+                {
+                  title: 'Support Inbox',
+                  path: '/admin/support',
+                  metrics: [
+                    { label: 'Open Tickets', value: dashboardData.supportTickets },
+                    { label: 'Resolved', value: '—' },
+                  ],
+                  color: '#ef4444',
+                  icon: '◉',
+                },
+                {
+                  title: 'Employee Objectives',
+                  path: '/admin/objectives',
+                  metrics: [
+                    { label: 'Objectives', value: overviewCounts.objectives },
+                    { label: 'In Progress', value: '—' },
+                  ],
+                  color: '#10b981',
+                  icon: '◈',
+                },
+                {
+                  title: 'Email & Contacts',
+                  path: '/admin/emails',
+                  metrics: [
+                    { label: 'Campaigns', value: overviewCounts.emailCampaigns || '—' },
+                    { label: 'Contacts', value: '—' },
+                  ],
+                  color: '#0891b2',
+                  icon: '◉',
+                },
+                {
+                  title: 'Messages',
+                  path: '/admin/messages',
+                  metrics: [
+                    { label: 'Unread', value: overviewCounts.unreadMessages || '—' },
+                    { label: 'Total', value: '—' },
+                  ],
+                  color: '#6366f1',
+                  icon: '◈',
+                },
+                {
+                  title: 'Blogs & Articles',
+                  path: '/admin/blogs',
+                  metrics: [
+                    { label: 'Posts', value: overviewCounts.blogs },
+                    { label: 'Drafts', value: '—' },
+                  ],
+                  color: '#ec4899',
+                  icon: '◉',
+                },
+                {
+                  title: 'Future Prospects',
+                  path: '/admin/prospects',
+                  metrics: [
+                    { label: 'Prospects', value: overviewCounts.prospects },
+                    { label: 'Qualified', value: '—' },
+                  ],
+                  color: '#f97316',
+                  icon: '◉',
+                },
+                {
+                  title: 'Meetings',
+                  path: '/admin/meetings',
+                  metrics: [
+                    { label: 'Upcoming', value: stats.events },
+                    { label: 'This Week', value: '—' },
+                  ],
+                  color: '#14b8a6',
+                  icon: '▶',
+                },
+                {
+                  title: 'Planning Board',
+                  path: '/admin/planning',
+                  metrics: [
+                    { label: 'Tasks', value: overviewCounts.planningTasks || '—' },
+                    { label: 'Done', value: '—' },
+                  ],
+                  color: '#64748b',
+                  icon: '◐',
+                },
+                {
+                  title: 'AI Bot',
+                  path: '/admin/bot',
+                  metrics: [
+                    { label: 'Conversations', value: overviewCounts.aiConversations || '—' },
+                    { label: 'Today', value: '—' },
+                  ],
+                  color: '#a855f7',
+                  icon: '◉',
+                },
+                {
+                  title: 'Event Management',
+                  path: '/admin/events',
+                  metrics: [
+                    { label: 'Upcoming', value: overviewCounts.upcomingEvents },
+                    { label: 'Past', value: '—' },
+                  ],
+                  color: '#06b6d4',
+                  icon: '◈',
+                },
+                {
+                  title: 'System Settings',
+                  path: '/admin/settings',
+                  metrics: [
+                    { label: 'Admins', value: overviewCounts.adminUsers },
+                    { label: 'Version', value: '1.0.0' },
+                  ],
+                  color: '#475569',
+                  icon: '◉',
+                },
+              ].map((card) => (
+                <div
+                  key={card.path}
                   style={{
-                    fontSize: 11,
-                    color: '#3b82f6',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontWeight: 600,
+                    background: '#f9fafb',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 12,
+                    padding: '16px 18px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 10,
+                    transition: 'border-color 0.15s, box-shadow 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = card.color;
+                    e.currentTarget.style.boxShadow = `0 0 0 1px ${card.color}20`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
-                  View All
-                </button>
-              </div>
-              {dashboardData.recentMessages.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: 20, color: '#9ca3af', fontSize: 13 }}>
-                  No recent messages
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {dashboardData.recentMessages.map((msg) => (
-                    <div
-                      key={msg.id}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 14, color: card.color }}>{card.icon}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: '#1a1a1a' }}>
+                        {card.title}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => navigate(card.path)}
                       style={{
-                        padding: 10,
-                        background: '#fff',
-                        borderRadius: 8,
-                        border: '1px solid #e5e7eb',
+                        fontSize: 11,
+                        color: card.color,
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        padding: '2px 6px',
+                        borderRadius: 4,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = `${card.color}15`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'none';
                       }}
                     >
-                      <div style={{ fontSize: 11, fontWeight: 600, color: '#1a1a1a' }}>
-                        {msg.sender}
+                      View →
+                    </button>
+                  </div>
+                  <div style={{ display: 'flex', gap: 16 }}>
+                    {card.metrics.map((m) => (
+                      <div key={m.label}>
+                        <div style={{ fontSize: 18, fontWeight: 800, color: card.color }}>
+                          {m.value}
+                        </div>
+                        <div style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          {m.label}
+                        </div>
                       </div>
-                      <div
-                        style={{
-                          fontSize: 11,
-                          color: '#6b7280',
-                          marginTop: 2,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {msg.content}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              )}
-              <button
-                onClick={() => navigate('/admin/messages')}
-                style={{
-                  width: '100%',
-                  marginTop: 12,
-                  padding: '8px',
-                  background: '#1a1a1a',
-                  border: 'none',
-                  borderRadius: 8,
-                  color: '#fff',
-                  fontSize: 12,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                Open Messenger
-              </button>
-            </div>
-
-            {/* Right: quick actions */}
-            <div
-              style={{
-                background: '#f9fafb',
-                border: '1px solid #e5e7eb',
-                borderRadius: 12,
-                padding: '20px',
-              }}
-            >
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', margin: '0 0 16px' }}>
-                Quick Actions
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {quickActions.map((action) => (
-                  <button
-                    key={action.label}
-                    onClick={() => navigate(action.path)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 12,
-                      padding: '12px 14px',
-                      background: '#f9fafb',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: 8,
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      transition: 'all 0.15s',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#e5e7eb';
-                      e.currentTarget.style.borderColor = '#d1d5db';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = '#f9fafb';
-                      e.currentTarget.style.borderColor = '#e5e7eb';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 8,
-                        background: `${action.color}15`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 14,
-                        flexShrink: 0,
-                        color: action.color,
-                      }}
-                    >
-                      +
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>
-                        {action.label}
-                      </div>
-                      <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 1 }}>
-                        {action.desc}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
 
