@@ -483,9 +483,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         { name: 'Enterprise', target: '__enterprise_modal__', isOrange: true },
     ];
 
-    // Filter out Home nav item when on home page
-    const visibleNavItems = currentPage === 'home' 
-        ? navItems.filter(item => item.name !== 'Home')
+    // Filter out Home and Pathways nav items when on home page
+    const visibleNavItems = currentPage === 'home'
+        ? navItems.filter(item => item.name !== 'Home' && item.name !== 'Pathways')
         : navItems;
 
     const handleMouseEnter = (name: string) => {
