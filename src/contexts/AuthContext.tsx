@@ -1635,13 +1635,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (profileData && !error) {
               await decryptAndSetUserProfile(profileData);
             } else {
-              // No profile found; clear userProfile
-              setUserProfile(null);
+              // No profile found — preserve admin fallback role if present
+              let fallbackRole: string | undefined;
+              try {
+                const fb = JSON.parse(localStorage.getItem('adminFallbackLogin') || '{}');
+                fallbackRole = fb.role;
+              } catch { /* ignore */ }
+              setUserProfile({
+                id: session.user.id,
+                user_id: session.user.id,
+                email: session.user.email || '',
+                role: fallbackRole,
+                created_at: new Date().toISOString(),
+                last_login: new Date().toISOString(),
+              });
             }
           } catch (err) {
             console.error('❌ Error fetching Supabase profile:', err);
-            // On error, do not fabricate a profile — leave null so route guards work correctly
-            setUserProfile(null);
+            // Preserve admin fallback role on timeout so admin dashboard stays accessible
+            let fallbackRole: string | undefined;
+            try {
+              const fb = JSON.parse(localStorage.getItem('adminFallbackLogin') || '{}');
+              fallbackRole = fb.role;
+            } catch { /* ignore */ }
+            setUserProfile({
+              id: session.user.id,
+              user_id: session.user.id,
+              email: session.user.email || '',
+              role: fallbackRole,
+              created_at: new Date().toISOString(),
+              last_login: new Date().toISOString(),
+            });
           }
         } else {
           // Check for Auth0 session in sessionStorage

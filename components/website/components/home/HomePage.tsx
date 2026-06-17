@@ -2449,7 +2449,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                     <div key={i} className="flex gap-16 items-center shrink-0">
                                         <img src={IMAGES.ACCREDITATION_1} alt="FAA" className="h-14 w-auto object-contain" />
                                         <img src={IMAGES.ACCREDITATION_3} alt="GCAA" className="h-14 w-auto object-contain" />
-                                        <img src={IMAGES.ACCREDITATION_4} alt="Airbus" className="h-16 w-auto object-contain" />
+                                        {/* Airbus logo removed — Wikimedia source no longer available */}
                                         <img src={IMAGES.ACCREDITATION_5} alt="WM Group" className="h-16 w-auto object-contain" />
                                     </div>
                                 ))}
