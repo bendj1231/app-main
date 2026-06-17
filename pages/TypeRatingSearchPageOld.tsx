@@ -47,7 +47,7 @@ const AIRCRAFT_INFO: Record<string, AircraftInfo> = {
     ],
   },
   'airbus-a320': {
-    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/1200px-Airbus_Logo_2017.svg.png',
+    manufacturerLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/2560px-Airbus_Logo_2017.svg.png',
     manufacturerName: 'Airbus',
     firstFlight: 1987,
     avgRatingCostUSD: '$30,000–$55,000',

@@ -65,7 +65,7 @@ export const IMAGES = {
     ACCREDITATION_1: "/images/accreditation-1.png",
     ACCREDITATION_2: "/images/accreditation-2.png",
     ACCREDITATION_3: "/images/accreditation-3.png",
-    ACCREDITATION_4: "https://upload.wikimedia.org/wikipedia/commons/8/84/Airbus_Logo_2017.svg",
+    ACCREDITATION_4: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Airbus_Logo_2017.svg/2560px-Airbus_Logo_2017.svg.png",
     ACCREDITATION_5: "/images/accreditation-5.png",
     ETIHAD_MUSEUM_EVENT: "/images/etihad-museum-event.png",
 };

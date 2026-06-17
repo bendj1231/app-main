@@ -1,20 +1,14 @@
 /**
- * Cloudinary Upload Edge Function (Multi-Account)
+ * Cloudinary Upload Edge Function (Single Account)
  * 
- * Supports multiple Cloudinary accounts:
- * - PROFILE: User profile photos (account: drcfmairy)
- * - CONTENT: Pathway images, airline logos (can be separate account)
+ * Uses single Cloudinary account for all uploads:
+ * - PROFILE: User profile photos (folder: profiles)
+ * - CONTENT: Pathway images, airline logos (folder: content)
  * 
  * Required env vars:
- * Profile Uploads:
  * - CLOUDINARY_CLOUD_NAME
  * - CLOUDINARY_API_KEY  
  * - CLOUDINARY_API_SECRET
- * 
- * Content Uploads (optional - can use same account):
- * - CONTENT_CLOUDINARY_CLOUD_NAME
- * - CONTENT_CLOUDINARY_API_KEY
- * - CONTENT_CLOUDINARY_API_SECRET
  */
 
 /// <reference lib="deno.ns" />
@@ -77,34 +71,14 @@ serve(async (req) => {
       });
     }
     
-    // Select Cloudinary account based on type
-    let cloudName: string | undefined;
-    let apiKey: string | undefined;
-    let apiSecret: string | undefined;
-    let folder: string;
+    // Select Cloudinary account and folder based on type
+    // Both profile and content use the same account with different folders
+    const cloudName = Deno.env.get('CLOUDINARY_CLOUD_NAME') || 'dridtecu6';
+    const apiKey = Deno.env.get('CLOUDINARY_API_KEY');
+    const apiSecret = Deno.env.get('CLOUDINARY_API_SECRET');
+    const folder = type === 'profile' ? 'profiles' : 'content';
     
-    if (type === 'profile') {
-      // Profile images - user uploads
-      cloudName = Deno.env.get('CLOUDINARY_CLOUD_NAME') || 'drcfmairy';
-      apiKey = Deno.env.get('CLOUDINARY_API_KEY');
-      apiSecret = Deno.env.get('CLOUDINARY_API_SECRET');
-      folder = 'profiles';
-    } else if (type === 'content') {
-      // Content images - pathways, logos, etc.
-      // MUST use different account from drcfmairy (profiles only)
-      cloudName = Deno.env.get('CONTENT_CLOUDINARY_CLOUD_NAME');
-      apiKey = Deno.env.get('CONTENT_CLOUDINARY_API_KEY');
-      apiSecret = Deno.env.get('CONTENT_CLOUDINARY_API_SECRET');
-      folder = 'content';
-      
-      // Prevent using drcfmairy for content
-      if (!cloudName || cloudName === 'drcfmairy') {
-        return new Response(
-          JSON.stringify({ error: 'Content uploads require separate Cloudinary account. drcfmairy is reserved for profile images only.' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-    } else {
+    if (type !== 'profile' && type !== 'content') {
       return new Response(
         JSON.stringify({ error: 'Invalid type. Use "profile" or "content"' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

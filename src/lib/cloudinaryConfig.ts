@@ -1,37 +1,32 @@
 /**
- * Multi-Cloudinary Configuration
+ * Cloudinary Configuration
  * 
- * Separate Cloudinary accounts for different use cases:
- * - PROFILE: User profile photos (drcfmairy)
- * - CONTENT: Pathway images, airline logos, etc. (can be separate)
+ * Single Cloudinary account for all image uploads:
+ * - PROFILE: User profile photos
+ * - CONTENT: Pathway images, airline logos, platform images
  * 
- * Benefits:
- * - Cost tracking per use case
- * - Security isolation
- * - Different upload presets/policies
+ * Cloud Name: dridtecu6
  */
 
 // Profile Images Cloudinary (User Uploads)
-// Cloud Name: drcfmairy
 export const PROFILE_CLOUDINARY = {
-  cloudName: 'drcfmairy',
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CLOUDINARY_CLOUD_NAME 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    ? (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME 
+    : 'dridtecu6',
   uploadPreset: 'profile_avatars', // Unsigned preset for client uploads
   folder: 'profiles',
-  // These come from Supabase Edge Function secrets for server-side uploads
-  // CLOUDINARY_CLOUD_NAME=drcfmairy
-  // CLOUDINARY_API_KEY=xxx
-  // CLOUDINARY_API_SECRET=xxx
 };
 
 // Content Images Cloudinary (Pathways, Logos, Platform Images)
-// MUST be different account from profiles (drcfmairy is for profiles only)
-// Set these in your .env file
+// Uses the same account as profiles with different folder structure
 export const CONTENT_CLOUDINARY = {
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CONTENT_CLOUDINARY_CLOUD_NAME 
+  cloudName: typeof window !== 'undefined' && (import.meta as any).env?.VITE_CLOUDINARY_CLOUD_NAME 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    ? (import.meta as any).env.VITE_CONTENT_CLOUDINARY_CLOUD_NAME 
-    : '', // Must be configured separately - drcfmairy is for profiles only
+    ? (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME 
+    : 'dridtecu6',
   uploadPreset: 'content_images',
   folder: 'content',
 };
