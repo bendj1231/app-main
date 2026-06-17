@@ -700,16 +700,33 @@ export const AppRoutes = () => {
   // to avoid briefly rendering the Home page before redirecting to /become-member.
   if (oauthAccountCheck && oauthAccountCheck.checking) {
     return (
-      <>
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
-          <div className="text-center">
-            <h2 className="text-xl font-semibold">Signing in</h2>
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="text-center px-6">
+          {/* Brand mark */}
+          <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-500/20">
+            <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M2 12h20" />
+              <path d="M2 12l4-4" />
+              <path d="M2 12l4 4" />
+              <path d="M22 12l-4-4" />
+              <path d="M22 12l-4 4" />
+            </svg>
+          </div>
+
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Signing in</h2>
             <p className="text-sm mt-2 text-slate-500">
               Checking your account and preparing your profile
             </p>
+
+            {/* Animated spinner */}
+            <div className="mt-8 flex justify-center">
+              <div className="relative h-10 w-10">
+                <div className="absolute inset-0 rounded-full border-2 border-slate-200" />
+                <div className="absolute inset-0 rounded-full border-2 border-red-500 border-t-transparent animate-spin" />
+              </div>
+            </div>
           </div>
         </div>
-      </>
     );
   }
 

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 interface Employee {
   id: string;
@@ -249,12 +250,15 @@ export default function EmployeeObjectivesPage() {
               Performance oversight — referrals, revenue, and outsourcing velocity
             </p>
           </div>
-          <button
-            onClick={() => navigate('/admin')}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <AdminNotificationBell />
+            <button
+              onClick={() => navigate('/admin')}
             style={{ padding: '8px 16px', background: 'none', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', color: '#6b7280' }}
           >
             ← Back to Dashboard
           </button>
+          </div>
         </div>
       </div>
 

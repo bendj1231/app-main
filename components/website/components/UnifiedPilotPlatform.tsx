@@ -486,8 +486,9 @@ const HomeTab: React.FC<{
                   <span className="text-cyan-400 text-xs">&#8811;</span>
                   <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Pilot Platform</p>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-tight leading-tight mb-3">
-                  Coming Soon
+                <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight leading-tight mb-3">
+                  <span className="text-white">Career </span>
+                  <span className="text-red-500">Pathways</span>
                 </h2>
                 <div className="w-8 h-[2px] bg-cyan-400 mb-4" />
                 <p className="text-sm text-slate-300 max-w-sm leading-relaxed mb-6">
@@ -502,6 +503,16 @@ const HomeTab: React.FC<{
                   <span className="text-xs text-slate-400">{airlines.length}+ Airlines</span>
                 </div>
               </div>
+              
+            </div>
+          </div>
+          
+          {/* Coming Soon overlay on the image (right side) */}
+          <div className="absolute top-0 bottom-0 flex items-center justify-center" style={{ left: '60%', width: '40%' }}>
+            <div className="absolute inset-0 backdrop-blur-md bg-white/5" />
+            <div className="relative z-10 flex flex-col items-center justify-center">
+              <span className="text-xs font-black tracking-[0.25em] uppercase text-white/60 mb-2">Pilot Platform</span>
+              <span className="text-2xl font-extrabold text-white/90 uppercase tracking-wider">Coming Soon</span>
             </div>
           </div>
           
@@ -537,7 +548,14 @@ const HomeTab: React.FC<{
           {/* DISCOVER EXPECTATIONS */}
           <div
             className="relative overflow-hidden rounded-none cursor-pointer group h-full border border-white/20 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_0_28px_rgba(0,0,0,0.55)]"
-            onClick={() => setTab('pathways')}
+            onClick={async () => {
+              const { data: { session } } = await supabase.auth.getSession();
+              const baseUrl = 'https://www.pilotcareerpathways.com/type-ratings';
+              const url = session
+                ? `${baseUrl}?access_token=${encodeURIComponent(session.access_token)}&refresh_token=${encodeURIComponent(session.refresh_token || '')}`
+                : baseUrl;
+              window.open(url, '_blank', 'noopener,noreferrer');
+            }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=800&q=80')" }} />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(5,10,30,0.92) 0%, rgba(5,10,30,0.55) 60%, transparent 100%)' }} />

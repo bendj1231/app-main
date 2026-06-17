@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from './components/AdminSidebar';
+import AdminNotificationBell from './components/AdminNotificationBell';
+import { cachedFetch, invalidateCache } from './lib/cache';
 
 const Background = ({ children }: { children: React.ReactNode }) => (
   <div
@@ -84,13 +86,13 @@ export default function AdminDashboardPage() {
       read: boolean;
       created_at: string;
       type: string;
+      source: string;
     }[],
     recentMessages: [] as { id: string; sender: string; content: string; created_at: string }[],
     supportTickets: 0,
     pendingVerifications: 0,
   });
 
-  const [showNotifications, setShowNotifications] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -147,70 +149,54 @@ export default function AdminDashboardPage() {
         const referralRevenue = pilotsReferred * 50;
 
         // Fetch each stat independently so one missing table doesn't break everything
+        // Wrapped with 2-minute localStorage cache to reduce Supabase I/O
         let pilots = 0;
         try {
-          console.log('[AdminDashboard] Calling supabase.from(profiles).select(count)...');
-          const { count, error } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
-          pilots = count || 0;
-          console.log('[AdminDashboard] profiles count:', count, 'error:', error?.message);
+          pilots = await cachedFetch('count_profiles', async () => {
+            const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] profiles count query failed'); }
 
         let enterprises = 0;
         try {
-          console.log('[AdminDashboard] Calling supabase.from(enterprise_profiles).select(count)...');
-          const { count, error } = await supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true });
-          enterprises = count || 0;
-          console.log('[AdminDashboard] enterprise_profiles count:', count, 'error:', error?.message);
+          enterprises = await cachedFetch('count_enterprise_profiles', async () => {
+            const { count } = await supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true });
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] enterprise_profiles query failed'); }
 
         let verifiedPilots = 0;
         try {
-          console.log('[AdminDashboard] Calling supabase.from(profiles verified).select(count)...');
-          const { count, error } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true);
-          verifiedPilots = count || 0;
-          console.log('[AdminDashboard] verified profiles count:', count, 'error:', error?.message);
+          verifiedPilots = await cachedFetch('count_verified_profiles', async () => {
+            const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true);
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] verified profiles query failed'); }
 
         let pendingDocs = 0;
         try {
-          console.log('[AdminDashboard] Calling supabase.from(pilot_documents).select(count)...');
-          const { count, error } = await supabase.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review');
-          pendingDocs = count || 0;
-          console.log('[AdminDashboard] pilot_documents count:', count, 'error:', error?.message);
+          pendingDocs = await cachedFetch('count_pending_docs', async () => {
+            const { count } = await supabase.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review');
+            return count || 0;
+          }, undefined, 0);
         } catch { console.log('[AdminDashboard] pilot_documents query failed'); }
 
         let openTickets = 0;
         try {
-          console.log('[AdminDashboard] Calling supabase.from(support_enquiries).select(count)...');
-          const { count, error } = await supabase.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved');
-          openTickets = count || 0;
-          console.log('[AdminDashboard] support_enquiries count:', count, 'error:', error?.message);
+          openTickets = await cachedFetch('count_open_tickets', async () => {
+            const { count } = await supabase.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved');
+            return count || 0;
+          }, undefined, 0);
         } catch { console.log('[AdminDashboard] support_enquiries query failed'); }
 
         let upcomingMeetings = 0;
         try {
-          console.log('[AdminDashboard] Calling supabase.from(meetings).select(count)...');
-          const { count, error } = await supabase.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed');
-          upcomingMeetings = count || 0;
-          console.log('[AdminDashboard] meetings count:', count, 'error:', error?.message);
+          upcomingMeetings = await cachedFetch('count_upcoming_meetings', async () => {
+            const { count } = await supabase.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed');
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] meetings query failed'); }
-
-        let notifications: any[] = [];
-        if (adminProfileId) {
-          try {
-            console.log('[AdminDashboard] Calling supabase.from(admin_notifications).select(*)...');
-            const { data, error } = await supabase
-              .from('admin_notifications')
-              .select('*')
-              .eq('admin_id', adminProfileId)
-              .order('created_at', { ascending: false })
-              .limit(10);
-            notifications = data || [];
-            console.log('[AdminDashboard] admin_notifications rows:', (data || []).length, 'error:', error?.message);
-          } catch { console.log('[AdminDashboard] admin_notifications query failed'); }
-        } else {
-          console.log('[AdminDashboard] Skipping admin_notifications — no adminProfileId');
-        }
 
         setStats({
           pilots,
@@ -266,14 +252,14 @@ export default function AdminDashboardPage() {
             console.log('[AdminDashboard] Calling supabase.from(referrals).select(*) for invite codes...');
             const { data: referralsData, error } = await supabase
               .from('referrals')
-              .select('referred_email, status, created_at, referrer_profile_id')
+              .select('pilot_email, status, created_at, referrer_profile_id')
               .eq('referrer_profile_id', adminProfileId)
               .order('created_at', { ascending: false });
             console.log('[AdminDashboard] referrals rows:', (referralsData || []).length, 'error:', error?.message);
             setInviteCodes(
               (referralsData || []).map((r: any) => ({
                 code: dashboardData.karlInviteCode || adminInviteCode,
-                used_by: r.referred_email,
+                used_by: r.pilot_email,
                 created_at: r.created_at,
                 status: r.status,
               }))
@@ -288,37 +274,42 @@ export default function AdminDashboardPage() {
         // ─── Overview counts for all admin sub-pages ───
         let blogPosts = 0;
         try {
-          const { count, error } = await supabase.from('blog_posts').select('*', { count: 'exact', head: true });
-          blogPosts = count || 0;
-          console.log('[AdminDashboard] blog_posts count:', count, 'error:', error?.message);
+          blogPosts = await cachedFetch('count_blog_posts', async () => {
+            const { count } = await supabase.from('blog_posts').select('*', { count: 'exact', head: true });
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] blog_posts query failed'); }
 
         let prospects = 0;
         try {
-          const { count, error } = await supabase.from('prospects').select('*', { count: 'exact', head: true });
-          prospects = count || 0;
-          console.log('[AdminDashboard] prospects count:', count, 'error:', error?.message);
+          prospects = await cachedFetch('count_prospects', async () => {
+            const { count } = await supabase.from('prospects').select('*', { count: 'exact', head: true });
+            return count || 0;
+          }, undefined, 0);
         } catch { console.log('[AdminDashboard] prospects query failed'); }
 
         let objectives = 0;
         try {
-          const { count, error } = await supabase.from('employee_objectives').select('*', { count: 'exact', head: true });
-          objectives = count || 0;
-          console.log('[AdminDashboard] employee_objectives count:', count, 'error:', error?.message);
+          objectives = await cachedFetch('count_objectives', async () => {
+            const { count } = await supabase.from('employee_objectives').select('*', { count: 'exact', head: true });
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] employee_objectives query failed'); }
 
         let upcomingEvents = 0;
         try {
-          const { count, error } = await supabase.from('events').select('*', { count: 'exact', head: true }).gte('event_date', new Date().toISOString());
-          upcomingEvents = count || 0;
-          console.log('[AdminDashboard] events count:', count, 'error:', error?.message);
+          upcomingEvents = await cachedFetch('count_upcoming_events', async () => {
+            const { count } = await supabase.from('events').select('*', { count: 'exact', head: true }).gte('start_date', new Date().toISOString());
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] events query failed'); }
 
         let adminUsers = 0;
         try {
-          const { count, error } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).in('role', ['admin', 'super_admin']);
-          adminUsers = count || 0;
-          console.log('[AdminDashboard] admin users count:', count, 'error:', error?.message);
+          adminUsers = await cachedFetch('count_admin_users', async () => {
+            const { count } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).in('role', ['admin', 'super_admin']);
+            return count || 0;
+          });
         } catch { console.log('[AdminDashboard] admin users query failed'); }
 
         setOverviewCounts({
@@ -343,15 +334,6 @@ export default function AdminDashboardPage() {
           referralRevenue,
           supportTickets: openTickets || 0,
           pendingVerifications: pendingDocs || 0,
-          notifications:
-            (notifications as {
-              id: string;
-              title: string;
-              message: string;
-              read: boolean;
-              created_at: string;
-              type: string;
-            }[]) || [],
         }));
       } catch (err) {
         console.error('Error fetching stats:', err);
@@ -361,65 +343,42 @@ export default function AdminDashboardPage() {
 
     fetchStats();
 
-    // Real-time subscriptions
+    // Real-time subscriptions — invalidate cache on data changes instead of blind refetch
     const profilesSubscription = supabase
       .channel('profiles-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
-        fetchStats();
+        void invalidateCache('count_profiles');
+        void invalidateCache('count_verified_profiles');
+        void invalidateCache('count_admin_users');
       })
       .subscribe();
 
     const enterprisesSubscription = supabase
       .channel('enterprises-changes')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'enterprise_profiles' },
-        () => {
-          fetchStats();
-        }
-      )
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'enterprise_profiles' }, () => {
+        void invalidateCache('count_enterprise_profiles');
+      })
       .subscribe();
 
     const referralsSubscription = supabase
       .channel('referrals-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'referrals' }, () => {
-        fetchStats();
+        void invalidateCache(); // Clear all since referrals affects multiple counts
       })
       .subscribe();
 
-    const notificationsSubscription = supabase
-      .channel('notifications-changes')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'admin_notifications' },
-        () => {
-          fetchStats();
-        }
-      )
+    const meetingsSubscription = supabase
+      .channel('meetings-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'meetings' }, () => { void invalidateCache('count_upcoming_meetings'); })
       .subscribe();
 
     return () => {
       profilesSubscription.unsubscribe();
       enterprisesSubscription.unsubscribe();
       referralsSubscription.unsubscribe();
-      notificationsSubscription.unsubscribe();
+      meetingsSubscription.unsubscribe();
     };
   }, [currentUser, isAdmin]);
-
-  const unreadNotifications = dashboardData.notifications.filter((n) => !n.read);
-
-  const markNotificationRead = async (id: string) => {
-    try {
-      await supabase.from('admin_notifications').update({ read: true }).eq('id', id);
-
-      setDashboardData((prev) => ({
-        ...prev,
-        notifications: prev.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
-      }));
-    } catch (err) {
-      console.error('Error marking notification as read:', err);
-    }
-  };
 
   const _createNotification = async (
     title: string,
@@ -806,8 +765,26 @@ export default function AdminDashboardPage() {
               <span style={{ width: 20, height: 2, background: '#1a1a1a', borderRadius: 1 }} />
             </button>
             <div>
-              <h1 style={{ fontSize: 18, fontWeight: 700, margin: 0, color: '#1a1a1a' }}>
+              <h1 style={{ fontSize: 18, fontWeight: 700, margin: 0, color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: 10 }}>
                 Dashboard
+                <button
+                  onClick={async () => {
+                    await invalidateCache();
+                    hasFetchedRef.current = false;
+                    window.location.reload();
+                  }}
+                  title="Refresh all data"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: 14,
+                    color: '#9ca3af',
+                    padding: 2,
+                  }}
+                >
+                  ↻
+                </button>
               </h1>
               <p
                 style={{
@@ -827,150 +804,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            {/* Notification Bell */}
-            <div style={{ position: 'relative' }}>
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                style={{
-                  position: 'relative',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: 20,
-                  padding: 4,
-                  color: '#6b7280',
-                }}
-                title="Notifications"
-              >
-                🔔
-                {unreadNotifications.length > 0 && (
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: -2,
-                      right: -2,
-                      width: 18,
-                      height: 18,
-                      background: '#ef4444',
-                      color: '#fff',
-                      fontSize: 10,
-                      fontWeight: 700,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {unreadNotifications.length}
-                  </span>
-                )}
-              </button>
-
-              {/* Notification Dropdown */}
-              {showNotifications && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 40,
-                    right: -10,
-                    width: 320,
-                    background: '#fff',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: 12,
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.12)',
-                    zIndex: 100,
-                    padding: '12px 0',
-                    maxHeight: 400,
-                    overflowY: 'auto',
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div
-                    style={{
-                      padding: '0 16px 8px',
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: '#9ca3af',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                    }}
-                  >
-                    Notifications
-                  </div>
-                  {dashboardData.notifications.length === 0 ? (
-                    <div
-                      style={{ padding: 20, textAlign: 'center', color: '#9ca3af', fontSize: 13 }}
-                    >
-                      No new notifications
-                    </div>
-                  ) : (
-                    dashboardData.notifications.map((n) => {
-                      const typeColors = {
-                        info: '#3b82f6',
-                        success: '#10b981',
-                        warning: '#f59e0b',
-                        error: '#ef4444',
-                      };
-                      const bgColor = n.read ? '#f9fafb' : '#fff';
-                      return (
-                        <button
-                          key={n.id}
-                          onClick={() => {
-                            markNotificationRead(n.id);
-                          }}
-                          style={{
-                            width: '100%',
-                            padding: '12px 16px',
-                            background: bgColor,
-                            border: 'none',
-                            borderBottom: '1px solid #f3f4f6',
-                            textAlign: 'left',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 4,
-                            transition: 'background 0.15s',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f3f4f6';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = bgColor;
-                          }}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span
-                              style={{
-                                width: 8,
-                                height: 8,
-                                borderRadius: '50%',
-                                background:
-                                  typeColors[n.type as keyof typeof typeColors] || '#6b7280',
-                              }}
-                            />
-                            <div
-                              style={{
-                                fontSize: 12,
-                                fontWeight: 600,
-                                color: n.read ? '#9ca3af' : '#1a1a1a',
-                              }}
-                            >
-                              {n.title}
-                            </div>
-                          </div>
-                          <div style={{ fontSize: 11, color: '#6b7280', marginLeft: 16 }}>
-                            {n.message}
-                          </div>
-                          <div style={{ fontSize: 10, color: '#9ca3af', marginLeft: 16 }}>
-                            {new Date(n.created_at).toLocaleString()}
-                          </div>
-                        </button>
-                      );
-                    })
-                  )}
-                </div>
-              )}
-            </div>
+            <AdminNotificationBell />
 
             {/* Profile Avatar */}
             <div

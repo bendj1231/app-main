@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -201,19 +202,22 @@ export default function AIBotPage() {
               Brainstorm · Draft Emails · Internal Planning
             </p>
           </div>
-          <div
-            style={{
-              padding: '6px 14px',
-              background: 'rgba(239,68,68,0.08)',
-              border: '1px solid rgba(239,68,68,0.15)',
-              borderRadius: 20,
-              fontSize: 12,
-              fontWeight: 600,
-              color: '#ef4444',
-              letterSpacing: '0.03em',
-            }}
-          >
-            LIVE
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <AdminNotificationBell />
+            <div
+              style={{
+                padding: '6px 14px',
+                background: 'rgba(239,68,68,0.08)',
+                border: '1px solid rgba(239,68,68,0.15)',
+                borderRadius: 20,
+                fontSize: 12,
+                fontWeight: 600,
+                color: '#ef4444',
+                letterSpacing: '0.03em',
+              }}
+            >
+              LIVE
+            </div>
           </div>
         </header>
 

@@ -4,6 +4,7 @@ import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import { uploadProfileImage, type CloudinaryUploadResult } from '@/src/lib/cloudinaryClient';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -216,9 +217,12 @@ export default function BlogsPage() {
 
       {/* Main Content */}
       <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, padding: '32px', minHeight: '100vh' }}>
-        <div style={{ marginBottom: 28 }}>
-          <h1 style={{ fontSize: 24, fontWeight: 800, margin: '0 0 6px', color: '#1a1a1a' }}>Blogs & Articles</h1>
-          <p style={{ fontSize: 13, color: '#6b7280', margin: 0 }}>Review and comment on content by Benjamin and Karl</p>
+        <div style={{ marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ fontSize: 24, fontWeight: 800, margin: '0 0 6px', color: '#1a1a1a' }}>Blogs & Articles</h1>
+            <p style={{ fontSize: 13, color: '#6b7280', margin: 0 }}>Review and comment on content by Benjamin and Karl</p>
+          </div>
+          <AdminNotificationBell />
         </div>
 
         {/* Filters */}

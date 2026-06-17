@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -249,9 +250,12 @@ export default function InvoicesPage() {
             <h1 style={{ fontSize: 22, fontWeight: 800, color: '#1a1a1a', margin: '0 0 4px' }}>Invoice & Billing Management</h1>
             <p style={{ fontSize: 13, color: '#9ca3af', margin: 0 }}>Proforma invoices, enterprise subscriptions, and recognition fees</p>
           </div>
-          <button onClick={() => setShowCreate(true)} style={{ padding: '10px 20px', background: '#ef4444', border: 'none', borderRadius: 8, color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
-            + Create Proforma
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <AdminNotificationBell />
+            <button onClick={() => setShowCreate(true)} style={{ padding: '10px 20px', background: '#ef4444', border: 'none', borderRadius: 8, color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+              + Create Proforma
+            </button>
+          </div>
         </div>
 
         {/* Tab Switcher */}

@@ -5,6 +5,7 @@ import { supabase } from '@/shared/lib/supabase';
 import { logAuditAction } from '@/src/lib/auditLog';
 import { type AdminPermissions, type PermissionSet, FULL_PERMISSIONS, READ_ONLY_PERMISSIONS } from '@/src/lib/permissions';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -324,6 +325,9 @@ export default function AdminSettingsPage() {
             <p style={{ fontSize: 11, color: '#9ca3af', margin: '2px 0 0', letterSpacing: '0.03em' }}>
               Manage your profile and security preferences
             </p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <AdminNotificationBell />
           </div>
         </header>
 

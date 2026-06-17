@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -49,21 +50,137 @@ export default function MessagesPage() {
 
   const currentUserId = currentUser?.id || '';
 
-  const [dailyQuote, setDailyQuote] = useState('"Excellence is not a destination, it is a continuous journey that never ends." — Karl Vogt');
-  const [dailyObjectives, setDailyObjectives] = useState([
-    { id: '1', text: 'Reach out to 2 new airline partnerships', completed: false },
-    { id: '2', text: 'Review 3 pilot verification applications', completed: true },
-    { id: '3', text: 'Update enterprise pricing deck', completed: false },
-    { id: '4', text: 'Follow up with Veremark on CAAP PEL timeline', completed: false },
-  ]);
+  const [dailyQuote, setDailyQuote] = useState('');
+  const [dailyQuoteAuthor, setDailyQuoteAuthor] = useState('');
+  const [dailyObjectives, setDailyObjectives] = useState<{ id: string; text: string; completed: boolean }[]>([]);
+  const [objectivesLoading, setObjectivesLoading] = useState(false);
   const [newQuote, setNewQuote] = useState('');
   const [newObjective, setNewObjective] = useState('');
   const [showQuoteInput, setShowQuoteInput] = useState(false);
-  const [notifications] = useState([
-    { id: '1', text: 'New enterprise inquiry from Alpha Aviation Group', time: '10m ago', type: 'lead' },
-    { id: '2', text: '5 new Recognition+ subscriptions today', time: '1h ago', type: 'revenue' },
-    { id: '3', text: 'Karl posted: "Push for September launch — no excuses"', time: '2h ago', type: 'memo' },
-  ]);
+  const [teamUpdates, setTeamUpdates] = useState<any[]>([]);
+  const [briefingLoading, setBriefingLoading] = useState(true);
+
+  // Map current user to planning board assignee short name
+  const currentAssignee = useMemo(() => {
+    const name = (userProfile?.display_name || userProfile?.email || '').toLowerCase();
+    if (name.includes('karl')) return 'karl';
+    if (name.includes('keiv')) return 'keiv';
+    return 'ben';
+  }, [userProfile]);
+
+  // Fetch objectives from employee_objectives table (same as Planning Board)
+  const fetchDailyObjectives = async () => {
+    if (!currentUser) return;
+    setObjectivesLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('employee_objectives')
+        .select('id, title, status')
+        .eq('assignee', currentAssignee)
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      setDailyObjectives(
+        (data || []).map((o: any) => ({
+          id: o.id,
+          text: o.title,
+          completed: o.status === 'completed',
+        }))
+      );
+    } catch (err) {
+      console.error('Error fetching daily objectives:', err);
+    } finally {
+      setObjectivesLoading(false);
+    }
+  };
+
+  // Fetch daily quote from Supabase
+  const fetchDailyQuote = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('daily_quotes')
+        .select('quote, author')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      if (error) throw error;
+      if (data) {
+        setDailyQuote(data.quote);
+        setDailyQuoteAuthor(data.author || '');
+      }
+    } catch (err) {
+      console.error('Error fetching daily quote:', err);
+    }
+  };
+
+  // Fetch team updates from Supabase
+  const fetchTeamUpdates = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('team_updates')
+        .select('id, title, message, type, created_at')
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      setTeamUpdates(data || []);
+    } catch (err) {
+      console.error('Error fetching team updates:', err);
+    } finally {
+      setBriefingLoading(false);
+    }
+  };
+
+  // Relative time formatter
+  const formatRelativeTime = (dateStr: string) => {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return new Date(dateStr).toLocaleDateString();
+  };
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    fetchDailyQuote();
+    fetchTeamUpdates();
+
+    // Realtime sync for daily briefing
+    const quoteChannel = supabase
+      .channel('daily-quote-sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'daily_quotes' }, () => {
+        fetchDailyQuote();
+      })
+      .subscribe();
+
+    const updatesChannel = supabase
+      .channel('team-updates-sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'team_updates' }, () => {
+        fetchTeamUpdates();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(quoteChannel);
+      supabase.removeChannel(updatesChannel);
+    };
+  }, [isAdmin]);
+
+  useEffect(() => {
+    if (isAdmin) fetchDailyObjectives();
+    // Realtime sync with planning board
+    const channel = supabase
+      .channel('daily-objectives-sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'employee_objectives' }, () => {
+        fetchDailyObjectives();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [isAdmin, currentAssignee]);
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -220,26 +337,86 @@ export default function MessagesPage() {
       (m.sender_id === selectedContact?.id && m.recipient_id === currentUserId)
   );
 
-  const toggleObjective = (id: string) => {
+  const toggleObjective = async (id: string) => {
+    const objective = dailyObjectives.find((o) => o.id === id);
+    if (!objective) return;
+    const newStatus = objective.completed ? 'pending' : 'completed';
     setDailyObjectives((prev) =>
       prev.map((o) => (o.id === id ? { ...o, completed: !o.completed } : o))
     );
+    try {
+      const { error } = await supabase
+        .from('employee_objectives')
+        .update({ status: newStatus })
+        .eq('id', id);
+      if (error) throw error;
+    } catch (err) {
+      console.error('Error toggling objective:', err);
+      // Revert on error
+      setDailyObjectives((prev) =>
+        prev.map((o) => (o.id === id ? { ...o, completed: objective.completed } : o))
+      );
+    }
   };
 
-  const addObjective = () => {
-    if (!newObjective.trim()) return;
+  const addObjective = async () => {
+    if (!newObjective.trim() || !currentUser) return;
+    const tempId = `temp-${Date.now()}`;
+    const text = newObjective.trim();
     setDailyObjectives((prev) => [
       ...prev,
-      { id: Date.now().toString(), text: newObjective.trim(), completed: false },
+      { id: tempId, text, completed: false },
     ]);
     setNewObjective('');
+    try {
+      const { data, error } = await supabase
+        .from('employee_objectives')
+        .insert({
+          title: text,
+          assignee: currentAssignee,
+          status: 'pending',
+          priority: 'medium',
+          employee_id: currentUser.id,
+          created_by: currentUser.id,
+        })
+        .select()
+        .single();
+      if (error) throw error;
+      // Replace temp ID with real ID
+      if (data) {
+        setDailyObjectives((prev) =>
+          prev.map((o) => (o.id === tempId ? { id: data.id, text: data.title, completed: false } : o))
+        );
+      }
+    } catch (err) {
+      console.error('Error adding objective:', err);
+      setDailyObjectives((prev) => prev.filter((o) => o.id !== tempId));
+    }
   };
 
-  const updateDailyQuote = () => {
-    if (!newQuote.trim()) return;
-    setDailyQuote(newQuote.trim());
+  const updateDailyQuote = async () => {
+    if (!newQuote.trim() || !currentUser) return;
+    const text = newQuote.trim();
+    setDailyQuote(text);
     setNewQuote('');
     setShowQuoteInput(false);
+    try {
+      // Upsert: update the most recent active quote, or insert new
+      const { data: existing } = await supabase
+        .from('daily_quotes')
+        .select('id')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      if (existing) {
+        await supabase.from('daily_quotes').update({ quote: text }).eq('id', existing.id);
+      } else {
+        await supabase.from('daily_quotes').insert({ quote: text, is_active: true });
+      }
+    } catch (err) {
+      console.error('Error saving daily quote:', err);
+    }
   };
 
   if (!currentUser || !isAdmin) {
@@ -290,14 +467,17 @@ export default function MessagesPage() {
       <main style={{ marginLeft: SIDEBAR_WIDTH + 300, flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         {selectedContact ? (
           <>
-            <div style={{ height: 60, background: '#fff', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', padding: '0 24px', gap: 12 }}>
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: selectedContact.role === 'admin' ? 'linear-gradient(135deg, #ef4444, #b91c1c)' : '#e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: selectedContact.role === 'admin' ? '#fff' : '#6b7280' }}>
-                {selectedContact.name.charAt(0).toUpperCase()}
+            <div style={{ height: 60, background: '#fff', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', padding: '0 24px', gap: 12, justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: selectedContact.role === 'admin' ? 'linear-gradient(135deg, #ef4444, #b91c1c)' : '#e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: selectedContact.role === 'admin' ? '#fff' : '#6b7280' }}>
+                  {selectedContact.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>{selectedContact.name}</div>
+                  <div style={{ fontSize: 11, color: '#10b981' }}>{selectedContact.role === 'admin' ? 'Online' : 'Pilot Member'}</div>
+                </div>
               </div>
-              <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>{selectedContact.name}</div>
-                <div style={{ fontSize: 11, color: '#10b981' }}>{selectedContact.role === 'admin' ? 'Online' : 'Pilot Member'}</div>
-              </div>
+              <AdminNotificationBell />
             </div>
 
             <div style={{ flex: 1, padding: 24, overflowY: 'auto', background: '#f8f9fa' }}>
@@ -344,7 +524,7 @@ export default function MessagesPage() {
               {/* Quote of the Day */}
               <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginBottom: 20, position: 'relative' }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>Quote of the Day</div>
-                <div style={{ fontSize: 15, color: '#1a1a1a', fontStyle: 'italic', lineHeight: 1.5 }}>{dailyQuote}</div>
+                <div style={{ fontSize: 15, color: '#1a1a1a', fontStyle: 'italic', lineHeight: 1.5 }}>{dailyQuote}{dailyQuoteAuthor && <span style={{ fontStyle: 'normal', color: '#6b7280', fontWeight: 500 }}> — {dailyQuoteAuthor}</span>}</div>
                 {userProfile?.role === 'super_admin' && (
                   <div style={{ marginTop: 12 }}>
                     {showQuoteInput ? (
@@ -372,12 +552,16 @@ export default function MessagesPage() {
               <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginBottom: 20 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Notifications</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {notifications.map((n) => (
+                  {briefingLoading && <div style={{ fontSize: 12, color: '#9ca3af', padding: '8px 0' }}>Loading updates…</div>}
+                  {!briefingLoading && teamUpdates.length === 0 && (
+                    <div style={{ fontSize: 12, color: '#9ca3af', padding: '8px 0' }}>No team updates yet.</div>
+                  )}
+                  {teamUpdates.map((n) => (
                     <div key={n.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 12px', background: n.type === 'memo' ? '#fef2f2' : '#f9fafb', borderRadius: 8, borderLeft: n.type === 'memo' ? '3px solid #ef4444' : '3px solid #3b82f6' }}>
-                      <span style={{ fontSize: 16 }}>{n.type === 'lead' ? '�' : n.type === 'revenue' ? '💰' : '📢'}</span>
+                      <span style={{ fontSize: 16 }}>{n.type === 'lead' ? '💎' : n.type === 'revenue' ? '💰' : '📢'}</span>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 13, color: '#1a1a1a', fontWeight: 500 }}>{n.text}</div>
-                        <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>{n.time}</div>
+                        <div style={{ fontSize: 13, color: '#1a1a1a', fontWeight: 500 }}>{n.title}{n.message && n.message !== n.title ? `: ${n.message}` : ''}</div>
+                        <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>{formatRelativeTime(n.created_at)}</div>
                       </div>
                     </div>
                   ))}
@@ -388,6 +572,10 @@ export default function MessagesPage() {
               <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Objectives</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {objectivesLoading && <div style={{ fontSize: 12, color: '#9ca3af', padding: '8px 0' }}>Loading objectives…</div>}
+                  {!objectivesLoading && dailyObjectives.length === 0 && (
+                    <div style={{ fontSize: 12, color: '#9ca3af', padding: '8px 0' }}>No objectives yet. Add one below.</div>
+                  )}
                   {dailyObjectives.map((o) => (
                     <div key={o.id} onClick={() => toggleObjective(o.id)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: o.completed ? '#f0fdf4' : '#f9fafb', borderRadius: 8, cursor: 'pointer', border: `1px solid ${o.completed ? '#86efac' : '#e5e7eb'}`, transition: 'all 0.15s' }}>
                       <div style={{ width: 18, height: 18, borderRadius: 4, border: `2px solid ${o.completed ? '#10b981' : '#d1d5db'}`, background: o.completed ? '#10b981' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: '#fff', flexShrink: 0 }}>

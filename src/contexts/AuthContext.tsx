@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 // import { indexedDB } from '../lib/indexedDB';
 // import { createManagementAPI } from '../lib/supabase-management';
 import { useUserActivityLog } from '../hooks/useUserActivityLog';
+import { PostOAuthWelcomeScreen } from '@/components/website/components/PostOAuthWelcomeScreen';
 import {
   getVaultKey,
   getVaultKeyFromAuth0Token,
@@ -211,6 +212,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     hasAccount: boolean | null;
   }>({ checking: false, hasAccount: null });
   const [showPasskeyPrompt, setShowPasskeyPrompt] = useState(false);
+  const [showOAuthWelcome, setShowOAuthWelcome] = useState(false);
   // Track previous auth state to detect genuine login (false → true) vs session restore
   const prevAuth0AuthenticatedRef = React.useRef<boolean | null>(null);
 
@@ -264,16 +266,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [oauthAccountCheck.hasAccount, userProfile?.role]);
 
-  // If OAuth signed-in user has a linked profile, redirect to /platform from
-  // common landing pages (handles Supabase redirect URL fallback to Site URL /)
+  // If OAuth signed-in user has a linked profile, show welcome screen then redirect
+  // to /platform from common landing pages (handles Supabase redirect URL fallback)
   useEffect(() => {
     if (oauthAccountCheck.hasAccount === true && !oauthAccountCheck.checking) {
       const path = window.location.pathname;
       if (path === '/' || path === '/flight-deck-login') {
-        navigate('/platform', { replace: true });
+        setShowOAuthWelcome(true);
       }
     }
-  }, [oauthAccountCheck.hasAccount, oauthAccountCheck.checking, navigate]);
+  }, [oauthAccountCheck.hasAccount, oauthAccountCheck.checking]);
 
   // Article 5 — Keep logoutRef current so idle timer always calls latest logout
   useEffect(() => {
@@ -1814,5 +1816,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dismissPasskeyPrompt: () => setShowPasskeyPrompt(false),
   };
 
-  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+      {showOAuthWelcome && (
+        <PostOAuthWelcomeScreen
+          userName={currentUser?.display_name || undefined}
+          onComplete={() => {
+            setShowOAuthWelcome(false);
+            navigate('/platform', { replace: true });
+          }}
+        />
+      )}
+    </AuthContext.Provider>
+  );
 };

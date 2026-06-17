@@ -149,6 +149,52 @@ export const PathwayDashboardPage: React.FC<PathwayDashboardPageProps> = ({
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* ── Getting Started Banner ── */}
+        {profile && (
+          <div className="mb-8 rounded-2xl border border-white/10 shadow-lg overflow-hidden" style={{ background: 'rgba(15,22,35,0.97)' }}>
+            <div className="px-6 py-5 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
+                  <CheckCircle className="w-6 h-6 text-emerald-400" />
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black tracking-[0.2em] uppercase text-emerald-400/60 mb-1">Pilot Onboarding</p>
+                <h3 className="text-lg font-black text-white tracking-tight">Getting Started</h3>
+                <p className="text-xs text-white/40 mt-0.5">Complete these steps to unlock your full profile and pathway matching.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: 'Complete Profile', done: (profile.profile_readiness || 0) > 20, path: '/profile' },
+                  { label: 'Log Flight Hours', done: (profile.total_flight_hours || 0) > 0, path: '/logbook' },
+                  { label: 'Verify Credentials', done: false, path: '/wallet' },
+                  { label: 'Browse Pathways', done: qualifiedMatches.length > 0, path: '/discover' },
+                  { label: 'Start a Program', done: false, path: '/programs' },
+                ].map((s, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleNavigate(s.path)}
+                    className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-[11px] font-bold transition-all hover:brightness-110 flex-shrink-0 ${
+                      s.done
+                        ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-300'
+                        : 'bg-white/5 border border-white/10 text-white/60 hover:text-white/80'
+                    }`}
+                  >
+                    {s.done ? (
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                    ) : (
+                      <div className="w-3.5 h-3.5 rounded-full border border-white/20 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                      </div>
+                    )}
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
@@ -253,57 +299,26 @@ export const PathwayDashboardPage: React.FC<PathwayDashboardPageProps> = ({
                     <p className="text-[10px] font-semibold uppercase tracking-wide mt-0.5" style={{ color: '#f97316' }}>{profile.license_type?.toUpperCase() || 'COMMERCIAL PILOT (CPL)'}</p>
                   </div>
 
-                  {/* Stats grid */}
+                  {/* Key stats — 2-up */}
                   <div className="grid grid-cols-2 gap-2 px-4 mb-4">
-                    {[
-                      { label: 'HOURS', value: profile.total_flight_hours?.toLocaleString() || '—', color: 'text-white' },
-                      { label: 'SCORE', value: profile.recognition_score?.toString() || '—', color: 'text-sky-300' },
-                      { label: 'CREDS', value: profile.type_ratings?.length?.toString() || '—', color: 'text-emerald-400' },
-                      { label: 'PATHS', value: `${qualifiedMatches.length || 0}+`, color: 'text-blue-300' },
-                    ].map(s => (
-                      <div key={s.label} className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                        <p className={`text-base font-black ${s.color}`}>{s.value}</p>
-                        <p className="text-[8px] text-white/35 uppercase tracking-widest">{s.label}</p>
-                      </div>
-                    ))}
+                    <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                      <p className="text-base font-black text-white">{profile.total_flight_hours?.toLocaleString() || '—'}</p>
+                      <p className="text-[8px] text-white/35 uppercase tracking-widest">Hours</p>
+                    </div>
+                    <div className="text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                      <p className="text-base font-black text-sky-300">{profile.recognition_score?.toString() || '—'}</p>
+                      <p className="text-[8px] text-white/35 uppercase tracking-widest">Score</p>
+                    </div>
                   </div>
 
                   {/* Profile readiness bar */}
-                  <div className="px-4 mb-4">
+                  <div className="px-4 mb-5">
                     <div className="flex justify-between text-[9px] mb-1.5">
                       <span className="text-white/30 uppercase tracking-wider font-bold">Profile Readiness</span>
                       <span className="font-black" style={{ color: (profile.profile_readiness || 40) >= 80 ? '#10b981' : (profile.profile_readiness || 40) >= 40 ? '#f59e0b' : '#ef4444' }}>{profile.profile_readiness || 40}%</span>
                     </div>
                     <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
                       <div className="h-full rounded-full transition-all duration-700" style={{ width: `${profile.profile_readiness || 40}%`, background: (profile.profile_readiness || 40) >= 80 ? '#10b981' : (profile.profile_readiness || 40) >= 40 ? '#f59e0b' : '#ef4444' }} />
-                    </div>
-                  </div>
-
-                  {/* Zero-knowledge badge */}
-                  <div className="mx-4 mb-4 flex items-center gap-1.5 px-3 py-2 rounded-xl" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(16,185,129,0.15)' }}>
-                    <Lock className="w-2 h-2 text-emerald-400/60 flex-shrink-0" />
-                    <p className="text-[8px] font-mono text-emerald-400/50 tracking-wide truncate">AES-256-GCM · Zero-knowledge</p>
-                  </div>
-
-                  {/* Onboarding steps */}
-                  <div className="px-4 mb-4">
-                    <p className="text-[9px] font-black tracking-[0.2em] uppercase text-white/25 mb-2">Getting Started</p>
-                    <div className="flex flex-col gap-1.5">
-                      {[
-                        { label: 'Complete Profile', done: (profile.profile_readiness || 0) > 20 },
-                        { label: 'Log Flight Hours', done: (profile.total_flight_hours || 0) > 0 },
-                        { label: 'Verify Credentials', done: false },
-                        { label: 'Browse Pathways', done: qualifiedMatches.length > 0 },
-                        { label: 'Start a Program', done: false },
-                      ].map((s, i) => (
-                        <button key={i} onClick={() => handleNavigate(i === 0 ? '/profile' : i === 1 ? '/logbook' : i === 2 ? '/wallet' : i === 3 ? '/discover' : '/programs')} className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all hover:brightness-110" style={{ background: s.done ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.04)', border: `1px solid ${s.done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.06)'}` }}>
-                          <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${s.done ? 'bg-emerald-500' : 'bg-white/10'}`}>
-                            {s.done ? <CheckCircle className="w-2.5 h-2.5 text-white" /> : <div className="w-2 h-2 rounded-full bg-white/20" />}
-                          </div>
-                          <span className={`text-[10px] font-bold truncate flex-1 ${s.done ? 'text-emerald-300' : 'text-white/50'}`}>{s.label}</span>
-                          {s.done && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
-                        </button>
-                      ))}
                     </div>
                   </div>
 

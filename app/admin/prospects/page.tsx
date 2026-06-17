@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -210,9 +211,12 @@ export default function ProspectsPage() {
 
       {/* Main Content */}
       <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, padding: '32px', minHeight: '100vh' }}>
-        <div style={{ marginBottom: 28 }}>
-          <h1 style={{ fontSize: 24, fontWeight: 800, margin: '0 0 6px', color: '#1a1a1a' }}>Future Prospects</h1>
-          <p style={{ fontSize: 13, color: '#6b7280', margin: 0 }}>Track potential partnerships, deals, and outreach opportunities</p>
+        <div style={{ marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ fontSize: 24, fontWeight: 800, margin: '0 0 6px', color: '#1a1a1a' }}>Future Prospects</h1>
+            <p style={{ fontSize: 13, color: '#6b7280', margin: 0 }}>Track potential partnerships, deals, and outreach opportunities</p>
+          </div>
+          <AdminNotificationBell />
         </div>
 
         {/* Filters */}

@@ -42,6 +42,32 @@ serve(async (req) => {
       )
     }
 
+    // Fetch the authenticated user's profile to get their display name
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('full_name, display_name')
+      .eq('id', user.id)
+      .single()
+
+    // Use the authenticated user's email — never trust client-provided from_email
+    const authenticatedEmail = user.email || 'noreply@pilotrecognition.com'
+
+    // Build sender name from profile (or fallback to email prefix)
+    const profileName = profile?.display_name || profile?.full_name || ''
+    const emailPrefix = authenticatedEmail.split('@')[0]
+      .split('.')
+      .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ')
+    const senderName = profileName || emailPrefix || 'PilotRecognition Team'
+
+    // Security: reject if client tries to spoof a different sender email
+    if (from_email && from_email !== authenticatedEmail) {
+      return new Response(
+        JSON.stringify({ error: 'Sender email does not match authenticated user' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+      )
+    }
+
     const resendApiKey = Deno.env.get('RESEND_API_KEY')
     if (!resendApiKey) {
       return new Response(
@@ -50,8 +76,8 @@ serve(async (req) => {
       )
     }
 
-    const from = from_email || 'noreply@pilotrecognition.com'
-    const fromName = from_name || 'Pilot Recognition'
+    const from = authenticatedEmail
+    const fromName = senderName
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',

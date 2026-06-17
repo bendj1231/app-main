@@ -81,6 +81,7 @@ async function getAccessToken(serviceAccountJson: any): Promise<string> {
   })
 
   const tokenData = await tokenRes.json()
+  console.log('[google-calendar-meeting] Token response:', tokenRes.status, JSON.stringify(tokenData))
   if (!tokenRes.ok || !tokenData.access_token) {
     throw new Error(`Token exchange failed: ${JSON.stringify(tokenData)}`)
   }
@@ -174,6 +175,7 @@ serve(async (req) => {
     )
 
     const eventData = await createRes.json()
+    console.log('[google-calendar-meeting] Calendar API response:', createRes.status, JSON.stringify(eventData))
     if (!createRes.ok) {
       return new Response(
         JSON.stringify({ error: 'Calendar API error', details: eventData }),

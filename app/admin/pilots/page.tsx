@@ -6,6 +6,7 @@ import { logAuditAction } from '@/src/lib/auditLog';
 import { canEdit, canDelete, canVerify, type AdminPermissions } from '@/src/lib/permissions';
 import { TableSkeleton } from '@/src/components/admin/LoadingSpinner';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -369,6 +370,7 @@ export default function PilotManagementPage() {
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <AdminNotificationBell />
             <div
               style={{
                 padding: '6px 14px',

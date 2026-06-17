@@ -5,6 +5,7 @@ import { supabase } from '@/shared/lib/supabase';
 import { uploadProfileImage, type CloudinaryUploadResult } from '@/src/lib/cloudinaryClient';
 import { logAuditAction } from '@/src/lib/auditLog';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -21,7 +22,24 @@ export default function PlanningBoardPage() {
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
-  const [activeTab, setActiveTab] = useState<'ben' | 'karl' | 'keiv'>('ben');
+  const [activeTab, setActiveTab] = useState<string>('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [newObjective, setNewObjective] = useState({
+    title: '',
+    description: '',
+    assignee: '',
+    priority: 'medium' as 'low' | 'medium' | 'high',
+    status: 'pending' as 'pending' | 'in_progress' | 'completed' | 'future',
+    due_date: '',
+    collaborators: '',
+  });
+  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editDraft, setEditDraft] = useState<any>(null);
+  const [updating, setUpdating] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
   useEffect(() => {
     if (!currentUser || !isAdmin) return;
@@ -42,17 +60,130 @@ export default function PlanningBoardPage() {
 
   const fetchBoardData = async () => {
     try {
-      const { data, error } = await supabase
-        .from('employee_objectives')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setObjectives(data || []);
+      const [{ data: objectivesData, error: objectivesError }, { data: profilesData, error: profilesError }] = await Promise.all([
+        supabase.from('employee_objectives').select('*').order('created_at', { ascending: false }),
+        supabase.from('profiles').select('display_name, full_name, email, role').not('email', 'is', null).limit(200),
+      ]);
+
+      if (objectivesError) throw objectivesError;
+      setObjectives(objectivesData || []);
+
+      // Build team member list from profiles + existing assignees
+      const fromProfiles = (profilesData || [])
+        .map((p: any) => p.display_name || p.full_name || p.email?.split('@')[0])
+        .filter(Boolean);
+      const fromObjectives = (objectivesData || [])
+        .map((o: any) => o.assignee)
+        .filter(Boolean);
+      const allMembers = Array.from(new Set([...fromProfiles, ...fromObjectives]))
+        .map((n) => String(n).trim())
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+      setTeamMembers(allMembers);
+
+      // Default active tab if unset or no longer valid
+      setActiveTab((prev) => {
+        if (prev && allMembers.includes(prev)) return prev;
+        return allMembers[0] || '';
+      });
     } catch (err) {
       console.error('Error fetching board data:', err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const createObjective = async () => {
+    if (!newObjective.title.trim() || !currentUser) return;
+    setCreating(true);
+    try {
+      const payload = {
+        title: newObjective.title.trim(),
+        description: newObjective.description.trim() || null,
+        assignee: newObjective.assignee,
+        priority: newObjective.priority,
+        status: newObjective.status,
+        due_date: newObjective.due_date ? new Date(newObjective.due_date).toISOString() : null,
+        collaborators: newObjective.collaborators.trim() || null,
+        employee_id: currentUser.id,
+        created_by: currentUser.id,
+      };
+      const { data, error } = await supabase.from('employee_objectives').insert(payload).select().single();
+      if (error) throw error;
+      if (data) {
+        setObjectives((prev) => [data, ...prev]);
+        setShowCreateModal(false);
+        setNewObjective({
+          title: '',
+          description: '',
+          assignee: 'ben',
+          priority: 'medium',
+          status: 'pending',
+          due_date: '',
+          collaborators: '',
+        });
+      }
+    } catch (err) {
+      console.error('Error creating objective:', err);
+      alert('Failed to create objective. Please try again.');
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const updateObjective = async (id: string, updates: any) => {
+    if (!currentUser) return;
+    setUpdating(true);
+    try {
+      const { data, error } = await supabase
+        .from('employee_objectives')
+        .update({
+          title: updates.title,
+          description: updates.description,
+          assignee: updates.assignee,
+          priority: updates.priority,
+          status: updates.status,
+          due_date: updates.due_date ? new Date(updates.due_date).toISOString() : null,
+          collaborators: updates.collaborators || null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setObjectives((prev) => prev.map((o) => (o.id === id ? data : o)));
+        setEditingId(null);
+        setEditDraft(null);
+      }
+    } catch (err) {
+      console.error('Error updating objective:', err);
+      alert('Failed to update objective.');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const deleteObjective = async (id: string) => {
+    if (!currentUser) return;
+    if (!window.confirm('Delete this objective?')) return;
+    setDeletingId(id);
+    try {
+      const { error } = await supabase.from('employee_objectives').delete().eq('id', id);
+      if (error) throw error;
+      setObjectives((prev) => prev.filter((o) => o.id !== id));
+      if (selectedItem?.id === id) setSelectedItem(null);
+    } catch (err) {
+      console.error('Error deleting objective:', err);
+      alert('Failed to delete objective.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const startEdit = (item: any) => {
+    setEditingId(item.id);
+    setEditDraft({ ...item });
   };
 
   const handleScreenshotUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,15 +249,12 @@ export default function PlanningBoardPage() {
 
   // Filter objectives by assignee for each tab
   const getTabObjectives = (assignee: string) => {
+    const search = assignee.toLowerCase();
     return objectives.filter((o) => {
       const assigneeLower = o.assignee?.toLowerCase() || '';
-      return assigneeLower.includes(assignee);
+      return assigneeLower.includes(search);
     });
   };
-
-  const benObjectives = getTabObjectives('ben');
-  const karlObjectives = getTabObjectives('karl');
-  const keivObjectives = getTabObjectives('keiv');
 
   const getTabStats = (objs: any[]) => {
     const completed = objs.filter((o) => o.status === 'completed').length;
@@ -134,9 +262,10 @@ export default function PlanningBoardPage() {
     return { completed, todo };
   };
 
-  const benStats = getTabStats(benObjectives);
-  const karlStats = getTabStats(karlObjectives);
-  const keivStats = getTabStats(keivObjectives);
+  const tabData = teamMembers.map((member) => {
+    const objs = getTabObjectives(member);
+    return { key: member, label: member.charAt(0).toUpperCase() + member.slice(1), stats: getTabStats(objs), objectives: objs };
+  });
 
   const renderPersonObjectives = (items: any[]) => {
     if (items.length === 0) {
@@ -240,6 +369,200 @@ export default function PlanningBoardPage() {
     });
   };
 
+  const renderEditableTable = (items: any[]) => {
+    if (items.length === 0) {
+      return (
+        <div style={{ textAlign: 'center', padding: 60, background: '#f9fafb', borderRadius: 12, border: '1px solid #e5e7eb' }}>
+          <div style={{ fontSize: 16, color: '#6b7280' }}>No objectives assigned</div>
+        </div>
+      );
+    }
+
+    const isEditing = (id: string) => editingId === id;
+
+    const statusBadge = (status: string) => {
+      const colors: Record<string, [string, string]> = {
+        completed: ['#f3f4f6', '#9ca3af'],
+        in_progress: ['#f0fdf4', '#166534'],
+        pending: ['#fef2f2', '#991b1b'],
+        future: ['#eff6ff', '#1e40af'],
+      };
+      const [bg, color] = colors[status] || ['#f9fafb', '#6b7280'];
+      return (
+        <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 10, background: bg, color, textTransform: 'uppercase' }}>
+          {status.replace('_', ' ')}
+        </span>
+      );
+    };
+
+    const priorityBadge = (priority: string) => {
+      const colors: Record<string, [string, string]> = {
+        high: ['#fef2f2', '#ef4444'],
+        medium: ['#fffbeb', '#f59e0b'],
+        low: ['#f0fdf4', '#10b981'],
+      };
+      const [bg, color] = colors[priority] || ['#f9fafb', '#6b7280'];
+      return (
+        <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 10, background: bg, color, textTransform: 'uppercase' }}>
+          {priority}
+        </span>
+      );
+    };
+
+    return (
+      <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+          <thead>
+            <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+              <th style={{ textAlign: 'left', padding: '10px 14px', fontWeight: 600, color: '#6b7280', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Title</th>
+              <th style={{ textAlign: 'left', padding: '10px 14px', fontWeight: 600, color: '#6b7280', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Assignee</th>
+              <th style={{ textAlign: 'left', padding: '10px 14px', fontWeight: 600, color: '#6b7280', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Status</th>
+              <th style={{ textAlign: 'left', padding: '10px 14px', fontWeight: 600, color: '#6b7280', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Priority</th>
+              <th style={{ textAlign: 'left', padding: '10px 14px', fontWeight: 600, color: '#6b7280', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Due</th>
+              <th style={{ textAlign: 'left', padding: '10px 14px', fontWeight: 600, color: '#6b7280', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Collaborators</th>
+              <th style={{ textAlign: 'right', padding: '10px 14px', fontWeight: 600, color: '#6b7280', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.03em' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.id} style={{ borderBottom: '1px solid #f3f4f6', background: isEditing(item.id) ? '#fffbeb' : '#fff' }}>
+                {/* Title */}
+                <td style={{ padding: '8px 14px', maxWidth: 280 }}>
+                  {isEditing(item.id) ? (
+                    <input
+                      type="text"
+                      value={editDraft?.title || ''}
+                      onChange={(e) => setEditDraft((p: any) => ({ ...p, title: e.target.value }))}
+                      style={{ width: '100%', padding: '6px 8px', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: 13, outline: 'none' }}
+                    />
+                  ) : (
+                    <div>
+                      <div style={{ fontWeight: 600, color: '#1a1a1a' }}>{item.title}</div>
+                      {item.description && <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>{item.description}</div>}
+                    </div>
+                  )}
+                </td>
+                {/* Assignee */}
+                <td style={{ padding: '8px 14px' }}>
+                  {isEditing(item.id) ? (
+                    <select
+                      value={editDraft?.assignee || ''}
+                      onChange={(e) => setEditDraft((p: any) => ({ ...p, assignee: e.target.value }))}
+                      style={{ padding: '6px 8px', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: 13 }}
+                    >
+                      <option value="">Select…</option>
+                      {teamMembers.map((m) => (
+                        <option key={m} value={m}>{m.charAt(0).toUpperCase() + m.slice(1)}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span style={{ textTransform: 'capitalize', color: '#374151' }}>{item.assignee}</span>
+                  )}
+                </td>
+                {/* Status */}
+                <td style={{ padding: '8px 14px' }}>
+                  {isEditing(item.id) ? (
+                    <select
+                      value={editDraft?.status || 'pending'}
+                      onChange={(e) => setEditDraft((p: any) => ({ ...p, status: e.target.value }))}
+                      style={{ padding: '6px 8px', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: 13 }}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="in_progress">In Progress</option>
+                      <option value="completed">Completed</option>
+                      <option value="future">Future</option>
+                    </select>
+                  ) : (
+                    statusBadge(item.status)
+                  )}
+                </td>
+                {/* Priority */}
+                <td style={{ padding: '8px 14px' }}>
+                  {isEditing(item.id) ? (
+                    <select
+                      value={editDraft?.priority || 'medium'}
+                      onChange={(e) => setEditDraft((p: any) => ({ ...p, priority: e.target.value }))}
+                      style={{ padding: '6px 8px', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: 13 }}
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  ) : (
+                    priorityBadge(item.priority)
+                  )}
+                </td>
+                {/* Due Date */}
+                <td style={{ padding: '8px 14px', whiteSpace: 'nowrap' }}>
+                  {isEditing(item.id) ? (
+                    <input
+                      type="date"
+                      value={editDraft?.due_date ? new Date(editDraft.due_date).toISOString().split('T')[0] : ''}
+                      onChange={(e) => setEditDraft((p: any) => ({ ...p, due_date: e.target.value }))}
+                      style={{ padding: '6px 8px', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: 13 }}
+                    />
+                  ) : (
+                    <span style={{ color: '#6b7280' }}>{item.due_date ? new Date(item.due_date).toLocaleDateString() : '—'}</span>
+                  )}
+                </td>
+                {/* Collaborators */}
+                <td style={{ padding: '8px 14px' }}>
+                  {isEditing(item.id) ? (
+                    <input
+                      type="text"
+                      value={editDraft?.collaborators || ''}
+                      onChange={(e) => setEditDraft((p: any) => ({ ...p, collaborators: e.target.value }))}
+                      placeholder="e.g. Karl, Keiv"
+                      style={{ padding: '6px 8px', border: '1px solid #e5e7eb', borderRadius: 6, fontSize: 13, width: 120 }}
+                    />
+                  ) : (
+                    <span style={{ color: '#6b7280' }}>{item.collaborators || '—'}</span>
+                  )}
+                </td>
+                {/* Actions */}
+                <td style={{ padding: '8px 14px', textAlign: 'right' }}>
+                  {isEditing(item.id) ? (
+                    <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                      <button
+                        onClick={() => updateObjective(item.id, editDraft)}
+                        disabled={updating}
+                        style={{ padding: '4px 10px', background: '#22c55e', color: '#fff', border: 'none', borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: updating ? 'not-allowed' : 'pointer' }}
+                      >
+                        {updating ? '…' : 'Save'}
+                      </button>
+                      <button
+                        onClick={() => { setEditingId(null); setEditDraft(null); }}
+                        style={{ padding: '4px 10px', background: '#f3f4f6', color: '#6b7280', border: 'none', borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: 'pointer' }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                      <button
+                        onClick={() => startEdit(item)}
+                        style={{ padding: '4px 10px', background: '#eff6ff', color: '#2563eb', border: 'none', borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: 'pointer' }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteObjective(item.id)}
+                        disabled={deletingId === item.id}
+                        style={{ padding: '4px 10px', background: '#fef2f2', color: '#ef4444', border: 'none', borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: deletingId === item.id ? 'not-allowed' : 'pointer' }}
+                      >
+                        {deletingId === item.id ? '…' : 'Delete'}
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   return (
     <div
       style={{
@@ -281,39 +604,24 @@ export default function PlanningBoardPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <button
-              onClick={() => navigate('/admin/meetings')}
+              onClick={() => setShowCreateModal(true)}
               style={{
-                position: 'relative',
-                background: 'none',
+                padding: '8px 16px',
+                background: '#ef4444',
+                color: '#fff',
                 border: 'none',
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: 600,
                 cursor: 'pointer',
-                fontSize: 20,
-                padding: 4,
-                color: '#6b7280',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
               }}
-              title="Meetings & Notifications"
             >
-              🔔
-              <span
-                style={{
-                  position: 'absolute',
-                  top: -2,
-                  right: -2,
-                  width: 18,
-                  height: 18,
-                  background: '#ef4444',
-                  color: '#fff',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                3
-              </span>
+              <span style={{ fontSize: 16 }}>+</span> New Objective
             </button>
+            <AdminNotificationBell />
             <div
               style={{
                 padding: '6px 14px',
@@ -337,45 +645,85 @@ export default function PlanningBoardPage() {
             <div style={{ textAlign: 'center', padding: '40px 0', color: '#9ca3af' }}>Loading board data…</div>
           ) : (
             <>
-              {/* Tab Navigation */}
-              <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: '1px solid #e5e7eb', paddingBottom: 16 }}>
-                {[
-                  { key: 'ben', label: 'Ben', stats: benStats },
-                  { key: 'karl', label: 'Karl', stats: karlStats },
-                  { key: 'keiv', label: 'Keiv', stats: keivStats },
-                ].map((tab) => (
+              {/* Tab Navigation + View Toggle */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, borderBottom: '1px solid #e5e7eb', paddingBottom: 16 }}>
+                <div style={{ display: 'flex', gap: 4 }}>
+                  {tabData.map((tab) => (
+                    <button
+                      key={tab.key}
+                      onClick={() => setActiveTab(tab.key)}
+                      style={{
+                        padding: '10px 20px',
+                        background: activeTab === tab.key ? 'rgba(239,68,68,0.08)' : 'transparent',
+                        color: activeTab === tab.key ? '#ef4444' : '#6b7280',
+                        border: 'none',
+                        borderRadius: 8,
+                        fontSize: 14,
+                        fontWeight: activeTab === tab.key ? 600 : 500,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                      }}
+                    >
+                      {tab.label}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1, gap: 2 }}>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: '#ef4444' }}>{tab.stats.todo}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af' }}>{tab.stats.completed}</span>
+                      </div>
+                    </button>
+                  ))}
+                  {tabData.length === 0 && !loading && (
+                    <div style={{ padding: '10px 20px', color: '#9ca3af', fontSize: 14 }}>No team members found</div>
+                  )}
+                </div>
+
+                {/* View Mode Toggle */}
+                <div style={{ display: 'flex', gap: 4, background: '#f3f4f6', borderRadius: 8, padding: 4 }}>
                   <button
-                    key={tab.key}
-                    onClick={() => setActiveTab(tab.key as 'ben' | 'karl' | 'keiv')}
+                    onClick={() => setViewMode('cards')}
                     style={{
-                      padding: '10px 20px',
-                      background: activeTab === tab.key ? 'rgba(239,68,68,0.08)' : 'transparent',
-                      color: activeTab === tab.key ? '#ef4444' : '#6b7280',
+                      padding: '6px 12px',
+                      background: viewMode === 'cards' ? '#fff' : 'transparent',
+                      color: viewMode === 'cards' ? '#1a1a1a' : '#6b7280',
                       border: 'none',
-                      borderRadius: 8,
-                      fontSize: 14,
-                      fontWeight: activeTab === tab.key ? 600 : 500,
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: viewMode === 'cards' ? 600 : 500,
                       cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 8,
+                      boxShadow: viewMode === 'cards' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
                     }}
                   >
-                    {tab.label}
-                    {/* Stacked count - todo above, completed below */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1, gap: 2 }}>
-                      <span style={{ fontSize: 10, fontWeight: 700, color: '#ef4444' }}>{tab.stats.todo}</span>
-                      <span style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af' }}>{tab.stats.completed}</span>
-                    </div>
+                    Cards
                   </button>
-                ))}
+                  <button
+                    onClick={() => setViewMode('table')}
+                    style={{
+                      padding: '6px 12px',
+                      background: viewMode === 'table' ? '#fff' : 'transparent',
+                      color: viewMode === 'table' ? '#1a1a1a' : '#6b7280',
+                      border: 'none',
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: viewMode === 'table' ? 600 : 500,
+                      cursor: 'pointer',
+                      boxShadow: viewMode === 'table' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                    }}
+                  >
+                    Table
+                  </button>
+                </div>
               </div>
 
               {/* Objectives for selected tab */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {activeTab === 'ben' && renderPersonObjectives(benObjectives)}
-                {activeTab === 'karl' && renderPersonObjectives(karlObjectives)}
-                {activeTab === 'keiv' && renderPersonObjectives(keivObjectives)}
+                {(() => {
+                  const currentTab = tabData.find((t) => t.key === activeTab);
+                  if (!currentTab) return <div style={{ textAlign: 'center', padding: 60, color: '#6b7280' }}>Select a team member to view objectives</div>;
+                  return viewMode === 'cards'
+                    ? renderPersonObjectives(currentTab.objectives)
+                    : renderEditableTable(currentTab.objectives);
+                })()}
               </div>
             </>
           )}
@@ -441,6 +789,166 @@ export default function PlanningBoardPage() {
 
             <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
               <button onClick={() => setSelectedItem(null)} style={{ flex: 1, padding: 10, background: 'transparent', border: '1px solid #e5e7eb', borderRadius: 8, color: '#6b7280', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Objective Modal */}
+      {showCreateModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }} onClick={() => setShowCreateModal(false)}>
+          <div style={{ background: '#fff', borderRadius: 16, padding: 28, width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto' }} onClick={(e) => e.stopPropagation()}>
+            <h2 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 20px', color: '#1a1a1a' }}>New Objective</h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {/* Title */}
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, display: 'block' }}>Title *</label>
+                <input
+                  type="text"
+                  value={newObjective.title}
+                  onChange={(e) => setNewObjective((p) => ({ ...p, title: e.target.value }))}
+                  placeholder="e.g. Complete Veremark API integration"
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Description */}
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, display: 'block' }}>Description</label>
+                <textarea
+                  value={newObjective.description}
+                  onChange={(e) => setNewObjective((p) => ({ ...p, description: e.target.value }))}
+                  placeholder="Add details about this objective..."
+                  rows={3}
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+                />
+              </div>
+
+              {/* Row: Assignee + Status */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, display: 'block' }}>Assignee</label>
+                  {teamMembers.length > 0 ? (
+                    <select
+                      value={newObjective.assignee}
+                      onChange={(e) => setNewObjective((p) => ({ ...p, assignee: e.target.value }))}
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, background: '#fff', cursor: 'pointer' }}
+                    >
+                      <option value="">Select team member…</option>
+                      {teamMembers.map((m) => (
+                        <option key={m} value={m}>{m.charAt(0).toUpperCase() + m.slice(1)}</option>
+                      ))}
+                      <option value="__custom__">+ Add new…</option>
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      value={newObjective.assignee}
+                      onChange={(e) => setNewObjective((p) => ({ ...p, assignee: e.target.value.toLowerCase().trim() }))}
+                      placeholder="e.g. ben"
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  )}
+                  {newObjective.assignee === '__custom__' && (
+                    <input
+                      type="text"
+                      value={''}
+                      onChange={(e) => setNewObjective((p) => ({ ...p, assignee: e.target.value.toLowerCase().trim() }))}
+                      placeholder="Enter name…"
+                      autoFocus
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', boxSizing: 'border-box', marginTop: 8 }}
+                    />
+                  )}
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, display: 'block' }}>Status</label>
+                  <select
+                    value={newObjective.status}
+                    onChange={(e) => setNewObjective((p) => ({ ...p, status: e.target.value as any }))}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, background: '#fff', cursor: 'pointer' }}
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="future">Future / Idea</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Row: Priority + Due Date */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, display: 'block' }}>Priority</label>
+                  <select
+                    value={newObjective.priority}
+                    onChange={(e) => setNewObjective((p) => ({ ...p, priority: e.target.value as any }))}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, background: '#fff', cursor: 'pointer' }}
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, display: 'block' }}>Due Date</label>
+                  <input
+                    type="date"
+                    value={newObjective.due_date}
+                    onChange={(e) => setNewObjective((p) => ({ ...p, due_date: e.target.value }))}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Collaborators */}
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginBottom: 6, display: 'block' }}>Collaborators</label>
+                <input
+                  type="text"
+                  value={newObjective.collaborators}
+                  onChange={(e) => setNewObjective((p) => ({ ...p, collaborators: e.target.value }))}
+                  placeholder="e.g. Karl, Keiv"
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div style={{ marginTop: 24, display: 'flex', gap: 12 }}>
+              <button
+                onClick={createObjective}
+                disabled={creating || !newObjective.title.trim()}
+                style={{
+                  flex: 1,
+                  padding: 12,
+                  background: creating || !newObjective.title.trim() ? '#fca5a5' : '#ef4444',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 8,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: creating || !newObjective.title.trim() ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {creating ? 'Creating…' : 'Create Objective'}
+              </button>
+              <button
+                onClick={() => setShowCreateModal(false)}
+                style={{
+                  flex: 1,
+                  padding: 12,
+                  background: 'transparent',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: 8,
+                  color: '#6b7280',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

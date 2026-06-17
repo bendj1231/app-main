@@ -46,8 +46,9 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
       if (hasProfile) {
         setCheckingOAuth(false);
-        console.log('[FlightDeckLogin] Profile found — redirecting to /platform');
-        navigate('/platform', { replace: true });
+        console.log('[FlightDeckLogin] Profile found — AuthContext will show welcome screen');
+        // AuthContext handles the welcome screen + redirect to /platform
+        return;
       } else {
         console.log('[FlightDeckLogin] No profile found — signing out and redirecting to /become-member?setup=1');
         await supabase.auth.signOut();
@@ -68,9 +69,9 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
     const handleOAuthResult = async () => {
       if (oauthAccountCheck.hasAccount) {
-        console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=true — redirecting to /platform');
-        resetOauthAccountCheck();
-        navigate('/platform', { replace: true });
+        // Welcome screen + redirect is handled by AuthContext
+        console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=true — AuthContext will show welcome screen');
+        return;
       } else {
         console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=false — signing out and redirecting to /become-member?setup=1');
         await supabase.auth.signOut();

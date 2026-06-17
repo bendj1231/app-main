@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminNotificationBell from '../components/AdminNotificationBell';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -13,9 +14,12 @@ export default function FrameworkAdminPage() {
       <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, minHeight: "100vh" }}>
         <div className="min-h-screen bg-slate-50 p-6">
         {/* Coded by Benjamin Bowler */}
-      <nav className="mb-6 flex items-center gap-4">
-        <Link to="/framework" className="text-slate-900 font-semibold">← View Framework</Link>
-        <h1 className="text-xl font-bold">Framework Admin</h1>
+      <nav className="mb-6 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Link to="/framework" className="text-slate-900 font-semibold">← View Framework</Link>
+          <h1 className="text-xl font-bold">Framework Admin</h1>
+        </div>
+        <AdminNotificationBell />
       </nav>
 
       <div className="bg-white rounded-lg border p-6 max-w-2xl">
