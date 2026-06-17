@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { MeshGradient } from '@paper-design/shaders-react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/src/lib/supabase';
@@ -10,6 +11,7 @@ interface FlightDeckLoginPageProps {
 
 export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavigate }) => {
   const navigate = useNavigate();
+  const { loginWithRedirect } = useAuth0();
   const { sendOtp, verifyOtp, currentUser, oauthAccountCheck, resetOauthAccountCheck } = useAuth();
 
   const [email, setEmail] = useState('');
@@ -142,25 +144,16 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
 
   const handleGoogleLogin = async () => {
     setError('');
-    console.log('[FlightDeckLogin] Google sign-in button clicked');
+    console.log('[FlightDeckLogin] Google sign-in button clicked — using Auth0');
 
-    const redirectTo = `${window.location.origin}/flight-deck-login`;
-    console.log('[FlightDeckLogin] Calling supabase.auth.signInWithOAuth with redirectTo:', redirectTo);
-
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo,
+    await loginWithRedirect({
+      authorizationParams: {
+        connection: 'google-oauth2',
       },
     });
-
-    if (error) {
-      console.error('[FlightDeckLogin] signInWithOAuth error:', error);
-      setError(error.message || 'Google sign-in failed');
-    } else {
-      console.log('[FlightDeckLogin] signInWithOAuth initiated — browser will redirect to Google');
-    }
   };
+
+  const googleBtnDisabled = checkingOAuth || oauthAccountCheck.checking;
 
   const oauthInProgress = checkingOAuth || oauthAccountCheck.checking || checkingAccount;
   const oauthStatusText = checkingAccount
@@ -466,17 +459,17 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
         {/* Google Sign In — via Supabase OAuth */}
         <button
           onClick={handleGoogleLogin}
-          disabled={checkingOAuth || oauthAccountCheck.checking}
+          disabled={googleBtnDisabled}
           style={{
             width: '100%',
             padding: '10px 14px',
-            background: checkingOAuth || oauthAccountCheck.checking ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
+            background: googleBtnDisabled ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)',
             border: '1px solid rgba(255,255,255,0.18)',
             borderRadius: 6,
             fontSize: 14,
             fontWeight: 500,
             color: 'rgba(255,255,255,0.9)',
-            cursor: checkingOAuth || oauthAccountCheck.checking ? 'not-allowed' : 'pointer',
+            cursor: googleBtnDisabled ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -484,12 +477,12 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
             marginBottom: 10,
           }}
           onMouseEnter={(e) => {
-            if (!checkingOAuth && !oauthAccountCheck.checking) {
+            if (!googleBtnDisabled) {
               e.currentTarget.style.background = 'rgba(255,255,255,0.14)';
             }
           }}
           onMouseLeave={(e) => {
-            if (!checkingOAuth && !oauthAccountCheck.checking) {
+            if (!googleBtnDisabled) {
               e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
             }
           }}
