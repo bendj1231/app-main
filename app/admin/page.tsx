@@ -95,13 +95,13 @@ export default function AdminDashboardPage() {
     if (!currentUser || !isAdmin) return;
 
     const fetchStats = async () => {
-      console.debug('[AdminDashboard] fetchStats() starting...');
+      console.log('[AdminDashboard] fetchStats() starting...');
       try {
         // Get current admin's profile (wrapped — profiles table sometimes 500s)
         let adminProfileId = '';
         let adminInviteCode = '';
         try {
-          console.debug('[AdminDashboard] Calling supabase.from(profiles).select() for admin profile...');
+          console.log('[AdminDashboard] Calling supabase.from(profiles).select() for admin profile...');
           const { data: adminProfile } = await supabase
             .from('profiles')
             .select('id, referral_code, display_name')
@@ -109,21 +109,25 @@ export default function AdminDashboardPage() {
             .single();
           adminProfileId = adminProfile?.id || '';
           adminInviteCode = adminProfile?.referral_code || '';
-          console.debug('[AdminDashboard] adminProfile:', adminProfile);
-        } catch { console.debug('[AdminDashboard] profiles query failed (timeout)'); }
+          console.log('[AdminDashboard] adminProfile:', adminProfile);
+        } catch { console.log('[AdminDashboard] profiles query failed (timeout)'); }
 
         // Count pilots referred by this admin (isolated catch)
         let pilotsReferred = 0;
-        try {
-          console.debug('[AdminDashboard] Calling supabase.from(referrals).select(count)...');
-          const { count, error } = await supabase
-            .from('referrals')
-            .select('id', { count: 'exact', head: true })
-            .eq('referrer_profile_id', adminProfileId)
-            .eq('status', 'credited');
-          pilotsReferred = count || 0;
-          console.debug('[AdminDashboard] referrals count:', count, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] referrals query failed'); }
+        if (adminProfileId) {
+          try {
+            console.log('[AdminDashboard] Calling supabase.from(referrals).select(count)...');
+            const { count, error } = await supabase
+              .from('referrals')
+              .select('id', { count: 'exact', head: true })
+              .eq('referrer_profile_id', adminProfileId)
+              .eq('status', 'credited');
+            pilotsReferred = count || 0;
+            console.log('[AdminDashboard] referrals count:', count, 'error:', error?.message);
+          } catch (e) { console.log('[AdminDashboard] referrals query failed:', (e as Error).message); }
+        } else {
+          console.log('[AdminDashboard] Skipping referrals query — no adminProfileId');
+        }
 
         // Calculate referral revenue (assuming $50 per referred pilot who subscribed)
         const referralRevenue = pilotsReferred * 50;
@@ -131,64 +135,68 @@ export default function AdminDashboardPage() {
         // Fetch each stat independently so one missing table doesn't break everything
         let pilots = 0;
         try {
-          console.debug('[AdminDashboard] Calling supabase.from(profiles).select(count)...');
+          console.log('[AdminDashboard] Calling supabase.from(profiles).select(count)...');
           const { count, error } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
           pilots = count || 0;
-          console.debug('[AdminDashboard] profiles count:', count, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] profiles count query failed'); }
+          console.log('[AdminDashboard] profiles count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] profiles count query failed'); }
 
         let enterprises = 0;
         try {
-          console.debug('[AdminDashboard] Calling supabase.from(enterprise_profiles).select(count)...');
+          console.log('[AdminDashboard] Calling supabase.from(enterprise_profiles).select(count)...');
           const { count, error } = await supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true });
           enterprises = count || 0;
-          console.debug('[AdminDashboard] enterprise_profiles count:', count, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] enterprise_profiles query failed'); }
+          console.log('[AdminDashboard] enterprise_profiles count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] enterprise_profiles query failed'); }
 
         let verifiedPilots = 0;
         try {
-          console.debug('[AdminDashboard] Calling supabase.from(profiles verified).select(count)...');
+          console.log('[AdminDashboard] Calling supabase.from(profiles verified).select(count)...');
           const { count, error } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true);
           verifiedPilots = count || 0;
-          console.debug('[AdminDashboard] verified profiles count:', count, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] verified profiles query failed'); }
+          console.log('[AdminDashboard] verified profiles count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] verified profiles query failed'); }
 
         let pendingDocs = 0;
         try {
-          console.debug('[AdminDashboard] Calling supabase.from(pilot_documents).select(count)...');
+          console.log('[AdminDashboard] Calling supabase.from(pilot_documents).select(count)...');
           const { count, error } = await supabase.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review');
           pendingDocs = count || 0;
-          console.debug('[AdminDashboard] pilot_documents count:', count, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] pilot_documents query failed'); }
+          console.log('[AdminDashboard] pilot_documents count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] pilot_documents query failed'); }
 
         let openTickets = 0;
         try {
-          console.debug('[AdminDashboard] Calling supabase.from(support_enquiries).select(count)...');
+          console.log('[AdminDashboard] Calling supabase.from(support_enquiries).select(count)...');
           const { count, error } = await supabase.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved');
           openTickets = count || 0;
-          console.debug('[AdminDashboard] support_enquiries count:', count, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] support_enquiries query failed'); }
+          console.log('[AdminDashboard] support_enquiries count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] support_enquiries query failed'); }
 
         let upcomingMeetings = 0;
         try {
-          console.debug('[AdminDashboard] Calling supabase.from(meetings).select(count)...');
+          console.log('[AdminDashboard] Calling supabase.from(meetings).select(count)...');
           const { count, error } = await supabase.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed');
           upcomingMeetings = count || 0;
-          console.debug('[AdminDashboard] meetings count:', count, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] meetings query failed'); }
+          console.log('[AdminDashboard] meetings count:', count, 'error:', error?.message);
+        } catch { console.log('[AdminDashboard] meetings query failed'); }
 
         let notifications: any[] = [];
-        try {
-          console.debug('[AdminDashboard] Calling supabase.from(admin_notifications).select(*)...');
-          const { data, error } = await supabase
-            .from('admin_notifications')
-            .select('*')
-            .eq('admin_id', adminProfileId)
-            .order('created_at', { ascending: false })
-            .limit(10);
-          notifications = data || [];
-          console.debug('[AdminDashboard] admin_notifications rows:', (data || []).length, 'error:', error?.message);
-        } catch { console.debug('[AdminDashboard] admin_notifications query failed'); }
+        if (adminProfileId) {
+          try {
+            console.log('[AdminDashboard] Calling supabase.from(admin_notifications).select(*)...');
+            const { data, error } = await supabase
+              .from('admin_notifications')
+              .select('*')
+              .eq('admin_id', adminProfileId)
+              .order('created_at', { ascending: false })
+              .limit(10);
+            notifications = data || [];
+            console.log('[AdminDashboard] admin_notifications rows:', (data || []).length, 'error:', error?.message);
+          } catch { console.log('[AdminDashboard] admin_notifications query failed'); }
+        } else {
+          console.log('[AdminDashboard] Skipping admin_notifications — no adminProfileId');
+        }
 
         setStats({
           pilots,
@@ -197,24 +205,24 @@ export default function AdminDashboardPage() {
           events: upcomingMeetings,
           loading: false,
         });
-        console.debug('[AdminDashboard] setStats:', { pilots, enterprises, verifications: verifiedPilots, events: upcomingMeetings });
+        console.log('[AdminDashboard] setStats:', { pilots, enterprises, verifications: verifiedPilots, events: upcomingMeetings });
 
         // Fetch Dodo Payments revenue stats
         try {
-          console.debug('[AdminDashboard] Fetching Dodo Payments via edge function...');
+          console.log('[AdminDashboard] Fetching Dodo Payments via edge function...');
           const { data: { session } } = await supabase.auth.getSession();
           const edgeUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/dodo-payments-proxy`;
-          console.debug('[AdminDashboard] Edge function URL:', edgeUrl);
+          console.log('[AdminDashboard] Edge function URL:', edgeUrl);
           const dodoRes = await fetch(edgeUrl, {
             headers: {
               'Authorization': `Bearer ${session?.access_token || ''}`,
               'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
             },
           });
-          console.debug('[AdminDashboard] Dodo edge response status:', dodoRes.status, dodoRes.statusText);
+          console.log('[AdminDashboard] Dodo edge response status:', dodoRes.status, dodoRes.statusText);
           if (dodoRes.ok) {
             const dodo = await dodoRes.json();
-            console.debug('[AdminDashboard] Dodo data:', dodo);
+            console.log('[AdminDashboard] Dodo data:', dodo);
             setDodoStats({
               totalRevenue: dodo.totalRevenue || 0,
               revenueThisMonth: dodo.revenueThisMonth || 0,
@@ -228,38 +236,42 @@ export default function AdminDashboardPage() {
               loading: false,
               source: dodo.source || 'supabase_fallback',
             });
-            console.debug('[AdminDashboard] setDodoStats from source:', dodo.source);
+            console.log('[AdminDashboard] setDodoStats from source:', dodo.source);
           } else {
             const text = await dodoRes.text();
-            console.debug('[AdminDashboard] Dodo edge error response:', dodoRes.status, text);
+            console.log('[AdminDashboard] Dodo edge error response:', dodoRes.status, text);
           }
         } catch (dodoErr) {
-          console.debug('[AdminDashboard] Dodo fetch threw:', dodoErr);
+          console.log('[AdminDashboard] Dodo fetch threw:', dodoErr);
           setDodoStats((s) => ({ ...s, loading: false }));
         }
 
         // Fetch invite codes used by this admin's referrals
-        try {
-          console.debug('[AdminDashboard] Calling supabase.from(referrals).select(*) for invite codes...');
-          const { data: referralsData, error } = await supabase
-            .from('referrals')
-            .select('referred_email, status, created_at, referrer_profile_id')
-            .eq('referrer_profile_id', adminProfileId)
-            .order('created_at', { ascending: false });
-          console.debug('[AdminDashboard] referrals rows:', (referralsData || []).length, 'error:', error?.message);
-          setInviteCodes(
-            (referralsData || []).map((r: any) => ({
-              code: dashboardData.karlInviteCode || adminInviteCode,
-              used_by: r.referred_email,
-              created_at: r.created_at,
-              status: r.status,
-            }))
-          );
-        } catch (refErr) {
-          console.debug('[AdminDashboard] referrals invite fetch threw:', refErr);
+        if (adminProfileId) {
+          try {
+            console.log('[AdminDashboard] Calling supabase.from(referrals).select(*) for invite codes...');
+            const { data: referralsData, error } = await supabase
+              .from('referrals')
+              .select('referred_email, status, created_at, referrer_profile_id')
+              .eq('referrer_profile_id', adminProfileId)
+              .order('created_at', { ascending: false });
+            console.log('[AdminDashboard] referrals rows:', (referralsData || []).length, 'error:', error?.message);
+            setInviteCodes(
+              (referralsData || []).map((r: any) => ({
+                code: dashboardData.karlInviteCode || adminInviteCode,
+                used_by: r.referred_email,
+                created_at: r.created_at,
+                status: r.status,
+              }))
+            );
+          } catch (refErr) {
+            console.log('[AdminDashboard] referrals invite fetch threw:', refErr);
+          }
+        } else {
+          console.log('[AdminDashboard] Skipping invite codes query — no adminProfileId');
         }
 
-        console.debug('[AdminDashboard] Setting dashboard data...');
+        console.log('[AdminDashboard] Setting dashboard data...');
         setDashboardData((prev) => ({
           ...prev,
           karlProfileId: adminProfileId,
