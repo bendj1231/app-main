@@ -1,14 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '@/shared/lib/supabase';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav = [
+const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
   { label: 'Dashboard', path: '/admin', icon: '◆' },
   { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
   { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
+  { label: 'Messages', path: '/admin/messages', icon: '◈' },
+  { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
+  { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
+  { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
+  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
   { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
@@ -106,10 +111,6 @@ export default function AIBotPage() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [apiKey, setApiKey] = useState(() => {
-    try { return localStorage.getItem('openrouter_api_key') || ''; } catch { return ''; }
-  });
-  const [showKeyInput, setShowKeyInput] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -126,63 +127,36 @@ export default function AIBotPage() {
     setError('');
 
     try {
-      const key = apiKey || import.meta.env.VITE_OPENROUTER_API_KEY || '';
-      if (!key) {
-        setError('No OpenRouter API key configured. Please add your key below.');
-        setShowKeyInput(true);
-        setLoading(false);
-        return;
-      }
+      const { data: { session } } = await supabase.auth.getSession();
+      const history = messages.map((m) => ({ role: m.role, content: m.content }));
 
-      const conversation = [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...messages.map((m) => ({ role: m.role, content: m.content })),
-        { role: 'user', content: userMsg.content },
-      ];
-
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/groq-chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${key}`,
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'PilotRecognition Admin Bot',
+          'Authorization': `Bearer ${session?.access_token || ''}`,
+          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
         },
         body: JSON.stringify({
-          model: 'meta-llama/llama-3-8b-instruct:free',
-          messages: conversation,
-          temperature: 0.7,
-          max_tokens: 1500,
+          message: userMsg.content,
+          history,
         }),
       });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error?.message || `API error ${res.status}`);
-      }
-
       const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content || 'No response.';
+      if (!res.ok) {
+        throw new Error(data.error || `API error ${res.status}`);
+      }
 
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: reply, timestamp: new Date() },
+        { role: 'assistant', content: data.reply || 'No response.', timestamp: new Date() },
       ]);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to get response';
       setError(msg);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleKeySave = () => {
-    try {
-      localStorage.setItem('openrouter_api_key', apiKey);
-      setShowKeyInput(false);
-      setError('');
-    } catch {
-      // ignore
     }
   };
 
@@ -380,83 +354,21 @@ export default function AIBotPage() {
               Brainstorm · Draft Emails · Internal Planning
             </p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <button
-              onClick={() => setShowKeyInput((s) => !s)}
-              style={{
-                padding: '6px 14px',
-                background: apiKey ? '#f0fdf4' : '#fef2f2',
-                border: `1px solid ${apiKey ? '#86efac' : '#fecaca'}`,
-                borderRadius: 20,
-                fontSize: 12,
-                fontWeight: 600,
-                color: apiKey ? '#15803d' : '#991b1b',
-                cursor: 'pointer',
-              }}
-            >
-              {apiKey ? '● API Key Set' : '⚠ Set API Key'}
-            </button>
-            <div
-              style={{
-                padding: '6px 14px',
-                background: 'rgba(239,68,68,0.08)',
-                border: '1px solid rgba(239,68,68,0.15)',
-                borderRadius: 20,
-                fontSize: 12,
-                fontWeight: 600,
-                color: '#ef4444',
-                letterSpacing: '0.03em',
-              }}
-            >
-              LIVE
-            </div>
-          </div>
-        </header>
-
-        {/* API key input panel */}
-        {showKeyInput && (
           <div
             style={{
-              padding: '16px 32px',
-              background: '#f9fafb',
-              borderBottom: '1px solid #e5e7eb',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
+              padding: '6px 14px',
+              background: 'rgba(239,68,68,0.08)',
+              border: '1px solid rgba(239,68,68,0.15)',
+              borderRadius: 20,
+              fontSize: 12,
+              fontWeight: 600,
+              color: '#ef4444',
+              letterSpacing: '0.03em',
             }}
           >
-            <input
-              type="password"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              placeholder="sk-or-v1-..."
-              style={{
-                flex: 1,
-                padding: '10px 14px',
-                border: '1px solid #e5e7eb',
-                borderRadius: 8,
-                fontSize: 13,
-                background: '#ffffff',
-                color: '#1a1a1a',
-              }}
-            />
-            <button
-              onClick={handleKeySave}
-              style={{
-                padding: '10px 20px',
-                background: '#1a1a1a',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: 8,
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              Save Key
-            </button>
+            LIVE
           </div>
-        )}
+        </header>
 
         {/* Error banner */}
         {error && (

@@ -6,7 +6,7 @@ import { supabase } from '@/shared/lib/supabase';
 const SIDEBAR_WIDTH = 260;
 const SUB_SIDEBAR_WIDTH = 240;
 
-const sidebarNav = [
+const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
   { label: 'Dashboard', path: '/admin', icon: '◆' },
   { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
   { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
@@ -14,7 +14,7 @@ const sidebarNav = [
   { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
   { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
   { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
+  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
   { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
@@ -145,19 +145,54 @@ export default function EmailManagementPage() {
 
   const approveAndSend = async (id: string) => {
     try {
+      // Get the email details first
+      const { data: email } = await supabase.from('admin_emails').select('*').eq('id', id).single();
+      if (!email) {
+        alert('Email not found');
+        return;
+      }
+
+      // Call edge function to send via Resend
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-admin-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token || ''}`,
+          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+        },
+        body: JSON.stringify({
+          email_id: id,
+          recipient: email.recipient,
+          subject: email.subject,
+          body: email.body,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        console.error('Send failed:', result);
+        alert('Failed to send email: ' + (result.error || 'Unknown error'));
+        return;
+      }
+
+      // Update status in Supabase
       const { error } = await supabase.from('admin_emails').update({
         status: 'sent',
         reviewer_id: currentUser?.id,
         review_notes: reviewNotes || null,
         sent_at: new Date().toISOString(),
+        resend_message_id: result.message_id || null,
         updated_at: new Date().toISOString(),
       }).eq('id', id);
+
       if (error) throw error;
       setReviewNotes('');
       setSelectedEmail(null);
       fetchEmails();
     } catch (err) {
       console.error('Error approving email:', err);
+      alert('Failed to send email');
     }
   };
 

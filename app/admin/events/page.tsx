@@ -5,7 +5,7 @@ import { supabase } from '@/shared/lib/supabase';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav = [
+const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
   { label: 'Dashboard', path: '/admin', icon: '◆' },
   { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
   { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
@@ -13,7 +13,7 @@ const sidebarNav = [
   { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
   { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
   { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
+  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
   { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
@@ -34,7 +34,17 @@ export default function EventManagementPage() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newEvent, setNewEvent] = useState({ title: '', date: '', location: '', description: '' });
+  const [newEvent, setNewEvent] = useState({
+    title: '',
+    start_date: '',
+    end_date: '',
+    start_time: '',
+    end_time: '',
+    location: '',
+    description: '',
+    virtual_event_url: '',
+    event_type: 'webinar',
+  });
 
   useEffect(() => {
     if (!currentUser || !isAdmin) return;
@@ -61,18 +71,40 @@ export default function EventManagementPage() {
     try {
       const { error } = await supabase.from('events').insert([{
         title: newEvent.title,
-        date: newEvent.date,
-        location: newEvent.location,
+        start_date: newEvent.start_date,
+        end_date: newEvent.end_date || newEvent.start_date,
+        start_time: newEvent.start_time || null,
+        end_time: newEvent.end_time || null,
+        venue_name: newEvent.location,
         description: newEvent.description,
+        virtual_event_url: newEvent.virtual_event_url || null,
+        event_type: newEvent.event_type,
+        status: 'planning',
+        timezone: 'UTC',
         created_at: new Date().toISOString(),
       }]);
       if (error) throw error;
       setShowCreateModal(false);
-      setNewEvent({ title: '', date: '', location: '', description: '' });
+      setNewEvent({
+        title: '',
+        start_date: '',
+        end_date: '',
+        start_time: '',
+        end_time: '',
+        location: '',
+        description: '',
+        virtual_event_url: '',
+        event_type: 'webinar',
+      });
       fetchEvents();
     } catch (err) {
       console.error('Error creating event:', err);
+      alert('Failed to create event: ' + (err as Error).message);
     }
+  };
+
+  const generateMeetLink = () => {
+    window.open('https://meet.google.com/new', '_blank', 'noopener,noreferrer');
   };
 
   if (!currentUser || !isAdmin) {
@@ -328,11 +360,23 @@ export default function EventManagementPage() {
                         {event.title}
                       </div>
                       <div style={{ fontSize: 12, color: '#6b7280' }}>
-                        {event.date} · {event.location}
+                        {event.start_date} · {event.venue_name || event.location}
+                        {event.virtual_event_url && <span> · Virtual</span>}
                       </div>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    {event.virtual_event_url && (
+                      <a
+                        href={event.virtual_event_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 20, background: '#dbeafe', color: '#2563eb', textDecoration: 'none', textTransform: 'uppercase' }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Join
+                      </a>
+                    )}
                     <span
                       style={{
                         fontSize: 11,
@@ -344,7 +388,7 @@ export default function EventManagementPage() {
                         textTransform: 'uppercase',
                       }}
                     >
-                      Upcoming
+                      {event.status || 'Upcoming'}
                     </span>
                   </div>
                 </div>
@@ -399,41 +443,75 @@ export default function EventManagementPage() {
                   }}
                 />
               </div>
-              <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>Date</label>
-                <input
-                  type="date"
-                  value={newEvent.date}
-                  onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#f9fafb',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: 8,
-                    color: '#1a1a1a',
-                    fontSize: 14,
-                  }}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>Start Date</label>
+                  <input
+                    type="date"
+                    value={newEvent.start_date}
+                    onChange={(e) => setNewEvent({ ...newEvent, start_date: e.target.value })}
+                    required
+                    style={{ width: '100%', padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, color: '#1a1a1a', fontSize: 14 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>End Date</label>
+                  <input
+                    type="date"
+                    value={newEvent.end_date}
+                    onChange={(e) => setNewEvent({ ...newEvent, end_date: e.target.value })}
+                    style={{ width: '100%', padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, color: '#1a1a1a', fontSize: 14 }}
+                  />
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>Start Time</label>
+                  <input
+                    type="time"
+                    value={newEvent.start_time}
+                    onChange={(e) => setNewEvent({ ...newEvent, start_time: e.target.value })}
+                    style={{ width: '100%', padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, color: '#1a1a1a', fontSize: 14 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>End Time</label>
+                  <input
+                    type="time"
+                    value={newEvent.end_time}
+                    onChange={(e) => setNewEvent({ ...newEvent, end_time: e.target.value })}
+                    style={{ width: '100%', padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, color: '#1a1a1a', fontSize: 14 }}
+                  />
+                </div>
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>Location</label>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>Location / Venue</label>
                 <input
                   type="text"
                   value={newEvent.location}
                   onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#f9fafb',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: 8,
-                    color: '#1a1a1a',
-                    fontSize: 14,
-                  }}
+                  placeholder="Venue name or 'Virtual'"
+                  style={{ width: '100%', padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, color: '#1a1a1a', fontSize: 14 }}
                 />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>Virtual Event URL (Google Meet)</label>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <input
+                    type="url"
+                    value={newEvent.virtual_event_url}
+                    onChange={(e) => setNewEvent({ ...newEvent, virtual_event_url: e.target.value })}
+                    placeholder="https://meet.google.com/..."
+                    style={{ flex: 1, padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, color: '#1a1a1a', fontSize: 14 }}
+                  />
+                  <button
+                    type="button"
+                    onClick={generateMeetLink}
+                    style={{ padding: '10px 14px', background: '#0a66c2', border: 'none', borderRadius: 8, color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                  >
+                    New Meet
+                  </button>
+                </div>
               </div>
               <div>
                 <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6b7280', marginBottom: 6 }}>Description</label>

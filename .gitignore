@@ -39,3 +39,4 @@ external-references/
 functions/.env
 
 aeron-analysis/
+gcp-oauth.keys.json

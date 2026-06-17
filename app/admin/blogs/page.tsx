@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '@/shared/lib/supabase';
 import { uploadProfileImage, type CloudinaryUploadResult } from '@/src/lib/cloudinaryClient';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav = [
+const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
   { label: 'Dashboard', path: '/admin', icon: '◆' },
   { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
   { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
@@ -13,7 +14,7 @@ const sidebarNav = [
   { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
   { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
   { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
+  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
   { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
@@ -95,13 +96,48 @@ export default function BlogsPage() {
   const currentPath = location.pathname;
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
 
-  const [blogs, setBlogs] = useState<BlogPost[]>(mockBlogs);
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
   const [newComment, setNewComment] = useState('');
-  const [authorFilter, setAuthorFilter] = useState<'all' | 'Benjamin' | 'Karl'>('all');
+  const [authorFilter, setAuthorFilter] = useState<'all' | string>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'review' | 'published'>('all');
   const [reviewNotes, setReviewNotes] = useState('');
   const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
+
+  const fetchBlogs = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.error('Error fetching blogs:', error);
+    } else {
+      setBlogs(
+        (data || []).map((row: any) => ({
+          id: row.id,
+          title: row.title,
+          author: row.author,
+          excerpt: row.excerpt || '',
+          content: row.content,
+          status: row.status,
+          category: row.category || '',
+          created_at: row.created_at,
+          comments: [],
+          reviewNotes: '',
+          reviewScreenshots: row.featured_image_url ? [row.featured_image_url] : [],
+        }))
+      );
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (isAdmin) fetchBlogs();
+  }, [isAdmin]);
+
+  const allAuthors = Array.from(new Set(blogs.map((b) => b.author))).sort();
 
   const filteredBlogs = blogs.filter((blog) => {
     if (authorFilter !== 'all' && blog.author !== authorFilter) return false;
@@ -126,14 +162,13 @@ export default function BlogsPage() {
     setNewComment('');
   };
 
-  const handleUpdateStatus = (id: string, status: BlogPost['status']) => {
-    setBlogs((prev) =>
-      prev.map((b) =>
-        b.id === id
-          ? { ...b, status, reviewNotes: reviewNotes || undefined }
-          : b
-      )
-    );
+  const handleUpdateStatus = async (id: string, status: BlogPost['status']) => {
+    const { error } = await supabase.from('blog_posts').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) {
+      console.error('Error updating blog status:', error);
+      return;
+    }
+    setBlogs((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
   };
 
   const handleScreenshotUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -242,10 +277,10 @@ export default function BlogsPage() {
         {/* Filters */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', gap: 8 }}>
-            {['all', 'Benjamin', 'Karl'].map((author) => (
+            {['all', ...allAuthors].map((author) => (
               <button
                 key={author}
-                onClick={() => setAuthorFilter(author as typeof authorFilter)}
+                onClick={() => setAuthorFilter(author)}
                 style={{
                   padding: '6px 14px',
                   borderRadius: 20,
@@ -288,7 +323,9 @@ export default function BlogsPage() {
 
         {/* Blog List */}
         <div style={{ display: 'grid', gap: 16 }}>
-          {filteredBlogs.map((blog) => (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>Loading blogs...</div>
+          ) : filteredBlogs.map((blog) => (
             <div
               key={blog.id}
               onClick={() => { setSelectedBlog(blog); setReviewNotes(blog.reviewNotes || ''); }}
@@ -324,7 +361,7 @@ export default function BlogsPage() {
               </div>
             </div>
           ))}
-          {filteredBlogs.length === 0 && (
+          {filteredBlogs.length === 0 && !loading && (
             <div style={{ padding: 40, textAlign: 'center', color: '#9ca3af', fontSize: 13 }}>No blogs match this filter</div>
           )}
         </div>

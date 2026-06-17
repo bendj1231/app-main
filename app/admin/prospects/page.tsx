@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
+import { supabase } from '@/shared/lib/supabase';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav = [
+const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
   { label: 'Dashboard', path: '/admin', icon: '◆' },
   { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
   { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
@@ -12,7 +13,7 @@ const sidebarNav = [
   { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
   { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
   { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
+  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
   { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
@@ -85,12 +86,49 @@ export default function ProspectsPage() {
   const currentPath = location.pathname;
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
 
-  const [prospects, setProspects] = useState<Prospect[]>(mockProspects);
+  const [prospects, setProspects] = useState<Prospect[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
   const [newTitle, setNewTitle] = useState('');
   const [newDescription, setNewDescription] = useState('');
+  const [newCompany, setNewCompany] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'in_progress' | 'completed' | 'on_hold'>('all');
-  const [authorFilter, setAuthorFilter] = useState<'all' | 'Benjamin' | 'Karl' | 'Keiv'>('all');
+  const [authorFilter, setAuthorFilter] = useState<'all' | string>('all');
+
+  // LinkedIn lookup state
+  const [linkedinOrgId, setLinkedinOrgId] = useState('');
+  const [linkedinLoading, setLinkedinLoading] = useState(false);
+  const [linkedinResult, setLinkedinResult] = useState<any>(null);
+
+  const fetchProspects = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('prospects')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.error('Error fetching prospects:', error);
+    } else {
+      setProspects(
+        (data || []).map((row: any) => ({
+          id: row.id,
+          title: row.title,
+          description: row.description,
+          author: row.author,
+          status: row.status,
+          created_at: row.created_at,
+          updated_at: row.updated_at,
+        }))
+      );
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (isAdmin) fetchProspects();
+  }, [isAdmin]);
+
+  const allAuthors = Array.from(new Set(prospects.map((p) => p.author))).sort();
 
   const filteredProspects = prospects.filter((prospect) => {
     if (statusFilter !== 'all' && prospect.status !== statusFilter) return false;
@@ -98,34 +136,76 @@ export default function ProspectsPage() {
     return true;
   });
 
-  const handleAddProspect = () => {
+  const handleAddProspect = async () => {
     if (!newTitle.trim() || !newDescription.trim()) return;
     const author = userProfile?.display_name || currentUser?.email?.split('@')[0] || 'Other';
-    const newProspect: Prospect = {
-      id: `p${Date.now()}`,
-      title: newTitle,
-      description: newDescription,
+    const { data, error } = await supabase.from('prospects').insert({
+      title: newTitle.trim(),
+      description: newDescription.trim(),
       author,
       status: 'active',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    setProspects((prev) => [newProspect, ...prev]);
+      company_name: newCompany.trim() || null,
+      created_by: currentUser?.id,
+    }).select().single();
+
+    if (error) {
+      console.error('Error adding prospect:', error);
+      alert('Failed to add prospect');
+      return;
+    }
+
+    setProspects((prev) => [
+      {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        author: data.author,
+        status: data.status,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+      },
+      ...prev,
+    ]);
     setNewTitle('');
     setNewDescription('');
+    setNewCompany('');
   };
 
-  const handleUpdateStatus = (id: string, status: Prospect['status']) => {
-    setProspects((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, status, updated_at: new Date().toISOString() } : p
-      )
-    );
+  const handleUpdateStatus = async (id: string, status: Prospect['status']) => {
+    const { error } = await supabase.from('prospects').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) {
+      console.error('Error updating prospect:', error);
+      return;
+    }
+    setProspects((prev) => prev.map((p) => (p.id === id ? { ...p, status, updated_at: new Date().toISOString() } : p)));
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
+    const { error } = await supabase.from('prospects').delete().eq('id', id);
+    if (error) {
+      console.error('Error deleting prospect:', error);
+      return;
+    }
     setProspects((prev) => prev.filter((p) => p.id !== id));
     setSelectedProspect(null);
+  };
+
+  const lookupLinkedInCompany = async () => {
+    if (!linkedinOrgId.trim()) return;
+    setLinkedinLoading(true);
+    setLinkedinResult(null);
+    try {
+      const res = await fetch(`https://api.linkedin.com/v2/organizations/${linkedinOrgId.trim()}`, {
+        headers: { 'X-Restli-Protocol-Version': '2.0.0' },
+      });
+      // LinkedIn API requires OAuth, so this will likely fail in browser.
+      // Fallback: show a message directing to use the MCP server or manual entry.
+      setLinkedinResult({ note: 'LinkedIn API requires OAuth. Use the LinkedIn MCP server or enter company details manually.', orgId: linkedinOrgId.trim() });
+    } catch {
+      setLinkedinResult({ error: 'LinkedIn lookup failed. Enter company details manually.' });
+    } finally {
+      setLinkedinLoading(false);
+    }
   };
 
   if (!currentUser || !isAdmin) {
@@ -213,10 +293,10 @@ export default function ProspectsPage() {
             ))}
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            {['all', 'Benjamin', 'Karl', 'Keiv'].map((author) => (
+            {['all', ...allAuthors].map((author) => (
               <button
                 key={author}
-                onClick={() => setAuthorFilter(author as typeof authorFilter)}
+                onClick={() => setAuthorFilter(author)}
                 style={{
                   padding: '6px 14px',
                   borderRadius: 20,
@@ -247,6 +327,15 @@ export default function ProspectsPage() {
               style={{ flex: 1, padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, color: '#1a1a1a' }}
             />
           </div>
+          <div style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
+            <input
+              type="text"
+              value={newCompany}
+              onChange={(e) => setNewCompany(e.target.value)}
+              placeholder="Company name (optional)"
+              style={{ flex: 1, padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, color: '#1a1a1a' }}
+            />
+          </div>
           <div style={{ marginBottom: 12 }}>
             <textarea
               value={newDescription}
@@ -261,9 +350,37 @@ export default function ProspectsPage() {
           </button>
         </div>
 
+        {/* LinkedIn Lookup */}
+        <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginBottom: 24 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, margin: '0 0 12px', color: '#1a1a1a' }}>LinkedIn Company Lookup</h3>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <input
+              type="text"
+              value={linkedinOrgId}
+              onChange={(e) => setLinkedinOrgId(e.target.value)}
+              placeholder="LinkedIn Organization ID (numeric)"
+              style={{ flex: 1, padding: '10px 12px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, color: '#1a1a1a' }}
+            />
+            <button
+              onClick={lookupLinkedInCompany}
+              disabled={linkedinLoading || !linkedinOrgId.trim()}
+              style={{ padding: '10px 16px', background: linkedinLoading || !linkedinOrgId.trim() ? '#e5e7eb' : '#0a66c2', border: 'none', borderRadius: 8, color: linkedinLoading || !linkedinOrgId.trim() ? '#9ca3af' : '#fff', fontSize: 13, fontWeight: 600, cursor: linkedinLoading || !linkedinOrgId.trim() ? 'not-allowed' : 'pointer' }}
+            >
+              {linkedinLoading ? 'Looking up...' : 'Lookup'}
+            </button>
+          </div>
+          {linkedinResult && (
+            <div style={{ marginTop: 12, padding: 12, background: '#f9fafb', borderRadius: 8, fontSize: 13, color: linkedinResult.error ? '#ef4444' : '#6b7280' }}>
+              {linkedinResult.note || linkedinResult.error}
+            </div>
+          )}
+        </div>
+
         {/* Prospects List */}
         <div style={{ display: 'grid', gap: 16 }}>
-          {filteredProspects.map((prospect) => (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>Loading prospects...</div>
+          ) : filteredProspects.map((prospect) => (
             <div
               key={prospect.id}
               onClick={() => setSelectedProspect(prospect)}
@@ -295,7 +412,7 @@ export default function ProspectsPage() {
               <p style={{ fontSize: 13, color: '#6b7280', margin: 0, lineHeight: 1.5 }}>{prospect.description}</p>
             </div>
           ))}
-          {filteredProspects.length === 0 && (
+          {filteredProspects.length === 0 && !loading && (
             <div style={{ padding: 40, textAlign: 'center', color: '#9ca3af', fontSize: 13 }}>No prospects match this filter</div>
           )}
         </div>

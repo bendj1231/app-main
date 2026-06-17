@@ -82,6 +82,9 @@ export default function PilotManagementPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'verified' | 'unverified'>('all');
+  const [countryFilter, setCountryFilter] = useState<string>('all');
+  const [hoursFilter, setHoursFilter] = useState<'all' | '0-500' | '500-1500' | '1500+'>('all');
+  const [ratingFilter, setRatingFilter] = useState<string>('all');
   const [activeTab, setActiveTab] = useState<'pilots' | 'verification'>('pilots');
 
   // Verification queue state
@@ -298,6 +301,9 @@ export default function PilotManagementPage() {
     }
   }, [activeTab, filterStatus, currentUser, isAdmin, loadDocs]);
 
+  const allCountries = Array.from(new Set(pilots.map((p) => p.country).filter(Boolean))).sort();
+  const allRatings = Array.from(new Set(pilots.flatMap((p) => p.ratings || []).filter(Boolean))).sort();
+
   const filteredPilots = pilots.filter((pilot) => {
     const matchesSearch = (pilot.display_name || pilot.email || '')
       .toLowerCase()
@@ -306,7 +312,15 @@ export default function PilotManagementPage() {
       statusFilter === 'all' ||
       (statusFilter === 'verified' && pilot.verified_account) ||
       (statusFilter === 'unverified' && !pilot.verified_account);
-    return matchesSearch && matchesStatus;
+    const matchesCountry = countryFilter === 'all' || pilot.country === countryFilter;
+    const hours = Number(pilot.total_flight_hours) || 0;
+    const matchesHours =
+      hoursFilter === 'all' ||
+      (hoursFilter === '0-500' && hours < 500) ||
+      (hoursFilter === '500-1500' && hours >= 500 && hours < 1500) ||
+      (hoursFilter === '1500+' && hours >= 1500);
+    const matchesRating = ratingFilter === 'all' || (pilot.ratings || []).includes(ratingFilter);
+    return matchesSearch && matchesStatus && matchesCountry && matchesHours && matchesRating;
   });
 
   if (!currentUser || !isAdmin) {
@@ -616,7 +630,7 @@ export default function PilotManagementPage() {
                 ) : (
                   <>
                     {/* Filters */}
-                    <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap', alignItems: 'center' }}>
                       <input
                         type="text"
                         placeholder="Search pilots..."
@@ -655,6 +669,46 @@ export default function PilotManagementPage() {
                           </button>
                         ))}
                       </div>
+                      {allCountries.length > 0 && (
+                        <select
+                          value={countryFilter}
+                          onChange={(e) => setCountryFilter(e.target.value)}
+                          style={{ padding: '6px 12px', borderRadius: 20, border: '1px solid #e5e7eb', fontSize: 12, fontWeight: 600, color: '#6b7280', background: '#fff', cursor: 'pointer' }}
+                        >
+                          <option value="all">All Countries</option>
+                          {allCountries.map((c) => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                        </select>
+                      )}
+                      <select
+                        value={hoursFilter}
+                        onChange={(e) => setHoursFilter(e.target.value as any)}
+                        style={{ padding: '6px 12px', borderRadius: 20, border: '1px solid #e5e7eb', fontSize: 12, fontWeight: 600, color: '#6b7280', background: '#fff', cursor: 'pointer' }}
+                      >
+                        <option value="all">All Hours</option>
+                        <option value="0-500">0-500 hrs</option>
+                        <option value="500-1500">500-1500 hrs</option>
+                        <option value="1500+">1500+ hrs</option>
+                      </select>
+                      {allRatings.length > 0 && (
+                        <select
+                          value={ratingFilter}
+                          onChange={(e) => setRatingFilter(e.target.value)}
+                          style={{ padding: '6px 12px', borderRadius: 20, border: '1px solid #e5e7eb', fontSize: 12, fontWeight: 600, color: '#6b7280', background: '#fff', cursor: 'pointer' }}
+                        >
+                          <option value="all">All Ratings</option>
+                          {allRatings.map((r) => (
+                            <option key={r} value={r}>{r}</option>
+                          ))}
+                        </select>
+                      )}
+                      <button
+                        onClick={() => { setSearchTerm(''); setStatusFilter('all'); setCountryFilter('all'); setHoursFilter('all'); setRatingFilter('all'); }}
+                        style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid #e5e7eb', background: '#f9fafb', color: '#6b7280', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                      >
+                        Reset
+                      </button>
                     </div>
 
                     {/* Pilot list */}
@@ -692,7 +746,7 @@ export default function PilotManagementPage() {
                               gap: 16,
                             }}
                           >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, minWidth: 0 }}>
                               <div
                                 style={{
                                   width: 40,
@@ -705,18 +759,33 @@ export default function PilotManagementPage() {
                                   fontSize: 14,
                                   fontWeight: 700,
                                   color: '#fff',
+                                  flexShrink: 0,
                                 }}
                               >
                                 {(pilot.display_name || pilot.email || '?').charAt(0).toUpperCase()}
                               </div>
-                              <div>
+                              <div style={{ minWidth: 0 }}>
                                 <div style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>
                                   {pilot.display_name || pilot.email}
                                 </div>
-                                <div style={{ fontSize: 12, color: '#6b7280' }}>{pilot.email}</div>
+                                <div style={{ fontSize: 12, color: '#6b7280', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                                  <span>{pilot.email}</span>
+                                  {pilot.country && <span>· {pilot.country}</span>}
+                                  {pilot.license_id && <span>· License: {pilot.license_id}</span>}
+                                </div>
                               </div>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                              {pilot.total_flight_hours ? (
+                                <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 20, background: '#dbeafe', color: '#2563eb' }}>
+                                  {pilot.total_flight_hours} hrs
+                                </span>
+                              ) : null}
+                              {pilot.overall_recognition_score ? (
+                                <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 20, background: '#fef3c7', color: '#d97706' }}>
+                                  Score: {pilot.overall_recognition_score}
+                                </span>
+                              ) : null}
                               <span
                                 style={{
                                   fontSize: 11,

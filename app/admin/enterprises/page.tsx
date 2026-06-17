@@ -5,7 +5,7 @@ import { supabase } from '@/shared/lib/supabase';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav = [
+const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
   { label: 'Dashboard', path: '/admin', icon: '◆' },
   { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
   { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
@@ -13,7 +13,7 @@ const sidebarNav = [
   { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
   { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
   { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
+  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
   { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
@@ -34,6 +34,7 @@ export default function EnterpriseManagementPage() {
   const [enterprises, setEnterprises] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [stats, setStats] = useState({ total: 0, active: 0, enterprise: 0, free: 0 });
 
   useEffect(() => {
     if (!currentUser || !isAdmin) return;
@@ -43,11 +44,18 @@ export default function EnterpriseManagementPage() {
   const fetchEnterprises = async () => {
     try {
       const { data, error } = await supabase
-        .from('enterprise_profiles')
+        .from('enterprise_accounts')
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      setEnterprises(data || []);
+      const list = data || [];
+      setEnterprises(list);
+      setStats({
+        total: list.length,
+        active: list.filter((e: any) => e.is_active).length,
+        enterprise: list.filter((e: any) => e.account_tier === 'enterprise').length,
+        free: list.filter((e: any) => e.account_tier === 'free').length,
+      });
     } catch (err) {
       console.error('Error fetching enterprises:', err);
     } finally {
@@ -56,7 +64,7 @@ export default function EnterpriseManagementPage() {
   };
 
   const filteredEnterprises = enterprises.filter((ent) => {
-    return (ent.company_name || '').toLowerCase().includes(searchTerm.toLowerCase());
+    return (ent.airline_name || '').toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   if (!currentUser || !isAdmin) {
@@ -264,8 +272,23 @@ export default function EnterpriseManagementPage() {
           </div>
         </header>
 
-        {/* Content body */}
+          {/* Content body */}
         <div style={{ padding: '28px 32px 40px' }}>
+          {/* Stats */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+            {[
+              { label: 'Total', value: stats.total, color: '#1a1a1a' },
+              { label: 'Active', value: stats.active, color: '#10b981' },
+              { label: 'Enterprise Tier', value: stats.enterprise, color: '#3b82f6' },
+              { label: 'Free Tier', value: stats.free, color: '#6b7280' },
+            ].map((stat) => (
+              <div key={stat.label} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>{stat.label}</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: stat.color }}>{stat.value}</div>
+              </div>
+            ))}
+          </div>
+
           {/* Search */}
           <div style={{ marginBottom: 24 }}>
             <input
@@ -311,7 +334,7 @@ export default function EnterpriseManagementPage() {
                     gap: 16,
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, minWidth: 0 }}>
                     <div
                       style={{
                         width: 40,
@@ -322,31 +345,56 @@ export default function EnterpriseManagementPage() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: 18,
+                        flexShrink: 0,
                       }}
                     >
                       🏢
                     </div>
-                    <div>
+                    <div style={{ minWidth: 0 }}>
                       <div style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>
-                        {ent.company_name || 'Unnamed Enterprise'}
+                        {ent.airline_name || 'Unnamed Enterprise'}
                       </div>
-                      <div style={{ fontSize: 12, color: '#6b7280' }}>{ent.industry || 'Aviation'}</div>
+                      <div style={{ fontSize: 12, color: '#6b7280', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                        <span>{ent.country || 'Aviation'}</span>
+                        {ent.airline_iata_code && <span>· {ent.airline_iata_code}</span>}
+                        {ent.billing_email && <span>· {ent.billing_email}</span>}
+                      </div>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                     <span
                       style={{
-                        fontSize: 11,
-                        fontWeight: 600,
+                        fontSize: 10,
+                        fontWeight: 700,
                         padding: '4px 10px',
                         borderRadius: 20,
-                        background: '#f0fdf4',
-                        color: '#10b981',
+                        background: ent.account_tier === 'enterprise' ? '#dbeafe' : '#f3f4f6',
+                        color: ent.account_tier === 'enterprise' ? '#2563eb' : '#6b7280',
                         textTransform: 'uppercase',
+                        letterSpacing: '0.03em',
                       }}
                     >
-                      Active
+                      {ent.account_tier}
                     </span>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        padding: '4px 10px',
+                        borderRadius: 20,
+                        background: ent.is_active ? '#f0fdf4' : '#fef2f2',
+                        color: ent.is_active ? '#10b981' : '#ef4444',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.03em',
+                      }}
+                    >
+                      {ent.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                    {ent.tier_expires_at && (
+                      <span style={{ fontSize: 10, color: '#9ca3af', whiteSpace: 'nowrap' }}>
+                        Expires {new Date(ent.tier_expires_at).toLocaleDateString()}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}

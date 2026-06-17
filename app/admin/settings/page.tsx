@@ -3,11 +3,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
 import { logAuditAction } from '@/src/lib/auditLog';
-import { type AdminPermissions, FULL_PERMISSIONS, READ_ONLY_PERMISSIONS } from '@/src/lib/permissions';
+import { type AdminPermissions, type PermissionSet, FULL_PERMISSIONS, READ_ONLY_PERMISSIONS } from '@/src/lib/permissions';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav = [
+const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
   { label: 'Dashboard', path: '/admin', icon: '◆' },
   { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
   { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
@@ -15,7 +15,7 @@ const sidebarNav = [
   { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
   { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
   { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
+  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
   { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
   { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
   { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
@@ -51,6 +51,8 @@ export default function AdminSettingsPage() {
   const [adminUsers, setAdminUsers] = useState<any[]>([]);
   const [selectedAdmin, setSelectedAdmin] = useState<any>(null);
   const [showPermissionsModal, setShowPermissionsModal] = useState(false);
+  const [securityEvents, setSecurityEvents] = useState<any[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
 
   useEffect(() => {
     if (userProfile) {
@@ -64,6 +66,7 @@ export default function AdminSettingsPage() {
     }
     if (isAdmin) {
       fetchAdminUsers();
+      fetchSecurityEvents();
     }
   }, [userProfile, isAdmin]);
 
@@ -78,6 +81,23 @@ export default function AdminSettingsPage() {
       setAdminUsers(data || []);
     } catch (err) {
       console.error('Error fetching admin users:', err);
+    }
+  };
+
+  const fetchSecurityEvents = async () => {
+    setEventsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('security_events')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      setSecurityEvents(data || []);
+    } catch (err) {
+      console.error('Error fetching security events:', err);
+    } finally {
+      setEventsLoading(false);
     }
   };
 
@@ -786,6 +806,54 @@ export default function AdminSettingsPage() {
               </div>
             </div>
           )}
+
+          {/* Security Audit Logs */}
+          <div style={{ padding: '24px', background: '#ffffff', borderRadius: 12, border: '1px solid #e5e7eb', marginBottom: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: '#1a1a1a' }}>
+                Security Audit Logs
+              </h2>
+              <button
+                onClick={fetchSecurityEvents}
+                style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #e5e7eb', borderRadius: 6, color: '#6b7280', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Refresh
+              </button>
+            </div>
+            {eventsLoading ? (
+              <div style={{ textAlign: 'center', padding: 20, color: '#6b7280', fontSize: 13 }}>Loading security events...</div>
+            ) : securityEvents.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: 20, color: '#9ca3af', fontSize: 13 }}>No security events recorded</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {securityEvents.map((event) => (
+                  <div key={event.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', background: '#f9fafb', borderRadius: 8, border: '1px solid #e5e7eb' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{
+                        width: 8, height: 8, borderRadius: '50%',
+                        background: event.severity === 'critical' ? '#ef4444' : event.severity === 'high' ? '#f59e0b' : event.severity === 'medium' ? '#3b82f6' : '#10b981',
+                        display: 'inline-block'
+                      }} />
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>{event.event_type}</div>
+                        <div style={{ fontSize: 11, color: '#6b7280' }}>
+                          {event.ip_address ? `${event.ip_address} · ` : ''}
+                          {new Date(event.created_at).toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, textTransform: 'uppercase', padding: '2px 8px', borderRadius: 10,
+                      background: event.severity === 'critical' ? 'rgba(239,68,68,0.1)' : event.severity === 'high' ? 'rgba(245,158,11,0.1)' : event.severity === 'medium' ? 'rgba(59,130,246,0.1)' : 'rgba(16,185,129,0.1)',
+                      color: event.severity === 'critical' ? '#ef4444' : event.severity === 'high' ? '#f59e0b' : event.severity === 'medium' ? '#3b82f6' : '#10b981',
+                    }}>
+                      {event.severity}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Account Actions */}
           <div style={{ padding: '24px', background: '#fef2f2', borderRadius: 12, border: '1px solid #fecaca' }}>

@@ -25,22 +25,18 @@ const sidebarNav = [
 
 interface SupportTicket {
   id: string;
+  user_id: string;
   user_email: string;
   user_name: string;
   subject: string;
   message: string;
   status: 'open' | 'in_progress' | 'resolved' | 'escalated';
   priority: 'low' | 'medium' | 'high' | 'urgent';
-  category: string;
+  program_type: string;
+  admin_notes?: string;
   created_at: string;
-  assigned_to?: string;
+  updated_at: string;
 }
-
-const mockTickets: SupportTicket[] = [
-  { id: '1', user_email: 'pilot@example.com', user_name: 'John Doe', subject: 'Cannot verify CAAP license', message: 'My license upload keeps failing with error 500.', status: 'open', priority: 'high', category: 'Verification', created_at: new Date(Date.now() - 2 * 3600000).toISOString() },
-  { id: '2', user_email: 'captain@example.com', user_name: 'Sarah Smith', subject: 'Pathway not showing', message: 'I completed the Foundation Program but my pathway is not unlocked.', status: 'in_progress', priority: 'medium', category: 'Programs', created_at: new Date(Date.now() - 5 * 3600000).toISOString() },
-  { id: '3', user_email: 'student@example.com', user_name: 'Mike Chen', subject: 'Payment failed', message: 'Tried to buy Recognition Plus but card was declined.', status: 'open', priority: 'urgent', category: 'Billing', created_at: new Date(Date.now() - 8 * 3600000).toISOString() },
-];
 
 export default function SupportInboxPage() {
   const navigate = useNavigate();
@@ -49,10 +45,12 @@ export default function SupportInboxPage() {
   const currentPath = location.pathname;
   const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
 
-  const [tickets, setTickets] = useState<SupportTicket[]>(mockTickets);
+  const [tickets, setTickets] = useState<SupportTicket[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
   const [replyText, setReplyText] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [sendingReply, setSendingReply] = useState(false);
 
   const statusColors: Record<string, string> = {
     open: '#ef4444',
@@ -68,20 +66,100 @@ export default function SupportInboxPage() {
     urgent: '#ef4444',
   };
 
-  const filteredTickets = statusFilter === 'all' ? tickets : tickets.filter((t) => t.status === statusFilter);
+  const loadTickets = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('support_enquiries')
+      .select(`
+        *,
+        profiles:user_id (email, display_name, full_name)
+      `)
+      .order('created_at', { ascending: false });
 
-  const handleReply = () => {
-    if (!replyText.trim() || !selectedTicket) return;
-    setTickets((prev) =>
-      prev.map((t) => (t.id === selectedTicket.id ? { ...t, status: 'in_progress' as const } : t))
-    );
-    setReplyText('');
-    setSelectedTicket(null);
+    if (error) {
+      console.error('Error loading tickets:', error);
+      setLoading(false);
+      return;
+    }
+
+    const mapped = (data || []).map((row: any) => ({
+      id: row.id,
+      user_id: row.user_id,
+      user_email: row.profiles?.email || 'unknown@pilotrecognition.com',
+      user_name: row.profiles?.display_name || row.profiles?.full_name || 'Unknown Pilot',
+      subject: row.subject,
+      message: row.message,
+      status: (row.status || 'open') as SupportTicket['status'],
+      priority: (row.priority || 'medium') as SupportTicket['priority'],
+      program_type: row.program_type || 'General',
+      admin_notes: row.admin_notes,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+    }));
+
+    setTickets(mapped);
+    setLoading(false);
   };
 
-  const handleResolve = (id: string) => {
-    setTickets((prev) => prev.map((t) => (t.id === id ? { ...t, status: 'resolved' as const } : t)));
+  useEffect(() => {
+    if (isAdmin) loadTickets();
+  }, [isAdmin]);
+
+  const filteredTickets = statusFilter === 'all' ? tickets : tickets.filter((t) => t.status === statusFilter);
+
+  const handleReply = async () => {
+    if (!replyText.trim() || !selectedTicket) return;
+    setSendingReply(true);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-support-reply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token || ''}`,
+          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+        },
+        body: JSON.stringify({
+          ticket_id: selectedTicket.id,
+          reply_text: replyText.trim(),
+          admin_id: currentUser?.id,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        console.error('Reply failed:', result);
+        alert('Failed to send reply: ' + (result.error || 'Unknown error'));
+        setSendingReply(false);
+        return;
+      }
+
+      setReplyText('');
+      setSelectedTicket(null);
+      await loadTickets();
+    } catch (err) {
+      console.error('Reply error:', err);
+      alert('Failed to send reply');
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
+  const handleResolve = async (id: string) => {
+    const { error } = await supabase
+      .from('support_enquiries')
+      .update({ status: 'resolved', updated_at: new Date().toISOString() })
+      .eq('id', id);
+
+    if (error) {
+      console.error('Resolve error:', error);
+      alert('Failed to resolve ticket');
+      return;
+    }
+
     setSelectedTicket(null);
+    await loadTickets();
   };
 
   if (!currentUser || !isAdmin) {
@@ -187,50 +265,55 @@ export default function SupportInboxPage() {
         <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden' }}>
           <div style={{ padding: '16px 20px', borderBottom: '1px solid #e5e7eb', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 120px', gap: 16, fontSize: 11, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             <div>Subject / User</div>
-            <div>Category</div>
+            <div>Program</div>
             <div>Priority</div>
             <div>Status</div>
             <div>Time</div>
           </div>
-          {filteredTickets.map((ticket) => (
-            <div
-              key={ticket.id}
-              onClick={() => setSelectedTicket(ticket)}
-              style={{
-                padding: '14px 20px',
-                borderBottom: '1px solid #f3f4f6',
-                display: 'grid',
-                gridTemplateColumns: '2fr 1fr 1fr 1fr 120px',
-                gap: 16,
-                alignItems: 'center',
-                cursor: 'pointer',
-                transition: 'background 0.15s',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#f9fafb'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
-            >
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 2 }}>{ticket.subject}</div>
-                <div style={{ fontSize: 11, color: '#9ca3af' }}>{ticket.user_name} — {ticket.user_email}</div>
-              </div>
-              <div style={{ fontSize: 12, color: '#6b7280' }}>{ticket.category}</div>
-              <div>
-                <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', background: `${priorityColors[ticket.priority]}15`, color: priorityColors[ticket.priority] }}>
-                  {ticket.priority}
-                </span>
-              </div>
-              <div>
-                <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', background: `${statusColors[ticket.status]}15`, color: statusColors[ticket.status] }}>
-                  {ticket.status.replace('_', ' ')}
-                </span>
-              </div>
-              <div style={{ fontSize: 11, color: '#9ca3af' }}>
-                {new Date(ticket.created_at).toLocaleDateString()}
-              </div>
-            </div>
-          ))}
-          {filteredTickets.length === 0 && (
-            <div style={{ padding: 40, textAlign: 'center', color: '#9ca3af', fontSize: 13 }}>No tickets match this filter</div>
+          {loading ? (
+            <div style={{ padding: 40, textAlign: 'center', color: '#9ca3af', fontSize: 13 }}>Loading tickets...</div>
+          ) : filteredTickets.length === 0 ? (
+            <div style={{ padding: 40, textAlign: 'center', color: '#9ca3af', fontSize: 13 }}>No tickets found</div>
+          ) : (
+            <>
+              {filteredTickets.map((ticket) => (
+                <div
+                  key={ticket.id}
+                  onClick={() => setSelectedTicket(ticket)}
+                  style={{
+                    padding: '14px 20px',
+                    borderBottom: '1px solid #f3f4f6',
+                    display: 'grid',
+                    gridTemplateColumns: '2fr 1fr 1fr 1fr 120px',
+                    gap: 16,
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    transition: 'background 0.15s',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#f9fafb'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
+                >
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a', marginBottom: 2 }}>{ticket.subject}</div>
+                    <div style={{ fontSize: 11, color: '#9ca3af' }}>{ticket.user_name} — {ticket.user_email}</div>
+                  </div>
+                  <div style={{ fontSize: 12, color: '#6b7280' }}>{ticket.program_type}</div>
+                  <div>
+                    <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', background: `${priorityColors[ticket.priority]}15`, color: priorityColors[ticket.priority] }}>
+                      {ticket.priority}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', background: `${statusColors[ticket.status]}15`, color: statusColors[ticket.status] }}>
+                      {ticket.status.replace('_', ' ')}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: 11, color: '#9ca3af' }}>
+                    {new Date(ticket.created_at).toLocaleDateString()}
+                  </div>
+                </div>
+              ))}
+            </>
           )}
         </div>
       </main>
@@ -266,7 +349,7 @@ export default function SupportInboxPage() {
 
             <div style={{ display: 'flex', gap: 12 }}>
               <button onClick={() => setSelectedTicket(null)} style={{ flex: 1, padding: 10, background: 'transparent', border: '1px solid #e5e7eb', borderRadius: 8, color: '#6b7280', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Close</button>
-              <button onClick={handleReply} disabled={!replyText.trim()} style={{ flex: 1, padding: 10, background: replyText.trim() ? '#3b82f6' : '#e5e7eb', border: 'none', borderRadius: 8, color: replyText.trim() ? '#fff' : '#9ca3af', fontSize: 14, fontWeight: 600, cursor: replyText.trim() ? 'pointer' : 'not-allowed' }}>Reply</button>
+              <button onClick={handleReply} disabled={!replyText.trim() || sendingReply} style={{ flex: 1, padding: 10, background: replyText.trim() && !sendingReply ? '#3b82f6' : '#e5e7eb', border: 'none', borderRadius: 8, color: replyText.trim() && !sendingReply ? '#fff' : '#9ca3af', fontSize: 14, fontWeight: 600, cursor: replyText.trim() && !sendingReply ? 'pointer' : 'not-allowed' }}>{sendingReply ? 'Sending...' : 'Reply'}</button>
               <button onClick={() => handleResolve(selectedTicket.id)} style={{ flex: 1, padding: 10, background: '#10b981', border: 'none', borderRadius: 8, color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Resolve</button>
             </div>
           </div>

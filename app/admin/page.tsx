@@ -49,6 +49,7 @@ export default function AdminDashboardPage() {
     }[],
     recentMessages: [] as { id: string; sender: string; content: string; created_at: string }[],
     supportTickets: 0,
+    pendingVerifications: 0,
   });
 
   const [showNotifications, setShowNotifications] = useState(false);
@@ -89,23 +90,34 @@ export default function AdminDashboardPage() {
         const referralRevenue = (pilotsReferred || 0) * 50;
 
         // General platform stats
-        const [{ count: pilots }, { count: enterprises }, { data: notifications }] =
-          await Promise.all([
-            supabase.from('profiles').select('*', { count: 'exact', head: true }),
-            supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true }),
-            supabase
-              .from('admin_notifications')
-              .select('*')
-              .eq('admin_id', adminProfileId)
-              .order('created_at', { ascending: false })
-              .limit(10),
-          ]);
+        const [
+          { count: pilots },
+          { count: enterprises },
+          { count: verifiedPilots },
+          { count: pendingDocs },
+          { count: openTickets },
+          { count: upcomingMeetings },
+          { data: notifications },
+        ] = await Promise.all([
+          supabase.from('profiles').select('*', { count: 'exact', head: true }),
+          supabase.from('enterprise_profiles').select('*', { count: 'exact', head: true }),
+          supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('verified_account', true),
+          supabase.from('pilot_documents').select('*', { count: 'exact', head: true }).eq('status', 'pending_review'),
+          supabase.from('support_enquiries').select('*', { count: 'exact', head: true }).neq('status', 'resolved'),
+          supabase.from('meetings').select('*', { count: 'exact', head: true }).neq('status', 'completed'),
+          supabase
+            .from('admin_notifications')
+            .select('*')
+            .eq('admin_id', adminProfileId)
+            .order('created_at', { ascending: false })
+            .limit(10),
+        ]);
 
         setStats({
           pilots: pilots || 0,
           enterprises: enterprises || 0,
-          verifications: 0,
-          events: 0,
+          verifications: verifiedPilots || 0,
+          events: upcomingMeetings || 0,
           loading: false,
         });
 
@@ -115,6 +127,8 @@ export default function AdminDashboardPage() {
           karlInviteCode: adminInviteCode,
           pilotsReferred: pilotsReferred || 0,
           referralRevenue,
+          supportTickets: openTickets || 0,
+          pendingVerifications: pendingDocs || 0,
           notifications:
             (notifications as {
               id: string;
