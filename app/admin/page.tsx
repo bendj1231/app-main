@@ -744,7 +744,7 @@ export default function AdminDashboardPage() {
     { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
     { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
     { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
-    { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
+    { label: 'Recognition+ Management', path: '/admin/verification', icon: '◈' },
     { label: 'Pilot Management', path: '/admin/pilots', icon: '◉' },
     { label: 'Enterprise Accounts', path: '/admin/enterprises', icon: '◆' },
     { label: 'Event Management', path: '/admin/events', icon: '◈' },
@@ -1371,11 +1371,11 @@ export default function AdminDashboardPage() {
             >
               {[
                 {
-                  title: 'Verification Queue',
+                  title: 'Recognition+ Management',
                   path: '/admin/verification',
                   metrics: [
-                    { label: 'Pending', value: dashboardData.pendingVerifications },
-                    { label: 'Total Pilots', value: stats.pilots },
+                    { label: 'Active Subs', value: dodoStats.activeSubscriptions },
+                    { label: 'Total Revenue', value: `$${(dodoStats.totalRevenue / 100).toFixed(0)}` },
                   ],
                   color: '#f59e0b',
                   icon: '◈',
