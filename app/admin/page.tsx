@@ -1411,11 +1411,11 @@ export default function AdminDashboardPage() {
                   icon: '◉',
                 },
                 {
-                  title: 'Employee Objectives',
+                  title: 'Employee Roster',
                   path: '/admin/objectives',
                   metrics: [
-                    { label: 'Objectives', value: overviewCounts.objectives },
-                    { label: 'In Progress', value: '—' },
+                    { label: 'Team Members', value: overviewCounts.adminUsers },
+                    { label: 'Total Referrals', value: overviewCounts.objectives },
                   ],
                   color: '#10b981',
                   icon: '◈',
