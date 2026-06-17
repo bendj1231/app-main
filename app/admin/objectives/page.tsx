@@ -11,6 +11,7 @@ interface Employee {
   referral_count: number;
   referral_revenue: number;
   performance_tier: 'top' | 'solid' | 'rising' | 'needs_attention';
+  assignments: string[];
 }
 
 export default function EmployeeObjectivesPage() {
@@ -18,6 +19,27 @@ export default function EmployeeObjectivesPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'referrals' | 'revenue' | 'name'>('revenue');
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [selectedModules, setSelectedModules] = useState<string[]>([]);
+
+  const MODULES = [
+    'Verification Queue',
+    'Pilot Management',
+    'Enterprise Accounts',
+    'Support Inbox',
+    'Employee Roster',
+    'Email & Contacts',
+    'Messages',
+    'Blogs & Articles',
+    'Future Prospects',
+    'Meetings',
+    'Planning Board',
+    'AI Bot',
+    'Event Management',
+    'System Settings',
+    'Referral Tracking',
+  ];
 
   useEffect(() => {
     fetchEmployeePerformance();
@@ -40,7 +62,14 @@ export default function EmployeeObjectivesPage() {
       const employeeList: Employee[] = [];
       const baseProfiles = profiles || [];
 
-      // 2. For each employee, count their referrals
+      // 2. Fetch all assignments
+      let allAssignments: { employee_id: string; module: string }[] = [];
+      try {
+        const { data, error } = await supabase.from('employee_assignments').select('employee_id, module');
+        if (!error) allAssignments = data || [];
+      } catch { /* ignore */ }
+
+      // 3. For each employee, count their referrals
       for (const p of baseProfiles) {
         let referralCount = 0;
         try {
@@ -60,6 +89,10 @@ export default function EmployeeObjectivesPage() {
         else if (referralCount >= 10) tier = 'solid';
         else if (referralCount >= 3) tier = 'rising';
 
+        const empAssignments = allAssignments
+          .filter((a) => a.employee_id === p.id)
+          .map((a) => a.module);
+
         employeeList.push({
           id: p.id,
           display_name: p.display_name,
@@ -69,6 +102,7 @@ export default function EmployeeObjectivesPage() {
           referral_count: referralCount,
           referral_revenue: revenue,
           performance_tier: tier,
+          assignments: empAssignments,
         });
       }
 
@@ -90,6 +124,10 @@ export default function EmployeeObjectivesPage() {
   const totalRevenue = employees.reduce((sum, e) => sum + e.referral_revenue, 0);
   const topPerformer = sortedEmployees[0];
 
+  const assignedModules = new Set(employees.flatMap((e) => e.assignments));
+  const modulesCovered = assignedModules.size;
+  const unassignedCount = MODULES.length - modulesCovered;
+
   const tierStyles: Record<string, { bg: string; color: string; label: string }> = {
     top: { bg: '#10b98120', color: '#10b981', label: 'Top Performer' },
     solid: { bg: '#3b82f620', color: '#3b82f6', label: 'Solid' },
@@ -103,6 +141,39 @@ export default function EmployeeObjectivesPage() {
     recruiter: 'Recruiter',
     sales: 'Sales',
     employee: 'Employee',
+  };
+
+  const openAssignModal = (emp: Employee) => {
+    setSelectedEmployee(emp);
+    setSelectedModules(emp.assignments || []);
+    setShowAssignModal(true);
+  };
+
+  const saveAssignments = async () => {
+    if (!selectedEmployee) return;
+    try {
+      // Delete existing assignments for this employee
+      await supabase.from('employee_assignments').delete().eq('employee_id', selectedEmployee.id);
+      // Insert new ones
+      if (selectedModules.length > 0) {
+        const rows = selectedModules.map((module) => ({
+          employee_id: selectedEmployee.id,
+          module,
+          role_type: 'primary',
+        }));
+        await supabase.from('employee_assignments').insert(rows);
+      }
+      setShowAssignModal(false);
+      fetchEmployeePerformance();
+    } catch (err) {
+      console.error('Error saving assignments:', err);
+    }
+  };
+
+  const toggleModule = (module: string) => {
+    setSelectedModules((prev) =>
+      prev.includes(module) ? prev.filter((m) => m !== module) : [...prev, module]
+    );
   };
 
   return (
@@ -127,12 +198,13 @@ export default function EmployeeObjectivesPage() {
 
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 32px' }}>
         {/* Summary Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 28 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 28 }}>
           {[
             { label: 'Team Members', value: employees.length, sub: 'Active employees', color: '#1a1a1a' },
             { label: 'Total Referrals', value: totalReferrals, sub: 'Users brought in', color: '#3b82f6' },
             { label: 'Total Revenue', value: `$${totalRevenue.toLocaleString()}`, sub: 'From referrals', color: '#059669' },
-            { label: 'Top Performer', value: topPerformer?.display_name || topPerformer?.email || '—', sub: `${topPerformer?.referral_count || 0} referrals`, color: '#f59e0b' },
+            { label: 'Modules Covered', value: `${modulesCovered}/${MODULES.length}`, sub: 'Have staff assigned', color: '#8b5cf6' },
+            { label: 'Unassigned', value: unassignedCount, sub: 'Modules need owner', color: unassignedCount > 0 ? '#ef4444' : '#10b981' },
           ].map((stat) => (
             <div key={stat.label} style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20 }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>{stat.label}</div>
@@ -252,7 +324,7 @@ export default function EmployeeObjectivesPage() {
                   <div style={{ textAlign: 'right', fontSize: 12, color: '#9ca3af' }}>
                     {new Date(emp.created_at).toLocaleDateString()}
                   </div>
-                  <div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <span
                       style={{
                         fontSize: 10,
@@ -263,10 +335,38 @@ export default function EmployeeObjectivesPage() {
                         borderRadius: 20,
                         background: tier.bg,
                         color: tier.color,
+                        textAlign: 'center',
                       }}
                     >
                       {tier.label}
                     </span>
+                    <button
+                      onClick={() => openAssignModal(emp)}
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        padding: '4px 10px',
+                        borderRadius: 20,
+                        background: '#f3f4f6',
+                        color: '#6b7280',
+                        border: 'none',
+                        cursor: 'pointer',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                      }}
+                    >
+                      {emp.assignments.length > 0 ? `${emp.assignments.length} module${emp.assignments.length > 1 ? 's' : ''}` : 'Assign'}
+                    </button>
+                    {emp.assignments.length > 0 && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, maxWidth: 120 }}>
+                        {emp.assignments.slice(0, 2).map((m) => (
+                          <span key={m} style={{ fontSize: 9, color: '#9ca3af', background: '#f3f4f6', padding: '1px 6px', borderRadius: 10 }}>{m}</span>
+                        ))}
+                        {emp.assignments.length > 2 && (
+                          <span style={{ fontSize: 9, color: '#9ca3af' }}>+{emp.assignments.length - 2}</span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -285,6 +385,100 @@ export default function EmployeeObjectivesPage() {
           ))}
         </div>
       </div>
+
+      {/* Assign Modules Modal */}
+      {showAssignModal && selectedEmployee && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+          onClick={() => setShowAssignModal(false)}
+        >
+          <div
+            style={{
+              background: '#fff',
+              border: '1px solid #e5e7eb',
+              borderRadius: 16,
+              padding: 28,
+              width: '100%',
+              maxWidth: 420,
+              maxHeight: '80vh',
+              overflow: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 4px' }}>
+              Assign Modules
+            </h2>
+            <p style={{ fontSize: 13, color: '#9ca3af', margin: '0 0 20px' }}>
+              {selectedEmployee.display_name || selectedEmployee.email}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+              {MODULES.map((module) => (
+                <label
+                  key={module}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '10px 12px',
+                    borderRadius: 8,
+                    cursor: 'pointer',
+                    background: selectedModules.includes(module) ? '#f0fdf4' : '#f9fafb',
+                    border: `1px solid ${selectedModules.includes(module) ? '#10b981' : '#e5e7eb'}`,
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedModules.includes(module)}
+                    onChange={() => toggleModule(module)}
+                    style={{ width: 16, height: 16, accentColor: '#10b981' }}
+                  />
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1a1a1a' }}>{module}</span>
+                </label>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setShowAssignModal(false)}
+                style={{
+                  padding: '10px 20px',
+                  background: 'transparent',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: 8,
+                  color: '#6b7280',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveAssignments}
+                style={{
+                  padding: '10px 20px',
+                  background: '#1a1a1a',
+                  border: 'none',
+                  borderRadius: 8,
+                  color: '#fff',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
