@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../../src/lib/supabase';
+import AdminSidebar from '../components/AdminSidebar';
+
+const SIDEBAR_WIDTH = 260;
 
 type AdminFlag = 'active' | 'pending' | 'suspicious' | 'contacted_support';
 type SubStatus = 'active' | 'canceled' | 'past_due' | 'unpaid' | 'trialing' | 'all';
@@ -139,7 +142,10 @@ export default function RecognitionPlusManagementPage() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: '#ffffff', color: '#1a1a1a', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <AdminSidebar />
+      <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, minHeight: "100vh" }}>
+        <div style={{ minHeight: '100vh', background: '#ffffff', color: '#1a1a1a', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       {/* Header */}
       <div style={{ borderBottom: '1px solid #e5e7eb', padding: '24px 32px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -421,5 +427,6 @@ export default function RecognitionPlusManagementPage() {
         )}
       </div>
     </div>
-  );
+      </main>
+    </div>);
 }

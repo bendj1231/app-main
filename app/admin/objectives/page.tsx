@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
+import AdminSidebar from '../components/AdminSidebar';
 
 interface Employee {
   id: string;
@@ -15,8 +17,16 @@ interface Employee {
   evaluation_status: 'none' | 'under_evaluation' | 'flagged' | 'cleared' | 'terminated';
 }
 
+const SIDEBAR_WIDTH = 260;
+
+
 export default function EmployeeObjectivesPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { currentUser, userProfile } = useAuth();
+  const currentPath = location.pathname;
+  const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'admin';
+
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'referrals' | 'revenue' | 'name'>('revenue');
@@ -212,11 +222,27 @@ export default function EmployeeObjectivesPage() {
     );
   };
 
+  if (!currentUser || !isAdmin) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f9fa' }}>
+        <div style={{ textAlign: 'center' }}>
+          <h2 style={{ color: '#1a1a1a' }}>Access Denied</h2>
+          <p style={{ color: '#6b7280' }}>You must be an admin to view this page.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ minHeight: '100vh', background: '#ffffff', color: '#1a1a1a', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-      {/* Header */}
-      <div style={{ borderBottom: '1px solid #e5e7eb', padding: '24px 32px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div style={{ minHeight: '100vh', background: '#ffffff', color: '#1a1a1a', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', display: 'flex' }}>
+      
+      <AdminSidebar />
+
+      {/* Main Content */}
+      <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, minHeight: '100vh' }}>
+        {/* Header */}
+        <div style={{ borderBottom: '1px solid #e5e7eb', padding: '24px 32px' }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 4px' }}>Employee Roster</h1>
             <p style={{ fontSize: 13, color: '#9ca3af', margin: 0 }}>
@@ -626,6 +652,7 @@ export default function EmployeeObjectivesPage() {
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 }

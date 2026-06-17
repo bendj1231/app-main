@@ -2,27 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
+import AdminSidebar from '../components/AdminSidebar';
 
 const SIDEBAR_WIDTH = 260;
 const SUB_SIDEBAR_WIDTH = 240;
 
-const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
-  { label: 'Dashboard', path: '/admin', icon: '◆' },
-  { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
-  { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
-  { label: 'Messages', path: '/admin/messages', icon: '◈' },
-  { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
-  { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
-  { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
-  { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
-  { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
-  { label: 'Recognition+ Management', path: '/admin/verification', icon: '◈' },
-  { label: 'Pilot Management', path: '/admin/pilots', icon: '◉' },
-  { label: 'Enterprise Accounts', path: '/admin/enterprises', icon: '◆' },
-  { label: 'Event Management', path: '/admin/events', icon: '◈' },
-  { label: 'System Settings', path: '/admin/settings', icon: '◉' },
-];
 
 interface Contact {
   id: string;
@@ -83,14 +67,17 @@ export default function EmailManagementPage() {
   const [composeData, setComposeData] = useState({ recipient: '', subject: '', body: '' });
   const [selectedCategory, setSelectedCategory] = useState<string>('Airlines');
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
-  const [activeTab, setActiveTab] = useState<'compose' | 'drafts' | 'review' | 'sent' | 'enterprise' | 'subscriptions'>(
-    canReview ? 'review' : 'compose'
-  );
+  const [activeTab, setActiveTab] = useState<'inbox' | 'sent' | 'drafts' | 'review'>('inbox');
   const [reviewNotes, setReviewNotes] = useState('');
+  const [resendEmails, setResendEmails] = useState<any[]>([]);
+
+  const userEmail = userProfile?.email || currentUser?.email || '';
+  const fromName = userProfile?.display_name || userProfile?.full_name || 'PilotRecognition Team';
 
   useEffect(() => {
     if (!currentUser || !isAdmin) return;
     fetchEmails();
+    fetchResendEmails();
   }, [currentUser, isAdmin]);
 
   const fetchEmails = async () => {
@@ -105,6 +92,34 @@ export default function EmailManagementPage() {
       console.error('Error fetching emails:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchResendEmails = async () => {
+    if (!userEmail) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      // Fetch sent emails from Resend
+      const sentRes = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/resend-list-emails`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token || ''}`,
+            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+          },
+          body: JSON.stringify({ type: 'sent', email: userEmail }),
+        }
+      );
+      const sentData = await sentRes.json();
+      if (sentRes.ok && sentData.emails) {
+        setResendEmails(sentData.emails);
+      } else {
+        console.warn('Resend list error:', sentData.error || 'Unknown');
+      }
+    } catch (err) {
+      console.error('Error fetching Resend emails:', err);
     }
   };
 
@@ -166,6 +181,8 @@ export default function EmailManagementPage() {
           recipient: email.recipient,
           subject: email.subject,
           body: email.body,
+          from_email: userEmail,
+          from_name: fromName,
         }),
       });
 
@@ -242,7 +259,10 @@ export default function EmailManagementPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b1121', color: '#e2e8f0', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', padding: '32px' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <AdminSidebar />
+      <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, minHeight: '100vh' }}>
+        <div style={{ minHeight: '100vh', background: '#0b1121', color: '#e2e8f0', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', padding: '32px' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Header */}
         <div style={{ marginBottom: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -251,7 +271,7 @@ export default function EmailManagementPage() {
               Email Management
             </h1>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', margin: 0 }}>
-              Review and manage outgoing communications
+              Sending as: <strong>{userEmail}</strong>
             </p>
           </div>
           <button
@@ -274,10 +294,10 @@ export default function EmailManagementPage() {
         {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
           {[
-            { label: 'Total', value: emails.length, color: '#3b82f6' },
-            { label: 'Sent', value: emails.filter(e => e.status === 'sent').length, color: '#10b981' },
-            { label: 'Pending Review', value: emails.filter(e => e.status === 'pending').length, color: '#f59e0b' },
-            { label: 'Reviewed', value: emails.filter(e => e.status === 'reviewed').length, color: '#3b82f6' },
+            { label: 'Drafts', value: emails.filter(e => e.status === 'draft' || e.status === 'pending_review').length, color: '#f59e0b' },
+            { label: 'Sent', value: resendEmails.length + emails.filter(e => e.status === 'sent').length, color: '#10b981' },
+            { label: 'Pending Review', value: emails.filter(e => e.status === 'pending_review').length, color: '#ef4444' },
+            { label: 'Resend API', value: resendEmails.length, color: '#3b82f6' },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -291,6 +311,29 @@ export default function EmailManagementPage() {
               <div style={{ fontSize: 32, fontWeight: 800, color: stat.color, marginBottom: 4 }}>{stat.value}</div>
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{stat.label}</div>
             </div>
+          ))}
+        </div>
+
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 24, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          {(['inbox', 'sent', 'drafts', 'review'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                padding: '10px 16px',
+                background: 'none',
+                border: 'none',
+                borderBottom: activeTab === tab ? '2px solid #ef4444' : '2px solid transparent',
+                color: activeTab === tab ? '#ef4444' : 'rgba(255,255,255,0.4)',
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: 'pointer',
+                textTransform: 'capitalize',
+              }}
+            >
+              {tab === 'review' ? 'Pending Review' : tab}
+            </button>
           ))}
         </div>
 
@@ -309,72 +352,158 @@ export default function EmailManagementPage() {
               </div>
             </div>
 
-            {emails.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: 60, background: '#0f172a', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div style={{ fontSize: 48, marginBottom: 16 }}>📧</div>
-                <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>No emails yet</div>
-                <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>Compose your first email to get started</div>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {emails
-                  .filter((email) => {
-                    if (canReview) {
-                      return email.status === 'pending_review' || email.status === 'draft';
-                    } else {
-                      return email.author_id === currentUser?.id;
-                    }
-                  })
-                  .map((email) => (
-                    <div
-                      key={email.id}
-                      style={{
-                        background: '#0f172a',
-                        border: '1px solid rgba(255,255,255,0.06)',
-                        borderRadius: 12,
-                        padding: 20,
-                        cursor: 'pointer',
-                        transition: 'all 0.15s',
-                      }}
-                      onClick={() => setSelectedEmail(email)}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
-                            <span
-                              style={{
-                                padding: '4px 10px',
-                                background: `${statusColors[email.status]}20`,
-                                color: statusColors[email.status],
-                                borderRadius: 20,
-                                fontSize: 11,
-                                fontWeight: 600,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.05em',
-                              }}
-                            >
-                              {statusLabels[email.status] || email.status}
-                            </span>
-                            <h3 style={{ fontSize: 15, fontWeight: 600, margin: 0, color: '#e2e8f0' }}>{email.subject}</h3>
-                          </div>
-                          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 4 }}>
-                            To: {email.recipient}
-                          </div>
-                          {email.author_id !== currentUser?.id && (
-                            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>
-                              From: Employee
+            {/* Inbox tab — received emails */}
+            {activeTab === 'inbox' && (
+              <div>
+                {resendEmails.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: 60, background: '#0f172a', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>�</div>
+                    <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>No received emails</div>
+                    <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>Inbound emails for {userEmail} will appear here</div>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {resendEmails.map((email: any) => (
+                      <div key={email.id} style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                          <div style={{ flex: 1 }}>
+                            <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 6px', color: '#e2e8f0' }}>{email.subject}</h3>
+                            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 4 }}>
+                              From: {email.from}
                             </div>
-                          )}
-                        </div>
-                        <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
-                          {new Date(email.created_at).toLocaleDateString()}
+                            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 4 }}>
+                              To: {email.to?.join?.(', ') || email.to}
+                            </div>
+                          </div>
+                          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+                            {new Date(email.created_at).toLocaleDateString()}
+                          </div>
                         </div>
                       </div>
-                      <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {email.body.substring(0, 100)}...
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Sent tab */}
+            {activeTab === 'sent' && (
+              <div>
+                {emails.filter(e => e.status === 'sent').length === 0 && resendEmails.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: 60, background: '#0f172a', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>📤</div>
+                    <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>No sent emails yet</div>
+                    <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>Sent emails will appear here</div>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {emails.filter(e => e.status === 'sent').map((email) => (
+                      <div key={email.id} style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20, cursor: 'pointer' }} onClick={() => setSelectedEmail(email)}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <div style={{ flex: 1 }}>
+                            <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 6px', color: '#e2e8f0' }}>{email.subject}</h3>
+                            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>To: {email.recipient}</div>
+                          </div>
+                          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+                            {new Date(email.sent_at || email.created_at).toLocaleDateString()}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                    {resendEmails.map((email: any) => (
+                      <div key={email.id} style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <div style={{ flex: 1 }}>
+                            <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 6px', color: '#e2e8f0' }}>{email.subject}</h3>
+                            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>To: {email.to?.join?.(', ') || email.to}</div>
+                            <div style={{ fontSize: 11, color: '#3b82f6' }}>Resend API</div>
+                          </div>
+                          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+                            {new Date(email.created_at).toLocaleDateString()}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Drafts tab */}
+            {activeTab === 'drafts' && (
+              <div>
+                {emails.filter(e => e.status === 'draft' || e.status === 'pending_review').length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: 60, background: '#0f172a', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>📝</div>
+                    <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>No drafts</div>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {emails
+                      .filter(e => e.status === 'draft' || e.status === 'pending_review')
+                      .map((email) => (
+                        <div key={email.id} style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20, cursor: 'pointer' }} onClick={() => setSelectedEmail(email)}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
+                                <span style={{ padding: '4px 10px', background: `${statusColors[email.status]}20`, color: statusColors[email.status], borderRadius: 20, fontSize: 11, fontWeight: 600, textTransform: 'uppercase' }}>
+                                  {statusLabels[email.status] || email.status}
+                                </span>
+                                <h3 style={{ fontSize: 15, fontWeight: 600, margin: 0, color: '#e2e8f0' }}>{email.subject}</h3>
+                              </div>
+                              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>To: {email.recipient}</div>
+                            </div>
+                            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+                              {new Date(email.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: 8 }}>
+                            {email.body.substring(0, 100)}...
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Review tab */}
+            {activeTab === 'review' && (
+              <div>
+                {!canReview ? (
+                  <div style={{ textAlign: 'center', padding: 40, color: 'rgba(255,255,255,0.4)' }}>Only directors can review emails</div>
+                ) : emails.filter(e => e.status === 'pending_review' || e.status === 'draft').length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: 60, background: '#0f172a', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+                    <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)' }}>Nothing pending review</div>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {emails
+                      .filter(e => e.status === 'pending_review' || e.status === 'draft')
+                      .map((email) => (
+                        <div key={email.id} style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20, cursor: 'pointer' }} onClick={() => setSelectedEmail(email)}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
+                                <span style={{ padding: '4px 10px', background: `${statusColors[email.status]}20`, color: statusColors[email.status], borderRadius: 20, fontSize: 11, fontWeight: 600, textTransform: 'uppercase' }}>
+                                  {statusLabels[email.status] || email.status}
+                                </span>
+                                <h3 style={{ fontSize: 15, fontWeight: 600, margin: 0, color: '#e2e8f0' }}>{email.subject}</h3>
+                              </div>
+                              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>To: {email.recipient}</div>
+                            </div>
+                            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+                              {new Date(email.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: 8 }}>
+                            {email.body.substring(0, 100)}...
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
             )}
           </>
@@ -648,6 +777,8 @@ export default function EmailManagementPage() {
           </div>
         )}
       </div>
+    </div>
+      </main>
     </div>
   );
 }

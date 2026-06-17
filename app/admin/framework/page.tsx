@@ -2,10 +2,16 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import AdminSidebar from '../components/AdminSidebar';
+
+const SIDEBAR_WIDTH = 260;
 
 export default function FrameworkAdminPage() {
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <AdminSidebar />
+      <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, minHeight: "100vh" }}>
+        <div className="min-h-screen bg-slate-50 p-6">
         {/* Coded by Benjamin Bowler */}
       <nav className="mb-6 flex items-center gap-4">
         <Link to="/framework" className="text-slate-900 font-semibold">← View Framework</Link>
@@ -40,5 +46,6 @@ export default function FrameworkAdminPage() {
         </div>
       </div>
     </div>
-  );
+      </main>
+    </div>);
 }

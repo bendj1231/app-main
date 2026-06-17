@@ -2,26 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
+import AdminSidebar from '../components/AdminSidebar';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav = [
-  { label: 'Dashboard', path: '/admin', icon: '◆' },
-  { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
-  { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
-  { label: 'Messages', path: '/admin/messages', icon: '◈' },
-  { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
-  { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
-  { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶', badge: 3 },
-  { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
-  { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
-  { label: 'Verification Queue', path: '/admin/verification', icon: '◈' },
-  { label: 'Pilot Management', path: '/admin/pilots', icon: '◉' },
-  { label: 'Enterprise Accounts', path: '/admin/enterprises', icon: '◆' },
-  { label: 'Event Management', path: '/admin/events', icon: '◈' },
-  { label: 'System Settings', path: '/admin/settings', icon: '◉' },
-];
 
 interface Contact {
   id: string;
@@ -35,9 +19,10 @@ interface Contact {
 interface Message {
   id: string;
   sender_id: string;
-  sender_name: string;
+  sender_name?: string;
   recipient_id: string;
   content: string;
+  read_at: string | null;
   created_at: string;
 }
 
@@ -63,6 +48,22 @@ export default function MessagesPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const currentUserId = currentUser?.id || '';
+
+  const [dailyQuote, setDailyQuote] = useState('"Excellence is not a destination, it is a continuous journey that never ends." — Karl Vogt');
+  const [dailyObjectives, setDailyObjectives] = useState([
+    { id: '1', text: 'Reach out to 2 new airline partnerships', completed: false },
+    { id: '2', text: 'Review 3 pilot verification applications', completed: true },
+    { id: '3', text: 'Update enterprise pricing deck', completed: false },
+    { id: '4', text: 'Follow up with Veremark on CAAP PEL timeline', completed: false },
+  ]);
+  const [newQuote, setNewQuote] = useState('');
+  const [newObjective, setNewObjective] = useState('');
+  const [showQuoteInput, setShowQuoteInput] = useState(false);
+  const [notifications] = useState([
+    { id: '1', text: 'New enterprise inquiry from Alpha Aviation Group', time: '10m ago', type: 'lead' },
+    { id: '2', text: '5 new Recognition+ subscriptions today', time: '1h ago', type: 'revenue' },
+    { id: '3', text: 'Karl posted: "Push for September launch — no excuses"', time: '2h ago', type: 'memo' },
+  ]);
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -100,23 +101,146 @@ export default function MessagesPage() {
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedContact || !currentUser) return;
-    const msg: Message = {
-      id: Date.now().toString(),
-      sender_id: currentUserId,
-      sender_name: userProfile?.display_name || userProfile?.email || 'Admin',
-      recipient_id: selectedContact.id,
-      content: newMessage.trim(),
-      created_at: new Date().toISOString(),
-    };
-    setMessages((prev) => [...prev, msg]);
-    setNewMessage('');
+    try {
+      const { error } = await supabase.from('messages').insert({
+        sender_id: currentUserId,
+        recipient_id: selectedContact.id,
+        content: newMessage.trim(),
+      });
+      if (error) throw error;
+      setNewMessage('');
+    } catch (err) {
+      console.error('Error sending message:', err);
+    }
   };
+
+  // Fetch messages for selected contact
+  const fetchMessages = async (contactId: string) => {
+    if (!currentUserId) return;
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`sender_id.eq.${currentUserId},recipient_id.eq.${currentUserId}`)
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      const conversation = (data || []).filter(
+        (m) =>
+          (m.sender_id === currentUserId && m.recipient_id === contactId) ||
+          (m.sender_id === contactId && m.recipient_id === currentUserId)
+      );
+      setMessages(conversation);
+    } catch (err) {
+      console.error('Error fetching messages:', err);
+    }
+  };
+
+  // Realtime subscription
+  useEffect(() => {
+    if (!currentUserId) return;
+    const channel = supabase
+      .channel('messages')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages' },
+        (payload: any) => {
+          const newMsg = payload.new as Message;
+          if (
+            (newMsg.sender_id === currentUserId && newMsg.recipient_id === selectedContact?.id) ||
+            (newMsg.sender_id === selectedContact?.id && newMsg.recipient_id === currentUserId)
+          ) {
+            setMessages((prev) => [...prev, newMsg]);
+            if (newMsg.sender_id !== currentUserId && selectedContact?.id === newMsg.sender_id) {
+              // Mark as read immediately
+              supabase.from('messages').update({ read_at: new Date().toISOString() }).eq('id', newMsg.id).then();
+            }
+          }
+          // Refresh unread counts
+          fetchUnreadCounts();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [currentUserId, selectedContact?.id]);
+
+  // Fetch messages when contact changes
+  useEffect(() => {
+    if (selectedContact) {
+      fetchMessages(selectedContact.id);
+      markConversationAsRead(selectedContact.id);
+    }
+  }, [selectedContact?.id]);
+
+  const markConversationAsRead = async (contactId: string) => {
+    try {
+      await supabase
+        .from('messages')
+        .update({ read_at: new Date().toISOString() })
+        .eq('sender_id', contactId)
+        .eq('recipient_id', currentUserId)
+        .is('read_at', null);
+      fetchUnreadCounts();
+    } catch (err) {
+      console.error('Error marking as read:', err);
+    }
+  };
+
+  const fetchUnreadCounts = async () => {
+    if (!currentUserId) return;
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('sender_id')
+        .eq('recipient_id', currentUserId)
+        .is('read_at', null);
+      if (error) throw error;
+      const counts: Record<string, number> = {};
+      (data || []).forEach((m) => {
+        counts[m.sender_id] = (counts[m.sender_id] || 0) + 1;
+      });
+      setContacts((prev) =>
+        prev.map((c) => ({ ...c, unread: counts[c.id] || 0 }))
+      );
+    } catch (err) {
+      console.error('Error fetching unread counts:', err);
+    }
+  };
+
+  // Load unread counts on mount
+  useEffect(() => {
+    if (currentUserId) fetchUnreadCounts();
+  }, [currentUserId]);
 
   const chatMessages = messages.filter(
     (m) =>
       (m.sender_id === currentUserId && m.recipient_id === selectedContact?.id) ||
       (m.sender_id === selectedContact?.id && m.recipient_id === currentUserId)
   );
+
+  const toggleObjective = (id: string) => {
+    setDailyObjectives((prev) =>
+      prev.map((o) => (o.id === id ? { ...o, completed: !o.completed } : o))
+    );
+  };
+
+  const addObjective = () => {
+    if (!newObjective.trim()) return;
+    setDailyObjectives((prev) => [
+      ...prev,
+      { id: Date.now().toString(), text: newObjective.trim(), completed: false },
+    ]);
+    setNewObjective('');
+  };
+
+  const updateDailyQuote = () => {
+    if (!newQuote.trim()) return;
+    setDailyQuote(newQuote.trim());
+    setNewQuote('');
+    setShowQuoteInput(false);
+  };
 
   if (!currentUser || !isAdmin) {
     return (
@@ -131,47 +255,8 @@ export default function MessagesPage() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f8f9fa', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-      {/* Sidebar */}
-      <aside style={{ width: SIDEBAR_WIDTH, background: '#ffffff', borderRight: '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, left: 0, bottom: 0, zIndex: 50 }}>
-        <div style={{ padding: '24px 20px 16px' }}>
-          <div style={{ fontSize: 20, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ color: '#ef4444', fontSize: 22 }}>◆</span>
-            <span>Admin<span style={{ color: '#ef4444' }}>OS</span></span>
-          </div>
-          <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4, letterSpacing: '0.05em' }}>
-            PILOTRECOGNITION MANAGEMENT
-          </div>
-        </div>
-
-        <nav style={{ flex: 1, padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {sidebarNav.map((item) => {
-            const isActive = currentPath === item.path;
-            return (
-              <button key={item.path} onClick={() => navigate(item.path)} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderRadius: 8, background: isActive ? 'rgba(239,68,68,0.08)' : 'transparent', border: 'none', color: isActive ? '#ef4444' : '#6b7280', fontSize: 13, fontWeight: isActive ? 600 : 500, cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s', position: 'relative' }}>
-                {isActive && <div style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', width: 3, height: 20, background: '#ef4444', borderRadius: '0 4px 4px 0' }} />}
-                <span style={{ fontSize: 14, opacity: isActive ? 1 : 0.6 }}>{item.icon}</span>
-                <span style={{ flex: 1 }}>{item.label}</span>
-                {item.badge ? <span style={{ background: '#ef4444', color: '#fff', fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 10, minWidth: 18, textAlign: 'center' }}>{item.badge}</span> : null}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div style={{ padding: '16px 16px 20px', borderTop: '1px solid #e5e7eb' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-            <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #ef4444, #b91c1c)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#fff' }}>
-              {((userProfile?.display_name || userProfile?.email || currentUser?.email || '?') as string).charAt(0).toUpperCase()}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#1a1a1a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{userProfile?.display_name || userProfile?.email || currentUser?.email}</div>
-              <div style={{ fontSize: 10, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.05em' }}>● {userProfile?.role || 'admin'}</div>
-            </div>
-          </div>
-          <button onClick={() => navigate('/')} style={{ width: '100%', padding: '8px 0', background: 'none', border: 'none', color: '#9ca3af', fontSize: 12, cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span>←</span> Back to Home
-          </button>
-        </div>
-      </aside>
+      
+      <AdminSidebar />
 
       {/* Contact List */}
       <div style={{ width: 300, background: '#fff', borderRight: '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, left: SIDEBAR_WIDTH, bottom: 0, zIndex: 40 }}>
@@ -248,11 +333,82 @@ export default function MessagesPage() {
             </div>
           </>
         ) : (
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f9fa' }}>
-            <div style={{ textAlign: 'center', color: '#9ca3af' }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>💬</div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: '#6b7280' }}>Select a contact to start messaging</div>
-              <div style={{ fontSize: 13, marginTop: 8 }}>Contact admin team or pilot members</div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#f8f9fa', overflowY: 'auto' }}>
+            {/* Daily Briefing Header */}
+            <div style={{ padding: '28px 32px 20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                <h2 style={{ fontSize: 18, fontWeight: 700, color: '#1a1a1a', margin: 0 }}>📋 Daily Briefing</h2>
+                <span style={{ fontSize: 12, color: '#9ca3af', fontWeight: 500 }}>{new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}</span>
+              </div>
+
+              {/* Quote of the Day */}
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginBottom: 20, position: 'relative' }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>Quote of the Day</div>
+                <div style={{ fontSize: 15, color: '#1a1a1a', fontStyle: 'italic', lineHeight: 1.5 }}>{dailyQuote}</div>
+                {userProfile?.role === 'super_admin' && (
+                  <div style={{ marginTop: 12 }}>
+                    {showQuoteInput ? (
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <input
+                          type="text"
+                          value={newQuote}
+                          onChange={(e) => setNewQuote(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === 'Enter') updateDailyQuote(); }}
+                          placeholder="Enter new quote..."
+                          autoFocus
+                          style={{ flex: 1, padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 13, color: '#1a1a1a' }}
+                        />
+                        <button onClick={updateDailyQuote} style={{ padding: '8px 14px', background: '#ef4444', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Set</button>
+                        <button onClick={() => { setShowQuoteInput(false); setNewQuote(''); }} style={{ padding: '8px 14px', background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: 8, color: '#6b7280', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+                      </div>
+                    ) : (
+                      <button onClick={() => setShowQuoteInput(true)} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #ef4444', borderRadius: 6, color: '#ef4444', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>✏️ Edit Quote</button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Notifications / Business Updates */}
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginBottom: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Notifications</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {notifications.map((n) => (
+                    <div key={n.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 12px', background: n.type === 'memo' ? '#fef2f2' : '#f9fafb', borderRadius: 8, borderLeft: n.type === 'memo' ? '3px solid #ef4444' : '3px solid #3b82f6' }}>
+                      <span style={{ fontSize: 16 }}>{n.type === 'lead' ? '�' : n.type === 'revenue' ? '💰' : '📢'}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 13, color: '#1a1a1a', fontWeight: 500 }}>{n.text}</div>
+                        <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>{n.time}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Daily Objectives */}
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Objectives</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {dailyObjectives.map((o) => (
+                    <div key={o.id} onClick={() => toggleObjective(o.id)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: o.completed ? '#f0fdf4' : '#f9fafb', borderRadius: 8, cursor: 'pointer', border: `1px solid ${o.completed ? '#86efac' : '#e5e7eb'}`, transition: 'all 0.15s' }}>
+                      <div style={{ width: 18, height: 18, borderRadius: 4, border: `2px solid ${o.completed ? '#10b981' : '#d1d5db'}`, background: o.completed ? '#10b981' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: '#fff', flexShrink: 0 }}>
+                        {o.completed ? '✓' : ''}
+                      </div>
+                      <span style={{ fontSize: 13, color: o.completed ? '#6b7280' : '#1a1a1a', textDecoration: o.completed ? 'line-through' : 'none', flex: 1 }}>{o.text}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                  <input
+                    type="text"
+                    value={newObjective}
+                    onChange={(e) => setNewObjective(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') addObjective(); }}
+                    placeholder="Add a new objective..."
+                    style={{ flex: 1, padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 13, color: '#1a1a1a' }}
+                  />
+                  <button onClick={addObjective} style={{ padding: '8px 16px', background: '#ef4444', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Add</button>
+                </div>
+              </div>
             </div>
           </div>
         )}

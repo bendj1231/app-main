@@ -10,10 +10,16 @@
 export const ALLOWED_OAUTH_REDIRECTS = [
   // Production domain
   typeof window !== 'undefined' ? `${window.location.origin}/` : 'http://localhost:3000/',
+  typeof window !== 'undefined' ? `${window.location.origin}/flight-deck-login` : 'http://localhost:3000/flight-deck-login',
+  typeof window !== 'undefined' ? `${window.location.origin}/become-member` : 'http://localhost:3000/become-member',
 
   // Local development
   'http://localhost:3000/',
   'http://localhost:5173/',
+  'http://localhost:3000/flight-deck-login',
+  'http://localhost:5173/flight-deck-login',
+  'http://localhost:3000/become-member',
+  'http://localhost:5173/become-member',
 
   // Add any other allowed domains here
   // 'https://staging.yourdomain.com/',

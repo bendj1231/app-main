@@ -33,18 +33,23 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   // If they logged in via Google OAuth but have no profile row, sign out silently
   // and redirect to /become-member?setup=1 so they can register.
   useEffect(() => {
+    console.log('[FlightDeckLogin] currentUser effect fired:', { currentUser: currentUser?.id ?? null, checking: oauthAccountCheck.checking, hasAccount: oauthAccountCheck.hasAccount });
     if (!currentUser || oauthAccountCheck.checking || oauthAccountCheck.hasAccount !== null) return;
 
     let active = true;
     const verifyUserAccount = async () => {
       setCheckingOAuth(true);
+      console.log('[FlightDeckLogin] Checking if profile exists for user:', currentUser.id);
       const hasProfile = await profileExists(currentUser.id);
+      console.log('[FlightDeckLogin] profileExists result:', hasProfile);
       if (!active) return;
 
       if (hasProfile) {
         setCheckingOAuth(false);
+        console.log('[FlightDeckLogin] Profile found — redirecting to /platform');
         navigate('/platform', { replace: true });
       } else {
+        console.log('[FlightDeckLogin] No profile found — signing out and redirecting to /become-member?setup=1');
         await supabase.auth.signOut();
         setCheckingOAuth(false);
         navigate('/become-member?setup=1', { replace: true });
@@ -58,13 +63,16 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   }, [currentUser, oauthAccountCheck.checking, oauthAccountCheck.hasAccount, navigate]);
 
   useEffect(() => {
+    console.log('[FlightDeckLogin] oauthAccountCheck effect fired:', oauthAccountCheck);
     if (oauthAccountCheck.checking || oauthAccountCheck.hasAccount === null) return;
 
     const handleOAuthResult = async () => {
       if (oauthAccountCheck.hasAccount) {
+        console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=true — redirecting to /platform');
         resetOauthAccountCheck();
         navigate('/platform', { replace: true });
       } else {
+        console.log('[FlightDeckLogin] oauthAccountCheck.hasAccount=false — signing out and redirecting to /become-member?setup=1');
         await supabase.auth.signOut();
         resetOauthAccountCheck();
         navigate('/become-member?setup=1', { replace: true });
@@ -135,17 +143,24 @@ export const FlightDeckLoginPage: React.FC<FlightDeckLoginPageProps> = ({ onNavi
   const handleGoogleLogin = async () => {
     setError('');
     setGoogleLoading(true);
+    console.log('[FlightDeckLogin] Google sign-in button clicked');
+
+    const redirectTo = `${window.location.origin}/flight-deck-login`;
+    console.log('[FlightDeckLogin] Calling supabase.auth.signInWithOAuth with redirectTo:', redirectTo);
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/flight-deck-login`,
+        redirectTo,
       },
     });
 
     if (error) {
+      console.error('[FlightDeckLogin] signInWithOAuth error:', error);
       setError(error.message || 'Google sign-in failed');
       setGoogleLoading(false);
+    } else {
+      console.log('[FlightDeckLogin] signInWithOAuth initiated — browser will redirect to Google');
     }
   };
 

@@ -2,26 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
+import AdminSidebar from '../components/AdminSidebar';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
-  { label: 'Dashboard', path: '/admin', icon: '◆' },
-  { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
-  { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
-  { label: 'Messages', path: '/admin/messages', icon: '◈' },
-  { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
-  { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
-  { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
-  { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
-  { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
-  { label: 'Recognition+ Management', path: '/admin/verification', icon: '◈' },
-  { label: 'Pilot Management', path: '/admin/pilots', icon: '◉' },
-  { label: 'Enterprise Accounts', path: '/admin/enterprises', icon: '◆' },
-  { label: 'Event Management', path: '/admin/events', icon: '◈' },
-  { label: 'System Settings', path: '/admin/settings', icon: '◉' },
-];
 
 interface Message {
   role: 'user' | 'assistant';
@@ -188,145 +172,8 @@ export default function AIBotPage() {
         display: 'flex',
       }}
     >
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: SIDEBAR_WIDTH,
-          background: '#ffffff',
-          borderRight: '1px solid #e5e7eb',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          zIndex: 50,
-        }}
-      >
-        <div style={{ padding: '24px 20px 16px' }}>
-          <div style={{ fontSize: 20, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ color: '#ef4444', fontSize: 22 }}>◆</span>
-            <span>Admin<span style={{ color: '#ef4444' }}>OS</span></span>
-          </div>
-          <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4, letterSpacing: '0.05em' }}>
-            PILOTRECOGNITION MANAGEMENT
-          </div>
-        </div>
-
-        <nav style={{ flex: 1, padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {sidebarNav.map((item) => {
-            const isActive = currentPath === item.path;
-            return (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  padding: '10px 14px',
-                  borderRadius: 8,
-                  background: isActive ? 'rgba(239,68,68,0.08)' : 'transparent',
-                  border: 'none',
-                  color: isActive ? '#ef4444' : '#6b7280',
-                  fontSize: 13,
-                  fontWeight: isActive ? 600 : 500,
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.15s',
-                  position: 'relative',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) e.currentTarget.style.background = '#f3f4f6';
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) e.currentTarget.style.background = 'transparent';
-                }}
-              >
-                {isActive && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: 0,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: 3,
-                      height: 20,
-                      background: '#ef4444',
-                      borderRadius: '0 4px 4px 0',
-                    }}
-                  />
-                )}
-                <span style={{ fontSize: 14, opacity: isActive ? 1 : 0.6 }}>{item.icon}</span>
-                <span style={{ flex: 1 }}>{item.label}</span>
-                {item.badge && (
-                  <span
-                    style={{
-                      background: '#ef4444',
-                      color: '#fff',
-                      fontSize: 10,
-                      fontWeight: 700,
-                      padding: '2px 6px',
-                      borderRadius: 10,
-                      minWidth: 18,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div style={{ padding: '16px 16px 20px', borderTop: '1px solid #e5e7eb' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-            <div
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #ef4444, #b91c1c)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#fff',
-              }}
-            >
-              {((userProfile?.display_name || userProfile?.email || currentUser?.email || '?') as string).charAt(0).toUpperCase()}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#1a1a1a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {userProfile?.display_name || userProfile?.email || currentUser?.email}
-              </div>
-              <div style={{ fontSize: 10, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                ● {userProfile?.role || 'admin'}
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={() => navigate('/')}
-            style={{
-              width: '100%',
-              padding: '8px 0',
-              background: 'none',
-              border: 'none',
-              color: '#9ca3af',
-              fontSize: 12,
-              cursor: 'pointer',
-              textAlign: 'left',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            <span>←</span> Back to Home
-          </button>
-        </div>
-      </aside>
+      
+      <AdminSidebar />
 
       {/* Main content */}
       <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>

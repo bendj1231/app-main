@@ -26,6 +26,11 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
+  "include": [
+    "app/**/*",
+    "src/**/*",
+    "components/**/*"
+  ],
   "exclude": [
     "node_modules",
     "dist",
@@ -36,6 +41,17 @@
     "functions",
     "waltid-identity",
     "supabase",
-    "aeron-analysis"
+    "aeron-analysis",
+    ".git",
+    "coverage",
+    "out",
+    "tmp",
+    "**/*.png",
+    "**/*.jpg",
+    "**/*.jpeg",
+    "**/*.gif",
+    "**/*.svg",
+    "**/*.mp4",
+    "**/*.pdf"
   ]
 }

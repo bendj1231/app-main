@@ -23,7 +23,14 @@ interface DodoStats {
 }
 
 async function fetchDodoStats(): Promise<Partial<DodoStats>> {
-  if (!dodoApiKey) return {}
+  console.log('[dodo-payments-proxy] fetchDodoStats() called')
+  console.log('[dodo-payments-proxy] DODO_PAYMENTS_API_KEY present:', !!dodoApiKey)
+  console.log('[dodo-payments-proxy] DODO_PAYMENTS_API_KEY length:', dodoApiKey?.length || 0)
+
+  if (!dodoApiKey) {
+    console.warn('[dodo-payments-proxy] No DODO_PAYMENTS_API_KEY set — skipping Dodo API calls')
+    return {}
+  }
 
   const headers = {
     'Authorization': `Bearer ${dodoApiKey}`,
@@ -31,21 +38,33 @@ async function fetchDodoStats(): Promise<Partial<DodoStats>> {
   }
 
   try {
-    // Fetch all payments (paginated, grab first page)
+    console.log('[dodo-payments-proxy] Fetching /payments ...')
     const paymentsRes = await fetch(`${DODO_BASE}/payments?page_size=100`, { headers })
+    console.log('[dodo-payments-proxy] /payments status:', paymentsRes.status, paymentsRes.statusText)
     const payments = paymentsRes.ok ? await paymentsRes.json() : { items: [] }
+    if (!paymentsRes.ok) console.warn('[dodo-payments-proxy] /payments failed body preview:', await paymentsRes.text().catch(() => 'unreadable'))
+    console.log('[dodo-payments-proxy] /payments items count:', (payments.items || []).length)
 
-    // Fetch subscriptions
+    console.log('[dodo-payments-proxy] Fetching /subscriptions ...')
     const subsRes = await fetch(`${DODO_BASE}/subscriptions?page_size=100&status=active`, { headers })
+    console.log('[dodo-payments-proxy] /subscriptions status:', subsRes.status, subsRes.statusText)
     const subs = subsRes.ok ? await subsRes.json() : { items: [] }
+    if (!subsRes.ok) console.warn('[dodo-payments-proxy] /subscriptions failed body preview:', await subsRes.text().catch(() => 'unreadable'))
+    console.log('[dodo-payments-proxy] /subscriptions items count:', (subs.items || []).length)
 
-    // Fetch products
+    console.log('[dodo-payments-proxy] Fetching /products ...')
     const productsRes = await fetch(`${DODO_BASE}/products?page_size=100`, { headers })
+    console.log('[dodo-payments-proxy] /products status:', productsRes.status, productsRes.statusText)
     const products = productsRes.ok ? await productsRes.json() : { items: [] }
+    if (!productsRes.ok) console.warn('[dodo-payments-proxy] /products failed body preview:', await productsRes.text().catch(() => 'unreadable'))
+    console.log('[dodo-payments-proxy] /products items count:', (products.items || []).length)
 
-    // Fetch customers
+    console.log('[dodo-payments-proxy] Fetching /customers ...')
     const customersRes = await fetch(`${DODO_BASE}/customers?page_size=100`, { headers })
+    console.log('[dodo-payments-proxy] /customers status:', customersRes.status, customersRes.statusText)
     const customers = customersRes.ok ? await customersRes.json() : { items: [] }
+    if (!customersRes.ok) console.warn('[dodo-payments-proxy] /customers failed body preview:', await customersRes.text().catch(() => 'unreadable'))
+    console.log('[dodo-payments-proxy] /customers items count:', (customers.items || []).length)
 
     const allPayments = payments.items || []
     const now = new Date()
@@ -159,6 +178,7 @@ async function fetchSupabaseFallback(): Promise<Partial<DodoStats>> {
 }
 
 serve(async (req) => {
+  console.log('[dodo-payments-proxy] Request received:', req.method, req.url)
   const corsHeaders = getCorsHeaders(req);
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
@@ -175,11 +195,47 @@ serve(async (req) => {
       stats = { ...fallback, ...stats }
     }
 
-    return new Response(JSON.stringify({
+    const url = new URL(req.url)
+    const detail = url.searchParams.get('detail') === 'true'
+    console.log('[dodo-payments-proxy] detail param:', detail)
+    console.log('[dodo-payments-proxy] stats so far:', JSON.stringify({ totalRevenue: stats.totalRevenue, totalPayments: stats.totalPayments, activeSubscriptions: stats.activeSubscriptions, mrr: stats.mrr }))
+
+    let responseBody: any = {
       ...stats,
       source: dodoApiKey ? 'dodo_api' : 'supabase_fallback',
       cached: false,
-    }), {
+    }
+
+    // If detail requested, fetch and attach raw lists
+    if (detail && dodoApiKey) {
+      console.log('[dodo-payments-proxy] detail=true — fetching raw lists ...')
+      const headers = { 'Authorization': `Bearer ${dodoApiKey}`, 'Content-Type': 'application/json' }
+      try {
+        const [paymentsRes, subsRes, customersRes, productsRes] = await Promise.all([
+          fetch(`${DODO_BASE}/payments?page_size=100`, { headers }),
+          fetch(`${DODO_BASE}/subscriptions?page_size=100`, { headers }),
+          fetch(`${DODO_BASE}/customers?page_size=100`, { headers }),
+          fetch(`${DODO_BASE}/products?page_size=100`, { headers }),
+        ])
+        console.log('[dodo-payments-proxy] detail fetches — payments:', paymentsRes.status, 'subs:', subsRes.status, 'customers:', customersRes.status, 'products:', productsRes.status)
+        const payments = paymentsRes.ok ? await paymentsRes.json() : { items: [] }
+        const subscriptions = subsRes.ok ? await subsRes.json() : { items: [] }
+        const customers = customersRes.ok ? await customersRes.json() : { items: [] }
+        const products = productsRes.ok ? await productsRes.json() : { items: [] }
+
+        responseBody.payments = payments.items || []
+        responseBody.subscriptions = subscriptions.items || []
+        responseBody.customers = customers.items || []
+        responseBody.products = products.items || []
+        console.log('[dodo-payments-proxy] detail lists attached — payments:', responseBody.payments.length, 'subs:', responseBody.subscriptions.length, 'customers:', responseBody.customers.length, 'products:', responseBody.products.length)
+      } catch (detailErr) {
+        console.error('[dodo-payments-proxy] Detail fetch error:', detailErr)
+        responseBody.detailError = 'Failed to fetch detailed data'
+      }
+    }
+
+    console.log('[dodo-payments-proxy] returning responseBody keys:', Object.keys(responseBody))
+    return new Response(JSON.stringify(responseBody), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (err) {

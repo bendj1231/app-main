@@ -2,26 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { supabase } from '@/shared/lib/supabase';
+import AdminSidebar from '../components/AdminSidebar';
 
 const SIDEBAR_WIDTH = 260;
 
-const sidebarNav: { label: string; path: string; icon: string; badge?: number }[] = [
-  { label: 'Dashboard', path: '/admin', icon: '◆' },
-  { label: 'Employee Objectives', path: '/admin/objectives', icon: '◈' },
-  { label: 'Email & Contacts', path: '/admin/emails', icon: '◉' },
-  { label: 'Messages', path: '/admin/messages', icon: '◈' },
-  { label: 'Support Inbox', path: '/admin/support', icon: '◉' },
-  { label: 'Blogs & Articles', path: '/admin/blogs', icon: '◉' },
-  { label: 'Future Prospects', path: '/admin/prospects', icon: '◉' },
-  { label: 'Meetings', path: '/admin/meetings', icon: '▶' },
-  { label: 'Planning Board', path: '/admin/planning', icon: '◐' },
-  { label: 'AI Bot', path: '/admin/bot', icon: '◉' },
-  { label: 'Recognition+ Management', path: '/admin/verification', icon: '◈' },
-  { label: 'Pilot Management', path: '/admin/pilots', icon: '◉' },
-  { label: 'Enterprise Accounts', path: '/admin/enterprises', icon: '◆' },
-  { label: 'Event Management', path: '/admin/events', icon: '◈' },
-  { label: 'System Settings', path: '/admin/settings', icon: '◉' },
-];
 
 interface Meeting {
   id: string;
@@ -34,6 +18,7 @@ interface Meeting {
   meet_link?: string;
   attendees?: string[];
   created_at: string;
+  calendar_event_id?: string;
 }
 
 export default function MeetingsPage() {
@@ -50,6 +35,7 @@ export default function MeetingsPage() {
   const [statusFilter, setStatusFilter] = useState<'all' | 'upcoming' | 'scheduled' | 'completed'>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [generatingMeet, setGeneratingMeet] = useState(false);
 
   const [newMeeting, setNewMeeting] = useState({
     title: '',
@@ -80,9 +66,59 @@ export default function MeetingsPage() {
     if (isAdmin) loadMeetings();
   }, [isAdmin]);
 
+  const createGoogleCalendarEvent = async (): Promise<{ meetLink: string; eventId: string } | null> => {
+    if (!newMeeting.title || !newMeeting.start_time || !newMeeting.end_time) return null;
+    setGeneratingMeet(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const edgeUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar-meeting`;
+      const res = await fetch(edgeUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session?.access_token || ''}`,
+          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: newMeeting.title,
+          description: newMeeting.description || '',
+          start_time: new Date(newMeeting.start_time).toISOString(),
+          end_time: new Date(newMeeting.end_time).toISOString(),
+          attendees: newMeeting.attendees ? newMeeting.attendees.split(',').map((s) => s.trim()) : [],
+          time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        console.error('[Meetings] Calendar API error:', json);
+        alert('Google Calendar error: ' + (json.error || json.details?.error?.message || 'Unknown error'));
+        return null;
+      }
+      return { meetLink: json.meetLink, eventId: json.eventId };
+    } catch (err) {
+      console.error('[Meetings] Failed to create calendar event:', err);
+      alert('Failed to create Google Calendar event. Check console for details.');
+      return null;
+    } finally {
+      setGeneratingMeet(false);
+    }
+  };
+
   const createMeeting = async () => {
     if (!newMeeting.title || !newMeeting.start_time) return;
     setCreating(true);
+
+    let meetLink = newMeeting.meet_link;
+    let calendarEventId = '';
+
+    // Auto-generate Meet link via Google Calendar API if not provided
+    if (!meetLink) {
+      const calendarResult = await createGoogleCalendarEvent();
+      if (calendarResult) {
+        meetLink = calendarResult.meetLink;
+        calendarEventId = calendarResult.eventId;
+      }
+    }
 
     const { error } = await supabase.from('meetings').insert({
       title: newMeeting.title,
@@ -91,9 +127,10 @@ export default function MeetingsPage() {
       status: 'scheduled',
       start_time: new Date(newMeeting.start_time).toISOString(),
       end_time: newMeeting.end_time ? new Date(newMeeting.end_time).toISOString() : null,
-      meet_link: newMeeting.meet_link || null,
+      meet_link: meetLink || null,
       attendees: newMeeting.attendees ? newMeeting.attendees.split(',').map((s) => s.trim()) : [],
       created_by: currentUser?.id,
+      calendar_event_id: calendarEventId || null,
     });
 
     setCreating(false);
@@ -125,8 +162,11 @@ export default function MeetingsPage() {
     loadMeetings();
   };
 
-  const generateMeetLink = () => {
-    window.open('https://meet.google.com/new', '_blank', 'noopener,noreferrer');
+  const generateMeetLink = async () => {
+    const result = await createGoogleCalendarEvent();
+    if (result?.meetLink) {
+      setNewMeeting((prev) => ({ ...prev, meet_link: result.meetLink }));
+    }
   };
 
   if (!currentUser || !isAdmin) {
@@ -275,145 +315,8 @@ export default function MeetingsPage() {
         display: 'flex',
       }}
     >
-      {/* Sidebar */}
-      <aside
-        style={{
-          width: SIDEBAR_WIDTH,
-          background: '#ffffff',
-          borderRight: '1px solid #e5e7eb',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          zIndex: 50,
-        }}
-      >
-        <div style={{ padding: '24px 20px 16px' }}>
-          <div style={{ fontSize: 20, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ color: '#ef4444', fontSize: 22 }}>◆</span>
-            <span>Admin<span style={{ color: '#ef4444' }}>OS</span></span>
-          </div>
-          <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4, letterSpacing: '0.05em' }}>
-            PILOTRECOGNITION MANAGEMENT
-          </div>
-        </div>
-
-        <nav style={{ flex: 1, padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {sidebarNav.map((item) => {
-            const isActive = currentPath === item.path;
-            return (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  padding: '10px 14px',
-                  borderRadius: 8,
-                  background: isActive ? 'rgba(239,68,68,0.08)' : 'transparent',
-                  border: 'none',
-                  color: isActive ? '#ef4444' : '#6b7280',
-                  fontSize: 13,
-                  fontWeight: isActive ? 600 : 500,
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.15s',
-                  position: 'relative',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) e.currentTarget.style.background = '#f3f4f6';
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) e.currentTarget.style.background = 'transparent';
-                }}
-              >
-                {isActive && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: 0,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: 3,
-                      height: 20,
-                      background: '#ef4444',
-                      borderRadius: '0 4px 4px 0',
-                    }}
-                  />
-                )}
-                <span style={{ fontSize: 14, opacity: isActive ? 1 : 0.6 }}>{item.icon}</span>
-                <span style={{ flex: 1 }}>{item.label}</span>
-                {item.badge && (
-                  <span
-                    style={{
-                      background: '#ef4444',
-                      color: '#fff',
-                      fontSize: 10,
-                      fontWeight: 700,
-                      padding: '2px 6px',
-                      borderRadius: 10,
-                      minWidth: 18,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
-
-        <div style={{ padding: '16px 16px 20px', borderTop: '1px solid #e5e7eb' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-            <div
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #ef4444, #b91c1c)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#fff',
-              }}
-            >
-              {((userProfile?.display_name || userProfile?.email || currentUser?.email || '?') as string).charAt(0).toUpperCase()}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#1a1a1a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {userProfile?.display_name || userProfile?.email || currentUser?.email}
-              </div>
-              <div style={{ fontSize: 10, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                ● {userProfile?.role || 'admin'}
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={() => navigate('/')}
-            style={{
-              width: '100%',
-              padding: '8px 0',
-              background: 'none',
-              border: 'none',
-              color: '#9ca3af',
-              fontSize: 12,
-              cursor: 'pointer',
-              textAlign: 'left',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            <span>←</span> Back to Home
-          </button>
-        </div>
-      </aside>
+      
+      <AdminSidebar />
 
       {/* Main content */}
       <main style={{ flex: 1, marginLeft: SIDEBAR_WIDTH, minHeight: '100vh' }}>
@@ -629,9 +532,17 @@ export default function MeetingsPage() {
                       <button
                         onClick={generateMeetLink}
                         type="button"
-                        style={{ fontSize: 11, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+                        disabled={generatingMeet || !newMeeting.title || !newMeeting.start_time || !newMeeting.end_time}
+                        style={{
+                          fontSize: 11,
+                          color: generatingMeet ? '#9ca3af' : '#ef4444',
+                          background: 'none',
+                          border: 'none',
+                          cursor: generatingMeet ? 'not-allowed' : 'pointer',
+                          fontWeight: 600,
+                        }}
                       >
-                        + Generate New Link
+                        {generatingMeet ? 'Generating...' : '+ Generate Meet Link'}
                       </button>
                     </div>
                     <input
@@ -641,7 +552,11 @@ export default function MeetingsPage() {
                       placeholder="https://meet.google.com/..."
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 8, fontSize: 14, color: '#1a1a1a' }}
                     />
-                    <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>Click "Generate New Link" to open Google Meet, then paste the URL here.</p>
+                    <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>
+                      {newMeeting.meet_link
+                        ? 'Meet link generated via Google Calendar.'
+                        : 'Click "Generate Meet Link" to auto-create a Google Calendar event with a Meet link.'}
+                    </p>
                   </div>
 
                   <div>

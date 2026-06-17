@@ -528,10 +528,10 @@ const AdminProspectsPage = lazy(() => import('@/app/admin/prospects/page'));
 const AdminPilotsPage = lazy(() => import('@/app/admin/pilots/page'));
 const AdminEnterprisesPage = lazy(() => import('@/app/admin/enterprises/page'));
 const AdminEventsPage = lazy(() => import('@/app/admin/events/page'));
+const AdminInvoicesPage = lazy(() => import('@/app/admin/invoices/page'));
 const AdminSettingsPage = lazy(() => import('@/app/admin/settings/page'));
 const AdminVerificationManagementPage = lazy(() => import('@/app/admin/verification-management/page'));
 const VerificationServicePage = lazy(() => import('@/app/verification-service/page'));
-const AdminVerificationQueuePage = lazy(() => import('@/app/admin/verification/page'));
 const TermsOfServicePage = lazy(() => import('@/app/terms-of-service/page'));
 const PrivacyPolicyPage = lazy(() => import('@/app/privacy-policy/page'));
 const IssuerPolicyPage = lazy(() => import('@/app/issuer-policy/page'));
@@ -1624,9 +1624,9 @@ export const AppRoutes = () => {
         <Route path="/admin/pilots" element={<AdminPilotsPage />} />
         <Route path="/admin/enterprises" element={<AdminEnterprisesPage />} />
         <Route path="/admin/events" element={<AdminEventsPage />} />
+        <Route path="/admin/invoices" element={<AdminInvoicesPage />} />
         <Route path="/admin/settings" element={<AdminSettingsPage />} />
         <Route path="/admin/verification-management" element={<AdminVerificationManagementPage />} />
-        <Route path="/admin/verification" element={<AdminVerificationQueuePage />} />
 
         {/* Redirect removed pages */}
         <Route path="/board" element={<Navigate to="/about" replace />} />
