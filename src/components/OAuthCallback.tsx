@@ -90,38 +90,57 @@ export const OAuthCallback = () => {
         let supabaseError: unknown = null;
 
         if (!existing) {
-          // ─── STEP 2: Query Supabase with retry (always use legacy Sydney for data) ───
+          // ─── STEP 2: Query BOTH Supabase nodes for profile ───
+          // Sydney (legacy) AND Singapore (cluster backup)
+          const profileFields = 'id, auth0_id, display_name, total_flight_hours, email';
+          
+          // Check Sydney first (primary data node)
+          let sydneyResult: any = null;
+          let sydneyError: any = null;
           try {
-            const result = await withRetry(() =>
+            const { data } = await withRetry(() =>
               Promise.resolve(
-                dataSupabase
-                  .from('profiles')
-                  .select('id, auth0_id, display_name, total_flight_hours, email')
-                  .eq('auth0_id', user.sub)
-                  .maybeSingle()
+                dataSupabase.from('profiles').select(profileFields).eq('auth0_id', user.sub).maybeSingle()
               )
             );
-            existing = result.data || null;
-            if (existing) setCachedProfile(user.sub, existing);
+            sydneyResult = data;
+            console.log('[OAuthCallback] Sydney profile:', sydneyResult ? 'found' : 'not found');
           } catch (err) {
-            supabaseError = err;
-            console.warn('[OAuthCallback] Supabase profile lookup failed after retries:', err);
-            // DON'T crash — continue with null existing (assume new user)
+            sydneyError = err;
+            console.warn('[OAuthCallback] Sydney lookup failed:', err);
           }
 
-          // Fallback: check by email only if first query failed (not if null result)
-          if (!existing && !supabaseError && user.email) {
+          // Check Singapore (failover node) — only if Sydney didn't find it
+          let singaporeResult: any = null;
+          if (!sydneyResult && clusterClient) {
             try {
-              const emailResult = await withRetry(() =>
+              const { data } = await withRetry(() =>
                 Promise.resolve(
-                  dataSupabase
-                    .from('profiles')
-                    .select('id, auth0_id, display_name, total_flight_hours')
-                    .eq('email', user.email)
-                    .maybeSingle()
+                  clusterClient.from('profiles').select(profileFields).eq('auth0_id', user.sub).maybeSingle()
                 )
               );
-              const byEmail = emailResult.data;
+              singaporeResult = data;
+              console.log('[OAuthCallback] Singapore profile:', singaporeResult ? 'found' : 'not found');
+            } catch (err) {
+              console.warn('[OAuthCallback] Singapore lookup failed:', err);
+            }
+          }
+
+          // Use whichever node has the profile
+          existing = sydneyResult || singaporeResult || null;
+          if (existing) {
+            setCachedProfile(user.sub, existing);
+            console.log('[OAuthCallback] Profile found on:', sydneyResult ? 'Sydney' : 'Singapore');
+          }
+
+          // Fallback: check by email on Sydney (legacy linking)
+          if (!existing && !sydneyError && user.email) {
+            try {
+              const { data: byEmail } = await withRetry(() =>
+                Promise.resolve(
+                  dataSupabase.from('profiles').select('id, auth0_id, display_name, total_flight_hours').eq('email', user.email).maybeSingle()
+                )
+              );
               if (byEmail) {
                 await withRetry(() =>
                   Promise.resolve(
@@ -130,9 +149,10 @@ export const OAuthCallback = () => {
                 );
                 existing = byEmail;
                 setCachedProfile(user.sub, existing);
+                console.log('[OAuthCallback] Profile linked by email on Sydney');
               }
             } catch (err) {
-              console.warn('[OAuthCallback] Email fallback also failed:', err);
+              console.warn('[OAuthCallback] Email fallback failed:', err);
             }
           }
         }
