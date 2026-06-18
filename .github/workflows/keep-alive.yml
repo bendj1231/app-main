@@ -1,0 +1,29 @@
+name: Keep Supabase Auth Nodes Alive
+
+# Prevents auto-pause on free tier by pinging both auth nodes every 3 days
+# Runs at 00:00 UTC on day 1, 4, 7, 10, 13, 16, 19, 22, 25, 28 of each month
+on:
+  schedule:
+    - cron: '0 0 */3 * *'
+  workflow_dispatch: # Allow manual trigger for testing
+
+jobs:
+  ping-sydney:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Sydney Auth Node
+        run: |
+          curl -sfL \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_SYDNEY }}" \
+            "${{ secrets.SUPABASE_URL_SYDNEY }}/auth/v1/health" \
+            || echo "Sydney ping failed (may be expected if URL not set)"
+
+  ping-frankfurt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Frankfurt Auth Node
+        run: |
+          curl -sfL \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_FRANKFURT }}" \
+            "${{ secrets.SUPABASE_URL_FRANKFURT }}/auth/v1/health" \
+            || echo "Frankfurt ping failed (may be expected if URL not set)"
