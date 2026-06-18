@@ -438,3 +438,14 @@ export function getBestClient(): SupabaseClient | null {
 
 // ─── INIT ───
 startHealthChecks();
+
+// ─── DEBUG: Expose to browser console ───
+if (typeof window !== 'undefined') {
+  (window as any).markNodeDown = markNodeDown;
+  (window as any).markNodeHealthy = markNodeHealthy;
+  (window as any).getClusterStatus = getClusterStatus;
+  (window as any).getUsableNodes = getUsableNodes;
+  (window as any).getBestClient = getBestClient;
+  (window as any).selectNodeForLogin = selectNodeForLogin;
+  console.log('[AuthCluster] Debug helpers exposed: markNodeDown, markNodeHealthy, getClusterStatus, getUsableNodes, getBestClient, selectNodeForLogin');
+}
