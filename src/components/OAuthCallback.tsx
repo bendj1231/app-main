@@ -55,12 +55,12 @@ export const OAuthCallback = () => {
   useEffect(() => {
     if (!isAuthenticated || !user || profileCreated) return;
 
-    // Safety timeout — never get stuck longer than 10s
+    // Safety timeout — never get stuck longer than 20s
     const timeout = setTimeout(() => {
       console.warn('[OAuthCallback] Timeout — forcing navigation');
       setProfileCreated(true);
       navigate('/become-member?setup=1', { replace: true });
-    }, 10000);
+    }, 20000);
 
     const handleAuthCallback = async () => {
       try {
@@ -93,10 +93,10 @@ export const OAuthCallback = () => {
           // ─── STEP 2: Query BOTH Supabase nodes in PARALLEL ───
           const profileFields = 'id, auth0_id, display_name, total_flight_hours, email';
           
-          // Helper: query with 4s timeout (so slow Sydney doesn't block Singapore)
+          // Helper: query with 15s timeout (allows paused Supabase to wake up)
           const queryWithTimeout = async (client: any, nodeName: string) => {
             const timeout = new Promise<never>((_, reject) => 
-              setTimeout(() => reject(new Error(`${nodeName} timeout`)), 4000)
+              setTimeout(() => reject(new Error(`${nodeName} timeout`)), 15000)
             );
             try {
               const query = client
