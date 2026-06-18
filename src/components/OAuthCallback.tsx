@@ -3,6 +3,7 @@ import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 import { getBestClient } from '@/src/lib/auth-cluster';
+import { supabase as legacySupabase } from '@/src/lib/supabase';
 
 /** Retry helper with exponential backoff for resilient Supabase calls */
 async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3, baseDelay = 500): Promise<T> {
@@ -65,7 +66,6 @@ export const OAuthCallback = () => {
 
         // ─── CLUSTER-AWARE CLIENT for auth, LEGACY for data ───
         const clusterClient = getBestClient();
-        const { supabase: legacySupabase } = await import('@/src/lib/supabase');
         // Auth/session operations use cluster (failover-aware)
         const authSupabase = clusterClient || legacySupabase;
         // Profile/data operations ALWAYS use legacy Sydney (data lives there)
