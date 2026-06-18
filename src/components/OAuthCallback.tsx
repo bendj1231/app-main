@@ -55,6 +55,13 @@ export const OAuthCallback = () => {
   useEffect(() => {
     if (!isAuthenticated || !user || profileCreated) return;
 
+    // Safety timeout — never get stuck longer than 10s
+    const timeout = setTimeout(() => {
+      console.warn('[OAuthCallback] Timeout — forcing navigation');
+      setProfileCreated(true);
+      navigate('/become-member?setup=1', { replace: true });
+    }, 10000);
+
     const handleAuthCallback = async () => {
       try {
         // Debug trace
@@ -193,6 +200,8 @@ export const OAuthCallback = () => {
     };
 
     handleAuthCallback();
+
+    return () => clearTimeout(timeout);
   }, [isAuthenticated, user, profileCreated, navigate]);
 
   if (error) {
