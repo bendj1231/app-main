@@ -5,10 +5,10 @@
 # Install: Add to crontab: 0 0 */3 * * /path/to/keep-alive-oracle-vm.sh
 #
 # Environment vars (set in ~/.bashrc or Oracle VM systemd):
-#   SUPABASE_URL_SYDNEY
-#   SUPABASE_ANON_KEY_SYDNEY
-#   SUPABASE_URL_SINGAPORE
-#   SUPABASE_ANON_KEY_SINGAPORE
+#   SUPABASE_URL_SYDNEY=https://gkbhgrozrzhalnjherfu.supabase.co
+#   SUPABASE_ANON_KEY_SYDNEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYmhncm96cnpoYWxuamhlcmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MzQxOTEsImV4cCI6MjA4OTExMDE5MX0.m49ula5RMn4uEtRTk6l9q_6VElyPrY1YPMj-gtUYRsY
+#   SUPABASE_URL_SINGAPORE=https://xdrsipgwodmnhizxdsnp.supabase.co
+#   SUPABASE_ANON_KEY_SINGAPORE=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkcnNpcGd3b2Rtbmhpenhkc25wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3MjIyMTYsImV4cCI6MjA5NzI5ODIxNn0.FWvIafAh2APggWZRQKV9BmMFqViiw2kzEsubibLuy34
 
 set -euo pipefail
 
@@ -29,7 +29,7 @@ ping_node() {
     return 0
   fi
 
-  if curl -sfL -H "apikey: $key" "$url/auth/v1/health" > /dev/null 2>&1; then
+  if curl -sfL -H "apikey: $key" "$url/rest/v1/" > /dev/null 2>&1; then
     log "OK   $name — ping successful"
   else
     log "FAIL $name — ping failed (node may be down or URL incorrect)"

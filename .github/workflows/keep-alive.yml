@@ -11,19 +11,19 @@ jobs:
   ping-sydney:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Sydney Auth Node
+      - name: Ping Sydney Data API (wakes database)
         run: |
           curl -sfL \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_SYDNEY }}" \
-            "${{ secrets.SUPABASE_URL_SYDNEY }}/auth/v1/health" \
+            "${{ secrets.SUPABASE_URL_SYDNEY }}/rest/v1/" \
             || echo "Sydney ping failed (may be expected if URL not set)"
 
   ping-singapore:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Singapore Auth Node
+      - name: Ping Singapore Data API (wakes database)
         run: |
           curl -sfL \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_SINGAPORE }}" \
-            "${{ secrets.SUPABASE_URL_SINGAPORE }}/auth/v1/health" \
+            "${{ secrets.SUPABASE_URL_SINGAPORE }}/rest/v1/" \
             || echo "Singapore ping failed (may be expected if URL not set)"
