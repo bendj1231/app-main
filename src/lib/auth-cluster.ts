@@ -41,6 +41,7 @@ export interface AuthNode {
   sessionCount: number;
   sessionCapacity: number;
   compositeLoad: number;
+  manualDown?: boolean;
 }
 
 /** Active node registry — Sydney + Singapore */
@@ -197,6 +198,7 @@ export function stopHealthChecks(): void {
 /** Get nodes that are currently usable (healthy or degraded, not red) */
 export function getUsableNodes(): AuthNode[] {
   return [...AUTH_NODES]
+    .filter((n) => !n.manualDown)
     .filter((n) => n.status === 'healthy' || n.status === 'degraded')
     .filter((n) => n.compositeLoad < THRESHOLDS.RED)
     .sort((a, b) => {
@@ -412,9 +414,10 @@ export function markNodeDown(nodeId: NodeId): void {
   const node = AUTH_NODES.find((n) => n.id === nodeId);
   if (node) {
     node.status = 'down';
+    node.manualDown = true;
     node.failureCount = 99;
     node.compositeLoad = 1.0;
-    console.log(`[TEST] Manually marked ${nodeId} as DOWN`);
+    console.log(`[TEST] Manually marked ${nodeId} as DOWN (manual lock)`);
   }
 }
 
@@ -423,6 +426,7 @@ export function markNodeHealthy(nodeId: NodeId): void {
   const node = AUTH_NODES.find((n) => n.id === nodeId);
   if (node) {
     node.status = 'healthy';
+    node.manualDown = false;
     node.failureCount = 0;
     node.compositeLoad = 0;
     console.log(`[TEST] Manually marked ${nodeId} as HEALTHY`);
