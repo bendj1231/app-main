@@ -1,12 +1,11 @@
 /**
- * AUTH CLUSTER — 3-Node Regional Auth Router
+ * AUTH CLUSTER — 2-Node Regional Auth Router
  * ===========================================
- * Configuration: 2 EU nodes (Frankfurt + London) + 1 Asia node (Singapore)
+ * Configuration: Sydney (existing) + Frankfurt (new)
  *
  * Architecture:
- * - EU-1 (Frankfurt): Primary EU auth node
- * - EU-2 (London): Hot standby / cross-feed (same region)
- * - SG-1 (Singapore): Cross-region emergency backup
+ * - SYDNEY (ap-southeast-2): Primary node (existing, has data tables)
+ * - FRANKFURT (eu-central-1): Backup node (new, auth-only for failover test)
  *
  * Rules:
  * - EU pilots: Home → EU-1 → EU-2 → SG-1 (emergency)
@@ -27,7 +26,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // ─── REGION & NODE CONFIGURATION ───
 
-export type NodeId = 'eu-1' | 'eu-2' | 'sg-1';
+export type NodeId = 'sydney' | 'frankfurt';
 
 export interface AuthNode {
   id: NodeId;
@@ -44,42 +43,28 @@ export interface AuthNode {
   compositeLoad: number;
 }
 
-/** Active node registry — 2 EU + 1 Singapore */
+/** Active node registry — Sydney + Frankfurt */
 export const AUTH_NODES = ([
   {
-    id: 'eu-1' as NodeId,
-    region: 'EU West (Frankfurt)',
+    id: 'sydney' as NodeId,
+    region: 'Asia Pacific (Sydney)',
+    regionCode: 'ap-southeast-2',
+    url: import.meta.env.VITE_SUPABASE_URL || '',
+    anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+    status: 'unknown' as AuthNode['status'],
+    latencyMs: 0,
+    lastChecked: 0,
+    failureCount: 0,
+    sessionCount: 0,
+    sessionCapacity: 1000,
+    compositeLoad: 0,
+  },
+  {
+    id: 'frankfurt' as NodeId,
+    region: 'EU Central (Frankfurt)',
     regionCode: 'eu-central-1',
     url: import.meta.env.VITE_SUPABASE_URL_EU || '',
     anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_EU || '',
-    status: 'unknown' as AuthNode['status'],
-    latencyMs: 0,
-    lastChecked: 0,
-    failureCount: 0,
-    sessionCount: 0,
-    sessionCapacity: 1000,
-    compositeLoad: 0,
-  },
-  {
-    id: 'eu-2' as NodeId,
-    region: 'EU West (London)',
-    regionCode: 'eu-west-2',
-    url: import.meta.env.VITE_SUPABASE_URL_EU2 || '',
-    anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_EU2 || '',
-    status: 'unknown' as AuthNode['status'],
-    latencyMs: 0,
-    lastChecked: 0,
-    failureCount: 0,
-    sessionCount: 0,
-    sessionCapacity: 1000,
-    compositeLoad: 0,
-  },
-  {
-    id: 'sg-1' as NodeId,
-    region: 'Asia Pacific (Singapore)',
-    regionCode: 'ap-southeast-1',
-    url: import.meta.env.VITE_SUPABASE_URL_SG || '',
-    anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_SG || '',
     status: 'unknown' as AuthNode['status'],
     latencyMs: 0,
     lastChecked: 0,
@@ -93,10 +78,10 @@ export const AUTH_NODES = ([
 // ─── REGIONAL FAILOVER CHAINS ───
 
 const REGIONAL_CHAINS: Record<string, NodeId[]> = {
-  eu: ['eu-1', 'eu-2', 'sg-1'],
-  asia: ['sg-1', 'eu-1', 'eu-2'],
-  americas: ['eu-1', 'eu-2', 'sg-1'],
-  default: ['eu-1', 'eu-2', 'sg-1'],
+  asia: ['sydney', 'frankfurt'],
+  eu: ['frankfurt', 'sydney'],
+  americas: ['sydney', 'frankfurt'],
+  default: ['sydney', 'frankfurt'],
 };
 
 // ─── CAPACITY THRESHOLDS ───
@@ -418,6 +403,37 @@ export async function switchToNode(nodeId: NodeId): Promise<AuthResult<{ session
 export function isEmergencyMode(): boolean {
   const usable = getUsableNodes();
   return usable.length === 0;
+}
+
+// ─── TEST HELPERS ───
+
+/** Manually mark a node as down (for testing failover) */
+export function markNodeDown(nodeId: NodeId): void {
+  const node = AUTH_NODES.find((n) => n.id === nodeId);
+  if (node) {
+    node.status = 'down';
+    node.failureCount = 99;
+    node.compositeLoad = 1.0;
+    console.log(`[TEST] Manually marked ${nodeId} as DOWN`);
+  }
+}
+
+/** Restore a node to healthy (for testing recovery) */
+export function markNodeHealthy(nodeId: NodeId): void {
+  const node = AUTH_NODES.find((n) => n.id === nodeId);
+  if (node) {
+    node.status = 'healthy';
+    node.failureCount = 0;
+    node.compositeLoad = 0;
+    console.log(`[TEST] Manually marked ${nodeId} as HEALTHY`);
+  }
+}
+
+/** Get the best available client for data operations (profiles, etc.) */
+export function getBestClient(): SupabaseClient | null {
+  const usable = getUsableNodes();
+  if (usable.length === 0) return null;
+  return getClient(usable[0]);
 }
 
 // ─── INIT ───

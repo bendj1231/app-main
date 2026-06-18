@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
+import { getBestClient } from '@/src/lib/auth-cluster';
 
 /** Retry helper with exponential backoff for resilient Supabase calls */
 async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3, baseDelay = 500): Promise<T> {
@@ -62,7 +63,13 @@ export const OAuthCallback = () => {
           sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
         } catch {}
 
-        const { supabase } = await import('@/src/lib/supabase');
+        // ─── CLUSTER-AWARE CLIENT: try best node first, fallback to legacy ───
+        const clusterClient = getBestClient();
+        const { supabase: legacySupabase } = await import('@/src/lib/supabase');
+        const supabase = clusterClient || legacySupabase;
+        const activeNode = clusterClient ? 'cluster' : 'legacy';
+        console.log(`[OAuthCallback] Using ${activeNode} Supabase client`);
+
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
         const isCareerPathways = window.location.hostname.includes('pilotcareerpathways') || 
           window.location.hostname.includes('careerpathways') ||
