@@ -63,12 +63,15 @@ export const OAuthCallback = () => {
           sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
         } catch {}
 
-        // ─── CLUSTER-AWARE CLIENT: try best node first, fallback to legacy ───
+        // ─── CLUSTER-AWARE CLIENT for auth, LEGACY for data ───
         const clusterClient = getBestClient();
         const { supabase: legacySupabase } = await import('@/src/lib/supabase');
-        const supabase = clusterClient || legacySupabase;
+        // Auth/session operations use cluster (failover-aware)
+        const authSupabase = clusterClient || legacySupabase;
+        // Profile/data operations ALWAYS use legacy Sydney (data lives there)
+        const dataSupabase = legacySupabase;
         const activeNode = clusterClient ? 'cluster' : 'legacy';
-        console.log(`[OAuthCallback] Using ${activeNode} Supabase client`);
+        console.log(`[OAuthCallback] Auth: ${activeNode} node | Data: legacy (Sydney)`);
 
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
         const isCareerPathways = window.location.hostname.includes('pilotcareerpathways') || 
@@ -80,11 +83,11 @@ export const OAuthCallback = () => {
         let supabaseError: unknown = null;
 
         if (!existing) {
-          // ─── STEP 2: Query Supabase with retry ───
+          // ─── STEP 2: Query Supabase with retry (always use legacy Sydney for data) ───
           try {
             const result = await withRetry(() =>
               Promise.resolve(
-                supabase
+                dataSupabase
                   .from('profiles')
                   .select('id, auth0_id, display_name, total_flight_hours, email')
                   .eq('auth0_id', user.sub)
@@ -104,7 +107,7 @@ export const OAuthCallback = () => {
             try {
               const emailResult = await withRetry(() =>
                 Promise.resolve(
-                  supabase
+                  dataSupabase
                     .from('profiles')
                     .select('id, auth0_id, display_name, total_flight_hours')
                     .eq('email', user.email)
@@ -115,7 +118,7 @@ export const OAuthCallback = () => {
               if (byEmail) {
                 await withRetry(() =>
                   Promise.resolve(
-                    supabase.from('profiles').update({ auth0_id: user.sub }).eq('id', byEmail.id)
+                    dataSupabase.from('profiles').update({ auth0_id: user.sub }).eq('id', byEmail.id)
                   )
                 );
                 existing = byEmail;
@@ -140,13 +143,14 @@ export const OAuthCallback = () => {
           // New user — try to create profile, but DON'T block on failure
           console.debug('[OAuthCallback] no profile (or Supabase down) — treating as new user');
           
-          const { data: { session } } = await supabase.auth.getSession().catch(() => ({ data: { session: null } }));
+          // Auth session from cluster-aware client (supports failover)
+          const { data: { session } } = await authSupabase.auth.getSession().catch(() => ({ data: { session: null } }));
           const supabaseUid = session?.user?.id;
 
           if (supabaseUid && !supabaseError) {
             // Best effort: create profile, but don't await forever
             Promise.resolve(
-              supabase.from('profiles').upsert({
+              dataSupabase.from('profiles').upsert({
                 id: supabaseUid,
                 auth0_id: user.sub,
                 email: user.email,
@@ -158,7 +162,7 @@ export const OAuthCallback = () => {
               const newProfile = result.data;
               if (newProfile && 'id' in newProfile) {
                 Promise.resolve(
-                  supabase.functions.invoke('generate-profile-token', {
+                  dataSupabase.functions.invoke('generate-profile-token', {
                     body: { userId: newProfile.id }
                   })
                 ).catch(() => {});
