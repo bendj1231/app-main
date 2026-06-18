@@ -7,8 +7,8 @@
 # Environment vars (set in ~/.bashrc or Oracle VM systemd):
 #   SUPABASE_URL_SYDNEY
 #   SUPABASE_ANON_KEY_SYDNEY
-#   SUPABASE_URL_FRANKFURT
-#   SUPABASE_ANON_KEY_FRANKFURT
+#   SUPABASE_URL_SINGAPORE
+#   SUPABASE_ANON_KEY_SINGAPORE
 
 set -euo pipefail
 
@@ -39,6 +39,6 @@ ping_node() {
 log "=== Keep-alive run started ==="
 
 ping_node "sydney"    "$SUPABASE_URL_SYDNEY"    "$SUPABASE_ANON_KEY_SYDNEY"
-ping_node "frankfurt" "$SUPABASE_URL_FRANKFURT" "$SUPABASE_ANON_KEY_FRANKFURT"
+ping_node "singapore" "$SUPABASE_URL_SINGAPORE" "$SUPABASE_ANON_KEY_SINGAPORE"
 
 log "=== Keep-alive run complete ==="

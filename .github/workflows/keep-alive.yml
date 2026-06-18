@@ -18,12 +18,12 @@ jobs:
             "${{ secrets.SUPABASE_URL_SYDNEY }}/auth/v1/health" \
             || echo "Sydney ping failed (may be expected if URL not set)"
 
-  ping-frankfurt:
+  ping-singapore:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Frankfurt Auth Node
+      - name: Ping Singapore Auth Node
         run: |
           curl -sfL \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_FRANKFURT }}" \
-            "${{ secrets.SUPABASE_URL_FRANKFURT }}/auth/v1/health" \
-            || echo "Frankfurt ping failed (may be expected if URL not set)"
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_SINGAPORE }}" \
+            "${{ secrets.SUPABASE_URL_SINGAPORE }}/auth/v1/health" \
+            || echo "Singapore ping failed (may be expected if URL not set)"

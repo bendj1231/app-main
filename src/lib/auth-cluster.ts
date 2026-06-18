@@ -1,11 +1,11 @@
 /**
  * AUTH CLUSTER — 2-Node Regional Auth Router
  * ===========================================
- * Configuration: Sydney (existing) + Frankfurt (new)
+ * Configuration: Sydney (existing) + Singapore (new)
  *
  * Architecture:
  * - SYDNEY (ap-southeast-2): Primary node (existing, has data tables)
- * - FRANKFURT (eu-central-1): Backup node (new, auth-only for failover test)
+ * - SINGAPORE (ap-southeast-1): Backup node (new, auth-only for failover test)
  *
  * Rules:
  * - EU pilots: Home → EU-1 → EU-2 → SG-1 (emergency)
@@ -26,7 +26,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // ─── REGION & NODE CONFIGURATION ───
 
-export type NodeId = 'sydney' | 'frankfurt';
+export type NodeId = 'sydney' | 'singapore';
 
 export interface AuthNode {
   id: NodeId;
@@ -43,7 +43,7 @@ export interface AuthNode {
   compositeLoad: number;
 }
 
-/** Active node registry — Sydney + Frankfurt */
+/** Active node registry — Sydney + Singapore */
 export const AUTH_NODES = ([
   {
     id: 'sydney' as NodeId,
@@ -60,11 +60,11 @@ export const AUTH_NODES = ([
     compositeLoad: 0,
   },
   {
-    id: 'frankfurt' as NodeId,
-    region: 'EU Central (Frankfurt)',
-    regionCode: 'eu-central-1',
-    url: import.meta.env.VITE_SUPABASE_URL_EU || '',
-    anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_EU || '',
+    id: 'singapore' as NodeId,
+    region: 'Asia Pacific (Singapore)',
+    regionCode: 'ap-southeast-1',
+    url: import.meta.env.VITE_SUPABASE_URL_SG || '',
+    anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_SG || '',
     status: 'unknown' as AuthNode['status'],
     latencyMs: 0,
     lastChecked: 0,
@@ -78,10 +78,10 @@ export const AUTH_NODES = ([
 // ─── REGIONAL FAILOVER CHAINS ───
 
 const REGIONAL_CHAINS: Record<string, NodeId[]> = {
-  asia: ['sydney', 'frankfurt'],
-  eu: ['frankfurt', 'sydney'],
-  americas: ['sydney', 'frankfurt'],
-  default: ['sydney', 'frankfurt'],
+  asia: ['sydney', 'singapore'],
+  eu: ['singapore', 'sydney'],
+  americas: ['sydney', 'singapore'],
+  default: ['sydney', 'singapore'],
 };
 
 // ─── CAPACITY THRESHOLDS ───
