@@ -90,70 +90,42 @@ export const OAuthCallback = () => {
         let supabaseError: unknown = null;
 
         if (!existing) {
-          // ─── STEP 2: Query BOTH Supabase nodes for profile ───
-          // Sydney (legacy) AND Singapore (cluster backup)
+          // ─── STEP 2: Query BOTH Supabase nodes in PARALLEL ───
           const profileFields = 'id, auth0_id, display_name, total_flight_hours, email';
           
-          // Check Sydney first (primary data node)
-          let sydneyResult: any = null;
-          let sydneyError: any = null;
-          try {
-            const { data } = await withRetry(() =>
-              Promise.resolve(
-                dataSupabase.from('profiles').select(profileFields).eq('auth0_id', user.sub).maybeSingle()
-              )
+          // Helper: query with 4s timeout (so slow Sydney doesn't block Singapore)
+          const queryWithTimeout = async (client: any, nodeName: string) => {
+            const timeout = new Promise<never>((_, reject) => 
+              setTimeout(() => reject(new Error(`${nodeName} timeout`)), 4000)
             );
-            sydneyResult = data;
-            console.log('[OAuthCallback] Sydney profile:', sydneyResult ? 'found' : 'not found');
-          } catch (err) {
-            sydneyError = err;
-            console.warn('[OAuthCallback] Sydney lookup failed:', err);
-          }
-
-          // Check Singapore (failover node) — only if Sydney didn't find it
-          let singaporeResult: any = null;
-          if (!sydneyResult && clusterClient) {
             try {
-              const { data } = await withRetry(() =>
-                Promise.resolve(
-                  clusterClient.from('profiles').select(profileFields).eq('auth0_id', user.sub).maybeSingle()
-                )
-              );
-              singaporeResult = data;
-              console.log('[OAuthCallback] Singapore profile:', singaporeResult ? 'found' : 'not found');
+              const query = client
+                .from('profiles')
+                .select(profileFields)
+                .eq('auth0_id', user.sub)
+                .maybeSingle();
+              const { data } = await Promise.race([query, timeout]);
+              console.log(`[OAuthCallback] ${nodeName} profile:`, data ? 'found' : 'not found');
+              return data;
             } catch (err) {
-              console.warn('[OAuthCallback] Singapore lookup failed:', err);
+              console.warn(`[OAuthCallback] ${nodeName} lookup failed:`, (err as Error).message);
+              return null;
             }
-          }
+          };
 
-          // Use whichever node has the profile
+          // Query BOTH nodes simultaneously (parallel)
+          const [sydneyResult, singaporeResult] = await Promise.all([
+            queryWithTimeout(dataSupabase, 'Sydney'),
+            clusterClient ? queryWithTimeout(clusterClient, 'Singapore') : Promise.resolve(null)
+          ]);
+
+          // Use whichever node responds first with data
           existing = sydneyResult || singaporeResult || null;
           if (existing) {
             setCachedProfile(user.sub, existing);
             console.log('[OAuthCallback] Profile found on:', sydneyResult ? 'Sydney' : 'Singapore');
-          }
-
-          // Fallback: check by email on Sydney (legacy linking)
-          if (!existing && !sydneyError && user.email) {
-            try {
-              const { data: byEmail } = await withRetry(() =>
-                Promise.resolve(
-                  dataSupabase.from('profiles').select('id, auth0_id, display_name, total_flight_hours').eq('email', user.email).maybeSingle()
-                )
-              );
-              if (byEmail) {
-                await withRetry(() =>
-                  Promise.resolve(
-                    dataSupabase.from('profiles').update({ auth0_id: user.sub }).eq('id', byEmail.id)
-                  )
-                );
-                existing = byEmail;
-                setCachedProfile(user.sub, existing);
-                console.log('[OAuthCallback] Profile linked by email on Sydney');
-              }
-            } catch (err) {
-              console.warn('[OAuthCallback] Email fallback failed:', err);
-            }
+          } else {
+            console.log('[OAuthCallback] Profile NOT found on either node');
           }
         }
 
