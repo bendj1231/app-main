@@ -155,26 +155,30 @@ export const OAuthCallback = () => {
           const supabaseUid = session?.user?.id;
 
           if (supabaseUid && !supabaseError) {
-            // Best effort: create profile, but don't await forever
+            // Sync profile across BOTH Supabase nodes (Sydney + Singapore)
             Promise.resolve(
-              dataSupabase.from('profiles').upsert({
-                id: supabaseUid,
-                auth0_id: user.sub,
-                email: user.email,
-                avatar_url: user.picture,
-                account_tier: 'free',
-                created_at: new Date().toISOString(),
-              }, { onConflict: 'auth0_id' }).select('id').maybeSingle()
-            ).then((result) => {
-              const newProfile = result.data;
-              if (newProfile && 'id' in newProfile) {
+              dataSupabase.functions.invoke('sync-user-cluster', {
+                body: {
+                  auth0_id: user.sub,
+                  email: user.email,
+                  display_name: user.name || user.email?.split('@')[0] || 'New Pilot',
+                  avatar_url: user.picture,
+                  supabase_uid: supabaseUid,
+                }
+              })
+            ).then((syncResult) => {
+              console.log('[OAuthCallback] Cross-node sync result:', syncResult);
+              // If at least one node succeeded, try to generate token
+              if (syncResult?.data?.success) {
                 Promise.resolve(
                   dataSupabase.functions.invoke('generate-profile-token', {
-                    body: { userId: newProfile.id }
+                    body: { userId: supabaseUid }
                   })
                 ).catch(() => {});
               }
-            }).catch(() => {});
+            }).catch((err) => {
+              console.warn('[OAuthCallback] Sync failed (will retry on next login):', err);
+            });
           }
 
           setProfileCreated(true);
