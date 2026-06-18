@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
-import { getBestClient } from '@/src/lib/auth-cluster';
+import { getBestClient, getUsableNodes } from '@/src/lib/auth-cluster';
 import { supabase as legacySupabase } from '@/src/lib/supabase';
 
 /** Retry helper with exponential backoff for resilient Supabase calls */
@@ -113,19 +113,34 @@ export const OAuthCallback = () => {
             }
           };
 
-          // Query BOTH nodes simultaneously (parallel)
-          const [sydneyResult, singaporeResult] = await Promise.all([
-            queryWithTimeout(dataSupabase, 'Sydney'),
-            clusterClient ? queryWithTimeout(clusterClient, 'Singapore') : Promise.resolve(null)
-          ]);
+          // Check which nodes are actually usable
+          const usableNodes = getUsableNodes();
+          const sydneyUsable = usableNodes.some(n => n.id === 'sydney');
+          const singaporeUsable = usableNodes.some(n => n.id === 'singapore');
+          console.log('[OAuthCallback] Usable nodes:', usableNodes.map(n => n.id));
 
-          // Use whichever node responds first with data
+          // Query nodes — skip Sydney if it's marked down
+          let sydneyResult: any = null;
+          let singaporeResult: any = null;
+
+          if (sydneyUsable) {
+            sydneyResult = await queryWithTimeout(dataSupabase, 'Sydney');
+          } else {
+            console.log('[OAuthCallback] Sydney marked down — skipping');
+          }
+
+          // Query Singapore if Sydney didn't find it or is down
+          if (!sydneyResult && singaporeUsable && clusterClient) {
+            singaporeResult = await queryWithTimeout(clusterClient, 'Singapore');
+          }
+
+          // Use whichever node has the profile
           existing = sydneyResult || singaporeResult || null;
           if (existing) {
             setCachedProfile(user.sub, existing);
             console.log('[OAuthCallback] Profile found on:', sydneyResult ? 'Sydney' : 'Singapore');
           } else {
-            console.log('[OAuthCallback] Profile NOT found on either node');
+            console.log('[OAuthCallback] Profile NOT found on available nodes');
           }
         }
 
