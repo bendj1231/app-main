@@ -42,9 +42,10 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
   const auth0Audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
   if (!auth0Domain || !auth0ClientId) {
-    throw new Error(
-      'Missing required Auth0 environment variables: VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID'
+    console.warn(
+      '⚠️ Missing Auth0 environment variables: VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID — auth disabled until configured'
     );
+    return <>{children}</>;
   }
 
   const effectiveAuth0Audience =
