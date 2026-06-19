@@ -1,0 +1,5 @@
+# Exclude functions/ from Cloudflare Pages auto-detection
+# We deploy a static Vite build in dist/; Worker API is separate
+functions/
+functions
+node_modules/
