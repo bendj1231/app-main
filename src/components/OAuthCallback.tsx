@@ -2,31 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
-import { getBestClient, getUsableNodes } from '@/src/lib/auth-cluster';
-import { supabase as legacySupabase } from '@/src/lib/supabase';
+import { api } from '@/src/lib/d1-api';
 
-/** Retry helper with exponential backoff for resilient Supabase calls */
-async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3, baseDelay = 500): Promise<T> {
-  let lastError: unknown;
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      return await fn();
-    } catch (err) {
-      lastError = err;
-      // 522 = throttled, 503 = unavailable — these are retryable
-      const status = (err as any)?.status || (err as any)?.code;
-      const isRetryable = status === 522 || status === 503 || status === 'timeout' || status === 'ETIMEDOUT';
-      if (!isRetryable && i === 0) throw err; // Non-retryable error, fail fast
-      if (i < maxRetries - 1) {
-        const delay = baseDelay * Math.pow(2, i); // 500ms, 1000ms, 2000ms
-        await new Promise(r => setTimeout(r, delay));
-      }
-    }
-  }
-  throw lastError;
-}
-
-/** Cache profile data in sessionStorage to reduce Supabase calls */
+/** Cache profile data in sessionStorage to reduce API calls */
 function getCachedProfile(auth0Id: string): { display_name?: string | null; id?: string } | null {
   try {
     const cached = sessionStorage.getItem(`profile_cache:${auth0Id}`);
@@ -71,80 +49,38 @@ export const OAuthCallback = () => {
           sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
         } catch {}
 
-        // ─── CLUSTER-AWARE CLIENT for auth, LEGACY for data ───
-        const clusterClient = getBestClient();
-        // Auth/session operations use cluster (failover-aware)
-        const authSupabase = clusterClient || legacySupabase;
-        // Profile/data operations ALWAYS use legacy Sydney (data lives there)
-        const dataSupabase = legacySupabase;
-        const activeNode = clusterClient ? 'cluster' : 'legacy';
-        console.log(`[OAuthCallback] Auth: ${activeNode} node | Data: legacy (Sydney)`);
-
         const isPilotTerminal = window.location.hostname.includes('pilotterminal');
         const isCareerPathways = window.location.hostname.includes('pilotcareerpathways') || 
           window.location.hostname.includes('careerpathways') ||
           (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('product') === 'careerpathways');
 
-        // ─── STEP 1: Check cached profile (reduces Supabase calls to zero if cache hit) ───
+        // ─── STEP 1: Check cached profile ───
         let existing = getCachedProfile(user.sub);
-        let supabaseError: unknown = null;
 
         if (!existing) {
-          // ─── STEP 2: Query BOTH Supabase nodes in PARALLEL ───
-          const profileFields = 'id, auth0_id, display_name, total_flight_hours, email';
-          
-          // Helper: query with 30s timeout (allows deeply paused Supabase to wake up)
-          const queryWithTimeout = async (client: any, nodeName: string) => {
-            const timeout = new Promise<never>((_, reject) => 
-              setTimeout(() => reject(new Error(`${nodeName} timeout`)), 30000)
-            );
-            try {
-              const query = client
-                .from('profiles')
-                .select(profileFields)
-                .eq('auth0_id', user.sub)
-                .maybeSingle();
-              const { data } = await Promise.race([query, timeout]);
-              console.log(`[OAuthCallback] ${nodeName} profile:`, data ? 'found' : 'not found');
-              return data;
-            } catch (err) {
-              console.warn(`[OAuthCallback] ${nodeName} lookup failed:`, (err as Error).message);
-              return null;
+          // ─── STEP 2: Query profile via Worker API ───
+          try {
+            const accessToken = sessionStorage.getItem('access_token') || '';
+            const rows = await api(accessToken, 'queryTable', {
+              table: 'profiles',
+              operation: 'select',
+              where: { auth0_id: user.sub },
+              limit: 1,
+            }) as Record<string, unknown>[];
+            existing = rows?.[0] ?? null;
+            if (existing) {
+              setCachedProfile(user.sub, existing);
+              console.log('[OAuthCallback] Profile found via Worker API');
+            } else {
+              console.log('[OAuthCallback] Profile NOT found — new user');
             }
-          };
-
-          // Check which nodes are actually usable
-          const usableNodes = getUsableNodes();
-          const sydneyUsable = usableNodes.some(n => n.id === 'sydney');
-          const singaporeUsable = usableNodes.some(n => n.id === 'singapore');
-          console.log('[OAuthCallback] Usable nodes:', usableNodes.map(n => n.id));
-
-          // Query nodes — skip Sydney if it's marked down
-          let sydneyResult: any = null;
-          let singaporeResult: any = null;
-
-          if (sydneyUsable) {
-            sydneyResult = await queryWithTimeout(dataSupabase, 'Sydney');
-          } else {
-            console.log('[OAuthCallback] Sydney marked down — skipping');
-          }
-
-          // Query Singapore if Sydney didn't find it or is down
-          if (!sydneyResult && singaporeUsable && clusterClient) {
-            singaporeResult = await queryWithTimeout(clusterClient, 'Singapore');
-          }
-
-          // Use whichever node has the profile
-          existing = sydneyResult || singaporeResult || null;
-          if (existing) {
-            setCachedProfile(user.sub, existing);
-            console.log('[OAuthCallback] Profile found on:', sydneyResult ? 'Sydney' : 'Singapore');
-          } else {
-            console.log('[OAuthCallback] Profile NOT found on available nodes');
+          } catch (err) {
+            console.warn('[OAuthCallback] Worker API profile lookup failed:', err);
+            existing = null;
           }
         }
 
-        // ─── STEP 3: Determine redirect (works even if Supabase is down) ───
+        // ─── STEP 3: Determine redirect ───
         const returnTo = sessionStorage.getItem('auth0_return_to');
         if (returnTo) {
           sessionStorage.removeItem('auth0_return_to');
@@ -154,40 +90,7 @@ export const OAuthCallback = () => {
         }
 
         if (!existing) {
-          // New user — try to create profile, but DON'T block on failure
-          console.debug('[OAuthCallback] no profile (or Supabase down) — treating as new user');
-          
-          // Auth session from cluster-aware client (supports failover)
-          const { data: { session } } = await authSupabase.auth.getSession().catch(() => ({ data: { session: null } }));
-          const supabaseUid = session?.user?.id;
-
-          if (supabaseUid && !supabaseError) {
-            // Sync profile across BOTH Supabase nodes (Sydney + Singapore)
-            Promise.resolve(
-              dataSupabase.functions.invoke('sync-user-cluster', {
-                body: {
-                  auth0_id: user.sub,
-                  email: user.email,
-                  display_name: user.name || user.email?.split('@')[0] || 'New Pilot',
-                  avatar_url: user.picture,
-                  supabase_uid: supabaseUid,
-                }
-              })
-            ).then((syncResult) => {
-              console.log('[OAuthCallback] Cross-node sync result:', syncResult);
-              // If at least one node succeeded, try to generate token
-              if (syncResult?.data?.success) {
-                Promise.resolve(
-                  dataSupabase.functions.invoke('generate-profile-token', {
-                    body: { userId: supabaseUid }
-                  })
-                ).catch(() => {});
-              }
-            }).catch((err) => {
-              console.warn('[OAuthCallback] Sync failed (will retry on next login):', err);
-            });
-          }
-
+          // New user — AuthContext will handle profile creation
           setProfileCreated(true);
           const target = isPilotTerminal ? '/' : '/become-member?setup=1';
           navigate(target, { replace: true });
