@@ -6,21 +6,61 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error('❌ Supabase environment variables not configured:', {
-    hasUrl: !!supabaseUrl,
-    hasKey: !!supabaseKey
-  });
+  console.warn('⚠️ VITE_SUPABASE_URL not set — Portal Supabase client not initialized (migration to Worker API in progress)');
 }
 
-console.log('🔧 Supabase Client Initialization:', {
-  url: supabaseUrl,
-  hasServiceKey: !!supabaseKey,
-  keyLength: supabaseKey?.length || 0,
-  envUrl: import.meta.env.VITE_SUPABASE_URL,
-  envKey: supabaseKey ? '***SET***' : 'missing'
-});
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function createNoOpClient(): any {
+  const noop = () => Promise.resolve({ data: null, error: new Error('Supabase not configured') });
+  const noopUser = () => Promise.resolve({ data: { user: null }, error: new Error('Supabase not configured') });
+  const noopSession = () => Promise.resolve({ data: { session: null }, error: new Error('Supabase not configured') });
+  const noopChain = new Proxy({} as any, {
+    get(_, prop: string | symbol) {
+      if (prop === 'then') {
+        return (resolve: any) => Promise.resolve(resolve?.({ data: null, error: new Error('Supabase not configured') }));
+      }
+      if (prop === 'catch') {
+        return (reject: any) => Promise.resolve(reject?.(new Error('Supabase not configured')));
+      }
+      if (prop === 'finally') {
+        return (fn: any) => Promise.resolve(fn?.());
+      }
+      if (prop === 'data' || prop === 'error') {
+        return null;
+      }
+      return noopChain;
+    },
+    apply() {
+      return noopChain;
+    },
+  });
+  return {
+    from: () => noopChain,
+    auth: {
+      getSession: noopSession,
+      signOut: noop,
+      getUser: noopUser,
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+    },
+    functions: { invoke: noop },
+    storage: { from: () => noopChain },
+    channel: () => noopChain,
+    removeChannel: () => noopChain,
+    removeAllChannels: () => noopChain,
+    realtime: {},
+  };
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = supabaseUrl && supabaseKey
+  ? createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    })
+  : createNoOpClient();
 
 export interface AuthState {
   user: any | null;

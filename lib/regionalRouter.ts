@@ -126,14 +126,31 @@ export function getRegionalSupabaseClient(issuingAuthority: string) {
   const region = getRegionForLicense(issuingAuthority);
 
   if (region === 'eu') {
-    if (!SUPABASE_URL_EU || !SUPABASE_ANON_KEY_EU) {
-      console.error('❌ EU Supabase credentials not configured. Falling back to World project.');
-      return createClient(SUPABASE_URL_WORLD || '', SUPABASE_ANON_KEY_WORLD || '');
+    if (SUPABASE_URL_EU && SUPABASE_ANON_KEY_EU) {
+      return createClient(SUPABASE_URL_EU, SUPABASE_ANON_KEY_EU);
     }
-    return createClient(SUPABASE_URL_EU, SUPABASE_ANON_KEY_EU);
+    console.warn('⚠️ EU Supabase credentials not configured. Falling back to World project (migration to Worker API in progress).');
+    if (SUPABASE_URL_WORLD && SUPABASE_ANON_KEY_WORLD) {
+      return createClient(SUPABASE_URL_WORLD, SUPABASE_ANON_KEY_WORLD);
+    }
   }
 
-  return createClient(SUPABASE_URL_WORLD || '', SUPABASE_ANON_KEY_WORLD || '');
+  if (SUPABASE_URL_WORLD && SUPABASE_ANON_KEY_WORLD) {
+    return createClient(SUPABASE_URL_WORLD, SUPABASE_ANON_KEY_WORLD);
+  }
+
+  console.warn('⚠️ Supabase credentials not configured — regional router returning no-op client (migration to Worker API in progress).');
+  const noop = () => Promise.resolve({ data: null, error: new Error('Supabase not configured') });
+  const noopChain = new Proxy({} as any, {
+    get() { return noopChain; },
+    apply() { return noopChain; },
+  });
+  return {
+    from: () => noopChain,
+    auth: { getSession: noop, signOut: noop, getUser: noop, onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }) },
+    functions: { invoke: noop },
+    storage: { from: () => noopChain },
+  } as any;
 }
 
 /**
