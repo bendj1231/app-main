@@ -141,7 +141,8 @@ export function getRegionalSupabaseClient(issuingAuthority: string) {
 
   console.warn('⚠️ Supabase credentials not configured — regional router returning no-op client (migration to Worker API in progress).');
   const noop = () => Promise.resolve({ data: null, error: new Error('Supabase not configured') });
-  const noopChain = new Proxy({} as any, {
+  const noopChainTarget = function () {} as any;
+  const noopChain = new Proxy(noopChainTarget, {
     get() { return noopChain; },
     apply() { return noopChain; },
   });

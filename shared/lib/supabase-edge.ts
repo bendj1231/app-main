@@ -12,7 +12,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function createNoOpClient(): any {
   const noop = () => Promise.resolve({ data: null, error: new Error('Supabase not configured') });
-  const noopChain: any = new Proxy({} as any, {
+  const noopChainTarget = function () {} as any;
+  const noopChain: any = new Proxy(noopChainTarget, {
     get() { return noopChain; },
     apply() { return noopChain; },
   });

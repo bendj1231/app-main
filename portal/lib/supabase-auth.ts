@@ -14,7 +14,8 @@ function createNoOpClient(): any {
   const noop = () => Promise.resolve({ data: null, error: new Error('Supabase not configured') });
   const noopUser = () => Promise.resolve({ data: { user: null }, error: new Error('Supabase not configured') });
   const noopSession = () => Promise.resolve({ data: { session: null }, error: new Error('Supabase not configured') });
-  const noopChain = new Proxy({} as any, {
+  const noopChainTarget = function () {} as any;
+  const noopChain = new Proxy(noopChainTarget, {
     get(_, prop: string | symbol) {
       if (prop === 'then') {
         return (resolve: any) => Promise.resolve(resolve?.({ data: null, error: new Error('Supabase not configured') }));
