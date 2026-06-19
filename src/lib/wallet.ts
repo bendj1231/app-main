@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { api } from './d1-api';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const PILOT_ISSUER_URL = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_PILOT_ISSUER_URL)
@@ -6,7 +6,6 @@ const PILOT_ISSUER_URL = (typeof window !== 'undefined' && (import.meta as any).
   ? (import.meta as any).env.VITE_PILOT_ISSUER_URL
   : 'https://issuer.pilotrecognition.com';
 
-// PilotRecognition Wallet API — native browser wallet, no external dependency
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const PILOT_WALLET_API = (typeof window !== 'undefined' && (import.meta as any).env?.VITE_WALT_WALLET_API)
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -22,13 +21,11 @@ async function sha256(text: string): Promise<string> {
     .join('');
 }
 
-// ── Client-side DID wallet (100% browser-native, $0, works on Vercel) ────────
-
 export async function createClientWallet(
+  accessToken: string,
   profileId: string,
   auth0Id: string
 ): Promise<{ did: string; publicKeyJwk: JsonWebKey; walletId: string }> {
-  // ── Prompt browser to save a passkey (Google Password Manager / iCloud Keychain) ──
   try {
     const challenge = crypto.getRandomValues(new Uint8Array(32));
     const userId = new TextEncoder().encode(profileId.slice(0, 64));
@@ -37,98 +34,84 @@ export async function createClientWallet(
         challenge,
         rp: { name: 'PilotRecognition', id: window.location.hostname },
         user: { id: userId, name: auth0Id, displayName: 'Pilot Wallet' },
-        pubKeyCredParams: [{ type: 'public-key', alg: -7 }], // ES256
-        authenticatorSelection: {
-          residentKey: 'preferred',
-          userVerification: 'preferred',
-        },
+        pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
+        authenticatorSelection: { residentKey: 'preferred', userVerification: 'preferred' },
         timeout: 60000,
         attestation: 'none',
       },
     }) as PublicKeyCredential | null;
 
     if (credential) {
-      // Store the passkey credential_id so we can use it for future sign-ins
       const credId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)))
         .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-      await supabase.from('pilot_passkeys').upsert({
-        user_id: auth0Id,
-        credential_id: credId,
-        public_key: new Uint8Array((credential.response as AuthenticatorAttestationResponse).getPublicKey() || []),
-        sign_count: 0,
-        device_name: 'Platform Authenticator',
-        transports: ['internal'],
-      }, { onConflict: 'credential_id' });
+      await api(accessToken, 'queryTable', {
+        table: 'pilot_passkeys',
+        operation: 'insert',
+        data: {
+          user_id: auth0Id,
+          credential_id: credId,
+          public_key: new Uint8Array((credential.response as AuthenticatorAttestationResponse).getPublicKey() || []),
+          sign_count: 0,
+          device_name: 'Platform Authenticator',
+          transports: ['internal'],
+        },
+      });
     }
   } catch (passkeyErr) {
-    // Non-fatal — user may have cancelled or device doesn't support passkeys
-    console.warn('⚠️ Passkey creation skipped:', passkeyErr instanceof Error ? passkeyErr.message : passkeyErr);
+    console.warn('Passkey creation skipped:', passkeyErr instanceof Error ? passkeyErr.message : passkeyErr);
   }
 
-  // Generate cryptographic keypair entirely in the browser
   const keyPair = await crypto.subtle.generateKey(
-    { name: 'ECDSA', namedCurve: 'P-256' },
-    true,
-    ['sign', 'verify']
+    { name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']
   );
   const publicKeyJwk = await crypto.subtle.exportKey('jwk', keyPair.publicKey);
 
-  // Build did:key from the public key
   const pubKeyBytes = new TextEncoder().encode(JSON.stringify(publicKeyJwk));
   const hashBuf = await crypto.subtle.digest('SHA-256', pubKeyBytes);
   const hashB64 = btoa(String.fromCharCode(...new Uint8Array(hashBuf)))
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   const did = `did:key:z${hashB64}`;
 
-  // walletId = SHA-256 of profileId+auth0Id — stable, deterministic
   const walletId = await sha256(`${profileId}:${auth0Id}`);
 
-  // Store DID in Supabase pilot_dids
-  await supabase.from('pilot_dids').upsert({
-    profile_id: profileId,
-    auth0_id: auth0Id,
-    did,
-    did_method: 'did:key',
-    public_key_jwk: publicKeyJwk,
-  }, { onConflict: 'auth0_id' });
+  await api(accessToken, 'queryTable', {
+    table: 'pilot_dids',
+    operation: 'insert',
+    data: { profile_id: profileId, auth0_id: auth0Id, did, did_method: 'did:key', public_key_jwk: publicKeyJwk },
+  });
 
-  // Store walletId + DID directly on profiles for easy querying
-  await supabase.from('profiles').update({
-    wallet_id: walletId,
-    wallet_email: `${profileId}@wallet.pilotrecognition.com`,
-    wallet_did: did,
-  }).eq('id', profileId);
+  await api(accessToken, 'queryTable', {
+    table: 'profiles',
+    operation: 'update',
+    id: profileId,
+    data: { wallet_id: walletId, wallet_email: `${profileId}@wallet.pilotrecognition.com`, wallet_did: did },
+  });
 
   return { did, publicKeyJwk, walletId };
 }
 
 export async function getOrCreateClientWallet(
+  accessToken: string,
   profileId: string,
   auth0Id: string
 ): Promise<{ did: string; walletId: string }> {
-  // Check existing
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('wallet_id')
-    .eq('id', profileId)
-    .single();
+  const profileRows = await api(accessToken, 'queryTable', {
+    table: 'profiles', operation: 'select', where: { id: profileId }, limit: 1,
+  }) as Record<string, unknown>[];
+  const profile = profileRows?.[0];
 
-  const { data: didData } = await supabase
-    .from('pilot_dids')
-    .select('did')
-    .eq('auth0_id', auth0Id)
-    .single();
+  const didRows = await api(accessToken, 'queryTable', {
+    table: 'pilot_dids', operation: 'select', where: { auth0_id: auth0Id }, limit: 1,
+  }) as Record<string, unknown>[];
+  const didData = didRows?.[0];
 
   if (profile?.wallet_id && didData?.did) {
-    return { did: didData.did, walletId: profile.wallet_id };
+    return { did: String(didData.did), walletId: String(profile.wallet_id) };
   }
 
-  // Create new client-side wallet
-  const { did, walletId } = await createClientWallet(profileId, auth0Id);
+  const { did, walletId } = await createClientWallet(accessToken, profileId, auth0Id);
   return { did, walletId };
 }
-
-// ── PilotRecognition Wallet API helpers (legacy compatibility) ─────────────
 
 export async function registerPilotWallet(
   email: string,
@@ -136,29 +119,23 @@ export async function registerPilotWallet(
   name: string
 ): Promise<{ success: boolean; token?: string; walletId?: string; error?: string }> {
   try {
-    // Step 1: Register account
     const regRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'email', name, email, password }),
     });
-    if (!regRes.ok && regRes.status !== 409) {
-      throw new Error(`Register failed: ${regRes.status}`);
-    }
+    if (!regRes.ok && regRes.status !== 409) throw new Error(`Register failed: ${regRes.status}`);
 
-    // Step 2: Login to get token
     const loginRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'email', email, password }),
     });
     if (!loginRes.ok) throw new Error(`Login failed: ${loginRes.status}`);
-    const loginData = await loginRes.json();
-    const token = loginData.token;
+    const { token } = await loginRes.json();
 
-    // Step 3: Get wallet ID
     const walletsRes = await fetch(`${PILOT_WALLET_API}/wallet-api/wallet/accounts/wallets`, {
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!walletsRes.ok) throw new Error(`Get wallets failed: ${walletsRes.status}`);
     const walletsData = await walletsRes.json();
@@ -174,19 +151,17 @@ export async function registerPilotWallet(
 }
 
 export async function getOrCreatePilotWallet(
+  accessToken: string,
   auth0Id: string,
   profileId: string,
   _email: string
 ): Promise<{ walletId: string; token: string } | null> {
-  // Check if already registered in Supabase
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('wallet_id, wallet_email')
-    .eq('id', profileId)
-    .single();
+  const rows = await api(accessToken, 'queryTable', {
+    table: 'profiles', operation: 'select', where: { id: profileId }, limit: 1,
+  }) as Record<string, unknown>[];
+  const profile = rows?.[0];
 
   if (profile?.wallet_id) {
-    // Re-login to get fresh token
     const password = `PR-${auth0Id.replace(/\|/g, '-')}`;
     const loginRes = await fetch(`${PILOT_WALLET_API}/wallet-api/auth/login`, {
       method: 'POST',
@@ -195,25 +170,23 @@ export async function getOrCreatePilotWallet(
     });
     if (!loginRes.ok) return null;
     const { token } = await loginRes.json();
-    return { walletId: profile.wallet_id, token };
+    return { walletId: String(profile.wallet_id), token };
   }
 
-  // Register new wallet
   const password = `PR-${auth0Id.replace(/\|/g, '-')}`;
   const walletEmail = `${profileId}@wallet.pilotrecognition.com`;
   const result = await registerPilotWallet(walletEmail, password, `Pilot-${profileId.slice(0, 8)}`);
   if (!result.success || !result.walletId || !result.token) return null;
 
-  // Store wallet_id in Supabase
-  await supabase.from('profiles').update({
-    wallet_id: result.walletId,
-    wallet_email: walletEmail,
-  }).eq('id', profileId);
+  await api(accessToken, 'queryTable', {
+    table: 'profiles',
+    operation: 'update',
+    id: profileId,
+    data: { wallet_id: result.walletId, wallet_email: walletEmail },
+  });
 
   return { walletId: result.walletId, token: result.token };
 }
-
-// ── Credential issuance ─────────────────────────────────────────────────────
 
 export interface IssuedCredential {
   credentialJwt: string;
@@ -224,6 +197,7 @@ export interface IssuedCredential {
 }
 
 export async function issueAndStoreCredential(
+  accessToken: string,
   auth0Id: string,
   profileId: string,
   totalHours: number,
@@ -234,25 +208,19 @@ export async function issueAndStoreCredential(
     const issuanceDate = now.toISOString();
     const expirationDate = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()).toISOString();
 
-    // Get or create client-side DID wallet (browser-native, $0, no Docker)
-    const { did: subjectDid, walletId } = await getOrCreateClientWallet(profileId, auth0Id);
+    const { did: subjectDid, walletId } = await getOrCreateClientWallet(accessToken, profileId, auth0Id);
 
-    // Onboard issuer key from legacy external issuer (deprecated, use issuer-sign)
     const onboardRes = await fetch(`${PILOT_ISSUER_URL}/onboard/issuer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        key: { backend: 'jwk', keyType: 'secp256r1' },
-        did: { method: 'jwk' }
-      })
+      body: JSON.stringify({ key: { backend: 'jwk', keyType: 'secp256r1' }, did: { method: 'jwk' } }),
     });
     if (!onboardRes.ok) throw new Error('External issuer onboard failed');
     const onboardData = await onboardRes.json();
 
-    // Issue credential via OID4VCI (legacy path)
     const issueRes = await fetch(`${PILOT_ISSUER_URL}/openid4vc/jwt/issue`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'accept': 'text/plain' },
+      headers: { 'Content-Type': 'application/json', accept: 'text/plain' },
       body: JSON.stringify({
         issuerKey: { type: 'jwk', jwk: onboardData.issuerKey.jwk },
         issuerDid: onboardData.issuerDid,
@@ -263,41 +231,36 @@ export async function issueAndStoreCredential(
           issuer: onboardData.issuerDid,
           issuanceDate,
           expirationDate,
-          credentialSubject: {
-            id: subjectDid,
-            flightHours: totalHours,
-            auth0Id,
-          },
+          credentialSubject: { id: subjectDid, flightHours: totalHours, auth0Id },
         },
-      })
+      }),
     });
     if (!issueRes.ok) throw new Error(`External issuer failed: ${issueRes.status}`);
     const credentialOfferUrl = await issueRes.text();
     const credentialJwt = credentialOfferUrl;
     const credentialHash = await sha256(credentialJwt);
 
-    // Store credential in Supabase
-    const { error: dbError } = await supabase.from('pilot_credentials').insert({
-      profile_id: profileId,
-      auth0_id: auth0Id,
-      credential_type: 'FlightHoursVC',
-      issuer_did: onboardData.issuerDid,
-      subject_did: subjectDid,
-      credential_offer_url: credentialOfferUrl,
-      credential_jwt: credentialJwt,
-      credential_hash: credentialHash,
-      source_provider: 'pilot.wallet',
-      total_hours: totalHours,
-      issued_at: issuanceDate,
-      expires_at: expirationDate,
-      status: 'active',
-      storage_backend: storageBackend,
-      metadata: {
-        issuerDid: onboardData.issuerDid,
-        walletId: walletId || null,
+    await api(accessToken, 'queryTable', {
+      table: 'pilot_credentials',
+      operation: 'insert',
+      data: {
+        profile_id: profileId,
+        auth0_id: auth0Id,
+        credential_type: 'FlightHoursVC',
+        issuer_did: onboardData.issuerDid,
+        subject_did: subjectDid,
+        credential_offer_url: credentialOfferUrl,
+        credential_jwt: credentialJwt,
+        credential_hash: credentialHash,
+        source_provider: 'pilot.wallet',
+        total_hours: totalHours,
+        issued_at: issuanceDate,
+        expires_at: expirationDate,
+        status: 'active',
+        storage_backend: storageBackend,
+        metadata: JSON.stringify({ issuerDid: onboardData.issuerDid, walletId: walletId || null }),
       },
     });
-    if (dbError) throw new Error(`Supabase store failed: ${dbError.message}`);
 
     return {
       success: true,
@@ -307,7 +270,7 @@ export async function issueAndStoreCredential(
         credentialOfferUrl,
         subjectDid,
         walletId: walletId || '',
-      }
+      },
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
@@ -316,30 +279,27 @@ export async function issueAndStoreCredential(
   }
 }
 
-// ── Wallet API pass-through ─────────────────────────────────────────────────
-
-export async function getWalletCredentials(profileId: string) {
-  const { data } = await supabase
-    .from('pilot_credentials')
-    .select('*')
-    .eq('profile_id', profileId)
-    .eq('status', 'active')
-    .order('issued_at', { ascending: false });
-  return data || [];
+export async function getWalletCredentials(accessToken: string, profileId: string) {
+  return api(accessToken, 'queryTable', {
+    table: 'pilot_credentials',
+    operation: 'select',
+    where: { profile_id: profileId, status: 'active' },
+    orderBy: 'issued_at DESC',
+  }) as Promise<Record<string, unknown>[]>;
 }
 
-export async function getWalletDid(profileId: string) {
-  const { data } = await supabase
-    .from('pilot_dids')
-    .select('did, did_method, created_at')
-    .eq('profile_id', profileId)
-    .single();
-  return data;
+export async function getWalletDid(accessToken: string, profileId: string) {
+  const rows = await api(accessToken, 'queryTable', {
+    table: 'pilot_dids',
+    operation: 'select',
+    where: { profile_id: profileId },
+    limit: 1,
+  }) as Record<string, unknown>[];
+  return rows?.[0] ?? null;
 }
-
-// ── Self-Hosted Issuer (Production Signing via issuer-sign edge function) ────
 
 export async function issueAndStoreCredentialSelfHosted(
+  accessToken: string,
   auth0Id: string,
   profileId: string,
   licenseNumber: string,
@@ -349,70 +309,77 @@ export async function issueAndStoreCredentialSelfHosted(
   totalHours: number = 0
 ): Promise<{ success: boolean; credential?: IssuedCredential; error?: string }> {
   try {
-    // Get or create client-side DID wallet
-    const { did: subjectDid, walletId } = await getOrCreateClientWallet(profileId, auth0Id);
+    const { did: subjectDid, walletId } = await getOrCreateClientWallet(accessToken, profileId, auth0Id);
 
-    // Call our self-hosted issuer (no Walt.id dependency)
-    const { data: issueData, error: issueError } = await supabase.functions.invoke('issuer-sign', {
-      body: {
-        auth0_id: auth0Id,
-        profile_id: profileId,
-        subject_did: subjectDid,
-        credential_type: 'PilotLicenseVC',
-        credential_data: {
-          licenseNumber,
-          licenseType,
-          pelNumber: licenseNumber.replace(/[^0-9]/g, ''),
-          issuingAuthority: countryOfLicense,
-          issuingCountry: countryOfLicense,
-          expiryDate: licenseExpiry,
-          totalHours,
-          verificationMethod: 'Self-Asserted (Account Creation)',
-        },
+    const issueRes = await api(accessToken, 'issuerSign', {
+      auth0_id: auth0Id,
+      profile_id: profileId,
+      subject_did: subjectDid,
+      credential_type: 'PilotLicenseVC',
+      credential_data: {
+        licenseNumber,
+        licenseType,
+        pelNumber: licenseNumber.replace(/[^0-9]/g, ''),
+        issuingAuthority: countryOfLicense,
+        issuingCountry: countryOfLicense,
+        expiryDate: licenseExpiry,
+        totalHours,
+        verificationMethod: 'Self-Asserted (Account Creation)',
       },
-    });
+    }) as {
+      success: boolean;
+      issuer_did?: string;
+      signed_credential?: Record<string, unknown>;
+      credential_id?: string;
+      issued_at?: string;
+      error?: string;
+    };
 
-    if (issueError || !issueData?.success) {
-      throw new Error(issueError?.message || issueData?.error || 'Issuer-sign failed');
+    if (!issueRes?.success) {
+      throw new Error(issueRes?.error || 'Issuer-sign failed');
     }
 
-    // Store the issued credential in database
-    const { error: dbError } = await supabase.from('pilot_credentials').insert({
-      profile_id: profileId,
-      auth0_id: auth0Id,
-      credential_type: 'PilotLicenseVC',
-      issuer_did: issueData.issuer_did,
-      subject_did: subjectDid,
-      credential_offer_url: null, // Self-hosted doesn't use offer URLs
-      credential_jwt: JSON.stringify(issueData.signed_credential),
-      credential_hash: issueData.signed_credential.proof?.proofValue?.slice(0, 64),
-      source_provider: 'issuer-sign',
-      total_hours: totalHours,
-      issued_at: issueData.issued_at,
-      expires_at: licenseExpiry,
-      status: 'active',
-      storage_backend: 'supabase',
-      signed_credential: issueData.signed_credential,
-      proof_value: issueData.signed_credential.proof?.proofValue,
-      metadata: {
-        credential_id: issueData.credential_id,
-        issuer_did: issueData.issuer_did,
-        walletId: walletId || null,
-        self_hosted: true,
+    const signedCred = issueRes.signed_credential ?? {};
+    const proofValue = (signedCred.proof as Record<string, unknown>)?.proofValue as string | undefined;
+
+    await api(accessToken, 'queryTable', {
+      table: 'pilot_credentials',
+      operation: 'insert',
+      data: {
+        profile_id: profileId,
+        auth0_id: auth0Id,
+        credential_type: 'PilotLicenseVC',
+        issuer_did: issueRes.issuer_did,
+        subject_did: subjectDid,
+        credential_offer_url: null,
+        credential_jwt: JSON.stringify(signedCred),
+        credential_hash: proofValue?.slice(0, 64),
+        source_provider: 'issuer-sign',
+        total_hours: totalHours,
+        issued_at: issueRes.issued_at,
+        expires_at: licenseExpiry,
+        status: 'active',
+        storage_backend: 'supabase',
+        signed_credential: JSON.stringify(signedCred),
+        proof_value: proofValue,
+        metadata: JSON.stringify({
+          credential_id: issueRes.credential_id,
+          issuer_did: issueRes.issuer_did,
+          walletId: walletId || null,
+          self_hosted: true,
+        }),
       },
     });
-
-    if (dbError) throw new Error(`Supabase store failed: ${dbError.message}`);
 
     return {
       success: true,
       credential: {
-        credentialJwt: JSON.stringify(issueData.signed_credential),
-        credentialHash: issueData.signed_credential.proof?.proofValue?.slice(0, 64),
-        credentialOfferUrl: '', // No offer URL for self-hosted
+        credentialJwt: JSON.stringify(signedCred),
+        credentialHash: proofValue?.slice(0, 64) || '',
+        credentialOfferUrl: '',
         subjectDid,
         walletId: walletId || '',
-      }
+      },
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
