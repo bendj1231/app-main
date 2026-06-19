@@ -94,13 +94,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 Refresh Page
               </button>
             </div>
-            {process.env.NODE_ENV === 'development' && this.state.error && (
-              <details className="mt-6 text-left">
+            {this.state.error && (
+              <details className="mt-6 text-left" open>
                 <summary className="cursor-pointer text-sm font-semibold text-slate-700">
                   Error Details
                 </summary>
                 <pre className="mt-2 p-4 bg-slate-100 rounded-lg text-xs overflow-auto">
                   {this.state.error.toString()}
+                  {'\n\n'}
+                  {this.state.error.stack}
                 </pre>
               </details>
             )}
