@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export interface MentorshipBadge {
   id: string;
@@ -142,6 +142,7 @@ export const useMentorshipBadges = (userId: string | null) => {
   const [badges, setBadges] = useState<MentorshipBadge[]>([]);
   const [availableBadges, setAvailableBadges] = useState<BadgeDefinition[]>([]);
   const [loading, setLoading] = useState(false);
+  const { callApi } = useWorkerAuth();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -159,15 +160,15 @@ export const useMentorshipBadges = (userId: string | null) => {
     setError(null);
 
     try {
-      const { data, error } = await supabase
-        .from('mentorship_badges')
-        .select('*')
-        .eq('user_id', userId)
-        .order('earned_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_badges',
+        operation: 'select',
+        where: { user_id: userId },
+        orderBy: 'earned_at DESC',
+        limit: 200,
+      });
 
-      if (error) throw error;
-
-      setBadges(data || []);
+      setBadges((data || []) as unknown as MentorshipBadge[]);
     } catch (err) {
       console.error('Error fetching badges:', err);
       setError('Failed to load badges');
@@ -181,20 +182,26 @@ export const useMentorshipBadges = (userId: string | null) => {
 
     try {
       // Fetch user's mentorship stats
-      const { data: sessions } = await supabase
-        .from('mentorship_sessions')
-        .select('*')
-        .eq('mentor_id', userId);
+      const sessions = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_sessions',
+        operation: 'select',
+        where: { mentor_id: userId },
+        limit: 500,
+      });
 
-      const { data: requests } = await supabase
-        .from('mentorship_requests')
-        .select('mentee_id')
-        .eq('mentor_id', userId)
-        .in('status', ['accepted', 'completed']);
+      const requestRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_requests',
+        operation: 'select',
+        where: { mentor_id: userId },
+        limit: 500,
+      });
+      const requests = (requestRows || []).filter(
+        r => ['accepted', 'completed'].includes(r.status as string)
+      );
 
       // Calculate stats
       const totalMenteesHelped = new Set(requests?.map(r => r.mentee_id)).size;
-      const totalHoursContributed = sessions?.reduce((sum, s) => sum + (s.duration_hours || 0), 0) || 0;
+      const totalHoursContributed = sessions?.reduce((sum, s) => sum + (((s as Record<string, unknown>).duration_hours as number) || 0), 0) || 0;
       const totalSessions = sessions?.length || 0;
       
       const ratings = [
@@ -255,20 +262,19 @@ export const useMentorshipBadges = (userId: string | null) => {
     if (!badge) return { success: false, error: 'Badge not found' };
 
     try {
-      const { error } = await supabase
-        .from('mentorship_badges')
-        .insert({
+      await callApi('queryTable', {
+        table: 'mentorship_badges',
+        operation: 'insert',
+        data: {
           user_id: userId,
           badge_id: badge.id,
           badge_name: badge.name,
           badge_description: badge.description,
           badge_icon: badge.icon,
           badge_tier: badge.tier,
-          earned_at: new Date().toISOString(),
           is_displayed: true,
-        });
-
-      if (error) throw error;
+        },
+      });
 
       await fetchBadges();
       return { success: true };
@@ -285,12 +291,12 @@ export const useMentorshipBadges = (userId: string | null) => {
       const badge = badges.find(b => b.id === badgeId);
       if (!badge) return { success: false };
 
-      const { error } = await supabase
-        .from('mentorship_badges')
-        .update({ is_displayed: !badge.is_displayed })
-        .eq('id', badgeId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'mentorship_badges',
+        operation: 'update',
+        id: badgeId,
+        data: { is_displayed: !badge.is_displayed },
+      });
 
       await fetchBadges();
       return { success: true };

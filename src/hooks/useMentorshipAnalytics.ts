@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export interface MentorshipAnalytics {
   totalMenteesHelped: number;
@@ -21,6 +21,7 @@ export interface MentorshipAnalytics {
 export const useMentorshipAnalytics = (mentorId: string | null) => {
   const [analytics, setAnalytics] = useState<MentorshipAnalytics | null>(null);
   const [loading, setLoading] = useState(false);
+  const { callApi } = useWorkerAuth();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,25 +39,27 @@ export const useMentorshipAnalytics = (mentorId: string | null) => {
 
     try {
       // Fetch all mentorship sessions for this mentor
-      const { data: sessions, error: sessionsError } = await supabase
-        .from('mentorship_sessions')
-        .select('*')
-        .eq('mentor_id', mentorId);
-
-      if (sessionsError) throw sessionsError;
+      const sessions = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_sessions',
+        operation: 'select',
+        where: { mentor_id: mentorId },
+        limit: 500,
+      });
 
       // Fetch all accepted mentorship requests
-      const { data: requests, error: requestsError } = await supabase
-        .from('mentorship_requests')
-        .select('mentee_id, status')
-        .eq('mentor_id', mentorId)
-        .in('status', ['accepted', 'completed']);
-
-      if (requestsError) throw requestsError;
+      const requestRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_requests',
+        operation: 'select',
+        where: { mentor_id: mentorId },
+        limit: 500,
+      });
+      const requests = (requestRows || []).filter(
+        r => ['accepted', 'completed'].includes(r.status as string)
+      );
 
       // Calculate analytics
       const totalMenteesHelped = new Set(requests?.map(r => r.mentee_id)).size;
-      const totalHoursContributed = sessions?.reduce((sum, s) => sum + (s.duration_hours || 0), 0) || 0;
+      const totalHoursContributed = sessions?.reduce((sum, s) => sum + ((s as Record<string, unknown>).duration_hours as number || 0), 0) || 0;
       const averageSessionDuration = sessions?.length > 0 
         ? totalHoursContributed / sessions.length 
         : 0;
@@ -158,23 +161,19 @@ export const useMentorshipAnalytics = (mentorId: string | null) => {
     const menteeIds = [...new Set(requests.map(r => r.mentee_id))];
     
     const progressPromises = menteeIds.map(async (menteeId) => {
-      const { data: mentee } = await supabase
-        .from('profiles')
-        .select('full_name')
-        .eq('id', menteeId)
-        .single();
+      const mentee = await callApi<Record<string, unknown>>('getProfile', { id: menteeId });
 
-      const { count } = await supabase
-        .from('mentorship_sessions')
-        .select('*', { count: 'exact', head: true })
-        .eq('mentor_id', mentorId)
-        .eq('mentee_id', menteeId);
+      const countResult = await callApi<{ count: number }>('queryTable', {
+        table: 'mentorship_sessions',
+        operation: 'count',
+        where: { mentor_id: mentorId, mentee_id: menteeId },
+      });
 
       return {
         menteeId,
-        menteeName: mentee?.full_name || 'Unknown',
+        menteeName: (mentee?.full_name as string) || 'Unknown',
         progress: Math.min(Math.random() * 100, 100), // Placeholder - would calculate real progress
-        sessions: count || 0,
+        sessions: countResult.count || 0,
       };
     });
 

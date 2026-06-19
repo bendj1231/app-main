@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export interface MentorshipMessage {
   id: string;
@@ -35,6 +35,7 @@ export const useMentorshipMessaging = (userId: string | null) => {
   const [activeConversation, setActiveConversation] = useState<string | null>(null);
   const [messages, setMessages] = useState<MentorshipMessage[]>([]);
   const [loading, setLoading] = useState(false);
+  const { callApi } = useWorkerAuth();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -52,41 +53,48 @@ export const useMentorshipMessaging = (userId: string | null) => {
 
     try {
       // Get all mentorship requests involving the user
-      const { data: requests, error: requestsError } = await supabase
-        .from('mentorship_requests')
-        .select('*')
-        .or(`mentee_id.eq.${userId},mentor_id.eq.${userId}`)
-        .in('status', ['accepted', 'pending']);
-
-      if (requestsError) throw requestsError;
+      const requests = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_requests',
+        operation: 'select',
+        where: { mentee_id: userId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
+      const requests2 = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_requests',
+        operation: 'select',
+        where: { mentor_id: userId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
+      const allRequests = [...(requests || []), ...(requests2 || [])].filter(
+        (r, i, arr) => arr.findIndex(x => x.id === r.id) === i
+      ).filter(r => ['accepted', 'pending'].includes(r.status as string));
 
       // Build conversations from requests
-      const conversationPromises = (requests || []).map(async (request) => {
+      const conversationPromises = (allRequests || []).map(async (req) => {
+        const request = req as Record<string, unknown>;
         const otherUserId = request.mentee_id === userId ? request.mentor_id : request.mentee_id;
         
         // Get other user's profile
-        const { data: otherUser } = await supabase
-          .from('profiles')
-          .select('full_name, profile_image_url')
-          .eq('id', otherUserId)
-          .single();
+        const otherUser = await callApi<Record<string, unknown>>('getProfile', { id: otherUserId });
 
         // Get last message
-        const { data: lastMessage } = await supabase
-          .from('mentorship_messages')
-          .select('message, created_at')
-          .eq('request_id', request.id)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
+        const lastMessages = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'mentorship_messages',
+          operation: 'select',
+          where: { request_id: request.id },
+          orderBy: 'created_at DESC',
+          limit: 1,
+        });
+        const lastMessage = lastMessages?.[0];
 
         // Get unread count
-        const { count } = await supabase
-          .from('mentorship_messages')
-          .select('*', { count: 'exact', head: true })
-          .eq('request_id', request.id)
-          .eq('receiver_id', userId)
-          .eq('is_read', false);
+        const unreadCount = await callApi<{ count: number }>('queryTable', {
+          table: 'mentorship_messages',
+          operation: 'count',
+          where: { request_id: request.id, receiver_id: userId, is_read: false },
+        });
 
         return {
           request_id: request.id,
@@ -95,11 +103,11 @@ export const useMentorshipMessaging = (userId: string | null) => {
           other_user_image: otherUser?.profile_image_url,
           last_message: lastMessage?.message || 'No messages yet',
           last_message_time: lastMessage?.created_at || request.created_at,
-          unread_count: count || 0,
+          unread_count: unreadCount.count || 0,
         };
       });
 
-      const fetchedConversations = await Promise.all(conversationPromises);
+      const fetchedConversations = await Promise.all(conversationPromises) as Conversation[];
       
       // Sort by last message time
       setConversations(
@@ -122,15 +130,15 @@ export const useMentorshipMessaging = (userId: string | null) => {
     setError(null);
 
     try {
-      const { data, error } = await supabase
-        .from('mentorship_messages')
-        .select('*')
-        .eq('request_id', requestId)
-        .order('created_at', { ascending: true });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_messages',
+        operation: 'select',
+        where: { request_id: requestId },
+        orderBy: 'created_at ASC',
+        limit: 500,
+      });
 
-      if (error) throw error;
-
-      setMessages(data || []);
+      setMessages((data || []) as unknown as MentorshipMessage[]);
       setActiveConversation(requestId);
 
       // Mark messages as read
@@ -148,29 +156,30 @@ export const useMentorshipMessaging = (userId: string | null) => {
 
     try {
       // Get the request to determine receiver
-      const { data: request } = await supabase
-        .from('mentorship_requests')
-        .select('mentee_id, mentor_id')
-        .eq('id', requestId)
-        .single();
+      const requestRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_requests',
+        operation: 'select',
+        where: { id: requestId },
+        limit: 1,
+      });
+      const request = requestRows?.[0];
 
       if (!request) throw new Error('Request not found');
 
       const receiverId = request.mentee_id === userId ? request.mentor_id : request.mentee_id;
 
-      const { error } = await supabase
-        .from('mentorship_messages')
-        .insert({
+      await callApi('queryTable', {
+        table: 'mentorship_messages',
+        operation: 'insert',
+        data: {
           request_id: requestId,
           sender_id: userId,
           receiver_id: receiverId,
           message,
           message_type: attachmentUrl ? 'file' : 'text',
           attachment_url: attachmentUrl,
-          created_at: new Date().toISOString(),
-        });
-
-      if (error) throw error;
+        },
+      });
 
       await fetchMessages(requestId);
       await fetchConversations();
@@ -185,17 +194,21 @@ export const useMentorshipMessaging = (userId: string | null) => {
     if (!userId) return;
 
     try {
-      const { error } = await supabase
-        .from('mentorship_messages')
-        .update({
-          is_read: true,
-          read_at: new Date().toISOString(),
-        })
-        .eq('request_id', requestId)
-        .eq('receiver_id', userId)
-        .eq('is_read', false);
-
-      if (error) throw error;
+      // Get unread messages to mark as read
+      const unreadMsgs = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'mentorship_messages',
+        operation: 'select',
+        where: { request_id: requestId, receiver_id: userId, is_read: false },
+        limit: 100,
+      });
+      for (const msg of (unreadMsgs || [])) {
+        await callApi('queryTable', {
+          table: 'mentorship_messages',
+          operation: 'update',
+          id: msg.id,
+          data: { is_read: true, read_at: new Date().toISOString() },
+        });
+      }
 
       await fetchConversations();
     } catch (err) {

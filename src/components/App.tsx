@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/src/contexts/AuthContext';
-import { supabase } from '@/src/lib/supabase';
+import { useWorkerAuth } from '@/src/hooks/useWorkerAuth';
 import { safeRedirect } from '@/src/lib/url-validator';
 import { HomePage } from '@/src/routes';
 import { LoginModal } from '@/components/website/components/LoginModal';
@@ -42,8 +42,9 @@ export const App = () => {
     dismissPasskeyPrompt,
     userProfile,
   } = useAuth();
+  const { callApi } = useWorkerAuth();
 
-  // Fetch user's enrollment status from Supabase
+  // Fetch user's enrollment status from Worker API
   useEffect(() => {
     const fetchEnrollmentStatus = async () => {
       if (!currentUser?.email) {
@@ -52,21 +53,10 @@ export const App = () => {
       }
 
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('enrolled_programs')
-          .eq('email', currentUser.email)
-          .maybeSingle();
-
-        if (error) {
-          console.error('Error fetching enrollment status:', error);
-          setIsEnrolledInFoundation(false);
-          return;
-        }
-
-        if (data?.enrolled_programs && Array.isArray(data.enrolled_programs)) {
-          const isEnrolled = data.enrolled_programs.includes('Foundational');
-          setIsEnrolledInFoundation(isEnrolled);
+        const profile = await callApi<Record<string, unknown>>('getProfile', { email: currentUser.email });
+        const enrolledPrograms = profile?.enrolled_programs;
+        if (enrolledPrograms && Array.isArray(enrolledPrograms)) {
+          setIsEnrolledInFoundation(enrolledPrograms.includes('Foundational'));
         } else {
           setIsEnrolledInFoundation(false);
         }
@@ -79,45 +69,26 @@ export const App = () => {
     fetchEnrollmentStatus();
   }, [currentUser]);
 
-  // Fetch user's profile data from Supabase
+  // Fetch user's profile data from Worker API
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!currentUser?.uid) {
         setIsProfileLoading(false);
         return;
       }
-      // Skip if uid is an Auth0 sub (not a Supabase UUID) — profile query would 400
-      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-        currentUser.uid
-      );
-      if (!isUUID) {
-        setIsProfileLoading(false);
-        return;
-      }
 
       setIsProfileLoading(true);
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select(
-            'pilot_id, profile_image_url, total_flight_hours, last_flown, mentorship_hours, foundation_progress, examination_score, overall_recognition_score, enrolled_programs'
-          )
-          .eq('id', currentUser.uid)
-          .maybeSingle();
-
-        if (error) {
-          console.error('Error fetching profile data:', error);
-          return;
-        }
+        const data = await callApi<Record<string, unknown>>('getProfile', { id: currentUser.uid });
 
         if (data) {
-          setPilotId(data.pilot_id || '');
-          setTotalHours(data.total_flight_hours || 0);
-          setLastFlown(data.last_flown || '');
-          setMentorshipHours(data.mentorship_hours || 0);
-          setFoundationProgress(data.foundation_progress || 0);
-          setExaminationScore(data.examination_score || 0);
-          setOverallRecognitionScore(data.overall_recognition_score || 0);
+          setPilotId((data.pilot_id as string) || '');
+          setTotalHours((data.total_flight_hours as number) || 0);
+          setLastFlown((data.last_flown as string) || '');
+          setMentorshipHours((data.mentorship_hours as number) || 0);
+          setFoundationProgress((data.foundation_progress as number) || 0);
+          setExaminationScore((data.examination_score as number) || 0);
+          setOverallRecognitionScore((data.overall_recognition_score as number) || 0);
         }
       } catch (err) {
         console.error('Error fetching profile data:', err);

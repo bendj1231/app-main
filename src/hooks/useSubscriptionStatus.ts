@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export interface SubscriptionStatus {
   isPremium: boolean;
@@ -33,6 +33,7 @@ export const useSubscriptionStatus = (userId: string | null) => {
     },
   });
   const [loading, setLoading] = useState(false);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -46,15 +47,11 @@ export const useSubscriptionStatus = (userId: string | null) => {
 
     setLoading(true);
     try {
-      // Check subscription from profiles table or subscriptions table
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('subscription_tier, subscription_expires_at')
-        .eq('id', userId)
-        .maybeSingle();
+      // Check subscription from profiles table
+      const profile = await callApi<Record<string, unknown>>('getProfile', { id: userId });
 
-      const plan = profile?.subscription_tier || 'free';
-      const expiresAt = profile?.subscription_expires_at;
+      const plan = (profile?.subscription_tier as string) || 'free';
+      const expiresAt = profile?.subscription_expires_at as string | undefined;
       const isPremium = plan !== 'free' && (!expiresAt || new Date(expiresAt) > new Date());
 
       const features = {

@@ -1,5 +1,3 @@
-import { App } from '@/components/App';
-
 export default function ProfilePage() {
   return (
     <div className="flex h-screen items-center justify-center">

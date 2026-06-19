@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export type EndorsementType = 'professional' | 'leadership' | 'teamwork' | 'technical' | 'communication';
 
@@ -19,6 +19,7 @@ export const usePeerEndorsements = (userId: string | null) => {
   const [endorsements, setEndorsements] = useState<PeerEndorsement[]>([]);
   const [loading, setLoading] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -32,22 +33,20 @@ export const usePeerEndorsements = (userId: string | null) => {
     
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('peer_endorsements')
-        .select('*')
-        .eq('endorsee_id', userId)
-        .order('created_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'peer_endorsements',
+        operation: 'select',
+        where: { endorsee_id: userId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
 
-      if (error) {
-        console.error('Failed to fetch endorsements:', error);
+      setEndorsements((data || []) as unknown as PeerEndorsement[]);
+      if (data && data.length > 0) {
+        const avg = data.reduce((sum, e) => sum + ((e as Record<string, unknown>).rating as number || 0), 0) / data.length;
+        setAverageRating(avg);
       } else {
-        setEndorsements(data || []);
-        if (data && data.length > 0) {
-          const avg = data.reduce((sum, e) => sum + (e.rating || 0), 0) / data.length;
-          setAverageRating(avg);
-        } else {
-          setAverageRating(0);
-        }
+        setAverageRating(0);
       }
     } catch (error) {
       console.error('Error in fetchEndorsements:', error);
@@ -65,28 +64,23 @@ export const usePeerEndorsements = (userId: string | null) => {
     relationship: string | null = null
   ) => {
     try {
-      const { data, error } = await supabase
-        .from('peer_endorsements')
-        .insert({
+      const data = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'peer_endorsements',
+        operation: 'insert',
+        data: {
           endorser_id: endorserId,
           endorsee_id: endorseeId,
           endorsement_type: endorsementType,
           rating,
           comment,
           relationship,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Failed to create endorsement:', error);
-        return null;
-      }
+        },
+      });
 
       if (endorseeId === userId) {
         await fetchEndorsements();
       }
-      return data;
+      return data as unknown as PeerEndorsement;
     } catch (error) {
       console.error('Error in createEndorsement:', error);
       return null;
@@ -99,19 +93,15 @@ export const usePeerEndorsements = (userId: string | null) => {
     comment: string | null = null
   ) => {
     try {
-      const { error } = await supabase
-        .from('peer_endorsements')
-        .update({
+      await callApi('queryTable', {
+        table: 'peer_endorsements',
+        operation: 'update',
+        id: endorsementId,
+        data: {
           rating,
           comment,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', endorsementId);
-
-      if (error) {
-        console.error('Failed to update endorsement:', error);
-        return false;
-      }
+        },
+      });
 
       await fetchEndorsements();
       return true;
@@ -123,15 +113,11 @@ export const usePeerEndorsements = (userId: string | null) => {
 
   const deleteEndorsement = async (endorsementId: string) => {
     try {
-      const { error } = await supabase
-        .from('peer_endorsements')
-        .delete()
-        .eq('id', endorsementId);
-
-      if (error) {
-        console.error('Failed to delete endorsement:', error);
-        return false;
-      }
+      await callApi('queryTable', {
+        table: 'peer_endorsements',
+        operation: 'delete',
+        id: endorsementId,
+      });
 
       await fetchEndorsements();
       return true;
@@ -147,18 +133,15 @@ export const usePeerEndorsements = (userId: string | null) => {
 
   const getEndorsementsGiven = async (endorserId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('peer_endorsements')
-        .select('*')
-        .eq('endorser_id', endorserId)
-        .order('created_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'peer_endorsements',
+        operation: 'select',
+        where: { endorser_id: endorserId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
 
-      if (error) {
-        console.error('Failed to fetch given endorsements:', error);
-        return [];
-      }
-
-      return data || [];
+      return (data || []) as unknown as PeerEndorsement[];
     } catch (error) {
       console.error('Error in getEndorsementsGiven:', error);
       return [];

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export type ConnectionType = 'classmate' | 'mentor' | 'colleague' | 'friend';
 export type InteractionFrequency = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'rarely';
@@ -19,6 +19,7 @@ export const useAlumniNetwork = (userId: string | null) => {
   const [connections, setConnections] = useState<AlumniNetwork[]>([]);
   const [loading, setLoading] = useState(false);
   const [highValueConnections, setHighValueConnections] = useState(0);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -32,19 +33,17 @@ export const useAlumniNetwork = (userId: string | null) => {
     
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('alumni_network')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'alumni_network',
+        operation: 'select',
+        where: { user_id: userId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
 
-      if (error) {
-        console.error('Failed to fetch alumni connections:', error);
-      } else {
-        setConnections(data || []);
-        const highValue = (data || []).filter(c => c.professional_value >= 4).length;
-        setHighValueConnections(highValue);
-      }
+      setConnections((data || []) as unknown as AlumniNetwork[]);
+      const highValue = (data || []).filter(c => (c as Record<string, unknown>).professional_value as number >= 4).length;
+      setHighValueConnections(highValue);
     } catch (error) {
       console.error('Error in fetchConnections:', error);
     } finally {
@@ -61,25 +60,20 @@ export const useAlumniNetwork = (userId: string | null) => {
     if (!userId) return null;
 
     try {
-      const { data, error } = await supabase
-        .from('alumni_network')
-        .insert({
+      const data = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'alumni_network',
+        operation: 'insert',
+        data: {
           user_id: userId,
           alumni_id: alumniId,
           connection_type: connectionType,
           interaction_frequency: interactionFrequency,
           professional_value: professionalValue,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Failed to add connection:', error);
-        return null;
-      }
+        },
+      });
 
       await fetchConnections();
-      return data;
+      return data as unknown as AlumniNetwork;
     } catch (error) {
       console.error('Error in addConnection:', error);
       return null;
@@ -94,19 +88,15 @@ export const useAlumniNetwork = (userId: string | null) => {
     if (!userId) return false;
 
     try {
-      const { error } = await supabase
-        .from('alumni_network')
-        .update({
+      await callApi('queryTable', {
+        table: 'alumni_network',
+        operation: 'update',
+        id: connectionId,
+        data: {
           interaction_frequency: interactionFrequency,
           professional_value: professionalValue,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', connectionId);
-
-      if (error) {
-        console.error('Failed to update connection:', error);
-        return false;
-      }
+        },
+      });
 
       await fetchConnections();
       return true;
@@ -120,15 +110,11 @@ export const useAlumniNetwork = (userId: string | null) => {
     if (!userId) return false;
 
     try {
-      const { error } = await supabase
-        .from('alumni_network')
-        .delete()
-        .eq('id', connectionId);
-
-      if (error) {
-        console.error('Failed to delete connection:', error);
-        return false;
-      }
+      await callApi('queryTable', {
+        table: 'alumni_network',
+        operation: 'delete',
+        id: connectionId,
+      });
 
       await fetchConnections();
       return true;

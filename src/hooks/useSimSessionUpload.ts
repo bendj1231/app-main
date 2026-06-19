@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 import { useAuth } from '../contexts/AuthContext';
 
 export const ICAO_COMPETENCIES = [
@@ -47,6 +47,7 @@ export type SimUploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 
 export function useSimSessionUpload() {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus]           = useState<SimUploadStatus>('idle');
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [tokenId, setTokenId]         = useState<string | null>(null);
@@ -70,42 +71,44 @@ export function useSimSessionUpload() {
       // 1. Upsert platform connection
       const _providerSlug = `manual-sim-${(form.provider_name || 'generic').toLowerCase().replace(/\s+/g, '-').slice(0, 20)}`;
 
-      const { data: existingConn } = await supabase
-        .from('pilot_platform_connections')
-        .select('id')
-        .eq('pilot_id', currentUser.id)
-        .eq('provider_slug', 'manual-sim')
-        .maybeSingle();
+      const existingConnRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_platform_connections',
+        operation: 'select',
+        where: { pilot_id: currentUser.id, provider_slug: 'manual-sim' },
+        limit: 1,
+      });
+      const existingConn = existingConnRows?.[0];
 
       let connectionId: string;
 
       if (existingConn) {
-        connectionId = existingConn.id;
-        await supabase
-          .from('pilot_platform_connections')
-          .update({ last_synced_at: new Date().toISOString() })
-          .eq('id', connectionId);
+        connectionId = existingConn.id as string;
+        await callApi('queryTable', {
+          table: 'pilot_platform_connections',
+          operation: 'update',
+          id: connectionId,
+          data: {},
+        });
       } else {
-        const { data: newConn, error: connErr } = await supabase
-          .from('pilot_platform_connections')
-          .insert({
+        const newConn = await callApi<Record<string, unknown>>('queryTable', {
+          table: 'pilot_platform_connections',
+          operation: 'insert',
+          data: {
             pilot_id: currentUser.id,
             provider_type: 'simulation',
             provider_name: form.provider_name || 'Manual Sim Entry',
             provider_slug: 'manual-sim',
             connection_status: 'active',
-            last_synced_at: new Date().toISOString(),
-          })
-          .select('id')
-          .single();
-        if (connErr) throw connErr;
-        connectionId = newConn.id;
+          },
+        });
+        connectionId = (newConn as { id: string }).id;
       }
 
       // 2. Write sim_session_tokens row (L2 — device-verified, no instructor yet)
-      const { data: token, error: tokenErr } = await supabase
-        .from('sim_session_tokens')
-        .insert({
+      const token = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'sim_session_tokens',
+        operation: 'insert',
+        data: {
           pilot_id:             currentUser.id,
           connection_id:        connectionId,
           provider_name:        form.provider_name || 'Manual Entry',
@@ -114,31 +117,31 @@ export function useSimSessionUpload() {
           session_date:         form.session_date,
           duration_minutes:     form.duration_minutes,
           scenario_description: form.scenario_description || null,
-          competency_tags:      form.competency_tags,
+          competency_tags:      JSON.stringify(form.competency_tags),
           verification_level:   2,
           status:               'pending',
-        })
-        .select('id')
-        .single();
+        },
+      });
 
-      if (tokenErr) throw tokenErr;
-      setTokenId(token.id);
+      const tokenId = (token as { id: string }).id;
+      setTokenId(tokenId);
 
       // 3. Audit event
-      await supabase
-        .from('p12_verification_events')
-        .insert({
+      await callApi('queryTable', {
+        table: 'p12_verification_events',
+        operation: 'insert',
+        data: {
           pilot_id:         currentUser.id,
           connection_id:    connectionId,
           event_type:       'sim_session_submission',
           source_table:     'sim_session_tokens',
-          source_record_id: token.id,
+          source_record_id: tokenId,
           provider_name:    form.provider_name || 'Manual Entry',
           step_reached:     'token_issued',
           outcome:          'success',
           outcome_detail:   `Sim session recorded. Type: ${form.session_type}. Duration: ${form.duration_minutes} min. Competencies: ${form.competency_tags.join(', ') || 'none tagged'}.`,
-          referral_dividend_triggered: false,
-        });
+        },
+      });
 
       setStatus('success');
     } catch (e: unknown) {

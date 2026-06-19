@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export type AccountTier = 'free' | 'recognition_plus' | 'enterprise' | 'enterprise_admin';
 
@@ -19,6 +19,7 @@ export function useAccountTier(userId?: string | null): AccountTierState {
     isRecognitionPlus: false,
     error: null,
   });
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (!userId) {
@@ -26,67 +27,38 @@ export function useAccountTier(userId?: string | null): AccountTierState {
       return;
     }
 
+    let cancelled = false;
+
     async function loadTier() {
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('account_tier')
-          .eq('id', userId)
-          .maybeSingle();
-
-        if (error) throw error;
-
-        const tier = (data?.account_tier as AccountTier) || 'free';
-        setState({
-          tier,
-          loading: false,
-          isEnterprise: tier === 'enterprise' || tier === 'enterprise_admin',
-          isRecognitionPlus: tier === 'recognition_plus' || tier === 'enterprise' || tier === 'enterprise_admin',
-          error: null,
-        });
+        const profile = await callApi<Record<string, unknown>>('getProfile', { id: userId });
+        const tier = (profile?.account_tier as AccountTier) || 'free';
+        if (!cancelled) {
+          setState({
+            tier,
+            loading: false,
+            isEnterprise: tier === 'enterprise' || tier === 'enterprise_admin',
+            isRecognitionPlus: tier === 'recognition_plus' || tier === 'enterprise' || tier === 'enterprise_admin',
+            error: null,
+          });
+        }
       } catch (err: unknown) {
-        setState({
-          tier: 'free',
-          loading: false,
-          isEnterprise: false,
-          isRecognitionPlus: false,
-          error: err instanceof Error ? err.message : String(err),
-        });
+        if (!cancelled) {
+          setState({
+            tier: 'free',
+            loading: false,
+            isEnterprise: false,
+            isRecognitionPlus: false,
+            error: err instanceof Error ? err.message : String(err),
+          });
+        }
       }
     }
 
     loadTier();
 
-    // Real-time subscription for tier changes
-    const channel = supabase
-      .channel(`profile_tier_${userId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'profiles',
-          filter: `id=eq.${userId}`,
-        },
-        (payload) => {
-          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-          const newTier = (payload.new as any)?.account_tier as AccountTier;
-          if (newTier) {
-            setState({
-              tier: newTier,
-              loading: false,
-              isEnterprise: newTier === 'enterprise' || newTier === 'enterprise_admin',
-              isRecognitionPlus: newTier === 'recognition_plus' || newTier === 'enterprise' || newTier === 'enterprise_admin',
-              error: null,
-            });
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      channel.unsubscribe();
-    };
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   return state;

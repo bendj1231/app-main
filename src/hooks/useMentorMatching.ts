@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export interface MentorProfile {
   id: string;
@@ -45,6 +45,7 @@ export interface MenteeProfile {
 export const useMentorMatching = (menteeId: string | null, isPremium: boolean = false) => {
   const [matches, setMatches] = useState<MentorMatch[]>([]);
   const [loading, setLoading] = useState(false);
+  const { callApi } = useWorkerAuth();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -62,24 +63,14 @@ export const useMentorMatching = (menteeId: string | null, isPremium: boolean = 
 
     try {
       // Get mentee profile
-      const { data: menteeData, error: menteeError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', menteeId)
-        .single();
+      const menteeData = await callApi<Record<string, unknown>>('getProfile', { id: menteeId });
+      if (!menteeData) throw new Error('Mentee not found');
 
-      if (menteeError) throw menteeError;
-
-      const mentee: MenteeProfile = menteeData;
+      const mentee: MenteeProfile = menteeData as MenteeProfile;
 
       // Get available mentors (role = 'mentor')
-      const { data: mentorsData, error: mentorsError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('role', 'mentor')
-        .eq('status', 'active');
-
-      if (mentorsError) throw mentorsError;
+      const mentorsData = await callApi<Record<string, unknown>[]>('queryProfiles', { role: 'mentor', status: 'active' });
+      if (!mentorsData) throw new Error('No mentors found');
 
       // Calculate compatibility scores
       const calculatedMatches = calculateMatches(mentee, mentorsData || [], isPremium);
@@ -193,18 +184,12 @@ export const useMentorMatching = (menteeId: string | null, isPremium: boolean = 
     if (!menteeId) return { success: false, error: 'No mentee ID provided' };
 
     try {
-      const { error } = await supabase
-        .from('mentorship_requests')
-        .insert({
-          mentee_id: menteeId,
-          mentor_id: mentorId,
-          status: 'pending',
-          message,
-          created_at: new Date().toISOString(),
-        });
-
-      if (error) throw error;
-
+      await callApi('createMentorshipRequest', {
+        mentee_id: menteeId,
+        mentor_id: mentorId,
+        status: 'pending',
+        message,
+      });
       return { success: true };
     } catch (err) {
       console.error('Error requesting mentorship:', err);

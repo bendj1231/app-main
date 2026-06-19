@@ -1,26 +1,24 @@
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export type ScoreType = 'recognition' | 'programs' | 'experience' | 'behavioral' | 'language' | 'skills';
 
-export const useScoreHistory = () => {
+export const useRecognitionProfileHistory = () => {
+  const { callApi } = useWorkerAuth();
   const logScore = async (
     userId: string,
     scoreType: ScoreType,
     scoreValue: number
   ) => {
     try {
-      const { error } = await supabase
-        .from('score_history')
-        .insert({
+      await callApi('queryTable', {
+        table: 'score_history',
+        operation: 'insert',
+        data: {
           user_id: userId,
           score_type: scoreType,
           score_value: scoreValue,
-          calculated_at: new Date().toISOString(),
-        });
-
-      if (error) {
-        console.error('Failed to log score:', error);
-      }
+        },
+      });
     } catch (error) {
       console.error('Error in logScore:', error);
     }
@@ -56,30 +54,22 @@ export const useScoreHistory = () => {
     days?: number
   ) => {
     try {
-      let query = supabase
-        .from('score_history')
-        .select('*')
-        .eq('user_id', userId);
-
-      if (scoreType) {
-        query = query.eq('score_type', scoreType);
-      }
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'score_history',
+        operation: 'select',
+        where: scoreType ? { user_id: userId, score_type: scoreType } : { user_id: userId },
+        orderBy: 'calculated_at ASC',
+        limit: 500,
+      });
 
       if (days) {
         const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-        query = query.gte('calculated_at', cutoffDate);
+        return (data || []).filter(
+          (r: Record<string, unknown>) => (r.calculated_at as string) >= cutoffDate
+        );
       }
 
-      query = query.order('calculated_at', { ascending: true });
-
-      const { data, error } = await query;
-
-      if (error) {
-        console.error('Failed to get score history:', error);
-        return [];
-      }
-
-      return data;
+      return (data || []) as unknown as Record<string, unknown>[];
     } catch (error) {
       console.error('Error in getScoreHistory:', error);
       return [];
@@ -93,8 +83,8 @@ export const useScoreHistory = () => {
       return 0;
     }
 
-    const oldestScore = history[0].score_value || 0;
-    const newestScore = history[history.length - 1].score_value || 0;
+    const oldestScore = (history[0] as Record<string, unknown>).score_value as number || 0;
+    const newestScore = (history[history.length - 1] as Record<string, unknown>).score_value as number || 0;
     
     return newestScore - oldestScore;
   };

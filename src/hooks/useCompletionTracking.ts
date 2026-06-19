@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export type ItemType = 'assessment' | 'course' | 'module' | 'program' | 'certification';
 export type CompletionStatus = 'not_started' | 'in_progress' | 'completed' | 'failed';
@@ -24,6 +24,7 @@ export const useCompletionTracking = (userId: string | null) => {
   const [completions, setCompletions] = useState<CompletionTracking[]>([]);
   const [loading, setLoading] = useState(false);
   const [averageCompletionPercentage, setAverageCompletionPercentage] = useState(0);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -37,22 +38,20 @@ export const useCompletionTracking = (userId: string | null) => {
     
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('completion_tracking')
-        .select('*')
-        .eq('user_id', userId)
-        .order('updated_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'completion_tracking',
+        operation: 'select',
+        where: { user_id: userId },
+        orderBy: 'updated_at DESC',
+        limit: 200,
+      });
 
-      if (error) {
-        console.error('Failed to fetch completions:', error);
+      setCompletions((data || []) as unknown as CompletionTracking[]);
+      if (data && data.length > 0) {
+        const avg = data.reduce((sum, c) => sum + ((c as Record<string, unknown>).completion_percentage as number || 0), 0) / data.length;
+        setAverageCompletionPercentage(avg);
       } else {
-        setCompletions(data || []);
-        if (data && data.length > 0) {
-          const avg = data.reduce((sum, c) => sum + (c.completion_percentage || 0), 0) / data.length;
-          setAverageCompletionPercentage(avg);
-        } else {
-          setAverageCompletionPercentage(0);
-        }
+        setAverageCompletionPercentage(0);
       }
     } catch (error) {
       console.error('Error in fetchCompletions:', error);
@@ -69,9 +68,10 @@ export const useCompletionTracking = (userId: string | null) => {
     if (!userId) return null;
 
     try {
-      const { data, error } = await supabase
-        .from('completion_tracking')
-        .insert({
+      const data = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'completion_tracking',
+        operation: 'insert',
+        data: {
           user_id: userId,
           item_id: itemId,
           item_type: itemType,
@@ -81,17 +81,11 @@ export const useCompletionTracking = (userId: string | null) => {
           started_at: new Date().toISOString(),
           time_spent_hours: 0,
           score: null,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Failed to start tracking:', error);
-        return null;
-      }
+        },
+      });
 
       await fetchCompletions();
-      return data;
+      return data as unknown as CompletionTracking;
     } catch (error) {
       console.error('Error in startTracking:', error);
       return null;
@@ -113,42 +107,42 @@ export const useCompletionTracking = (userId: string | null) => {
         : 'not_started';
 
     try {
-      const { error } = await supabase
-        .from('completion_tracking')
-        .update({
+      await callApi('queryTable', {
+        table: 'completion_tracking',
+        operation: 'update',
+        id: trackingId,
+        data: {
           completion_percentage: completionPercentage,
           status: newStatus,
           completed_at: newStatus === 'completed' ? new Date().toISOString() : null,
           time_spent_hours: timeSpentHours,
           score: score,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', trackingId);
-
-      if (error) {
-        console.error('Failed to update progress:', error);
-        return false;
-      }
+        },
+      });
 
       // Log assessment completion
       if (newStatus === 'completed') {
-        const { data: trackingData } = await supabase
-          .from('completion_tracking')
-          .select('item_type, item_title, score')
-          .eq('id', trackingId)
-          .single();
+        const trackingRows = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'completion_tracking',
+          operation: 'select',
+          where: { id: trackingId },
+          limit: 1,
+        });
+        const trackingData = trackingRows?.[0];
 
         if (trackingData?.item_type === 'assessment') {
-          await supabase
-            .from('user_activity_log')
-            .insert({
+          await callApi('queryTable', {
+            table: 'user_activity_log',
+            operation: 'insert',
+            data: {
               user_id: userId,
               activity_type: 'assessment_completion',
-              activity_details: {
+              activity_details: JSON.stringify({
                 assessmentName: trackingData.item_title,
                 score: trackingData.score,
-              },
-            });
+              }),
+            },
+          });
         }
       }
 
@@ -164,18 +158,12 @@ export const useCompletionTracking = (userId: string | null) => {
     if (!userId) return false;
 
     try {
-      const { error } = await supabase
-        .from('completion_tracking')
-        .update({
-          status: 'failed',
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', trackingId);
-
-      if (error) {
-        console.error('Failed to mark as failed:', error);
-        return false;
-      }
+      await callApi('queryTable', {
+        table: 'completion_tracking',
+        operation: 'update',
+        id: trackingId,
+        data: { status: 'failed' },
+      });
 
       await fetchCompletions();
       return true;

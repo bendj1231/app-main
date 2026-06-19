@@ -471,29 +471,79 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const _firebaseUser = null;
       let _userAlreadyExisted = false;
 
-      // Auth0 handles authentication — use Auth0 user ID
+      // Skip Edge Function to avoid rate limiting (429 errors) - use direct Supabase auth
       try {
-        const token = await getAccessTokenSilently();
-        if (!token) {
-          await auth0Context.loginWithRedirect({ authorizationParams: { screen_hint: 'signup' } });
-          return;
+        throw new Error('SKIP_EDGE_FUNCTION');
+      } catch (_edgeFunctionError) {
+        // Fallback to direct Supabase auth (original logic)
+        const { data: supabaseData, error: supabaseError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              display_name: userData.fullName || email.split('@')[0],
+              firebase_uid: null,
+            },
+          },
+        });
+
+        if (supabaseError) {
+          if (
+            supabaseError.message.includes('already registered') ||
+            supabaseError.message === 'User already registered'
+          ) {
+            _userAlreadyExisted = true;
+
+            const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword(
+              {
+                email,
+                password,
+              }
+            );
+
+            if (signInError) {
+              console.error('❌ Failed to sign in to get user ID:', signInError);
+              throw new Error('USER_ALREADY_EXISTS');
+            }
+
+            if (!signInData.user) {
+              throw new Error('USER_ALREADY_EXISTS');
+            }
+
+            userId = signInData.user.id;
+
+            if (!signInData.user.email_confirmed_at) {
+              const { error: resendError } = await supabase.auth.resend({
+                type: 'signup',
+                email,
+              });
+              if (resendError) {
+                console.warn('⚠️ Failed to resend confirmation email:', resendError);
+              } else {
+              }
+            }
+          } else {
+            console.error('❌ Supabase auth error:', supabaseError);
+            throw new Error(`Supabase auth failed: ${supabaseError.message}`);
+          }
+        } else {
+          if (!supabaseData.user) {
+            throw new Error('No user returned from Supabase auth');
+          }
+
+          userId = supabaseData.user.id;
         }
-        userId = auth0User?.sub || '';
-        if (!userId) {
-          throw new Error('Auth0 user ID not available');
-        }
-      } catch (authErr) {
-        console.error('Auth0 auth error:', authErr);
-        throw new Error('Authentication failed. Please try again.');
       }
 
       // Acquire vault key for this session (non-blocking, falls back gracefully)
       let vaultKey: CryptoKey | null = null;
       try {
-        const token = await getAccessTokenSilently();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
         const sub = auth0User?.sub || userId;
-        if (token && sub) {
-          vaultKey = await getVaultKey(sub, token);
+        if (session?.access_token && sub) {
+          vaultKey = await getVaultKey(sub, session.access_token);
         }
       } catch (vaultErr: unknown) {
         console.warn(
@@ -505,13 +555,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Step 2: Create or update portal profile in profiles table
       try {
         // First check if profile already exists
-        const existingProfiles = await callApi<Record<string, unknown>[]>('queryTable', {
-          table: 'profiles',
-          operation: 'select',
-          where: { id: userId },
-          limit: 1,
-        });
-        const existingProfile = existingProfiles?.[0] || null;
+        const { data: existingProfile, error: checkError } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', userId)
+          .maybeSingle();
+
+        if (checkError && checkError.code !== 'PGRST116') {
+          // PGRST116 is "not found", which is expected if profile doesn't exist
+          console.error('❌ Error checking existing profile:', checkError);
+          throw new Error(`Failed to check existing profile: ${checkError.message}`);
+        }
 
         if (existingProfile) {
           // Profile exists, update
@@ -548,7 +602,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             ? /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
               await encryptFields(rawUpdatePayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
             : rawUpdatePayload;
-          await callApi('queryTable', { table: 'profiles', operation: 'update', id: userId, data: updatePayload });
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update(updatePayload)
+            .eq('id', userId);
+
+          if (updateError) {
+            console.error('❌ Profile update error:', updateError);
+            throw new Error(`Failed to update portal profile: ${updateError.message}`);
+          }
         } else {
           // Profile doesn't exist, create it
           const _experienceLevel = (() => {
@@ -562,13 +624,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           let autoPilotId = userData.pilotId || null;
           if (!autoPilotId) {
             try {
-              const countResult = await callApi<Record<string, unknown>[]>('queryTable', {
-                table: 'profiles',
-                operation: 'select',
-                columns: 'id',
-                limit: 1,
-              });
-              const nextNum = (countResult?.length ?? 0) + 1;
+              const { count } = await supabase
+                .from('profiles')
+                .select('id', { count: 'exact', head: true });
+              const nextNum = (count ?? 2) + 1;
               autoPilotId = `PR${String(nextNum).padStart(4, '0')}`;
             } catch {
               console.warn('⚠️ Could not generate pilot ID');
@@ -614,20 +673,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             ? /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
               await encryptFields(rawInsertPayload, PROFILE_SENSITIVE_FIELDS as any, vaultKey)
             : rawInsertPayload;
-          await callApi('queryTable', {
-            table: 'profiles',
-            operation: 'insert',
-            data: { id: userId, ...insertPayload },
-          });
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({ id: userId, ...insertPayload });
+
+          if (profileError) {
+            console.error('❌ Profile insert error:', profileError);
+            throw new Error(`Failed to create portal profile: ${profileError.message}`);
+          }
 
           // Provision Pilot Wallet in background (non-blocking)
           try {
-            await callApi('provisionWallet', {
-              profile_id: userId,
-              auth0_id: userData.auth0Id || userId,
-              email,
-              name: userData.fullName || email.split('@')[0],
-            });
+            const {
+              data: { session: currentSession },
+            } = await supabase.auth.getSession();
+            if (currentSession?.access_token) {
+              fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/wallet-provision`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${currentSession.access_token}`,
+                  apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+                },
+                body: JSON.stringify({
+                  profile_id: userId,
+                  auth0_id: userData.auth0Id || userId,
+                  email: email,
+                  name: userData.fullName || email.split('@')[0],
+                }),
+              })
+                .then((r) => r.json())
+                .then((d) => {
+                  if (d.success) console.warn('✅ Pilot Wallet provisioned:', d.walletId);
+                  else
+                    console.warn(
+                      '⚠️ Pilot Wallet provision skipped (wallet API offline):',
+                      d.error
+                    );
+                })
+                .catch((e) => console.warn('⚠️ Pilot Wallet provision failed (non-critical):', e));
+            }
           } catch (walletErr) {
             console.warn('⚠️ Wallet provision non-critical error:', walletErr);
           }
@@ -642,37 +727,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     ?.split('=')[1]
                 : null;
             if (refCode) {
-              const referrerRows = await callApi<Record<string, unknown>[]>('queryTable', {
-                table: 'profiles',
-                operation: 'select',
-                where: { referral_code: refCode },
-                limit: 1,
-              });
-              const referrer = referrerRows?.[0];
+              const { data: referrer } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('referral_code', refCode)
+                .maybeSingle();
               if (referrer) {
-                await callApi('queryTable', {
-                  table: 'profiles',
-                  operation: 'update',
-                  id: userId,
-                  data: {
+                await supabase
+                  .from('profiles')
+                  .update({
                     referred_by_code: refCode,
-                    referred_by_profile_id: (referrer as Record<string, unknown>).id,
-                  },
-                });
+                    referred_by_profile_id: referrer.id,
+                  })
+                  .eq('id', userId);
                 // Record in referral_conversions (partner = referrer via referral_partners if they exist)
-                const partnerRows = await callApi<Record<string, unknown>[]>('queryTable', {
-                  table: 'referral_partners',
-                  operation: 'select',
-                  where: { referral_code: refCode, is_active: true },
-                  limit: 1,
-                });
-                const partner = partnerRows?.[0];
+                const { data: partner } = await supabase
+                  .from('referral_partners')
+                  .select('id, commission_rate, total_referrals')
+                  .eq('referral_code', refCode)
+                  .eq('is_active', true)
+                  .maybeSingle();
                 if (partner) {
-                  await callApi('queryTable', {
-                    table: 'referral_conversions',
-                    operation: 'insert',
-                    data: {
-                      partner_id: (partner as Record<string, unknown>).id,
+                  await supabase.from('referral_conversions').upsert(
+                    {
+                      partner_id: partner.id,
                       referral_code: refCode,
                       pilot_id: userId,
                       pilot_email: email,
@@ -680,17 +758,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                       status: 'signed_up',
                       clicked_at: new Date().toISOString(),
                       signed_up_at: new Date().toISOString(),
-                      commission_amount: (partner as Record<string, unknown>).commission_rate ?? 20,
+                      commission_amount: partner.commission_rate ?? 20,
                     },
-                  });
-                  await callApi('queryTable', {
-                    table: 'referral_partners',
-                    operation: 'update',
-                    id: (partner as Record<string, unknown>).id as string,
-                    data: {
-                      total_referrals: ((partner as Record<string, unknown>).total_referrals as number) + 1,
-                    },
-                  });
+                    { onConflict: 'partner_id,pilot_email' }
+                  );
+                  await supabase
+                    .from('referral_partners')
+                    .update({
+                      total_referrals: partner.total_referrals + 1,
+                    })
+                    .eq('id', partner.id);
                 }
                 // Clear cookie after attribution
                 document.cookie = 'pr_ref=; path=/; max-age=0';
@@ -702,7 +779,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           // Generate referral code for new pilot (non-blocking)
           try {
-            await callApi('generateReferral', { auth0Id: userData.auth0Id || userId, profileId: userId });
+            supabase.functions
+              .invoke('generate-referral', {
+                body: { auth0Id: userData.auth0Id || userId, profileId: userId },
+              })
+              .catch(() => {});
           } catch {}
         }
       } catch (profileError) {
@@ -728,11 +809,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           updated_at: new Date().toISOString(),
         }));
 
-        await callApi('queryTable', {
-          table: 'user_app_access',
-          operation: 'insert',
-          data: appAccessRecords,
-        });
+        const { error: accessError } = await supabase
+          .from('user_app_access')
+          .insert(appAccessRecords);
+
+        if (accessError) {
+          // If records already exist, it's not a critical error
+          if (accessError.code === '23505') {
+          } else {
+            console.error('App access creation error:', accessError);
+            throw new Error(`Failed to create app access: ${accessError.message}`);
+          }
+        }
       } catch (accessError) {
         console.error('Failed to create app access:', accessError);
         throw accessError;
@@ -874,11 +962,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               vaultKey
             )
           : rawLicensurePayload;
-        await callApi('queryTable', {
-          table: 'pilot_licensure_experience',
-          operation: 'insert',
-          data: { user_id: userId, ...licensurePayload },
-        });
+        const { error: pilotTableError } = await supabase
+          .from('pilot_licensure_experience')
+          .upsert({ user_id: userId, ...licensurePayload }, { onConflict: 'user_id' });
+
+        if (pilotTableError) {
+          console.error('Pilot table sync error:', pilotTableError);
+          throw new Error(`Failed to sync to pilot table: ${pilotTableError.message}`);
+        }
       } catch (pilotTableError) {
         console.error('Failed to sync to pilot table:', pilotTableError);
         throw pilotTableError;
@@ -888,7 +979,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const displayName = userData.fullName || email.split('@')[0];
 
-        await callApi('sendAccountCreatedEmail', { email, name: displayName });
+        const { error } = await supabase.functions.invoke('send-account-created-email', {
+          body: {
+            email,
+            name: displayName,
+          },
+          headers: getAuthHeaders(),
+        });
+
+        if (error) {
+          console.error('❌ Account creation email error:', error);
+        } else {
+        }
       } catch (emailError) {
         console.error('❌ Error sending account creation email:', emailError);
         // Non-critical: User is still created
@@ -978,23 +1080,108 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     } catch (profileError) {
-      console.error('[AuthContext] Error fetching user profile from Worker API:', profileError);
+      console.error('[AuthContext] Error fetching user profile from Supabase:', profileError);
     }
   }
 
-  async function login(_email: string, _password: string) {
-    // Auth0 handles authentication — redirect to Auth0 login
-    await auth0Context.loginWithRedirect();
+  async function login(email: string, password: string) {
+    console.log('[AuthContext] login() called with email:', email);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      console.log('[AuthContext] signInWithPassword result:', { hasUser: !!data.user, hasSession: !!data.session, error: error?.message });
+      if (error) throw new Error(error.message || 'Login failed');
+      if (!data.user || !data.session) throw new Error('Login failed: No user or session returned');
+      await handlePostLogin(data.user, data.session, email);
+    } catch (error: any) {
+      const errMsg = error?.message || String(error);
+      console.log('[AuthContext] signInWithPassword failed:', errMsg);
+      
+      // Fallback: use custom admin_login RPC when Supabase Auth service is broken
+      if (errMsg.includes('Database error querying schema') || errMsg.includes('Load failed')) {
+        console.log('[AuthContext] Trying admin_login RPC fallback...');
+        try {
+          const { data: adminData, error: adminError } = await supabase.rpc('admin_login', {
+            check_email: email,
+            check_password: password
+          });
+          console.log('[AuthContext] admin_login RPC result:', { adminData, adminError: adminError?.message });
+          
+          if (adminError || !adminData || adminData.length === 0) {
+            throw new Error('Invalid email or password');
+          }
+          
+          const user = adminData[0];
+          // Manually create a session-like object for admin users
+          const mockUser = {
+            id: user.id,
+            email: user.email,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            email_confirmed_at: new Date().toISOString(),
+            user_metadata: { display_name: user.display_name, role: user.role }
+          };
+          const mockSession = { access_token: 'admin-fallback-token', refresh_token: '' };
+          
+          // Store a local flag to indicate admin fallback login
+          localStorage.setItem('adminFallbackLogin', JSON.stringify({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            display_name: user.display_name,
+            timestamp: Date.now()
+          }));
+          
+          await handlePostLogin(mockUser, mockSession, email);
+          // Restore admin role since handlePostLogin may overwrite userProfile
+          setUserProfile({
+            id: user.id,
+            email: user.email,
+            display_name: user.display_name,
+            role: user.role,
+            created_at: new Date().toISOString(),
+          });
+          console.log('[AuthContext] Admin fallback login succeeded for:', user.email);
+          return;
+        } catch (fallbackError: any) {
+          console.error('[AuthContext] Admin fallback login failed:', fallbackError);
+          throw new Error(fallbackError?.message || 'Login failed');
+        }
+      }
+      
+      console.error('[AuthContext] Login failed:', error);
+      throw error;
+    }
   }
 
-  async function sendOtp(_email: string, _redirectTo?: string) {
-    // Auth0 handles OTP — redirect to Auth0 login
-    await auth0Context.loginWithRedirect();
+  async function sendOtp(email: string, redirectTo?: string) {
+    const defaultRedirect = typeof window !== 'undefined' ? `${window.location.origin}/flight-deck-login` : undefined;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: redirectTo || defaultRedirect,
+      },
+    });
+    if (error) {
+      console.error('sendOtp error:', error);
+      throw new Error(error.message || 'Failed to send code. Please try again.');
+    }
   }
 
-  async function verifyOtp(_email: string, _token: string) {
-    // Auth0 handles verification — redirect to Auth0 login
-    await auth0Context.loginWithRedirect();
+  async function verifyOtp(email: string, token: string) {
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'email',
+      });
+      if (error) throw new Error(error.message || 'Invalid code. Please try again.');
+      if (!data.user || !data.session) throw new Error('Verification failed. Please try again.');
+      await handlePostLogin(data.user, data.session, email);
+    } catch (error) {
+      console.error('verifyOtp failed:', error);
+      throw error;
+    }
   }
 
   async function logout() {
@@ -1023,49 +1210,82 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     sessionStorage.removeItem('auth0_user_id');
 
     try {
-      await auth0Context.logout({ logoutParams: { returnTo: window.location.origin } });
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Supabase signOut error:', error);
+        throw error;
+      }
     } catch (error) {
-      console.error('❌ Auth0 logout error:', error);
+      console.error('❌ Logout error:', error);
+      // If Supabase API fails, clear session storage directly
+      // Remove all Supabase auth tokens from BOTH localStorage and sessionStorage
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('sb-') || key.includes('auth') || key.includes('token'))) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach((key) => localStorage.removeItem(key));
+      // Also purge sessionStorage (Supabase auth session now lives here)
+      const ssKeysToRemove: string[] = [];
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key && (key.startsWith('sb-') || key.includes('auth') || key.includes('token'))) {
+          ssKeysToRemove.push(key);
+        }
+      }
+      ssKeysToRemove.forEach((key) => sessionStorage.removeItem(key));
     }
   }
 
-  async function resetPassword(_email: string) {
-    // Auth0 handles password reset
-    await auth0Context.loginWithRedirect({ authorizationParams: { screen_hint: 'reset_password' } });
+  async function resetPassword(email: string) {
+    // Use Supabase auth for password reset
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
   }
 
-  // Refresh user profile from Worker API
+  // Refresh user profile from Supabase
   async function refreshUserProfile() {
-    if (!currentUser) return;
+    if (!currentUser) {
+      return;
+    }
+
     try {
-      const licRows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'pilot_licensure_experience',
-        operation: 'select',
-        where: { user_id: currentUser.id },
-        limit: 1,
-      });
-      const licData = licRows?.[0];
-      if (licData) {
-        await decryptAndSetUserProfile(licData as UserProfile);
+      // Fetch profile from Supabase
+      const { data: profileData, error } = await supabase
+        .from('pilot_licensure_experience')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+
+      if (profileData && !error) {
+        await decryptAndSetUserProfile(profileData);
         logProfileUpdate(currentUser.id, {
           action: 'Profile refreshed after enrollment',
           timestamp: new Date().toISOString(),
         });
-        return;
-      }
-      const profileRows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'profiles',
-        operation: 'select',
-        where: { id: currentUser.id },
-        limit: 1,
-      });
-      const profileData = profileRows?.[0];
-      if (profileData) {
-        await decryptAndSetUserProfile(profileData as UserProfile);
-        logProfileUpdate(currentUser.id, {
-          action: 'Profile refreshed from profiles table',
-          timestamp: new Date().toISOString(),
-        });
+      } else {
+        // Try profiles table as fallback
+        const { data: profilesData, error: profilesError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', currentUser.id)
+          .maybeSingle();
+
+        if (profilesData && !profilesError) {
+          await decryptAndSetUserProfile(profilesData);
+          logProfileUpdate(currentUser.id, {
+            action: 'Profile refreshed from profiles table',
+            timestamp: new Date().toISOString(),
+          });
+        } else {
+        }
       }
     } catch (error) {
       console.error('❌ Error refreshing user profile:', error);
@@ -1079,13 +1299,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('User must be logged in to setup MFA');
       }
 
-      const data = await callApi<Record<string, unknown>>('mfaSetup', { userId: currentUser.uid, method, phoneNumber });
+      const { data, error } = await supabase.functions.invoke('auth-mfa-setup', {
+        body: { userId: currentUser.uid, method, phoneNumber },
+        headers: getAuthHeaders(),
+      });
 
-      if (!data?.success) {
-        throw new Error((data?.error as string) || 'Failed to setup MFA');
+      if (error) {
+        throw new Error(error.message || 'Failed to setup MFA');
       }
 
-      setMfaSetupData({ secret: data.secret as string, qrCodeURL: data.qrCodeURL as string });
+      if (!data?.success) {
+        throw new Error(data?.error || 'Failed to setup MFA');
+      }
+
+      setMfaSetupData({ secret: data.secret, qrCodeURL: data.qrCodeURL });
       setMfaSetupStep('qr');
     } catch (error) {
       console.error('MFA setup error:', error);
@@ -1103,17 +1330,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('User must be logged in to verify MFA');
       }
 
-      const data = await callApi<Record<string, unknown>>('mfaVerify', { userId: currentUser.uid, code, isSetup });
+      const { data, error } = await supabase.functions.invoke('auth-mfa-verify', {
+        body: { userId: currentUser.uid, code, isSetup },
+        headers: getAuthHeaders(),
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to verify MFA code');
+      }
 
       if (!data?.success) {
-        throw new Error((data?.error as string) || 'Failed to verify MFA code');
+        throw new Error(data?.error || 'Failed to verify MFA code');
       }
 
       if (isSetup) {
         setMfaEnabled(true);
         setMfaSetupStep('none');
         setMfaSetupData({});
-        return { success: true, backupCodes: data.backupCodes as string[] };
+        return { success: true, backupCodes: data.backupCodes };
       }
 
       return { success: true };
@@ -1130,10 +1364,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('User must be logged in to disable MFA');
       }
 
-      const data = await callApi<Record<string, unknown>>('mfaDisable', { userId: currentUser.uid, code });
+      const { data, error } = await supabase.functions.invoke('auth-mfa-disable', {
+        body: { userId: currentUser.uid, code },
+        headers: getAuthHeaders(),
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to disable MFA');
+      }
 
       if (!data?.success) {
-        throw new Error((data?.error as string) || 'Failed to disable MFA');
+        throw new Error(data?.error || 'Failed to disable MFA');
       }
 
       setMfaEnabled(false);
@@ -1150,13 +1391,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('User must be logged in to generate backup codes');
       }
 
-      const data = await callApi<Record<string, unknown>>('mfaBackupCodes', { userId: currentUser.uid, action: 'generate', codeCount: 10 });
+      const { data, error } = await supabase.functions.invoke('auth-mfa-backup-codes', {
+        body: { userId: currentUser.uid, action: 'generate', codeCount: 10 },
+        headers: getAuthHeaders(),
+      });
 
-      if (!data?.success) {
-        throw new Error((data?.error as string) || 'Failed to generate backup codes');
+      if (error) {
+        throw new Error(error.message || 'Failed to generate backup codes');
       }
 
-      return data.backupCodes as string[];
+      if (!data?.success) {
+        throw new Error(data?.error || 'Failed to generate backup codes');
+      }
+
+      return data.backupCodes;
     } catch (error) {
       console.error('MFA generate backup codes error:', error);
       throw error;
@@ -1170,15 +1418,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return false;
       }
 
-      const rows = await callApi<Record<string, unknown>[]>('queryTable', {
-        table: 'mfa_secrets',
-        operation: 'select',
-        where: { user_id: currentUser.uid },
-        limit: 1,
-      });
-      const data = rows?.[0] || null;
+      const { data, error } = await supabase
+        .from('mfa_secrets')
+        .select('is_enabled')
+        .eq('user_id', currentUser.uid)
+        .single();
 
-      const enabled = (data?.is_enabled as boolean) || false;
+      if (error) {
+        return false;
+      }
+
+      const enabled = data?.is_enabled || false;
       setMfaEnabled(enabled);
       return enabled;
     } catch (error) {
@@ -1189,7 +1439,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   async function deleteAccount(userId: string) {
     try {
-      await callApi('deleteAccount', { userId });
+      // Call the delete-account Edge Function
+      const { data, error } = await supabase.functions.invoke('delete-account', {
+        body: { userId },
+        headers: getAuthHeaders(),
+      });
+
+      if (error) {
+        console.error('❌ Error calling delete-account Edge Function:', error);
+        throw new Error(`Failed to delete account: ${error.message}`);
+      }
+
+      return data;
     } catch (error) {
       console.error('❌ Error deleting account:', error);
       throw error;
@@ -1197,53 +1458,349 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   useEffect(() => {
-    // Auth0 handles auth state changes — no Supabase listener needed
+    // Guard: prevent duplicate SIGNED_IN processing within 5 seconds
+    let lastSignedInAt = 0;
+    const SIGNED_IN_DEBOUNCE_MS = 5000;
+
+    /** Retry helper for resilient Supabase calls inside auth handler */
+    async function authRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
+      for (let i = 0; i <= retries; i++) {
+        try {
+          return await fn();
+        } catch (err) {
+          const status = (err as any)?.status || (err as any)?.code;
+          const isRetryable = status === 522 || status === 503 || status === 'timeout';
+          if (!isRetryable || i === retries) throw err;
+          await new Promise(r => setTimeout(r, 500 * (i + 1)));
+        }
+      }
+      throw new Error('unreachable');
+    }
+
+    // Listen for auth state changes from Supabase (handles OAuth redirects)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // Debug: record auth state change event
+      try {
+        const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+        dbg.push({ ts: Date.now(), event, sessionUserId: session?.user?.id || null });
+        sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+        console.debug('[AuthContext] onAuthStateChange', { event, sessionUserId: session?.user?.id });
+      } catch (e) {
+        console.debug('[AuthContext] debug log write failed', e);
+      }
+
+      if (event === 'SIGNED_IN' && session?.user) {
+        // DEBOUNCE: skip if we processed SIGNED_IN recently (prevents cascade from tab focus / token refresh)
+        const now = Date.now();
+        if (now - lastSignedInAt < SIGNED_IN_DEBOUNCE_MS) {
+          console.debug('[AuthContext] SIGNED_IN debounced — skipping duplicate');
+          return;
+        }
+        lastSignedInAt = now;
+
+        // User signed in via OAuth
+        console.log('[AuthContext] SIGNED_IN event — userId:', session.user.id, 'email:', session.user.email, 'path:', window.location.pathname);
+
+        // Only check account if:
+        // 1. We haven't already shown the modal in this session
+        // 2. The user is not already set (prevents duplicate checks on tab switch)
+        // 3. The user ID is different (new user signing in)
+        const modalShownInStorage = localStorage.getItem('oauthModalShown') === 'true';
+        const isNewUser = !currentUserRef.current || currentUserRef.current.id !== session.user.id;
+
+        const isOauthRedirectPath = window.location.pathname === '/auth/callback' || window.location.pathname === '/callback';
+        const isOnboarding = window.location.pathname.startsWith('/become-member');
+        const shouldRunAccountCheck = !isOnboarding && (isOauthRedirectPath || (!oauthModalShownRef.current && !modalShownInStorage && isNewUser));
+        console.log('[AuthContext] shouldRunAccountCheck:', shouldRunAccountCheck, { isOauthRedirectPath, isOnboarding, isNewUser, modalShownInStorage });
+
+        if (shouldRunAccountCheck) {
+          setOauthModalShown(true);
+
+          // Start account check
+          setOauthAccountCheck({ checking: true, hasAccount: null });
+          console.log('[AuthContext] Starting profile check for OAuth user');
+
+          const supabaseUser: SupabaseUser = {
+            id: session.user.id,
+            uid: session.user.id,
+            email: session.user.email || '',
+            display_name:
+              session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+            displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+            email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
+            created_at: session.user.created_at || new Date().toISOString(),
+            updated_at: session.user.updated_at || new Date().toISOString(),
+          };
+
+          setCurrentUserWithRef(supabaseUser);
+          setExplicitLogoutInStorage(false); // Clear logout flag on sign-in
+
+          // Scroll to top after successful login
+          window.scrollTo(0, 0);
+
+          // Check if user has an existing account profile (with retry + graceful failure)
+          let profileFound = false;
+          try {
+            const profileResult = await authRetry(() =>
+              Promise.resolve(
+                supabase.from('profiles').select('*').eq('id', session!.user.id).maybeSingle()
+              )
+            );
+            const profileData = profileResult.data;
+
+            if (profileData) {
+              console.log('[AuthContext] Profile found in profiles table for OAuth user');
+              await decryptAndSetUserProfile(profileData);
+              profileFound = true;
+              setOauthAccountCheck({ checking: false, hasAccount: true });
+            } else {
+              // Try pilot_licensure_experience as fallback (with retry)
+              const pilotResult = await authRetry(() =>
+                Promise.resolve(
+                  supabase.from('pilot_licensure_experience').select('*').eq('user_id', session!.user.id).maybeSingle()
+                )
+              );
+              const pilotData = pilotResult.data;
+              console.debug('[AuthContext] SIGNED_IN fallback fetched', { pilotData });
+
+              if (pilotData) {
+                console.log('[AuthContext] pilot_licensure_experience found — treating as existing account');
+                await decryptAndSetUserProfile(pilotData);
+                profileFound = true;
+                setOauthAccountCheck({ checking: false, hasAccount: true });
+              }
+            }
+          } catch (err) {
+            console.warn('[AuthContext] Profile lookup failed (Supabase may be throttled):', err);
+            try {
+              const dbg = JSON.parse(sessionStorage.getItem('oauth_debug_log') || '[]');
+              dbg.push({ ts: Date.now(), step: 'profile_check_error_resilient', err: err instanceof Error ? err.message : String(err) });
+              sessionStorage.setItem('oauth_debug_log', JSON.stringify(dbg.slice(-50)));
+            } catch {}
+          }
+
+          if (!profileFound) {
+            console.warn('[AuthContext] No profile found — new user flow', { userId: session.user.id });
+            setOauthAccountCheck({ checking: false, hasAccount: false });
+            setUserProfile(null);
+          }
+
+          setLoading(false);
+        } else {
+          // User already signed in or same user, just set the user without checking account
+          const supabaseUser: SupabaseUser = {
+            id: session.user.id,
+            uid: session.user.id,
+            email: session.user.email || '',
+            display_name:
+              session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+            displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+            email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
+            created_at: session.user.created_at || new Date().toISOString(),
+            updated_at: session.user.updated_at || new Date().toISOString(),
+          };
+
+          setCurrentUserWithRef(supabaseUser);
+          setExplicitLogoutInStorage(false);
+          setLoading(false);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        lastSignedInAt = 0; // reset debounce on logout
+        setCurrentUserWithRef(null);
+        setUserProfile(null);
+        setLoading(false);
+        // Reset OAuth modal flag on logout
+        setOauthModalShown(false);
+        localStorage.removeItem('oauthModalShown');
+        setOauthAccountCheck({ checking: false, hasAccount: null });
+      } else if (event === 'TOKEN_REFRESHED') {
+        // Session is still valid, no action needed
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    // Verify session using Auth0 (bypassing Supabase)
+    // Verify session using Supabase native session check (bypassing Edge Function due to 403 errors)
     const verifySession = async () => {
+      // Clear explicit logout flag on OAuth redirect routes (callback or setup page)
+      if (typeof window !== 'undefined') {
+        const path = window.location.pathname;
+        const isOAuthCallback = path === '/auth/callback' || path === '/callback';
+        const isSetupPage = new URLSearchParams(window.location.search).get('setup') === '1';
+        if (isOAuthCallback || isSetupPage) {
+          setExplicitLogoutInStorage(false);
+          setOauthModalShown(false);
+          oauthModalShownRef.current = false;
+          localStorage.removeItem('oauthModalShown');
+        }
+      }
+      // Check if user explicitly logged out - prevent session restoration
       if (isExplicitLogout()) {
         setCurrentUser(null);
         setUserProfile(null);
         setLoading(false);
         return;
       }
+
       try {
-        const token = await getAccessTokenSilently();
-        if (token && auth0User) {
+        // Use Supabase native session check instead of Edge Function
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          setCurrentUser(null);
+          setUserProfile(null);
+          setLoading(false);
+          return;
+        }
+
+        if (session?.user) {
+          // Create SupabaseUser object
           const verifiedUser: SupabaseUser = {
-            id: auth0User.sub || '',
-            uid: auth0User.sub || '',
-            email: auth0User.email || '',
-            display_name: auth0User.name || auth0User.email?.split('@')[0],
-            displayName: auth0User.name || auth0User.email?.split('@')[0],
-            email_confirmed_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            id: session.user.id,
+            uid: session.user.id,
+            email: session.user.email || '',
+            display_name:
+              session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+            displayName: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+            email_confirmed_at: session.user.email_confirmed_at || new Date().toISOString(),
+            created_at: session.user.created_at || new Date().toISOString(),
+            updated_at: session.user.updated_at || new Date().toISOString(),
           };
+
           setCurrentUser(verifiedUser);
+
+          // Scroll to top on session restoration
           window.scrollTo(0, 0);
+
+          // Fetch profile from Supabase
           try {
-            const licRows = await callApi<Record<string, unknown>[]>('queryTable', {
-              table: 'pilot_licensure_experience',
-              operation: 'select',
-              where: { user_id: auth0User.sub },
-              limit: 1,
-            });
-            const licData = licRows?.[0];
-            if (licData) {
-              await decryptAndSetUserProfile(licData as UserProfile);
+            const { data: profileData, error } = await supabase
+              .from('pilot_licensure_experience')
+              .select('*')
+              .eq('user_id', session.user.id)
+              .maybeSingle();
+
+            if (profileData && !error) {
+              await decryptAndSetUserProfile(profileData);
             } else {
-              setUserProfile(null);
+              // No profile found — preserve admin fallback role if present
+              let fallbackRole: string | undefined;
+              try {
+                const fb = JSON.parse(localStorage.getItem('adminFallbackLogin') || '{}');
+                fallbackRole = fb.role;
+              } catch { /* ignore */ }
+              setUserProfile({
+                id: session.user.id,
+                user_id: session.user.id,
+                email: session.user.email || '',
+                role: fallbackRole,
+                created_at: new Date().toISOString(),
+                last_login: new Date().toISOString(),
+              });
             }
           } catch (err) {
-            console.warn('⚠️ Could not load profile for Auth0 session:', err);
-            setUserProfile(null);
+            console.error('❌ Error fetching Supabase profile:', err);
+            // Preserve admin fallback role on timeout so admin dashboard stays accessible
+            let fallbackRole: string | undefined;
+            try {
+              const fb = JSON.parse(localStorage.getItem('adminFallbackLogin') || '{}');
+              fallbackRole = fb.role;
+            } catch { /* ignore */ }
+            setUserProfile({
+              id: session.user.id,
+              user_id: session.user.id,
+              email: session.user.email || '',
+              role: fallbackRole,
+              created_at: new Date().toISOString(),
+              last_login: new Date().toISOString(),
+            });
           }
         } else {
-          setCurrentUser(null);
+          // Check for Auth0 session in sessionStorage
+          const auth0Provider = sessionStorage.getItem('sb-auth-provider');
+          const auth0UserId = sessionStorage.getItem('sb-auth-user-id');
+          const auth0Email = sessionStorage.getItem('sb-auth-email');
+          const auth0Name = sessionStorage.getItem('sb-auth-name');
+          const auth0Expiry = sessionStorage.getItem('sb-auth-expiry');
+
+          if (auth0Provider === 'auth0' && auth0UserId && auth0Email) {
+            // Check if session expired
+            if (auth0Expiry && parseInt(auth0Expiry) > Date.now()) {
+              const restoredUser: SupabaseUser = {
+                id: auth0UserId,
+                uid: auth0UserId,
+                email: auth0Email,
+                email_confirmed_at: new Date().toISOString(),
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                display_name: auth0Name || auth0Email.split('@')[0],
+                displayName: auth0Name || auth0Email.split('@')[0],
+              };
+              setCurrentUser(restoredUser);
+
+              // Fetch profile data from Supabase (includes profile_image_url)
+              try {
+                const { data: profileData } = await supabase
+                  .from('profiles')
+                  .select(
+                    'profile_image_url, profile_image_public_id, full_name, display_name, email, current_flight_hours, overall_recognition_score, license_id, country_of_license, ratings'
+                  )
+                  .eq('auth0_id', auth0UserId)
+                  .maybeSingle();
+
+                if (profileData) {
+                  let displayData = profileData;
+                  try {
+                    const {
+                      data: { session: s },
+                    } = await supabase.auth.getSession();
+                    if (s?.access_token && auth0UserId) {
+                      const vKey = await getVaultKey(auth0UserId, s.access_token);
+                       
+                      displayData = await decryptFields(
+                        profileData,
+                        PROFILE_SENSITIVE_FIELDS as any,
+                        vKey
+                      );
+                    }
+                  } catch (err: unknown) {
+                    console.warn(
+                      '[AuthContext] Vault decryption failed for restored session:',
+                      err instanceof Error ? err.message : err
+                    );
+                  }
+                  setUserProfile({
+                    ...displayData,
+                    user_id: auth0UserId,
+                    profile_image_url: displayData.profile_image_url || '',
+                    profile_image_public_id: displayData.profile_image_public_id || '',
+                  });
+                }
+              } catch (err) {
+                console.warn('⚠️ Could not load profile data for Auth0 session:', err);
+              }
+            } else {
+              // Clear expired session data
+              sessionStorage.removeItem('sb-auth-provider');
+              sessionStorage.removeItem('sb-auth-user-id');
+              sessionStorage.removeItem('sb-auth-email');
+              sessionStorage.removeItem('sb-auth-name');
+              sessionStorage.removeItem('sb-auth-expiry');
+              setCurrentUser(null);
+            }
+          } else {
+            setCurrentUser(null);
+          }
           setUserProfile(null);
         }
       } catch (_err) {
@@ -1253,11 +1810,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
       }
     };
+
+    // Guard: only run session verification if we don't already have a user
+    // This prevents loops when Vite Fast Refresh remounts the component
     if (!currentUserRef.current) {
       verifySession();
     } else {
       setLoading(false);
     }
+
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

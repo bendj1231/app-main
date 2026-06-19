@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useWorkerAuth } from './useWorkerAuth';
 
 
 export type CheckStatus = 'pending' | 'in_review' | 'verified' | 'failed' | 'expired' | 'not_required';
@@ -28,63 +28,44 @@ export interface VerificationWallet {
 }
 
 export function useVerificationWallet() {
-  const { currentUser } = useAuth();
+  const { user: auth0User, getAccessTokenSilently } = useAuth0();
+  const { callApi } = useWorkerAuth();
   const [wallet, setWallet] = useState<VerificationWallet | null>(null);
   const [loading, setLoading] = useState(true);
   const [initiating, setInitiating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const userId = auth0User?.sub ?? null;
+
   const loadWallet = useCallback(async () => {
-    if (!currentUser?.id) { setLoading(false); return; }
+    if (!userId) { setLoading(false); return; }
     setLoading(true);
     setError(null);
     try {
-      const { data: walletRow, error: walletErr } = await supabase
-        .from('pilot_verification_wallet')
-        .select('*')
-        .eq('pilot_id', currentUser.id)
-        .maybeSingle();
-
-      if (walletErr) throw walletErr;
-
-      if (!walletRow) {
-        setWallet(null);
-        setLoading(false);
-        return;
-      }
-
-      const { data: checks, error: checksErr } = await supabase
-        .from('verification_checks')
-        .select('id, check_type, status, verified_at, notes, updated_at')
-        .eq('wallet_id', walletRow.id)
-        .order('check_type');
-
-      if (checksErr) throw checksErr;
-
-      setWallet({ ...walletRow, checks: checks ?? [] });
+      const data = await callApi<VerificationWallet>('getVerificationStatus', { user_id: userId });
+      setWallet(data ?? null);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Failed to load verification wallet');
     } finally {
       setLoading(false);
     }
-  }, [currentUser?.id]);
+  }, [userId, callApi]);
 
   useEffect(() => { loadWallet(); }, [loadWallet]);
 
   const initiateVerification = useCallback(async () => {
-    if (!currentUser?.id) return;
+    if (!userId) return;
     setInitiating(true);
     setError(null);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
+      const token = await getAccessTokenSilently();
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       const baseUrl = (import.meta as any).env?.VITE_FIREBASE_FUNCTIONS_URL as string;
 
       const res = await window.fetch(`${baseUrl}/initiateVerification`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify({ pilot_id: currentUser.id }),
+        body: JSON.stringify({ pilot_id: userId }),
       });
 
       const json = await res.json();
@@ -95,7 +76,7 @@ export function useVerificationWallet() {
     } finally {
       setInitiating(false);
     }
-  }, [currentUser?.id, loadWallet]);
+  }, [userId, loadWallet, getAccessTokenSilently]);
 
   const CHECK_LABELS: Record<string, string> = {
     identity: 'Identity',

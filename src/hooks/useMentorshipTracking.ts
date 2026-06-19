@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export interface MentorshipSession {
   id: string;
@@ -36,6 +36,7 @@ export const useMentorshipTracking = (userId: string | null, role: 'mentor' | 'm
   const [sessions, setSessions] = useState<MentorshipSession[]>([]);
   const [stats, setStats] = useState<MentorshipStats | null>(null);
   const [loading, setLoading] = useState(false);
+  const { callApi } = useWorkerAuth();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -52,25 +53,46 @@ export const useMentorshipTracking = (userId: string | null, role: 'mentor' | 'm
     setError(null);
 
     try {
-      let query = supabase
-        .from('mentorship_sessions')
-        .select('*')
-        .order('session_date', { ascending: false });
+      let data: Record<string, unknown>[] = [];
 
       if (role === 'mentor') {
-        query = query.eq('mentor_id', userId);
+        data = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'mentorship_sessions',
+          operation: 'select',
+          where: { mentor_id: userId },
+          orderBy: 'session_date DESC',
+          limit: 500,
+        });
       } else if (role === 'mentee') {
-        query = query.eq('mentee_id', userId);
+        data = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'mentorship_sessions',
+          operation: 'select',
+          where: { mentee_id: userId },
+          orderBy: 'session_date DESC',
+          limit: 500,
+        });
       } else {
-        query = query.or(`mentor_id.eq.${userId},mentee_id.eq.${userId}`);
+        const data1 = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'mentorship_sessions',
+          operation: 'select',
+          where: { mentor_id: userId },
+          orderBy: 'session_date DESC',
+          limit: 500,
+        });
+        const data2 = await callApi<Record<string, unknown>[]>('queryTable', {
+          table: 'mentorship_sessions',
+          operation: 'select',
+          where: { mentee_id: userId },
+          orderBy: 'session_date DESC',
+          limit: 500,
+        });
+        data = [...(data1 || []), ...(data2 || [])].filter(
+          (r, i, arr) => arr.findIndex(x => x.id === r.id) === i
+        );
       }
 
-      const { data, error: fetchError } = await query;
-
-      if (fetchError) throw fetchError;
-
-      setSessions(data || []);
-      calculateStats(data || []);
+      setSessions(data as unknown as MentorshipSession[]);
+      calculateStats(data as unknown as MentorshipSession[]);
     } catch (err) {
       console.error('Error fetching mentorship sessions:', err);
       setError('Failed to load mentorship sessions');
@@ -110,41 +132,27 @@ export const useMentorshipTracking = (userId: string | null, role: 'mentor' | 'm
     if (!userId) return { success: false, error: 'No user ID provided' };
 
     try {
-      const { data, error } = await supabase
-        .from('mentorship_sessions')
-        .insert({
-          ...sessionData,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
+      const newSession = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'mentorship_sessions',
+        operation: 'insert',
+        data: { ...sessionData },
+      });
 
       // Update user's mentorship hours in profiles table
       const updateColumn = sessionData.mentor_id === userId ? 'mentorship_hours' : null;
       if (updateColumn) {
-        // Fetch current hours first
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select(updateColumn)
-          .eq('id', userId)
-          .single();
-        
-        if (profileData) {
-          const currentHours = profileData[updateColumn] || 0;
-          await supabase
-            .from('profiles')
-            .update({
-              [updateColumn]: currentHours + sessionData.duration_hours
-            })
-            .eq('id', userId);
+        const profile = await callApi<Record<string, unknown>>('getProfile', { id: userId });
+        if (profile) {
+          const currentHours = (profile[updateColumn] as number) || 0;
+          await callApi('updateProfile', {
+            id: userId,
+            [updateColumn]: currentHours + sessionData.duration_hours,
+          });
         }
       }
 
       await fetchSessions();
-      return { success: true, data };
+      return { success: true, data: newSession };
     } catch (err) {
       console.error('Error adding mentorship session:', err);
       return { success: false, error: 'Failed to add session' };
@@ -153,15 +161,12 @@ export const useMentorshipTracking = (userId: string | null, role: 'mentor' | 'm
 
   const updateSession = async (sessionId: string, updates: Partial<MentorshipSession>) => {
     try {
-      const { error } = await supabase
-        .from('mentorship_sessions')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', sessionId);
-
-      if (error) throw error;
+      await callApi('queryTable', {
+        table: 'mentorship_sessions',
+        operation: 'update',
+        id: sessionId,
+        data: { ...updates },
+      });
 
       await fetchSessions();
       return { success: true };

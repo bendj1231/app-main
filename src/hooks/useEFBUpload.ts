@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 import { useAuth } from '../contexts/AuthContext';
 
 export interface EFBFormData {
@@ -65,6 +65,7 @@ function calcComplexityIndex(form: EFBFormData): number {
 
 export function useEFBUpload() {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus]         = useState<EFBUploadStatus>('idle');
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [tokenId, setTokenId]       = useState<string | null>(null);
@@ -90,42 +91,44 @@ export function useEFBUpload() {
       const complexity = calcComplexityIndex(form);
 
       // 1. Upsert platform connection
-      const { data: existingConn } = await supabase
-        .from('pilot_platform_connections')
-        .select('id')
-        .eq('pilot_id', currentUser.id)
-        .eq('provider_slug', 'manual-efb')
-        .maybeSingle();
+      const existingConnRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_platform_connections',
+        operation: 'select',
+        where: { pilot_id: currentUser.id, provider_slug: 'manual-efb' },
+        limit: 1,
+      });
+      const existingConn = existingConnRows?.[0];
 
       let connectionId: string;
 
       if (existingConn) {
-        connectionId = existingConn.id;
-        await supabase
-          .from('pilot_platform_connections')
-          .update({ last_synced_at: new Date().toISOString() })
-          .eq('id', connectionId);
+        connectionId = existingConn.id as string;
+        await callApi('queryTable', {
+          table: 'pilot_platform_connections',
+          operation: 'update',
+          id: connectionId,
+          data: {},
+        });
       } else {
-        const { data: newConn, error: connErr } = await supabase
-          .from('pilot_platform_connections')
-          .insert({
+        const newConn = await callApi<Record<string, unknown>>('queryTable', {
+          table: 'pilot_platform_connections',
+          operation: 'insert',
+          data: {
             pilot_id: currentUser.id,
             provider_type: 'efb',
             provider_name: form.provider_name || 'Manual EFB Entry',
             provider_slug: 'manual-efb',
             connection_status: 'active',
-            last_synced_at: new Date().toISOString(),
-          })
-          .select('id')
-          .single();
-        if (connErr) throw connErr;
-        connectionId = newConn.id;
+          },
+        });
+        connectionId = (newConn as { id: string }).id;
       }
 
       // 2. Write efb_complexity_tokens row
-      const { data: token, error: tokenErr } = await supabase
-        .from('efb_complexity_tokens')
-        .insert({
+      const token = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'efb_complexity_tokens',
+        operation: 'insert',
+        data: {
           pilot_id:                  currentUser.id,
           connection_id:             connectionId,
           provider_name:             form.provider_name || 'Manual Entry',
@@ -147,29 +150,29 @@ export function useEFBUpload() {
           complexity_index:          complexity,
           plausibility_validated:    false,
           status:                    'pending',
-        })
-        .select('id')
-        .single();
+        },
+      });
 
-      if (tokenErr) throw tokenErr;
-      setTokenId(token.id);
+      const tokenId = (token as { id: string }).id;
+      setTokenId(tokenId);
       setComplexityIndex(complexity);
 
       // 3. Audit event
-      await supabase
-        .from('p12_verification_events')
-        .insert({
+      await callApi('queryTable', {
+        table: 'p12_verification_events',
+        operation: 'insert',
+        data: {
           pilot_id:         currentUser.id,
           connection_id:    connectionId,
           event_type:       'efb_complexity_ingestion',
           source_table:     'efb_complexity_tokens',
-          source_record_id: token.id,
+          source_record_id: tokenId,
           provider_name:    form.provider_name || 'Manual Entry',
           step_reached:     'token_issued',
           outcome:          'success',
           outcome_detail:   `EFB complexity token created. Complexity index: ${complexity}. ILS: ${form.ils_approaches}, IMC hours: ${form.imc_hours}.`,
-          referral_dividend_triggered: false,
-        });
+        },
+      });
 
       setStatus('success');
     } catch (e: unknown) {

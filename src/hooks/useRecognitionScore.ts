@@ -5,19 +5,28 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 import {
-  getRecognitionScore,
-  updateRecognitionScore,
-  getLeaderboard,
-  getUserRank,
-  getScoreStatistics,
-  subscribeToScoreUpdates,
-  type RecognitionScoreRecord,
-} from '../../services/recognition-score-service';
-import {
+  calculateRecognitionScore,
   PilotScoreInput,
+  getScoreTier,
 } from '../../lib/pilot-recognition-score';
+
+export interface RecognitionScoreRecord {
+  id: string;
+  user_id: string;
+  total_score: number;
+  hours_score: number;
+  experience_score: number;
+  assessment_score: number;
+  mentorship_score: number;
+  score_tier: string;
+  breakdown: unknown;
+  recommendations: string[];
+  last_calculated_at: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export interface UseRecognitionScoreReturn {
   score: RecognitionScoreRecord | null;
@@ -34,26 +43,11 @@ export interface UseRecognitionScoreReturn {
 export const useRecognitionScore = (): UseRecognitionScoreReturn => {
   const [score, setScore] = useState<RecognitionScoreRecord | null>(null);
   const [loading, setLoading] = useState(true);
+  const { callApi, userId } = useWorkerAuth();
   const [error, setError] = useState<string | null>(null);
   const [leaderboard, setLeaderboard] = useState<RecognitionScoreRecord[]>([]);
   const [rank, setRank] = useState<number | null>(null);
   const [statistics, setStatistics] = useState<unknown>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-
-  // Get current user ID from Supabase auth
-  useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUserId(user?.id || null);
-    };
-    getUser();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUserId(session?.user?.id || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   // Fetch current user's score
   const refreshScore = useCallback(async () => {
@@ -66,22 +60,22 @@ export const useRecognitionScore = (): UseRecognitionScoreReturn => {
     setError(null);
 
     try {
-      const scoreData = await getRecognitionScore(userId);
+      const scoreData = await callApi<RecognitionScoreRecord>('getRecognitionScore', { user_id: userId });
       setScore(scoreData);
 
       // Fetch rank
-      const rankData = await getUserRank(userId);
+      const rankData = await callApi<number>('getUserRank', { user_id: userId });
       setRank(rankData);
 
       // Fetch statistics
-      const statsData = await getScoreStatistics(userId);
+      const statsData = await callApi<unknown>('getScoreStatistics', { user_id: userId });
       setStatistics(statsData);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, callApi]);
 
   // Update score with new input data
   const updateScore = useCallback(async (input: PilotScoreInput) => {
@@ -91,7 +85,21 @@ export const useRecognitionScore = (): UseRecognitionScoreReturn => {
     setError(null);
 
     try {
-      const updatedScore = await updateRecognitionScore(userId, input);
+      const scoreBreakdown = calculateRecognitionScore(input);
+      const scoreTier = getScoreTier(scoreBreakdown.totalScore);
+
+      const updatedScore = await callApi<RecognitionScoreRecord>('saveRecognitionScore', {
+        user_id: userId,
+        total_score: scoreBreakdown.totalScore,
+        hours_score: scoreBreakdown.hoursScore,
+        experience_score: scoreBreakdown.experienceScore,
+        assessment_score: scoreBreakdown.assessmentScore,
+        mentorship_score: scoreBreakdown.mentorshipScore,
+        score_tier: scoreTier,
+        breakdown: scoreBreakdown.breakdown,
+        recommendations: scoreBreakdown.recommendations,
+      });
+
       if (updatedScore) {
         setScore(updatedScore);
       }
@@ -100,33 +108,22 @@ export const useRecognitionScore = (): UseRecognitionScoreReturn => {
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, callApi]);
 
   // Load leaderboard
   const loadLeaderboard = useCallback(async (limit: number = 50, tierFilter?: string) => {
     try {
-      const data = await getLeaderboard(limit, tierFilter);
+      const data = await callApi<RecognitionScoreRecord[]>('getLeaderboard', { limit, tier_filter: tierFilter });
       setLeaderboard(data);
     } catch (err: unknown) {
       console.error('Error loading leaderboard:', err);
     }
-  }, []);
+  }, [callApi]);
 
   // Initial load
   useEffect(() => {
     refreshScore();
   }, [refreshScore]);
-
-  // Subscribe to real-time updates
-  useEffect(() => {
-    if (!userId) return;
-
-    const unsubscribe = subscribeToScoreUpdates(userId, (newScore) => {
-      setScore(newScore);
-    });
-
-    return unsubscribe;
-  }, [userId]);
 
   return {
     score,

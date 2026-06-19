@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export type EventType = 'webinar' | 'workshop' | 'conference' | 'meetup' | 'seminar';
 
@@ -19,6 +19,7 @@ export const useEventAttendance = (userId: string | null) => {
   const [events, setEvents] = useState<EventAttendance[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalEventHours, setTotalEventHours] = useState(0);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -32,19 +33,17 @@ export const useEventAttendance = (userId: string | null) => {
     
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('event_attendance')
-        .select('*')
-        .eq('user_id', userId)
-        .order('attended_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'event_attendance',
+        operation: 'select',
+        where: { user_id: userId },
+        orderBy: 'attended_at DESC',
+        limit: 200,
+      });
 
-      if (error) {
-        console.error('Failed to fetch events:', error);
-      } else {
-        setEvents(data || []);
-        const total = (data || []).reduce((sum, e) => sum + (e.duration_hours || 0), 0);
-        setTotalEventHours(total);
-      }
+      setEvents((data || []) as unknown as EventAttendance[]);
+      const total = (data || []).reduce((sum, e) => sum + ((e as Record<string, unknown>).duration_hours as number || 0), 0);
+      setTotalEventHours(total);
     } catch (error) {
       console.error('Error in fetchEvents:', error);
     } finally {
@@ -63,9 +62,10 @@ export const useEventAttendance = (userId: string | null) => {
     if (!userId) return null;
 
     try {
-      const { data, error } = await supabase
-        .from('event_attendance')
-        .insert({
+      const data = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'event_attendance',
+        operation: 'insert',
+        data: {
           user_id: userId,
           event_id: eventId,
           event_title: eventTitle,
@@ -73,17 +73,11 @@ export const useEventAttendance = (userId: string | null) => {
           attended_at: attendedAt,
           duration_hours: durationHours,
           certificate_url: certificateUrl,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Failed to add event attendance:', error);
-        return null;
-      }
+        },
+      });
 
       await fetchEvents();
-      return data;
+      return data as unknown as EventAttendance;
     } catch (error) {
       console.error('Error in addEventAttendance:', error);
       return null;
@@ -96,18 +90,15 @@ export const useEventAttendance = (userId: string | null) => {
     certificateUrl?: string | null
   ) => {
     try {
-      const { error } = await supabase
-        .from('event_attendance')
-        .update({
+      await callApi('queryTable', {
+        table: 'event_attendance',
+        operation: 'update',
+        id: eventId,
+        data: {
           duration_hours: durationHours,
           certificate_url: certificateUrl,
-        })
-        .eq('id', eventId);
-
-      if (error) {
-        console.error('Failed to update event attendance:', error);
-        return false;
-      }
+        },
+      });
 
       if (userId) {
         await fetchEvents();
@@ -121,15 +112,11 @@ export const useEventAttendance = (userId: string | null) => {
 
   const deleteEventAttendance = async (eventId: string) => {
     try {
-      const { error } = await supabase
-        .from('event_attendance')
-        .delete()
-        .eq('id', eventId);
-
-      if (error) {
-        console.error('Failed to delete event attendance:', error);
-        return false;
-      }
+      await callApi('queryTable', {
+        table: 'event_attendance',
+        operation: 'delete',
+        id: eventId,
+      });
 
       if (userId) {
         await fetchEvents();

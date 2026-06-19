@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export interface LearningHours {
   id: string;
@@ -17,6 +17,7 @@ export const useLearningHours = (userId: string | null) => {
   const [learningHours, setLearningHours] = useState<LearningHours[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalHours, setTotalHours] = useState(0);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -30,19 +31,17 @@ export const useLearningHours = (userId: string | null) => {
     
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('learning_hours')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'learning_hours',
+        operation: 'select',
+        where: { user_id: userId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
 
-      if (error) {
-        console.error('Failed to fetch learning hours:', error);
-      } else {
-        setLearningHours(data || []);
-        const total = (data || []).reduce((sum, item) => sum + (item.hours_completed || 0), 0);
-        setTotalHours(total);
-      }
+      setLearningHours((data || []) as unknown as LearningHours[]);
+      const total = (data || []).reduce((sum, item) => sum + ((item as Record<string, unknown>).hours_completed as number || 0), 0);
+      setTotalHours(total);
     } catch (error) {
       console.error('Error in fetchLearningHours:', error);
     } finally {
@@ -59,26 +58,21 @@ export const useLearningHours = (userId: string | null) => {
     if (!userId) return null;
 
     try {
-      const { data, error } = await supabase
-        .from('learning_hours')
-        .insert({
+      const data = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'learning_hours',
+        operation: 'insert',
+        data: {
           user_id: userId,
           course_id: courseId,
           course_title: courseTitle,
           hours_completed: hoursCompleted,
           completed_at: new Date().toISOString(),
           certificate_url: certificateUrl,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Failed to add learning hours:', error);
-        return null;
-      }
+        },
+      });
 
       await fetchLearningHours();
-      return data;
+      return data as unknown as LearningHours;
     } catch (error) {
       console.error('Error in addLearningHours:', error);
       return null;
@@ -93,19 +87,15 @@ export const useLearningHours = (userId: string | null) => {
     if (!userId) return false;
 
     try {
-      const { error } = await supabase
-        .from('learning_hours')
-        .update({
+      await callApi('queryTable', {
+        table: 'learning_hours',
+        operation: 'update',
+        id: learningId,
+        data: {
           hours_completed: hoursCompleted,
           completed_at: completedAt || new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', learningId);
-
-      if (error) {
-        console.error('Failed to update learning hours:', error);
-        return false;
-      }
+        },
+      });
 
       await fetchLearningHours();
       return true;
@@ -119,15 +109,11 @@ export const useLearningHours = (userId: string | null) => {
     if (!userId) return false;
 
     try {
-      const { error } = await supabase
-        .from('learning_hours')
-        .delete()
-        .eq('id', learningId);
-
-      if (error) {
-        console.error('Failed to delete learning hours:', error);
-        return false;
-      }
+      await callApi('queryTable', {
+        table: 'learning_hours',
+        operation: 'delete',
+        id: learningId,
+      });
 
       await fetchLearningHours();
       return true;

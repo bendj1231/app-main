@@ -1,12 +1,12 @@
 /**
- * useAICoachingScoreBoost Hook
- * 
- * Integrates AI coaching recommendations with Recognition Score boosting.
- * When pilots complete AI-recommended actions, their recognition score gets boosted.
+ * useRecognitionProfileCoaching Hook
+ *
+ * Integrates AI coaching recommendations with Recognition Profile boosting.
+ * When pilots complete AI-recommended actions, their recognition profile gets boosted.
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/shared/lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 interface AICoachingAction {
   actionId: string;
@@ -26,12 +26,13 @@ interface ScoreBoostHistory {
   timestamp: string;
 }
 
-export const useAICoachingScoreBoost = (userId?: string) => {
+export const useRecognitionProfileCoaching = (userId?: string) => {
   const [pendingActions, setPendingActions] = useState<AICoachingAction[]>([]);
   const [completedActions, setCompletedActions] = useState<AICoachingAction[]>([]);
   const [boostHistory, setBoostHistory] = useState<ScoreBoostHistory[]>([]);
   const [totalBoost, setTotalBoost] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -46,22 +47,21 @@ export const useAICoachingScoreBoost = (userId?: string) => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('ai_coaching_actions')
-        .select('*')
-        .eq('pilot_id', userId)
-        .order('created_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'ai_coaching_actions',
+        operation: 'select',
+        where: { pilot_id: userId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
 
-      if (error) throw error;
-
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      const actions: AICoachingAction[] = (data || []).map((item: any) => ({
-        actionId: item.id,
-        type: item.action_type,
-        description: item.description,
-        scoreBoost: item.score_boost,
-        completed: item.completed,
-        completedAt: item.completed_at,
+      const actions: AICoachingAction[] = (data || []).map(item => ({
+        actionId: item.id as string,
+        type: item.action_type as AICoachingAction['type'],
+        description: item.description as string,
+        scoreBoost: item.score_boost as number,
+        completed: !!item.completed,
+        completedAt: item.completed_at as string | undefined,
       }));
 
       setPendingActions(actions.filter(a => !a.completed));
@@ -77,23 +77,21 @@ export const useAICoachingScoreBoost = (userId?: string) => {
     if (!userId) return;
 
     try {
-      const { data, error } = await supabase
-        .from('score_boost_history')
-        .select('*')
-        .eq('pilot_id', userId)
-        .order('timestamp', { ascending: false })
-        .limit(50);
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'score_boost_history',
+        operation: 'select',
+        where: { pilot_id: userId },
+        orderBy: 'timestamp DESC',
+        limit: 50,
+      });
 
-      if (error) throw error;
-
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      const history: ScoreBoostHistory[] = (data || []).map((item: any) => ({
-        boostId: item.id,
-        actionId: item.action_id,
-        scoreBefore: item.score_before,
-        scoreAfter: item.score_after,
-        boostAmount: item.boost_amount,
-        timestamp: item.timestamp,
+      const history: ScoreBoostHistory[] = (data || []).map(item => ({
+        boostId: item.id as string,
+        actionId: item.action_id as string,
+        scoreBefore: item.score_before as number,
+        scoreAfter: item.score_after as number,
+        boostAmount: item.boost_amount as number,
+        timestamp: item.timestamp as string,
       }));
 
       setBoostHistory(history);
@@ -112,44 +110,35 @@ export const useAICoachingScoreBoost = (userId?: string) => {
       if (!action) throw new Error('Action not found');
 
       // Update action as completed
-      const { error: updateError } = await supabase
-        .from('ai_coaching_actions')
-        .update({
-          completed: true,
-          completed_at: new Date().toISOString(),
-        })
-        .eq('id', actionId);
-
-      if (updateError) throw updateError;
+      await callApi('queryTable', {
+        table: 'ai_coaching_actions',
+        operation: 'update',
+        id: actionId,
+        data: { completed: true, completed_at: new Date().toISOString() },
+      });
 
       // Calculate new score
       const newScore = currentScore + action.scoreBoost;
 
       // Record boost history
-      const { error: historyError } = await supabase
-        .from('score_boost_history')
-        .insert({
+      await callApi('queryTable', {
+        table: 'score_boost_history',
+        operation: 'insert',
+        data: {
           pilot_id: userId,
           action_id: actionId,
           score_before: currentScore,
           score_after: newScore,
           boost_amount: action.scoreBoost,
-          timestamp: new Date().toISOString(),
-        });
-
-      if (historyError) throw historyError;
+        },
+      });
 
       // Update recognition score in database
-      const { error: scoreError } = await supabase
-        .from('recognition_scores')
-        .update({
-          total_score: newScore,
-          ai_coaching_boost: (totalBoost || 0) + action.scoreBoost,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('pilot_id', userId);
-
-      if (scoreError) throw scoreError;
+      await callApi('saveRecognitionScore', {
+        pilot_id: userId,
+        total_score: newScore,
+        ai_coaching_boost: (totalBoost || 0) + action.scoreBoost,
+      });
 
       // Refresh data
       await loadCoachingActions();
@@ -168,27 +157,24 @@ export const useAICoachingScoreBoost = (userId?: string) => {
     if (!userId) return;
 
     try {
-      const { data, error } = await supabase
-        .from('ai_coaching_actions')
-        .insert({
+      const data = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'ai_coaching_actions',
+        operation: 'insert',
+        data: {
           pilot_id: userId,
           action_type: action.type,
           description: action.description,
           score_boost: action.scoreBoost,
           completed: false,
-          created_at: new Date().toISOString(),
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
+        },
+      });
 
       const newAction: AICoachingAction = {
-        actionId: data.id,
-        type: data.action_type,
-        description: data.description,
-        scoreBoost: data.score_boost,
-        completed: data.completed,
+        actionId: (data as { id: string }).id,
+        type: action.type,
+        description: action.description,
+        scoreBoost: action.scoreBoost,
+        completed: false,
       };
 
       setPendingActions([...pendingActions, newAction]);

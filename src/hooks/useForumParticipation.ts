@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
 export type PostType = 'question' | 'answer' | 'comment' | 'discussion';
 
@@ -20,6 +20,7 @@ export const useForumParticipation = (userId: string | null) => {
   const [loading, setLoading] = useState(false);
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalHelpfulVotes, setTotalHelpfulVotes] = useState(0);
+  const { callApi } = useWorkerAuth();
 
   useEffect(() => {
     if (userId) {
@@ -33,21 +34,19 @@ export const useForumParticipation = (userId: string | null) => {
     
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('forum_participation')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+      const data = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'forum_posts',
+        operation: 'select',
+        where: { user_id: userId },
+        orderBy: 'created_at DESC',
+        limit: 200,
+      });
 
-      if (error) {
-        console.error('Failed to fetch forum posts:', error);
-      } else {
-        setPosts(data || []);
-        const likes = (data || []).reduce((sum, p) => sum + (p.likes_received || 0), 0);
-        const helpful = (data || []).reduce((sum, p) => sum + (p.helpful_votes || 0), 0);
-        setTotalLikes(likes);
-        setTotalHelpfulVotes(helpful);
-      }
+      setPosts((data || []) as unknown as ForumParticipation[]);
+      const likes = (data || []).reduce((sum, p) => sum + ((p as Record<string, unknown>).likes_received as number || 0), 0);
+      const helpful = (data || []).reduce((sum, p) => sum + ((p as Record<string, unknown>).helpful_votes as number || 0), 0);
+      setTotalLikes(likes);
+      setTotalHelpfulVotes(helpful);
     } catch (error) {
       console.error('Error in fetchPosts:', error);
     } finally {
@@ -63,26 +62,21 @@ export const useForumParticipation = (userId: string | null) => {
     if (!userId) return null;
 
     try {
-      const { data, error } = await supabase
-        .from('forum_participation')
-        .insert({
+      const data = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'forum_posts',
+        operation: 'insert',
+        data: {
           user_id: userId,
           post_id: postId,
           post_title: postTitle,
           post_type: postType,
           likes_received: 0,
           helpful_votes: 0,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Failed to add post:', error);
-        return null;
-      }
+        },
+      });
 
       await fetchPosts();
-      return data;
+      return data as unknown as ForumParticipation;
     } catch (error) {
       console.error('Error in addPost:', error);
       return null;
@@ -95,19 +89,15 @@ export const useForumParticipation = (userId: string | null) => {
     helpfulVotes?: number
   ) => {
     try {
-      const { error } = await supabase
-        .from('forum_participation')
-        .update({
+      await callApi('queryTable', {
+        table: 'forum_posts',
+        operation: 'update',
+        id: postId,
+        data: {
           likes_received: likesReceived,
           helpful_votes: helpfulVotes,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', postId);
-
-      if (error) {
-        console.error('Failed to update engagement:', error);
-        return false;
-      }
+        },
+      });
 
       if (userId) {
         await fetchPosts();
@@ -121,15 +111,11 @@ export const useForumParticipation = (userId: string | null) => {
 
   const deletePost = async (postId: string) => {
     try {
-      const { error } = await supabase
-        .from('forum_participation')
-        .delete()
-        .eq('id', postId);
-
-      if (error) {
-        console.error('Failed to delete post:', error);
-        return false;
-      }
+      await callApi('queryTable', {
+        table: 'forum_posts',
+        operation: 'delete',
+        id: postId,
+      });
 
       if (userId) {
         await fetchPosts();

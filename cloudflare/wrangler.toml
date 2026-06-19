@@ -1,0 +1,32 @@
+# Cloudflare Worker configuration for PilotRecognition API
+# This replaces Supabase Edge Functions and direct client queries
+
+name = "pilotrecognition-api"
+main = "worker.ts"
+compatibility_date = "2025-06-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+# D1 Database binding — your SQLite database at the edge
+[[d1_databases]]
+binding = "DB"
+database_name = "pilotrecognition-d1"
+# Replace with your actual D1 database ID after creation:
+# Run: npx wrangler d1 create pilotrecognition-d1
+database_id = "0652ca22-adb0-4642-8658-ccc3ad74d263"
+
+# Environment variables
+[vars]
+AUTH0_DOMAIN = "dev-ir828tguibp1dh5f.eu.auth0.com"
+AUTH0_AUDIENCE = "https://dev-ir828tguibp1dh5f.eu.auth0.com/api/v2/"
+DODO_PRODUCT_ID_RECOGNITION_PLUS = "your_dodo_product_id"
+
+# Secrets (set these with `wrangler secret put`):
+# DODO_API_KEY = "your_dodo_api_key"
+# DODO_WEBHOOK_SECRET = "your_dodo_webhook_secret"
+# VEREMARK_WEBHOOK_SECRET = "your_veremark_webhook_secret"
+
+# Optional: KV for caching or rate limiting
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "your_kv_namespace_id"

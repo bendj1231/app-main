@@ -1,12 +1,11 @@
-import { useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 
-export type ActivityType = 
-  | 'login' 
-  | 'logout' 
-  | 'profile_update' 
-  | 'assessment_completion' 
-  | 'course_enrollment' 
+export type ActivityType =
+  | 'login'
+  | 'logout'
+  | 'profile_update'
+  | 'assessment_completion'
+  | 'course_enrollment'
   | 'goal_completion';
 
 interface ActivityLogOptions {
@@ -16,6 +15,8 @@ interface ActivityLogOptions {
 }
 
 export const useUserActivityLog = () => {
+  const { callApi } = useWorkerAuth();
+
   const logActivity = async (
     activityType: ActivityType,
     userId: string,
@@ -23,8 +24,7 @@ export const useUserActivityLog = () => {
   ) => {
     try {
       const { activityDetails = {}, ipAddress, userAgent } = options;
-      
-      // Get IP address if not provided
+
       let finalIpAddress = ipAddress;
       if (!finalIpAddress) {
         try {
@@ -36,25 +36,18 @@ export const useUserActivityLog = () => {
         }
       }
 
-      // Get user agent if not provided
       let finalUserAgent = userAgent;
       if (!finalUserAgent) {
         finalUserAgent = navigator.userAgent;
       }
 
-      const { error } = await supabase
-        .from('user_activity_log')
-        .insert({
-          user_id: userId,
-          activity_type: activityType,
-          activity_details: activityDetails,
-          ip_address: finalIpAddress,
-          user_agent: finalUserAgent,
-        });
-
-      if (error) {
-        console.error('Failed to log activity:', error);
-      }
+      await callApi('logActivity', {
+        user_id: userId,
+        activity_type: activityType,
+        activity_details: activityDetails,
+        ip_address: finalIpAddress,
+        user_agent: finalUserAgent,
+      });
     } catch (error) {
       console.error('Error in logActivity:', error);
     }
@@ -105,9 +98,10 @@ export const useUserActivityLog = () => {
 export const useAutoLogLogin = (userId: string | null, isLoggedIn: boolean) => {
   const { logLogin } = useUserActivityLog();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (userId && isLoggedIn) {
       logLogin(userId);
     }
-  }, [userId, isLoggedIn, logLogin]);
+  }, [userId, isLoggedIn]);
 };

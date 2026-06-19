@@ -1,0 +1,19 @@
+models:
+  - title: "Nvidia Nemotron (Portkey Free)"
+    provider: openai
+    model: nvidia/nemotron-3-nano-omni-30b-a3b-reasoning
+    api_key: 18zmP1IdgJwKo9bw43VdLsVjUaVH
+    api_base: https://api.portkey.ai/v1
+    request_options:
+      headers:
+        x-portkey-config: pc-reques-32d267
+
+disableIndexing: true
+enableAutocomplete: false
+enableSummarization: false
+enableCitation: false
+enableAgent: false
+enableToolUse: false
+enableMemory: false
+enableSearch: false
+enableEmbeddings: false

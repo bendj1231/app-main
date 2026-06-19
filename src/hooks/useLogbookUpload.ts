@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+import { useWorkerAuth } from './useWorkerAuth';
 import { useAuth } from '../contexts/AuthContext';
 
 export interface ParsedLogbookRow {
@@ -120,6 +120,7 @@ export function summariseRows(rows: ParsedLogbookRow[]): UploadSummary {
 
 export function useLogbookUpload() {
   const { currentUser } = useAuth();
+  const { callApi } = useWorkerAuth();
   const [status, setStatus]       = useState<UploadStatus>('idle');
   const [parseErrors, setParseErrors] = useState<string[]>([]);
   const [rows, setRows]           = useState<ParsedLogbookRow[]>([]);
@@ -166,38 +167,38 @@ export function useLogbookUpload() {
 
     try {
       // 1. Ensure pilot_platform_connections row exists for manual-upload source
-      const { data: existingConn } = await supabase
-        .from('pilot_platform_connections')
-        .select('id')
-        .eq('pilot_id', currentUser.id)
-        .eq('provider_slug', 'manual-csv')
-        .maybeSingle();
+      const existingConnRows = await callApi<Record<string, unknown>[]>('queryTable', {
+        table: 'pilot_platform_connections',
+        operation: 'select',
+        where: { pilot_id: currentUser.id, provider_slug: 'manual-csv' },
+        limit: 1,
+      });
+      const existingConn = existingConnRows?.[0];
 
       let connectionId: string;
 
       if (existingConn) {
-        connectionId = existingConn.id;
+        connectionId = existingConn.id as string;
       } else {
-        const { data: newConn, error: connErr } = await supabase
-          .from('pilot_platform_connections')
-          .insert({
+        const newConn = await callApi<Record<string, unknown>>('queryTable', {
+          table: 'pilot_platform_connections',
+          operation: 'insert',
+          data: {
             pilot_id: currentUser.id,
             provider_type: 'logbook',
             provider_name: 'Manual CSV Upload',
             provider_slug: 'manual-csv',
             connection_status: 'active',
-            last_synced_at: new Date().toISOString(),
-          })
-          .select('id')
-          .single();
-        if (connErr) throw connErr;
-        connectionId = newConn.id;
+          },
+        });
+        connectionId = (newConn as { id: string }).id;
       }
 
       // 2. Write the logbook_hour_tokens row (L1 — self-reported)
-      const { data: token, error: tokenErr } = await supabase
-        .from('logbook_hour_tokens')
-        .insert({
+      const token = await callApi<Record<string, unknown>>('queryTable', {
+        table: 'logbook_hour_tokens',
+        operation: 'insert',
+        data: {
           pilot_id:             currentUser.id,
           connection_id:        connectionId,
           issuer_type:          'self_reported',
@@ -212,28 +213,28 @@ export function useLogbookUpload() {
           period_to:            summary.dateTo || null,
           verification_level:   1,
           status:               'pending',
-        })
-        .select('id')
-        .single();
+        },
+      });
 
-      if (tokenErr) throw tokenErr;
-      setTokenId(token.id);
+      const tokenId = (token as { id: string }).id;
+      setTokenId(tokenId);
 
       // 3. Write audit event
-      await supabase
-        .from('p12_verification_events')
-        .insert({
+      await callApi('queryTable', {
+        table: 'p12_verification_events',
+        operation: 'insert',
+        data: {
           pilot_id:        currentUser.id,
           connection_id:   connectionId,
           event_type:      'logbook_verification',
           source_table:    'logbook_hour_tokens',
-          source_record_id: token.id,
+          source_record_id: tokenId,
           provider_name:   'Manual CSV Upload',
           step_reached:    'token_issued',
           outcome:         'success',
           outcome_detail:  `${summary.rowCount} rows parsed. ${summary.totalHours} total hours. L1 self-reported token created.`,
-          referral_dividend_triggered: false,
-        });
+        },
+      });
 
       setStatus('success');
     } catch (e: unknown) {
