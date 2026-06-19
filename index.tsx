@@ -12,7 +12,7 @@ if (typeof window !== 'undefined') {
   }
 }
 
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BrowserRouter, useNavigate } from 'react-router-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
@@ -24,6 +24,31 @@ import { ErrorBoundary } from '@/src/components/ErrorBoundary';
 import { getAuth0RedirectUri } from '@/src/lib/auth0';
 import { ThemeProvider } from '@/components/website/context/ThemeContext';
 import './index.css';
+
+// No-op Auth0 context for when env vars are missing
+const noOpAuth0Value = {
+  isAuthenticated: false,
+  isLoading: false,
+  user: undefined,
+  getAccessTokenSilently: async () => '',
+  getAccessTokenWithPopup: async () => undefined,
+  getIdTokenClaims: async () => undefined,
+  loginWithRedirect: async () => {},
+  loginWithPopup: async () => {},
+  logout: async () => {},
+  handleRedirectCallback: async () => ({} as any),
+  getDpopNonce: undefined,
+  setDpopNonce: undefined,
+  generateDpopProof: undefined,
+  createFetcher: undefined,
+  getConfiguration: () => ({ domain: '', clientId: '' }),
+  mfa: {} as any,
+  loginWithCustomTokenExchange: async () => ({} as any),
+  customTokenExchange: async () => ({} as any),
+  exchangeToken: async () => ({} as any),
+  connectAccountWithRedirect: async () => {},
+};
+const NoOpAuth0Context = createContext(noOpAuth0Value);
 
 declare global {
   interface Window {
@@ -45,7 +70,7 @@ const Auth0ProviderWithNavigate: React.FC<{ children: React.ReactNode }> = ({ ch
     console.warn(
       '⚠️ Missing Auth0 environment variables: VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID — auth disabled until configured'
     );
-    return <>{children}</>;
+    return <NoOpAuth0Context.Provider value={noOpAuth0Value}>{children}</NoOpAuth0Context.Provider>;
   }
 
   const effectiveAuth0Audience =
