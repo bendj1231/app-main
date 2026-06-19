@@ -36,16 +36,15 @@ export const LogbookCallback = () => {
 
     const exchange = async () => {
       try {
-        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
-        if (!SUPABASE_ANON_KEY) throw new Error('VITE_SUPABASE_ANON_KEY is not configured');
+        const WORKER_URL = import.meta.env.VITE_WORKER_API_URL;
+        if (!WORKER_URL) throw new Error('VITE_WORKER_API_URL is not configured');
         let res: Response;
         try {
-          res = await fetch(`${SUPABASE_URL}/functions/v1/mfb-token-exchange`, {
+          res = await fetch(`${WORKER_URL}?action=mfbTokenExchange`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${sessionStorage.getItem('access_token') || ''}`,
             },
             body: JSON.stringify({
               code,
@@ -59,7 +58,7 @@ export const LogbookCallback = () => {
 
         if (!res.ok) {
           const errText = await res.text();
-          throw new Error(errText || `Edge function error ${res.status}`);
+          throw new Error(errText || `Worker error ${res.status}`);
         }
 
         const data = await res.json();

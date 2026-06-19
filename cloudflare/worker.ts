@@ -1046,6 +1046,11 @@ async function handleAction(
       return { success: false, error: 'issuerSign not yet migrated to Worker. Use legacy issuer endpoint.' };
     }
 
+    case 'mfbTokenExchange': {
+      // TODO: Migrate mfb-token-exchange edge function into Worker
+      return { success: false, error: 'mfbTokenExchange not yet migrated to Worker' };
+    }
+
     default:
       throw new Error(`Unknown action: ${action}`);
   }
