@@ -68,8 +68,22 @@ function getSupabaseClient(): SupabaseClient {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function createNoOpClient(): SupabaseClient {
   const noop = () => Promise.resolve({ data: null, error: new Error('Supabase not configured') });
+  const noopUser = () => Promise.resolve({ data: { user: null }, error: new Error('Supabase not configured') });
+  const noopSession = () => Promise.resolve({ data: { session: null }, error: new Error('Supabase not configured') });
   const noopChain = new Proxy({} as any, {
-    get() {
+    get(_, prop: string | symbol) {
+      if (prop === 'then') {
+        return (resolve: any) => Promise.resolve(resolve?.({ data: null, error: new Error('Supabase not configured') }));
+      }
+      if (prop === 'catch') {
+        return (reject: any) => Promise.resolve(reject?.(new Error('Supabase not configured')));
+      }
+      if (prop === 'finally') {
+        return (fn: any) => Promise.resolve(fn?.());
+      }
+      if (prop === 'data' || prop === 'error') {
+        return null;
+      }
       return noopChain;
     },
     apply() {
@@ -79,9 +93,9 @@ function createNoOpClient(): SupabaseClient {
   return {
     from: () => noopChain,
     auth: {
-      getSession: noop,
+      getSession: noopSession,
       signOut: noop,
-      getUser: noop,
+      getUser: noopUser,
       onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
     } as any,
     functions: { invoke: noop } as any,
