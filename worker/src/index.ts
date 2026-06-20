@@ -362,6 +362,38 @@ async function executeAction(env: Env, action: string, params: any): Promise<unk
       return results?.[0] || {};
     }
 
+    // ── Unified dashboard load — one request, all data ─────
+    case 'getDashboardData': {
+      const { user_id, auth0_id } = params || {};
+      if (!user_id && !auth0_id) throw new Error('user_id or auth0_id required');
+
+      const id = user_id || auth0_id;
+      const isAuth0 = !user_id && !!auth0_id;
+
+      const profileQuery = isAuth0
+        ? db.prepare('SELECT * FROM profiles WHERE auth0_id = ?').bind(id)
+        : db.prepare('SELECT * FROM profiles WHERE id = ?').bind(id);
+
+      const { results: profileResults } = await profileQuery.all();
+      const profile = profileResults?.[0] || null;
+      if (!profile) return { profile: null, flight_hours: null, badges: [], verification_receipts: [] };
+
+      const profileId = profile.id;
+
+      const [{ results: fhResults }, { results: badgeResults }, { results: receiptResults }] = await Promise.all([
+        db.prepare('SELECT * FROM flight_hours WHERE user_id = ?').bind(profileId).all(),
+        db.prepare('SELECT * FROM mentorship_badges WHERE user_id = ? ORDER BY earned_at DESC').bind(profileId).all(),
+        db.prepare('SELECT * FROM verification_receipts WHERE user_id = ? ORDER BY updated_at DESC').bind(profileId).all(),
+      ]);
+
+      return {
+        profile,
+        flight_hours: fhResults?.[0] || null,
+        badges: badgeResults || [],
+        verification_receipts: receiptResults || [],
+      };
+    }
+
     case 'updateFlightHours': {
       const { user_id, total_hours, pic_hours, instrument_hours } = params || {};
       await db.prepare(`

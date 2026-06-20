@@ -4929,7 +4929,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
       if (avatarInputRef.current) avatarInputRef.current.value = '';
     }
   };
-  const { callBatch } = useWorkerAuth();
+  const { callApi, callBatch } = useWorkerAuth();
   const [emailVerified, setEmailVerified] = useState<boolean>(true);
   const [resendingSent, setResendingSent] = useState(false);
   const [tcUpdatePending, setTcUpdatePending] = useState(false);
@@ -5152,117 +5152,41 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     }
   };
 
-  // Dashboard batch load — once per session, cached in IndexedDB
+  // Unified dashboard load — one request gets profile + flight hours + badges + receipts
   useEffect(() => {
     if (sessionInitiatedRef.current) return;
-    const profileId = profileData?.id;
-    if (!profileId) return;
     sessionInitiatedRef.current = true;
-
-    const cacheKey = `dashboard:${profileId}`;
 
     const loadDashboard = async () => {
       try {
-        const batch = await callBatch([
-          { action: 'getLicensure', params: { user_id: profileId } },
-          { action: 'getVerificationReceipts', params: { user_id: profileId } },
-          { action: 'queryTable', params: { table: 'pilot_notifications', operation: 'count', where: { pilot_id: profileId, is_read: false } } },
-          { action: 'getVerificationStatus', params: { user_id: profileId } },
-        ]);
-
-        await cacheBatch(cacheKey, batch);
-
-        const licensure = batch.result_0 as Record<string, unknown> | null;
-        const receipts = batch.result_1 as Array<Record<string, unknown>> | null;
-        const notifCountRaw = batch.result_2 as { count: number } | null;
-        const verifStatus = batch.result_3 as Record<string, unknown> | null;
-
-        if (licensure) {
-          setProfileData((prev: Record<string, unknown>) => ({ ...prev, ...licensure }));
+        const auth0Id = auth0User?.sub;
+        if (!auth0Id) return;
+        const data = await callApi('getDashboardData', { auth0_id: auth0Id }) as Record<string, unknown>;
+        if (!data?.profile) {
+          console.warn('[dashboard] no profile found for auth0_id:', auth0Id);
+          return;
         }
-        if (receipts) {
-          setWalletChecks(receipts);
-        }
-        setNotifCount(notifCountRaw?.count ?? 0);
-        if (verifStatus) {
-          setProfileData((prev: Record<string, unknown>) => ({ ...prev, verification_status: verifStatus }));
-        }
+        const profile = data.profile as Record<string, unknown>;
+        const flightHours = data.flight_hours as Record<string, unknown> | null;
+        const receipts = data.verification_receipts as Array<Record<string, unknown>> | null;
 
-        const warnings = await scanCachedData();
-        setDataWarnings(warnings);
+        setProfileData({ ...profile, ...flightHours });
+        if (receipts) setWalletChecks(receipts);
+        setNotifCount(0); // TODO: add notifications to Worker schema if needed
       } catch (err) {
-        console.error('[dashboard] batch load failed:', err);
+        console.error('[dashboard] unified load failed:', err);
       }
     };
 
-    // 1. Try IndexedDB first — immediate UI paint
-    (async () => {
-      const cached = await readCachedBatch(cacheKey);
-      if (cached) {
-        const licensure = cached.result_0 as Record<string, unknown> | null;
-        const receipts = cached.result_1 as Array<Record<string, unknown>> | null;
-        const notifCountRaw = cached.result_2 as { count: number } | null;
-        const verifStatus = cached.result_3 as Record<string, unknown> | null;
+    loadDashboard();
+  }, [auth0User?.sub, callApi]);
 
-        if (licensure) {
-          setProfileData((prev: Record<string, unknown>) => ({ ...prev, ...licensure }));
-        }
-        if (receipts) {
-          setWalletChecks(receipts);
-        }
-        setNotifCount(notifCountRaw?.count ?? 0);
-        if (verifStatus) {
-          setProfileData((prev: Record<string, unknown>) => ({ ...prev, verification_status: verifStatus }));
-        }
-
-        const warnings = await scanCachedData();
-        setDataWarnings(warnings);
-      }
-      // 2. Fetch fresh from Worker in background (one time per session)
-      await loadDashboard();
-    })();
-  }, [profileData?.id, callBatch]);
-
-  // Keep profileData in sync — prefer AuthContext userProfile, fall back to auth0_id then email lookup
-  const profileSyncInitiatedRef = useRef(false);
+  // AuthContext userProfile seed — only used if passed from login flow
   useEffect(() => {
-    if (profileSyncInitiatedRef.current) return;
-    if (userProfile) {
-      profileSyncInitiatedRef.current = true;
+    if (userProfile && !profileData?.id) {
       setProfileData(userProfile);
-    } else if (auth0User?.sub) {
-      profileSyncInitiatedRef.current = true;
-      const email = auth0User?.email || currentUser?.email;
-      supabase
-        .from('profiles')
-        .select('*, profile_image_public_id')
-        .eq('auth0_id', auth0User.sub)
-        .maybeSingle()
-        .then(async ({ data }) => {
-          if (data) {
-            const { data: decrypted } = await readProfile(data.id);
-            setProfileData(decrypted || data);
-          } else if (email) {
-            const { data: emailData } = await supabase
-              .from('profiles')
-              .select('*, profile_image_public_id')
-              .eq('email', email)
-              .maybeSingle();
-            if (emailData) {
-              supabase
-                .from('profiles')
-                .update({ auth0_id: auth0User.sub })
-                .eq('id', emailData.id)
-                .then(() => {});
-              const { data: decrypted } = await readProfile(emailData.id);
-              setProfileData(decrypted || emailData);
-            } else {
-              console.warn('[profile] no profile found by auth0_id or email');
-            }
-          }
-        });
     }
-  }, [userProfile, auth0User?.sub, auth0User?.email, currentUser?.email]);
+  }, [userProfile]);
 
   const handleLogout = useCallback(async () => {
     await clearDashboardCache();
