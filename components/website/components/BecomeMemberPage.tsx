@@ -193,6 +193,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [enableShader, setEnableShader] = useState(false);
     const isSetup = new URLSearchParams(window.location.search).get('setup') === '1';
     const setupInitRef = React.useRef(false);
+    const profileCheckInitiatedRef = React.useRef(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -295,9 +296,10 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
     const [profileCheckComplete, setProfileCheckComplete] = useState(false);
     const [profileExists, setProfileExists] = useState<boolean | null>(null);
 
-    // Check profile for Auth0 users
+    // Check profile for Auth0 users — runs exactly once
     useEffect(() => {
-        if (!isSetup || !auth0User?.sub || profileCheckComplete) return;
+        if (!isSetup || !auth0User?.sub || profileCheckInitiatedRef.current) return;
+        profileCheckInitiatedRef.current = true;
 
         const checkProfile = async () => {
             const auth0Id = auth0User.sub;
@@ -309,7 +311,7 @@ export const BecomeMemberPage: React.FC<BecomeMemberPageProps> = ({ onBack, onNa
         };
 
         checkProfile();
-    }, [isSetup, auth0User, profileCheckComplete]);
+    }, [isSetup, auth0User]);
 
     // Redirect based on profile existence
     useEffect(() => {
