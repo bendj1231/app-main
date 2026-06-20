@@ -33,7 +33,7 @@ async function fetchAPI(
   const url = `${WORKER_URL}${path}`;
   let lastErr: Error | null = null;
 
-  for (let attempt = 0; attempt < 3; attempt++) {
+  for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const res = await fetch(url, {
         ...options,
@@ -52,8 +52,8 @@ async function fetchAPI(
       return data;
     } catch (err) {
       lastErr = err instanceof Error ? err : new Error(String(err));
-      if (attempt < 2) {
-        await new Promise((r) => setTimeout(r, 300 * (attempt + 1)));
+      if (attempt < 1) {
+        await new Promise((r) => setTimeout(r, 300));
       }
     }
   }

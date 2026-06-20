@@ -4855,6 +4855,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   const [notifCount, setNotifCount] = useState(0);
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [profileData, setProfileData] = useState<any>(userProfile);
+  const sessionInitiatedRef = useRef(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarError, setAvatarError] = useState('');
@@ -5153,8 +5154,10 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
 
   // Dashboard batch load — once per session, cached in IndexedDB
   useEffect(() => {
+    if (sessionInitiatedRef.current) return;
     const profileId = profileData?.id;
     if (!profileId) return;
+    sessionInitiatedRef.current = true;
 
     const cacheKey = `dashboard:${profileId}`;
 
@@ -5221,10 +5224,14 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
   }, [profileData?.id, callBatch]);
 
   // Keep profileData in sync — prefer AuthContext userProfile, fall back to auth0_id then email lookup
+  const profileSyncInitiatedRef = useRef(false);
   useEffect(() => {
+    if (profileSyncInitiatedRef.current) return;
     if (userProfile) {
+      profileSyncInitiatedRef.current = true;
       setProfileData(userProfile);
     } else if (auth0User?.sub) {
+      profileSyncInitiatedRef.current = true;
       const email = auth0User?.email || currentUser?.email;
       supabase
         .from('profiles')
