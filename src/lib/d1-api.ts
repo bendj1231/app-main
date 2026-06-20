@@ -21,7 +21,7 @@
 
 // ── Config ─────────────────────────────────────────────────────
 
-const WORKER_URL = import.meta.env.VITE_WORKER_API_URL || '';
+const WORKER_URL = import.meta.env.VITE_WORKER_API_URL || 'https://pilotrecognition-api.benjamintigerbowler.workers.dev';
 
 async function fetchAPI(
   accessToken: string,
