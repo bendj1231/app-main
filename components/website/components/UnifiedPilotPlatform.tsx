@@ -5152,7 +5152,7 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
     }
   };
 
-  // Unified dashboard load — one request per browser session, cached in sessionStorage
+  // Unified dashboard load — one request per browser session, cached in IndexedDB
   useEffect(() => {
     if (sessionInitiatedRef.current) return;
     sessionInitiatedRef.current = true;
@@ -5162,17 +5162,22 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         const auth0Id = auth0User?.sub;
         if (!auth0Id) return;
 
-        // Check sessionStorage cache first
-        const cacheKey = `pr_dashboard_${auth0Id}`;
-        const cached = sessionStorage.getItem(cacheKey);
+        // Check IndexedDB cache first (survives browser restarts)
+        const cacheKey = `dashboard:${auth0Id}`;
+        const cached = await readCachedBatch(cacheKey);
         if (cached) {
           try {
-            const data = JSON.parse(cached);
-            setProfileData(data.profileData || null);
-            setWalletChecks(data.walletChecks || []);
-            setNotifCount(data.notifCount || 0);
-            console.log('[dashboard] loaded from sessionStorage cache');
-            return;
+            const now = Date.now();
+            const cachedAt = (cached as any).cachedAt || 0;
+            const ageHours = (now - cachedAt) / (1000 * 60 * 60);
+            if (ageHours < 24) {
+              const payload = (cached as any).payload || cached;
+              setProfileData(payload.profileData || null);
+              setWalletChecks(payload.walletChecks || []);
+              setNotifCount(payload.notifCount || 0);
+              console.log('[dashboard] loaded from IndexedDB cache');
+              return;
+            }
           } catch { /* invalid cache, fetch fresh */ }
         }
 
@@ -5191,14 +5196,14 @@ export const UnifiedPilotPlatform: React.FC<UnifiedPilotPlatformProps> = ({ onNa
         if (receipts) setWalletChecks(receipts);
         setNotifCount(0);
 
-        // Cache in sessionStorage for this browser session
-        sessionStorage.setItem(cacheKey, JSON.stringify({
+        // Cache in IndexedDB (persists across browser sessions)
+        await cacheBatch(cacheKey, {
           profileData: profileDataState,
           walletChecks: receipts || [],
           notifCount: 0,
           cachedAt: Date.now(),
-        }));
-        console.log('[dashboard] fetched from Worker and cached');
+        });
+        console.log('[dashboard] fetched from Worker and cached in IndexedDB');
       } catch (err) {
         console.error('[dashboard] unified load failed:', err);
       }
