@@ -6,7 +6,8 @@
  *
  * Architecture:
  *   - Uses WebAuthn navigator.credentials.create() to register a platform authenticator
- *   - Public key stored in Supabase `pilot_passkeys` table
+ *   - Private key stays in device hardware (iCloud Keychain / Google Password Manager)
+ *   - Credential ID stored in localStorage only — no server needed
  *   - On future logins: navigator.credentials.get() → assertion → Auth0 still issues JWT
  *   - `auth0User.sub` remains stable → vault key derivation unchanged
  *
@@ -16,7 +17,6 @@
  */
 
 import React, { useState } from 'react';
-import { supabase } from '../../../src/lib/supabase';
 import { Fingerprint, X, Shield, ChevronRight } from 'lucide-react';
 
 interface PasskeyPromptProps {
@@ -101,24 +101,10 @@ export const PasskeyPrompt: React.FC<PasskeyPromptProps> = ({ userId, userEmail,
                 : /Windows/.test(ua) ? 'Windows'
                 : 'Unknown device';
 
-            // Persist public key to Supabase pilot_passkeys table via service role
-            // Uses supabase client with anon key — insert allowed via edge function pattern
-            const { error: dbError } = await supabase
-                .from('pilot_passkeys')
-                .insert({
-                    user_id: userId,
-                    credential_id: credential.id,
-                    public_key: Array.from(new Uint8Array(publicKeyBuffer)),
-                    sign_count: 0,
-                    device_name: deviceName,
-                    transports: (credential as any).response?.getTransports?.() ?? [],
-                });
-
-            if (dbError) {
-                console.warn('[passkey] DB insert failed (non-critical):', dbError.message);
-            }
-
-            // Mark registered locally for prompt suppression
+            // Passkey is browser-native — no server storage needed.
+            // The private key stays in iCloud Keychain / Google Password Manager.
+            // We only store the credential ID locally to know which passkey to use for auth.
+            console.log('[passkey] registered on device:', deviceName, credential.id);
             localStorage.setItem('pr_passkey_registered', 'true');
             localStorage.setItem('pr_passkey_credential_id', credential.id);
 
